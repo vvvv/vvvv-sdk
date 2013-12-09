@@ -1,9 +1,9 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Heading (Animation) help.v4p">
-   <BOUNDS height="7290" left="630" top="885" type="Window" width="5715">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Heading (Animation) help.v4p">
+   <BOUNDS height="7290" left="630" top="885" type="Window" width="6630">
    </BOUNDS>
    <NODE id="10" nodename="Heading (Animation)">
-   <BOUNDS height="0" left="810" top="4560" type="Node" width="0">
+   <BOUNDS height="0" left="1290" top="4725" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -15,7 +15,7 @@
    </PIN>
    </NODE>
    <NODE id="9" nodename="Vector2Points (2d)">
-   <BOUNDS height="0" left="105" top="5490" type="Node" width="0">
+   <BOUNDS height="270" left="270" top="5580" type="Node" width="1590">
    </BOUNDS>
    <PIN pinname="Length" visible="1">
    </PIN>
@@ -46,22 +46,8 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE id="7" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="120" top="3840" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="10" dstpinname="X" srcnodeid="7" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="X" srcnodeid="7" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="7" srcpinname="Y">
-   </LINK>
    <NODE id="6" nodename="Multiply (Value)">
-   <BOUNDS height="0" left="810" top="5025" type="Node" width="0">
+   <BOUNDS height="270" left="1290" top="5145" type="Node" width="330">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -74,10 +60,8 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Length" srcnodeid="6" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="10" dstpinname="Y" srcnodeid="7" srcpinname="Y">
-   </LINK>
    <NODE id="5" nodename="Line (GDI)">
-   <BOUNDS height="0" left="120" top="6360" type="Node" width="0">
+   <BOUNDS height="270" left="270" top="6360" type="Node" width="4170">
    </BOUNDS>
    <PIN pinname="X1" visible="1">
    </PIN>
@@ -103,9 +87,9 @@
    <LINK dstnodeid="5" dstpinname="Y2" srcnodeid="9" srcpinname="Y2">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
-   <BOUNDS height="585" left="1680" top="4515" type="Node" width="3420">
+   <BOUNDS height="585" left="2175" top="4680" type="Node" width="3420">
    </BOUNDS>
-   <BOUNDS height="825" left="1680" top="4515" type="Box" width="4080">
+   <BOUNDS height="825" left="2175" top="4680" type="Box" width="4080">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -117,9 +101,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
-   <BOUNDS height="255" left="1365" top="5505" type="Node" width="5190">
+   <BOUNDS height="255" left="2175" top="5580" type="Node" width="5190">
    </BOUNDS>
-   <BOUNDS height="570" left="1365" top="5505" type="Box" width="3300">
+   <BOUNDS height="570" left="2175" top="5580" type="Box" width="3300">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -131,9 +115,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <BOUNDS height="255" left="930" top="3855" type="Node" width="2715">
+   <BOUNDS height="255" left="1530" top="3885" type="Node" width="2715">
    </BOUNDS>
-   <BOUNDS height="285" left="930" top="3855" type="Box" width="3090">
+   <BOUNDS height="285" left="1530" top="3885" type="Box" width="3090">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -175,13 +159,39 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
-   <LINKPOINT x="135" y="6750">
+   <LINKPOINT x="255" y="6750">
    </LINKPOINT>
-   <LINKPOINT x="15" y="6750">
+   <LINKPOINT x="105" y="6750">
    </LINKPOINT>
-   <LINKPOINT x="15" y="930">
+   <LINKPOINT x="75" y="930">
    </LINKPOINT>
-   <LINKPOINT x="105" y="930">
+   <LINKPOINT x="135" y="930">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="105" top="3870" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="255" top="4260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="PositionXY" dstnodeid="12" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="X" dstnodeid="9" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="X" dstnodeid="10" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y" dstnodeid="10" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y" dstnodeid="9" dstpinname="Y">
    </LINK>
    </PATCH>

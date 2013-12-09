@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Transform\TextureSpace (Transform FromProjectionSpace) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\Transform\TextureSpace (Transform FromProjectionSpace) help.v4p">
    <BOUNDS height="7395" left="1230" top="2760" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Projection Space|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Projection Space|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Texture Space|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Texture Space|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -37,7 +37,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|                                 1 / 1&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;-1 / -1                 |" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|                                 1 / 1&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;-1 / -1                 |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -51,7 +51,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|0 / 0                       &cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;                                 1 / 1|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|0 / 0                       &cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;                                 1 / 1|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -65,7 +65,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Transforms from Projection Space to Texture Space. |" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Transforms from Projection Space to Texture Space. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -79,7 +79,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|TextureSpace (Transform FromProjectionSpace)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|TextureSpace (Transform FromProjectionSpace)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -127,25 +127,13 @@
    <NODE id="12" nodename="Multiply (3d Vector)" systemname="Multiply (3d Vector)">
    <BOUNDS height="0" left="6315" top="2550" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ UnTransformed" visible="1">
+   <PIN pinname="XYZ UnTransformed" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
    <PIN pinname="XYZ Transformed" visible="1">
    </PIN>
    </NODE>
-   <NODE id="11" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="7320" top="2325" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="XYZ UnTransformed" srcnodeid="11" srcpinname="XYZ">
-   </LINK>
    <NODE id="10" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="6315" top="2955" type="Node" width="0">
    </BOUNDS>
@@ -165,7 +153,7 @@
    <NODE id="9" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="0" left="3765" top="3750" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Filename" slicecount="1" values="..\..\..\assets\images\earth_512x512.jpg" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\..\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -210,28 +198,14 @@
    </LINK>
    <LINK dstnodeid="13" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
    </LINK>
-   <NODE id="5" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="0" left="7305" top="1770" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="11" dstpinname="X" srcnodeid="5" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Y" srcnodeid="5" srcpinname="Y">
-   </LINK>
    <NODE id="4" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="0" left="6570" top="4605" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="XYZ" srcnodeid="11" srcpinname="XYZ">
-   </LINK>
    <NODE id="3" nodename="Scale (Transform)" systemname="Scale (Transform)">
    <BOUNDS height="0" left="5355" top="4830" type="Node" width="0">
    </BOUNDS>
@@ -273,7 +247,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|mouse outputs coordinates in projection space|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|mouse outputs coordinates in projection space|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -287,7 +261,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|pipet needs texture space coordinates. so coordinates need to be multiplied with that transform|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|pipet needs texture space coordinates. so coordinates need to be multiplied with that transform|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -305,5 +279,33 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="24" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="11" nodename="xyZ (3d XY)" systemname="xyZ (3d XY)">
+   <BOUNDS height="0" left="7245" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="XYZ" dstnodeid="4" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="XYZ" dstnodeid="12" dstpinname="XYZ UnTransformed">
+   </LINK>
+   <NODE id="5" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="7080" top="1740" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="PositionXY" dstnodeid="11" dstpinname="XY">
    </LINK>
    </PATCH>

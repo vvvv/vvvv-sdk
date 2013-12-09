@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
-   <BOUNDS height="10035" left="135" top="135" type="Window" width="14325">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\3D\PointEditor (3D Persistent Sandwich) help.v4p">
+   <BOUNDS height="10470" left="0" top="0" type="Window" width="14325">
    </BOUNDS>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="525" type="Node" width="570">
@@ -99,7 +99,7 @@
    </PIN>
    </NODE>
    <NODE id="37" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
-   <BOUNDS height="0" left="9855" top="960" type="Node" width="0">
+   <BOUNDS height="0" left="9810" top="900" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -248,20 +248,6 @@
    </LINK>
    <LINK dstnodeid="35" dstpinname="Vertex Buffer" srcnodeid="27" srcpinname="Vertex Buffer">
    </LINK>
-   <NODE id="26" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="0" left="7500" top="3585" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="25" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
    <BOUNDS height="0" left="9240" top="1380" type="Node" width="0">
    </BOUNDS>
@@ -785,7 +771,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="50" dstpinname="Init" linkstyle="Bezier" srcnodeid="40" srcpinname="Y Output Value">
@@ -834,8 +820,26 @@
    </LINK>
    <LINK dstnodeid="50" dstpinname="Load" hiddenwhenlocked="1" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE systemname="MouseState (System Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Join)" componentmode="Hidden" id="52" managers="boygroup">
-   <BOUNDS type="Node" left="7500" top="4080" width="100" height="100">
+   <NODE id="26" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="6915" top="3630" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="52" systemname="MouseStates (Mouse Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Join)" componentmode="Hidden" managers="boygroup">
+   <BOUNDS type="Node" left="7065" top="4200" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -851,19 +855,21 @@
    </PIN>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="X" dstnodeid="52" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Y" dstnodeid="52" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Left Button" dstnodeid="52" dstpinname="Left Button">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Middle Button" dstnodeid="52" dstpinname="Middle Button">
+   <LINK srcnodeid="52" srcpinname="Mouse" dstnodeid="50" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Right Button" dstnodeid="52" dstpinname="Right Button">
    </LINK>
-   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="50" dstpinname="Mouse State">
+   <LINK srcnodeid="26" srcpinname="Middle Button" dstnodeid="52" dstpinname="Middle Button">
    </LINK>
-   <LINK srcnodeid="52" srcpinname="Mouse" dstnodeid="50" dstpinname="Mouse">
+   <LINK srcnodeid="26" srcpinname="Left Button" dstnodeid="52" dstpinname="Left Button">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="PositionXY" dstnodeid="52" dstpinname="PositionXY">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Mouse Wheel" dstnodeid="52" dstpinname="Mouse Wheel">
    </LINK>
    </PATCH>

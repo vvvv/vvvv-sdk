@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D).v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\3D\PointEditor (3D).v4p" locked="0">
    <BOUNDS height="12990" left="10710" top="1125" type="Window" width="18090">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="90" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
@@ -857,7 +857,7 @@
    <NODE id="36" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="9105" top="5970" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -1207,7 +1207,7 @@
    <NODE id="13" nodename="FrameDifference (Animation)" systemname="FrameDifference (Animation)">
    <BOUNDS height="0" left="7245" top="6720" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1802,22 +1802,6 @@
    </LINK>
    <LINK dstnodeid="121" dstpinname="Points Visible" srcnodeid="120" srcpinname="Visible">
    </LINK>
-   <NODE systemname="MouseState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseState (System Split)" componentmode="Hidden" id="122">
-   <BOUNDS type="Node" left="7965" top="750" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="123" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="7965" top="150" width="0" height="0">
    </BOUNDS>
@@ -1830,22 +1814,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="122" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="124">
-   <BOUNDS type="Node" left="7965" top="1230" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="122" srcpinname="X" dstnodeid="124" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y" dstnodeid="124" dstpinname="Y">
-   </LINK>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="125">
    <BOUNDS type="Node" left="8670" top="1230" width="100" height="100">
    </BOUNDS>
@@ -1853,21 +1821,11 @@
    </PIN>
    <PIN pinname="Y" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Z" visible="1">
+   <PIN pinname="Z" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="122" srcpinname="Left Button" dstnodeid="125" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Middle Button" dstnodeid="125" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Right Button" dstnodeid="125" dstpinname="Z">
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="36" dstpinname="XYZ">
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="13" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="56" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="35" dstpinname="Input 2">
@@ -1878,34 +1836,18 @@
    </LINK>
    <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="121" dstpinname="Mouse State">
    </LINK>
-   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="122" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="121" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
    </LINK>
-   <NODE id="60" hiddenwhenlocked="1" nodename="Keyboard (System Global)" systemname="Keyboard (System Global)">
-   <BOUNDS type="Node" height="0" left="12750" top="780" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   <PIN pinname="Key" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="73" srcpinname="Y Output Value" dstnodeid="60" dstpinname="Enabled">
-   </LINK>
-   <NODE systemname="KeyMatch (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (String)" componentmode="Hidden" id="126">
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (String)" componentmode="Hidden" id="126">
    <BOUNDS type="Node" left="12330" top="1140" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Key Match" slicecount="1" values="|t,s,d,x,c,v,y, m|" encoded="0">
+   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|t,s,d,x,c,v,y, m|">
    </PIN>
    <PIN pinname="T" visible="1">
    </PIN>
@@ -1924,8 +1866,6 @@
    <PIN pinname="M" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="60" srcpinname="Keyboard" dstnodeid="126" dstpinname="Keyboard">
-   </LINK>
    <LINK srcnodeid="126" srcpinname="T" dstnodeid="16" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="126" srcpinname="S" dstnodeid="16" dstpinname="Input 2">
@@ -1947,5 +1887,67 @@
    <LINK srcnodeid="126" srcpinname="T" dstnodeid="45" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="126" srcpinname="M" dstnodeid="47" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="122">
+   <BOUNDS type="Node" left="7965" top="750" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="122" srcpinname="Left Button" dstnodeid="125" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Middle Button" dstnodeid="125" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Right Button" dstnodeid="125" dstpinname="Z">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="122" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="124">
+   <BOUNDS type="Node" left="7965" top="1230" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="36" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="124" srcpinname="XYZ" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="PositionXY" dstnodeid="124" dstpinname="XY">
+   </LINK>
+   <NODE id="60" hiddenwhenlocked="1" nodename="Keyboard (Devices Desktop)" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="12330" top="630" width="0">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   <PIN pinname="Key" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Y Output Value" dstnodeid="60" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="60" srcpinname="Device" dstnodeid="126" dstpinname="Keyboard">
    </LINK>
    </PATCH>

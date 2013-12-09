@@ -1,5 +1,5 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\LinearFilter (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\LinearFilter (Animation) help.v4p">
    <BOUNDS height="5295" left="405" top="2460" type="Window" width="7260">
    </BOUNDS>
    <NODE componentmode="InABox" id="9" managers="" nodename="Renderer (GDI)">
@@ -18,14 +18,6 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE id="-2" nodename="Mouse (System Global)">
-   <BOUNDS height="0" left="1155" top="1140" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="8" nodename="VLine (GDI)">
    <BOUNDS height="0" left="360" top="1770" type="Node" width="0">
    </BOUNDS>
@@ -36,14 +28,8 @@
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="X" linkstyle="PolyLine" srcnodeid="-2" srcpinname="X">
-   <LINKPOINT x="1185" y="1575">
-   </LINKPOINT>
-   <LINKPOINT x="390" y="1575">
-   </LINKPOINT>
-   </LINK>
    <NODE id="7" nodename="LinearFilter (Animation)">
-   <BOUNDS height="0" left="1155" top="2910" type="Node" width="0">
+   <BOUNDS height="0" left="1155" top="3000" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Position Out" visible="1">
    </PIN>
@@ -58,7 +44,7 @@
    <PIN pinname="Acceleration">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="Point (GDI)">
+   <NODE id="6" nodename="POINT (GDI)">
    <BOUNDS height="0" left="1155" top="3675" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
@@ -69,7 +55,7 @@
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Asterisk">
    </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   <PIN pinname="Pen Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -77,7 +63,7 @@
    <LINK dstnodeid="6" dstpinname="X" srcnodeid="7" srcpinname="Position Out">
    </LINK>
    <NODE id="5" nodename="LinearSpread (Spreads)">
-   <BOUNDS height="0" left="1590" top="1590" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="1590" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -93,7 +79,7 @@
    </PIN>
    </NODE>
    <NODE id="4" nodename="Add (Value)">
-   <BOUNDS height="0" left="1590" top="2070" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="2100" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -104,10 +90,8 @@
    </NODE>
    <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="7" dstpinname="Go To Position" srcnodeid="-2" srcpinname="X">
-   </LINK>
    <NODE id="3" nodename="Divide (Value)">
-   <BOUNDS height="0" left="1575" top="2505" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="2490" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -120,12 +104,10 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="FilterTime" srcnodeid="3" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="5" srcpinname="Output">
-   <LINKPOINT x="2310" y="2130">
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="5" srcpinname="Output" linkstyle="PolyLine">
+   <LINKPOINT x="2265" y="2280">
    </LINKPOINT>
-   <LINKPOINT x="2310" y="3465">
-   </LINKPOINT>
-   <LINKPOINT x="1350" y="3465">
+   <LINKPOINT x="2250" y="3360">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
@@ -177,5 +159,25 @@
    </LINKPOINT>
    <LINKPOINT x="2670" y="4305">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1020" top="780" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="1170" top="1200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="PositionXY" dstnodeid="12" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="X" dstnodeid="8" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="X" dstnodeid="7" dstpinname="Go To Position">
    </LINK>
    </PATCH>

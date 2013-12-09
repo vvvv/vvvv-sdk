@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\girlpower\conneczzione.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\conneczzione.v4p">
    <BOUNDS height="14130" left="180" top="630" type="Window" width="10965">
    </BOUNDS>
    <NODE id="53" nodename="LFO (Animation)" systemname="LFO (Animation)">
-   <BOUNDS height="0" left="5895" top="4215" type="Node" width="0">
+   <BOUNDS height="0" left="5925" top="4230" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -24,16 +24,6 @@
    </NODE>
    <LINK dstnodeid="52" dstpinname="Input 2" srcnodeid="53" srcpinname="Output">
    </LINK>
-   <NODE id="51" nodename="Oscillator (Animation)" systemname="Oscillator (Animation)">
-   <BOUNDS height="0" left="6630" top="3585" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Go To Position" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Position Out" visible="1">
-   </PIN>
-   <PIN pinname="Cyclic" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE id="50" nodename="ConnectAll (2d)" systemname="ConnectAll (2d)">
    <BOUNDS height="270" left="4110" top="6540" type="Node" width="1125">
    </BOUNDS>
@@ -263,11 +253,11 @@
    <LINK dstnodeid="50" dstpinname="Y In" srcnodeid="38" srcpinname="Output Y">
    </LINK>
    <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="2835" top="4590" type="Node" width="0">
+   <BOUNDS height="0" left="2970" top="4590" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3953" top="3369" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="2835" top="4590" type="Box" width="795">
+   <BOUNDS height="240" left="2970" top="4590" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -278,16 +268,6 @@
    </LINK>
    <LINK dstnodeid="38" dstpinname="Height" srcnodeid="37" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="36" nodename="Oscillator (Animation)" systemname="Oscillator (Animation)">
-   <BOUNDS height="0" left="5655" top="3600" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Go To Position" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Position Out" visible="1">
-   </PIN>
-   <PIN pinname="Cyclic" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE id="35" nodename="HSL (Color Join)" systemname="HSL (Color Join)">
    <BOUNDS height="0" left="6015" top="10155" type="Node" width="0">
    </BOUNDS>
@@ -339,7 +319,7 @@
    <LINK dstnodeid="33" dstpinname="FilterTime" srcnodeid="41" srcpinname="Output">
    </LINK>
    <NODE id="32" nodename="Map (Value)" systemname="Map (Value)">
-   <BOUNDS height="0" left="2805" top="4005" type="Node" width="0">
+   <BOUNDS height="0" left="2955" top="4005" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -355,7 +335,7 @@
    <LINK dstnodeid="37" dstpinname="Y Input Value" srcnodeid="32" srcpinname="Output">
    </LINK>
    <NODE id="31" nodename="Counter (Animation)" systemname="Counter (Animation)">
-   <BOUNDS height="0" left="4185" top="3600" type="Node" width="0">
+   <BOUNDS height="0" left="4260" top="3600" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -363,15 +343,15 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="20">
    </PIN>
-   <PIN pinname="Up" visible="1">
+   <PIN pinname="Up" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Down" visible="1">
+   <PIN pinname="Down" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Mode" slicecount="1" values="Clamp">
    </PIN>
    </NODE>
    <NODE id="30" nodename="Counter (Animation)" systemname="Counter (Animation)">
-   <BOUNDS height="0" left="2805" top="3600" type="Node" width="0">
+   <BOUNDS height="0" left="2955" top="3600" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -379,41 +359,11 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="15">
    </PIN>
-   <PIN pinname="Down" visible="1">
+   <PIN pinname="Down" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Up" visible="1">
+   <PIN pinname="Up" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Mode" slicecount="1" values="Clamp">
-   </PIN>
-   </NODE>
-   <NODE id="29" nodename="KeyMatch (String)" systemname="Match (String)">
-   <BOUNDS height="0" left="3270" top="2850" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Key Match" slicecount="1" encoded="0" values="|&lt;LEFT&gt; &lt;RIGHT&gt; &lt;DOWN&gt; &lt;UP&gt; |">
-   </PIN>
-   <PIN pinname="Input" visible="1" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="&lt;UP&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;DOWN&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;LEFT&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="&lt;RIGHT&gt; Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="30" dstpinname="Down" srcnodeid="29" srcpinname="&lt;LEFT&gt; Output">
-   </LINK>
-   <LINK dstnodeid="30" dstpinname="Up" srcnodeid="29" srcpinname="&lt;RIGHT&gt; Output">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Up" srcnodeid="29" srcpinname="&lt;UP&gt; Output">
-   </LINK>
-   <LINK dstnodeid="31" dstpinname="Down" srcnodeid="29" srcpinname="&lt;DOWN&gt; Output">
-   </LINK>
-   <NODE id="99" nodename="Keyboard (System Global)" systemname="Keyboard (System Global Legacy)">
-   <BOUNDS height="0" left="3270" top="2475" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="32" dstpinname="Input" srcnodeid="30" srcpinname="Output">
@@ -433,11 +383,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="3885" top="4560" type="Node" width="0">
+   <BOUNDS height="0" left="4245" top="4605" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9228" top="896" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="3885" top="4560" type="Box" width="930">
+   <BOUNDS height="240" left="4245" top="4605" type="Box" width="555">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -472,8 +422,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Y Input Value" srcnodeid="51" srcpinname="Position Out">
-   </LINK>
    <LINK dstnodeid="46" dstpinname="Input 2" srcnodeid="25" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -493,8 +441,6 @@
    <LINK dstnodeid="38" dstpinname="Phase" srcnodeid="26" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="26" dstpinname="Y Input Value" srcnodeid="52" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="52" dstpinname="Input 1" srcnodeid="36" srcpinname="Position Out">
    </LINK>
    <LINK dstnodeid="44" dstpinname="TranslateX" linkstyle="Bezier" srcnodeid="38" srcpinname="Output X">
    <LINKPOINT x="4800" y="7560">
@@ -581,7 +527,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The Keyboard  &amp; Keymatch combo look for arrow keys: &lt;UP&gt; &lt;DOWN&gt; &lt;LEFT&gt; &lt;RIGHT&gt;.  The counters keep track of how many times the user has pressed each of these keys.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The Keyboard  &amp; Keymatch combo look for arrow keys: Left, Right, Down, Up.  The counters keep track of how many times the user has pressed each of these keys.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -629,7 +575,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="600" top="600" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="--------&gt;">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="---&gt;">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -854,18 +800,72 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Backbuffer Height" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="100" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
-   <BOUNDS height="0" left="5970" top="2805" type="Node" width="0">
+   <NODE id="103" nodename="Oscillator (Animation)" systemname="Oscillator (Animation)">
+   <BOUNDS height="0" left="5625" top="2790" type="Node" width="0">
    </BOUNDS>
+   <PIN pinname="Go To Position" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="5640" top="3495" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="36" dstpinname="Go To Position" srcnodeid="100" srcpinname="X">
+   <LINK srcnodeid="103" srcpinname="Position Out" dstnodeid="101" dstpinname="XY">
    </LINK>
-   <LINK dstnodeid="51" dstpinname="Go To Position" srcnodeid="100" srcpinname="Y">
+   <LINK srcnodeid="101" srcpinname="X" dstnodeid="52" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="99" srcpinname="Keyboard Output" dstnodeid="29" dstpinname="Input">
+   <LINK srcnodeid="101" srcpinname="Y" dstnodeid="25" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="102">
+   <BOUNDS type="Node" left="5445" top="2160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="102" srcpinname="PositionXY" dstnodeid="103" dstpinname="Go To Position">
+   </LINK>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="105">
+   <BOUNDS type="Node" left="3135" top="2790" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Key Match" slicecount="1" values="|Left, Right, Down, Up|">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Left" visible="1">
+   </PIN>
+   <PIN pinname="Right" visible="1">
+   </PIN>
+   <PIN pinname="Down" visible="1">
+   </PIN>
+   <PIN pinname="Up" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="105" srcpinname="Left" dstnodeid="30" dstpinname="Down">
+   </LINK>
+   <LINK srcnodeid="105" srcpinname="Right" dstnodeid="30" dstpinname="Up">
+   </LINK>
+   <LINK srcnodeid="105" srcpinname="Down" dstnodeid="31" dstpinname="Down">
+   </LINK>
+   <LINK srcnodeid="105" srcpinname="Up" dstnodeid="31" dstpinname="Up">
+   </LINK>
+   <NODE id="104" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden">
+   <BOUNDS type="Node" left="3120" top="2100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Device" dstnodeid="105" dstpinname="Keyboard">
    </LINK>
    </PATCH>

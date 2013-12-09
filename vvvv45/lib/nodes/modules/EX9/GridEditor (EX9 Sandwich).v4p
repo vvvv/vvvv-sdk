@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\GridEditor (EX9 Sandwich).v4p" componentmode="InAWindow">
-   <BOUNDS height="9375" left="1035" top="3645" type="Window" width="16155">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\EX9\GridEditor (EX9 Sandwich).v4p" componentmode="InAWindow">
+   <BOUNDS height="9765" left="1035" top="3645" type="Window" width="16155">
    </BOUNDS>
    <NODE id="84" nodename="Cross (2d)" systemname="Cross (2d)">
    <BOUNDS height="0" left="3885" top="4365" type="Node" width="0">
@@ -1175,7 +1175,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Input" srcnodeid="81" srcpinname="XYZ">
@@ -1201,14 +1201,6 @@
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="0" dstpinname="Feed Back In" srcnodeid="2" srcpinname="Y Output Value">
-   </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="85">
-   <BOUNDS type="Node" left="1515" top="4875" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="85" srcpinname="Mouse" dstnodeid="0" dstpinname="Mouse">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D Surface Normals).v4p" id="86" nodename="..\3D\B-Spline (3D Surface Normals).v4p" systemname="B-Spline (3d Surface Normals)">
    <BOUNDS height="0" left="4770" top="7695" type="Node" width="0">
@@ -1261,5 +1253,15 @@
    <LINK srcnodeid="86" srcpinname="Output" dstnodeid="43" dstpinname="Position XYZ">
    </LINK>
    <LINK srcnodeid="86" srcpinname="Normal" dstnodeid="43" dstpinname="Normal XYZ">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="85">
+   <BOUNDS type="Node" left="1515" top="4875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="85" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
    </LINK>
    </PATCH>

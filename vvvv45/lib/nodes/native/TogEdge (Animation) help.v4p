@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\TogEdge (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\TogEdge (Animation) help.v4p">
    <BOUNDS height="4530" left="2040" top="2445" type="Window" width="13320">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="15750" top="43020" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Detects upwards and downwards flanks in the input|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Detects upwards and downwards flanks in the input|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="15750" top="43020" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|TogEdge - Animation|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|TogEdge - Animation|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -55,7 +55,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -71,7 +71,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="510" top="2670" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -87,7 +87,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1230" top="3390" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -103,7 +103,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1050" top="2670" width="4125" height="495">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Bangs for 1 frame when the input changes from 0 to 1, ie on an &apos;Up Edge&apos;.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Bangs for 1 frame when the input changes from 0 to 1, ie on an &apos;Up Edge&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -126,26 +126,18 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (System Global)" nodename="Mouse (System Global)" componentmode="Hidden" id="-2">
-   <BOUNDS type="Node" left="6885" top="885" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Toggle (Animation)" nodename="Toggle (Animation)" componentmode="Hidden" id="13">
    <BOUNDS type="Node" left="7395" top="2280" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="-2" srcpinname="Left Button" dstnodeid="13" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="7395" top="2910" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="7395" top="2910" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -165,13 +157,11 @@
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="8460" top="1785" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="-2" srcpinname="Left Button" dstnodeid="16" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="16" srcpinname="Up Edge" dstnodeid="15" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
@@ -179,7 +169,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8460" top="2955" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -195,7 +185,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="9525" top="1785" width="3300" height="1965">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Often used to make sure a human click is really only interpreted as a bang for one frame. Here a press of the left mousebutton is used to toggle a value. &cr;&lf;&cr;&lf;Without the TogEdge (Animation) you see the toggle sometimes reacts more often than you&apos;d expect when you click the mouse (somewhere in the patch).|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Often used to make sure a human click is really only interpreted as a bang for one frame. Here a press of the left mousebutton is used to toggle a value. &cr;&lf;&cr;&lf;Without the TogEdge (Animation) you see the toggle sometimes reacts more often than you&apos;d expect when you click the mouse (somewhere in the patch).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -204,4 +194,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (Devices Desktop)" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="19" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" left="6885" top="885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Left Button" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Left Button" dstnodeid="16" dstpinname="Input">
+   </LINK>
    </PATCH>
