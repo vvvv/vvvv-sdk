@@ -45,17 +45,17 @@ namespace VVVV.Nodes.Input
                     RECT cr;
                     if (User32.GetClientRect(e.HWnd, out cr))
                     {
-                        var pos = e.LParam.ToInt32();
-                        var position = new Point(pos.LoWord(), pos.HiWord());
+                        var lParam = e.LParam;
+                        var position = new Point(lParam.LoWord(), lParam.HiWord());
                         var clientArea = new Size(cr.Width, cr.Height);
-                        var wParam = e.WParam.ToInt32();
+                        var wParam = e.WParam;
 
                         switch (e.Message)
                         {
                             case WM.MOUSEWHEEL:
                                 unchecked
                                 {
-                                    var wheel = e.WParam.ToInt32().HiWord();
+                                    var wheel = wParam.HiWord();
                                     return new MouseWheelNotification(position, clientArea, wheel);
                                 }
                             case WM.MOUSEMOVE:

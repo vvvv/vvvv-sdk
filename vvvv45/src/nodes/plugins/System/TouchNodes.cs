@@ -66,7 +66,7 @@ namespace VVVV.Nodes.Input
 
         private IEnumerable<TouchNotification> GenerateTouchNotifications(WMEventArgs e)
         {
-            var touchPointCount = e.WParam.ToInt32().LoWord();
+            var touchPointCount = e.WParam.LoWord();
             if (touchPointCount > 0)
             {
                 var touchPoints = new TOUCHINPUT[touchPointCount];
