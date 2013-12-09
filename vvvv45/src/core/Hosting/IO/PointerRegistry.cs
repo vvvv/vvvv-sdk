@@ -47,6 +47,46 @@ namespace VVVV.Hosting.IO
 
                     return IOContainer.Create(context, stream, container); 
                 });
+
+            RegisterInput<ColorInput>(
+                (factory, context) =>
+                {
+                    var t = context.IOType;
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
+                    var stream = Activator.CreateInstance(t, container.RawIOObject) as IOutStream;
+
+                    return IOContainer.Create(context, stream, container);
+                });
+
+            RegisterOutput<ColorOutput>(
+                (factory, context) =>
+                {
+                    var t = context.IOType;
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorOut)));
+                    var stream = Activator.CreateInstance(t, container.RawIOObject) as IOutStream;
+
+                    return IOContainer.Create(context, stream, container);
+                });
+
+            RegisterInput<TransformInput>(
+                (factory, context) =>
+                {
+                    var t = context.IOType;
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
+                    var stream = Activator.CreateInstance(t, container.RawIOObject) as IOutStream;
+
+                    return IOContainer.Create(context, stream, container);
+                });
+
+            RegisterOutput<TransformOutput>(
+                (factory, context) =>
+                {
+                    var t = context.IOType;
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformOut)));
+                    var stream = Activator.CreateInstance(t, container.RawIOObject) as IOutStream;
+
+                    return IOContainer.Create(context, stream, container);
+                });
         }
     }
 }
