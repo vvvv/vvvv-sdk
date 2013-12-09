@@ -1,11 +1,11 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.5.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\plugins\Mouse (Devices Desktop) help.v4p">
-   <BOUNDS height="9150" left="11145" top="4995" type="Window" width="12075">
+   <BOUNDS height="9150" left="12270" top="4995" type="Window" width="12075">
    </BOUNDS>
    <NODE id="13" nodename="RENDERER (EX9)" componentmode="InAWindow">
    <BOUNDS height="0" left="465" top="6810" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4500" left="11115" top="435" type="Window" width="6000">
+   <BOUNDS height="4500" left="12255" top="450" type="Window" width="6000">
    </BOUNDS>
    <BOUNDS height="1800" left="465" top="6810" type="Box" width="2400">
    </BOUNDS>
@@ -243,9 +243,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2700" top="3405" width="9960" height="270">
+   <BOUNDS type="Node" left="5880" top="3435" width="9960" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2700" top="3405" width="4425" height="315">
+   <BOUNDS type="Box" left="5880" top="3435" width="4425" height="315">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; defines the behaviour of the PositionXY and Button outputs&cr;&lf;|">
    </PIN>
@@ -257,9 +257,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="31" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="1755" top="3420" width="855" height="240">
+   <BOUNDS type="Box" left="4725" top="3495" width="855" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1755" top="3420" width="0" height="0">
+   <BOUNDS type="Node" left="4725" top="3495" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="Discard">
    </PIN>
@@ -267,17 +267,17 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="39" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="1455" top="2835" width="1590" height="240">
+   <BOUNDS type="Box" left="2610" top="2865" width="1590" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1455" top="2835" width="0" height="0">
+   <BOUNDS type="Node" left="2610" top="2865" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="NoCycle">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3120" top="2820" width="3495" height="270">
+   <BOUNDS type="Node" left="4275" top="2850" width="3495" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3120" top="2820" width="3495" height="270">
+   <BOUNDS type="Box" left="4275" top="2850" width="3495" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; selects the cycle mode of the windows cursor|">
    </PIN>
@@ -286,20 +286,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2850" top="3660" width="9825" height="480">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2850" top="3660" width="6345" height="900">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enqueue: the mouse events get queued, the outputs will return all observed mouse states one after the other, in consecutive frames&cr;&lf;Discard: the mouse events get discarded, the outputs will only return the last observed mouse state.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
    <NODE systemname="MouseEvents (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseEvents (Mouse Split)" componentmode="Hidden" id="43">
@@ -325,7 +311,7 @@
    </PIN>
    </NODE>
    <NODE id="46" nodename="Mouse (Devices Desktop)" systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
-   <BOUNDS height="100" left="465" top="4410" type="Node" width="100">
+   <BOUNDS height="270" left="465" top="4410" type="Node" width="4335">
    </BOUNDS>
    <PIN pinname="Queue Mode" visible="1">
    </PIN>
@@ -352,4 +338,18 @@
    </LINK>
    <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="46" dstpinname="Queue Mode">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6060" top="3720" width="9825" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6060" top="3720" width="3870" height="1350">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|- Enqueue: the mouse events get queued, the outputs will return all observed mouse states one after the other, in consecutive frames&cr;&lf;&cr;&lf;- Discard: the mouse events get discarded, the outputs will only return the last observed mouse state.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
    </PATCH>
