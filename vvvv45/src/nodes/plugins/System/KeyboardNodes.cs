@@ -22,7 +22,10 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Window")]
+    [PluginInfo(Name = "Keyboard", 
+	            Category = "Devices", 
+	            Version = "Window",
+	            Help = "Returns the keyboard of the current render window.")]
     public class KeyboardNode : WindowMessageNode, IPluginEvaluate
     {
         [Output("Device", IsSingle = true)]
@@ -72,7 +75,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "Devices", Version = "Desktop")]
+    [PluginInfo(Name = "Keyboard", 
+                Category = "Devices", 
+                Version = "Desktop",
+                Help = "Returns the systemwide keyboard.")]
     public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
     {
         public DesktopKeyboardNode()
@@ -221,7 +227,7 @@ namespace VVVV.Nodes.Input
         [Input("Keyboard")]
         public ISpread<Keyboard> KeyboardIn;
 
-        [Input("Schedule Mode")]
+        [Input("Queue Mode")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Key Name")]

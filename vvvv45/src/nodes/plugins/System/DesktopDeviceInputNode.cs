@@ -16,7 +16,7 @@ namespace VVVV.Nodes.Input
         [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
         public ISpread<bool> EnabledIn;
 
-        [Input("Index", Order = int.MinValue + 1)]
+        [Input("Index", Order = int.MinValue + 1, Visibility = PinVisibility.OnlyInspector)]
         public IDiffSpread<int> IndexIn;
 
         [Output("Device")]

@@ -121,7 +121,7 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Source")]
+        [Input("Source", Visibility = PinVisibility.OnlyInspector)]
         public IDiffSpread<DataSource> DataSourceIn;
 
         [Input("Cycle Mode")]
@@ -679,7 +679,7 @@ namespace VVVV.Nodes.Input
     {
         [Input("Mouse")]
         public ISpread<Mouse> MouseIn;
-        [Input("Schedule Mode", DefaultEnumEntry = "Discard")]
+        [Input("Queue Mode", DefaultEnumEntry = "Discard")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Position")]
