@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="X:\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Combinations (Spreads Combinatorics) help.v4p">
+   <PATCH nodename="X:\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Combinations (Spreads) help.v4p">
    <BOUNDS type="Window" left="0" top="0" width="10290" height="8820">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="15" top="15" width="5925" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Combinations (Spreads Combinatorics)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Combinations (Spreads)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="15" top="415" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|calculates combinations of given input&cr;&lf;credits: http://www.codeproject.com/Members/Adrian-Akison|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates combinations of given input&cr;&lf;credits: http://www.codeproject.com/Members/Adrian-Akison|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -87,42 +87,6 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   </NODE>
-   <NODE systemname="Combinations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Combinations (String Combinatorics)" componentmode="Hidden" id="18" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="1350" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="1350">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Combinations (Color Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Combinations (Color Combinatorics)" componentmode="Hidden" id="17" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="1770" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="1770">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Variations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (Spreads Combinatorics)" componentmode="Hidden" id="16" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="3330" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="3330">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Variations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (String Combinatorics)" componentmode="Hidden" id="15" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="3750" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="3750">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Variations (Color Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (Color Combinatorics)" componentmode="Hidden" id="14" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="4170" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="4170">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Permutations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Permutations (Spreads Combinatorics)" componentmode="Hidden" id="11" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="2340" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="2340">
-   </BOUNDS>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="41">
    <BOUNDS type="Node" left="1215" top="975" width="100" height="100">
@@ -304,22 +268,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE nodename="Combinations (Spreads Combinatorics)" componentmode="Hidden" id="42" systemname="Combinations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll">
-   <BOUNDS type="Node" left="1215" top="2340" width="2145" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1215" top="2340" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="With Repetition" slicecount="1" visible="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Count" dstnodeid="40" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="39" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2250" top="1515" width="555" height="240">
    </BOUNDS>
@@ -338,13 +286,9 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Subset Element Count (k)|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Subset Element Count">
-   </LINK>
    <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Bin Size" hiddenwhenlocked="1">
    <LINKPOINT x="2280" y="4335">
    </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="42" dstpinname="With Repetition">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Cycles" dstnodeid="6" dstpinname="Index" hiddenwhenlocked="1">
    <LINKPOINT x="2835" y="4275">
@@ -364,10 +308,36 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Permutations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Permutations (String Combinatorics)" componentmode="Hidden" id="45" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="2760" width="100" height="100">
+   <NODE nodename="Combinations (Spreads)" componentmode="Hidden" id="42" systemname="Combinations (Spreads)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll">
+   <BOUNDS type="Node" left="1215" top="2340" width="2145" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="2760">
+   <BOUNDS type="Box" left="1215" top="2340" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="With Repetition" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Count" dstnodeid="40" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="39" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Subset Element Count">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="42" dstpinname="With Repetition">
+   </LINK>
+   <NODE systemname="Permutations (Spreads)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Permutations (Spreads)" componentmode="Hidden" id="11" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="7515" top="1440" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7515" top="1440">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Variations (Spreads)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (Spreads)" componentmode="Hidden" id="16" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="7515" top="2010" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7515" top="2010">
    </BOUNDS>
    </NODE>
    </PATCH>

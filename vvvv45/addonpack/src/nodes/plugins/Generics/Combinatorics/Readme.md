@@ -1,4 +1,4 @@
-This project contains the Combinatorics Implementations of Adrian Akison, taken from following CodeProject Article
+These Nodes contain the Combinatorics Implementations of Adrian Akison, taken from following CodeProject Article
 
 http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G
 

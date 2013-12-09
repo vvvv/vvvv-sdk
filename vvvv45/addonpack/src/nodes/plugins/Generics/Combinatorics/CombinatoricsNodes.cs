@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 using Combinatorics;
 using Combinatorics.Collections;
@@ -72,12 +73,27 @@ namespace VVVV.Nodes
 		}
 	}
 
+    #region Permutations Color Node
+    //Doesn't work for now:
+    //Unable to cast object of type 'VVVV.Utils.VColor.RGBAColor' to type 'System.IComparable`1[VVVV.Utils.VColor.RGBAColor]'
+
+    //[PluginInfo(Name = "Permutations",
+    //            Category = "Color",
+    //            Help = "Calculates permutations of given input",
+    //            Tags = "combinatorics",
+    //            Author = "bjo:rn",
+    //            Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    //public class PermutationsColor : PermutationsNode<RGBAColor>
+    //{
+    //}
+    #endregion  Permutations Color Node
+
     #region Permutations Spreads Node
     [PluginInfo(Name = "Permutations", 
                 Category = "Spreads", 
-                Version = "Combinatorics", 
-                Help = "calculates permutations of given input", 
-                Tags = "combinatorics, permutation",
+                Help = "Calculates permutations of given input", 
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
     
@@ -89,9 +105,8 @@ namespace VVVV.Nodes
     #region Permutations String Node
     [PluginInfo(Name = "Permutations",
                 Category = "String",
-                Version = "Combinatorics",
-                Help = "calculates permutations of given input",
-                Tags = "combinatorics, permutation",
+                Help = "Calculates permutations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
    
@@ -100,22 +115,6 @@ namespace VVVV.Nodes
     }
     #endregion Permutations String Node
 
-    #region Permutations Color Node
-    //Doesn't work for now:
-    //Unable to cast object of type 'VVVV.Utils.VColor.RGBAColor' to type 'System.IComparable`1[VVVV.Utils.VColor.RGBAColor]'
-
-    //[PluginInfo(Name = "Permutations",
-    //            Category = "Color",
-    //            Version = "Combinatorics",
-    //            Help = "calculates permutations of given input",
-    //            Tags = "combinatorics, permutation",
-    //            Author = "bjo:rn",
-    //            Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
-
-    //public class PermutationsColor : PermutationsNode<RGBAColor>
-    //{
-    //}
-    #endregion  Permutations Color Node
 
     public class CombinationsNode<T> : CombinatoricsBaseNode<T>
     {
@@ -159,12 +158,50 @@ namespace VVVV.Nodes
         }
     }
 
+    #region Combinations Color Node
+    [PluginInfo(Name = "Combinations",
+                Category = "Color",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class CombinationsColor : CombinationsNode<RGBAColor>
+    {
+    }
+    #endregion Combinations Color Node
+
+    #region Combinations Enum Node
+    [PluginInfo(Name = "Combinations",
+                Category = "Enumerations",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class CombinationsEnum : CombinationsNode<EnumEntry>
+    {
+    }
+    #endregion Combinations Enum Node
+
+    #region Combinations Raw Node
+    [PluginInfo(Name = "Combinations",
+                Category = "Raw",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class CombinationsRaw : CombinationsNode<System.IO.Stream>
+    {
+    }
+    #endregion Combinations Raw Node
+
     #region Combinations Spreads Node
     [PluginInfo(Name = "Combinations",
                 Category = "Spreads",
-                Version = "Combinatorics",
-                Help = "calculates combinations of given input",
-                Tags = "combinatorics, combinations",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
@@ -176,9 +213,8 @@ namespace VVVV.Nodes
     #region Combinations String Node
     [PluginInfo(Name = "Combinations",
                 Category = "String",
-                Version = "Combinatorics",
-                Help = "calculates combinations of given input",
-                Tags = "combinatorics, combinations",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
@@ -187,19 +223,18 @@ namespace VVVV.Nodes
     }
     #endregion Combinations String Node
 
-    #region Combinations Color Node
+    #region Combinations Transform Node
     [PluginInfo(Name = "Combinations",
-                Category = "Color",
-                Version = "Combinatorics",
-                Help = "calculates combinations of given input",
-                Tags = "combinatorics, combinations",
+                Category = "Transform",
+                Help = "Calculates combinations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
-    public class CombinationsColor : CombinationsNode<RGBAColor>
+    public class CombinationsTransform : CombinationsNode<Matrix4x4>
     {
     }
-    #endregion Combinations Color Node
+    #endregion Combinations Transform Node
 
     public class VariationsNode<T> : CombinatoricsBaseNode<T>
     {
@@ -242,12 +277,50 @@ namespace VVVV.Nodes
         }
     }
 
+    #region Variations Color Node
+    [PluginInfo(Name = "Variations",
+                Category = "Color",
+                Help = "Calculates variations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class VariationsColor : VariationsNode<RGBAColor>
+    {
+    }
+    #endregion Variations Color Node
+
+    #region Variations Enum Node
+    [PluginInfo(Name = "Variations",
+                Category = "Enumerations",
+                Help = "Calculates variations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class VariationsEnum : VariationsNode<EnumEntry>
+    {
+    }
+    #endregion Variations Color Node
+
+    #region Variations Raw Node
+    [PluginInfo(Name = "Variations",
+                Category = "Raw",
+                Help = "Calculates variations of given input",
+                Tags = "combinatorics",
+                Author = "bjo:rn",
+                Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
+
+    public class VariationsRaw : VariationsNode<System.IO.Stream>
+    {
+    }
+    #endregion Variations Raw Node
+
     #region Variations Spreads Node
     [PluginInfo(Name = "Variations",
                 Category = "Spreads",
-                Version = "Combinatorics",
-                Help = "calculates variations of given input",
-                Tags = "combinatorics, variations",
+                Help = "Calculates variations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
@@ -259,9 +332,8 @@ namespace VVVV.Nodes
     #region Variations String Node
     [PluginInfo(Name = "Variations",
                 Category = "String",
-                Version = "Combinatorics",
-                Help = "calculates Variations of given input",
-                Tags = "combinatorics, variations",
+                Help = "Calculates Variations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
@@ -270,18 +342,17 @@ namespace VVVV.Nodes
     }
     #endregion Variations String Node
 
-    #region Variations Color Node
+    #region Variations Transform Node
     [PluginInfo(Name = "Variations",
-                Category = "Color",
-                Version = "Combinatorics",
-                Help = "calculates variations of given input",
-                Tags = "combinatorics, variations",
+                Category = "Transform",
+                Help = "Calculates Variations of given input",
+                Tags = "combinatorics",
                 Author = "bjo:rn",
                 Credits = "http://www.codeproject.com/Members/Adrian-Akison")]
 
-    public class VariationsColor : VariationsNode<RGBAColor>
+    public class VariationsTransform : VariationsNode<Matrix4x4>
     {
     }
-    #endregion Variations Color Node
+    #endregion Variations Transform Node
 
 }

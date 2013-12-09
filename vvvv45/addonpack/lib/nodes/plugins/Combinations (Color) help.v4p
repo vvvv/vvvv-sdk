@@ -1,36 +1,52 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="X:\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Variations (Color Combinatorics) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="10350" height="8535">
+   <PATCH nodename="X:\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Combinations (Color) help.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="10305" height="8820">
    </BOUNDS>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15" top="15" width="5000" height="450">
    </BOUNDS>
    <BOUNDS type="Box" left="15" top="15" width="5925" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Variations (Color Combinatorics)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Combinations (Color)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Size" slicecount="1" visible="1" values="14">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15" top="415" width="5000" height="500">
    </BOUNDS>
    <BOUNDS type="Box" left="15" top="415" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|calculates variations of given input&cr;&lf;credits: http://www.codeproject.com/Members/Adrian-Akison|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates combinations of given input&cr;&lf;credits: http://www.codeproject.com/Members/Adrian-Akison|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    </NODE>
-   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="23" hiddenwhenlocked="1">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="75" top="7980" width="7335" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="75" top="7980" width="9150" height="345">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="22" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="2130" top="120" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Cycles" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Mod (Value)" nodename="Mod (Value)" componentmode="Hidden" id="22" hiddenwhenlocked="1">
+   <NODE systemname="Mod (Value)" nodename="Mod (Value)" componentmode="Hidden" id="21" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="2955" top="570" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -40,9 +56,39 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Cycles" dstnodeid="22" dstpinname="Input 1" hiddenwhenlocked="1">
+   <LINK srcnodeid="22" srcpinname="Cycles" dstnodeid="21" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="75" top="5850" width="26835" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="75" top="5850" width="9900" height="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&quot;Combinations are subsets of a given size taken from a given input set. The size of the set is known as the Upper Index (n) and the size of the subset is known as the Lower Index (k). When counting the number of combinations, the terminology is generally &quot;n choose k&quot;, and is known as the Binomial Coefficient. Unlike permutations, combinations do not have any order in the output set. Like permutations, they do have two generation methods based on the repeating of output items. These are called Combinations and Combinations with Repetition.&quot;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="90" top="7680" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="90" top="7680" width="2205" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for more info please refer to:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3285" top="2820" width="450" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="3285" top="2820" width="0" height="0">
@@ -58,9 +104,9 @@
    <PIN pinname="Y Input Value" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="14" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="12" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
-   <NODE id="14" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)" hiddenwhenlocked="0" managers="">
+   <NODE id="12" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)" hiddenwhenlocked="0" managers="">
    <PIN pinname="Y Input Value" visible="1" pintype="Input">
    </PIN>
    <PIN pinname="Y Output Value" pintype="Output" visible="1">
@@ -136,7 +182,7 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2250" top="1515" width="555" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="2250" top="1515" width="0" height="0">
@@ -154,7 +200,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Subset Element Count (k)|">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6420" top="1065" width="750" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="6420" top="1065" width="750" height="270">
@@ -168,7 +214,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Color)" componentmode="InABox" id="8" systemname="IOBox (Color)">
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="31" systemname="IOBox (Color)">
    <BOUNDS type="Box" left="1230" top="915" width="360" height="795">
    </BOUNDS>
    <BOUNDS type="Node" left="1230" top="915" width="0" height="0">
@@ -182,18 +228,18 @@
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="7">
+   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="32">
    <BOUNDS type="Node" left="1215" top="2685" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="1215" top="2685" width="945" height="1590">
    </BOUNDS>
    <PIN pinname="Columns" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Rows" slicecount="1" values="9">
+   <PIN pinname="Rows" slicecount="1" values="6">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Color Input" visible="1" slicecount="6" values="|1.00000,0.00000,0.00000,1.00000|,|0.00000,1.00000,0.00000,1.00000|,|1.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,1.00000,1.00000|,|0.00000,1.00000,0.00000,1.00000|,|0.00000,0.00000,1.00000,1.00000|">
+   <PIN pinname="Color Input" visible="1" slicecount="1" values="|0.00000,1.00000,0.00000,1.00000|">
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
@@ -205,7 +251,7 @@
    </PIN>
    <BOUNDS type="Node" left="1200" top="4635" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" pintype="Input">
+   <PIN pinname="Input" visible="1" slicecount="6" pintype="Input" values="|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|,|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
@@ -216,17 +262,17 @@
    <PIN pinname="Output Bins" pintype="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Bin Size" hiddenwhenlocked="1">
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Bin Size" hiddenwhenlocked="1">
    <LINKPOINT x="2280" y="4335">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="23" srcpinname="Cycles" dstnodeid="6" dstpinname="Index" hiddenwhenlocked="1">
+   <LINK srcnodeid="22" srcpinname="Cycles" dstnodeid="6" dstpinname="Index" hiddenwhenlocked="1">
    <LINKPOINT x="2835" y="4275">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Color Output" dstnodeid="6" dstpinname="Input">
+   <LINK srcnodeid="32" srcpinname="Color Output" dstnodeid="6" dstpinname="Input">
    </LINK>
-   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="5">
+   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="33">
    <BOUNDS type="Node" left="1215" top="5040" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="1215" top="5040" width="555" height="390">
@@ -238,9 +284,9 @@
    <PIN pinname="Color Input" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="5" dstpinname="Color Input">
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="33" dstpinname="Color Input">
    </LINK>
-   <NODE nodename="Variations (Color Combinatorics)" componentmode="Hidden" id="10" systemname="Variations (Color Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll">
+   <NODE nodename="Combinations (Color)" componentmode="Hidden" id="9" systemname="Combinations (Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll">
    <BOUNDS type="Node" left="1215" top="2340" width="2145" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="1215" top="2340" width="0" height="0">
@@ -252,102 +298,20 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Count" dstnodeid="15" dstpinname="Y Input Value">
+   <LINK srcnodeid="9" srcpinname="Count" dstnodeid="13" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Subset Element Count">
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Subset Element Count">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="10" dstpinname="With Repetition">
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="9" dstpinname="With Repetition">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Color Output" dstnodeid="10" dstpinname="Input">
+   <LINK srcnodeid="31" srcpinname="Color Output" dstnodeid="9" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="7" dstpinname="Color Input">
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="32" dstpinname="Color Input">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="90" top="7650" width="7335" height="270">
+   <NODE systemname="Variations (Color)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (Color)" componentmode="Hidden" id="15" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="7515" top="1395" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="90" top="7650" width="9150" height="345">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="http://www.codeproject.com/Articles/26050/Permutations-Combinations-and-Variations-using-C-G">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="9">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="90" top="5805" width="26835" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="90" top="5805" width="9885" height="1350">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&quot;Variations combine features of combinations and permutations, they are the set of all ordered combinations of items to make up a subset. Like combinations, the size of the set is known as the Upper Index (n) and the size of the subset is known as the Lower Index (k). And, the generation of variations can be based on the repeating of output items. These are called Variations and Variations with Repetition.&quot;|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="10">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="105" top="7335" width="2205" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="105" top="7335" width="2205" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|for more info please refer to:|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="Combinations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Combinations (String Combinatorics)" componentmode="Hidden" id="36" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="2760" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="2760">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Combinations (Color Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Combinations (Color Combinatorics)" componentmode="Hidden" id="35" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="3180" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="3180">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Permutations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Permutations (Spreads Combinatorics)" componentmode="Hidden" id="33" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="3750" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="3750">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Combinations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Combinations (Spreads Combinatorics)" componentmode="Hidden" id="32" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="2340" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="2340">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Variations (Spreads Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (Spreads Combinatorics)" componentmode="Hidden" id="31" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="1350" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="1350">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Permutations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Permutations (String Combinatorics)" componentmode="Hidden" id="30" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="4170" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="4170">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Variations (String Combinatorics)" filename="%VVVV%\addonpack\lib\nodes\plugins\CombinatoricsNodes.dll" nodename="Variations (String Combinatorics)" componentmode="Hidden" id="34" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="7515" top="1770" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7515" top="1770">
+   <BOUNDS type="Box" left="7515" top="1395">
    </BOUNDS>
    </NODE>
    </PATCH>
