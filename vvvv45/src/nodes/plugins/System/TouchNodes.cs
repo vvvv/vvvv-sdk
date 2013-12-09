@@ -21,7 +21,7 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Touch", Category = "Devices")]
+    [PluginInfo(Name = "Touch", Category = "Devices", Version = "Window")]
     public class WindowTouchNode : WindowMessageNode, IPluginEvaluate
     {
         [Input("Mode", IsSingle = true)]
@@ -58,7 +58,7 @@ namespace VVVV.Nodes.Input
             TouchDeviceOut[0] = new TouchDevice(notifications);
 
             // Create a touch states split node for us and connect our touch device out to its touch device in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "TouchStates" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "TouchStates" && n.Category == "Touch" && n.Version == "Split");
             FTouchStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Touch Device", c => TouchDeviceOut);
 
             ModeIn.Changed += ModeIn_Changed;
