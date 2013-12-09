@@ -90,7 +90,7 @@ namespace VVVV.Utils.VMath
 		public double m44;
 		
         [DataMember]
-        public double[] matrix
+        public double[] Values
         {
             get
             {

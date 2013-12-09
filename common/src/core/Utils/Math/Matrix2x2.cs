@@ -41,7 +41,7 @@ namespace VVVV.Utils.VMath
         public double d;
 
         [DataMember]
-        public double[] abcd
+        public double[] Values
         {
             get
             {
