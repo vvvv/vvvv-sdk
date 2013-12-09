@@ -1,7 +1,8 @@
 # Retrieve arguments
 Param(
-    [string][Parameter(Mandatory=$true)][ValidateSet("x86", "x64")]$platform,
-    [int]$maxCount = 100
+    [string][ValidateSet("x86", "x64")]$platform = "x86",
+    [int]$maxCount = 100,
+    [string]$branch = "refs/heads/develop"
 )
 
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -14,16 +15,15 @@ $packageVersion = ""
 
 $tcHost = "http://vvvv.org:8111"
 $tagsUri = "$tcHost/guestAuth/app/rest/builds/id:$buildId/tags/"
-$currentBranch = git rev-parse --symbolic-full-name HEAD
 
 $localCommits = git log --format=%H --max-count=$maxCount
 $i = 0
 $found = $false
 foreach ($c in $localCommits)
 {
-    Write-Progress -Activity "Looking for matching binaries (Branch: $currentBranch, Platform: $platform)" -Status "Commit $c" -PercentComplete ($i++ / $maxCount * 100)
+    Write-Progress -Activity "Looking for matching binaries (Branch: $branch, Platform: $platform)" -Status "Commit $c" -PercentComplete ($i++ / $maxCount * 100)
     
-    $buildsForTagUri = "$tcHost/guestAuth/app/rest/builds/?locator=branch:(name:$currentBranch,default:any),tags:$c"
+    $buildsForTagUri = "$tcHost/guestAuth/app/rest/builds/?locator=branch:(name:$branch,default:any),tags:$c"
     $response = Invoke-RestMethod -Uri $buildsForTagUri
     $build = $response.builds.ChildNodes | select -first 1
     if ($build)
