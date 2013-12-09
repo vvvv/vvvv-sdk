@@ -1,10 +1,10 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH locked="0" nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Levin (Spreads) help.v4p">
-   <NODE id="19" nodename="RINGBUFFER (SPREADS)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Levin (Spreads) help.v4p" locked="0">
+   <NODE id="19" nodename="RingBuffer (Spreads Legacy)">
    <BOUNDS height="0" left="3540" top="5715" type="Node" width="0">
    </BOUNDS>
    </NODE>
-   <NODE id="18" nodename="QUEUE (SPREADS)">
+   <NODE id="18" nodename="Queue (Spreads Legacy)">
    <BOUNDS height="0" left="2865" top="5715" type="Node" width="0">
    </BOUNDS>
    </NODE>
@@ -50,10 +50,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
-   </LINK>
    <LINK dstnodeid="6" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
@@ -98,17 +94,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="11" nodename="Mouse (System Window)">
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <BOUNDS height="0" left="495" top="1095" type="Node" width="0">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="80">
@@ -120,7 +106,7 @@
    <BOUNDS height="240" left="1800" top="1110" type="Box" width="795">
    </BOUNDS>
    </NODE>
-   <NODE id="9" nodename="Point (GDI)">
+   <NODE id="9" nodename="POINT (GDI)">
    <PIN pinname="Type" slicecount="1" values="Asterisk">
    </PIN>
    <PIN pinname="Y" slicecount="80" visible="1" values="0.65217">
@@ -183,11 +169,9 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="do Insert" slicecount="1" visible="1" values="1.00000">
+   <PIN pinname="do Insert" slicecount="1" visible="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="11" srcpinname="X">
-   </LINK>
    <NODE id="5" nodename="LEVIN (SPREADS)">
    <BOUNDS height="0" left="1155" top="2025" type="Node" width="0">
    </BOUNDS>
@@ -195,13 +179,11 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="do Insert" slicecount="1" visible="1" values="0.00000">
+   <PIN pinname="do Insert" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Frame Count" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="11" srcpinname="Y">
-   </LINK>
    <LINK dstnodeid="5" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="4" dstpinname="Input" srcnodeid="6" srcpinname="Output">
@@ -248,10 +230,6 @@
    <PIN pinname="Destination Width" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="3" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="X" srcnodeid="4" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="255" left="2775" top="6030" type="Node" width="1050">
    </BOUNDS>
@@ -297,5 +275,37 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="9" dstpinname="Y">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="465" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1" slicecount="2" values="0.425149700598802,0.8">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="X" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="315" top="1095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="PositionXY" dstnodeid="26" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Left Button" dstnodeid="6" dstpinname="do Insert">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Left Button" dstnodeid="5" dstpinname="do Insert">
    </LINK>
    </PATCH>

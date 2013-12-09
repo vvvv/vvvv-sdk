@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\07_Transparent Flash\TransparentFlash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\07_Transparent Flash\TransparentFlash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
    <BOUNDS type="Window" left="0" top="0" width="12540" height="10965">
    </BOUNDS>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="7">
@@ -49,7 +49,7 @@
    </PIN>
    <BOUNDS type="Box" left="8115" top="2895">
    </BOUNDS>
-   <PIN pinname="Mouse Event" visible="1">
+   <PIN pinname="Mouse Event" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Width" slicecount="1" values="550">
    </PIN>
@@ -416,24 +416,14 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="7" dstpinname="Texture">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System Window)" componentmode="Hidden" id="55">
-   <BOUNDS type="Node" left="10440" top="1005" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="55" srcpinname="Mouse" dstnodeid="4" dstpinname="Mouse Event">
-   </LINK>
    <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="10455" top="5760" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="55" srcpinname="Mouse" dstnodeid="56" dstpinname="Mouse">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="6615" top="8040" width="3465" height="270">
    </BOUNDS>
@@ -664,4 +654,16 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="10440" top="1005" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="55" srcpinname="Device" dstnodeid="56" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Device" dstnodeid="4" dstpinname="Mouse Event">
+   </LINK>
    </PATCH>

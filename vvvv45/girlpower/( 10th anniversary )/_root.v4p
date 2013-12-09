@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( 10th anniversary )\_root.v4p" systemname="_root" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\girlpower\( 10th anniversary )\_root.v4p">
    <BOUNDS type="Window" left="375" top="7215" width="9990" height="3750">
    </BOUNDS>
    <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="1">
@@ -322,14 +322,6 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Input Value" dstnodeid="5" dstpinname="Input 4">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="5445" top="5175" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="- (Value Cyclic)" filename="%VVVV%\lib\nodes\modules\Value\- (Value Cyclic).v4p" nodename="- (Value Cyclic)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="6885" top="3570" width="100" height="100">
    </BOUNDS>
@@ -523,7 +515,7 @@
    <LINK srcnodeid="3" srcpinname="EX9 Out" dstnodeid="7" dstpinname="Source">
    </LINK>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="54">
-   <BOUNDS type="Node" left="5205" top="5835" width="100" height="100">
+   <BOUNDS type="Node" left="4665" top="5895" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
    </PIN>
@@ -532,10 +524,6 @@
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="30" srcpinname="X" dstnodeid="54" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="30" srcpinname="Y" dstnodeid="54" dstpinname="X">
-   </LINK>
    <NODE systemname="Rotate (Transform Vector)" nodename="Rotate (Transform Vector)" componentmode="Hidden" id="55">
    <BOUNDS type="Node" left="3705" top="6750" width="100" height="100">
    </BOUNDS>
@@ -597,7 +585,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Newton (Animation)" nodename="Newton (Animation)" componentmode="Hidden" id="68">
-   <BOUNDS type="Node" left="4650" top="6270" width="100" height="100">
+   <BOUNDS type="Node" left="4650" top="6285" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Go To Position" visible="1">
    </PIN>
@@ -607,5 +595,27 @@
    <LINK srcnodeid="54" srcpinname="XYZ" dstnodeid="68" dstpinname="Go To Position">
    </LINK>
    <LINK srcnodeid="68" srcpinname="Position Out" dstnodeid="55" dstpinname="XYZ">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="70">
+   <BOUNDS type="Node" left="4650" top="5490" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="X" dstnodeid="54" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Y" dstnodeid="54" dstpinname="X">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="4485" top="5085" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="PositionXY" dstnodeid="70" dstpinname="XY">
    </LINK>
    </PATCH>

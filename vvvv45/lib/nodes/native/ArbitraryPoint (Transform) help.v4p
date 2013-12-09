@@ -1,21 +1,31 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\ArbitraryPoint (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\ArbitraryPoint (Transform) help.v4p">
    <BOUNDS height="7035" left="990" top="3750" type="Window" width="11520">
    </BOUNDS>
-   <NODE componentmode="InABox" id="23" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="23" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="7530" top="165" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6135" left="1875" top="930" type="Window" width="6795">
    </BOUNDS>
    <BOUNDS height="3225" left="7530" top="165" type="Box" width="3435">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="22" nodename="SPHERE (DX9)">
@@ -93,9 +103,9 @@
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
-   <BOUNDS height="420" left="2385" top="1350" type="Node" width="810">
+   <BOUNDS height="420" left="2220" top="1290" type="Node" width="810">
    </BOUNDS>
-   <BOUNDS height="570" left="2385" top="1350" type="Box" width="2310">
+   <BOUNDS height="570" left="2220" top="1290" type="Box" width="2310">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -106,7 +116,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5010" top="3555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10215" top="7665" type="Window" width="215">
@@ -134,7 +144,7 @@
    <LINKPOINT x="5715" y="5070">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5925" top="3555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10815" top="8265" type="Window" width="215">
@@ -174,7 +184,7 @@
    <LINKPOINT x="4590" y="5100">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="14" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="330" top="2520" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10515" top="7965" type="Window" width="215">
@@ -191,7 +201,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3.61111">
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="3.61111">
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
@@ -326,18 +336,10 @@
    <LINKPOINT x="3165" y="3840">
    </LINKPOINT>
    </LINK>
-   <NODE id="-2" nodename="Mouse (System Global)">
-   <BOUNDS height="0" left="1620" top="1395" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="6" nodename="Map (Value)">
-   <BOUNDS height="0" left="990" top="1950" type="Node" width="0">
+   <BOUNDS height="0" left="1005" top="1680" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="-0.766545075560188">
    </PIN>
    <PIN pinname="Source Minimum" slicecount="1" values="-1">
    </PIN>
@@ -345,26 +347,10 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="-2" srcpinname="X">
-   </LINK>
-   <NODE id="5" nodename="Map (Value)">
-   <BOUNDS height="0" left="2010" top="1965" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Source Minimum" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="10">
-   </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="-2" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="14" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1335" top="2565" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10815" top="8265" type="Window" width="215">
@@ -388,8 +374,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="2.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="7" dstpinname="FilterTime" srcnodeid="14" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="8" dstpinname="FilterTime" hiddenwhenlocked="1" srcnodeid="4" srcpinname="Y Output Value">
@@ -453,5 +437,33 @@
    </LINKPOINT>
    <LINKPOINT x="7545" y="45">
    </LINKPOINT>
+   </LINK>
+   <NODE id="24" nodename="Mouse (Devices Desktop)" systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="855" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="PositionXY" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="1005" top="2070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="27" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="X" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Y" dstnodeid="4" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
