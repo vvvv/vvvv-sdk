@@ -506,10 +506,8 @@ namespace VVVV.Utils.VMath
         /// This Method can be seen as an inverse of Lerp (in Mode Float). Additionally it provides the infamous Mapping Modes, author: velcrome
         /// </summary>
         /// <param name="Input">Input value to convert</param>
-        /// <param name="InMin">Minimum of input value range</param>
-        /// <param name="InMax">Maximum of input value range</param>
-        /// <param name="OutMin">Minimum of destination value range</param>
-        /// <param name="OutMax">Maximum of destination value range</param>
+        /// <param name="start">Minimum of input value range</param>
+        /// <param name="end">Maximum of input value range</param>
         /// <param name="mode">Defines the behavior of the function if the input value exceeds the destination range 
         /// <see cref="VVVV.Utils.VMath.TMapMode">TMapMode</see></param>
         /// <returns>Input value mapped from input range into destination range</returns>
