@@ -7,7 +7,7 @@ namespace VVVV.Utils.Win32
 {
     public class WMEventArgs : EventArgs
     {
-        public WMEventArgs(IntPtr hWnd, WM msg, IntPtr wparam, IntPtr lparam)
+        public WMEventArgs(IntPtr hWnd, WM msg, UIntPtr wparam, IntPtr lparam)
         {
             HWnd = hWnd;
             Message = msg;
@@ -17,7 +17,7 @@ namespace VVVV.Utils.Win32
 
         public readonly IntPtr HWnd;
         public readonly WM Message;
-        public readonly IntPtr WParam;
+        public readonly UIntPtr WParam;
         public readonly IntPtr LParam;
         // If true DefWindowProc won't be called
         public bool Handled;

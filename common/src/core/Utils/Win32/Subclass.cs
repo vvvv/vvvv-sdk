@@ -50,7 +50,7 @@ namespace VVVV.Utils.Win32
         public event EventHandler<WMEventArgs> WindowMessage;
         public event EventHandler Disposed;
 
-        private IntPtr SubclassProc(IntPtr hWnd, WM msg, IntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData)
+        private IntPtr SubclassProc(IntPtr hWnd, WM msg, UIntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData)
         {
             var handled = false;
             if (WindowMessage != null)
