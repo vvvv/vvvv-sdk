@@ -18,7 +18,7 @@ namespace VVVV.Nodes
                 {
                     FPluginInfo = new PluginInfo();
                     FPluginInfo.Name = "Insert";
-                    FPluginInfo.Category = "SQL Server";
+                    FPluginInfo.Category = "SQLServer";
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "SQL Server INSERT object";
