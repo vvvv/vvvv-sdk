@@ -19,55 +19,97 @@ using System.Reactive.Concurrency;
 namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "KeyMatch",
-                Category = "System",
+                Category = "Keyboard",
                 Help = "Detects pressed keys when connected with a Keyboard Node. Use the inspector to specify the keys to check.",
-                AutoEvaluate = true,
-                Tags = "keyboard")]
+                AutoEvaluate = true)]
     public class KeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         public enum KeyMode { Press, Toggle, UpOnly, DownOnly, DownUp, RepeatedEvent };
+
+        class Column : IDisposable
+        {
+            public readonly Keys KeyCode;
+            public readonly IIOContainer<ISpread<bool>> IOContainer;
+            public readonly Spread<KeyMatch> KeyMatches = new Spread<KeyMatch>();
+            private readonly IScheduler FScheduler;
+
+            public Column(IIOFactory factory, Keys keyCode, IScheduler scheduler)
+            {
+                KeyCode = keyCode;
+                FScheduler = scheduler;
+                var attribute = new OutputAttribute(keyCode.ToString()) { IsBang = true };
+                IOContainer = factory.CreateIOContainer<ISpread<bool>>(attribute);
+            }
+
+            public void Resize(int sliceCount)
+            {
+                KeyMatches.ResizeAndDispose(sliceCount, slice => new KeyMatch(IOContainer.IOObject, KeyCode, slice, FScheduler));
+                IOContainer.IOObject.SliceCount = sliceCount;
+            }
+
+            public void Dispose()
+            {
+                Resize(0);
+                IOContainer.Dispose();
+            }
+        }
 
         class KeyMatch : IDisposable
         {
             public readonly Keys KeyCode;
             private readonly IScheduler FScheduler;
-            private readonly IIOContainer<ISpread<bool>> FContainer;
+            private readonly ISpread<bool> FOutputSpread;
+            private readonly int FSlice;
             private IDisposable FSubscription;
+            private Keyboard FKeyboard;
+            private KeyMode FKeyMode;
 
-            public KeyMatch(IIOFactory factory, Keys keyCode, IScheduler scheduler)
+            public KeyMatch(ISpread<bool> outputSpread, Keys keyCode, int slice, IScheduler scheduler)
             {
                 KeyCode = keyCode;
+                FSlice = slice;
                 FScheduler = scheduler;
-                var attribute = new OutputAttribute(keyCode.ToString())
-                {
-                    IsSingle = true,
-                    IsBang = true
-                };
-                FContainer = factory.CreateIOContainer<ISpread<bool>>(attribute);
+                FOutputSpread = outputSpread;
             }
 
             public void Dispose()
             {
                 Unsubscribe();
-                FContainer.Dispose();
             }
 
             private bool Output
             {
-                get { return FContainer.IOObject[0]; }
-                set { FContainer.IOObject[0] = value; }
+                get { return FOutputSpread[FSlice]; }
+                set { FOutputSpread[FSlice] = value; }
             }
 
-            public void Subscribe(Keyboard keyboard, KeyMode mode)
+            public void Update(Keyboard keyboard, KeyMode mode)
             {
-                var notifications = keyboard.KeyNotifications
+                if (FKeyboard != keyboard || FKeyMode != mode)
+                {
+                    Unsubscribe();
+                    FKeyboard = keyboard;
+                    FKeyMode = mode;
+                    Subscribe();
+                }
+            }
+
+            public void Reset()
+            {
+                Unsubscribe();
+                Subscribe();
+            }
+
+            public void Subscribe()
+            {
+                var notifications = FKeyboard.KeyNotifications
                     .OfType<KeyCodeNotification>()
                     .Where(n => n.KeyCode == KeyCode);
 
                 var distinctNotifications = notifications.DistinctUntilChanged(n => n.Kind);
 
                 IObservable<bool> result;
-                switch (mode)
+                switch (FKeyMode)
                 {
                     case KeyMode.Press:
                         result = distinctNotifications.Select(n => n.Kind == KeyNotificationKind.KeyDown);
@@ -110,22 +152,20 @@ namespace VVVV.Nodes.Input
         [Config("Key Match", IsSingle = true)]
         public IDiffSpread<string> KeyMatchConfig;
 
-        [Input("Keyboard", IsSingle = true)]
+        [Input("Keyboard")]
         public ISpread<Keyboard> KeyboardIn;
 
-        [Input("Reset Toggle", IsSingle = true, IsBang = true)]
+        [Input("Reset Toggle", IsBang = true)]
         public ISpread<bool> ResetIn;
 
-        [Input("Key Mode", IsSingle = true)]
+        [Input("Key Mode")]
         public ISpread<KeyMode> KeyModeIn;
 
         [Import()]
         protected IIOFactory FIOFactory;
 
-        private readonly List<KeyMatch> FKeyMatches = new List<KeyMatch>();
+        private readonly List<Column> FColumns = new List<Column>();
         private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Keyboard FKeyboard = Keyboard.Empty;
-        private KeyMode FKeyMode;
 
         public void OnImportsSatisfied()
         {
@@ -135,103 +175,120 @@ namespace VVVV.Nodes.Input
         void KeyMatchChangedCB(IDiffSpread<string> sender)
         {
             var keyCodes = KeyMatchConfig[0].ToKeyCodes();
-
             //add new pins
             foreach (var keyCode in keyCodes)
             {
-                if (!FKeyMatches.Any(keyMatch => keyMatch.KeyCode == keyCode))
+                if (!FColumns.Any(col => col.KeyCode == keyCode))
                 {
-                    var keyMatch = new KeyMatch(FIOFactory, keyCode, FScheduler);
-                    keyMatch.Subscribe(FKeyboard, FKeyMode);
-                    FKeyMatches.Add(keyMatch);
+                    var column = new Column(FIOFactory, keyCode, FScheduler);
+                    FColumns.Add(column);
                 }
             }
 
             //remove obsolete pins
-            foreach (var keyMatch in FKeyMatches.ToArray())
+            foreach (var column in FColumns.ToArray())
             {
-                if (!keyCodes.Contains(keyMatch.KeyCode))
+                if (!keyCodes.Contains(column.KeyCode))
                 {
-                    FKeyMatches.Remove(keyMatch);
-                    keyMatch.Dispose();
+                    FColumns.Remove(column);
+                    column.Dispose();
                 }
             }
+
+            var spreadMax = SpreadUtils.SpreadMax(KeyMatchConfig, KeyboardIn, ResetIn, KeyModeIn);
+            UpdateColumns(spreadMax);
         }
 
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
-            //resubsribe if necessary
-            var keyboard = KeyboardIn[0] ?? Keyboard.Empty;
-            var keyMode = KeyModeIn[0];
-            if (ResetIn[0] || (keyboard != FKeyboard) || (keyMode != FKeyMode))
-            {
-                FKeyboard = keyboard;
-                FKeyMode = keyMode;
-                foreach (var keyMatch in FKeyMatches)
-                {
-                    keyMatch.Unsubscribe();
-                    keyMatch.Subscribe(keyboard, keyMode);
-                }
-            }
-
+            //update the key match columns
+            UpdateColumns(spreadMax);
             //process events
             FScheduler.Run();
+        }
+
+        private void UpdateColumns(int spreadMax)
+        {
+            foreach (var column in FColumns)
+                column.Resize(spreadMax);
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var keyboard = KeyboardIn[i] ?? Keyboard.Empty;
+                var keyMode = KeyModeIn[i];
+                var doReset = ResetIn[i];
+                foreach (var column in FColumns)
+                {
+                    var keyMatch = column.KeyMatches[i];
+                    keyMatch.Update(keyboard, keyMode);
+                    if (doReset)
+                        keyMatch.Reset();
+                }
+            }
         }
     }
 
     [PluginInfo(Name = "RadioKeyMatch",
-                Category = "System",
+                Category = "Keyboard",
                 Help = "Similiar to KeyMatch, but does not create a output pin for each key to check, but returns the index of the pressed key on its output pin.",
-                AutoEvaluate = true,
-                Tags = "keyboard")]
-    public class RadioKeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+                AutoEvaluate = true)]
+    public class RadioKeyMatchNode : IPluginEvaluate, IDisposable
     {
-        [Input("Keyboard", IsSingle = true)]
+        [Input("Keyboard")]
         public ISpread<Keyboard> KeyboardIn;
 
         [Input("Key Match")]
-        public ISpread<string> KeyMatchIn;
+        public ISpread<ISpread<string>> KeyMatchesIn;
 
         [Output("Output")]
-        public ISpread<int> Output;
+        public ISpread<ISpread<int>> Outputs;
 
         private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Subscription<Keyboard, KeyDownNotification> FSubscription;
-
-        public void OnImportsSatisfied()
-        {
-            FSubscription = new Subscription<Keyboard, KeyDownNotification>(
-                keyboard => keyboard.KeyNotifications.OfType<KeyDownNotification>(),
-                n =>
-                {
-                    var pressedKeyCode = n.KeyCode;
-                    for (int i = 0; i < Output.SliceCount; i++)
-                    {
-                        var keyCodes = KeyMatchIn[i].ToKeyCodes();
-                        var index = keyCodes.IndexOf(pressedKeyCode);
-                        if (index >= 0)
-                            Output[i] = index;
-                    }
-                },
-                FScheduler
-            );
-        }
+        private readonly Spread<Subscription<Keyboard, KeyDownNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyDownNotification>>();
 
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
-            //resubscribe if necessary
-            FSubscription.Update(KeyboardIn[0]);
-            //prepare output
-            Output.SliceCount = spreadMax;
+            spreadMax = SpreadUtils.SpreadMax(KeyboardIn, KeyMatchesIn);
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
+                {
+                    return new Subscription<Keyboard, KeyDownNotification>(
+                        keyboard => keyboard.KeyNotifications.OfType<KeyDownNotification>(),
+                        (keyboard, n) =>
+                        {
+                            var pressedKeyCode = n.KeyCode;
+                            var keyMatches = KeyMatchesIn[slice];
+                            var output = Outputs[slice];
+                            for (int i = 0; i < output.SliceCount; i++)
+                            {
+                                var keyCodes = keyMatches[i].ToKeyCodes();
+                                var index = keyCodes.IndexOf(pressedKeyCode);
+                                if (index >= 0)
+                                    output[i] = index;
+                            }
+                        },
+                        FScheduler
+                    );
+                }
+            );
+
+            Outputs.SliceCount = spreadMax;
+            for (int i = 0; i < spreadMax; i++)
+            {
+                Outputs[i].SliceCount = KeyMatchesIn[i].SliceCount;
+                FSubscriptions[i].Update(KeyboardIn[i]);
+            }
+
             //process events
             FScheduler.Run();
         }
 
         public void Dispose()
         {
-            FSubscription.Dispose();
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
         }
     }
 }

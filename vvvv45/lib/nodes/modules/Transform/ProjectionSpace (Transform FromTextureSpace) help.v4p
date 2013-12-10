@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Transform\ProjectionSpace (Transform FromTextureSpace) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\Transform\ProjectionSpace (Transform FromTextureSpace) help.v4p">
    <BOUNDS height="7395" left="1230" top="2760" type="Window" width="9885">
    </BOUNDS>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -134,18 +134,6 @@
    <PIN pinname="XYZ Transformed" visible="1">
    </PIN>
    </NODE>
-   <NODE id="15" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="7860" top="1350" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="16" dstpinname="XYZ UnTransformed" srcnodeid="15" srcpinname="XYZ">
-   </LINK>
    <NODE id="14" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="6315" top="3555" type="Node" width="0">
    </BOUNDS>
@@ -253,9 +241,9 @@
    <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6930" top="165" type="Node" width="3495">
+   <BOUNDS height="270" left="6930" top="390" type="Node" width="3495">
    </BOUNDS>
-   <BOUNDS height="480" left="6930" top="165" type="Box" width="2115">
+   <BOUNDS height="540" left="6930" top="390" type="Box" width="2115">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -332,28 +320,26 @@
    </NODE>
    <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="26" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="7860" top="690" width="100" height="100">
+   <NODE id="9" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="7860" top="1035" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="7860" top="690">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="7860" top="1020" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="27" srcpinname="PositionXY" dstnodeid="28" dstpinname="XY">
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="8010" top="1410" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="PositionXY" dstnodeid="27" dstpinname="XY">
    </LINK>
-   <LINK srcnodeid="28" srcpinname="X" dstnodeid="15" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="28" srcpinname="Y" dstnodeid="15" dstpinname="Y">
+   <LINK srcnodeid="27" srcpinname="XYZ" dstnodeid="16" dstpinname="XYZ UnTransformed">
    </LINK>
    </PATCH>

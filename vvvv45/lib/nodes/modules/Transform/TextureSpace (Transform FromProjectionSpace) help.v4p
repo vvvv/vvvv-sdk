@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Transform\TextureSpace (Transform FromProjectionSpace) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\Transform\TextureSpace (Transform FromProjectionSpace) help.v4p">
    <BOUNDS height="7395" left="1230" top="2760" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -127,25 +127,13 @@
    <NODE id="12" nodename="Multiply (3d Vector)" systemname="Multiply (3d Vector)">
    <BOUNDS height="0" left="6315" top="2550" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ UnTransformed" visible="1">
+   <PIN pinname="XYZ UnTransformed" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
    <PIN pinname="XYZ Transformed" visible="1">
    </PIN>
    </NODE>
-   <NODE id="11" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="0" left="7320" top="2325" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="XYZ UnTransformed" srcnodeid="11" srcpinname="XYZ">
-   </LINK>
    <NODE id="10" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="6315" top="2955" type="Node" width="0">
    </BOUNDS>
@@ -215,11 +203,9 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="XYZ" srcnodeid="11" srcpinname="XYZ">
-   </LINK>
    <NODE id="3" nodename="Scale (Transform)" systemname="Scale (Transform)">
    <BOUNDS height="0" left="5355" top="4830" type="Node" width="0">
    </BOUNDS>
@@ -255,9 +241,9 @@
    <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="3" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6375" top="690" type="Node" width="3495">
+   <BOUNDS height="270" left="6375" top="1125" type="Node" width="3495">
    </BOUNDS>
-   <BOUNDS height="540" left="6375" top="690" type="Box" width="2115">
+   <BOUNDS height="540" left="6375" top="1125" type="Box" width="2115">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -294,26 +280,32 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="24" srcpinname="Transform Out">
    </LINK>
-   <NODE systemname="Mouse (System)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="7140" top="1335" width="100" height="100">
+   <NODE id="11" nodename="xyZ (3d XY)" systemname="xyZ (3d XY)">
+   <BOUNDS height="0" left="7245" top="2175" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="7305" top="1785" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="26" srcpinname="PositionXY" dstnodeid="27" dstpinname="XY">
+   <LINK srcnodeid="11" srcpinname="XYZ" dstnodeid="4" dstpinname="XYZ">
    </LINK>
-   <LINK srcnodeid="27" srcpinname="X" dstnodeid="11" dstpinname="X">
+   <LINK srcnodeid="11" srcpinname="XYZ" dstnodeid="12" dstpinname="XYZ UnTransformed">
    </LINK>
-   <LINK srcnodeid="27" srcpinname="Y" dstnodeid="11" dstpinname="Y">
+   <NODE id="5" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="7080" top="1740" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="PositionXY" dstnodeid="11" dstpinname="XY">
    </LINK>
    </PATCH>

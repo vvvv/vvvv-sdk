@@ -9,25 +9,39 @@ namespace VVVV.Utils.Win32
     public static class Extensions
     {
         /// <summary>
-        /// Extracts lower 16-bit word from an 32-bit int.
+        /// Extracts lower 16-bit word.
+        /// See: http://stackoverflow.com/questions/7913325/win-api-in-c-get-hi-and-low-word-from-intptr
         /// </summary>
-        public static short LoWord(this int number)
+        public static short LoWord(this UIntPtr xy)
         {
-            unchecked
-            {
-                return (short)number;
-            }
+            return unchecked((short)(long)xy);
         }
 
         /// <summary>
-        /// Extracts higher 16-bit word from an 32-bit int.
+        /// Extracts higher 16-bit word.
+        /// See: http://stackoverflow.com/questions/7913325/win-api-in-c-get-hi-and-low-word-from-intptr
         /// </summary>
-        public static short HiWord(this int number)
+        public static short HiWord(this UIntPtr xy)
         {
-            unchecked
-            {
-                return (short)(number >> 16);
-            }
+            return unchecked((short)((long)xy >> 16));
+        }
+
+        /// <summary>
+        /// Extracts lower 16-bit word.
+        /// See: http://stackoverflow.com/questions/7913325/win-api-in-c-get-hi-and-low-word-from-intptr
+        /// </summary>
+        public static short LoWord(this IntPtr xy)
+        {
+            return unchecked((short)(long)xy);
+        }
+
+        /// <summary>
+        /// Extracts higher 16-bit word.
+        /// See: http://stackoverflow.com/questions/7913325/win-api-in-c-get-hi-and-low-word-from-intptr
+        /// </summary>
+        public static short HiWord(this IntPtr xy)
+        {
+            return unchecked((short)((long)xy >> 16));
         }
 
         /// <summary>
@@ -95,6 +109,28 @@ namespace VVVV.Utils.Win32
                 }
             }
             return modifiers;
+        }
+
+        public static IEnumerable<Keys> ReplaceModifierKeys(this IEnumerable<Keys> keys)
+        {
+            foreach (var key in keys)
+            {
+                switch (key)
+                {
+                    case Keys.Shift:
+                        yield return Keys.ShiftKey;
+                        break;
+                    case Keys.Control:
+                        yield return Keys.ControlKey;
+                        break;
+                    case Keys.Alt:
+                        yield return Keys.Menu;
+                        break;
+                    default:
+                        yield return key;
+                        break;
+                }
+            }
         }
     }
 }

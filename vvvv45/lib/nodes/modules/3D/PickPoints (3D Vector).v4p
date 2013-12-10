@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.2.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p" systemname="PickPoints (3D Vector)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p">
-   <BOUNDS height="9510" left="10065" top="5955" type="Window" width="12870">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p" systemname="PickPoints (3D Vector)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\PickPoints (3D Vector).v4p">
+   <BOUNDS height="11475" left="10065" top="6075" type="Window" width="9990">
    </BOUNDS>
    <NODE componentmode="InABox" id="29" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="330" top="9120" type="Node" width="0">
@@ -125,7 +125,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Switch" visible="1">
+   <PIN pinname="Switch" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -191,13 +191,13 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="14" dstpinname="Set" srcnodeid="12" srcpinname="Output">
    </LINK>
    <NODE id="11" nodename="EQ (Value)" systemname="EQ (Value)">
-   <BOUNDS height="0" left="4455" top="3300" type="Node" width="0">
+   <BOUNDS height="0" left="4380" top="3225" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -221,7 +221,7 @@
    </PIN>
    </NODE>
    <NODE id="9" nodename="AND (Boolean)" systemname="AND (Boolean)">
-   <BOUNDS height="0" left="4455" top="4260" type="Node" width="0">
+   <BOUNDS height="0" left="4380" top="4185" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -231,7 +231,7 @@
    </PIN>
    </NODE>
    <NODE id="8" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
-   <BOUNDS height="0" left="4455" top="3735" type="Node" width="0">
+   <BOUNDS height="0" left="4380" top="3660" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -313,9 +313,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="3285" top="3405" type="Node" width="1920">
+   <BOUNDS height="270" left="3210" top="3330" type="Node" width="1920">
    </BOUNDS>
-   <BOUNDS height="930" left="3285" top="3405" type="Box" width="990">
+   <BOUNDS height="930" left="3210" top="3330" type="Box" width="990">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -335,7 +335,7 @@
    <NODE id="1" nodename="TogEdge (Animation)" systemname="TogEdge (Animation)">
    <BOUNDS height="0" left="7185" top="8025" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
@@ -395,9 +395,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="36" nodename="AND (Boolean)" systemname="AND (Boolean)">
-   <BOUNDS height="100" left="3990" top="4785" type="Node" width="100">
+   <BOUNDS height="100" left="3915" top="4710" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="0" left="3990" top="4785" type="Box" width="0">
+   <BOUNDS height="0" left="3915" top="4710" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="8460" top="7950" type="Window" width="0">
    </BOUNDS>
@@ -469,37 +469,39 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mouse">
    </PIN>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
    </NODE>
-   <NODE systemname="MouseStates (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (System Split)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="4650" top="1620" width="100" height="100">
+   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="4560" top="1710" width="1395" height="270">
    </BOUNDS>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
    </PIN>
    <PIN pinname="Left Button" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="49">
-   <BOUNDS type="Node" left="4650" top="2115" width="100" height="100">
+   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="12" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="17" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Left Button" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="40" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="4560" top="2310" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="2" values="0.341666666666667,0.0866666666666667">
+   <PIN pinname="XY" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="44" srcpinname="PositionXY" dstnodeid="49" dstpinname="Input 1">
+   <LINK srcnodeid="40" srcpinname="PositionXY" dstnodeid="44" dstpinname="XY">
    </LINK>
-   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="11" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Left Button" dstnodeid="12" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Left Button" dstnodeid="17" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Left Button" dstnodeid="1" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="44" dstpinname="Mouse">
+   <LINK srcnodeid="44" srcpinname="XYZ" dstnodeid="11" dstpinname="Input 2">
    </LINK>
    </PATCH>

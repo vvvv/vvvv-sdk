@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using VVVV.Utils.Streams;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -15,44 +16,14 @@ namespace VVVV.PluginInterfaces.V2
     {
         #region static factory methods
         
-        public static IOBuildContext<InputAttribute> Create(Type ioType, InputAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, ioAttribute, subscribe);
-        }
-        
-        public static IOBuildContext<OutputAttribute> Create(Type ioType, OutputAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, ioAttribute, subscribe);
-        }
-        
-        public static IOBuildContext<ConfigAttribute> Create(Type ioType, ConfigAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, ioAttribute, subscribe);
-        }
-        
-        private static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, TAttribute ioAttribute, bool subscribe = true)
+        public static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, TAttribute ioAttribute, bool subscribe = true)
             where TAttribute : IOAttribute
         {
             var dataType = ioType.GetGenericArguments().FirstOrDefault();
             return Create(ioType, dataType, ioAttribute);
         }
         
-        public static IOBuildContext<InputAttribute> Create<TAttribute>(Type ioType, Type dataType, InputAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, dataType, ioAttribute, subscribe);
-        }
-        
-        public static IOBuildContext<OutputAttribute> Create<TAttribute>(Type ioType, Type dataType, OutputAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, dataType, ioAttribute, subscribe);
-        }
-        
-        public static IOBuildContext<ConfigAttribute> Create<TAttribute>(Type ioType, Type dataType, ConfigAttribute ioAttribute, bool subscribe = true)
-        {
-            return Create(ioType, dataType, ioAttribute, subscribe);
-        }
-        
-        private static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, Type dataType, TAttribute ioAttribute, bool subscribe = true)
+        public static IOBuildContext<TAttribute> Create<TAttribute>(Type ioType, Type dataType, TAttribute ioAttribute, bool subscribe = true)
             where TAttribute : IOAttribute
         {
             return new IOBuildContext<TAttribute>()
@@ -127,6 +98,8 @@ namespace VVVV.PluginInterfaces.V2
             get;
             internal set;
         }
+
+        public IIOContainer BinSizeIOContainer { get; set; }
         
         public IOBuildContext ReplaceIOType(Type ioType)
         {

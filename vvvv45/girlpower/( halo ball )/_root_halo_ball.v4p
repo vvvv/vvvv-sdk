@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\girlpower\( halo ball )\_root_halo_ball.v4p" bgcolor="15329769">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( halo ball )\_root_halo_ball.v4p" bgcolor="15329769">
    <BOUNDS height="6195" left="10470" top="0" type="Window" width="4770">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="60" nodename="RENDERER (EX9)">
@@ -416,18 +416,6 @@
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.54">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="33" nodename="Mouse (System Window Legacy)">
-   <BOUNDS height="100" left="11805" top="3585" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="0" left="11805" top="3585" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="1425" top="5460" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="32" nodename="Camera (Transform Softimage)">
    <BOUNDS height="0" left="3495" top="14475" type="Node" width="0">
    </BOUNDS>
@@ -655,13 +643,11 @@
    </BOUNDS>
    <BOUNDS height="0" left="13890" top="3720" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="21" dstpinname="Input" srcnodeid="33" srcpinname="Left Button">
-   </LINK>
    <LINK dstnodeid="22" dstpinname="Input" srcnodeid="21" srcpinname="Up Edge">
    </LINK>
    <LINK dstnodeid="23" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Output">
@@ -707,9 +693,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
-   <BOUNDS height="270" left="12780" top="3525" type="Node" width="1050">
+   <BOUNDS height="270" left="13155" top="3450" type="Node" width="1050">
    </BOUNDS>
-   <BOUNDS height="645" left="12780" top="3525" type="Box" width="1410">
+   <BOUNDS height="645" left="13155" top="3450" type="Box" width="1410">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; initialise mouse Event&cr;&lf;|">
    </PIN>
@@ -1104,4 +1090,12 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="11790" top="3465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Left Button" dstnodeid="21" dstpinname="Input">
+   </LINK>
    </PATCH>

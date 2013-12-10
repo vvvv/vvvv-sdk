@@ -18,13 +18,17 @@ using System.Reactive;
 using System.Reactive.Linq;
 using SharpDX.RawInput;
 using SharpDX.Multimedia;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Keyboard", Category = "System")]
+    [PluginInfo(Name = "Keyboard", 
+	            Category = "Devices", 
+	            Version = "Window",
+	            Help = "Returns the keyboard of the current render window.")]
     public class KeyboardNode : WindowMessageNode, IPluginEvaluate
     {
-        [Output("Keyboard", IsSingle = true)]
+        [Output("Device", IsSingle = true)]
         public ISpread<Keyboard> KeyboardOut;
 
         private PluginContainer FKeyboardStatesSplitNode;
@@ -53,7 +57,7 @@ namespace VVVV.Nodes.Input
             KeyboardOut[0] = new Keyboard(keyNotifications);
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
+            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyStates" && n.Category == "Keyboard" && n.Version == "Split");
             FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
         }
 
@@ -65,69 +69,37 @@ namespace VVVV.Nodes.Input
 
         public void Evaluate(int spreadMax)
         {
+            KeyboardOut[0].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
             // Evaluate our split plugin
             FKeyboardStatesSplitNode.Evaluate(spreadMax);
         }
     }
 
-    [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global")]
-    public class GlobalKeyboardNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    [PluginInfo(Name = "Keyboard", 
+                Category = "Devices", 
+                Version = "Desktop",
+                Help = "Returns the systemwide keyboard.")]
+    public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
     {
-        [Input("Enabled", DefaultBoolean = true)]
-        public ISpread<bool> EnabledIn;
-
-        [Output("Keyboard")]
-        public ISpread<Keyboard> KeyboardOut;
-
-        [Import]
-        protected IOFactory FIOFactory;
-        private PluginContainer FKeyboardStatesSplitNode;
-
-        public void OnImportsSatisfied()
+        public DesktopKeyboardNode()
+            : base(DeviceType.Keyboard, "KeyStates", "Keyboard")
         {
-            RawInputService.DevicesChanged += RawKeyboardService_DevicesChanged;
-            SubscribeToDevices();
-
-            // Create a keyboard states node for us and connect our keyboard out to its keyboard in
-            var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyboardStates" && n.Category == "System" && n.Version == "Split");
-            FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
         }
 
-        void RawKeyboardService_DevicesChanged(object sender, EventArgs e)
-        {
-            SubscribeToDevices();
-        }
-
-        public void Dispose()
-        {
-            RawInputService.DevicesChanged -= RawKeyboardService_DevicesChanged;
-            FKeyboardStatesSplitNode.Dispose();
-        }
-
-        private void SubscribeToDevices()
-        {
-            var keyboardDevices = Device.GetDevices()
-                .Where(d => d.DeviceType == DeviceType.Keyboard)
-                .OrderBy(d => d, new DeviceComparer())
-                .ToList();
-            KeyboardOut.SliceCount = keyboardDevices.Count;
-            for (int i = 0; i < keyboardDevices.Count; i++)
-            {
-                KeyboardOut[i] = CreateKeyboard(keyboardDevices[i], i);
-            }
-        }
-
-        private Keyboard CreateKeyboard(DeviceInfo deviceInfo, int slice)
+        protected override Keyboard CreateDevice(DeviceInfo deviceInfo, int slice)
         {
             var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
                 .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
                 .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
-                .SelectMany<EventPattern<KeyboardInputEventArgs>, KeyNotification>(ep => GenerateKeyNotifications(ep.EventArgs));
+                .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
+                .Where(args => args != null)
+                .SelectMany(args => GenerateKeyNotifications(args, slice));
             return new Keyboard(notifications, true);
         }
 
-        private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args)
+        private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)
         {
+            DeviceOut[slice].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
             var key = args.Key;
             switch (args.State)
             {
@@ -154,233 +126,306 @@ namespace VVVV.Nodes.Input
             }
             yield break;
         }
-
-        public void Evaluate(int spreadMax)
-        {
-            // Evaluate our split plugin
-            FKeyboardStatesSplitNode.Evaluate(spreadMax);
-        }
     }
 
-    [PluginInfo(Name = "KeyboardEvents", Category = "System", Version = "Join")]
-    public class KeyboardEventsJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Join")]
+    public class KeyboardEventsJoinNode : IPluginEvaluate, IDisposable
     {
-        [Input("Event Type")]
-        public ISpread<KeyNotificationKind> FEventTypeIn;
+        public ISpread<ISpread<KeyNotificationKind>> EventTypeIn;
+        public ISpread<ISpread<int>> KeyCodeIn;
+        public ISpread<ISpread<string>> KeyCharIn;
+        public ISpread<Keyboard> KeyboardOut;
 
-        [Input("Key Code")]
-        public ISpread<int> FKeyCodeIn;
+        private readonly Spread<Subject<KeyNotification>> FSubjects = new Spread<Subject<KeyNotification>>();
+        private IIOContainer<IInStream<int>> BinSizePin;
 
-        [Input("Key Char")]
-        public ISpread<string> FKeyCharIn;
-
-        [Output("Keyboard", IsSingle = true)]
-        public ISpread<Keyboard> FOutput;
-
-        private readonly Subject<KeyNotification> FSubject = new Subject<KeyNotification>();
-
-        public void OnImportsSatisfied()
+        [ImportingConstructor]
+        public KeyboardEventsJoinNode(IIOFactory factory)
         {
-            FOutput[0] = new Keyboard(FSubject);
+            BinSizePin = factory.CreateBinSizeInput(new InputAttribute("Bin Size") { DefaultValue = InputAttribute.DefaultBinSize, Order = int.MaxValue });
+            EventTypeIn = BinSizePin.CreateBinSizeSpread<KeyNotificationKind>(new InputAttribute("Event Type"));
+            KeyCodeIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Key Code"));
+            KeyCharIn = BinSizePin.CreateBinSizeSpread<string>(new InputAttribute("Key Char"));
+            KeyboardOut = factory.CreateSpread<Keyboard>(new OutputAttribute("Keyboard"));
+            KeyboardOut.SliceCount = 0;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subject in FSubjects)
+                subject.Dispose();
+            BinSizePin.Dispose();
         }
 
         public void Evaluate(int spreadMax)
         {
-            for (int i = 0; i < spreadMax; i++)
+            var binCount = BinSizePin.IOObject.Length;
+            FSubjects.ResizeAndDispose(binCount);
+            KeyboardOut.ResizeAndDismiss(binCount, slice => new Keyboard(FSubjects[slice]));
+            for (int bin = 0; bin < binCount; bin++)
             {
-                KeyNotification notification;
-                switch (FEventTypeIn[i])
+                var subject = FSubjects[bin];
+                var notificationCount = EventTypeIn[bin].SliceCount;
+                for (int i = 0; i < notificationCount; i++)
                 {
-                    case KeyNotificationKind.KeyDown:
-                        notification = new KeyDownNotification((Keys)FKeyCodeIn[i]);
-                        break;
-                    case KeyNotificationKind.KeyPress:
-                        var s = FKeyCharIn[i];
-                        notification = s.Length > 0
-                            ? new KeyPressNotification(s[0])
-                            : null;
-                        break;
-                    case KeyNotificationKind.KeyUp:
-                        notification = new KeyUpNotification((Keys)FKeyCodeIn[i]);
-                        break;
-                    default:
-                        throw new NotImplementedException();
+                    KeyNotification notification;
+                    switch (EventTypeIn[bin][i])
+                    {
+                        case KeyNotificationKind.KeyDown:
+                            notification = new KeyDownNotification((Keys)KeyCodeIn[bin][i]);
+                            break;
+                        case KeyNotificationKind.KeyPress:
+                            var s = KeyCharIn[bin][i];
+                            notification = s.Length > 0
+                                ? new KeyPressNotification(s[0])
+                                : null;
+                            break;
+                        case KeyNotificationKind.KeyUp:
+                            notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i]);
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                    if (notification != null)
+                        subject.OnNext(notification);
                 }
-                if (notification != null)
-                    FSubject.OnNext(notification);
             }
         }
     }
 
-    [PluginInfo(Name = "KeyboardStates", Category = "System", Version = "Split", AutoEvaluate = true)]
-    public class KeyboardStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    [PluginInfo(Name = "KeyStates", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
+    public class KeyboardStatesSplitNode : IPluginEvaluate, IDisposable
     {
-        class KeyCodeNotificationComparer : IEqualityComparer<KeyCodeNotification>
+        class KeyNotificationComparer : IEqualityComparer<KeyNotification>
         {
-            public bool Equals(KeyCodeNotification x, KeyCodeNotification y)
+            public bool Equals(KeyNotification x, KeyNotification y)
             {
-                return x.Kind == y.Kind && x.KeyCode == y.KeyCode;
+                if (x.Kind == y.Kind)
+                {
+                    if (x.Kind == KeyNotificationKind.KeyPress)
+                    {
+                        var xPress = x as KeyPressNotification;
+                        var yPress = y as KeyPressNotification;
+                        return xPress.KeyChar == yPress.KeyChar;
+                    }
+                    else
+                    {
+                        var xCode = x as KeyCodeNotification;
+                        var yCode = y as KeyCodeNotification;
+                        return xCode.KeyCode == yCode.KeyCode;
+                    }
+                }
+                return false;
             }
 
-            public int GetHashCode(KeyCodeNotification obj)
+            public int GetHashCode(KeyNotification obj)
             {
                 return obj.GetHashCode();
             }
         }
 
-        [Input("Keyboard", IsSingle = true)]
+        [Input("Keyboard")]
         public ISpread<Keyboard> KeyboardIn;
 
-        [Input("Schedule Mode", IsSingle = true)]
+        [Input("Queue Mode")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
-        [Output("Pressed Key Code")]
-        public ISpread<int> KeyCodeOut;
+        [Output("Key Name")]
+        public ISpread<ISpread<string>> KeyNameOut;
 
-        private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
-        private Subscription<Keyboard, KeyCodeNotification> FSubscription;
+        [Output("Key Code")]
+        public ISpread<ISpread<int>> KeyCodeOut;
 
-        public void OnImportsSatisfied()
+        [Output("Key Char")]
+        public ISpread<string> KeyCharOut;
+
+        Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
+        Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
+
+        public void Dispose()
         {
-            KeyCodeOut.SliceCount = 0;
-            FSubscription = new Subscription<Keyboard, KeyCodeNotification>(
-                keyboard => 
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+            FSubscriptions.SliceCount = 0;
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            KeyNameOut.SliceCount = spreadMax;
+            KeyCodeOut.SliceCount = spreadMax;
+            KeyCharOut.SliceCount = spreadMax;
+
+            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
+            FSubscriptions.ResizeAndDispose(
+                spreadMax,
+                slice =>
                 {
-                    return keyboard.KeyNotifications
-                        .OfType<KeyCodeNotification>()
-                        .DistinctUntilChanged(new KeyCodeNotificationComparer());
+                    return new Subscription<Keyboard, KeyNotification>(
+                        keyboard =>
+                        {
+                            return keyboard.KeyNotifications
+                                .DistinctUntilChanged(new KeyNotificationComparer());
+                        },
+                        (keyboard, n) =>
+                        {
+                            var keyCodeOut = KeyCodeOut[slice];
+                            var keyNameOut = KeyNameOut[slice];
+                            switch (n.Kind)
+                            {
+                                case KeyNotificationKind.KeyDown:
+                                    var keyDown = n as KeyDownNotification;
+                                    if (!keyCodeOut.Contains((int)keyDown.KeyCode))
+                                    {
+                                        keyCodeOut.Add((int)keyDown.KeyCode);
+                                        keyNameOut.Add(keyDown.KeyCode.ToString());
+                                    }
+                                    break;
+                                case KeyNotificationKind.KeyPress:
+                                    var keyPress = n as KeyPressNotification;
+                                    KeyCharOut[slice] = new string(keyPress.KeyChar, 1);
+                                    break;
+                                case KeyNotificationKind.KeyUp:
+                                    var keyUp = n as KeyUpNotification;
+                                    keyCodeOut.RemoveAll(k => k == (int)keyUp.KeyCode);
+                                    keyNameOut.RemoveAll(k => k == keyUp.KeyCode.ToString());
+                                    KeyCharOut[slice] = string.Empty;
+                                    break;
+                                default:
+                                    throw new NotImplementedException();
+                            }
+                        },
+                        FSchedulers[slice]
+                    );
+                }
+            );
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                //resubsribe if necessary
+                FSubscriptions[i].Update(KeyboardIn[i]);
+                //process events
+                FSchedulers[i].Run(ScheduleModeIn[i]);
+            }
+        }
+    }
+
+    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
+    public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
+    {
+        public ISpread<Keyboard> KeyboardIn;
+        public ISpread<ISpread<KeyNotificationKind>> EventTypeOut;
+        public ISpread<ISpread<int>> KeyCodeOut;
+        public ISpread<ISpread<string>> KeyCharOut;
+
+        private static readonly IList<KeyNotification> FEmptyList = new List<KeyNotification>(0);
+        private Spread<Tuple<Keyboard, IEnumerator<IList<KeyNotification>>>> FEnumerators = new Spread<Tuple<Keyboard, IEnumerator<IList<KeyNotification>>>>();
+        private IIOContainer<IOutStream<int>> BinSizePin;
+
+        [ImportingConstructor]
+        public KeyboardEventsSplitNode(IIOFactory factory)
+        {
+            KeyboardIn = factory.CreateSpread<Keyboard>(new InputAttribute("Keyboard"));
+            BinSizePin = factory.CreateBinSizeOutput(new OutputAttribute("Bin Size") { Order = int.MaxValue });
+            EventTypeOut = BinSizePin.CreateBinSizeSpread<KeyNotificationKind>(new OutputAttribute("Event Type"));
+            KeyCodeOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Key Code"));
+            KeyCharOut = BinSizePin.CreateBinSizeSpread<string>(new OutputAttribute("Key Char"));
+        }
+
+        public void Dispose()
+        {
+            foreach (var tuple in FEnumerators)
+                Unsubscribe(tuple);
+            BinSizePin.Dispose();
+        }
+
+        static Tuple<Keyboard, IEnumerator<IList<KeyNotification>>> Subscribe(Keyboard keyboard)
+        {
+            return Tuple.Create(
+                keyboard,
+                keyboard.KeyNotifications
+                    .Chunkify()
+                    .GetEnumerator()
+            );
+        }
+
+        static void Unsubscribe(Tuple<Keyboard, IEnumerator<IList<KeyNotification>>> tuple)
+        {
+            tuple.Item2.Dispose();
+        }
+
+        public void Evaluate(int spreadMax)
+        {
+            FEnumerators.Resize(
+                spreadMax,
+                slice =>
+                {
+                    var keyboard = KeyboardIn[slice] ?? Keyboard.Empty;
+                    return Subscribe(keyboard);
                 },
-                n =>
+                Unsubscribe
+            );
+
+            EventTypeOut.SliceCount = spreadMax;
+            KeyCodeOut.SliceCount = spreadMax;
+            KeyCharOut.SliceCount = spreadMax;
+
+            for (int bin = 0; bin < spreadMax; bin++)
+            {
+                var keyboard = KeyboardIn[bin] ?? Keyboard.Empty;
+                var tuple = FEnumerators[bin];
+                if (keyboard != tuple.Item1)
                 {
-                    switch (n.Kind)
+                    Unsubscribe(tuple);
+                    tuple = Subscribe(keyboard);
+                }
+
+                var enumerator = tuple.Item2;
+                var notifications = enumerator.MoveNext()
+                    ? enumerator.Current
+                    : FEmptyList;
+
+                EventTypeOut[bin].SliceCount = notifications.Count;
+                KeyCodeOut[bin].SliceCount = notifications.Count;
+                KeyCharOut[bin].SliceCount = notifications.Count;
+
+                for (int i = 0; i < notifications.Count; i++)
+                {
+                    var notification = notifications[i];
+                    EventTypeOut[bin][i] = notification.Kind;
+                    switch (notification.Kind)
                     {
                         case KeyNotificationKind.KeyDown:
-                            if (!KeyCodeOut.Contains((int)n.KeyCode))
-                                KeyCodeOut.Add((int)n.KeyCode);
+                            var keyDown = notification as KeyDownNotification;
+                            KeyCodeOut[bin][i] = (int)keyDown.KeyCode;
+                            KeyCharOut[bin][i] = null;
                             break;
                         case KeyNotificationKind.KeyPress:
-                            //ignore
+                            var keyPress = notification as KeyPressNotification;
+                            KeyCodeOut[bin][i] = 0;
+                            KeyCharOut[bin][i] = keyPress.KeyChar.ToString();
                             break;
                         case KeyNotificationKind.KeyUp:
-                            KeyCodeOut.RemoveAll(k => k == (int)n.KeyCode);
+                            var keyUp = notification as KeyUpNotification;
+                            KeyCodeOut[bin][i] = (int)keyUp.KeyCode;
+                            KeyCharOut[bin][i] = null;
                             break;
                         default:
                             throw new NotImplementedException();
                     }
-                },
-                FScheduler
-            );
-        }
-
-        public void Dispose()
-        {
-            FSubscription.Dispose();
-        }
-
-        public void Evaluate(int spreadMax)
-        {
-            //resubscribe if necessary
-            FSubscription.Update(KeyboardIn[0]);
-            //process events
-            FScheduler.Run(ScheduleModeIn[0]);
-        }
-    }
-
-    [PluginInfo(Name = "KeyboardEvents", Category = "System", Version = "Split", AutoEvaluate = true)]
-    public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
-    {
-        [Input("Keyboard", IsSingle = true)]
-        public ISpread<Keyboard> FInput;
-
-        [Output("Event Type")]
-        public ISpread<KeyNotificationKind> FEventTypeOut;
-
-        [Output("Key Code")]
-        public ISpread<int> FKeyCodeOut;
-
-        [Output("Key Char")]
-        public ISpread<string> FKeyCharOut;
-
-        private static readonly IList<KeyNotification> FEmptyList = new List<KeyNotification>(0);
-        private Keyboard FKeyboard;
-        private IEnumerator<IList<KeyNotification>> FEnumerator;
-
-        public void Dispose()
-        {
-            Unsubscribe();
-        }
-
-        public void Evaluate(int spreadMax)
-        {
-            var keyboard = FInput[0] ?? Keyboard.Empty;
-            if (keyboard != FKeyboard)
-            {
-                Unsubscribe();
-                FKeyboard = keyboard;
-                Subscribe();
-            }
-
-            var notifications = FEnumerator.MoveNext()
-                ? FEnumerator.Current
-                : FEmptyList;
-            FEventTypeOut.SliceCount = notifications.Count;
-            FKeyCodeOut.SliceCount = notifications.Count;
-            FKeyCharOut.SliceCount = notifications.Count;
-
-            for (int i = 0; i < notifications.Count; i++)
-            {
-                var notification = notifications[i];
-                FEventTypeOut[i] = notification.Kind;
-                switch (notification.Kind)
-                {
-                    case KeyNotificationKind.KeyDown:
-                        var keyDown = notification as KeyDownNotification;
-                        FKeyCodeOut[i] = (int)keyDown.KeyCode;
-                        FKeyCharOut[i] = null;
-                        break;
-                    case KeyNotificationKind.KeyPress:
-                        var keyPress = notification as KeyPressNotification;
-                        FKeyCodeOut[i] = 0;
-                        FKeyCharOut[i] = keyPress.KeyChar.ToString();
-                        break;
-                    case KeyNotificationKind.KeyUp:
-                        var keyUp = notification as KeyUpNotification;
-                        FKeyCodeOut[i] = (int)keyUp.KeyCode;
-                        FKeyCharOut[i] = null;
-                        break;
-                    default:
-                        throw new NotImplementedException();
                 }
-            }
-        }
 
-        private void Subscribe()
-        {
-            if (FKeyboard != null)
-            {
-                FEnumerator = FKeyboard.KeyNotifications
-                    .Chunkify()
-                    .GetEnumerator();
-            }
-        }
-
-        private void Unsubscribe()
-        {
-            if (FEnumerator != null)
-            {
-                FEnumerator.Dispose();
-                FEnumerator = null;
+                FEnumerators[bin] = tuple;
             }
         }
     }
 
-    [PluginInfo(Name = "AsKey", Category = "Value", Tags = "keyboard, convert")]
+    [PluginInfo(Name = "AsKeyName", Category = "Value", Tags = "keyboard, convert")]
     public class KeyCodeAsKey : IPluginEvaluate
     {
         [Input("Key Code")]
         public IDiffSpread<int> KeyCodeIn;
 
-        [Output("Key")]
+        [Output("Key Name")]
         public ISpread<string> KeyOut;
 
         public void Evaluate(int spreadMax)
@@ -401,7 +446,7 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "AsKeyCode", Category = "String", Tags = "keyboard, convert")]
     public class KeyAsKeyCodeNode : IPluginEvaluate
     {
-        [Input("Key")]
+        [Input("Key Name")]
         public IDiffSpread<string> KeyIn;
 
         [Output("Key Code")]
@@ -414,7 +459,7 @@ namespace VVVV.Nodes.Input
                     KeyIn.Select(s =>
                         {
                             Keys result;
-                            if (Enum.TryParse<Keys>(s, out result))
+                            if (Enum.TryParse<Keys>(s, true, out result))
                                 return (int)result;
                             else
                                 return (int)Keys.None;

@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\06_HTML_Multiple Websites\_root.v4p" systemname="HTML_MultipleViews" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\HTML_MultipleViews.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="12285" height="12285">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\06_HTML Multiple Websites\_root.v4p" systemname="HTML_MultipleViews" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Web\HTML_MultipleViews.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="12480" height="12420">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="17">
    <BOUNDS type="Node" left="6900" top="10005" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="6900" top="10005" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="12300" top="0" width="10815" height="11355">
+   <BOUNDS type="Window" left="12525" top="0" width="12240" height="12510">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -31,7 +31,7 @@
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="6900" top="8760" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -111,7 +111,7 @@
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -136,24 +136,8 @@
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="8" dstpinname="URL">
    </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="9225" top="8610" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.85655,0.17360,0.28036,1.00000|">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <BOUNDS type="Box" left="9225" top="8610">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="9" dstpinname="Layer 2">
-   </LINK>
    <NODE id="3" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)">
-   <PIN pinname="Y Input Value">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <BOUNDS type="Node" left="9405" top="885" width="0" height="0">
    </BOUNDS>
@@ -170,92 +154,6 @@
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE systemname="VirtualMouse" filename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p" nodename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="8368" top="5431" width="1800" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5278" top="2160" width="6180" height="7105">
-   </BOUNDS>
-   <BOUNDS type="Window" left="930" top="1245" width="13920" height="9345">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Mouse 1" visible="1">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   <PIN pinname="Object Hit" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Mouse" dstnodeid="4" dstpinname="Mouse">
-   </LINK>
-   <NODE systemname="VirtualKeyboard" filename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualKeyboard.v4p" nodename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualKeyboard.v4p" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="8357" top="6275" width="1545" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5600" top="3735" width="5515" height="5080">
-   </BOUNDS>
-   <BOUNDS type="Window" left="9240" top="4590" width="9240" height="6210">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
-   </PIN>
-   <PIN pinname="Transform In" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Object Hit" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="XY" dstnodeid="1" dstpinname="PointsXY">
-   </LINK>
-   <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="7245" top="6855" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Zoom Level" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Url" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Event" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Key Event" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="HTML" visible="1">
-   </PIN>
-   <PIN pinname="Base Url" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="16" dstpinname="Texture">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="0" dstpinname="Height" linkstyle="Bezier" hiddenwhenlocked="0">
-   <LINKPOINT x="5340" y="12930">
-   </LINKPOINT>
-   <LINKPOINT x="5865" y="4980">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Width" linkstyle="Bezier" hiddenwhenlocked="0">
-   <LINKPOINT x="5685" y="12165">
-   </LINKPOINT>
-   <LINKPOINT x="6510" y="5595">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Is Loading" dstnodeid="3" dstpinname="Y Input Value" linkstyle="Bezier" hiddenwhenlocked="1">
-   <LINKPOINT x="12060" y="8105">
-   </LINKPOINT>
-   <LINKPOINT x="10725" y="280">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Keyboard" dstnodeid="0" dstpinname="Key Event">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url" linkstyle="PolyLine">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="6375" top="3345" width="345" height="240">
    </BOUNDS>
@@ -299,16 +197,14 @@
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="14" srcpinname="X Out" dstnodeid="13" dstpinname="X">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Y Out" dstnodeid="13" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Mouse Transformed" dstnodeid="0" dstpinname="Mouse Event">
    </LINK>
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="525" top="195" type="Node" width="945">
@@ -662,10 +558,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform In">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Object Hit" dstnodeid="1" dstpinname="Object Hit">
-   </LINK>
    <NODE id="60" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" pintype="Input" values="|This subpatch maps window mouse coordinates to all quads (&quot;viewports&quot;). Only the Quad which has the mouse over it will receive the values. Please check it for more details.&cr;&lf;&cr;&lf;This subpatch creates the KeyboardState for every website. So if the user types something into a field of one of the websites, the text will appear only there.|">
    </PIN>
@@ -714,4 +606,144 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="9225" top="8610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.85655,0.17360,0.28036,1.00000|">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="9225" top="8610">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="9" dstpinname="Layer 2">
+   </LINK>
+   <NODE systemname="VirtualKeyboard" filename="VirtualKeyboard.v4p" nodename="VirtualKeyboard.v4p" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="8357" top="6275" width="1545" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5600" top="3735" width="5515" height="5080">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13080" top="9225" width="9585" height="6210">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Transform In">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Object Hit" visible="1" slicecount="4" values="0,0,1,0">
+   </PIN>
+   </NODE>
+   <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="7245" top="6855" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Zoom Level" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Url" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Event" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Event" visible="1">
+   </PIN>
+   <PIN pinname="HTML" visible="1">
+   </PIN>
+   <PIN pinname="Base Url" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="16" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="0" dstpinname="Height" linkstyle="Bezier" hiddenwhenlocked="0">
+   <LINKPOINT x="5340" y="12930">
+   </LINKPOINT>
+   <LINKPOINT x="5865" y="4980">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Width" linkstyle="Bezier" hiddenwhenlocked="0">
+   <LINKPOINT x="5685" y="12165">
+   </LINKPOINT>
+   <LINKPOINT x="6510" y="5595">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Is Loading" dstnodeid="3" dstpinname="Y Input Value" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="12060" y="8105">
+   </LINKPOINT>
+   <LINKPOINT x="10725" y="280">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Keyboard" dstnodeid="0" dstpinname="Key Event">
+   </LINK>
+   <NODE systemname="VirtualMouse" filename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p" nodename="%VVVV%\girlpower\The Next Generation\IO\Web\VirtualMouse.v4p" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="8353" top="5431" width="1800" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5263" top="2160" width="6180" height="7105">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3600" top="4785" width="11610" height="10185">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Object Hit" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Transformed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="2" dstpinname="Quads Transform">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Object Hit" dstnodeid="1" dstpinname="Object Hit">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Mouse Transformed" dstnodeid="0" dstpinname="Mouse Event">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="9195" top="4140" width="1260" height="270">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="9195" top="4140">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Device" dstnodeid="2" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Device" dstnodeid="4" dstpinname="Mouse" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="10905" top="4140" width="1050" height="270">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="10905" top="4140">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Device" dstnodeid="1" dstpinname="Keyboard">
+   </LINK>
    </PATCH>

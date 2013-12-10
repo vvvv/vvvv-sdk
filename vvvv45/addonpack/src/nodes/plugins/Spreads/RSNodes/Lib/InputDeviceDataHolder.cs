@@ -50,4 +50,26 @@ namespace VVVV.Lib
             }
         }
     }
+
+    public class TouchDeviceDataHolder : DataHolder<TouchDevice>
+    {
+        private static TouchDeviceDataHolder instance;
+
+        private TouchDeviceDataHolder()
+        {
+
+        }
+
+        public static TouchDeviceDataHolder Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new TouchDeviceDataHolder();
+                }
+                return instance;
+            }
+        }
+    }
 }
