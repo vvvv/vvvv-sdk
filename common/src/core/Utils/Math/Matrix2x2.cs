@@ -7,12 +7,14 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
     /// <summary>
     /// 2x2 transform matrix struct with operators
     /// </summary>
+    [DataContract]
     [StructLayout(LayoutKind.Sequential)]
     public struct Matrix2x2
     {
@@ -37,7 +39,22 @@ namespace VVVV.Utils.VMath
         /// The 2. data element of 2. row
         /// </summary>
         public double d;
-
+        [DataMember]
+        public double[] Values
+        {
+            get
+            {
+                double[] l = { a, b, c, d };
+                return l;
+            }
+            set
+            {
+                a = value[0];
+                b = value[1];
+                c = value[2];
+                d = value[3];
+            }
+        }
         #endregion data fields
 
         #region constructors

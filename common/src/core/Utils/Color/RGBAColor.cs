@@ -9,7 +9,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-
+using System.Runtime.Serialization;
 using VVVV.Utils.VMath;
 
 /// <summary>
@@ -22,6 +22,7 @@ namespace VVVV.Utils.VColor
 	/// There is an implicit cast to the C# Color type and an explictit cast from C# color to RGBAColor.
 	/// Aswell as implicit casts from and to Vector4D.
 	/// </summary>
+	[DataContract]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct RGBAColor
 	{
@@ -30,19 +31,23 @@ namespace VVVV.Utils.VColor
 		/// <summary>
 		/// The Red data field
 		/// </summary>
-		public double R;
+        [DataMember]
+        public double R;
 		/// <summary>
 		/// The Green data field
 		/// </summary>
-		public double G;
+        [DataMember]
+        public double G;
 		/// <summary>
 		/// The Blue data field
 		/// </summary>
-		public double B;
+        [DataMember]
+        public double B;
 		/// <summary>
 		/// The Alpha data field
 		/// </summary>
-		public double A;
+        [DataMember]
+        public double A;
 		
 		#endregion data fields
 		
