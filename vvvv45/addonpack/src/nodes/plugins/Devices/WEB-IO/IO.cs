@@ -37,13 +37,16 @@ namespace VVVV.Nodes
 		#pragma warning disable 649
 		#region fields & pins
 		[Input("Output")]
-		public IDiffSpread<bool> FPinsIn;
+		public ISpread<bool> FPinsIn;
 		
 		[Input("Enabled", IsSingle = true, DefaultBoolean = false)]
 		public IDiffSpread<bool> FEnable;
-		
+
+        [Input("Do Send", IsSingle = true, IsBang = true)]
+        public ISpread<bool> FDoSend;
+
 		[Input("Get Pin States", IsSingle = true, IsBang = true)]
-		public IDiffSpread<bool> FGetState;
+		public ISpread<bool> FGetState;
 		
 		[Input("Remote Host", IsSingle = true, StringType = StringType.IP, DefaultString = "192.168.1.1")]
 		public IDiffSpread<string> FIp;
@@ -62,6 +65,9 @@ namespace VVVV.Nodes
 		
 		[Output("Connected", DefaultBoolean = false)]
 		public ISpread<bool> FConnected;
+
+        //[Output("CallbackCounter")]
+        //public ISpread<int> FCallbackCounter;
 		
 		[Import()]
 		public ILogger FLogger;
@@ -80,6 +86,8 @@ namespace VVVV.Nodes
         private bool disposed = false;
         private bool firstConnect = true;
 
+        private bool reconnect = false;
+
 		#endregion fields & pins
 		#pragma warning restore
 
@@ -90,15 +98,33 @@ namespace VVVV.Nodes
             FOutput.SliceCount = 12;
             FInputs.SliceCount = 12;
 
+            // reconnect
+            if (reconnect)
+            {
+                 if (FEnable[0]) 
+			     {
+                     reconnect = false; // avoid multiple connects
+                     connect();
+                 }
+                 else if (!FEnable[0])
+                 {
+                     reconnect = false;
+                     closeConnection(false);
+                 }
+            }
+
 			// Enabled changed
             if (FEnable.IsChanged || FIp.IsChanged || FPort.IsChanged)
-			{
+            {
                 FConnected[0] = false;
 
-				if(FEnable[0] == true)
+				if(FEnable[0])
 				{
                     if (FConnected[0])
+                    {
                         closeConnection(true);
+                        firstConnect = true;
+                    }
 
 					connect();
 				}
@@ -127,24 +153,21 @@ namespace VVVV.Nodes
 			}
 			
             // set Output Pins
-			if(FPinsIn.IsChanged && FConnected[0])
+            if (FDoSend[0] && FConnected[0])
 			{
 				for (int i = 0; i < 12; i++)
 				{
-                    //if (FConnected[0])
-                    //{
-						if (FPinsIn[i] != lastOutputPinState[i])
+					if (FPinsIn[i] != lastOutputPinState[i]) // dangerous if another computer has altered the pins in the meantime. rare case anyway
+					{
+						if(FPinsIn[i])
 						{
-							if(FPinsIn[i])
-							{
-								setPins(i, (UInt16)1);
-							}
-							else
-							{
-								setPins(i, (UInt16)0);
-							}
+							setPins(i, (UInt16)1);
 						}
-					//}
+						else
+						{
+							setPins(i, (UInt16)0);
+						}
+					}
 					lastOutputPinState[i] = FPinsIn[i];
 				}
 				getPins();
@@ -203,11 +226,10 @@ namespace VVVV.Nodes
 		
 		private void connect()
 		{
-            if (IsValidIP(FIp[0]) && FPort[0] > 0 && FPort[0] < 65535)
+            if (IsValidIP(FIp[0]) && IsValidPort(FPort[0]) )
 			{
 				try
 				{
-                    //FLogger.Log(LogType.Debug, "connecting to " + FIp[0] + ":" + FPort[0]);
 					IPEndPoint ClientEP = new IPEndPoint(IPAddress.Parse(FIp[0]), FPort[0]);                    
                     TCP_Client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     TCP_Client.BeginConnect(ClientEP, new AsyncCallback(callback_connect), TCP_Client);
@@ -216,7 +238,7 @@ namespace VVVV.Nodes
 				catch (Exception e)
 				{
 					FLogger.Log(LogType.Debug, "exception in connect(): " + e);
-					closeConnection(true);
+                    reconnect = true;
 				}
 			}
 			else
@@ -231,30 +253,22 @@ namespace VVVV.Nodes
 		{
 			try
 			{
-                bool complete = ar.IsCompleted;
+                Socket socket = (Socket)ar.AsyncState;
+                socket.EndConnect(ar);
 
-                if (complete)
-                {
-                    Socket socket = (Socket)ar.AsyncState;
-                    socket.EndConnect(ar);
-
-                    FStatus[0] = "connected";
-                    FConnected[0] = true;
-
-                }
-                else
-                {
-                    //didn't connect > retry
-                    FLogger.Log(LogType.Debug, "connection not established");
-                    closeConnection(true);
-                }
+                FStatus[0] = "connected";
+                FConnected[0] = true;
 
 			}
 			catch (Exception e)
 			{
-                FLogger.Log(LogType.Debug, "exception in callback_connect(): " + e);
-                FStatus[0] = "connection error (refused)";
-				closeConnection(true);
+                FLogger.Log(LogType.Debug, "exception in callback_connect " + e);
+                FStatus[0] = "Connection error. See [Renderer (TTY)]" ;
+
+                FLogger.Log(LogType.Debug, "reconnect in 2 seconds...");
+                Thread.Sleep(2000);
+
+                reconnect = true;
 			}		
 		}
 		
@@ -355,7 +369,7 @@ namespace VVVV.Nodes
 		}
 		
 		
-		private void closeConnection(bool reconnect)
+		private void closeConnection(bool Doreconnect)
 		{
 			try
 			{
@@ -363,15 +377,17 @@ namespace VVVV.Nodes
 				{
                     if (TCP_Client.Connected)
 					{
-                        if (reconnect)
+                        if (Doreconnect)
+                        {
                             TCP_Client.Disconnect(true);
+                        }
                         else
+                        {
                             TCP_Client.Disconnect(false);
 
-                        TCP_Client.Shutdown(SocketShutdown.Both);
-                        TCP_Client.Close();
-                        TCP_Client.Dispose();
-                        TCP_Client = null;    // only null, when disposing ?
+                            TCP_Client.Shutdown(SocketShutdown.Both);
+                            TCP_Client.Close();
+                        }
 					}
                     
 				}
@@ -379,11 +395,11 @@ namespace VVVV.Nodes
 				FConnected[0] = false;
                 FStatus[0] = "disconnected";
 
-                if (reconnect && FEnable[0])
+                if (Doreconnect && FEnable[0])
                 {
                     FLogger.Log(LogType.Debug, "reconnect in 2 seconds...");
                     Thread.Sleep(2000);
-                    connect();
+                    reconnect = true;
                 }
 
 			}
@@ -398,7 +414,7 @@ namespace VVVV.Nodes
         //--------------------------------------------------------------------------------------------
 
 
-        public bool IsValidIP(string addr)
+        private bool IsValidIP(string addr)
         {
             string pattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
             Regex check = new Regex(pattern);
@@ -415,6 +431,15 @@ namespace VVVV.Nodes
             }
             return valid;
         }
+
+        private bool IsValidPort(int port)
+        {
+            if (port > 0 && port < 65553)
+                return true;
+            else
+                return false;
+        }
+
 
 		
 		//--------------------------------------------------------------------------------------------
@@ -433,13 +458,14 @@ namespace VVVV.Nodes
 		{
 			// Check to see if Dispose has already been called.
 			if(!this.disposed)
-			{				
-				if(disposing)
-				{
-                    closeConnection(false);
-                    TCP_Client = null;
-				}
-                
+			{
+                if (disposing)
+                {
+                    if (TCP_Client != null)
+                    {
+                        closeConnection(false);
+                    }
+                }
 				// Note disposing has been done.
 				disposed = true;
 			}
