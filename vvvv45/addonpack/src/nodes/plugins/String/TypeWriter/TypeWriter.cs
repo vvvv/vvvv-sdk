@@ -80,6 +80,8 @@ namespace VVVV.Nodes
                 FCursorCharPos = Math.Min(FText.Length, Math.Max(0, value));
             }
         }
+        
+        public int MaxLength { get; set; } //ASK ELIAS
 
         public bool IgnoreNavigationKeys { get; set; }
 
@@ -253,14 +255,28 @@ namespace VVVV.Nodes
         #endregion
 
         #region Commands
-        private void AddNewChar(string str)
+        private void AddNewChar(string str) //ASK ELIAS
         {
-            FText = FText.Insert(FCursorCharPos, str);
-
-            if (str.ToUpper() == str)
-                FLastCapitalKey = str;
-
-            CursorStepsRight(str.Length);
+        	for (int i = 0; i < str.Length; i++) {
+        		
+        		string oneChar = str.ElementAt(i).ToString();
+        		
+	        	if (FText.Length<MaxLength || MaxLength<0)
+	        	{
+	        		FText = FText.Insert(FCursorCharPos, oneChar);
+		
+		            if (oneChar.ToUpper() == oneChar)
+		            	FLastCapitalKey = oneChar;
+		
+		            CursorStepsRight(1);
+	        	}
+	        	else
+	        	{
+	        		break;
+	        	}
+        			
+        	}
+        	
         }
 
         private void DeleteLeftChar()
@@ -352,7 +368,7 @@ namespace VVVV.Nodes
 
         public void Initialize(string text)
         {
-            FText = text;
+            AddNewChar(text);
             CursorToTextEnd();
         }
 
