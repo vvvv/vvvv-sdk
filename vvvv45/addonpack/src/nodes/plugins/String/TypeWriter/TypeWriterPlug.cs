@@ -45,10 +45,13 @@ namespace VVVV.Nodes
 		[Input("Initial Text")]
 		ISpread<string> FInitialText;
 		
+		[Input("Max Length", MinValue = -1, MaxValue = int.MaxValue, DefaultValue=-1, Visibility = PinVisibility.True)]
+		ISpread<int> FMaxLength;
+		
 		[Input("Initialize", IsBang = true)]
 		ISpread<bool> FInitialize;
 		
-		[Input("Cursor Position", MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)]
+		[Input("Cursor Position", MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)] //ASK ELIAS ABOUT Min and Default
 		ISpread<int> FNewCursorPosition;
 		
 		[Input("Set Cursor Position", IsBang = true, Visibility = PinVisibility.OnlyInspector)]
@@ -78,6 +81,7 @@ namespace VVVV.Nodes
             {
                 var typeWriter = FTypeWriters[i];
                 typeWriter.IgnoreNavigationKeys = FIgnoreNavigationKeys[i];
+                typeWriter.MaxLength = FMaxLength[i];
                 typeWriter.Keyboard = FKeyboardIn[i];
                 if (FSetCursorPosition[i])
                     typeWriter.CursorPosition = FNewCursorPosition[i];
