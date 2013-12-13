@@ -48,6 +48,13 @@ namespace VVVV.Utils.OSC
 			this.timestamp = ts;
 		}
 
+		public OSCBundle(long ts, bool extendedMode = false) : base (extendedMode)
+		{
+            DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            timestamp = start.AddMilliseconds(ts).ToLocalTime();		    
+		}
+
+
 		public OSCBundle(bool extendedMode = false) : base (extendedMode)
 		{
 			this.address = BUNDLE;
