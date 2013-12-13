@@ -21,7 +21,10 @@ using VVVV.Utils.Win32;
 
 namespace VVVV.Nodes.Input
 {
-    [PluginInfo(Name = "Touch", Category = "Devices", Version = "Window")]
+    [PluginInfo(Name = "Touch",
+                Category = "Devices", 
+                Version = "Window",
+                Help = "Returns the touch device of the current render window.")]
     public class WindowTouchNode : WindowMessageNode, IPluginEvaluate
     {
         [Input("Mode", IsSingle = true)]
@@ -129,7 +132,12 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "TouchEvents", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
+    [PluginInfo(Name = "TouchEvents", 
+                Category = "Touch",
+                Version = "Split", 
+                Help = "Returns all the touch events of a given touch device.",
+                AutoEvaluate = true,
+                Bugs = "Not spreadable")]
     public class TouchEventsSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]
@@ -203,7 +211,12 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "TouchStates", Category = "Touch", Version = "Split", AutoEvaluate = true, Bugs = "Not spreadable")]
+    [PluginInfo(Name = "TouchStates", 
+                Category = "Touch",
+                Version = "Split", 
+                Help = "Returns the touched points of a given touch device.",
+                AutoEvaluate = true,
+                Bugs = "Not spreadable")]
     public class TouchStatesSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Touch Device", IsSingle = true)]

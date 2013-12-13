@@ -128,7 +128,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Join")]
+    [PluginInfo(Name = "KeyEvents",
+                Category = "Keyboard",
+                Version = "Join",
+                Help = "Creates a virtual keyboard based on the given key events.")]
     public class KeyboardEventsJoinNode : IPluginEvaluate, IDisposable
     {
         public ISpread<ISpread<KeyNotificationKind>> EventTypeIn;
@@ -193,7 +196,11 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyStates", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "KeyStates", 
+                Category = "Keyboard",
+                Version = "Split",
+                Help = "Returns the pressed keys of a given keyboard.",
+                AutoEvaluate = true)]
     public class KeyboardStatesSplitNode : IPluginEvaluate, IDisposable
     {
         class KeyNotificationComparer : IEqualityComparer<KeyNotification>
@@ -309,7 +316,11 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "KeyEvents", Category = "Keyboard", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "KeyEvents", 
+                Category = "Keyboard", 
+                Version = "Split", 
+                Help = "Returns all the key events of a given keyboard.",
+                AutoEvaluate = true)]
     public class KeyboardEventsSplitNode : IPluginEvaluate, IDisposable
     {
         public ISpread<Keyboard> KeyboardIn;
@@ -419,7 +430,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "AsKeyName", Category = "Value", Tags = "keyboard, convert")]
+    [PluginInfo(Name = "AsKeyName", 
+                Category = "Value", 
+                Help = "Converts a key code to a key name.",
+                Tags = "keyboard, convert")]
     public class KeyCodeAsKey : IPluginEvaluate
     {
         [Input("Key Code")]
@@ -443,7 +457,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "AsKeyCode", Category = "String", Tags = "keyboard, convert")]
+    [PluginInfo(Name = "AsKeyCode",
+                Category = "String", 
+                Help = "Converts a key name to a key code.",
+                Tags = "keyboard, convert")]
     public class KeyAsKeyCodeNode : IPluginEvaluate
     {
         [Input("Key Name")]

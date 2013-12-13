@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -14,7 +15,8 @@ namespace VVVV.Utils.VMath
 	/// <summary>
 	/// 4x4 transform matrix struct with operators, much faster then matrix classes
 	/// </summary>
-	[StructLayout(LayoutKind.Sequential)]
+	[DataContract]
+    [StructLayout(LayoutKind.Sequential)]
 	public struct Matrix4x4
 	{
 		#region data fields
@@ -86,7 +88,38 @@ namespace VVVV.Utils.VMath
 		/// The 4. data element of 4. row
 		/// </summary>
 		public double m44;
-		
+        
+        [DataMember]
+        public double[] Values
+        {
+            get
+            {
+                double[] l = { m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44 };
+                return l;
+            }
+            set
+            {
+                m11 = value[0];
+                m12 = value[1];
+                m13 = value[2];
+                m14 = value[3];
+
+                m21 = value[4];
+                m22 = value[5];
+                m23 = value[6];
+                m24 = value[7];
+
+                m31 = value[8];
+                m32 = value[9];
+                m33 = value[10];
+                m34 = value[11];
+
+                m41 = value[12];
+                m42 = value[13];
+                m43 = value[14];
+                m44 = value[15];
+            }
+        }		
 		#endregion data fields
 						  
 		#region constructors
