@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\plugins\RadioKeyMatch (Keyboard) help.v4p" systemname="RadioKeyMatch (String) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\RadioKeyMatch (String) help.v4p">
-   <BOUNDS height="5550" left="8535" top="945" type="Window" width="6705">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\plugins\RadioKeyMatch (Keyboard) help.v4p" systemname="RadioKeyMatch (String) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\RadioKeyMatch (String) help.v4p">
+   <BOUNDS height="10005" left="8535" top="945" type="Window" width="9840">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
@@ -85,9 +85,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="60" systemname="IOBox (String)">
    <BOUNDS type="Node" left="480" top="4170" width="4395" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="480" top="4170" width="5805" height="720">
+   <BOUNDS type="Box" left="480" top="4170" width="5490" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|for a list of key names see:&cr;&lf; http://msdn.microsoft.com/de-de/library/system.windows.forms.keys.aspx&cr;&lf;and remove the VK_ in front of the names.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|for a list of key names see (and remove the VK_ in front of the names):|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -106,4 +106,62 @@
    </NODE>
    <LINK srcnodeid="26" srcpinname="Device" dstnodeid="24" dstpinname="Keyboard">
    </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="65">
+   <BOUNDS type="Node" left="510" top="4515" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="510" top="4515" width="5715" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://msdn.microsoft.com/de-de/library/system.windows.forms.keys.aspx">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="75" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1080" top="6285" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1080" top="6285" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="74">
+   <BOUNDS type="Node" left="1080" top="6885" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1080" top="6885" width="2850" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="73" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="255" top="5700" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="5700" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="RadioKeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="RadioKeyMatch (Keyboard)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="2100" top="5670" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Typewriter (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\TypeWriter.dll" nodename="Typewriter (String)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="1080" top="5685" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1080" top="5685">
+   </BOUNDS>
+   </NODE>
    </PATCH>
