@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\plugins\MouseEvents (Mouse Split) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="9000" height="9615">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\lib\nodes\plugins\MouseEvents (Mouse Split) help.v4p">
+   <BOUNDS type="Window" left="4065" top="4965" width="9075" height="8595">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="555" width="5010" height="495">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns all the mouse events of a given mouse.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -397,27 +397,23 @@
    <LINK srcnodeid="0" srcpinname="Bin Size" dstnodeid="32" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="1215" top="2205" width="1950" height="270">
+   <BOUNDS type="Node" left="1230" top="1455" width="1950" height="270">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
+   <BOUNDS type="Box" left="1230" top="1455">
+   </BOUNDS>
    </NODE>
    <LINK srcnodeid="47" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
+   <LINKPOINT x="1260" y="2055">
+   </LINKPOINT>
+   <LINKPOINT x="765" y="2145">
+   </LINKPOINT>
+   <LINKPOINT x="1740" y="2190">
+   </LINKPOINT>
+   <LINKPOINT x="1260" y="2310">
+   </LINKPOINT>
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="150" top="1080" width="3870" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="150" top="1080" width="3990" height="630">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The node returns every event coming from the mouse (or even from all mice, see the &apos;Bin Size&apos; pin).|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
    <BOUNDS type="Node" left="240" top="6300" width="750" height="270">
    </BOUNDS>
