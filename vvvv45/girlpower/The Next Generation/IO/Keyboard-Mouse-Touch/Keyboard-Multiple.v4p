@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p" systemname="Keyboard-Multiple" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p" locked="0">
-   <BOUNDS type="Window" left="750" top="225" width="14520" height="8985">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p" systemname="Keyboard-Multiple" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p" locked="0">
+   <BOUNDS type="Window" left="750" top="270" width="14520" height="8940">
    </BOUNDS>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="375" top="195" type="Node" width="945">
@@ -60,24 +60,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="238">
-   <BOUNDS type="Node" left="10815" top="630" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10815" top="630" width="600" height="480">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="|0, 0|">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="252" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -351,9 +333,9 @@
    </PIN>
    <PIN pinname="Key Code Bin Size" visible="1">
    </PIN>
+   <PIN pinname="Index" slicecount="2" visible="1" pintype="Input" values="0,1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="238" srcpinname="Y Output Value" dstnodeid="312" dstpinname="Index">
-   </LINK>
    <LINK srcnodeid="312" srcpinname="Key Char" dstnodeid="282" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="312" srcpinname="Device" dstnodeid="285" dstpinname="Keyboard">
@@ -530,4 +512,24 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE id="238" systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox">
+   <BOUNDS type="Node" left="10815" top="630" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10815" top="630" width="600" height="480">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="238" srcpinname="Y Output Value" dstnodeid="312" dstpinname="Index">
+   </LINK>
    </PATCH>
