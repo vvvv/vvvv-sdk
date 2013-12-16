@@ -12,6 +12,7 @@ using VVVV.Utils.Win32;
 using VVVV.Utils.Reflection;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -131,7 +132,7 @@ namespace VVVV.Hosting.IO.Streams
         {
         }
         
-        public override bool Sync()
+        unsafe public override bool Sync()
         {
             IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
             if (IsChanged)
@@ -142,16 +143,18 @@ namespace VVVV.Hosting.IO.Streams
                     object usI;
                     FNodeIn.GetUpstreamInterface(out usI);
                     var upstreamInterface = usI as IGenericIO;
+
+                    int upStreamSliceCount;
+                    int* upStreamSlices;
+                    FNodeIn.GetUpStreamSlices(out upStreamSliceCount, out upStreamSlices);
+
+                    Debug.Assert(upStreamSliceCount == Length, "up stream slice counts mismatch");
                     
                     for (int i = 0; i < Length; i++)
                     {
-                        int usS;
                         var result = default(T);
                         if (upstreamInterface != null)
-                        {
-                            FNodeIn.GetUpsreamSlice(i, out usS);
-                            result = (T) upstreamInterface.GetSlice(usS);
-                        }
+                            result = (T) upstreamInterface.GetSlice(upStreamSlices[i]);
                         writer.Write(result);
                     }
                 }
