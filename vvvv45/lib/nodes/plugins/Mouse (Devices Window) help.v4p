@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\plugins\Mouse (Devices Window) help.v4p">
-   <BOUNDS height="8745" left="0" top="0" type="Window" width="11475">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\lib\nodes\plugins\Mouse (Devices Window) help.v4p">
+   <BOUNDS height="8745" left="270" top="930" type="Window" width="11475">
    </BOUNDS>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
    <BOUNDS height="255" left="630" top="5415" type="Node" width="855">
@@ -117,7 +117,7 @@
    <NODE id="99" nodename="RENDERER (EX9)" componentmode="InAWindow" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="435" top="4605" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="3975" left="11700" top="0" type="Window" width="5190">
+   <BOUNDS height="3975" left="11730" top="930" type="Window" width="5190">
    </BOUNDS>
    <BOUNDS height="1620" left="435" top="4605" type="Box" width="1860">
    </BOUNDS>
@@ -473,7 +473,7 @@
    <NODE id="83" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
    <BOUNDS height="270" left="465" top="2445" type="Node" width="6225">
    </BOUNDS>
-   <PIN pinname="Queue Mode" visible="1">
+   <PIN pinname="Queue Mode" visible="1" slicecount="1" values="Discard">
    </PIN>
    <PIN pinname="Schedule Mode" visible="1">
    </PIN>
@@ -497,5 +497,7 @@
    <LINK srcnodeid="90" srcpinname="Y Output Value" dstnodeid="83" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="87" srcpinname="Output Enum" dstnodeid="83" dstpinname="Schedule Mode">
+   </LINK>
+   <LINK srcnodeid="87" srcpinname="Output Enum" dstnodeid="83" dstpinname="Queue Mode">
    </LINK>
    </PATCH>

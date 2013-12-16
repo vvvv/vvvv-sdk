@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Multiple.v4p" systemname="Mouse-Multiple" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Multiple.v4p" locked="0">
-   <BOUNDS type="Window" left="750" top="225" width="14520" height="6870">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Multiple.v4p" systemname="Mouse-Multiple" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Multiple.v4p" locked="0">
+   <BOUNDS type="Window" left="750" top="225" width="14520" height="6090">
    </BOUNDS>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="375" top="195" type="Node" width="945">
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="510" left="375" top="705" type="Box" width="4170">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to use multiple mice. &cr;&lf;How many of them do use at once?|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to use multiple mice. &cr;&lf;How many of them do you use at once?|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -45,7 +45,7 @@
    </PIN>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
-   <PIN pinname="Source" slicecount="1" values="Raw">
+   <PIN pinname="Source" slicecount="1" values="Raw" visible="1" pintype="Input">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="238">
@@ -172,16 +172,6 @@
    </NODE>
    <LINK srcnodeid="244" srcpinname="Output" dstnodeid="247" dstpinname="Y Input Value" linkstyle="Bezier">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="250" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="7845" top="1410" width="570" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7845" top="1410" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="Raw">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="250" srcpinname="Output Enum" dstnodeid="232" dstpinname="Source" linkstyle="Bezier">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="251" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="8910" top="1410" width="945" height="240">
    </BOUNDS>
@@ -258,8 +248,6 @@
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="232" srcpinname="Left Button" dstnodeid="257" dstpinname="Input" linkstyle="Bezier">
-   </LINK>
    <LINK srcnodeid="257" srcpinname="Up Edge" dstnodeid="256" dstpinname="Input" linkstyle="Bezier">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="260" systemname="IOBox (String)">
@@ -419,7 +407,7 @@
    </BOUNDS>
    <BOUNDS height="765" left="1275" top="3135" type="Box" width="3120">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, that there is only &apos;NoCycle&apos; mode available for the &apos;Cycle Mode&apos; pin, when the &apos;Source&apos; is set to &apos;Raw&apos;.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, that with &apos;Source&apos; set to &apos;Raw&apos; the &apos;Cycle Mode&apos; is no longer used, ie. it defaults to &apos;NoCycle&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -451,7 +439,7 @@
    </BOUNDS>
    <BOUNDS height="1005" left="795" top="4380" type="Box" width="3780">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Use GetSlice (Spreads) to get the values from particular mouse. Note, the &apos;Bin Size&apos; pin is set to 2 as there are two values for every mouse&apos;s &apos;PositionXY&apos;.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Use GetSlice (Spreads) to get the values from a particular mouse. Note, the &apos;Bin Size&apos; pin is set to 2 as there are two values for every mouse&apos;s &apos;Position&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -462,4 +450,18 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
+   <NODE id="250" nodename="IOBox (Enumerations)" componentmode="InABox" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" width="570" height="240" left="7845" top="1410">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7845" top="1410" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Raw">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="250" srcpinname="Output Enum" dstnodeid="232" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="232" srcpinname="Right Button" dstnodeid="257" dstpinname="Input">
+   </LINK>
    </PATCH>

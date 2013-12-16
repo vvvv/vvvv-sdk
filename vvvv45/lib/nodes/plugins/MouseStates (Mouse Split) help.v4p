@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\plugins\MouseStates (Mouse Split) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="7725" height="7935">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\lib\nodes\plugins\MouseStates (Mouse Split) help.v4p">
+   <BOUNDS type="Window" left="13140" top="4950" width="7725" height="7935">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -19,17 +19,17 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the mouse position and the pressed mouse buttons of a given mouse.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1320" top="1065" type="Node" width="7425">
+   <BOUNDS height="270" left="600" top="1500" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="945" left="1320" top="1065" type="Box" width="5460">
+   <BOUNDS height="720" left="600" top="1500" type="Box" width="4470">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The MouseStates (Mouse Split) is useful for routing mouse (mice) data to different subpatches: only one connection should be made.&cr;&lf;&cr;&lf;The output pins are exactly the same as on the Mouse nodes.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The MouseStates (Mouse Split) is useful for routing mouse (mice) data to different subpatches. Its output pins are exactly the same as on the Mouse nodes.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -62,6 +62,8 @@
    <PIN pinname="Left Button" visible="1">
    </PIN>
    <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Queue Mode" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
@@ -367,6 +369,8 @@
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="Discard">
    </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="47" srcpinname="Output Enum" dstnodeid="19" dstpinname="Schedule Mode">
    </LINK>
@@ -400,4 +404,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="47" srcpinname="Output Enum" dstnodeid="19" dstpinname="Queue Mode">
+   </LINK>
    </PATCH>

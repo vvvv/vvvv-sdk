@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Mouse-Simulation.v4p" systemname="Mouse-Simulating" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Mouse-Simulating.v4p" locked="0">
-   <BOUNDS type="Window" left="0" top="0" width="11775" height="14265">
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Simulation.v4p" systemname="Mouse-Simulating" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Mouse-Simulating.v4p" locked="0">
+   <BOUNDS type="Window" left="450" top="600" width="11775" height="11985">
    </BOUNDS>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="345" top="195" type="Node" width="945">
@@ -51,7 +51,7 @@
    </BOUNDS>
    <BOUNDS height="7500" left="765" top="3360" type="Box" width="4005">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Trigger (Animation) bangs its output pin at random times (between Minimum and Maximum Interval).&cr;&lf;&cr;&lf;Random (Value) responds to this bang by returning a random value which is used as a &apos;Random Seed&apos; of the RandomSpread (Spreads) returning two random values in the range (-1..1). These are XY position of the mouse.&cr;&lf;&cr;&lf;Newton (Animation) smoothes the changes in these values, so that the mouse moves and not jumps.&cr;&lf;&cr;&lf;If the two values coming from the &apos;Velocity Out&apos; pin of the Newton (Animation) are equal 0 AND the random value from the step 2 is bigger than 50, then the left mouse click is triggered.&cr;&lf;&cr;&lf;If the random value from the step two is bigger than 50, the position of the mouse wheel is increased, if it is smaller, then decreased.&cr;&lf;&cr;&lf;MouseStates (Mouse Join) creates a virtual mouse (the Mouse datatype).&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) takes the URL of the website and the Mouse, it navigates the website and renders it as a texture.&cr;&lf;&cr;&lf;This texture is applied to a FullscreenQuad (DX9) which is rendered to a window.&cr;&lf;&cr;&lf;The Mouse is also used to move the Cursor (DX9) drawn on top of the FullscreenQuad, just as a visual aid.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Trigger (Animation) bangs its output pin at random times (between Minimum and Maximum Interval).&cr;&lf;&cr;&lf;Random (Value) responds to this bang by returning a random value which is used as a &apos;Random Seed&apos; of the RandomSpread (Spreads) returning two random values in the range (-1..1). These are used as XY position of the mouse.&cr;&lf;&cr;&lf;Newton (Animation) smoothes the changes in these values, so that the mouse is moving and not jumping.&cr;&lf;&cr;&lf;If the two values coming from the &apos;Velocity Out&apos; pin of the Newton (Animation) are equal 0 AND the random value from step 2 is bigger than 50, then a left mouse click is triggered.&cr;&lf;&cr;&lf;If the random value from step two is bigger than 50, the position of the mouse wheel is increased, if it is smaller then decreased.&cr;&lf;&cr;&lf;MouseStates (Mouse Join) creates a virtual mouse (the Mouse datatype).&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) takes the URL of the website and the Mouse, it navigates the website and renders it as a texture.&cr;&lf;&cr;&lf;This texture is applied to a FullscreenQuad (DX9) which is rendered to a window.&cr;&lf;&cr;&lf;The Mouse is also used to move the Cursor (DX9) drawn on top of the FullscreenQuad, just as a visual aid.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -77,7 +77,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5880" top="10935" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="11790" top="0" width="7785" height="6180">
+   <BOUNDS type="Window" left="12225" top="600" width="7785" height="6180">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -675,9 +675,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="292" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="5865" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="5895" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="5865" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="5895" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -691,9 +691,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="293" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="6915" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="6945" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="6915" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="6945" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -723,9 +723,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="295" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="7755" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="7785" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="7755" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="7785" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -739,9 +739,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="296" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="8400" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="8430" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="8400" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="8430" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -755,9 +755,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="297" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="9855" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="9885" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="9855" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="9885" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
