@@ -10,6 +10,10 @@
 // As included with    
 // http://reactivision.sourceforge.net/
 //
+// Further implementations and specifications:
+// Copyright (c) 2013 Marko Ritter <marko@intolight.de>
+// As included with https://github.com/vvvv/vvvv-sdk/// 
+//
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 //
 // * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -28,7 +32,11 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.OSC
 {
@@ -38,15 +46,17 @@ namespace VVVV.Utils.OSC
 	abstract public class OSCPacket
 	{
 		public static readonly Encoding ASCIIEncoding8Bit;
+        public bool ExtendedVVVVMode { get; set; } 
 
         static OSCPacket()
         {
             ASCIIEncoding8Bit = Encoding.GetEncoding(1252);
         }
         
-		public OSCPacket()
+		public OSCPacket(bool extendedMode = false)
 		{
-			this.values = new ArrayList();
+		    this.ExtendedVVVVMode = extendedMode;
+            this.values = new ArrayList();
 		}
 
 		protected static void addBytes(ArrayList data, byte[] bytes)
@@ -67,7 +77,7 @@ namespace VVVV.Utils.OSC
 			}
 		}
 
-		protected static byte[] swapEndian(byte[] data)
+		internal static byte[] swapEndian(byte[] data)
 		{
 			byte[] swapped = new byte[data.Length];
 			for(int i = data.Length - 1, j = 0 ; i >= 0 ; i--, j++)
@@ -109,6 +119,111 @@ namespace VVVV.Utils.OSC
 		{
 			return ASCIIEncoding8Bit.GetBytes(value);
 		}
+
+
+        protected static byte[] packChar(char value)
+        {
+            byte[] data = BitConverter.GetBytes(value);
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            return data;
+        }
+
+        protected static byte[] packBlob(Stream value)
+        {
+            var mem = new MemoryStream();
+            value.Seek(0, SeekOrigin.Begin);
+            value.CopyTo(mem);
+
+            byte[] valueData = mem.ToArray();
+
+            var lData = new ArrayList();
+
+            var length = packInt(valueData.Length);
+
+            lData.AddRange(length);
+            lData.AddRange(valueData);
+
+            return (byte[])lData.ToArray(typeof(byte));
+        }
+
+        protected static byte[] packTimeTag(DateTime value)
+        {
+            var tag = new OscTimeTag();
+            tag.Set(value);
+            
+            return tag.ToByteArray(); ;
+        }
+
+        protected static byte[] packColor(RGBAColor value)
+        {
+            double[] rgba = {value.R, value.G, value.B, value.A};
+
+            byte[] data = new byte[rgba.Length];
+            for (int i = 0; i < rgba.Length; i++) data[i] = (byte) Math.Round(rgba[i]*255);
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            return data;
+        }
+
+        protected static byte[] packVector2D(Vector2D value)
+        {
+            int length = 2;
+            int compLength = BitConverter.GetBytes(new double()).Length;
+
+            byte[] data = new byte[compLength * length];
+
+            for (int i=0;i<length;i++)
+            {
+                byte[] component = packDouble(value[i]);
+                component.CopyTo(data, compLength * i);
+            }
+            return data;
+        }
+
+        protected static byte[] packVector3D(Vector3D value)
+        {
+            int length = 3;
+            int compLength = BitConverter.GetBytes(new double()).Length;
+
+            byte[] data = new byte[compLength * length];
+
+            for (int i = 0; i < length; i++)
+            {
+                byte[] component = packDouble(value[i]);
+                component.CopyTo(data, compLength * i);
+            }
+            return data;
+        }
+
+
+        protected static byte[] packVector4D(Vector4D value)
+        {
+            int length = 4;
+            int compLength = BitConverter.GetBytes(new double()).Length;
+
+            byte[] data = new byte[compLength * length];
+
+            for (int i = 0; i < length; i++)
+            {
+                byte[] component = packDouble(value[i]);
+                component.CopyTo(data, compLength * i);
+            }
+            return data;
+        }
+
+        protected static byte[] packMatrix(Matrix4x4 value)
+        {
+            int length = 16;
+            int compLength = BitConverter.GetBytes(new float()).Length;
+
+            byte[] data = new byte[compLength * length];
+
+            for (int i = 0; i < length; i++)
+            {
+                byte[] component = packFloat((float)value[i]);
+                component.CopyTo(data, compLength * i);
+            }
+            return data;
+        }
 
 		abstract protected void pack();
 		protected byte[] binaryData;
@@ -163,16 +278,93 @@ namespace VVVV.Utils.OSC
 			return s;
 		}
 
-		public static OSCPacket Unpack(byte[] bytes)
+        protected static char unpackChar(byte[] bytes, ref int start)
+        {
+            byte[] data = {bytes[start]};
+            return BitConverter.ToChar(data, 0);
+        }
+
+        protected static Stream unpackBlob(byte[] bytes, ref int start)
+        {
+            int length = unpackInt(bytes, ref start);
+
+            byte[] buffer = new byte[length];
+            Array.Copy(bytes, start, buffer, 0, length);
+            
+            start += length;
+            start = (start + 3) / 4 * 4;
+            return new MemoryStream(buffer);
+        }
+
+        protected static RGBAColor unpackColor(byte[] bytes, ref int start)
+        {
+            byte[] data = new byte[4];
+            for (int i = 0; i < 4; i++, start++) data[i] = bytes[start];
+            if (BitConverter.IsLittleEndian) data = swapEndian(data);
+            
+            var col = new RGBAColor();
+            col.R = (double)data[0] / 255.0;
+            col.G = (double)data[1] / 255.0;
+            col.B = (double)data[2] / 255.0;
+            col.A = (double)data[3] / 255.0;
+
+            return col;
+        }
+
+        protected static Vector2D unpackVector2D(byte[] bytes, ref int start)
+        {
+            var v = new Vector2D();
+            v.x = unpackDouble(bytes, ref start);
+            v.y = unpackDouble(bytes, ref start);
+            return v;
+        }
+
+        protected static Vector3D unpackVector3D(byte[] bytes, ref int start)
+        {
+            var v = new Vector3D();
+            v.x = unpackDouble(bytes, ref start);
+            v.y = unpackDouble(bytes, ref start);
+            v.z = unpackDouble(bytes, ref start);
+            return v;
+        }
+
+        protected static Vector4D unpackVector4D(byte[] bytes, ref int start)
+        {
+            var v = new Vector4D();
+            v.x = unpackDouble(bytes, ref start);
+            v.y = unpackDouble(bytes, ref start);
+            v.z = unpackDouble(bytes, ref start);
+            v.w = unpackDouble(bytes, ref start);
+            return v;
+        }
+
+        protected static Matrix4x4 unpackMatrix(byte[] bytes, ref int start)
+        {
+            var m = new Matrix4x4();
+            for (int i=0;i<16;i++) m[i] = unpackFloat(bytes, ref start);
+            return m;
+        }
+
+
+        protected static DateTime unpackTimeTag(byte[] bytes, ref int start)
+        {
+            byte[] data = new byte[8];
+            for (int i = 0; i < 8; i++, start++) data[i] = bytes[start];
+            var tag = new OscTimeTag(data);
+
+            return tag.DateTime;
+        }
+
+		public static OSCPacket Unpack(byte[] bytes, bool extendedMode = false)
 		{
 			int start = 0;
-			return Unpack(bytes, ref start, bytes.Length);
+			return Unpack(bytes, ref start, bytes.Length, extendedMode);
 		}
 
-		public static OSCPacket Unpack(byte[] bytes, ref int start, int end)
+		public static OSCPacket Unpack(byte[] bytes, ref int start, int end, bool extendedMode = false)
 		{
-			if(bytes[start] == '#') return OSCBundle.Unpack(bytes, ref start, end);
-			else return OSCMessage.Unpack(bytes, ref start);
+			if(bytes[start] == '#') return OSCBundle.Unpack(bytes, ref start, end, extendedMode);
+			else return OSCMessage.Unpack(bytes, ref start, extendedMode);
 		}
 
 

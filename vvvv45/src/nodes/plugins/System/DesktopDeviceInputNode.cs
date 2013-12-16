@@ -8,6 +8,7 @@ using VVVV.Hosting.IO;
 using VVVV.Nodes.Input;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Input
 {
@@ -16,7 +17,7 @@ namespace VVVV.Nodes.Input
         [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
         public ISpread<bool> EnabledIn;
 
-        [Input("Index", Order = int.MinValue + 1)]
+        [Input("Index", Order = int.MinValue + 1, Visibility = PinVisibility.OnlyInspector)]
         public IDiffSpread<int> IndexIn;
 
         [Output("Device")]
@@ -83,7 +84,7 @@ namespace VVVV.Nodes.Input
                 DeviceDescriptionOut.SliceCount = spreadMax;
                 for (int i = 0; i < spreadMax; i++)
                 {
-                    var index = IndexIn[i];
+                    var index = VMath.Zmod(IndexIn[i], spreadMax);
                     var device = devices[index % devices.Count];
                     DeviceOut[i] = CreateDevice(device, i);
                     DeviceNameOut[i] = device.DeviceName;

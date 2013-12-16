@@ -71,7 +71,7 @@ namespace VVVV.Nodes
               Category = "Devices",
               Author = "jens a. ewald",
               Help = "Decodes the firmata protocol version 2.x",
-              Tags = "Arduino")]
+              Tags = "arduino")]
   #endregion PluginInfo
   public class FirmataDecode : IPluginEvaluate
   {
@@ -344,11 +344,11 @@ namespace VVVV.Nodes
 
   #region PluginInfo
   [PluginInfo(Name = "I2CDecode",
-              Category = "Devices Firmata",
+              Category = "Firmata",
               Version  = "2.x",
               Author = "jens a. ewald",
               Help = "Decodes I2C data from Firmata messages",
-              Tags = "Firmata,Arduino")]
+              Tags = "arduino")]
   #endregion PluginInfo
   public class I2CDecode : IPluginEvaluate
   {

@@ -35,7 +35,12 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Maps the value, but repeats it into the min/max range, like a modulo function
 		/// </summary>
-		Wrap};
+		Wrap,
+		/// <summary>
+		/// Maps the value, but mirrors it into the min/max range, always against either start or end, whatever is closer
+		/// </summary>
+		Mirror
+    };
 	
 	#endregion enums
 	
@@ -496,57 +501,67 @@ namespace VVVV.Utils.VMath
 			return !(p1 - p2);
 		}
 		
-		/// <summary>
-		/// The infamous Map function of vvvv for values
-		/// </summary>
-		/// <param name="Input">Input value to convert</param>
-		/// <param name="InMin">Minimum of input value range</param>
-		/// <param name="InMax">Maximum of input value range</param>
-		/// <param name="OutMin">Minimum of destination value range</param>
-		/// <param name="OutMax">Maximum of destination value range</param>
-		/// <param name="mode">Defines the behavior of the function if the input value exceeds the destination range 
-		/// <see cref="VVVV.Utils.VMath.TMapMode">TMapMode</see></param>
-		/// <returns>Input value mapped from input range into destination range</returns>
-		public static double Map(double Input, double InMin, double InMax, double OutMin, double OutMax, TMapMode mode)
-		{
-			double output;
-			
-			if (InMax-InMin == 0)
-				output = 0;
-			else
-			{
-				double range = InMax - InMin;
-				double normalized = (Input - InMin) / range;
-				
-				switch (mode) 
-				{
-					case TMapMode.Float:
-						output = OutMin + normalized * (OutMax - OutMin);
-						break;
-						
-					case TMapMode.Clamp:			
-						output = OutMin + normalized * (OutMax - OutMin);
-						double min = Min(OutMin, OutMax);
-						double max = Max(OutMin, OutMax);
-						output = Min(Max(output, min), max);
-						break;
-						
-					case TMapMode.Wrap:
-						if (normalized < 0)
-							normalized = 1 + normalized;
-						output = OutMin + (normalized % 1) * (OutMax - OutMin);
-						break;
-						
-					default:
-						output = OutMin + normalized * (OutMax - OutMin);
-						break;
-				}
-				
-			}
-
-		 	return output;
-		}
-		
+        /// <summary>
+         /// This Method can be seen as an inverse of Lerp (in Mode Float). Additionally it provides the infamous Mapping Modes, author: velcrome
+         /// </summary>
+         /// <param name="Input">Input value to convert</param>
+         /// <param name="start">Minimum of input value range</param>
+         /// <param name="end">Maximum of input value range</param>
+         /// <param name="mode">Defines the behavior of the function if the input value exceeds the destination range 
+         /// <see cref="VVVV.Utils.VMath.TMapMode">TMapMode</see></param>
+         /// <returns>Input value mapped from input range into destination range</returns>
+         public static double Ratio(double Input, double start, double end, TMapMode mode)
+         {
+             if (end.CompareTo(start) == 0) return 0;
+ 
+             double range = end - start;
+             double ratio = (Input - start) / range;
+ 
+             if (mode == TMapMode.Float) { }
+             else if (mode == TMapMode.Clamp)
+             {
+                 if (ratio < 0) ratio = 0;
+                 if (ratio > 1) ratio = 1;
+             }
+             else
+             {
+                 if (mode == TMapMode.Wrap)
+                 {
+                     // includes fix for inconsistent behaviour of old delphi Map 
+                     // node when handling integers
+                     int rangeCount = (int)Math.Floor(ratio);
+                     ratio -= rangeCount;
+                 }
+                 else if (mode == TMapMode.Mirror)
+                 {
+                     // merke: if you mirror an input twice it is displaced twice the range. same as wrapping twice really
+                     int rangeCount = (int)Math.Floor(ratio);
+                     rangeCount -= rangeCount & 1; // if uneven, make it even. bitmask of one is same as mod2
+                     ratio -= rangeCount;
+ 
+                     if (ratio > 1) ratio = 2 - ratio; // if on the max side of things now (due to rounding down rangeCount), mirror once against max
+                 }
+             }
+             return ratio;
+         }
+ 
+         /// <summary>
+         /// The infamous Map function of vvvv for values
+         /// </summary>
+         /// <param name="Input">Input value to convert</param>
+         /// <param name="InMin">Minimum of input value range</param>
+         /// <param name="InMax">Maximum of input value range</param>
+         /// <param name="OutMin">Minimum of destination value range</param>
+         /// <param name="OutMax">Maximum of destination value range</param>
+         /// <param name="mode">Defines the behavior of the function if the input value exceeds the destination range 
+         /// <see cref="VVVV.Utils.VMath.TMapMode">TMapMode</see></param>
+         /// <returns>Input value mapped from input range into destination range</returns>
+         public static double Map(double Input, double InMin, double InMax, double OutMin, double OutMax, TMapMode mode)
+         {
+             double ratio = Ratio(Input, InMin, InMax, mode);
+             return Lerp(OutMin, OutMax, ratio);
+         }
+	
 		/// <summary>
 		/// The infamous Map function of vvvv for 2d-vectors and value range bounds
 		/// </summary>

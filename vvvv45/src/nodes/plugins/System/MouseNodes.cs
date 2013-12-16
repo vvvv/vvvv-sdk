@@ -28,7 +28,10 @@ namespace VVVV.Nodes.Input
         IncrementCycle
     }
 
-    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Window")]
+    [PluginInfo(Name = "Mouse",
+                Category = "Devices", 
+                Version = "Window",
+                Help = "Returns the mouse of the current render window.")]
     public class WindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
         [Output("Device", IsSingle = true)]
@@ -45,17 +48,17 @@ namespace VVVV.Nodes.Input
                     RECT cr;
                     if (User32.GetClientRect(e.HWnd, out cr))
                     {
-                        var pos = e.LParam.ToInt32();
-                        var position = new Point(pos.LoWord(), pos.HiWord());
+                        var lParam = e.LParam;
+                        var position = new Point(lParam.LoWord(), lParam.HiWord());
                         var clientArea = new Size(cr.Width, cr.Height);
-                        var wParam = e.WParam.ToInt32();
+                        var wParam = e.WParam;
 
                         switch (e.Message)
                         {
                             case WM.MOUSEWHEEL:
                                 unchecked
                                 {
-                                    var wheel = e.WParam.ToInt32().HiWord();
+                                    var wheel = wParam.HiWord();
                                     return new MouseWheelNotification(position, clientArea, wheel);
                                 }
                             case WM.MOUSEMOVE:
@@ -112,7 +115,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "Mouse", Category = "Devices", Version = "Desktop")]
+    [PluginInfo(Name = "Mouse", 
+                Category = "Devices", 
+                Version = "Desktop",
+                Help = "Returns the systemwide mouse.")]
     public class DesktopMouseNode : DesktopDeviceInputNode<Mouse>
     {
         public enum DataSource
@@ -121,7 +127,7 @@ namespace VVVV.Nodes.Input
             Raw
         }
 
-        [Input("Source")]
+        [Input("Source", Visibility = PinVisibility.OnlyInspector)]
         public IDiffSpread<DataSource> DataSourceIn;
 
         [Input("Cycle Mode")]
@@ -433,7 +439,10 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Join")]
+    [PluginInfo(Name = "MouseEvents", 
+                Category = "Mouse", 
+                Version = "Join",
+                Help = "Creates a virtual mouse based on the given mouse events.")]
     public class MouseEventsJoinNode : IPluginEvaluate, IDisposable
     {
         public ISpread<ISpread<MouseNotificationKind>> EventTypeIn;
@@ -529,7 +538,11 @@ namespace VVVV.Nodes.Input
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 
-    [PluginInfo(Name = "MouseEvents", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "MouseEvents", 
+                Category = "Mouse", 
+                Version = "Split",
+                Help = "Returns all the mouse events of a given mouse.",
+                AutoEvaluate = true)]
     public class MouseEventsSplitNode : IPluginEvaluate, IDisposable
     {
         public ISpread<Mouse> MouseIn;
@@ -674,12 +687,16 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "Mouse", Version = "Split", AutoEvaluate = true)]
+    [PluginInfo(Name = "MouseStates", 
+                Category = "Mouse", 
+                Version = "Split", 
+                Help = "Returns the mouse position and the pressed mouse buttons of a given mouse.",
+                AutoEvaluate = true)]
     public class MouseStatesSplitNode : IPluginEvaluate, IDisposable
     {
         [Input("Mouse")]
         public ISpread<Mouse> MouseIn;
-        [Input("Schedule Mode", DefaultEnumEntry = "Discard")]
+        [Input("Queue Mode", DefaultEnumEntry = "Discard")]
         public ISpread<ScheduleMode> ScheduleModeIn;
 
         [Output("Position")]
@@ -774,7 +791,11 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    [PluginInfo(Name = "MouseStates", Category = "Mouse", Version = "Join", AutoEvaluate = true)]
+    [PluginInfo(Name = "MouseStates",
+                Category = "Mouse", 
+                Version = "Join", 
+                Help = "Creates a virtual mouse based on the mouse position and pressed mouse buttons.",
+                AutoEvaluate = true)]
     public class MouseStatesJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Position")]
