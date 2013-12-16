@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\Tokenizer (String) help.v4p">
-   <BOUNDS height="14370" left="0" top="0" type="Window" width="15345">
+   <BOUNDS height="14370" left="0" top="0" type="Window" width="15690">
    </BOUNDS>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
    <BOUNDS height="0" left="6045" top="1260" type="Node" width="0">
@@ -69,9 +69,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6015" top="885" width="840" height="270">
+   <BOUNDS type="Node" left="6015" top="945" width="840" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6015" top="885" width="780" height="270">
+   <BOUNDS type="Box" left="6015" top="945" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Separator">
    </PIN>
@@ -93,9 +93,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="28" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="7725" top="3240" width="840" height="2160">
+   <BOUNDS type="Box" left="7725" top="3285" width="870" height="2220">
    </BOUNDS>
-   <BOUNDS type="Node" left="7725" top="3240" width="0" height="0">
+   <BOUNDS type="Node" left="7725" top="3285" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="Enqueue">
    </PIN>
@@ -181,9 +181,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8835" top="2115" width="2205" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8835" top="2115" width="6225" height="750">
+   <BOUNDS type="Box" left="8835" top="2115" width="5160" height="600">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Input stream is split at the character previous to the &apos;Separator&apos; and then filled the slice with so many characters as defined in &apos;Token Length&apos; ignoring the separators until the slice is full.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Input stream is split at the character previous to the &apos;Separator&apos; or when the number of characters defined in &apos;Token Length&apos; is collected.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -221,9 +221,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7875" top="885" width="525" height="270">
+   <BOUNDS type="Node" left="7875" top="945" width="525" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7875" top="885" width="525" height="270">
+   <BOUNDS type="Box" left="7875" top="945" width="525" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Mode">
    </PIN>
@@ -235,9 +235,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="42" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7695" top="2955" width="840" height="270">
+   <BOUNDS type="Node" left="7695" top="2985" width="840" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7695" top="2955" width="960" height="270">
+   <BOUNDS type="Box" left="7695" top="2985" width="960" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Queue Mode|">
    </PIN>
@@ -291,11 +291,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8850" top="3150" width="2205" height="270">
+   <BOUNDS type="Node" left="8850" top="3195" width="2205" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8850" top="3150" width="4830" height="2415">
+   <BOUNDS type="Box" left="8850" top="3195" width="5205" height="2415">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enque:&cr;&lf;Tokenizer stores all incoming strings, splits them as defined and forwards one item per frame to the connected nodes. If the queue item can&apos;t be forwarded (it comes faster than it can be delivered), it is stored into a queue and will be delievered one per frame.&cr;&lf;&cr;&lf;Discard:&cr;&lf;All items, that can&apos;t be delivered in frametime will be discarded.&cr;&lf;&cr;&lf;Spread:&cr;&lf;&apos;Output&apos; pin contains a spread of all split slices.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enque:&cr;&lf;Tokenizer concatenates all incoming strings, splits them as defined and forwards one item per frame to the connected nodes. If the queue item can&apos;t be forwarded (it comes faster than it can be delivered), it is stored into a queue and will be delievered one per frame.&cr;&lf;&cr;&lf;Discard:&cr;&lf;All items, that can&apos;t be delivered in frametime will be discarded.&cr;&lf;&cr;&lf;Spread:&cr;&lf;&apos;Output&apos; pin contains a spread of all split slices.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
