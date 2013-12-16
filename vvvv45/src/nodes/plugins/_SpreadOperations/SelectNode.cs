@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils;
 using VVVV.Utils.Streams;
 
-namespace VVVV.Nodes._SpreadOperations
+namespace VVVV.Nodes
 {
     public class SelectNode<T> : IPluginEvaluate
     {
@@ -102,6 +102,9 @@ namespace VVVV.Nodes._SpreadOperations
         }
     }
 
-    [PluginInfo(Name = "Select", Category = "Value")]
+    [PluginInfo(Name = "Select",
+                Category = "Value",
+                Help = "Select which slices and how many form the output spread",
+	            Tags = "resample")]
     public class ValueSelectNode : SelectNode<double> { }
 }

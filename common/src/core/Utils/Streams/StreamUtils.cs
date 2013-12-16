@@ -406,7 +406,8 @@ namespace VVVV.Utils.Streams
                         var blockSize = reader.Read(buffer, 0, StreamUtils.BUFFER_SIZE);
                         for (int i = 0; i < blockSize; i++)
                         {
-                            destructor(buffer[i]);
+                        	if(buffer[i] != null)
+                            	destructor(buffer[i]);
                         }
                         numSlicesToRead -= blockSize;
                     }

@@ -28,32 +28,55 @@
 
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
+using VVVV.Utils.VColor;
+using VVVV.Utils.VMath;
 
 namespace VVVV.Utils.OSC
 {
 	/// <summary>
 	/// OSCMessage
+	/// 
+	/// Contains an address, a comma followed by one or more type identifiers. then the data itself follows in binary encoding.
 	/// </summary>
 	public class OSCMessage : OSCPacket
 	{
-		protected const char INTEGER = 'i';
-		protected const char FLOAT	  = 'f';
-		protected const char LONG	  = 'h';
-		protected const char DOUBLE  = 'd';
-		protected const char STRING  = 's';
-		protected const char SYMBOL  = 'S';
-		//protected const char BLOB	  = 'b';
-		//protected const char ALL     = '*';
+//      These Attributes adhere to the OSC Specs 1.0
+        protected const char INTEGER = 'i'; // int32 8byte
+		protected const char FLOAT	  = 'f'; //float32 8byte
+		protected const char LONG	  = 'h';  //int64 16byte
+		protected const char DOUBLE  = 'd'; // float64 16byte
+		protected const char STRING  = 's'; // padded by zeros
+		protected const char SYMBOL  = 'S'; // same as STRING really
+        protected const char BLOB	  = 'b'; // bytestream, starts with an int that tells the total length of th stream
+        protected const char TIMETAG = 't'; // fixed point floating number with 32bytes (16bytes for totaldays after 1.1.1900 and 16bytes for fractionOfDay)
+        protected const char CHAR	  = 'c'; // bit
+        protected const char COLOR  = 'r'; // 4x8bit -> rgba
 
-		public OSCMessage(string address)
+        //protected const char TRUE	  = 'T';
+        //protected const char FALSE = 'F';
+        protected const char NIL = 'N';
+        //protected const char INFINITUM = 'I';
+
+        //protected const char ALL     = '*';
+
+//      These Attributes are added for convenience within vvvv. They are NOT part of the OSC Specs, but are VERY useful if you want to make vvvv talk to another instance of vvvv
+//      Using them requires to set the ExtendedVVVVMethod property to true (with the constructor or with the Unpack methods, depending if you want to send or receive)
+        protected const char VECTOR2D = 'v'; // synonym to dd
+        protected const char VECTOR3D = 'V'; // synonym to ddd
+        protected const char QUATERNION = 'q'; // synonym to dddd
+        protected const char MATRIX4 = 'M';  // for 4x4 Matrices with float, so synonym to ffffffffffffffff
+
+
+		public OSCMessage(string address, bool extendedMode = false) : base(extendedMode)
 		{
-			this.typeTag = ",";
+            this.typeTag = ",";
 			this.Address = address;
 		}
-		public OSCMessage(string address, object value)
+		public OSCMessage(string address, object value, bool extendedMode =  false) : base(extendedMode)
 		{
-			this.typeTag = ",";
+            this.typeTag = ",";
 			this.Address = address;
 			Append(value);
 		}
@@ -73,14 +96,26 @@ namespace VVVV.Utils.OSC
 				else if(value is long) addBytes(data, packLong((long)value));
 				else if(value is float) addBytes(data, packFloat((float)value));
 				else if(value is double) addBytes(data, packDouble((double)value));
-				else if(value is string)
-				{
+				else if(value is string) {
 					addBytes(data, packString((string)value));
 					padNull(data);
 				}
-				else 
+                else if (value is Stream) {
+                    addBytes(data, packBlob((Stream)value));
+                    padNull(data);
+                }
+                else if (value is RGBAColor) addBytes(data, packColor((RGBAColor)value));
+                else if (value is char) addBytes(data, packChar((char)value));
+                else if (value is DateTime)
+                {
+                    addBytes(data, packTimeTag((DateTime)value));
+                }
+                else if (ExtendedVVVVMode)
 				{
-					// TODO
+                    if (value is Vector2D ) addBytes(data, packVector2D((Vector2D)value));
+                    else if (value is Vector3D ) addBytes(data, packVector3D((Vector3D)value));
+                    else if (value is Vector4D) addBytes(data, packVector4D((Vector4D)value));
+                    else if (value is Matrix4x4) addBytes(data, packMatrix((Matrix4x4)value));
 				}
 			}
 			
@@ -88,11 +123,11 @@ namespace VVVV.Utils.OSC
 		}
 
 
-		public static OSCMessage Unpack(byte[] bytes, ref int start)
+		public static OSCMessage Unpack(byte[] bytes, ref int start, bool extendedMode = false)
 		{
 			string address = unpackString(bytes, ref start);
 			//Console.WriteLine("address: " + address);
-			OSCMessage msg = new OSCMessage(address);
+			OSCMessage msg = new OSCMessage(address, extendedMode);
 
 			char[] tags = unpackString(bytes, ref start).ToCharArray();
 			//Console.WriteLine("tags: " + new string(tags));
@@ -104,10 +139,22 @@ namespace VVVV.Utils.OSC
 				else if(tag == LONG) msg.Append(unpackLong(bytes, ref start));
 				else if(tag == DOUBLE) msg.Append(unpackDouble(bytes, ref start));
 				else if(tag == FLOAT) msg.Append(unpackFloat(bytes, ref start));
-				else if(tag == STRING || tag == SYMBOL) msg.Append(unpackString(bytes, ref start));
-				else Console.WriteLine("unknown tag: "+tag);
-			}
+                else if (tag == STRING || tag == SYMBOL) msg.Append(unpackString(bytes, ref start));
+                
+                else if (tag == CHAR) msg.Append(unpackChar(bytes, ref start));
+                else if (tag == BLOB) msg.Append(unpackBlob(bytes, ref start));
+                else if (tag == COLOR) msg.Append(unpackColor(bytes, ref start));
+                else if (tag == TIMETAG) msg.Append(unpackTimeTag(bytes, ref start));
 
+//              here come the custom vvvv datatypes
+                else if (extendedMode)
+                {
+                    if (tag == VECTOR2D) msg.Append(unpackVector2D(bytes, ref start));
+                    else if (tag == VECTOR3D) msg.Append(unpackVector3D(bytes, ref start));
+                    else if (tag == QUATERNION) msg.Append(unpackVector4D(bytes, ref start));
+                    else if (tag == MATRIX4) msg.Append(unpackMatrix(bytes, ref start));
+                } else Console.WriteLine("unknown tag: " + tag);
+			}
 			return msg;
 		}
 
@@ -133,19 +180,66 @@ namespace VVVV.Utils.OSC
 			{
 				AppendTag(STRING);
 			}
-			else 
-			{
-				// TODO: exception
-			}
+            else if (value is char)
+            {
+                AppendTag(CHAR);
+            }
+            else if (value is Stream)
+            {
+                AppendTag(BLOB);
+            }
+            else if (value is DateTime)
+            {
+                AppendTag(TIMETAG);
+            }
+            else if (value is RGBAColor)
+            {
+                AppendTag(COLOR);
+            }
+            else if (ExtendedVVVVMode)
+            {
+
+                if (value is Vector2D)
+                {
+                    AppendTag(VECTOR2D);
+                }
+                else if (value is Vector3D)
+                {
+                    AppendTag(VECTOR3D);
+                }
+                else if (value is Vector4D)
+                {
+                    AppendTag(QUATERNION);
+                }
+                else if (value is Matrix4x4)
+                {
+                    AppendTag(MATRIX4);
+                }
+                else
+                {
+                    Fallback();
+                    return;
+                }
+            }
+            else
+            {
+                Fallback();
+                return;
+            }
 			values.Add(value);
 		}
 
-		protected string typeTag;
+	    private void Fallback()
+	    {
+	        AppendTag(NIL);
+//	        values.Add("undefined");
+	    }
+
+	    protected string typeTag;
 		protected void AppendTag(char type)
 		{
 			typeTag += type;
 		}
-
 
 		override public bool IsBundle() { return false; }
 
