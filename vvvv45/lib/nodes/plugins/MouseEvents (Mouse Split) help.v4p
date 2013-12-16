@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\plugins\MouseEvents (Mouse Split) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="9000" height="9615">
+   <BOUNDS type="Window" left="0" top="0" width="9000" height="10980">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -47,13 +47,13 @@
    </PIN>
    <PIN pinname="Bin Size" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE id="5" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="630" top="4845" width="195" height="270">
+   <BOUNDS type="Node" left="735" top="5730" width="195" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="630" top="4845" width="285" height="645">
+   <BOUNDS type="Box" left="735" top="5730" width="285" height="645">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="!">
    </PIN>
@@ -67,11 +67,11 @@
    </PIN>
    </NODE>
    <NODE id="4" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1080" top="4920" width="4155" height="270">
+   <BOUNDS type="Node" left="1110" top="5805" width="4155" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1080" top="4920" width="2475" height="510">
+   <BOUNDS type="Box" left="1110" top="5805" width="4575" height="1215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;PositionXY&apos; is not correct in case of a &apos;MouseWheel&apos; event.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If the MouseEvents (Mouse Split) receives the data from the Mouse (Devices Window), then the &apos;PositionXY&apos; is not correct in case of &apos;MouseWheel&apos; events (see &apos;EventType&apos; pin). In this case the сoordinates are delievered relative to the upper-left corner of the screen. All other events deliever the corrent values.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -396,14 +396,6 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Bin Size" dstnodeid="32" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="1215" top="2205" width="1950" height="270">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="47" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="1080" width="3870" height="270">
    </BOUNDS>
@@ -419,9 +411,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="240" top="6300" width="750" height="270">
+   <BOUNDS type="Node" left="240" top="8400" width="750" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="240" top="6300" width="750" height="270">
+   <BOUNDS type="Box" left="240" top="8400" width="750" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
    </PIN>
@@ -433,15 +425,15 @@
    </PIN>
    </NODE>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="4050" top="6300" width="100" height="100">
+   <BOUNDS type="Node" left="4050" top="8400" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4050" top="6300">
+   <BOUNDS type="Box" left="4050" top="8400">
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="51" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1110" top="6990" width="5000" height="450">
+   <BOUNDS type="Node" left="1110" top="9090" width="5000" height="450">
    </BOUNDS>
-   <BOUNDS type="Box" left="1110" top="6990" width="1350" height="390">
+   <BOUNDS type="Box" left="1110" top="9090" width="1350" height="390">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
    </PIN>
@@ -453,9 +445,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="50">
-   <BOUNDS type="Node" left="1110" top="7590" width="100" height="100">
+   <BOUNDS type="Node" left="1110" top="9690" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1110" top="7590" width="2850" height="240">
+   <BOUNDS type="Box" left="1110" top="9690" width="2850" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
@@ -463,15 +455,149 @@
    </PIN>
    </NODE>
    <NODE systemname="MouseEvents (Mouse Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseEvents (Mouse Join)" componentmode="Hidden" id="54">
-   <BOUNDS type="Node" left="1110" top="6300" width="100" height="100">
+   <BOUNDS type="Node" left="1110" top="8400" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1110" top="6300">
+   <BOUNDS type="Box" left="1110" top="8400">
    </BOUNDS>
    </NODE>
    <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="52">
-   <BOUNDS type="Node" left="2745" top="6300" width="100" height="100">
+   <BOUNDS type="Node" left="2745" top="8400" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2745" top="6300">
+   <BOUNDS type="Box" left="2745" top="8400">
    </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="57" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3390" top="1995" width="1845" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3390" top="1995" width="1845" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Mouse (Devices Window)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="1230" top="2010" width="1950" height="270">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <NODE id="58" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1110" top="5385" width="195" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="5385" width="705" height="360">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Note">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="60" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="1110" top="7380" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="7380" width="2850" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" pintype="Input" visible="1" values="http://msdn.microsoft.com/en-us/library/windows/desktop/ms645617%28v=vs.85%29.aspx">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="URL">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="59" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="1110" top="7080" width="840" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="7080" width="840" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" pintype="Input" slicecount="1" values="|Read this:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
    </NODE>
    </PATCH>
