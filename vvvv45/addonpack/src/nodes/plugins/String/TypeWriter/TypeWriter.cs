@@ -257,26 +257,32 @@ namespace VVVV.Nodes
         #region Commands
         private void AddNewChar(string str) //ASK ELIAS
         {
-        	for (int i = 0; i < str.Length; i++) {
-        		
-        		string oneChar = str.ElementAt(i).ToString();
-        		
-	        	if (FText.Length<MaxLength || MaxLength<0)
-	        	{
-	        		FText = FText.Insert(FCursorCharPos, oneChar);
-		
-		            if (oneChar.ToUpper() == oneChar)
-		            	FLastCapitalKey = oneChar;
-		
-		            CursorStepsRight(1);
-	        	}
-	        	else
-	        	{
-	        		break;
-	        	}
-        			
-        	}
         	
+        	if (str.Length!=0)
+        	{
+        		string stringToInsert = str;
+        	
+	        	if (MaxLength > -1)
+	        	{
+	        		int diff=MaxLength-(FText.Length+str.Length);
+	        	
+			       	if (diff < 0)
+			       	{
+			       		stringToInsert= str.Substring (0, diff+str.Length);
+			        }
+			        else
+			        {
+			        	stringToInsert= str.Substring (0, str.Length);
+			        }
+	        	}
+        	  
+        		FText = FText.Insert (FCursorCharPos, stringToInsert);
+        		
+        		if (stringToInsert.ToUpper() == stringToInsert)
+		       	FLastCapitalKey = stringToInsert;
+		
+		    	CursorStepsRight(stringToInsert.Length);
+        	}
         }
 
         private void DeleteLeftChar()
@@ -368,7 +374,8 @@ namespace VVVV.Nodes
 
         public void Initialize(string text)
         {
-            AddNewChar(text);
+        	FText="";
+        	AddNewChar(text);
             CursorToTextEnd();
         }
 
