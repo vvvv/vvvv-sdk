@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9).v4p" systemname="Line (EX9 Vector)" filename="C:\Work\Anton-Work\Line (EX9 Vector).v4p">
-   <BOUNDS type="Window" left="13305" top="1995" width="14745" height="14190">
+   <BOUNDS type="Window" left="1455" top="8415" width="12045" height="7140">
    </BOUNDS>
    <NODE id="47" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="3990" top="10560" type="Node" width="0">
@@ -85,13 +85,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="41" nodename="Pairwise (3d)" systemname="Pairwise (3d)">
-   <BOUNDS height="270" left="4050" top="7320" type="Node" width="1335">
+   <BOUNDS height="270" left="4080" top="7320" type="Node" width="1335">
    </BOUNDS>
-   <BOUNDS height="0" left="4050" top="7320" type="Box" width="0">
+   <BOUNDS height="0" left="4080" top="7320" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="13260" top="9705" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="InputXYZ" visible="1" slicecount="21" values="-0.5,0,0,0.5,0,0,-0.5,0,0">
+   <PIN pinname="InputXYZ" visible="1" slicecount="30" values="-0.5,0,0,0.5,0,0,-0.5,0,0">
    </PIN>
    <PIN pinname="Input Bin Size" visible="1">
    </PIN>
@@ -139,7 +139,7 @@
    </BOUNDS>
    <BOUNDS height="0" left="7095" top="13200" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values="3" visible="1">
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="3">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -986,8 +986,6 @@
    </NODE>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="147" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="147" srcpinname="Output" dstnodeid="41" dstpinname="Input Bin Size">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="148" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5640" top="5595" width="795" height="240">
    </BOUNDS>
@@ -1001,8 +999,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="148" srcpinname="Y Output Value" dstnodeid="147" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="41" dstpinname="InputXYZ">
    </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="156">
    <BOUNDS type="Node" left="5310" top="3555" width="495" height="270">
@@ -1083,5 +1079,9 @@
    <LINK srcnodeid="160" srcpinname="Output" dstnodeid="144" dstpinname="Spread">
    </LINK>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="145" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="147" srcpinname="Output" dstnodeid="41" dstpinname="Input Bin Size">
+   </LINK>
+   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="41" dstpinname="InputXYZ">
    </LINK>
    </PATCH>
