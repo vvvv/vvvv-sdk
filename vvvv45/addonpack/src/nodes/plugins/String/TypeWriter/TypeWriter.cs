@@ -269,7 +269,7 @@ namespace VVVV.Nodes
         #endregion
 
         #region Commands
-        private void AddNewChar(string str)
+        private void AddNewChar(string str) //ASK ELIAS
         {
         	
         	if (MaxLength!=-1)
@@ -288,6 +288,21 @@ namespace VVVV.Nodes
         	
         	if (str.ToUpper() == str)
 		        FLastCapitalKey = str;
+	        	if (FText.Length<MaxLength || MaxLength<0)
+	        	{
+	        		FText = FText.Insert(FCursorCharPos, oneChar);
+		
+		            if (oneChar.ToUpper() == oneChar)
+		            	FLastCapitalKey = oneChar;
+		
+		            CursorStepsRight(1);
+	        	}
+	        	else
+	        	{
+	        		break;
+	        	}
+        			
+        	}
 		
 		    CursorStepsRight(str.Length);
 	                	
