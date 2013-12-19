@@ -81,7 +81,20 @@ namespace VVVV.Nodes
             }
         }
         
-        public int MaxLength { get; set; } //ASK ELIAS
+        public int MaxLength { 
+        	get { return FMaxLength; }
+        	set 
+        	{
+				FMaxLength=value;
+				
+				// I have to trim the FText if the new MaxLength is smaller the the FText.Length.
+				// Can I do it in the setter or should I define an extra method?
+				if (value>=0 && value < FText.Length)
+				{
+					FText=FText.Substring(0, value);
+				}
+        	}
+        }
 
         public bool IgnoreNavigationKeys { get; set; }
 
@@ -91,6 +104,7 @@ namespace VVVV.Nodes
         private string FLastCapitalKey;
         private string FText = "";
         private int FCursorCharPos = 0;
+        private int FMaxLength=-1;
         //defined as string but must be only one character:
         private string FNewlineSymbol = Environment.NewLine;
         private Dictionary<uint, double> FBufferedCommands = new Dictionary<uint, double>();
@@ -255,28 +269,28 @@ namespace VVVV.Nodes
         #endregion
 
         #region Commands
-        private void AddNewChar(string str) //ASK ELIAS
+        private void AddNewChar(string str)
         {
-        	for (int i = 0; i < str.Length; i++) {
+        	
+        	if (MaxLength!=-1)
+        	{
+        		int freeSpace=MaxLength-FText.Length;
         		
-        		string oneChar = str.ElementAt(i).ToString();
+        		if (freeSpace<=0) return;
         		
-	        	if (FText.Length<MaxLength || MaxLength<0)
-	        	{
-	        		FText = FText.Insert(FCursorCharPos, oneChar);
-		
-		            if (oneChar.ToUpper() == oneChar)
-		            	FLastCapitalKey = oneChar;
-		
-		            CursorStepsRight(1);
-	        	}
-	        	else
-	        	{
-	        		break;
-	        	}
-        			
+        		if (str.Length>freeSpace)
+        		{
+        			str=str.Substring(0, freeSpace);
+        		}
         	}
         	
+        	FText=FText.Insert(FCursorCharPos, str);
+        	
+        	if (str.ToUpper() == str)
+		        FLastCapitalKey = str;
+		
+		    CursorStepsRight(str.Length);
+	                	
         }
 
         private void DeleteLeftChar()
@@ -368,8 +382,9 @@ namespace VVVV.Nodes
 
         public void Initialize(string text)
         {
-            AddNewChar(text);
-            CursorToTextEnd();
+            FText="";
+            CursorToTextStart();
+        	AddNewChar(text);
         }
 
         public void InsertText(string text)
