@@ -124,10 +124,16 @@ namespace VVVV.Nodes.Devices
         
 		#pragma warning restore
 		
-		Controller FLeapController = new Controller();
+		Controller FLeapController;
 		Frame FLastFrame;
 		
 		#endregion fields & pins
+		
+		public LeapNode()
+		{
+			FLeapController = new Controller();
+			FLeapController.SetPolicyFlags(Controller.PolicyFlag.POLICYBACKGROUNDFRAMES);
+		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -145,6 +151,7 @@ namespace VVVV.Nodes.Devices
 			{
 				FLeapController.Dispose();
 				FLeapController = new Controller();
+				FLeapController.SetPolicyFlags(Controller.PolicyFlag.POLICYBACKGROUNDFRAMES);
 			}
 			
 			ConfigureGestures();

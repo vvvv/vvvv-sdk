@@ -50,7 +50,7 @@ namespace VVVV.PluginInterfaces.V2
 	}
 
     /// <summary>
-    /// Implement this interface on your plugin if the Mouse (System Window)
+    /// Implement this interface on your gui-plugin if the Mouse (System Window)
     /// or Keyboard (System Window) nodes should output data for it.
     /// </summary>
     [Guid("E8C47417-6146-472B-BCE5-A9550AA30C3A"),
@@ -58,6 +58,16 @@ namespace VVVV.PluginInterfaces.V2
     public interface IUserInputWindow
     {
         IntPtr InputWindowHandle { get; }
+    }
+    
+    /// <summary>
+    /// Implement this interface on your gui-plugin to specify an initial background color.
+    /// </summary>
+    [Guid("419E642A-8779-46F8-8175-A42DB7DCA539"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IBackgroundColor
+    {
+        RGBAColor BackgroundColor { get; }
     }
 	#endregion basic interfaces
 }
