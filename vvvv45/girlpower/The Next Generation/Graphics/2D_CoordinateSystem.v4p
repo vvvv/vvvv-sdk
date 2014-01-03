@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\AxisAndGrid_Test.v4p" systemname="AxisAndGrid_Test" filename="C:\Work\Anton-Work\AxisAndGrid_Test.v4p">
-   <BOUNDS type="Window" left="2445" top="810" width="16020" height="14790">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\2D_CoordinateSystem.v4p" systemname="2D_CoordinateSystem" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\2D_CoordinateSystem.v4p">
+   <BOUNDS type="Window" left="2445" top="810" width="16020" height="13470">
    </BOUNDS>
    <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="945" top="1110" width="100" height="100">
@@ -15,6 +15,8 @@
    </PIN>
    <PIN pinname="Draw Mode" slicecount="1" values="WireFrame">
    </PIN>
+   <BOUNDS type="Box" left="945" top="1110">
+   </BOUNDS>
    </NODE>
    <NODE id="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
    <PIN pinname="View" visible="1" slicecount="1" pintype="Input" values="||">
@@ -23,7 +25,7 @@
    </PIN>
    <BOUNDS type="Node" left="945" top="1755" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="945" top="1755" width="3525" height="3645">
+   <BOUNDS type="Box" left="945" top="1755" width="3735" height="3660">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" pintype="Input">
    </PIN>
@@ -108,128 +110,8 @@
    </NODE>
    <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="1" dstpinname="Layers">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="11010" top="1080" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="0" top="1740" width="14490" height="9735">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="3D">
-   </PIN>
-   <PIN pinname="Text" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <NODE id="3" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
-   <PIN pinname="View" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Projection" visible="1" pintype="Input">
-   </PIN>
-   <BOUNDS type="Node" left="11010" top="1725" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11010" top="1725" width="3525" height="3645">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1" pintype="Input">
-   </PIN>
-   <BOUNDS type="Window" left="16800" top="6420" width="6240" height="5010">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Device" pintype="Configuration" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Fullscreen Format" pintype="Configuration" slicecount="1" values="X8R8G8B8">
-   </PIN>
-   <PIN pinname="Fullscreen Depthbuffer Format" pintype="Configuration" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Fullscreen Dimensions" pintype="Configuration" slicecount="1" values="AsDesktop">
-   </PIN>
-   <PIN pinname="Fullscreen Refresh Rate" pintype="Configuration" slicecount="1" values="60">
-   </PIN>
-   <PIN pinname="Fullscreen Antialiasing Quality Level" pintype="Configuration" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Fullscreen Backbuffer Count" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Fullscreen Swap Effect" pintype="Configuration" slicecount="1" values="discard">
-   </PIN>
-   <PIN pinname="Windowed Backbuffer Format" pintype="Configuration" slicecount="1" values="X8R8G8B8">
-   </PIN>
-   <PIN pinname="Windowed Depthbuffer Format" pintype="Configuration" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Windowed Antialiasing Quality Level" pintype="Configuration" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Windowed Backbuffer Count" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Windowed Swap Effect" pintype="Configuration" slicecount="1" values="discard">
-   </PIN>
-   <PIN pinname="Clip Device" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Presentation Interval" pintype="Configuration" slicecount="1" values="default">
-   </PIN>
-   <PIN pinname="Clear Depth Buffer" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Clear" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Background Color" pintype="Input" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Backbuffer Width" pintype="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Backbuffer Height" pintype="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Fullscreen" pintype="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Aspect Ratio" pintype="Input" visible="0" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Crop" pintype="Input" visible="-1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Viewport" pintype="Input" visible="-1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transformations Index" pintype="Input" visible="-1" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Window Handle" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="X" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Y" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Is Fullscreen" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Width" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Height" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="EX9 Out" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="3" dstpinname="Layers">
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="13770" top="1080" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Inital Distance" slicecount="1" values="3.86">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0.1">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0.06">
-   </PIN>
-   <PIN pinname="Initial FOV" slicecount="1" values="0.09">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="View" dstnodeid="3" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Projection" dstnodeid="3" dstpinname="Projection">
-   </LINK>
    <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2445" top="8085" width="100" height="100">
+   <BOUNDS type="Node" left="945" top="6900" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Window" left="11325" top="3420" width="14490" height="9735">
    </BOUNDS>
@@ -239,7 +121,7 @@
    </PIN>
    <PIN pinname="Text" slicecount="1" values="1">
    </PIN>
-   <BOUNDS type="Box" left="2445" top="8085">
+   <BOUNDS type="Box" left="945" top="6900">
    </BOUNDS>
    </NODE>
    <NODE id="7" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
@@ -247,9 +129,9 @@
    </PIN>
    <PIN pinname="Projection" visible="1" slicecount="1" pintype="Input" values="||">
    </PIN>
-   <BOUNDS type="Node" left="930" top="9240" width="100" height="100">
+   <BOUNDS type="Node" left="945" top="7485" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="930" top="9240" width="3330" height="3450">
+   <BOUNDS type="Box" left="945" top="7485" width="3330" height="4065">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" pintype="Input">
    </PIN>
@@ -333,7 +215,7 @@
    </PIN>
    </NODE>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="4200" top="8805" width="2085" height="270">
+   <BOUNDS type="Node" left="4200" top="7050" width="2085" height="270">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -345,9 +227,9 @@
    <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="7" dstpinname="Aspect Ratio">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4710" top="8415" width="450" height="240">
+   <BOUNDS type="Box" left="4710" top="6660" width="450" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4710" top="8415" width="0" height="0">
+   <BOUNDS type="Node" left="4710" top="6660" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -361,9 +243,9 @@
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Aspect Width">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5220" top="8415" width="480" height="240">
+   <BOUNDS type="Box" left="5220" top="6660" width="480" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="5220" top="8415" width="0" height="0">
+   <BOUNDS type="Node" left="5220" top="6660" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -377,21 +259,21 @@
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Aspect Height">
    </LINK>
    <LINK srcnodeid="7" srcpinname="Actual Backbuffer Height" dstnodeid="16" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="8130" y="15045">
+   <LINKPOINT x="8130" y="13290">
    </LINKPOINT>
-   <LINKPOINT x="8025" y="7050">
+   <LINKPOINT x="8025" y="5295">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="7" srcpinname="Actual Backbuffer Width" dstnodeid="15" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="8200" y="15885">
+   <LINKPOINT x="8200" y="14130">
    </LINKPOINT>
-   <LINKPOINT x="8810" y="6375">
+   <LINKPOINT x="8810" y="4620">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="6240" top="8415" width="945" height="240">
+   <BOUNDS type="Box" left="6240" top="6660" width="945" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6240" top="8415" width="0" height="0">
+   <BOUNDS type="Node" left="6240" top="6660" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="FitIn">
    </PIN>
@@ -399,9 +281,9 @@
    <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="9" dstpinname="Alignment">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4815" top="1695" width="600" height="690">
+   <BOUNDS type="Node" left="5685" top="1740" width="600" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="4815" top="1695" width="600" height="690">
+   <BOUNDS type="Box" left="5685" top="1740" width="615" height="690">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|RED&cr;&lf;GREEN&cr;&lf;BLUE|">
    </PIN>
@@ -413,9 +295,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5760" top="1695" width="600" height="690">
+   <BOUNDS type="Node" left="4830" top="1740" width="600" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="5760" top="1695" width="600" height="690">
+   <BOUNDS type="Box" left="4830" top="1740" width="615" height="690">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|X axis&cr;&lf;Y axis&cr;&lf;Z axis|">
    </PIN>
@@ -427,9 +309,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5445" top="1695" width="600" height="690">
+   <BOUNDS type="Node" left="5400" top="1740" width="600" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="5445" top="1695" width="285" height="675">
+   <BOUNDS type="Box" left="5400" top="1740" width="300" height="675">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|...&cr;&lf;...&cr;&lf;...|">
    </PIN>
@@ -443,9 +325,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4830" top="2565" width="600" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="4830" top="2565" width="4875" height="4290">
+   <BOUNDS type="Box" left="4830" top="2565" width="4905" height="2865">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The renderer has a default range of -1 to +1 in both dimensions. The origin with coordinate 0 is in the middle of the window.&cr;&lf;&cr;&lf;...X axis To the right the coordinate system stretches in positive X direction, upwards it stretches to positive Y. Positive Z direction is &cr;&lf;&cr;&lf;The Top Left corner of the renderer has the coordinate (-1,1). &cr;&lf;The Bottom Right corner is (1,-1). Doesn&apos;t matter how big the renderer is and what proportions it has.&cr;&lf;&cr;&lf;&lt; Try to resize the renderer by dragging its sides.&cr;&lf;&cr;&lf;Note, that the content will be deformed (streched or squeezed), that is because ...&cr;&lf;&cr;&lf;The aspect ratio of the rendering is dependant of the size of the window: If you make your render window square, the quad would be square as well.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The renderer has a default range of -1 to +1 in both dimensions. The origin with coordinate 0 is in the middle of the window.&cr;&lf;&cr;&lf;The Top Left corner of the renderer has the coordinate (-1,1). &cr;&lf;The Bottom Right corner is (1,-1). Doesn&apos;t matter how big the renderer is and what proportions it has.&cr;&lf;&cr;&lf;&lt; Try to resize the renderer by dragging its sides.&cr;&lf;&cr;&lf;Note, that the content will be deformed (streched or squeezed), that is because ...&cr;&lf;&cr;&lf;Z axis is not really visible in this example. It points into the screen.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -470,12 +352,12 @@
    <PIN pinname="Size" slicecount="1" values="20">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12255" top="210" width="690" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7770" top="7080" width="600" height="690">
    </BOUNDS>
-   <BOUNDS type="Box" left="12255" top="210" width="615" height="555">
+   <BOUNDS type="Box" left="7770" top="7080" width="4875" height="4290">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="3d">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;Aspect Width&apos; and &apos;Aspect Height&apos; pins of the AspectRatio (Transform) node receive values from the renderer.&cr;&lf;&cr;&lf;The aspect ratio of the rendering is dependant of the size of the window: If you make your render window square, the quad would be square as well.&cr;&lf;&cr;&lf;&lt; Try to resize the renderer by dragging its sides.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -483,31 +365,7 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="20">
-   </PIN>
    </NODE>
-   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="915" top="8700" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer 2" visible="1">
-   </PIN>
-   <PIN pinname="Layer 1" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="27" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="27" dstpinname="Layer 2">
-   </LINK>
-   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="34">
-   <BOUNDS type="Node" left="930" top="8085" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.20267,0.20267,0.20267,1.00000|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="34" srcpinname="Layer" dstnodeid="27" dstpinname="Layer 1">
+   <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
    </LINK>
    </PATCH>
