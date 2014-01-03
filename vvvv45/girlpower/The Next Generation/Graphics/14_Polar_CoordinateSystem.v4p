@@ -1,0 +1,67 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Polar_CoordinateSystem.v4p" systemname="Polar_CoordinateSystem" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Polar_CoordinateSystem.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="10965" height="8895">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="5">
+   <BOUNDS type="Node" left="2895" top="6780" width="2190" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2895" top="6780" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10965" top="0" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="4395" top="6300" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="-0.11">
+   </PIN>
+   <PIN pinname="Initial Interest" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="2.24">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="View" dstnodeid="5" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Projection" dstnodeid="5" dstpinname="Projection">
+   </LINK>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2895" top="5415" width="1095" height="270">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Polar (3d Vector)" nodename="Polar (3d Vector)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="3060" top="3420" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Polar (2d Vector)" nodename="Polar (2d Vector)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="3870" top="3405" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
