@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="E:\vvvv-sdk\vvvv45\lib\nodes\native\Levin (Spreads) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\Levin (Spreads Simple) help.v4p" locked="0">
    <NODE id="19" nodename="RingBuffer (Spreads Legacy)">
    <BOUNDS height="0" left="3540" top="5715" type="Node" width="0">
    </BOUNDS>
@@ -50,12 +50,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
    <BOUNDS height="420" left="2790" top="2940" type="Node" width="1455">
    </BOUNDS>
@@ -160,52 +154,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="LEVIN (SPREADS)">
-   <PIN pinname="Phase" visible="1">
-   </PIN>
-   <PIN pinname="Factor">
-   </PIN>
-   <PIN pinname="Height">
-   </PIN>
-   <PIN pinname="Width">
-   </PIN>
-   <PIN pinname="Frame Count" visible="1">
-   </PIN>
-   <PIN pinname="Output Y" visible="1">
-   </PIN>
-   <PIN pinname="Output X" visible="1">
-   </PIN>
-   <BOUNDS height="270" left="480" top="2040" type="Node" width="615">
-   </BOUNDS>
-   <PIN pinname="Text">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="do Insert" slicecount="1" visible="1" values="1.00000">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="11" srcpinname="X">
-   </LINK>
-   <NODE id="5" nodename="LEVIN (SPREADS)">
-   <BOUNDS height="0" left="1155" top="2025" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="do Insert" slicecount="1" visible="1" values="0.00000">
-   </PIN>
-   <PIN pinname="Frame Count" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="11" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="6" srcpinname="Output">
-   </LINK>
    <NODE id="4" nodename="MapRange (Value)">
    <PIN pinname="Real Part" visible="1">
    </PIN>
@@ -226,8 +174,6 @@
    <PIN pinname="Destination Width" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="5" srcpinname="Output">
-   </LINK>
    <NODE id="3" nodename="MapRange (Value)">
    <PIN pinname="Real Part" visible="1">
    </PIN>
@@ -283,11 +229,11 @@
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
    <BOUNDS height="270" left="15" top="15" type="Node" width="915">
    </BOUNDS>
-   <BOUNDS height="360" left="15" top="15" type="Box" width="4050">
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3795">
    </BOUNDS>
    <BOUNDS height="160" left="9420" top="9450" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Levin - Spreads|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Levin (Spreads Simple)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -298,8 +244,62 @@
    </NODE>
    <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
    </LINK>
-   <NODE systemname="Levin (Spreads Spreaded)" filename="%VVVV%\addonpack\lib\nodes\plugins\Levin.dll" nodename="Levin (Spreads Spreaded)" componentmode="Hidden" id="20">
+   <NODE systemname="Levin (Spreads)" filename="%VVVV%\addonpack\lib\nodes\plugins\Levin.dll" nodename="Levin (Spreads)" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="4470" top="5715" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <LINK dstnodeid="6" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="6" nodename="Levin (Spreads Simple)" systemname="Levin (Spreads Simple)">
+   <PIN pinname="Phase" visible="1">
+   </PIN>
+   <PIN pinname="Factor">
+   </PIN>
+   <PIN pinname="Height">
+   </PIN>
+   <PIN pinname="Width">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="480" top="2040" type="Node" width="480">
+   </BOUNDS>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="11" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="11" srcpinname="Left Button">
+   </LINK>
+   <NODE id="5" nodename="Levin (Spreads Simple)" systemname="Levin (Spreads Simple)">
+   <BOUNDS height="0" left="1155" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="do Insert" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="11" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Frame Count" srcnodeid="10" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
    </PATCH>
