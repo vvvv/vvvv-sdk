@@ -1,0 +1,28 @@
+#N canvas 955 53 653 503 12;
+#X obj 35 187 netreceive 4001 1;
+#X obj 36 112 pddp/dsp;
+#X text 34 24 This patch is a part of vvvv-pd example on how to communicate.
+Check this: http://vvvv.org/documentation/pure-data;
+#X obj 36 452 dac~;
+#X obj 35 319 osc~ 1000;
+#X obj 35 375 *~;
+#X text 79 451 < audio output;
+#X text 178 316 < [osc~] is the Oscillator object which returns a cosine
+wave. Its frequency is defined by the value from vvvv.;
+#X text 178 366 < wave signal is multiplied with the second value from
+vvvv \, this defines an amplitude of the wave (aka volume of the sound).
+;
+#X text 178 184 < netreceive listens to the port 4001 and receives
+data from vvvv. "1" as the last argument means UDP network perception.
+The simple FUDI protocol is used to exchage the data.;
+#X text 177 262 < The spread of 2 values coming from vvvv is interpreted
+in pd as a list of 2 values which can be split using the unpack node.
+;
+#X obj 35 264 unpack 0 0;
+#X text 113 111 < Turns signal processing on|off;
+#X connect 0 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 0 3 1;
+#X connect 11 0 4 0;
+#X connect 11 1 5 1;
