@@ -11,7 +11,7 @@ using VVVV.Utils;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    unsafe abstract class UnmanagedOutStream<T> : IOutStream<T>
+    public unsafe abstract class UnmanagedOutStream<T> : IOutStream<T>
     {
         internal abstract class UnmanagedOutWriter : IStreamWriter<T>
         {
