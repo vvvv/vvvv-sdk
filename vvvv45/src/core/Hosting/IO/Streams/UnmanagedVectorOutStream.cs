@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    unsafe abstract class VectorOutStream<T> : IOutStream<T> where T : struct
+    public unsafe abstract class VectorOutStream<T> : IOutStream<T> where T : struct
     {
         internal abstract class VectorOutStreamWriter : IStreamWriter<T>
         {
