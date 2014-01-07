@@ -45,11 +45,11 @@ namespace VVVV.Nodes
 		[Input("Initial Text")]
 		ISpread<string> FInitialText;
 		
-		[Input("Max Length", MinValue = -1, MaxValue = int.MaxValue, DefaultValue=-1, Visibility = PinVisibility.True)]
-		ISpread<int> FMaxLength;
-		
 		[Input("Initialize", IsBang = true)]
 		ISpread<bool> FInitialize;
+		
+		[Input("Max Length", MinValue = -1, MaxValue = int.MaxValue, DefaultValue=-1, Visibility = PinVisibility.True)]
+		ISpread<int> FMaxLength;
 		
 		[Input("Cursor Position", MinValue = 0, MaxValue = int.MaxValue, Visibility = PinVisibility.OnlyInspector)] //ASK ELIAS ABOUT Min and Default
 		ISpread<int> FNewCursorPosition;
