@@ -19,6 +19,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.SlimDX;
+using VVVV.Utils.ManagedVCL;
 using Svg;
 using Svg.Transforms;
 
@@ -339,7 +340,7 @@ namespace VVVV.Nodes
                 InitialWindowHeight = 300,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-    public class SvgRendererNode : UserControl, IPluginEvaluate, IUserInputWindow
+    public class SvgRendererNode : TopControl, IPluginEvaluate, IUserInputWindow, IBackgroundColor
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
@@ -392,7 +393,6 @@ namespace VVVV.Nodes
 			Controls.Add(FPicBox);
 			
 			this.Resize	+= new EventHandler(SvgRendererNode_Resize);
-			
 		}
 
 		void SvgRendererNode_Resize(object sender, EventArgs e)
@@ -409,7 +409,6 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-
 			//update
 			if (FSVGIn.IsChanged || FSizeIn.IsChanged || FBackgroundIn.IsChanged ||
 			   FIgnoreView.IsChanged || FViewIn.IsChanged || FResized)
@@ -481,6 +480,11 @@ namespace VVVV.Nodes
         {
             get { return FPicBox.Handle; }
         }
+        
+        public RGBAColor BackgroundColor
+		{
+			get { return FBackgroundIn[0]; }
+		}
     }
 	
 	#region PluginInfo
