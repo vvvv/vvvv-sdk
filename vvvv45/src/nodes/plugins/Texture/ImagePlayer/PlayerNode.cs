@@ -43,13 +43,13 @@ namespace VVVV.Nodes.ImagePlayer
         public ISpread<int> FThreadsTextureConfig;
         
         [Output("Texture")]
-        ISpread<ISpread<Frame>> FTextureOut;
+        ISpread<ISpread<Frame>> FTextureOut = null;
 
         [Output("Width")]
-        ISpread<ISpread<int>> FTextureWidthOut;
+        public ISpread<ISpread<int>> FTextureWidthOut;
 
         [Output("Height")]
-        ISpread<ISpread<int>> FTextureHeightOut;
+        public ISpread<ISpread<int>> FTextureHeightOut;
         
         [Output("Frame Count")]
         public ISpread<int> FFrameCountOut;
@@ -70,6 +70,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ILogger FLogger;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
+        private readonly TexturePool FTexturePool = new TexturePool();
         private readonly IDXDeviceService FDeviceService;
         
         [ImportingConstructor]
@@ -87,6 +88,7 @@ namespace VVVV.Nodes.ImagePlayer
         		FLogger, 
         		FIOTaskScheduler, 
         		FMemoryPool,
+                FTexturePool,
                 FDeviceService
         	);
         }
@@ -117,6 +119,16 @@ namespace VVVV.Nodes.ImagePlayer
             FDurationTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
             FLoadedOut.SliceCount = spreadMax;
+
+            // Release unused resources
+            // Textures are accessed by render thread only
+            // -> if a texture is in the pool it's really not in use 
+            // -> release all
+            FTexturePool.ReleaseUnused(0);
+            // Memory is accessed by multiple threads 
+            // -> if memory is in the pool it could be used by one of them in just a moment 
+            // -> keep a little of it to avoid too many reallocations
+            FMemoryPool.ReleaseUnused(Environment.ProcessorCount);
             
             for (int i = 0; i < spreadMax; i++)
             {
@@ -138,7 +150,6 @@ namespace VVVV.Nodes.ImagePlayer
                 if (reload)
                 {
                     imagePlayer.Reload();
-                    FMemoryPool.Clear();
                 }
 
                 int frameCount = 0;
@@ -179,6 +190,7 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
+            FTexturePool.Dispose();
         }
     }
 }

@@ -1,9 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
-   <PATCH locked="0" nodename="Y:\vvvv33\help\About (VVVV) help.v4p">
-   <BOUNDS height="5490" left="1860" top="825" type="Window" width="9105">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\About (VVVV) help.v4p" locked="1">
+   <BOUNDS height="5550" left="1860" top="825" type="Window" width="9045">
    </BOUNDS>
-   <LINK dstnodeid="11" dstpinname="Input 14" hiddenwhenlocked="1" srcnodeid="5" srcpinname="Website">
-   </LINK>
    <LINK dstnodeid="15" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="14" srcpinname="String">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Time" hiddenwhenlocked="1" srcnodeid="5" srcpinname="Compile Date">
@@ -23,6 +21,10 @@
    </PIN>
    <BOUNDS height="0" left="5205" top="7695" type="Node" width="0">
    </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="14" nodename="TimeToString (String)">
    <PIN pinname="String" visible="1">
@@ -39,7 +41,7 @@
    </PIN>
    <PIN pinname="TextRenderingMode" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="11">
+   <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    <PIN pinname="Font" slicecount="1" values="|Small Fonts|">
    </PIN>
@@ -71,9 +73,9 @@
    </BOUNDS>
    </NODE>
    <NODE hiddenwhenlocked="1" id="11" nodename="Add (String)">
-   <PIN pinname="Input 13" visible="1">
+   <PIN pinname="Input 13" visible="1" slicecount="1" values="CREDITS">
    </PIN>
-   <PIN pinname="Input 14" visible="1">
+   <PIN pinname="Input 14" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Input 12" slicecount="1" visible="1" values="||">
    </PIN>
@@ -81,21 +83,21 @@
    </PIN>
    <PIN pinname="Input 10" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Input 9" slicecount="1" visible="1" values="CREDITS">
+   <PIN pinname="Input 9" slicecount="1" visible="1" values="|FORMER DEVELOPERS|">
    </PIN>
    <PIN pinname="Input 8" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input 6" visible="1">
+   <PIN pinname="Input 6" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Input 7" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Input 5" slicecount="1" visible="1" values="||">
+   <PIN pinname="Input 5" slicecount="1" visible="1" values="|ACTIVE DEVELOPERS|">
    </PIN>
    <PIN pinname="Input 3" visible="1">
    </PIN>
    <PIN pinname="Input 4" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="14">
+   <PIN pinname="Input Count" slicecount="1" values="17">
    </PIN>
    <PIN pinname="Intersperse" slicecount="1" values="CarriageReturn">
    </PIN>
@@ -103,15 +105,21 @@
    </PIN>
    <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Input 1" slicecount="1" visible="1" values="|VVVV TEAM|">
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="|VVVV GROUP|">
    </PIN>
    <BOUNDS height="0" left="2205" top="7695" type="Node" width="0">
    </BOUNDS>
+   <PIN pinname="Input 15" visible="1">
+   </PIN>
+   <PIN pinname="Input 17" visible="1">
+   </PIN>
+   <PIN pinname="Input 16" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="10" nodename="LFO (Animation)">
    <PIN pinname="Run">
    </PIN>
-   <PIN pinname="Period" slicecount="1" values="120">
+   <PIN pinname="Period" slicecount="1" values="60">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -183,19 +191,29 @@
    </PIN>
    <PIN pinname="Coauthors" visible="1">
    </PIN>
+   <PIN pinname="vvvv group" visible="1">
+   </PIN>
+   <PIN pinname="Active Developers" visible="1">
+   </PIN>
+   <PIN pinname="Former Developers" visible="1">
+   </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="4" nodename="OnOpen (VVVV)">
    <BOUNDS height="0" left="1245" top="6705" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
    </PIN>
+   <PIN pinname="Simulate" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="1" id="3" nodename="TogEdge (Animation)">
+   <NODE hiddenwhenlocked="1" id="3" nodename="TOGEDGE (ANIMATION)">
    <BOUNDS height="0" left="885" top="5640" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="2" nodename="Toggle (Animation)">
@@ -214,27 +232,19 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="Text" hiddenwhenlocked="1" srcnodeid="11" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 3" srcnodeid="12" srcpinname="Output">
+   <LINK dstnodeid="11" dstpinname="Input 3" srcnodeid="12" srcpinname="Output" hiddenwhenlocked="1">
    </LINK>
    <NODE hiddenwhenlocked="1" id="1" nodename="Add (String Spectral)">
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Intersperse" slicecount="1" values="CarriageReturn">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="text">
    </PIN>
    <BOUNDS height="0" left="2835" top="7230" type="Node" width="0">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="5" srcpinname="Authors">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="5" srcpinname="Coauthors">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 6" srcnodeid="1" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 13" srcnodeid="5" srcpinname="Copyright">
-   </LINK>
-   <LINK dstnodeid="10" dstpinname="Reset" srcnodeid="4" srcpinname="Bang">
+   <LINK dstnodeid="10" dstpinname="Reset" srcnodeid="4" srcpinname="Bang" hiddenwhenlocked="1">
    </LINK>
    <NODE hiddenwhenlocked="1" id="0" nodename="Group (GDI)">
    <BOUNDS height="0" left="180" top="8700" type="Node" width="0">
@@ -250,7 +260,7 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Layer 2" hiddenwhenlocked="1" srcnodeid="13" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINK dstnodeid="6" dstpinname="Layers" srcnodeid="0" srcpinname="Layer" hiddenwhenlocked="1">
    </LINK>
    <NODE hiddenwhenlocked="1" id="16" nodename="Add (String Spectral)">
    <PIN pinname="Output" visible="1">
@@ -259,13 +269,11 @@
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <BOUNDS height="0" left="3525" top="7035" type="Node" width="0">
+   <BOUNDS height="0" left="3975" top="6810" type="Node" width="0">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="11" dstpinname="Input 11">
-   </LINK>
    <NODE hiddenwhenlocked="1" id="19" nodename="Add (String)">
-   <BOUNDS height="0" left="3525" top="6480" type="Node" width="0">
+   <BOUNDS height="0" left="3975" top="6255" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -276,9 +284,9 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Credits" dstnodeid="19" dstpinname="Input 1">
+   <LINK srcnodeid="5" srcpinname="Credits" dstnodeid="19" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="16" dstpinname="Input">
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="16" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE hiddenwhenlocked="1" id="20" nodename="Map (Value)">
    <PIN pinname="Destination Center">
@@ -295,11 +303,37 @@
    </PIN>
    <PIN pinname="Destination Minimum" slicecount="1" values="-0.53">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="16">
+   <PIN pinname="Destination Maximum" slicecount="1" values="8.5">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Y" hiddenwhenlocked="1" srcnodeid="20" srcpinname="Output">
    </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="20" dstpinname="Input">
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="20" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="vvvv group" dstnodeid="12" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Active Developers" dstnodeid="1" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="11" dstpinname="Input 7" hiddenwhenlocked="1">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="21" nodename="Add (String Spectral)" systemname="Add (String Spectral)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturn">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="text">
+   </PIN>
+   <BOUNDS height="0" left="3435" top="7230" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Former Developers" dstnodeid="21" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="11" dstpinname="Input 11" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="11" dstpinname="Input 15" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Copyright" dstnodeid="11" dstpinname="Input 17" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Website" dstnodeid="15" dstpinname="Input 3" hiddenwhenlocked="1">
    </LINK>
    </PATCH>

@@ -1,25 +1,77 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- We used the Zip task from this project. Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
-  <!--<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>-->
-  <PropertyGroup>
-    <SevenZip>$(ProgramFiles)\7-Zip\7z.exe</SevenZip>
-  </PropertyGroup>
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
+  
+  <!-- Build -->
+  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+  <Target Name="CoreBuild">
+    <!-- Copy shared dependencies to lib/core -->
+    <CreateItem Include="$(PluginsOutputDir)Sanford*">
+      <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
+    </CreateItem>
+    <Copy SourceFiles="@(_SharedDependencies_)" DestinationFolder="$(CoreOutputDir)" />
+    <!-- Delete all files which are already in lib/core -->
+    <CreateItem Include="$(CoreOutputDir)**\*.*">
+      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
+    </CreateItem>
+    <Delete Files="@(CoreOutputFiles->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Delete Files="@(CoreOutputFiles->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Create lib/*.dtd file -->
+    <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </GetVersionInfo>
+    <ItemGroup>
+      <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
+    </ItemGroup>
+    <Delete Files="@(DTDFiles)" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
+  </Target>
+  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
+  
+  <!-- Zip -->
+  <Target Name="Zip">
+    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  </Target>
+  <Target Name="_PreZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
+  <Target Name="_Zip_">
+    <MakeDir Directories="$(ZipOutputDir)" />
+    <GetVersionInfo File="$(StartProgram)">
+      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
+    </GetVersionInfo>
+    <PropertyGroup>
+      <ZipTempDir Condition="'$(ZipTempDir)' == ''">$(TempBaseDir)$(ZipFileNamePrefix)_$(VersionInfo)_$(Platform)\</ZipTempDir>
+      <ZipFileName>$(ZipOutputDir)$(ZipFileNamePrefix)_$(VersionInfo)_$(Platform).zip</ZipFileName>
+    </PropertyGroup>
+    <CreateItem Include="$(ZipInclude)" Exclude="$(ZipExclude)">
+      <Output ItemName="OutputFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(ZipTempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Exec Condition="'$(ZipReadOnlyFiles)' != ''"
+          Command="attrib +R &quot;$(ZipTempDir)$(ZipReadOnlyFiles)&quot; /S /D" />
+    <Exec Condition="'$(ZipHiddenFiles)' != ''"
+          Command="attrib +H &quot;$(ZipTempDir)$(ZipHiddenFiles)&quot;" />
+    <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
+    <Exec Command="&quot;$(VVVVExe)&quot; /allowmultiple /dx9ex /nodelist &quot;$(ZipTempDir)lib\nodes&quot;" />
+    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(ZipTempDir)&quot;" />
+    <!--
+    <CreateItem Include="$(ZipTempDir)\**\*.*">
+      <Output ItemName="ZipFiles" TaskParameter="Include" />
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" 
+         WorkingDirectory="$(TempBaseDir)" 
+         ZipFileName="$(ZipFileName)" 
+         ZipLevel="9" />
+    -->
+  </Target>
+  <Target Name="_PostZip_">
+    <RemoveDir Directories="$(TempBaseDir)" />
+  </Target>
 
   <!-- ARToolKitPlus -->
-  <PropertyGroup>
-    <ARToolKitPlus>thirdparty\ARToolKitPlus\</ARToolKitPlus>
-    <ARToolKitPlusOutputPath>$(ARToolKitPlus)lib\Win32\</ARToolKitPlusOutputPath>
-    <ARToolKitPlusLibFile>$(ARToolKitPlusOutputPath)\libARToolKitPlus.a</ARToolKitPlusLibFile>
-    <ARToolKitPlusCompilerOptions>-O2 -W -fexceptions -DWIN32 -DNDEBUG -D_MBCS -D_LIB -DLIBRPP_STATIC</ARToolKitPlusCompilerOptions>
-    <ARToolKitPlusCompilerIncludes>-I$(ARToolKitPlus)include</ARToolKitPlusCompilerIncludes>
-  </PropertyGroup>
-  <ItemGroup>
-    <ARToolKitPlusSourceFiles Include="$(ARToolKitPlus)\src\**\*.cpp"
-                              Exclude="$(ARToolKitPlus)\src\**\MATLAB\*.cpp" />
-    <ARToolKitPlusObjectFiles Include="@(ARToolKitPlusSourceFiles->'%(RootDir)%(Directory)%(Filename).o')" />
-  </ItemGroup>
   <Target Name="_CheckMinGW_">
     <Error Text="The MinGW property must be set on the command line."
            Condition="'$(MinGW)' == ''" />

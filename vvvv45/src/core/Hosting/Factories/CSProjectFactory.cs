@@ -9,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Ast;
 using ICSharpCode.NRefactory.PrettyPrinter;
@@ -121,7 +121,7 @@ namespace VVVV.Hosting.Factories
         
         private bool RecompileIfNeeded(CSProject project)
         {
-            if (!IsAssemblyUpToDate(project))
+            if (!FHDEHost.IsBlackBoxMode && !IsAssemblyUpToDate(project))
             {
                 FLogger.Log(LogType.Message, "Assembly of {0} is not up to date. Need to recompile ...", project.Name);
                 
@@ -222,7 +222,7 @@ namespace VVVV.Hosting.Factories
         protected void DeleteArtefacts(string dir)
         {
             // Nothing to do if not existent.
-            if (!Directory.Exists(dir)) return;
+            if (FHDEHost.IsBlackBoxMode || !Directory.Exists(dir)) return;
             
             // Dynamic plugins generate a new assembly everytime they are compiled.
             // Cleanup old assemblies.
@@ -320,21 +320,29 @@ namespace VVVV.Hosting.Factories
 
             using (var newProject = new CSProject(newProjectPath))
             {
-                var foundContainingDocument = false;
                 foreach (var doc in newProject.Documents)
                 {
-                    // Now scan the document for possible plugin infos.
-                    // If we find one, update its properties and rename the class and document.
                     var csDoc = doc as CSDocument;
                     if (csDoc != null)
                     {
                         // Rename the CSDocument
-                        if (!foundContainingDocument && ContainsNodeInfo(csDoc, nodeInfo))
+                        if (ContainsNodeInfo(csDoc, nodeInfo))
                         {
-                            foundContainingDocument = true;
-                            csDoc.Name = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                            var newDocName = string.Format("{0}.cs", Path.GetFileNameWithoutExtension(className));
+                            csDoc.Name = newDocName;
+                            csDoc.Rename(newDocName);
+                            break;
                         }
+                    }
+                }
 
+                foreach (var doc in newProject.Documents)
+                {
+                    // Now scan the document for possible plugin infos.
+                    // If we find one, update its properties and rename the class.
+                    var csDoc = doc as CSDocument;
+                    if (csDoc != null)
+                    {
                         var parserResults = csDoc.Parse(true);
                         var compilationUnit = parserResults.CompilationUnit;
 
@@ -353,10 +361,6 @@ namespace VVVV.Hosting.Factories
                         csDoc.TextContent = outputVisitor.Text;
                     }
                 }
-
-                // Save all the documents.
-                foreach (var doc in newProject.Documents)
-                    doc.Save();
 
                 // Save the project.
                 newProject.Save();

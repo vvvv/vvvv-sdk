@@ -132,7 +132,7 @@ namespace VVVV.MSKinect.Lib
         {
             if (enable)
             {
-                this.Runtime.DepthStream.Enable(DepthImageFormat.Resolution320x240Fps30);
+                this.Runtime.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
                 this.Runtime.DepthFrameReady += this.Runtime_DepthFrameReady;
             }
             else
@@ -140,7 +140,6 @@ namespace VVVV.MSKinect.Lib
                 this.Runtime.DepthFrameReady -= Runtime_DepthFrameReady;
                 this.Runtime.DepthStream.Disable();
             }
-
         }
 
         public void SetColor(bool enable)

@@ -13,7 +13,12 @@ using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name = "Depth", Category = "Kinect", Version = "Microsoft", Author = "vux", Tags = "directx,texture")]
+    [PluginInfo(Name = "Depth", 
+	            Category = "Kinect", 
+	            Version = "Microsoft", 
+	            Author = "vux", 
+	            Tags = "EX9, texture",
+	            Help = "Returns a 16bit depthmap from the Kinects depth camera.")]
     public unsafe class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
         [Input("Kinect Runtime")]
@@ -41,8 +46,8 @@ namespace VVVV.MSKinect.Nodes
         [ImportingConstructor()]
         public KinectDepthTextureNode(IPluginHost host)
         {
-            this.depthpixels = new DepthImagePixel[320 * 240];
-            this.rawdepth = new short[320 * 240];
+            this.depthpixels = new DepthImagePixel[640 * 480];
+            this.rawdepth = new short[640 * 480];
             host.CreateTextureOutput("Texture Out", TSliceMode.Single, TPinVisibility.True, out this.FOutTexture);
         }
 
@@ -109,11 +114,11 @@ namespace VVVV.MSKinect.Nodes
                     Texture t = null;
                     if (OnDevice is DeviceEx)
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.Dynamic, Format.L16, Pool.Default);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.Dynamic, Format.L16, Pool.Default);
                     }
                     else
                     {
-                        t = new Texture(OnDevice, 320, 240, 1, Usage.None, Format.L16, Pool.Managed);
+                        t = new Texture(OnDevice, 640, 480, 1, Usage.None, Format.L16, Pool.Managed);
                     }
                     this.FDepthTex.Add(OnDevice, t);
                 }
@@ -162,11 +167,13 @@ namespace VVVV.MSKinect.Nodes
                 {
                     frame.CopyDepthImagePixelDataTo(this.depthpixels);
 
-                    for (int i16 = 0; i16 < 320 * 240; i16++)
+                    for (int i16 = 0; i16 < 640 * 480; i16++)
                     {
                         this.rawdepth[i16] = this.depthpixels[i16].Depth;
                     }
                 }
+                
+                frame.Dispose();
             }  
         }
     }

@@ -16,16 +16,16 @@ namespace VVVV.Nodes
 	public class Fly : IPluginEvaluate
 	{
 		[Input("Transform In")]
-		ISpread<Matrix4x4> FTransformIn;
+        public ISpread<Matrix4x4> FTransformIn;
 
 		[Input("Start", IsSingle = true)]
-		ISpread<bool> FStart;
+        public ISpread<bool> FStart;
 
 		[Output("Position")]
-		ISpread<Vector3D> FOutput;
+        public ISpread<Vector3D> FOutput;
 
 		[Output("Velocity")]
-		ISpread<Vector3D> FFrameVelocity;
+        public ISpread<Vector3D> FFrameVelocity;
 
 		public void Evaluate(int SpreadMax)
 		{

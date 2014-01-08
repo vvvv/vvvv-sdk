@@ -27,19 +27,19 @@ namespace VVVV.Nodes
 		#region fields & pins
 		
 		[Output("Button")]
-		ISpread<bool> FButtonOut;
+        public ISpread<bool> FButtonOut;
 		
 		[Output("Check Box")]
-		ISpread<bool> FCheckBoxOut;
+        public ISpread<bool> FCheckBoxOut;
 		
 		[Output("Text Box")]
-		ISpread<string> FTextBoxOut;
+        public ISpread<string> FTextBoxOut;
 		
 		[Output("Slider")]
-		ISpread<double> FSliderOut;
+        public ISpread<double> FSliderOut;
 		
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 
 		//gui controls
 		bool FButtonClick = false;

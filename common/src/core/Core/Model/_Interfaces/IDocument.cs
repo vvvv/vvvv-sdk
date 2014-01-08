@@ -9,6 +9,13 @@ namespace VVVV.Core.Model
     {
         string LocalPath { get; }
         void SaveTo(string path);
+        Stream Content { get; set; }
+        /// <summary>
+        /// This event occurs each time the content of this document changes.
+        /// </summary>
+        event EventHandler<ContentChangedEventArgs> ContentChanged;
+        bool IsDirty { get; }
+        bool IsReadOnly { get; set; }
     }
     
     public static class DocumentExtensionMethods
@@ -49,6 +56,25 @@ namespace VVVV.Core.Model
         public static void Save(this IDocument doc)
         {
             doc.SaveTo(doc.LocalPath);
+        }
+
+        public static void Rename(this IDocument doc, string filename)
+        {
+            var path = Path.Combine(Path.GetDirectoryName(doc.LocalPath), filename);
+            doc.SaveTo(path);
+            var project = doc.Project;
+            if (project != null)
+            {
+                project.Documents.Remove(doc);
+            }
+            File.Delete(doc.LocalPath);
+            doc.Dispose();
+            if (project != null)
+            {
+                var document = DocumentFactory.CreateDocumentFromFile(path);
+                project.Documents.Add(document);
+                project.Save();
+            }
         }
     }
 }

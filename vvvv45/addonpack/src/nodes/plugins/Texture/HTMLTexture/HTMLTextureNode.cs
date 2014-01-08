@@ -12,6 +12,38 @@ using System.Drawing;
 
 namespace VVVV.Nodes.Texture.HTML
 {
+	[PluginInfo(Name = "HTMLTexture", 
+                Category = "EX9.Texture", 
+                Version = "String", 
+                Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
+    public class HTMLTextureStringNode : HTMLTextureNode
+    {
+        [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
+        public ISpread<string> FHtmlIn;
+        [Input("Base Url", DefaultString = "about:blank")]
+        public ISpread<string> FBaseUrlIn;
+
+        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
+        {
+            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice]);
+        }
+    }
+
+    [PluginInfo(Name = "HTMLTexture", 
+                Category = "EX9.Texture", 
+                Version = "URL", 
+                Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
+    public class HTMLTextureUrlNode : HTMLTextureNode
+    {
+        [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
+        public ISpread<string> FUrlIn;
+
+        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
+        {
+            renderer.LoadURL(FUrlIn[slice]);
+        }
+    }
+    
     public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
         [Input("Reload", IsBang = true)]
@@ -23,9 +55,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
-        public ISpread<MouseState> FMouseIn;
+        public ISpread<Mouse> FMouseIn;
         [Input("Key Event")]
-        public ISpread<KeyboardState> FKeyboardIn;
+        public ISpread<Keyboard> FKeyboardIn;
         [Input("Scroll To")]
         public ISpread<Vector2D> FScrollToIn;
         [Input("Update DOM", IsBang = true)]
@@ -118,32 +150,6 @@ namespace VVVV.Nodes.Texture.HTML
         public void Dispose()
         {
             FWebRenderers.ResizeAndDispose(0, () => new HTMLTextureRenderer(FLogger));
-        }
-    }
-
-    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "String", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
-    public class HTMLTextureStringNode : HTMLTextureNode
-    {
-        [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
-        public ISpread<string> FHtmlIn;
-        [Input("Base Url", DefaultString = "about:blank")]
-        public ISpread<string> FBaseUrlIn;
-
-        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
-        {
-            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice]);
-        }
-    }
-
-    [PluginInfo(Name = "HTMLTexture", Category = "EX9.Texture", Version = "URL", Tags = "browser, web, html, javascript, chromium, flash, webgl")]
-    public class HTMLTextureUrlNode : HTMLTextureNode
-    {
-        [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
-        public ISpread<string> FUrlIn;
-
-        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
-        {
-            renderer.LoadURL(FUrlIn[slice]);
         }
     }
 }

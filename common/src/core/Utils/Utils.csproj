@@ -6,15 +6,30 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Utils</RootNamespace>
     <AssemblyName>VVVV.Utils</AssemblyName>
+    <AssemblyDescription>The VVVV Utility Library</AssemblyDescription>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DocumentationFile>$(OutputPath)\VVVV.Utils.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\thirdparty\Rx\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\thirdparty\Rx\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\thirdparty\Rx\System.Reactive.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -26,6 +41,18 @@
     <Compile Include="Animation\IIRFilter.cs" />
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
+    <Compile Include="IO\TakeStream.cs" />
+    <Compile Include="IO\Keyboard.cs" />
+    <Compile Include="IO\LeaveOpenStreamReader.cs" />
+    <Compile Include="IO\LeaveOpenStreamWriter.cs" />
+    <Compile Include="IO\SkipStream.cs" />
+    <Compile Include="IO\KeyNotification.cs" />
+    <Compile Include="IO\Mouse.cs" />
+    <Compile Include="IO\MouseNotification.cs" />
+    <Compile Include="IO\Subscription.cs" />
+    <Compile Include="IO\TouchDevice.cs" />
+    <Compile Include="IO\TouchNotification.cs" />
+    <Compile Include="OSC\OSCTimeTag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\EnumerableExtensions.cs" />
@@ -69,6 +96,7 @@
     <Compile Include="OSC\OSCReceiver.cs" />
     <Compile Include="OSC\OSCTransmitter.cs" />
     <Compile Include="PathUtils.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="SharedMemory\Segment.cs" />
     <Compile Include="SharedMemory\Win32Native.cs" />
@@ -78,6 +106,7 @@
     <Compile Include="Streams\CyclicStream.cs" />
     <Compile Include="Streams\RangeStream.cs" />
     <Compile Include="System\ArrayExtensions.cs" />
+    <Compile Include="System\GenericEventArgs.cs" />
     <Compile Include="System\IntPtrExtensions.cs" />
     <Compile Include="Win32\ComCtl32.cs" />
     <Compile Include="Win32\Const.cs" />
@@ -111,9 +140,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SystemIOExtensions.cs</LastGenOutput>
     </None>
+    <None Include="VVVV.Utils.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

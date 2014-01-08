@@ -136,13 +136,14 @@ namespace VVVV.Nodes
                 //Add field pin only if same name is not added already
                 foreach (string f in fields)
                 {
-                    if (f.Length > 0)
+                	var field = f.Trim();
+                    if (field.Length > 0)
                     {
-                        if (!this.FPinOutFields.ContainsKey(f))
+                        if (!this.FPinOutFields.ContainsKey(field))
                         {
                             IStringOut so;
-                            this.FHost.CreateStringOutput(f, TSliceMode.Dynamic, TPinVisibility.True, out so);
-                            this.FPinOutFields.Add(f, so);
+                            this.FHost.CreateStringOutput(field, TSliceMode.Dynamic, TPinVisibility.True, out so);
+                            this.FPinOutFields.Add(field, so);
                         }
                     }
                 }

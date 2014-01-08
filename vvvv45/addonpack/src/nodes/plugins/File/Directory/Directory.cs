@@ -269,7 +269,7 @@ namespace VVVV.Nodes
         			{
         				if (currentDelete==1)
         				{
-        					curDirectory.Delete();
+        					curDirectory.Delete(true);
         					FExists.SetValue(i, 0.0);
         				}
         				else

@@ -36,7 +36,7 @@ namespace VVVV.Nodes
 	            Category = "Kinect",
 	            Version = "OpenNI",
 	            Help = "Returns a 16bit texture per recognized user with pixels activated for areas occupied by the user plus center of mass and ID per user",
-	            Tags = "ex9, texture, tracking, person, people",
+	            Tags = "EX9, texture, tracking, person",
 	            Author = "Phlegma, joreg")]
 	#endregion PluginInfo
 	public class Users: DXTextureOutPluginBase, IPluginEvaluate, IPluginConnections, IDisposable

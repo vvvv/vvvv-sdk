@@ -185,6 +185,11 @@ namespace VVVV.Hosting
         {
             get;
         }
+        
+        bool IsBlackBoxMode 
+        {
+			get;
+		}
     }
     
     #region Listeners

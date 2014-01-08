@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using VVVV.Utils.Streams;
@@ -129,7 +130,10 @@ namespace VVVV.PluginInterfaces.V2
 		/// <param name="enumerable">The IEnumerable{T} to copy from.</param>
 		public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> enumerable)
 		{
-			spread.SliceCount = enumerable.Count();
+            var collection = enumerable as ICollection;
+			spread.SliceCount = collection != null
+                ? collection.Count
+                : enumerable.Count();
 			
 			int i = 0;
 			foreach	(var entry in enumerable)
@@ -491,6 +495,16 @@ namespace VVVV.PluginInterfaces.V2
         	}
         	
         	return false;
+        }
+
+        public static IObservable<T> ToObservable<T>(this IDiffSpread<T> spread, int slice)
+        {
+            return Observable.FromEvent<SpreadChangedEventHander<T>, IDiffSpread<T>>(
+                        h => spread.Changed += h,
+                        h => spread.Changed -= h
+                    )
+                    .Where(s => s.SliceCount > 0)
+                    .Select(s => s[slice]);
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(

@@ -27,7 +27,7 @@ namespace VVVV.Nodes
 		ISpread<int> FLogical;
 
 		[Import()]
-		ILogger FLogger;
+        public ILogger FLogger;
 		#endregion fields & pins
 		
 		[ImportingConstructor]

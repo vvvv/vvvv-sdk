@@ -1,54 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="vvvv45.props" />
+  
+  <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(MSBuildThisFileDirectory)..\vvvv.exe</StartProgram>
-    <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <PackageOutputDir Condition="'$(PackageOutputDir)' == ''">$(MSBuildThisFileDirectory)..\..\build\packages</PackageOutputDir>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
-  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
-  <PropertyGroup Condition=" '$(Platform)' == 'x64' " />
+  
+  <!-- Override vvvvv45.props -->
+  <!-- Zip -->
   <PropertyGroup>
-    <CoreOutputDir>$(MSBuildThisFileDirectory)..\lib\core\</CoreOutputDir>
-    <PluginsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</PluginsOutputDir>
-    <EditorsOutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\editors\</EditorsOutputDir>
+    <ZipFileNamePrefix>vvvv</ZipFileNamePrefix>
+    <ZipInclude>..\**\*.*</ZipInclude>
+    <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
+    <!-- Files to exclude for platform specific builds -->
+    <ZipExclude Condition=" '$(Platform)' == 'x86' ">$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
+    <ZipExclude Condition=" '$(Platform)' == 'x64' ">$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
+    <ZipReadOnlyFiles>lib\nodes\*.*</ZipReadOnlyFiles>
+    <ZipHiddenFiles>vvvv.exe.config</ZipHiddenFiles>
   </PropertyGroup>
-  <PropertyGroup>
-    <BuildDependsOn>CoreBuild</BuildDependsOn>
-    <RebuildDependsOn>Clean;Build</RebuildDependsOn>
-    <CleanDependsOn>$(CleanDependsOn)</CleanDependsOn>
-  </PropertyGroup>
-  <Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
-  <Target Name="CoreBuild">
-    <!-- Copy shared dependencies to lib/core -->
-    <CreateItem Include="$(PluginsOutputDir)Sanford*">
-      <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
-    </CreateItem>
-    <Copy SourceFiles="@(_SharedDependencies_)" DestinationFolder="$(CoreOutputDir)" />
-    <!-- Delete all files which are already in lib/core -->
-    <CreateItem Include="$(CoreOutputDir)**\*.*">
-      <Output TaskParameter="Include" ItemName="CoreOutputFiles" />
-    </CreateItem>
-    <Delete Files="@(CoreOutputFiles->'$(PluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Delete Files="@(CoreOutputFiles->'$(EditorsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <!-- Create lib/*.dtd file -->
-    <GetVersionInfo File="$(MSBuildThisFileDirectory)..\vvvv.exe">
-      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
-    </GetVersionInfo>
-    <ItemGroup>
-      <DTDFiles Include="$(MSBuildThisFileDirectory)..\lib\*.dtd" />
-    </ItemGroup>
-    <Delete Files="@(DTDFiles)" />
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(MSBuildThisFileDirectory)..\lib\$(VersionInfo).dtd" />
-  </Target>
-  <Target Name="Rebuild" DependsOnTargets="$(RebuildDependsOn)" />
-  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
+
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
     <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
@@ -104,55 +78,37 @@
       <Name>NativePlugins</Name>
     </ProjectReference>
   </ItemGroup>
-  <PropertyGroup>
-    <ZipSteps>_PreZip_;_Zip_;_PostZip_</ZipSteps>
-    <ZipOutputDir>..\..\</ZipOutputDir>
-    <TempBaseDir>$(ZipOutputDir)temp\</TempBaseDir>
-  </PropertyGroup>
-  <Target Name="Zip">
-    <CallTarget Targets="$(ZipSteps)" RunEachTargetSeparately="True" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  
+  <Target Name="CleanPackages">
+    <ItemGroup>
+      <PackagesToRemove Include="$(PackageOutputDir)\*.nupkg"/>
+    </ItemGroup>
+    <Delete Files="@(PackagesToRemove)" />
   </Target>
-  <Target Name="_PreZip_">
-    <RemoveDir Directories="$(TempBaseDir)" />
+  
+  <Target Name="RestoreAllPackages">
+    <ItemGroup>
+      <ProjectsToRestore Include="..\..\common\src\core\*\*.csproj" />
+      <ProjectsToRestore Include="core\*\*.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(ProjectsToRestore)" 
+             Targets="RestorePackages" />
   </Target>
-  <Target Name="_Zip_">
-    <GetVersionInfo File="$(StartProgram)">
-      <Output TaskParameter="ReturnValue" PropertyName="VersionInfo" />
-    </GetVersionInfo>
-    <PropertyGroup>
-      <TempDir>$(TempBaseDir)vvvv_$(VersionInfo)_$(Platform)\</TempDir>
-      <ZipFileName>$(ZipOutputDir)vvvv_$(VersionInfo)_$(Platform).zip</ZipFileName>
-      <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
-    </PropertyGroup>
-    <!-- Files to exclude for platform specific builds -->
-    <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
-      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
-      <ZipExclude>$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
-    </PropertyGroup>
-    <CreateItem Include="..\**\*.*" Exclude="$(ZipExclude)">
-      <Output ItemName="OutputFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Copy SourceFiles="@(OutputFiles)" DestinationFiles="@(OutputFiles->'$(TempDir)%(RecursiveDir)%(Filename)%(Extension)')" />
-    <Exec Command="attrib +R &quot;$(TempDir)lib\nodes\*.*&quot; /S /D" />
-    <Exec Command="attrib +H &quot;$(TempDir)vvvv.exe.config&quot;" />
-    <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
-    <Exec Command="vvvv.exe /nodelist /dx9ex" WorkingDirectory="$(TempDir)" />
-    <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
-    <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(TempDir)&quot;" />
-    <!--
-    <CreateItem Include="$(TempDir)\**\*.*">
-      <Output ItemName="ZipFiles" TaskParameter="Include" />
-    </CreateItem>
-    <Zip Files="@(ZipFiles)" 
-         WorkingDirectory="$(TempBaseDir)" 
-         ZipFileName="$(ZipFileName)" 
-         ZipLevel="9" />
-    -->
+  
+  <Target Name="BuildPackages" DependsOnTargets="CleanPackages;RestoreAllPackages">
+    <MakeDir Directories="$(PackageOutputDir)" />
+    <ItemGroup>
+      <ProjectsToPack Include="..\..\common\src\core\*\*.csproj" />
+      <ProjectsToPack Include="core\*\*.csproj" />
+    </ItemGroup>
+    <MSBuild Projects="@(ProjectsToPack)" 
+             Targets="BuildPackage" 
+             Properties="PackageOutputDir=$(PackageOutputDir)" />
   </Target>
-  <Target Name="_PostZip_">
-    <RemoveDir Directories="$(TempBaseDir)" />
-  </Target>
+  
   <Import Project="vvvv45.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

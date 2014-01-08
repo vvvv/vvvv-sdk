@@ -21,11 +21,44 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using VVVV.Utils;
+using VVVV.Utils.Streams;
 
 namespace System.IO
 {
     public static class SystemIOExtensions
     {
+        public static bool StreamEquals(this Stream stream1, Stream stream2)
+        {
+            stream1.Position = 0;
+            stream2.Position = 0;
+            try
+            {
+                using (var buffer1 = MemoryPool<byte>.GetBuffer())
+                using (var buffer2 = MemoryPool<byte>.GetBuffer())
+                {
+                    var b1 = buffer1.Array;
+                    var b2 = buffer2.Array;
+                    var bufferSize = b1.Length;
+                    while (true)
+                    {
+                        var count1 = stream1.Read(b1, 0, bufferSize);
+                        var count2 = stream2.Read(b2, 0, bufferSize);
+                        if (count1 != count2)
+                            return false;
+                        if (count1 == 0)
+                            return true;
+                        if (!b1.ContentEquals(b2))
+                            return false;
+                    }
+                }
+            }
+            finally
+            {
+                stream1.Position = 0;
+                stream2.Position = 0;
+            }
+        }
+
         public static byte[] ReadValue(this BinaryReader reader, int fieldSize, ByteOrder byteOrder)
         {
             if (byteOrder == ByteOrder.LittleEndian)

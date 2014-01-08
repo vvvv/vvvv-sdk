@@ -1,20 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" />
   <Import Project="..\Default.Core.Project.settings" />
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
     <AssemblyName>VVVV.PluginInterfaces</AssemblyName>
+    <AssemblyDescription>The VVVV Plugin Interfaces Library</AssemblyDescription>
     <ProjectGuid>{837C740A-485C-424C-8C38-086ED3DC73CB}</ProjectGuid>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoWarn>1591 1587</NoWarn>
     <DocumentationFile>$(OutputPath)\VVVV.PluginInterfaces.xml</DocumentationFile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <PackageIsAnyCPU>false</PackageIsAnyCPU>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InteropServices\EX9\DeviceMarshaler.cs" />
     <Compile Include="InteropServices\EX9\MeshMarshaler.cs" />
     <Compile Include="InteropServices\EX9\TextureMarshaler.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="V1\Enumerations1.cs" />
     <Compile Include="V1\IPlugin1.cs" />
     <Compile Include="V1\IPluginHost1.cs" />
@@ -68,15 +74,27 @@
     <Compile Include="V2\ValueTypeFormat.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="SlimDX">
-      <HintPath>..\..\..\..\common\src\thirdparty\$(PlatformTarget)\SlimDX.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition.Codeplex">
-      <HintPath>..\..\..\..\common\src\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    <Reference Include="System.ComponentModel.Composition.CodePlex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -89,5 +107,12 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="PluginInterfaces.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
 </Project>

@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 	            Category = "Kinect",
 	            Version = "OpenNI",
 	            Help = "Returns an X8R8G8B8 formatted texture from the kinects RGB camera",
-	            Tags = "ex9, texture",
+	            Tags = "EX9, texture",
 	            Author = "Phlegma, joreg",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo

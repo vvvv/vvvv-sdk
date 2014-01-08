@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Cursor (System) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Cursor (System) help.v4p">
    <BOUNDS height="4350" left="1605" top="1920" type="Window" width="6510">
    </BOUNDS>
    <NODE id="1" nodename="CircularSpread (Spreads)">
-   <BOUNDS height="0" left="570" top="2280" type="Node" width="0">
+   <BOUNDS height="0" left="570" top="2460" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Phase" visible="1">
    </PIN>
@@ -13,7 +13,7 @@
    </PIN>
    </NODE>
    <NODE id="0" nodename="LFO (Animation)">
-   <BOUNDS height="0" left="1470" top="1695" type="Node" width="0">
+   <BOUNDS height="0" left="1425" top="1995" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -27,7 +27,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Allows to switch off the mouse cursor and set its position. (Can completely take over control of your mouse!)&cr;&lf;|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Allows to switch off the mouse cursor and set its position. (Can completely take over control of your mouse!)&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -41,7 +41,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="900" top="900" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cursor - System|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Cursor - System|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -50,16 +50,8 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="Mouse (System Global)" systemname="Mouse (System Global)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Global).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="2820" top="1665" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="3" nodename="Cursor (System)" systemname="Cursor (System)">
-   <BOUNDS height="0" left="405" top="3060" type="Node" width="0">
+   <BOUNDS height="0" left="1935" top="3300" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Show" slicecount="1" values="1">
    </PIN>
@@ -72,20 +64,16 @@
    <PIN pinname="Cursor Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Cursor X" linkstyle="VHV" srcnodeid="1" srcpinname="Output X">
-   <LINKPOINT x="600" y="2805">
-   </LINKPOINT>
-   <LINKPOINT x="600" y="2805">
-   </LINKPOINT>
+   <LINK dstnodeid="3" dstpinname="Cursor X" linkstyle="PolyLine" srcnodeid="1" srcpinname="Output X">
    </LINK>
    <LINK dstnodeid="3" dstpinname="Cursor Y" linkstyle="PolyLine" srcnodeid="1" srcpinname="Output Y">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="3300" top="2340" width="0" height="0">
+   <BOUNDS type="Node" left="2790" top="1815" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3300" top="2340" width="480" height="480">
+   <BOUNDS type="Box" left="2790" top="1815" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -93,17 +81,15 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Right Button" dstnodeid="7" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Right Button" dstnodeid="3" dstpinname="Set Cursor Position">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4215" top="1665" width="4770" height="270">
+   <BOUNDS type="Node" left="3480" top="1155" width="4770" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4215" top="1665" width="1530" height="930">
+   <BOUNDS type="Box" left="3480" top="1155" width="1530" height="930">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|press the right mousebutton to see your cursor move in a circle.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|press the right mousebutton to see your cursor move in a circle.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -112,4 +98,16 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE id="6" nodename="Mouse (Devices Desktop)" systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
+   <BOUNDS height="100" left="1650" top="1185" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Right Button" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Right Button" dstnodeid="3" dstpinname="Set Cursor Position">
+   </LINK>
    </PATCH>

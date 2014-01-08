@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Text.RegularExpressions;
 
 using SlimDX;
 using Svg;
@@ -19,13 +20,73 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes
 {	
+
 	#region Base Nodes
-	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgVisualElement
+	public abstract class SVGVisualElementNode<T> : IPluginEvaluate where T : SvgElement
 	{
 		#region fields & pins
 		#pragma warning disable 649
+		[Input("ID", Order = -2, Visibility = PinVisibility.OnlyInspector)]
+		protected IDiffSpread<string> FIDIn;
+		
+		[Input("Class", Order = -1, Visibility = PinVisibility.OnlyInspector)]
+		protected IDiffSpread<string> FClassIn;
+		
 		[Input("Transform", Order = 0)]
 		protected IDiffSpread<SlimDX.Matrix> FTransformIn;
+		
+		[Input("Enabled", Order = 1000000, DefaultValue = 1)]
+		protected IDiffSpread<bool> FEnabledIn;
+		
+		[Output("Layer")]
+		protected Pin<T> FOutput;
+		
+		[Import]
+		protected ILogger FLogger;
+		#pragma warning restore
+		#endregion fields & pins
+		
+		void LogIDFix(SvgElement elem, string oldID, string newID)
+		{
+			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
+			FLogger.Log(LogType.Warning, msg);
+		}
+		
+		public abstract void Evaluate(int SpreadMax);
+		
+		protected void SetIDs()
+		{
+			//assumes that base nodes have calculated the output spread
+			//and call this at the end of their Evaluate
+			for (int i = 0; i < FOutput.SliceCount; i++)
+			{
+				var elem = FOutput[i];
+				
+				//set class
+				if(!string.IsNullOrWhiteSpace(FClassIn[i]))
+				{
+					elem.CustomAttributes["class"] = FClassIn[i];
+				}
+				
+				//set id
+				var idToSet = FIDIn[i];
+				if(!string.IsNullOrWhiteSpace(idToSet))
+				{
+					elem.SetAndFixID(idToSet, true, LogIDFix);
+				}
+			}
+			
+			//out pin changed hack
+			if(FIDIn.IsChanged || FClassIn.IsChanged)
+				FOutput[0] = FOutput[0];
+		}
+	}
+	
+	
+	public abstract class SVGVisualElementNodeStroke<T> : SVGVisualElementNode<T> where T : SvgVisualElement
+	{
+		#region fields & pins
+		#pragma warning disable 649
 		
 		[Input("Stroke", Order = 20, DefaultColor = new double[] { 0, 0, 0, 1 })]
 		protected IDiffSpread<RGBAColor> FStrokeIn;
@@ -33,11 +94,6 @@ namespace VVVV.Nodes
 		[Input("Stroke Width", DefaultValue = 0.1, Order = 22, MinValue = 0)]
 		protected IDiffSpread<float> FStrokeWidthIn;
 		
-		[Input("Enabled", Order = 30, DefaultValue = 1)]
-		protected IDiffSpread<bool> FEnabledIn;
-		
-		[Output("Layer")]
-		ISpread<T> FOutput;
 		#pragma warning restore
 		
 		bool FFirstFrame = true;
@@ -46,7 +102,7 @@ namespace VVVV.Nodes
 		
 		#endregion fields & pins
 		
-		public void Evaluate(int SpreadMax)
+		public sealed override void Evaluate(int SpreadMax)
 		{
 			if (FFirstFrame) FElements.Add(CreateElement());
 			
@@ -65,7 +121,8 @@ namespace VVVV.Nodes
                     FElements.Add(CreateElement());
             }
             
-			if(PinsChanged())
+            var pinsChanged = PinsChanged();
+			if(pinsChanged)
 			{
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -79,6 +136,10 @@ namespace VVVV.Nodes
 			}
 			
 			FFirstFrame = false;
+			
+			//set id and class to elements
+			if(pinsChanged || FIDIn.IsChanged || FClassIn.IsChanged)
+				base.SetIDs();
 		}
 		
 		//calc spread max, override in sub class
@@ -152,7 +213,7 @@ namespace VVVV.Nodes
 	
 	//FILL----------------------------------------------------------------------
 	
-	public abstract class SVGVisualElementFillNode<T> : SVGVisualElementNode<T> where T : SvgVisualElement
+	public abstract class SVGVisualElementFillNode<T> : SVGVisualElementNodeStroke<T> where T : SvgVisualElement
 	{
 		#region fields & pins
 		
@@ -184,6 +245,25 @@ namespace VVVV.Nodes
 			}
 		}
 	}
+	
+	public abstract class SVGVisualElementFillXYWH<T> : SVGVisualElementFillNode<T> where T : SvgVisualElement
+	{
+		#region fields & pins
+		
+		[Input("Position", Order = 6, Visibility = PinVisibility.OnlyInspector)]
+		protected IDiffSpread<Vector2> FPositionIn;
+		
+		[Input("Size", DefaultValues = new double[] { 1, 1 }, Order = 8, Visibility = PinVisibility.OnlyInspector)]
+		protected IDiffSpread<Vector2> FSizeIn;
+		
+		#endregion fields & pins
+		
+		protected override bool PinsChanged()
+		{
+			return base.PinsChanged() || FPositionIn.IsChanged || FSizeIn.IsChanged;
+		}
+	}
+	
 	#endregion Base Nodes
 	
 	//QUAD----------------------------------------------------------------------
@@ -193,7 +273,7 @@ namespace VVVV.Nodes
 	            Help = "Renders a rectangle into a Renderer (SVG)", 
 	            Tags = "rectangle, square, primitive, 2d, vector")]
 	#endregion PluginInfo
-	public class SvgRectNode : SVGVisualElementFillNode<SvgRectangle>
+	public class SvgRectNode : SVGVisualElementFillXYWH<SvgRectangle>
 	{
 	    #pragma warning disable 649
 		[Input("Corner Radius ", Order = 23, MinValue = 0, MaxValue = 1)]
@@ -212,11 +292,15 @@ namespace VVVV.Nodes
 		
 		protected override void CalcGeometry(SvgRectangle elem, Vector2 trans, Vector2 scale, int slice)
 		{
-			elem.Transforms.Add(new SvgTranslate(-scale.X * 0.5f, -scale.Y * 0.5f));
-			elem.X = 0;
-			elem.Y = 0;
-			elem.Width = (float)scale.X;
-			elem.Height = (float)scale.Y;
+			
+			var pos = FPositionIn[slice];
+			var size = FSizeIn[slice];
+			elem.X = pos.X;
+			elem.Y = pos.Y;
+			elem.Width = scale.X * size.X;
+			elem.Height = scale.Y * size.Y;
+			
+			elem.Transforms.Add(new SvgTranslate(-elem.Width * 0.5f, -elem.Height * 0.5f));
 			
 			elem.CornerRadiusX = Math.Max(FCornerRadiusIn[slice].X * elem.Width * 0.5f, 0);
 			elem.CornerRadiusY = Math.Max(FCornerRadiusIn[slice].Y * elem.Height * 0.5f, 0);
@@ -230,7 +314,7 @@ namespace VVVV.Nodes
 	            Help = "Renders an ellipse into a Renderer (SVG)", 
 	            Tags = "ellipse, primitive, 2d, vector")]
 	#endregion PluginInfo
-	public class SvgEllipseNode : SVGVisualElementFillNode<SvgEllipse>
+	public class SvgEllipseNode : SVGVisualElementFillXYWH<SvgEllipse>
 	{
 		protected override SvgEllipse CreateElement()
 		{
@@ -239,9 +323,12 @@ namespace VVVV.Nodes
 		
 		protected override void CalcGeometry(SvgEllipse elem, Vector2 trans, Vector2 scale, int slice)
 		{
-			elem.RadiusX = scale.X*0.5f;
-			elem.RadiusY = scale.Y*0.5f;
-
+			var pos = FPositionIn[slice];
+			var size = FSizeIn[slice];
+			elem.CenterX = pos.X;
+			elem.CenterY = pos.Y;
+			elem.RadiusX = scale.X*0.5f*size.X;
+			elem.RadiusY = scale.Y*0.5f*size.Y;
 		}
 	}
 	
@@ -255,20 +342,23 @@ namespace VVVV.Nodes
 	public class SvgPathNode : SVGVisualElementFillNode<SvgPath>
 	{
 	    #pragma warning disable 649
-		[Input("Vertices", Order = -5)]
+		[Input("Vertices", Order = -50)]
 		IDiffSpread<ISpread<Vector2>> FVerticesIn;
 		
-		[Input("Control 1", Order = -4)]
+		[Input("Control 1", Order = -40)]
 		IDiffSpread<ISpread<Vector2>> FControl1In;
 		
-		[Input("Control 2", Order = -3)]
+		[Input("Control 2", Order = -30)]
 		IDiffSpread<ISpread<Vector2>> FControl2In;
 		
-		[Input("Arc Rotation", Order = -2)]
+		[Input("Arc Rotation", Order = -20)]
 		IDiffSpread<ISpread<float>> FArcRotationIn;
 		
-		[Input("Command", Order = -1, MaxChars = 1, DefaultString = "L")]
+		[Input("Command", Order = -10, MaxChars = 1, DefaultString = "L")]
 		IDiffSpread<ISpread<string>> FCommandIn;
+		
+		[Input("Closed Path", Order = -15, DefaultValue = 1)]
+		IDiffSpread<bool> FClosedIn;
 		#pragma warning restore
 		
 		protected override SvgPath CreateElement()
@@ -289,12 +379,13 @@ namespace VVVV.Nodes
 			max = Math.Max(max, FControl2In.SliceCount);
 			max = Math.Max(max, FArcRotationIn.SliceCount);
 			max = Math.Max(max, FCommandIn.SliceCount);
+			max = Math.Max(max, FClosedIn.SliceCount);
 			return max;
 		}
 		
 		protected override bool PinsChanged()
 		{
-			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged;
+			return base.PinsChanged() || FVerticesIn.IsChanged || FCommandIn.IsChanged || FControl1In.IsChanged || FControl2In.IsChanged || FArcRotationIn.IsChanged || FClosedIn.IsChanged;
 		}
 		
 		protected override void CalcGeometry(SvgPath elem, Vector2 trans, Vector2 scale, int slice)
@@ -319,10 +410,6 @@ namespace VVVV.Nodes
 				if(i == 0)
 				{
 					c = 'M';
-				}
-				else if (i == verts.SliceCount - 1)
-				{
-					c = 'Z';
 				}
 				
 				//fill in params
@@ -405,6 +492,12 @@ namespace VVVV.Nodes
 				}
 				
 				SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+				
+				if (i == verts.SliceCount - 1 && FClosedIn[i])
+				{
+					c = 'Z';
+					SvgPathBuilder.CreatePathSegment(c, elem.PathData, coords, char.IsLower(c));
+				}
 			}
 			
 		}
@@ -745,8 +838,11 @@ namespace VVVV.Nodes
 		[Output("Element")]
 		ISpread<SvgElement> FElementsOut;
 		
-		[Output("Name")]
-		ISpread<string> FElementNameOut;
+		[Output("ID")]
+		ISpread<string> FElementIDOut;
+		
+		[Output("Class")]
+		ISpread<string> FElementClassOut;
 		
 		[Output("Type")]
 		ISpread<string> FElementTypeOut;
@@ -762,7 +858,8 @@ namespace VVVV.Nodes
 				FElementsOut.SliceCount = 0;
 				FElementTypeOut.SliceCount = 0;
 				FElementLevelOut.SliceCount = 0;
-				FElementNameOut.SliceCount = 0;
+				FElementIDOut.SliceCount = 0;
+				FElementClassOut.SliceCount = 0;
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
@@ -778,7 +875,11 @@ namespace VVVV.Nodes
 			FElementsOut.Add(elem);
 			FElementTypeOut.Add(elem.GetType().Name.Replace("Svg", ""));
 			FElementLevelOut.Add(level);
-			FElementNameOut.Add(elem.ID);
+			FElementIDOut.Add(elem.ID);
+			var className = "";
+			if(elem.CustomAttributes.ContainsKey("class"))
+				className = elem.CustomAttributes["class"];
+			FElementClassOut.Add(className);
 			
 			foreach(var child in elem.Children)
 			{
@@ -832,6 +933,12 @@ namespace VVVV.Nodes
 			var g = new SvgGroup();
 			FGroups.Add(g);
 		}
+		
+		void LogIDFix(SvgElement elem, string oldID, string newID)
+		{
+			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
+			FLogger.Log(LogType.Warning, msg);
+		}
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
@@ -858,7 +965,7 @@ namespace VVVV.Nodes
 					{
 						var elem = FInput[j];
 						if(elem != null)
-							g.Children.Add(elem);
+							g.Children.AddAndFixID(elem, true, true, LogIDFix);
 					}
 					
 					var b = FModeIn[i] == SvgNormalizeMode.None ? new RectangleF() : g.Path.GetBounds();
@@ -923,24 +1030,14 @@ namespace VVVV.Nodes
 	            Help = "Groups multiple SVG layers to be rendered one after the other", 
 	            Tags = "")]
 	#endregion PluginInfo
-	public class SVGGroupNode : IPluginEvaluate
+	public class SVGGroupNode : SVGVisualElementNode<SvgElement>
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
-		[Input("Transform")]
-		IDiffSpread<SlimDX.Matrix> FTransformIn;
 		
 		[Input("Layer", IsPinGroup=true)]
 		IDiffSpread<ISpread<SvgElement>> FInput;
-		
-		[Input("Enabled", DefaultValue = 1, Order = 1000000)]
-		IDiffSpread<bool> FEnabledIn;
 
-		[Output("Layer")]
-		ISpread<SvgElement> FOutput;
-
-		[Import()]
-		ILogger FLogger;
 		#pragma warning restore
 		
 		List<SvgElement> FGroups = new List<SvgElement>();
@@ -951,9 +1048,15 @@ namespace VVVV.Nodes
 			var g = new SvgGroup();
 			FGroups.Add(g);
 		}
+		
+		void LogIDFix(SvgElement elem, string oldID, string newID)
+		{
+			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
+			FLogger.Log(LogType.Warning, msg);
+		}
 
 		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+		public override void Evaluate(int SpreadMax)
 		{
 			//check transforms
 			if(FTransformIn.IsChanged)
@@ -978,7 +1081,8 @@ namespace VVVV.Nodes
 			}
 			
 			//add all elements to each group
-			if(FInput.IsChanged || FTransformIn.IsChanged || FEnabledIn.IsChanged)
+			var pinsChanged = FInput.IsChanged || FTransformIn.IsChanged || FEnabledIn.IsChanged;
+			if(pinsChanged)
 			{
 				foreach (var g in FGroups)
 				{
@@ -993,7 +1097,7 @@ namespace VVVV.Nodes
 							{
 								var elem = pin[j];
 								if(elem != null)
-									g.Children.Add(elem);
+									g.Children.AddAndFixID(elem, true, true, LogIDFix);
 							}
 						}
 					}
@@ -1002,6 +1106,11 @@ namespace VVVV.Nodes
 				//write groups to output
 				FOutput.AssignFrom(FGroups);
 			}
+			
+			//set id and class to elements
+			if(pinsChanged || FIDIn.IsChanged || FClassIn.IsChanged)
+				base.SetIDs();
+
 		}
 	}
 }

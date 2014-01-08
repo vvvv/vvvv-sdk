@@ -38,6 +38,7 @@ namespace VVVV.PluginInterfaces.V2
 	{
 	    private readonly IIOFactory FFactory;
 		private readonly IPluginIO FPluginIO;
+        private int FConnectionCount = 0;
 		
 		public Pin(IIOFactory factory, IPluginIO pluginIO, MemoryIOStream<T> stream)
 			: base(stream)
@@ -59,6 +60,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			return base.ToString() + ": " + FPluginIO.Name;
 		}
+
+        public bool IsConnected
+        {
+            get { return FConnectionCount > 0; }
+        }
 		
 		public IPluginIO PluginIO
 		{
@@ -92,16 +98,18 @@ namespace VVVV.PluginInterfaces.V2
 		{
             if (e.PluginIO == FPluginIO)
             {
+                FConnectionCount++;
                 OnConnected(new PinConnectionEventArgs(e.OtherPin));
             }
 		}
 		
 		void HandleDisconnected(object sender, ConnectionEventArgs e)
 		{
-		    if (e.PluginIO == FPluginIO)
-		    {
-		      OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
-		    }
+            if (e.PluginIO == FPluginIO)
+            {
+                FConnectionCount--;
+                OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
+            }
 		}
 	}
 }

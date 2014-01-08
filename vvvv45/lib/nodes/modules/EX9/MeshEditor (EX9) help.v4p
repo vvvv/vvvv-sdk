@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
-   <BOUNDS height="9435" left="780" top="450" type="Window" width="10770">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\EX9\MeshEditor (EX9) help.v4p">
+   <BOUNDS height="9465" left="780" top="450" type="Window" width="10770">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="25" nodename="Renderer (EX9)" stayontop="0" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1410" top="6975" type="Node" width="0">
@@ -515,7 +515,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="52" dstpinname="Mesh" srcnodeid="17" srcpinname="Mesh">
@@ -668,14 +668,16 @@
    <BOUNDS type="Node" left="810" top="8415" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="69">
-   <BOUNDS type="Node" left="1350" top="3495" width="100" height="100">
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="1680" top="3585" width="100" height="100">
    </BOUNDS>
    <PIN pinname="State" visible="1">
    </PIN>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="69" srcpinname="Mouse" dstnodeid="52" dstpinname="Mouse">
+   <LINK srcnodeid="69" srcpinname="Device" dstnodeid="52" dstpinname="Mouse">
    </LINK>
    </PATCH>

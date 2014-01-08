@@ -65,23 +65,37 @@ namespace VVVV.Nodes
 				//get current button
 				ToggleButton s = FControllers[slice];
 				
-				//set selected slice number and color
-				if (MouseLeftDownEdge && FMouseHit && slice == SelectedSlice)
+				if(IsMultiTouch)
 				{
-					s.Value = !s.Value;
-					s.CurrentCol = s.Value ? ColActive : ColNorm;
-				}
-				else if (slice == SelectedSlice)
-				{
-					s.CurrentCol = s.Value ? ColActive : ColNorm;
-					s.CurrentCol = s.MouseOver ? ColOver : s.CurrentCol;
-					s.CurrentCol = s.Value ? ColActive : s.CurrentCol;
+					if (MouseLeftDownEdge && s.MouseOver)
+					{
+						s.Value = !s.Value;
+					}
+					s.CurrentCol = ColNorm;
+					if(s.MouseOver) s.CurrentCol = ColOver;
+					if(s.Value || s.Hit) s.CurrentCol = ColActive;
 				}
 				else
 				{
-					s.CurrentCol = s.Value ? ColActive : ColNorm;	
-					s.CurrentCol = s.MouseOver ? ColOver : s.CurrentCol;
+					//set selected slice number and color
+					if (MouseLeftDownEdge && FMouseHit && slice == SelectedSlice)
+					{
+						s.Value = !s.Value;
+						s.CurrentCol = s.Value ? ColActive : ColNorm;
+					}
+					else if (slice == SelectedSlice)
+					{
+						s.CurrentCol = s.Value ? ColActive : ColNorm;
+						s.CurrentCol = s.MouseOver ? ColOver : s.CurrentCol;
+						s.CurrentCol = s.Value ? ColActive : s.CurrentCol;
+					}
+					else
+					{
+						s.CurrentCol = s.Value ? ColActive : ColNorm;	
+						s.CurrentCol = s.MouseOver ? ColOver : s.CurrentCol;
+					}
 				}
+				
 				
 			}
 			

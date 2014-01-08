@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha14.1.dtd" >
-   <PATCH nodename="Y:\vvvv33_trunk\help\Sequencer (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Sequencer (Animation) help.v4p">
    <BOUNDS height="5745" left="2040" top="2445" type="Window" width="7380">
    </BOUNDS>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4785" top="1860" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4680" top="7095" type="Window" width="215">
@@ -26,7 +26,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="record">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3510" top="345" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5415" top="5040" type="Window" width="215">
@@ -41,36 +41,14 @@
    </PIN>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.569233076923077">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.238463846153847">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.0151515151515152">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="KeyMatch (String)">
-   <BOUNDS height="0" left="5265" top="1020" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Key Match" slicecount="1" values="&lt;space&gt;">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="&lt;SPACE&gt; Output" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="space">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="6" srcpinname="&lt;SPACE&gt; Output">
-   </LINK>
-   <NODE id="-2" nodename="Keyboard (System Global)">
-   <BOUNDS height="0" left="5280" top="630" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="-2" srcpinname="Keyboard Output">
-   </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3540" top="3015" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5715" top="5340" type="Window" width="215">
@@ -160,7 +138,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="4875" top="3795" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="7500" top="6660" width="215" height="160">
@@ -186,4 +164,26 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="5280" top="1035" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Key Match" slicecount="1" values="Space">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Space" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Keyboard (Devices Desktop)" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="5280" top="630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Keyboard Output" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Device" dstnodeid="13" dstpinname="Keyboard">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Space" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

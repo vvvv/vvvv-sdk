@@ -61,11 +61,7 @@ namespace VVVV.Nodes
 			FControllers[0] = new T();
 		}
 
-		public bool IsMultiTouch
-		{
-			get;
-			set;
-		}
+		public bool IsMultiTouch = false;
 		
 		//update transform
 		public virtual void UpdateTransform(Matrix4x4 Transform,
@@ -141,7 +137,7 @@ namespace VVVV.Nodes
 		                        		bool MouseLeftPressed)
 		{
 			
-			if ((FStaticMousHit || IsMultiTouch) && MouseLeftPressed) return false;
+			if ((FStaticMousHit && !IsMultiTouch) && MouseLeftPressed) return false;
 			
 			//update state
 			bool anythingHit = false;
@@ -154,7 +150,7 @@ namespace VVVV.Nodes
 				Vector2D invMouse = (b.InvTransform * Mouse).xy;
 				
 				//check mouse over and hit
-				b.MouseOver = invMouse > -0.5 && invMouse < 0.5;
+				b.MouseOver = (invMouse > -0.5 && invMouse < 0.5) || b.MouseOver;
 				
 				//set selected slice number
 				if (b.MouseOver && MouseLeftDownEdge)
@@ -162,7 +158,6 @@ namespace VVVV.Nodes
 					SelectedSlice = i;
 					anythingHit = true;
 				}
-				
 			}
 			
 			bool lastMouseHit = FMouseHit;
@@ -176,18 +171,37 @@ namespace VVVV.Nodes
 				BasicGui2dController b = FControllers[i];
 				
 				//set selected slice number and color
-				if (i == SelectedSlice)
+				if(IsMultiTouch)
 				{
-					b.Active = true;
-					b.Hit = FMouseHit;
-					b.CurrentCol = b.MouseOver ? ColOver : ColActive;
-					
+					if (i == SelectedSlice)
+					{
+						b.Active = true;
+						b.Hit = b.MouseOver && MouseLeftDownEdge;
+						b.CurrentCol = b.MouseOver ? ColOver : ColActive;
+						
+					}
+					else
+					{
+						b.Active = false;
+						b.Hit = b.MouseOver && MouseLeftDownEdge;
+						b.CurrentCol = b.MouseOver ? ColOver : ColNorm;
+					}
 				}
 				else
 				{
-					b.Active = false;
-					b.Hit = false;
-					b.CurrentCol = b.MouseOver ? ColOver : ColNorm;
+					if (i == SelectedSlice)
+					{
+						b.Active = true;
+						b.Hit = FMouseHit;
+						b.CurrentCol = b.MouseOver ? ColOver : ColActive;
+						
+					}
+					else
+					{
+						b.Active = false;
+						b.Hit = false;
+						b.CurrentCol = b.MouseOver ? ColOver : ColNorm;
+					}
 				}
 				
 			}

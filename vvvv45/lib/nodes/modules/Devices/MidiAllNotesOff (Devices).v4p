@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.3.dtd" >
-   <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiAllNotesOff (Devices).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiAllNotesOff (Devices).v4p">
    <BOUNDS height="6000" left="3375" top="7590" type="Window" width="9000">
    </BOUNDS>
    <NODE id="3" nodename="I (Spreads)">
    <BOUNDS height="0" left="2520" top="2955" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname=".. To [" slicecount="1" values="127">
+   <PIN pinname=".. To [" slicecount="1" values="128">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -72,10 +72,6 @@
    <PIN pinname="Channel" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Note" srcnodeid="3" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Channel" srcnodeid="2" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Play" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
    <INFO author="tonfilm" description="module to send a all note off message" tags="io, panic">
@@ -111,5 +107,25 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="Cross (2d)" nodename="Cross (2d)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="2025" top="3540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="6" dstpinname="Y In">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="6" dstpinname="X In">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="X Out" dstnodeid="0" dstpinname="Channel">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Out" dstnodeid="0" dstpinname="Note">
    </LINK>
    </PATCH>

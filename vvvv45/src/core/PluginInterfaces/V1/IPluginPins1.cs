@@ -979,7 +979,7 @@ namespace VVVV.PluginInterfaces.V1
 	/// </summary>
 	[Guid("FE6FEBC6-8581-4EB5-9AC8-E428CB9D1A03"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	public interface INodeIn: IPluginIn
+	unsafe public interface INodeIn: IPluginIn
 	{
 		/// <summary>
 		/// Used to retrieve the actual slice index this pin has to access on the upstream node. Note that the actual slice
@@ -1019,6 +1019,18 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="upstreamInterface">The retrieved interface.</param>
 		void GetUpstreamInterface([MarshalAs(UnmanagedType.IUnknown)] out object upstreamInterface);
 		void SetConnectionHandler(IConnectionHandler handler, [MarshalAs(UnmanagedType.IUnknown)] object sink);
+
+        /// <summary>
+        /// Gives access to the internal Convolution Array. This was added for performance reasons. Basic functionality described at GetUpStreamSlice()
+        /// </summary>
+        /// <param name="sliceCount">Should always equal the slicecount of the pin.</param>
+        /// <param name="slices"></param>
+        void GetUpStreamSlices(out int sliceCount, out int* slices);
+
+        /// <summary>
+        /// Added for performance reasons. If is false you may skip indexing actual slices. Obviously no GetSlice node is involved.
+        /// </summary>
+        bool IsConvoluted { get; } 
 	}
 	
 	/// <summary>

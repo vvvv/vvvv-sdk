@@ -1,7 +1,9 @@
 ﻿using System;
+using VVVV.Utils;
 
 namespace VVVV.Core.Commands
 {
+	
     /// <summary>
     /// a command history accepts commands, allows redo and undo
     /// </summary>
@@ -38,5 +40,9 @@ namespace VVVV.Core.Commands
 		{
 		    get;
 		}
+		
+		event EventHandler<EventArgs<Command>> CommandInserted;
+		event EventHandler<EventArgs<Command>> Undone;
+		event EventHandler<EventArgs<Command>> Redone;
 	}
 }

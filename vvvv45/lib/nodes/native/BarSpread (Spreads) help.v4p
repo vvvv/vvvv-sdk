@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\BarSpread (Spreads) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\BarSpread (Spreads) help.v4p" locked="0">
    <NODE componentmode="InABox" id="18" nodename="Renderer (GDI)">
    <BOUNDS height="1575" left="195" top="4800" type="Box" width="6480">
    </BOUNDS>
@@ -17,7 +17,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|the input changes between 0 and 1 |" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|the input changes between 0 and 1 |">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -31,7 +31,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The output is connected to the saturation input of an object specifying the color of the  RoundRect. Setting the saturation to 1 will make the object red, while setting the saturation to 0 will make the object grey. |" slices="0" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The output is connected to the saturation input of an object specifying the color of the  RoundRect. Setting the saturation to 1 will make the object red, while setting the saturation to 0 will make the object grey. |" slices="0">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -40,7 +40,7 @@
    <BOUNDS height="255" left="3600" top="3240" type="Node" width="1815">
    </BOUNDS>
    </NODE>
-   <BOUNDS height="7620" left="1185" top="705" type="Window" width="7005">
+   <BOUNDS height="9855" left="1185" top="705" type="Window" width="7575">
    </BOUNDS>
    <NODE id="15" nodename="LFO (Animation)">
    <BOUNDS height="0" left="2655" top="1110" type="Node" width="0">
@@ -149,7 +149,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|set the number of slices|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|set the number of slices|">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -163,7 +163,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|create the x &cr;&lf;positions|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|create the x &cr;&lf;positions|">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -177,7 +177,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also:|">
    </PIN>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -277,7 +277,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="5940" top="15900" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The BarSpread outputs a 1 for all slice indices which are relative below the input, and 0 for all slice indices which are relative above the input. |" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|The BarSpread outputs a 1 for all slice indices which are relative below the input, and 0 for all slice indices which are relative above the input. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -291,7 +291,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="5940" top="15900" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|BarSpread (Spreads)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|BarSpread (Spreads)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -302,4 +302,28 @@
    </NODE>
    <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="18" dstpinname="Layers">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="7785" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="7785" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="600" top="8385" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="8385" width="3315" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\22_Visualisation_Equalizer_Stripes.v4p|">
+   </PIN>
+   </NODE>
    </PATCH>

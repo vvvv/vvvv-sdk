@@ -32,7 +32,7 @@ namespace VVVV.Nodes
     [PluginInfo (Name = "Mesh",
                  Category = "EX9.Geometry",
                  Version = "Collada",
-                 Author = "vvvv group",
+                 Author = "vvvv group, woei",
                  Help = "Returns a D3D9 mesh consisting of all meshes specified by index.",
                  Tags = "dae")]
     public class PluginColladaMesh: IPluginEvaluate, IPluginDXMesh
@@ -49,6 +49,19 @@ namespace VVVV.Nodes
         
         [Input ("Index")]
         protected IDiffSpread<int> FIndex;
+        
+        [Output ("MeshName")]
+        protected ISpread<string> FMeshNameOutput;
+                
+        [Output ("MeshPath")]
+        protected ISpread<string> FMeshPathOutput;
+        
+        [Output ("MaterialName")]
+        protected ISpread<string> FMaterialNameOutput;
+
+        
+//        [Output ("EffectID")]
+//        protected ISpread<string> FFxIdOutput;
         
         [Output ("TextureFileName")]
         protected ISpread<string> FTextureFileNameOutput;
@@ -130,12 +143,15 @@ namespace VVVV.Nodes
 	        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FBinSize.IsChanged)
 				{
 	        		FSelectedInstanceMeshes.Clear();
-	        		
+	        		FMeshNameOutput.SliceCount = 0;
+	        		FMeshPathOutput.SliceCount = 0;
 	        		FColladaModel = FColladaModelIn[0];
 	        		
 	        		if (FColladaModel == null)
 	        		{
 	        			FMyMeshOutput.SliceCount = 0;
+	        			FMaterialNameOutput.SliceCount = 0;
+//	        			FFxIdOutput.SliceCount = 0;
 	        			FTextureFileNameOutput.SliceCount = 0;
 						FEmissiveColorOut.SliceCount = 0;
 						FDiffuseColorOut.SliceCount = 0;
@@ -151,17 +167,25 @@ namespace VVVV.Nodes
 		        			binSize = FColladaModel.InstanceMeshes.Count / Math.Abs(binSize);
 		        		
 						List<Model.BasicMaterial> materialList = new List<Model.BasicMaterial>();
+//						FFxIdOutput.SliceCount = 0;
 						for (int i = 0; i < FIndex.SliceCount; i++)
 						{
 						    int index = FIndex[i] * binSize;
 							index = ((index % FColladaModel.InstanceMeshes.Count) + FColladaModel.InstanceMeshes.Count) % FColladaModel.InstanceMeshes.Count;
-							
 							for (int j = index; j < index + binSize; j++)
 							{
 								Model.InstanceMesh instanceMesh = FColladaModel.InstanceMeshes[j % FColladaModel.InstanceMeshes.Count];
 								FSelectedInstanceMeshes.Add(instanceMesh);
-								
 								FLogger.Log(LogType.Debug, "Instance of mesh '" + instanceMesh + "' loaded.");
+								
+								string name = instanceMesh.ParentBone.NodeName;
+								string path = name;
+								var bone = instanceMesh.ParentBone;
+								while (bone.Parent.NodeType == "NODE")
+								{
+									path = bone.Parent.NodeName+"/"+path;
+									bone = bone.Parent;
+								}
 								
 								foreach (Document.Primitive primitive in instanceMesh.Mesh.Primitives)
 								{
@@ -172,15 +196,23 @@ namespace VVVV.Nodes
 									}
 									
 									if (FColladaModel.BasicMaterialsBinding.TryGetValue(bindedMaterialId, out material))
+									{
 										materialList.Add(material);
+//										FFxIdOutput.Add(bindedMaterialId);
+									}
 									else
 									{
 										materialList.Add(FNoMaterial);
+//										FFxIdOutput.Add(bindedMaterialId);
 									}
+									
+									FMeshNameOutput.Add(name); //add name of the mesh
+									FMeshPathOutput.Add(path); //and prepend the group names it's in
 								}
 							}
 						}
 						
+						FMaterialNameOutput.SliceCount = materialList.Count;
 						FTextureFileNameOutput.SliceCount = materialList.Count;
 						FEmissiveColorOut.SliceCount = materialList.Count;
 						FDiffuseColorOut.SliceCount = materialList.Count;
@@ -190,6 +222,7 @@ namespace VVVV.Nodes
 						for (int j = 0; j < materialList.Count; j++)
 						{
 							Model.BasicMaterial material = materialList[j];
+							FMaterialNameOutput[j] = material.Name;
 							FTextureFileNameOutput[j] = material.Texture;
 							if (material.EmissiveColor.HasValue)
 								FEmissiveColorOut[j] = new RGBAColor(material.EmissiveColor.Value.X, material.EmissiveColor.Value.Y, material.EmissiveColor.Value.Z, 1.0);
@@ -241,11 +274,14 @@ namespace VVVV.Nodes
 						int meshIndex = i % FSelectedInstanceMeshes.Count;
 						Model.InstanceMesh instanceMesh = FSelectedInstanceMeshes[meshIndex];
 						
+						
+
 						float time = FTimeInput[i];
 						Matrix m = instanceMesh.ParentBone.GetAbsoluteTransformMatrix(time) * FColladaModel.ConversionMatrix;
 						
 						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
 							transforms.Add(m);
+
 						}
 						
 						// Skinning
@@ -257,6 +293,7 @@ namespace VVVV.Nodes
 								invBindPoseTransforms.Add(skinnedInstanceMesh.InvBindMatrixList[j]);
 						}
 					}
+					
 					
 					FTransformOutput.SliceCount = transforms.Count;
 					for (int j = 0; j < transforms.Count; j++)

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\3D\PointEditor (3D) help.v4p">
    <BOUNDS height="9795" left="0" top="0" type="Window" width="13590">
    </BOUNDS>
    <NODE componentmode="InABox" id="44" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -799,7 +799,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Edit Front Only" slicecount="1" values="0">
    </PIN>
@@ -818,12 +818,14 @@
    </LINK>
    <LINK dstnodeid="50" dstpinname="View Projection" srcnodeid="48" srcpinname="View Projection">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="51">
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="51">
    <BOUNDS type="Node" left="9750" top="3585" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="51" srcpinname="Mouse" dstnodeid="50" dstpinname="Mouse">
+   <LINK srcnodeid="51" srcpinname="Device" dstnodeid="50" dstpinname="Mouse">
    </LINK>
    </PATCH>
