@@ -1,9 +1,9 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\gassi - use at own risk.v4p">
-   <BOUNDS height="8070" left="2700" top="1605" type="Window" width="7215">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\Games\gassi - use at own risk.v4p">
+   <BOUNDS height="8070" left="4485" top="2625" type="Window" width="8655">
    </BOUNDS>
    <NODE id="7" nodename="Icon (Windows)">
-   <BOUNDS height="0" left="3465" top="4275" type="Node" width="0">
+   <BOUNDS height="270" left="4800" top="3375" type="Node" width="1110">
    </BOUNDS>
    <PIN pinname="Icon Index" visible="1">
    </PIN>
@@ -15,35 +15,21 @@
    </PIN>
    </NODE>
    <NODE id="6" nodename="FrameDelay (Animation)">
-   <BOUNDS height="0" left="3885" top="5340" type="Node" width="0">
+   <BOUNDS height="0" left="5865" top="4440" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <NODE id="5" nodename="Queue (Spreads Legacy)">
-   <BOUNDS height="0" left="1515" top="3840" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="do Insert" visible="1">
-   </PIN>
-   <PIN pinname="Frame Count" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="X" srcnodeid="5" srcpinname="Output">
-   </LINK>
    <NODE id="-6" nodename="MainLoop (VVVV)">
-   <BOUNDS height="0" left="990" top="6150" type="Node" width="0">
+   <BOUNDS height="0" left="1230" top="6705" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum forground fps" slicecount="1" values="999">
    </PIN>
    </NODE>
    <NODE id="8" nodename="Mouse (Devices Desktop)">
-   <BOUNDS height="0" left="1110" top="2070" type="Node" width="0">
+   <BOUNDS height="0" left="4635" top="1740" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -55,11 +41,9 @@
    </PIN>
    <PIN pinname="Middle Button" visible="1">
    </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="8" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="do Insert" srcnodeid="8" srcpinname="Middle Button">
-   </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
    <BOUNDS height="255" left="240" top="195" type="Node" width="660">
    </BOUNDS>
@@ -79,7 +63,7 @@
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
    <BOUNDS height="255" left="240" top="900" type="Node" width="4050">
    </BOUNDS>
-   <BOUNDS height="255" left="240" top="900" type="Box" width="4605">
+   <BOUNDS height="480" left="240" top="900" type="Box" width="3195">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -91,11 +75,11 @@
    </PIN>
    </NODE>
    <NODE id="2" nodename="I (Spreads)">
-   <BOUNDS height="0" left="4275" top="3660" type="Node" width="0">
+   <BOUNDS height="0" left="5835" top="2850" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="6810" top="6105" type="Window" width="9000">
    </BOUNDS>
-   <BOUNDS height="3600" left="4275" top="3660" type="Box" width="4800">
+   <BOUNDS height="3600" left="5835" top="2850" type="Box" width="4800">
    </BOUNDS>
    <PIN pinname="Integer" visible="1">
    </PIN>
@@ -108,22 +92,18 @@
    </NODE>
    <LINK dstnodeid="7" dstpinname="Icon Index" srcnodeid="2" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="2" dstpinname=".. To [" srcnodeid="6" srcpinname="Output 1">
-   <LINKPOINT x="4170" y="6810">
+   <LINK dstnodeid="2" dstpinname=".. To [" srcnodeid="6" srcpinname="Output 1" linkstyle="Bezier">
+   <LINKPOINT x="7720" y="5895">
    </LINKPOINT>
-   <LINKPOINT x="6765" y="6765">
-   </LINKPOINT>
-   <LINKPOINT x="5700" y="2055">
-   </LINKPOINT>
-   <LINKPOINT x="4485" y="2430">
+   <LINKPOINT x="7610" y="1530">
    </LINKPOINT>
    </LINK>
    <NODE id="1" nodename=":MODULES:\vvvv group\Spreads\AvoidNIL (Spreads).v4p">
-   <BOUNDS height="0" left="3885" top="4800" type="Node" width="0">
+   <BOUNDS height="0" left="5865" top="3900" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="6960" top="8025" type="Window" width="9000">
    </BOUNDS>
-   <BOUNDS height="3600" left="3885" top="4800" type="Box" width="4800">
+   <BOUNDS height="3600" left="5865" top="3900" type="Box" width="4800">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -134,40 +114,118 @@
    </LINK>
    <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE id="0" nodename="Queue (Spreads Legacy)">
-   <BOUNDS height="0" left="2550" top="3585" type="Node" width="0">
+   <NODE systemname="Queue (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Queue (Spreads)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="4815" top="2355" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Frame Count">
+   <PIN pinname="Frame Count" visible="1">
    </PIN>
-   <PIN pinname="do Insert">
+   <PIN pinname="Insert" visible="1">
    </PIN>
-   <PIN pinname="Input" slicecount="1" values="0">
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="Y" srcnodeid="0" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="8" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="do Insert" srcnodeid="8" srcpinname="Middle Button">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Frame Count" srcnodeid="6" srcpinname="Output 1">
-   <LINKPOINT x="4305" y="6945">
+   <LINK srcnodeid="6" srcpinname="Output 1" dstnodeid="9" dstpinname="Frame Count" linkstyle="Bezier">
+   <LINKPOINT x="8000" y="6465">
    </LINKPOINT>
-   <LINKPOINT x="6915" y="6870">
-   </LINKPOINT>
-   <LINKPOINT x="5745" y="1890">
-   </LINKPOINT>
-   <LINKPOINT x="3225" y="2745">
+   <LINKPOINT x="8620" y="1155">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Frame Count" srcnodeid="6" srcpinname="Output 1">
-   <LINKPOINT x="4485" y="7095">
-   </LINKPOINT>
-   <LINKPOINT x="7050" y="7020">
-   </LINKPOINT>
-   <LINKPOINT x="5790" y="1695">
-   </LINKPOINT>
-   <LINKPOINT x="2190" y="2880">
-   </LINKPOINT>
+   <LINK srcnodeid="8" srcpinname="Middle Button" dstnodeid="9" dstpinname="Insert">
    </LINK>
+   <LINK srcnodeid="8" srcpinname="PositionXY" dstnodeid="9" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="4815" top="2850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="10" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="X" dstnodeid="7" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y" dstnodeid="7" dstpinname="Y">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="195" top="1935" width="9945" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="195" top="1935" width="3210" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|In order this game to work, rightclick on your desktop and under the &apos;View&apos; menu unchek the &apos;Auto Arrange Icons&apos; and &apos;Align Icons to grid&apos; options.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="195" top="1635" width="3600" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="195" top="1635" width="3600" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="195" top="2910" width="3600" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="195" top="2910" width="3600" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5985" top="3360" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="300" left="5985" top="3360" type="Box" width="345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5490" top="2340" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="300" left="5490" top="2340" type="Box" width="345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
    </PATCH>
