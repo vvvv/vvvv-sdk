@@ -13,7 +13,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    unsafe abstract class UnmanagedInStream<T> : IInStream<T>
+    public unsafe abstract class UnmanagedInStream<T> : IInStream<T>
     {
         internal abstract class UnmanagedInStreamReader : IStreamReader<T>
         {
