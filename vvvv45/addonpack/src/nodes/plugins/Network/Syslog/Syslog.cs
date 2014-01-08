@@ -1,68 +1,147 @@
 #region usings
 using System;
+using System.IO;
 using System.ComponentModel.Composition;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
+
 using VVVV.Core.Logging;
+
+using VVVV.Nodes.Syslog;
 
 #endregion usings
 
 namespace VVVV.Nodes
 {
-	#region PluginInfo
-	[PluginInfo(Name = "Syslog", Category = "VVVV", Help = "log TTY messages to a specified Syslog Server", Tags = "Network, Udp")]
-	#endregion PluginInfo
-	public class SyslogServerNode : IPluginEvaluate
-	{
-		#region fields & pins		
-		[Input("Mac Adress", DefaultString = "00:00:00:00:00:00")]
-		ISpread<string> FMac;
-		
-		[Input("Port", DefaultValue = 50000)]
-		ISpread<int> FPort;
+    #region PluginInfo
+    [PluginInfo(Name = "Syslog", 
+                Version = "", 
+                Category = "String", 
+                Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
+                Tags = "Raw")]
+    #endregion PluginInfo
+    public class SyslogStringNode : Syslog.AbstractSyslog, IPluginEvaluate, IPartImportsSatisfiedNotification
+    {
 
-		
-		[Output("Status")]
-		ISpread<string> FStatus;
-		
-//		[Import()]
-//		ILogger FLogger;
-		#endregion fields & pins	
-		
-		
-		public void Evaluate(int SpreadMax)
-		{
-			FStatus.SliceCount = 1;
-			
-			
-		}
-		
-		
-		
-		public class BroadcastUdpClient:UdpClient
-		{
-			public BroadcastUdpClient():base()
-			{ }
-			//this is needed to send broadcast packet ?
-			public void SetClientToBrodcastMode()
-			{
-				if(this.Active)
-				this.Client.SetSocketOption(SocketOptionLevel.Socket,
-				SocketOptionName.Broadcast,0);
-			}
-		}
-		
-		
-		
-	}
+        #region fields & pins
+        [Input("Message")]
+        public IDiffSpread<string> FMessageIn;
+
+        [Input("Tag")]
+        public IDiffSpread<string> FTag;
+
+        [Input("Facility", DefaultEnumEntry = "local0")]
+        public IDiffSpread<Facility> FFacility;
+
+        [Input("Level", DefaultEnumEntry = "Debug")]
+        public IDiffSpread<Level> FLevel;
+
+        [Output("Message")]
+        public ISpread<Stream> FStreamOut;
+
+        private const int VERSION = 1;
+
+        #endregion fields & pins
+
+        //called when all inputs and outputs defined above are assigned from the host
+        public void OnImportsSatisfied()
+        {
+            //start with an empty stream output
+            FStreamOut.SliceCount = 0;
+        }
+
+        //called when data for any output pin is requested
+        public void Evaluate(int spreadMax)
+        {
+            //ResizeAndDispose will adjust the spread length and thereby call
+            //the given constructor function for new slices and Dispose on old
+            //slices.
+            FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+            for (int i = 0; i < spreadMax; i++)
+            {
+                if (FMessageIn.IsChanged || FFacility.IsChanged || FLevel.IsChanged)
+                {
+                    byte[] message = ConstructMessage(FLevel[i], FFacility[i], FMessageIn[i]);
+
+                    Stream outputStream = FStreamOut[i];
+
+                    outputStream.Position = 0;
+                    outputStream.SetLength(message.Length);
+                    outputStream.Write(message, 0, message.Length);
+                }
+            }
+            //this will force the changed flag of the output pin to be set
+            FStreamOut.Flush(true);
+        }
+
+
+        private byte[] ConstructMessage(Level level, Facility facility, string tag, string message = "")
+        {
+            int prival = (( int )facility) * 8 + (( int )level);
+            string pri = string.Format("<{0}>", prival);
+            string timestamp =
+            new DateTimeOffset(DateTime.Now, TimeZoneInfo.Local.GetUtcOffset(DateTime.Now)).ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
+            string hostname = Dns.GetHostEntry(Environment.UserDomainName).HostName;
+
+            string header = string.Format("{0}{1} {2} {3} {4}", pri, VERSION, timestamp, hostname, tag);
+
+            List<byte> syslogMsg = new List<byte>();
+            syslogMsg.AddRange(System.Text.Encoding.ASCII.GetBytes(header));
+            syslogMsg.AddRange(System.Text.Encoding.ASCII.GetBytes(" "));
+            syslogMsg.AddRange(System.Text.Encoding.UTF8.GetBytes(message));
+
+            return syslogMsg.ToArray();
+        }
+
+
+
+    }
+
+
+
+    #region PluginInfo
+    [PluginInfo(Name = "Logger", 
+                Version = "", 
+                Category = "VVVV", 
+                Help = "logs a given String to the TTY/Syslog", 
+                Tags = "Debug", 
+                AutoEvaluate = true)]
+    #endregion PluginInfo
+    public class LogNode : Syslog.AbstractSyslog, IPluginEvaluate
+    {
+        
+        #region fields & pins
+        [Input("Message")]
+        public IDiffSpread<string> FLogMessage;
+
+        [Input("Logtype", DefaultEnumEntry = "Debug")]
+        public IDiffSpread<LogType> FLogtype;
+
+        [Import()]
+        ILogger FLogger;
+        #endregion fields & pins
+
+
+        public void Evaluate(int spreadMax)
+        {
+            for (int i = 0; i < spreadMax; i++)
+            {
+                if (FLogMessage.IsChanged || FLogtype.IsChanged)
+                {
+                    if (FLogMessage[i].Length > 0)
+                        FLogger.Log(FLogtype[i], FLogMessage[i]);
+                }
+            }
+        }
+
+
+    }
 
 
 
