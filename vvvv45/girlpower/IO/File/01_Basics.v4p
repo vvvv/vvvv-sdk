@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Basics.v4p" systemname="Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Basics.v4p">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\01_Basics.v4p" systemname="Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Basics.v4p">
    <BOUNDS type="Window" left="0" top="0" width="19050" height="16605">
    </BOUNDS>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -145,7 +145,7 @@
    <LINK srcnodeid="15" srcpinname="Output Enum" dstnodeid="12" dstpinname="Encoding">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="210" top="6735" width="1560" height="2625">
+   <BOUNDS type="Box" left="210" top="6735" width="1695" height="2625">
    </BOUNDS>
    <BOUNDS type="Node" left="210" top="6735" width="0" height="0">
    </BOUNDS>
@@ -233,7 +233,7 @@
    <LINK srcnodeid="23" srcpinname="Output Enum" dstnodeid="9" dstpinname="Intersperse">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6225" top="6735" width="1515" height="2625">
+   <BOUNDS type="Box" left="6225" top="6735" width="1830" height="2610">
    </BOUNDS>
    <BOUNDS type="Node" left="6225" top="6735" width="0" height="0">
    </BOUNDS>
@@ -455,7 +455,7 @@
    </BOUNDS>
    <BOUNDS height="4500" left="765" top="10020" type="Box" width="4020">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Imagine you have 50 points described by their XY positions. This is what the RandomSpread (Spreads) simulates in this example: it returns a spread of 100 values.&cr;&lf;&cr;&lf;These values are converted into their string representation by FormatValue (String). After that they are concatenated with the &apos;x:&apos; and &apos;y:&apos; strings in order to create the human-readable description.&cr;&lf;&cr;&lf;Add (String Spectral) concatenates every two slices (see the &apos;BinSize&apos; pin set to 2) together.&cr;&lf;&cr;&lf;And now all the slices are concatenated into one big string (see the &apos;BinSize&apos; pin is left by default = -1). The &apos;CarriageReturnLineFeed&apos; sequence is used to separate individual points. Mouseover the &apos;Output&apos; pin to see how it looks like.&cr;&lf;&cr;&lf;The Writer (String) saves this string to a file with the defined &apos;Filename&apos;. |">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Imagine you have 50 points described by their XY positions. This is what the RandomSpread (Spreads) represents in this example: it returns a spread of 100 values.&cr;&lf;&cr;&lf;These values are converted into their string representation by FormatValue (String). After that they are concatenated with the &apos; x: &apos; and &apos; y: &apos; strings in order to create the human-readable description.&cr;&lf;&cr;&lf;Add (String Spectral) concatenates every two slices (see the &apos;BinSize&apos; pin set to 2) together.&cr;&lf;&cr;&lf;And now all the slices are concatenated into one big string (see the &apos;BinSize&apos; pin is left by default = -1). The &apos;CarriageReturnLineFeed&apos; sequence is used to separate individual points. Mouseover the &apos;Output&apos; pin to see how it looks like.&cr;&lf;&cr;&lf;The Writer (String) saves this string to a file with the defined &apos;Filename&apos;. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -577,9 +577,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="51" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8100" top="3510" width="1380" height="480">
+   <BOUNDS type="Node" left="8115" top="3510" width="1380" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="8100" top="3510" width="810" height="675">
+   <BOUNDS type="Box" left="8115" top="3510" width="810" height="675">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick to LOAD&cr;&lf;v|">
    </PIN>
@@ -933,7 +933,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="390" top="645" width="5625" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two options how to save &amp; load your data:&cr;&lf;a) convert everything into the string representation and save it into text file.&cr;&lf;b) convert everything into Raw binary data and save it as binary file. |">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two options how to save &amp; load your data:&cr;&lf;a) convert everything into string representation and save it into text file.&cr;&lf;b) convert everything into Raw binary data and save it as binary file. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -951,7 +951,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" values="x:,y:">
+   <PIN pinname="Input String" slicecount="2" values="| x: |,| y: |">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -995,7 +995,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Bin Size" slicecount="1" values="-1" visible="1">
+   <PIN pinname="Bin Size" slicecount="1" visible="1" values="-1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="112" systemname="IOBox (Enumerations)">
@@ -1119,7 +1119,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|... ADD PATCHES|">
+   <PIN pinname="Input String" slicecount="1" values="*************">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="122" systemname="IOBox (Value Advanced)">
@@ -1179,7 +1179,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Directory">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\..\Strings">
+   <PIN pinname="Input String" slicecount="1" values="**************">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="130" nodename="IOBox (String)" systemname="IOBox (String)">
