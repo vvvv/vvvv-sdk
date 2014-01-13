@@ -697,7 +697,7 @@ namespace VVVV.Nodes.Input
         [Input("Mouse")]
         public ISpread<Mouse> MouseIn;
         [Input("Queue Mode", DefaultEnumEntry = "Discard")]
-        public ISpread<ScheduleMode> ScheduleModeIn;
+        public ISpread<QueueMode> QueueModeIn;
 
         [Output("Position")]
         public ISpread<Vector2D> PositionOut;
@@ -786,7 +786,7 @@ namespace VVVV.Nodes.Input
                 //resubsribe if necessary
                 FSubscriptions[i].Update(MouseIn[i]);
                 //process events
-                FSchedulers[i].Run(ScheduleModeIn[i]);
+                FSchedulers[i].Run(QueueModeIn[i]);
             }
         }
     }
