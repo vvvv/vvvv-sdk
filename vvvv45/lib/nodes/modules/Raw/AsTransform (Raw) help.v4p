@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Raw\AsTransform (Raw) help.v4p">
-   <BOUNDS type="Window" left="360" top="270" width="10590" height="8940">
+   <BOUNDS type="Window" left="0" top="0" width="10590" height="8940">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -15,9 +15,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="150" top="550" width="5000" height="500">
+   <BOUNDS type="Node" left="150" top="555" width="5000" height="500">
    </BOUNDS>
-   <BOUNDS type="Box" left="150" top="550" width="4260" height="285">
+   <BOUNDS type="Box" left="150" top="555" width="4260" height="285">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="|Interprets a sequence of bytes as a transformation matrix.|">
    </PIN>
@@ -25,9 +25,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="195" top="1215" width="4035" height="270">
+   <BOUNDS type="Node" left="150" top="1215" width="4035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="195" top="1215" width="2220" height="525">
+   <BOUNDS type="Box" left="150" top="1215" width="2220" height="525">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|128 bytes are used to encode a transformation matrix.|">
    </PIN>
@@ -66,7 +66,7 @@
    </NODE>
    <LINK srcnodeid="37" srcpinname="Transform Out" dstnodeid="36" dstpinname="Transform">
    </LINK>
-   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="38" dstpinname="Input">
+   <LINK srcnodeid="36" srcpinname="Output" dstnodeid="38" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4245" top="3735" width="990" height="270">
@@ -94,16 +94,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="33">
-   <BOUNDS type="Node" left="6885" top="3330" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6885" top="3330" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="18090" top="5370" width="6240" height="5010">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="32">
@@ -204,18 +194,18 @@
    </LINK>
    <LINK srcnodeid="38" srcpinname="Transform Out" dstnodeid="27" dstpinname="Transform">
    </LINK>
-   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="6885" top="2865" width="100" height="100">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6570" top="1485" width="1230" height="270">
    </BOUNDS>
-   <PIN pinname="Transform" visible="1">
+   <BOUNDS type="Box" left="6570" top="1485" width="1230" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Change these|">
    </PIN>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Resolution Y" visible="1">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="37" srcpinname="Transform Out" dstnodeid="26" dstpinname="Transform">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Layer" dstnodeid="33" dstpinname="Layers">
-   </LINK>
    </PATCH>

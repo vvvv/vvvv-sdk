@@ -33,9 +33,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="195" top="1215" width="4035" height="270">
+   <BOUNDS type="Node" left="150" top="1215" width="4035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="195" top="1215" width="2220" height="525">
+   <BOUNDS type="Box" left="150" top="1215" width="2370" height="525">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|128 bytes are used to encode a transformation matrix.|">
    </PIN>
@@ -66,7 +66,7 @@
    </NODE>
    <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="19" dstpinname="Input">
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="19" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4245" top="3735" width="990" height="270">
@@ -94,16 +94,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="12">
-   <BOUNDS type="Node" left="6885" top="3330" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6885" top="3330" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="18090" top="5370" width="6240" height="5010">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="10">
@@ -204,18 +194,32 @@
    </LINK>
    <LINK srcnodeid="19" srcpinname="Transform Out" dstnodeid="11" dstpinname="Transform">
    </LINK>
-   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="13">
-   <BOUNDS type="Node" left="6885" top="2865" width="100" height="100">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6570" top="1485" width="1230" height="270">
    </BOUNDS>
-   <PIN pinname="Transform" visible="1">
+   <BOUNDS type="Box" left="6570" top="1485" width="1230" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Change these|">
    </PIN>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Resolution Y" visible="1">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="13" dstpinname="Transform">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Layer" dstnodeid="12" dstpinname="Layers">
-   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="150" top="2055" width="4035" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="2055" width="2400" height="1005">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Use AsRaw (Transform) to encode the transformations before writing them to a file or sending over the network.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
