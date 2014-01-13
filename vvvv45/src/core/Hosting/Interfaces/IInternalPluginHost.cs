@@ -11,12 +11,6 @@ namespace VVVV.Hosting.Interfaces
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IInternalPluginHost : IPluginHost2
     {
-        IPluginBase Plugin
-        {
-            get;
-            set;
-        }
-
         IWin32Window Win32Window
         {
             get;

@@ -12,7 +12,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    public class PluginContainer : IPlugin, IDisposable, ICustomQueryInterface
+    public class PluginContainer : IPlugin, IDisposable, ICustomQueryInterface, IPluginContainer
     {
         [Export(typeof(IIOFactory))]
         [Export(typeof(IOFactory))]
