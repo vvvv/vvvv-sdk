@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using VVVV.Utils.Streams;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO.Pointers
 {
-    public unsafe class ValueInput : ISynchronizable, IInStream
+    public unsafe class ValueInput : IValuePointerInput, IInStream
     {
         private readonly IValueIn FPin;
         int* lenptr;
