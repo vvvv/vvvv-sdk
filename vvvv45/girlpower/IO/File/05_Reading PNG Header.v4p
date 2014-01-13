@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Reading PNG Header.v4p" systemname="Reading PNG Header" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Reading PNG Header.v4p">
-   <BOUNDS type="Window" left="2415" top="4170" width="16755" height="11805">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\05_Reading PNG Header.v4p" systemname="Reading PNG Header" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Reading PNG Header.v4p">
+   <BOUNDS type="Window" left="2415" top="4170" width="16755" height="11550">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="525" top="195" type="Node" width="945">
@@ -243,7 +243,7 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Byte Order" slicecount="1" values="BigEndian" visible="1" pintype="Input">
+   <PIN pinname="Byte Order" slicecount="1" visible="1" pintype="Input" values="BigEndian">
    </PIN>
    <BOUNDS type="Box" left="7980" top="6750">
    </BOUNDS>
@@ -479,7 +479,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="570" top="1560" width="4530" height="2415">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Reader (Raw) reads and returns raw binary data of the PNG file.&cr;&lf;&cr;&lf;PNG format has a standard 8 bytes signature at the beginning of the file. Then comes first chunk of image header.&cr;&lf;First 4 bytes of the chunk is its length.&cr;&lf;Next 4 bytes is its type (4 ASCII characters).&cr;&lf;Then follows the chunk&apos;s data.&cr;&lf;&cr;&lf;So in this example first 12 bytes are skipped (signature and chunk&apos;s length) and the following bytes are picked.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Reader (Raw) reads and returns raw binary data of the PNG file.&cr;&lf;&cr;&lf;PNG format has a standard 8 bytes signature at the beginning of the file. Then comes first chunk of the image header.&cr;&lf;First 4 bytes of the chunk is its length.&cr;&lf;Next 4 bytes is its type (4 ASCII characters).&cr;&lf;Then follows the data.&cr;&lf;&cr;&lf;So in this example first 12 bytes are skipped (signature and chunk&apos;s length) and the following bytes are picked.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -691,7 +691,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="570" top="8535" width="4275" height="1800">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsValue (Raw) has a hidden &apos;Byte Order&apos; pin (available via Inspektor) for dealing with these situations.&cr;&lf;&cr;&lf;The last single byte defines the Bit Depth of the image.&cr;&lf;&cr;&lf;As a proof, that the header is read correctly, the file is loaded as a texture and Info (EX9.Texture) is used to extract the texture data.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsValue (Raw) has a hidden &apos;Byte Order&apos; pin (available via Inspektor) for dealing with these situations.&cr;&lf;&cr;&lf;The last single byte defines the Bit Depth of the image.&cr;&lf;&cr;&lf;As a proof, that the header is read correctly, the file is loaded as a texture and Info (EX9.Texture) is used to return the texture data.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Primitives_Overview.v4p" systemname="Primitives_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Primitives_Overview.v4p">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\05_Primitives_Overview.v4p" systemname="Primitives_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Primitives_Overview.v4p">
    <BOUNDS type="Window" left="0" top="0" width="21045" height="11490">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="24">
@@ -205,7 +205,7 @@
    <LINK srcnodeid="32" srcpinname="Render State Out" dstnodeid="38" dstpinname="Render State" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="12555" top="4605" width="100" height="100">
+   <BOUNDS type="Node" left="12405" top="5025" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -217,9 +217,9 @@
    <LINK srcnodeid="40" srcpinname="Output" dstnodeid="38" dstpinname="VerticesXYZ">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13605" top="4230" width="285" height="240">
+   <BOUNDS type="Box" left="13455" top="4650" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13605" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="13455" top="4650" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="27">
    </PIN>
@@ -232,26 +232,10 @@
    </NODE>
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Spread Count">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12390" top="5115" width="345" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="12390" top="5115" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Single Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12915" top="4230" width="285" height="240">
+   <BOUNDS type="Box" left="12765" top="4650" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12915" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="12765" top="4650" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
@@ -265,9 +249,9 @@
    <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Width">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13245" top="4230" width="285" height="240">
+   <BOUNDS type="Box" left="13095" top="4650" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13245" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="13095" top="4650" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="4">
    </PIN>
@@ -425,15 +409,17 @@
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="60">
    <BOUNDS type="Node" left="11925" top="8985" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="11925" top="8985" width="1710" height="240">
+   <BOUNDS type="Box" left="11925" top="8985" width="2190" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
+   <PIN pinname="Input String" slicecount="1" values="Lines_Overview.v4p">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="59" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11925" top="9390" width="2400" height="270">
+   <BOUNDS type="Node" left="11925" top="9690" width="2400" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11925" top="9390" width="2400" height="270">
+   <BOUNDS type="Box" left="11925" top="9690" width="2400" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="-----------------------------">
    </PIN>
@@ -445,9 +431,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="58" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11925" top="9780" width="1200" height="270">
+   <BOUNDS type="Node" left="11925" top="9975" width="1200" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11925" top="9780" width="1320" height="300">
+   <BOUNDS type="Box" left="11925" top="9975" width="1320" height="300">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Similar nodes:|">
    </PIN>
@@ -461,7 +447,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Stroke (EX9)" nodename="Stroke (EX9)" componentmode="Hidden" id="62" filename="%VVVV%\addonpack\lib\nodes\modules\EX9\Stroke (EX9).v4p">
-   <BOUNDS type="Node" left="11925" top="10110" width="100" height="100">
+   <BOUNDS type="Node" left="11925" top="10305" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="69">
@@ -746,6 +732,16 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="94">
+   <BOUNDS type="Node" left="11925" top="9300" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11925" top="9300" width="2190" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="Lines_2.v4p">
    </PIN>
    </NODE>
    </PATCH>
