@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv-sdk-anton\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
-   <BOUNDS type="Window" left="990" top="405" width="23820" height="16080">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
+   <BOUNDS type="Window" left="990" top="405" width="23820" height="16185">
    </BOUNDS>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="60">
    <BOUNDS type="Node" left="11220" top="1680" width="100" height="100">
@@ -576,34 +576,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" id="1" nodename="Line (EX9)" systemname="Line (EX9)">
-   <BOUNDS height="270" left="9690" top="5835" type="Node" width="5640">
-   </BOUNDS>
-   <BOUNDS height="15480" left="13500" top="750" type="Window" width="18975">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9690" top="5835">
-   </BOUNDS>
-   <PIN pinname="Closed" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="1" dstpinname="BinSize">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Transform Each Bin">
-   </LINK>
-   <LINK srcnodeid="59" srcpinname="XYZ" dstnodeid="1" dstpinname="VerticesXYZ" hiddenwhenlocked="0">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Width">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="1" dstpinname="Color">
-   </LINK>
    <NODE id="63" componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" systemname="Line (EX9)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" height="270" left="960" top="5835" width="3060">
    </BOUNDS>
@@ -842,8 +814,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="89" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Closed">
-   </LINK>
    <NODE componentmode="InABox" id="90" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="11820" top="4845" type="Node" width="315">
    </BOUNDS>
@@ -877,9 +847,9 @@
    <NODE componentmode="InABox" id="95" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="9630" top="9945" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4980" left="9630" top="9945" type="Box" width="4455">
+   <BOUNDS height="5250" left="9630" top="9945" type="Box" width="4530">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color whole lines and not their sections, every color has to be specified so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for every bin. So now there are 4 sections in every line. The color spread has to be adjusted accordingly (every color has to be specified 3 times instead of 2).&cr;&lf;&cr;&lf;Note: &apos;Enabled&apos; pin is spread with 3 Toggles. So the sigle bins (!) can be turned on and off. If there is only one toggle connected to the &apos;Enabled&apos; pin it controlls all the lines.&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color whole lines and not their sections, every color has to be specified so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for every bin. So now there are 4 sections in every line. The color spread has to be adjusted accordingly (every color has to be specified 3 times instead of 2).&cr;&lf;&cr;&lf;Now connect these 3 toggles to the &apos;Enabled&apos; pin.&cr;&lf;Note: &apos;Enabled&apos; pin is spreaded with 3 Toggles. So the single lines (bins) can be turned on and off. If there is only one toggle connected to the &apos;Enabled&apos; pin it controlls all the lines.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1461,15 +1431,13 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="3" values="1,1,1">
+   <PIN pinname="X Input Value" slicecount="3" values="1,0,1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="1,1,1">
+   <PIN pinname="Y Input Value" slicecount="3" values="1,0,1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="41" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform">
-   </LINK>
    <NODE componentmode="InABox" id="137" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="14820" top="3585" type="Node" width="315">
    </BOUNDS>
@@ -1486,8 +1454,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="136" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled">
-   </LINK>
    <NODE componentmode="InABox" id="138" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="9195" top="14145" type="Node" width="315">
    </BOUNDS>
@@ -1504,4 +1470,34 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE id="1" componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" systemname="Line (EX9)">
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS type="Node" height="270" left="9690" top="5835" width="5640">
+   </BOUNDS>
+   <BOUNDS type="Window" height="15480" left="13500" top="750" width="18975">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9690" top="5835">
+   </BOUNDS>
+   <PIN pinname="Closed">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="89" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Closed">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="1" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="XYZ" dstnodeid="1" dstpinname="VerticesXYZ" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Transform Each Bin">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="1" dstpinname="BinSize">
+   </LINK>
    </PATCH>
