@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Overview.v4p" systemname="Lines_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\Lines_Overview.v4p">
-   <BOUNDS type="Window" left="1965" top="420" width="12780" height="14340">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Overview.v4p" systemname="Lines_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\Lines_Overview.v4p">
+   <BOUNDS type="Window" left="1650" top="540" width="12780" height="14340">
    </BOUNDS>
    <NODE componentmode="InABox" id="34" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="885" top="5880" type="Node" width="100">
@@ -445,9 +445,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="101" systemname="IOBox (String)">
    <BOUNDS type="Node" left="675" top="1755" width="9405" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="1755" width="4920" height="720">
+   <BOUNDS type="Box" left="675" top="1755" width="4635" height="540">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|It takes one spread of all vertices and can connect them with the lines (according to the BinSize pin). It is also able draw closed lines.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Line points are specified via a single spread and connected according to the BinSize pin. It is also able draw closed lines.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -461,7 +461,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7140" top="1755" width="3960" height="480">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|It takes 2 separate spreads of vertices (&apos;From&apos; and &apos;To&apos;) and draws lines between them.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|It takes 2 separate spreads of points (&apos;From&apos; and &apos;To&apos;) and draws lines between them.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -475,7 +475,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Random Seed" slicecount="1" values="9">
+   <PIN pinname="Random Seed" slicecount="1" values="16">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="105" systemname="IOBox (Value Advanced)">
@@ -733,7 +733,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7485" top="8970" width="4170" height="2460">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The &apos;From&apos; vertex of every line is the position of the mouse. The Mouse (Devices Window) returns the &apos;XY&apos; coordinates of the position. A third &apos;Z&apos; coordinate (=0) is added.&cr;&lf;&cr;&lf;The RandomSpread (Spreads) generates 99 random values which are used as XYZ coordinates of 99/3=33 vertices. These are &apos;To&apos; vertices of the lines.&cr;&lf;&cr;&lf;The spread of two colors is defined for the &apos;Color&apos; pin, so all the lines are drawn using this alternating colors.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The &apos;From&apos; point of every line is the position of the mouse. The Mouse (Devices Window) returns the &apos;XY&apos; coordinates of the position. A third &apos;Z&apos; coordinate (=0) is added.&cr;&lf;&cr;&lf;The RandomSpread (Spreads) generates 99 random values which are interpreted as XYZ coordinates of 99/3=33 points. These are the &apos;To&apos; points of the lines.&cr;&lf;&cr;&lf;A spread of two colors is defined for the &apos;Color&apos; pin, so all the lines are drawn using these alternating colors.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -747,7 +747,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1215" top="8970" width="4440" height="3405">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="1" values="|VGhlIFJhbmRvbVNwcmVhZCAoU3ByZWFkcykgZ2VuZXJhdGVzIDQ1IHJhbmRvbSB2YWx1ZXMgd2hp&cr;&lf;Y2ggYXJlIHVzZWQgYXMgWFlaIGNvb3JkaW5hdGVzIG9mIDQ1Hy8zPTE1IHZlcnRpY2VzLg0KDQpU&cr;&lf;aGUgJ0JpblNpemUnIHBpbiBkZWZpbmVzIGhvdyBtYW55IG9mIHRoZXNlIGNvbnNlY3V0aXZlIHZl&cr;&lf;cnRpY2VzIHdpbGwgYmUgY29ubmVjdGVkIHdpdGggb25lIGxpbmUuIA0KDQpCaW5TaXplPS0xIG1l&cr;&lf;YW5zIHRoYXQgYWxsIGlucHV0IHZlcnRpY2VzIHdpbGwgYmUgY29ubmVjdGVkIHdpdGggb25lIGxp&cr;&lf;bmUuIEJpblNpemU9MiBtZWFucyB0aGF0IHRoZSBsaW5lIHdpbGwgYmUgZHJhd24gYmV0d2VlbiB0&cr;&lf;d28gdmVydGljZXMuIEFuZCBzbyBvbi4NCg0KV2hlbiB0aGUgJ0Nsb3NlZCcgcGluIGlzIHR1cm5l&cr;&lf;ZCBvbiwgYWRkaXRpb25hbCBsaW5lcyBhcmUgZHJhd24gaW4gb2RlciB0byBjbG9zZSB0aGUgbGlu&cr;&lf;ZXMgb2YgZXZlcnkgYmluLiANCg0KVHJ5IHRvIHNldCB0aGUgQmluU2l6ZT0zIGFuZCB0dXJuIG9u&cr;&lf;IHRoZSAnQ2xvc2VkJyBwaW46IGZpcnN0IG9mIHRoZXJlIHdpbGwgYmUgZm9ybXMgb2YgdHdvIGxp&cr;&lf;bmVzIChkcmF3biB0aHJvdWdodCAzIHBvaW50cyksIHRoZW4gdGhleSB3aWxsIGJlIGNsb3NlZCBm&cr;&lf;b3JtaW5nIHRyaWFuZ2xlcy4=|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="1" values="|VGhlIFJhbmRvbVNwcmVhZCAoU3ByZWFkcykgZ2VuZXJhdGVzIDQ1IHJhbmRvbSB2YWx1ZXMgd2hp&cr;&lf;Y2ggYXJlIHVzZWQgYXMgWFlaIGNvb3JkaW5hdGVzIG9mIDQ1Hy8zPTE1IHBvaW50cy4NCg0KVGhl&cr;&lf;ICdCaW5TaXplJyBwaW4gZGVmaW5lcyBob3cgbWFueSBvZiB0aGVzZSBjb25zZWN1dGl2ZSB2ZXJ0&cr;&lf;aWNlcyB3aWxsIGJlIGNvbm5lY3RlZCB3aXRoIG9uZSBsaW5lLiANCg0KQmluU2l6ZT0tMSBtZWFu&cr;&lf;cyB0aGF0IGFsbCBpbnB1dCBwb2ludHMgd2lsbCBiZSBjb25uZWN0ZWQgd2l0aCBvbmUgbGluZS4g&cr;&lf;QmluU2l6ZT0yIG1lYW5zIHRoYXQgYSBsaW5lIGlzIGRyYXduIGJldHdlZW4gZWFjaCB0d28gY29u&cr;&lf;c2VjdXRpdmUgcG9pbnRzLCBhbmQgc28gb24uDQoNCldoZW4gdGhlICdDbG9zZWQnIHBpbiBpcyB0&cr;&lf;dXJuZWQgb24sIGFkZGl0aW9uYWwgbGluZXMgYXJlIGRyYXduIGluIG9kZXIgdG8gY2xvc2UgdGhl&cr;&lf;IGxpbmVzIG9mIGV2ZXJ5IGJpbi4gDQoNClRyeSB0byBzZXQgdGhlIEJpblNpemU9MyBhbmQgdHVy&cr;&lf;biBvbiB0aGUgJ0Nsb3NlZCcgcGluOiBmaXJzdCB0aGVyZSB3aWxsIGJlIGZvcm1zIG9mIHR3byBs&cr;&lf;aW5lcyAoZHJhd24gdGhyb3VnaHQgMyBwb2ludHMpLCB0aGVuIHRoZXkgd2lsbCBiZSBjbG9zZWQg&cr;&lf;Zm9ybWluZyB0cmlhbmdsZXMu|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

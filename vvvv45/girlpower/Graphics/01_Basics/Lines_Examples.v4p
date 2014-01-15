@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
-   <BOUNDS type="Window" left="0" top="255" width="23820" height="15690">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
+   <BOUNDS type="Window" left="3135" top="495" width="23820" height="15675">
    </BOUNDS>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="60">
    <BOUNDS type="Node" left="11220" top="1680" width="100" height="100">
@@ -701,7 +701,7 @@
    </BOUNDS>
    <BOUNDS height="3105" left="885" top="10020" type="Box" width="4200">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A circular arrangement of nine 2D vertices is created. Vector (3d Join) adds the third &apos;Z&apos; coordinate to every vertex.&cr;&lf;&cr;&lf;With the BinSize=3 lines are drawn through 3 vertices and so they consist of 2 sections.&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section will be drawn for every bin. &cr;&lf;&cr;&lf;Now try to change the number of points to 7 (see the Step 1), leave the BinSize=3 and the &apos;Closed&apos; pin on. There will be 3 trianlges drawn: 0-1-2, 3-4-5, 6-0-1. This is how the spreading works in case of input vertices.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A circular arrangement of nine 2D points is created. Vector (3d Join) adds the third &apos;Z&apos; coordinate to every point.&cr;&lf;&cr;&lf;With the BinSize=3 lines are drawn through 3 points and so they consist of 2 sections.&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for each bin. &cr;&lf;&cr;&lf;Now try to change the number of points to 7 (see Step 1), leave the BinSize=3 and the &apos;Closed&apos; pin on. There will be 3 trianlges drawn: 0-1-2, 3-4-5, 6-0-1. This is how spreading deals with the input points.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -877,7 +877,7 @@
    </BOUNDS>
    <BOUNDS height="4110" left="9630" top="9945" type="Box" width="4425">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color the whole lines and not their sections, every color is copied so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section will be drawn for every bin. So now there are 4 sections in everyline. The color spread should be adjusted accordingly (every color should be copied 3 times insted of 2).&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color whole lines and not their sections, every color has to be specified so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for every bin. So now there are 4 sections in every line. The color spread has to be adjusted accordingly (every color has to be specified 3 times instead of 2).&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1241,7 +1241,7 @@
    </BOUNDS>
    <BOUNDS height="2235" left="16980" top="9945" type="Box" width="4380">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The RandomSpread (Spreads) creates 300 random values, which are used as xyz coordinates of 3d vertices.&cr;&lf;&cr;&lf;Line (EX9) draws a 3d line between each two of these vertices (see the BinSize set to 2). So there will be 50 lines.&cr;&lf;&cr;&lf;A spread of 15 colors is created and supplied to the &apos;Color&apos; pin of the Line (EX9).&cr;&lf;&cr;&lf;There is also a pattern defined for the lines.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The RandomSpread (Spreads) creates 300 random values, which are used as xyz coordinates of 3d points.&cr;&lf;&cr;&lf;Line (EX9) draws a 3d line between each two of these vertices (see the BinSize set to 2). So there will be 50 lines.&cr;&lf;&cr;&lf;A spread of 15 colors is created and supplied to the &apos;Color&apos; pin of the Line (EX9).&cr;&lf;&cr;&lf;There is also a pattern defined for the lines.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
