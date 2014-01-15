@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9).v4p" systemname="Line (EX9 Vector)" filename="C:\Work\Anton-Work\Line (EX9 Vector).v4p" locked="0">
-   <BOUNDS type="Window" left="13500" top="750" width="18975" height="15480">
+   <PATCH nodename="D:\devvvv\vvvv-sdk-anton\vvvv45\lib\nodes\modules\EX9\Line (EX9).v4p" systemname="Line (EX9 Vector)" filename="C:\Work\Anton-Work\Line (EX9 Vector).v4p" locked="0">
+   <BOUNDS type="Window" left="3885" top="1080" width="12915" height="15795">
    </BOUNDS>
    <NODE id="47" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="3300" top="13155" type="Node" width="0">
@@ -413,7 +413,7 @@
    </PIN>
    <PIN pinname="Color" visible="1" slicecount="23" values="|0.00000,0.80234,0.99332,1.00000|">
    </PIN>
-   <PIN pinname="Transform" slicecount="6" visible="1" values=",,,,,">
+   <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
@@ -608,8 +608,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Enabled" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="6" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="100" left="2340" top="12615" type="Node" width="100">
    </BOUNDS>
@@ -1304,4 +1302,34 @@
    </NODE>
    <LINK srcnodeid="38" srcpinname="Output" dstnodeid="127" dstpinname="Input Bin Size">
    </LINK>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="143">
+   <BOUNDS type="Node" left="11640" top="9975" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="143" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="141" srcpinname="Whole Part" dstnodeid="143" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="143" srcpinname="Output" dstnodeid="15" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="144" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11040" top="13335" width="1395" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11040" top="13335" width="1395" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Enable binweise|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

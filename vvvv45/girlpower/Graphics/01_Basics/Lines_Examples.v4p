@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
-   <BOUNDS type="Window" left="0" top="150" width="23820" height="15735">
+   <PATCH nodename="D:\devvvv\vvvv-sdk-anton\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
+   <BOUNDS type="Window" left="990" top="405" width="23820" height="16080">
    </BOUNDS>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="60">
    <BOUNDS type="Node" left="11220" top="1680" width="100" height="100">
@@ -589,6 +589,8 @@
    </PIN>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="1" dstpinname="BinSize">
    </LINK>
@@ -605,7 +607,7 @@
    <NODE id="63" componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" systemname="Line (EX9)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" height="270" left="960" top="5835" width="3060">
    </BOUNDS>
-   <BOUNDS type="Window" height="15795" left="12945" top="1095" width="12915">
+   <BOUNDS type="Window" height="15795" left="3885" top="1080" width="12915">
    </BOUNDS>
    <BOUNDS type="Box" left="960" top="5835" width="4800" height="3600">
    </BOUNDS>
@@ -861,7 +863,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="91" systemname="IOBox (String)">
    <BOUNDS type="Node" left="14700" top="4875" width="615" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="14700" top="4875" width="615" height="270">
+   <BOUNDS type="Box" left="14700" top="4875" width="540" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Closed">
    </PIN>
@@ -875,9 +877,9 @@
    <NODE componentmode="InABox" id="95" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="9630" top="9945" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4110" left="9630" top="9945" type="Box" width="4425">
+   <BOUNDS height="4980" left="9630" top="9945" type="Box" width="4455">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color whole lines and not their sections, every color has to be specified so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for every bin. So now there are 4 sections in every line. The color spread has to be adjusted accordingly (every color has to be specified 3 times instead of 2).&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connect the UniformScale (Transform) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9). The drawing made using the input vertices organized in the bins of 3 is copied now and scaled accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins. Turn this on and change the values attached to the UniformScale (Transform).&cr;&lf;&cr;&lf;Colors are defined per section. In oder to color whole lines and not their sections, every color has to be specified so many time as there are sections in the line (which is BinSize-1) using Select (Color).&cr;&lf;&cr;&lf;If the &apos;Closed&apos; pin is turned on, an additional section is drawn for every bin. So now there are 4 sections in every line. The color spread has to be adjusted accordingly (every color has to be specified 3 times instead of 2).&cr;&lf;&cr;&lf;Note: &apos;Enabled&apos; pin is spread with 3 Toggles. So the sigle bins (!) can be turned on and off. If there is only one toggle connected to the &apos;Enabled&apos; pin it controlls all the lines.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1444,6 +1446,62 @@
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    <PIN pinname="Input String" slicecount="1" values="..\..\Audio\23_Visualisation_Equalizer_JoyDivision.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="136">
+   <BOUNDS type="Node" left="15255" top="3345" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="15255" top="3345" width="450" height="975">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="1,1,1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="1,1,1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform">
+   </LINK>
+   <NODE componentmode="InABox" id="137" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="14820" top="3585" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="14820" top="3585" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled">
+   </LINK>
+   <NODE componentmode="InABox" id="138" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="9195" top="14145" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="9195" top="14145" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
    </PATCH>
