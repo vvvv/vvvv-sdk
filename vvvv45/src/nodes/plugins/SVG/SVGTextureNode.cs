@@ -47,7 +47,7 @@ namespace VVVV.Nodes
 	            Help = "Reads an XML string and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgStringReaderNode : DucumentSvgReaderNode
+	public class DocumentSvgStringReaderNode : DocumentSvgReaderNode
 	{
 	    #pragma warning disable 649
 		[Input("XML", DefaultString = "<SVG></SVG>")]
@@ -82,7 +82,7 @@ namespace VVVV.Nodes
 	            Help = "Reads and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgFileReaderNode : DucumentSvgReaderNode
+	public class DocumentSvgFileReaderNode : DocumentSvgReaderNode
 	{
 	    #pragma warning disable 649
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
@@ -110,7 +110,7 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	public abstract class DucumentSvgReaderNode : IPluginEvaluate
+	public abstract class DocumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
@@ -226,7 +226,7 @@ namespace VVVV.Nodes
 		protected abstract bool InputChanged();
 	}
 	
-	public abstract class DucumentSvgWriterNode : IPluginEvaluate
+	public abstract class DocumentSvgWriterNode : IPluginEvaluate
 	{
 	    #pragma warning disable 649
 		[Input("Document")]
@@ -278,7 +278,7 @@ namespace VVVV.Nodes
 	            Tags = "xml",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class DucumentSvgFileWriterNode : DucumentSvgWriterNode
+	public class DocumentSvgFileWriterNode : DocumentSvgWriterNode
 	{	
 	    #pragma warning disable 649
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
@@ -303,7 +303,7 @@ namespace VVVV.Nodes
 	            Tags = "xml",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class DucumentSvgStringWriterNode : DucumentSvgWriterNode
+	public class DocumentSvgStringWriterNode : DocumentSvgWriterNode
 	{	
 	    #pragma warning disable 649
 		[Output("XML")]
@@ -452,6 +452,7 @@ namespace VVVV.Nodes
 				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
 				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
 			}
+
 			
 			//render to window
 			if(FThisNode.Window != null)
@@ -470,6 +471,10 @@ namespace VVVV.Nodes
 				var g = Graphics.FromImage(FBitMap);
 				g.Clear(FBackgroundIn[0].Color);
 				g.Dispose();
+				
+				//also set controls backcolor so it does not flash when going fullscreen
+				if (FBackgroundIn.IsChanged)
+					this.BackColor = FBackgroundIn[0].Color;
 				
 				FSVGDoc.Draw(FBitMap);
 				FPicBox.Image = FBitMap;
