@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using VVVV.Utils.Streams;
 using VVVV.PluginInterfaces.V1;
+using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO.Pointers
 {
-    public unsafe class ValueOutput : IOutStream
+    public unsafe class ValueOutput : IValuePointerOutput, IOutStream
     {
         private readonly IValueOut FPin;
         double** dataptr;
