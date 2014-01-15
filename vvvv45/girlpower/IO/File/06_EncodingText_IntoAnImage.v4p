@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\06_Encoding Text into an Image.v4p" systemname="EncodingText" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\EncodingText.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\File\06_EncodingText_IntoAnImage.v4p" systemname="EncodingText" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\EncodingText.v4p">
    <BOUNDS type="Window" left="585" top="495" width="21030" height="12735">
    </BOUNDS>
    <NODE systemname="Reader (Raw)" nodename="Reader (Raw)" componentmode="Hidden" id="0">
@@ -237,7 +237,7 @@
    <LINK srcnodeid="36" srcpinname="Output" dstnodeid="20" dstpinname="Scale">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="40" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="6870" top="2715" width="930" height="240">
+   <BOUNDS type="Box" left="6870" top="2715" width="810" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="6870" top="2715" width="0" height="0">
    </BOUNDS>
@@ -465,7 +465,7 @@
    </BOUNDS>
    <BOUNDS height="2325" left="375" top="765" type="Box" width="4440">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is an example on how to read a binary file, change it and save a copy.&cr;&lf;&cr;&lf;An image is loaded as raw binary data, some bytes of the image are replaced with the bytes of some string, then the binary data is written back to the disk (under another name).&cr;&lf;&cr;&lf;This new image is loaded again and:&cr;&lf;a) used as texture, &cr;&lf;b) the modified bytes are picked and decoded as a string.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is an example on how to read a binary file, change it and save a copy.&cr;&lf;&cr;&lf;An image is loaded as raw binary data, some bytes of the image are replaced with the bytes of a string, then the binary data is written back to disk (under another name).&cr;&lf;&cr;&lf;This new image is loaded again and:&cr;&lf;a) used as texture, &cr;&lf;b) the modified bytes are picked and decoded as a string.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -481,7 +481,7 @@
    </BOUNDS>
    <BOUNDS height="7170" left="810" top="3255" type="Box" width="4260">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (Raw) returns the content of the file (an image in this example) as a raw data.&cr;&lf;&cr;&lf;This raw data is represented as a spread of Bytes. See the &apos;Format&apos; pin of the AsValue (Raw).&cr;&lf;&cr;&lf;A string (which will be encoded in the image) is splitted into a spread of characters which are then converted into their ASCII representation.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random integers - these are the slice indices (of the bytes of the image) which will be replaced with the data from the string. Rightclick the IOBox connected to the Select (Value) in oder to enable the Random (Value).&cr;&lf;&cr;&lf;The SetSlice (Spreads) replaces some bytes of the image with the bytes from the string.&cr;&lf;&cr;&lf;The spread of bytes values is converted back to the raw data.&cr;&lf;&cr;&lf;The Writer (Raw) saves the raw data to the file.&cr;&lf;&cr;&lf;This new file is read as a texture.&cr;&lf;&cr;&lf;It is also loaded as a raw data which is then converted to a spread of values.&cr;&lf;&cr;&lf;GetSlice (Spreads) picks the same slices, which were used to encode the string data. SpellValue (String) converts the spread of values into the ASCII characters which are then concatenated together using the Add (String Spectral).|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (Raw) returns the content of the file (an image in this example) as raw data.&cr;&lf;&cr;&lf;This raw data is represented as a spread of Bytes. See the &apos;Format&apos; pin of the AsValue (Raw).&cr;&lf;&cr;&lf;A string (which will be encoded in the image) is split into a spread of characters which are then converted into their ASCII representation.&cr;&lf;&cr;&lf;Random (Value) generates a spread of random integers - these are the slice indices (of the bytes of the image) which will be replaced with the data from the string. Rightclick the IOBox connected to the Select (Value) in oder to enable the Random (Value).&cr;&lf;&cr;&lf;The SetSlice (Spreads) replaces some bytes of the image with the bytes from the string.&cr;&lf;&cr;&lf;The spread of bytes values is converted back to the raw data.&cr;&lf;&cr;&lf;The Writer (Raw) saves the raw data to the file.&cr;&lf;&cr;&lf;This new file is read as a texture.&cr;&lf;&cr;&lf;It is also loaded as raw data which is then converted to a spread of values.&cr;&lf;&cr;&lf;GetSlice (Spreads) picks the same slices, which were used to encode the string data. SpellValue (String) converts the spread of values into the ASCII characters which are then concatenated together using the Add (String Spectral).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

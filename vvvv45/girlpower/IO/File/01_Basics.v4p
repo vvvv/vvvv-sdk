@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\01_Basics.v4p" systemname="Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Basics.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="19050" height="16725">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\File\01_Basics.v4p" systemname="Basics" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\File\Basics.v4p">
+   <BOUNDS type="Window" left="1035" top="0" width="19050" height="16725">
    </BOUNDS>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="375" top="195" type="Node" width="945">
@@ -453,9 +453,9 @@
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="765" top="10020" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="4500" left="765" top="10020" type="Box" width="4020">
+   <BOUNDS height="4710" left="765" top="10020" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Imagine you have 50 points described by their XY positions. This is what the RandomSpread (Spreads) represents in this example: it returns a spread of 100 values.&cr;&lf;&cr;&lf;These values are converted into their string representation by FormatValue (String). After that they are concatenated with the &apos; x: &apos; and &apos; y: &apos; strings in order to create the human-readable description.&cr;&lf;&cr;&lf;Add (String Spectral) concatenates every two slices (see the &apos;BinSize&apos; pin set to 2) together.&cr;&lf;&cr;&lf;And now all the slices are concatenated into one big string (see the &apos;BinSize&apos; pin is left by default = -1). The &apos;CarriageReturnLineFeed&apos; sequence is used to separate individual points. Mouseover the &apos;Output&apos; pin to see how it looks like.&cr;&lf;&cr;&lf;The Writer (String) saves this string to a file with the defined &apos;Filename&apos;. |">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Imagine you have 50 points described by their XY positions. This is what the RandomSpread (Spreads) represents in this example: it returns a spread of 100 values.&cr;&lf;&cr;&lf;These values are converted into their string representation by FormatValue (String) limiting the values to 4 digits after the comma. After that they are concatenated with the &apos; x: &apos; and &apos; y: &apos; strings in order to create the human-readable description. &cr;&lf;&cr;&lf;Add (String Spectral) concatenates every two slices (see the &apos;BinSize&apos; pin set to 2) together.&cr;&lf;&cr;&lf;And now all the slices are concatenated into one big string (see the &apos;BinSize&apos; pin is left by default = -1). The &apos;CarriageReturnLineFeed&apos; sequence is used to separate individual points. Mouseover the &apos;Output&apos; pin to see how it looks like.&cr;&lf;&cr;&lf;The Writer (String) saves this string to a file with the defined &apos;Filename&apos;. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -595,7 +595,7 @@
    </BOUNDS>
    <BOUNDS height="1740" left="5700" top="9945" type="Box" width="3660">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Reader (String) loades the file and returns its content as a string using the defined encoding. Note, that this encoding should match the one used to save the file.&cr;&lf;&cr;&lf;Separate (String) splits the incoming string into a spread according to the character defined for the &apos;Inersperse&apos; pin.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Reader (String) loads the file and returns its content as a string using the defined encoding. Note, that this encoding has match the one used to save the file.&cr;&lf;&cr;&lf;Separate (String) splits the incoming string into a spread according to the character defined for the &apos;Intersperse&apos; pin.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -623,9 +623,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="54" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="345" top="12105" type="Node" width="315">
+   <BOUNDS height="270" left="345" top="12330" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="345" top="12105" type="Box" width="405">
+   <BOUNDS height="390" left="345" top="12330" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -639,9 +639,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="55" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="345" top="12735" type="Node" width="315">
+   <BOUNDS height="270" left="345" top="12960" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="345" top="12735" type="Box" width="405">
+   <BOUNDS height="390" left="345" top="12960" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -687,11 +687,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="765" top="14775" type="Node" width="7425">
+   <BOUNDS height="270" left="765" top="15075" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="780" left="765" top="14775" type="Box" width="3795">
+   <BOUNDS height="780" left="765" top="15075" type="Box" width="3795">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NOTE, that in this example &apos;utf-8&apos; is set for the &apos;Encoding&apos; pin. This is the default options. There can be cases where other encoding should be chosen.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NOTE, that in this example &apos;utf-8&apos; is set for the &apos;Encoding&apos; pin. This is the default option and good for 99% of cases.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -703,9 +703,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="60" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="765" top="14520" type="Node" width="7425">
+   <BOUNDS height="270" left="765" top="14835" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="270" left="765" top="14520" type="Box" width="3795">
+   <BOUNDS height="270" left="765" top="14835" type="Box" width="3795">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-------------------------------------------------">
    </PIN>
@@ -719,9 +719,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="61" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="765" top="15525" type="Node" width="7425">
+   <BOUNDS height="270" left="765" top="15690" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="270" left="765" top="15525" type="Box" width="3795">
+   <BOUNDS height="270" left="765" top="15690" type="Box" width="3795">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-------------------------------------------------">
    </PIN>
@@ -865,7 +865,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4725" top="2340" width="4185" height="915">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Its weakness:&cr;&lf;- big size of the files&cr;&lf;- conversion of values into characters &amp; losing precision|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Its weakness:&cr;&lf;- big size of the files&cr;&lf;- conversion of values into characters &amp; loosing precision|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -893,7 +893,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="14160" top="2340" width="3195" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Its weakness:&cr;&lf;- not human readable&cr;&lf;- strict format should be defined|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Its weakness:&cr;&lf;- not human readable&cr;&lf;- strict format/layout has to be defined|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -933,7 +933,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="390" top="645" width="5625" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two options how to save &amp; load your data:&cr;&lf;a) convert everything into string representation and save it into text file.&cr;&lf;b) convert everything into Raw binary data and save it as binary file. |">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two options of how to save &amp; load your data:&cr;&lf;a) convert everything into string representation and save it into text file.&cr;&lf;b) convert everything into Raw binary data and save it as binary file. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1089,7 +1089,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5700" top="11895" width="3540" height="705">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|After that the data should be parsed in order to isolate values and convert them into the right format.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|After that the data has to be parsed in order to isolate values and convert them into the right format.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1139,9 +1139,9 @@
    <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Bin Size">
    </LINK>
    <NODE componentmode="InABox" id="123" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="345" top="13995" type="Node" width="315">
+   <BOUNDS height="270" left="345" top="14220" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="345" top="13995" type="Box" width="405">
+   <BOUNDS height="390" left="345" top="14220" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1321,7 +1321,7 @@
    </BOUNDS>
    <BOUNDS height="1665" left="15045" top="9885" type="Box" width="3180">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (Raw) loads the file and returns its content as a raw binary data.&cr;&lf;&cr;&lf;This raw data is converted into a spread of values. Please note, that the &apos;Format&apos; pin is set to &apos;Double&apos;: the format should be the same as at the time of writing the file...|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (Raw) loads the file and returns its content as raw binary data.&cr;&lf;&cr;&lf;This raw data is converted into a spread of values. Please note, that the &apos;Format&apos; pin is set to &apos;Double&apos;: the format has to be the same as at the time of writing the file...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1401,7 +1401,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|03_Saving Scene.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="03_Saving_Scene.v4p">
    </PIN>
    </NODE>
    </PATCH>
