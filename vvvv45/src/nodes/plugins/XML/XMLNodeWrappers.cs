@@ -278,8 +278,8 @@ namespace VVVV.Nodes.XML
         [Input("XPath", DefaultString = "MyChildTag/@OneOfItsAttributes")]
         public IDiffSpread<string> XPath;
 
-        [Input("NameSpace Resolver", IsSingle = true)]
-        public IDiffSpread<IXmlNamespaceResolver> NameSpaceResolver;
+        [Input("Namespace Resolver", IsSingle = true)]
+        public IDiffSpread<IXmlNamespaceResolver> NamespaceResolver;
 
         [Output("Attributes")]
         public ISpread<ISpread<XAttribute>> Attributes;
@@ -289,7 +289,7 @@ namespace VVVV.Nodes.XML
 
         public void Evaluate(int spreadMax)
         {
-            if (!Element.IsChanged && !XPath.IsChanged && !NameSpaceResolver.IsChanged) return;
+            if (!Element.IsChanged && !XPath.IsChanged && !NamespaceResolver.IsChanged) return;
 
             Attributes.SliceCount = spreadMax;
             ErrorMessage.SliceCount = spreadMax;
@@ -297,7 +297,7 @@ namespace VVVV.Nodes.XML
             for (int i = 0; i < spreadMax; i++)
             {
                 string error;
-                Attributes[i] = Element[i].GetAttributesByXPath(XPath[i], NameSpaceResolver[0], out error);
+                Attributes[i] = Element[i].GetAttributesByXPath(XPath[i], NamespaceResolver[0], out error);
                 ErrorMessage[i] = error;
             }
         }
