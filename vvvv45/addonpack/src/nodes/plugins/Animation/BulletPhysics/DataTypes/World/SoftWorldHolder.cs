@@ -157,21 +157,31 @@ namespace VVVV.DataTypes.Bullet
 		#region Process Deletion
 		internal void ProcessDelete()
 		{
-			int cnt = this.RigidBodies.Count;
-			for (int i = 0; i < cnt; i++)
-			{
-				RigidBody body = this.RigidBodies[i];
-				BodyCustomData bd = (BodyCustomData)body.UserObject;
-				bd.Created = false;
-				if (bd.MarkedForDeletion)
-				{
-					if (this.RigidBodyDeleted != null)
-					{
-						this.RigidBodyDeleted(body, bd.Id);
-					}
-					this.Unregister(body);
-				}
-			}
+            List<RigidBody> todelete = new List<RigidBody>();
+            List<int> deleteid = new List<int>();
+
+            int cnt = this.RigidBodies.Count;
+            for (int i = 0; i < cnt; i++)
+            {
+                RigidBody body = this.RigidBodies[i];
+                BodyCustomData bd = (BodyCustomData)body.UserObject;
+                bd.Created = false;
+                if (bd.MarkedForDeletion)
+                {
+                    todelete.Add(body);
+                    deleteid.Add(bd.Id);
+                }
+            }
+
+            for (int i = 0; i < todelete.Count; i++)
+            {
+                RigidBody body = todelete[i];
+                if (this.RigidBodyDeleted != null)
+                {
+                    this.RigidBodyDeleted(body, deleteid[i]);
+                }
+                this.Unregister(body);
+            }
 
 			cnt = this.SoftBodies.Count;
 			for (int i = 0; i < cnt; i++)

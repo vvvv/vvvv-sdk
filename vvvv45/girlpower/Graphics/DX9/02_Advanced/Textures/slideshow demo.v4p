@@ -1,0 +1,117 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH componentmode="InAWindow" nodename="X:\vvvv33svn\public\vvvv33\girlpower\slideshow demo.v4p">
+   <BOUNDS height="2850" left="3675" top="7110" type="Window" width="3720">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="6" nodename="slideshow module.v4p">
+   <BOUNDS height="270" left="1245" top="765" type="Node" width="1470">
+   </BOUNDS>
+   <BOUNDS left="1245" top="765" type="Box">
+   </BOUNDS>
+   <PIN pinname="Files" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS height="9450" left="375" top="165" type="Window" width="13680">
+   </BOUNDS>
+   <PIN pinname="Run" visible="1">
+   </PIN>
+   <PIN pinname="Loop" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Dir (File)">
+   <BOUNDS height="0" left="2685" top="240" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Directory" slicecount="1" values="images">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Files" srcnodeid="5" srcpinname="Filenames">
+   </LINK>
+   <NODE id="4" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="930" top="1305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="6" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="3" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="270" top="840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="855" top="150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5216" top="3342" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="855" top="150" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Run" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1440" top="150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5516" top="3642" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="1440" top="150" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Loop" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="0" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <BOUNDS height="0" left="915" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="3660" top="2265" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="915" top="1770" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
+   </LINK>
+   </PATCH>

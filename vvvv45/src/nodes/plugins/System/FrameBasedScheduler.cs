@@ -7,7 +7,7 @@ using System.Text;
 
 namespace VVVV.Nodes.Input
 {
-    public enum ScheduleMode
+    public enum QueueMode
     {
         Enqueue,
         Discard
@@ -42,16 +42,16 @@ namespace VVVV.Nodes.Input
 
         public uint CurrentFrame { get; private set; }
 
-        public void Run(ScheduleMode mode = ScheduleMode.Enqueue)
+        public void Run(QueueMode mode = QueueMode.Enqueue)
         {
             var currentFrame = CurrentFrame;
             switch (mode)
             {
-                case ScheduleMode.Enqueue:
+                case QueueMode.Enqueue:
                     CurrentFrame++;
                     Run(currentFrame);
                     break;
-                case ScheduleMode.Discard:
+                case QueueMode.Discard:
                     Run(currentFrame);
                     CurrentFrame++;
                     break;
