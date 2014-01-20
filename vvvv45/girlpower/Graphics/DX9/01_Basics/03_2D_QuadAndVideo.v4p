@@ -1,11 +1,11 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv-sdk-anton\vvvv45\girlpower\Graphics\01_Basics\03_QuadAndVideo.v4p" systemname="2_QuadAndVideo" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\2_QuadAndVideo.v4p">
-   <BOUNDS type="Window" left="195" top="270" width="12000" height="11145">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\03_2D_QuadAndVideo.v4p" systemname="2_QuadAndVideo" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\2_QuadAndVideo.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="12000" height="10050">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="675" top="570" width="690" height="270">
+   <BOUNDS type="Node" left="1965" top="900" width="690" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="570" width="3900" height="720">
+   <BOUNDS type="Box" left="1965" top="900" width="2250" height="375">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Using your camera|">
    </PIN>
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="20">
+   <PIN pinname="Size" slicecount="1" values="11">
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="104">
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="915" top="4470" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="11190" top="270" width="6240" height="5010">
+   <BOUNDS type="Window" left="10305" top="1725" width="6240" height="5010">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
@@ -37,11 +37,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="115" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6570" top="570" width="690" height="270">
+   <BOUNDS type="Node" left="7245" top="900" width="690" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6570" top="570" width="2685" height="540">
+   <BOUNDS type="Box" left="7245" top="900" width="1995" height="375">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Playing video|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Playing a video|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -49,7 +49,7 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="20">
+   <PIN pinname="Size" slicecount="1" values="11">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="116" systemname="IOBox (String)">
@@ -79,7 +79,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2520" top="1980" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="(nil)">
+   <PIN pinname="Input Enum" slicecount="1" values="|Blackmagic WDM Capture|">
    </PIN>
    </NODE>
    <LINK srcnodeid="118" srcpinname="Output Enum" dstnodeid="117" dstpinname="Driver">
@@ -227,7 +227,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="915" top="6900" width="3810" height="2445">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|VideoIn (EX9.Texture) receives the signal from the connected camera and returns it as a texture.&cr;&lf;&cr;&lf;If the node is Red (bad thing):&cr;&lf;1) is the right camera is selected (rightmost pin)?&cr;&lf;2) try to change the format&cr;&lf;3) try to reinstall drivers for the camera&cr;&lf;&cr;&lf;This is a normal renderer in the &apos;box mode&apos; (ALT+2). To have it in a &apos;window mode&apos;, select it and press ALT+1.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|VideoIn (EX9.Texture) receives the signal from the connected camera and returns it as a texture.&cr;&lf;&cr;&lf;If the node is Red (which is a bad thing):&cr;&lf;1) is the correct camera selected (rightmost pin)?&cr;&lf;2) try to change the format&cr;&lf;3) try to reinstall drivers for the camera&cr;&lf;&cr;&lf;This is a normal renderer in the &apos;box mode&apos; (ALT+2). To have it in a &apos;window mode&apos;, select it and press ALT+1.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -281,7 +281,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7245" top="6900" width="3945" height="2910">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|FileStream (DShow9) can play your videos using the codecs installed in your system, so by default it&apos;s playing only a limited number of formats.&cr;&lf;&cr;&lf;VideoTexture (EX9.Texture VMR9) converts the video stream into the textures. These textures are then applied to a FullscreenQuad (DX9) as usual. |">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|FileStream (DShow9) can play videos using the codecs installed in your system, so by default it&apos;s able to play only a limited number of formats.&cr;&lf;&cr;&lf;VideoTexture (EX9.Texture VMR9) converts the video stream into the textures. These textures are then applied to a FullscreenQuad (DX9) as usual. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -307,9 +307,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="137" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="495" top="4395" type="Node" width="315">
+   <BOUNDS height="270" left="495" top="4425" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="495" top="4395" type="Box" width="405">
+   <BOUNDS height="390" left="495" top="4425" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -384,6 +384,20 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="675" top="195" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="450" left="675" top="195" type="Box" width="3405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A Video and a webcam|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
    </PIN>
    </NODE>
    </PATCH>
