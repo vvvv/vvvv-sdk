@@ -45,12 +45,16 @@ namespace VVVV.Nodes
 			FOutPin.SliceCount = spreadMax;
 			FOutPin.GetValuePointer(out outData);
 			
+			var comp0 = component[0];
+			var comp1 = component[1];
+			var comp2 = component[2];
+			var comp3 = component[3];
 			for (int i=0; i<spreadMax; i++)
 			{
-				outData[(i*4+component[0])] = xyzData[(i*3+0)%xyzCount];
-				outData[(i*4+component[1])] = xyzData[(i*3+1)%xyzCount];
-				outData[(i*4+component[2])] = xyzData[(i*3+2)%xyzCount];
-				outData[(i*4+component[3])] = wData[(i)%wCount];
+				outData[(i*4+comp0)] = xyzData[(i*3+0)%xyzCount];
+				outData[(i*4+comp1)] = xyzData[(i*3+1)%xyzCount];
+				outData[(i*4+comp2)] = xyzData[(i*3+2)%xyzCount];
+				outData[(i*4+comp3)] = wData[(i)%wCount];
 			}
 		}
 	}
@@ -126,12 +130,16 @@ namespace VVVV.Nodes
 			FSingle.SliceCount = spreadMax;
 			FSingle.GetValuePointer(out wData);
 			
+			var comp0 = component[0];
+			var comp1 = component[1];
+			var comp2 = component[2];
+			var comp3 = component[3];
 			for (int i=0; i<spreadMax; i++)
 			{
-				xyzData[(i*3+0)] = inData[(i*4+component[0])%inCount];
-				xyzData[(i*3+1)] = inData[(i*4+component[1])%inCount];
-				xyzData[(i*3+2)] = inData[(i*4+component[2])%inCount];
-				wData[(i)] = inData[(i*4+component[3])%inCount];
+				xyzData[(i*3+0)] = inData[(i*4+comp0)%inCount];
+				xyzData[(i*3+1)] = inData[(i*4+comp1)%inCount];
+				xyzData[(i*3+2)] = inData[(i*4+comp2)%inCount];
+				wData[(i)] = inData[(i*4+comp3)%inCount];
 			}
 		}
 	}
