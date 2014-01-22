@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\Separate (String) help.v4p">
-   <BOUNDS height="14085" left="0" top="0" type="Window" width="12810">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\native\Separate (String) help.v4p">
+   <BOUNDS height="14085" left="1110" top="300" type="Window" width="12810">
    </BOUNDS>
    <NODE id="22" nodename="Separate (String)" systemname="Separate (String)">
    <BOUNDS height="270" left="5385" top="3105" type="Node" width="4650">
@@ -251,7 +251,7 @@
    </BOUNDS>
    <BOUNDS height="3150" left="675" top="3975" type="Box" width="3300">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&apos;Intersperse&apos; and &apos;Intersperse String&apos; pins define the character (or the String) at which positions the input string is separated into slices. In this example a &apos;Space&apos; is used as a separator.&cr;&lf;&cr;&lf;The &apos;Ignore between&apos; pin defines what part of the string will not be separated. In this example the part of the string between &apos;Double&apos; quotes is not separated into individual slices.&cr;&lf;&cr;&lf;&apos;Keep Quotes&apos; pin defines if the quotes will be removed after separating the string or not.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&apos;Intersperse&apos; and &apos;Intersperse String&apos; pins define the character (or the String) at which positions the input string is separated into slices. In this example a &apos;Space&apos; is used as a separator. &cr;&lf;&cr;&lf;The &apos;Ignore between&apos; pin defines what parts of the string will not be separated. In this example anything between &apos;Double&apos; quotes is not separated into individual slices.&cr;&lf;&cr;&lf;&apos;Keep Quotes&apos; pin defines if the quotes (as defined via &apos;Ignore between&apos;) will be removed after separating the string or not.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -295,9 +295,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="38" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="6480" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6270" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="6480" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6270" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -515,6 +515,8 @@
    <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="58">
    <BOUNDS type="Node" left="9300" top="9915" width="100" height="100">
    </BOUNDS>
+   <PIN pinname="Keep Quotes" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="53" srcpinname="Output String" dstnodeid="58" dstpinname="Input">
    </LINK>
@@ -544,6 +546,20 @@
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Strings\Parsing_CSV_Data.v4p">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="61" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6480" top="2265" width="4560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6480" top="2265" width="2490" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;Intersperse&apos; is ignored if the &apos;Intersperse String&apos; is not empty!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>

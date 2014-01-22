@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Color\AsRaw (Color) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="7515" height="7020">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Color\AsRaw (Color) help.v4p">
+   <BOUNDS type="Window" left="4785" top="810" width="7515" height="7020">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
@@ -25,9 +25,9 @@
    </PIN>
    </NODE>
    <NODE nodename="AsColor (Raw)" componentmode="Hidden" id="18" systemname="AsColor (Raw)" filename="%VVVV%\girlpower\IO\File\AsColor (Raw).v4p">
-   <BOUNDS type="Node" left="3550" top="4040" width="0" height="0">
+   <BOUNDS type="Node" left="3550" top="4340" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3550" top="4040" width="0" height="0">
+   <BOUNDS type="Box" left="3550" top="4340" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -96,24 +96,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3795" top="3420" width="750" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3795" top="3420" width="1515" height="300">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; 3*16 = 48 bytes|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3780" top="4425" width="750" height="270">
+   <BOUNDS type="Node" left="3780" top="4725" width="750" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3780" top="4425" width="705" height="255">
+   <BOUNDS type="Box" left="3780" top="4725" width="705" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Colors|">
    </PIN>
@@ -186,4 +172,40 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4455" top="3795" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4455" top="3795" width="705" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; 3*32 = |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="5190" top="3225" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5190" top="3795" width="720" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5190" top="3795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="bytes">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Count" dstnodeid="20" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="21" dstpinname="Input">
+   </LINK>
    </PATCH>
