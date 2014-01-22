@@ -1,18 +1,18 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.Streams;
-using System.IO;
+using VVVV.Utils;
 using VVVV.Utils.IO;
+using VVVV.Utils.Reflection;
+using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
-using VVVV.Utils.Reflection;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -114,52 +114,196 @@ namespace VVVV.Hosting.IO.Streams
             return IsChanged;
         }
     }
-    
-    class NodeInStream<T> : MemoryIOStream<T>
+
+    unsafe class NodeInStream<T> : IInStream<T>
     {
+        class ConvolutedReader : IStreamReader<T>
+        {
+            private readonly MemoryIOStream<T> FStream;
+            private readonly int* FUpstreamSlices;
+            private readonly int FLength;
+
+            public ConvolutedReader(MemoryIOStream<T> stream, int length, int* upstreamSlices)
+            {
+                FStream = stream;
+                FUpstreamSlices = upstreamSlices;
+                FLength = length;
+            }
+
+            public T Read(int stride = 1)
+            {
+                var upstreamSlice = VMath.Zmod(FUpstreamSlices[Position], FStream.Length);
+                Position += stride;
+                return FStream.Buffer[upstreamSlice];
+            }
+
+            public int Read(T[] buffer, int offset, int length, int stride = 1)
+            {
+                int slicesAhead = Length - Position;
+
+                if (stride > 1)
+                {
+                    int r = 0;
+                    slicesAhead = Math.DivRem(slicesAhead, stride, out r);
+                    if (r > 0)
+                        slicesAhead++;
+                }
+
+                int numSlicesToRead = Math.Max(Math.Min(length, slicesAhead), 0);
+
+                switch (numSlicesToRead)
+                {
+                    case 0:
+                        return 0;
+                    case 1:
+                        buffer[offset] = Read(stride);
+                        return 1;
+                    default:
+                        switch (stride)
+                        {
+                            case 0:
+                                if (offset == 0 && numSlicesToRead == buffer.Length)
+                                    buffer.Init(Read(stride)); // Slightly faster
+                                else
+                                    buffer.Fill(offset, numSlicesToRead, Read(stride));
+                                break;
+                            default:
+                                Debug.Assert(Position + numSlicesToRead <= Length);
+                                int* position = FUpstreamSlices + Position;
+                                for (int i = offset; i < numSlicesToRead; i++)
+                                {
+                                    var upstreamSlice = VMath.Zmod(*position, FStream.Length);
+                                    buffer[i] = FStream.Buffer[upstreamSlice];
+                                    position += stride;
+                                }
+                                Position += numSlicesToRead * stride;
+                                break;
+                        }
+                        break;
+                }
+
+                return numSlicesToRead;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return FLength; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
+
+            public T Current
+            {
+                get;
+                private set;
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+            public bool MoveNext()
+            {
+                var result = !Eos;
+                if (result)
+                {
+                    Current = Read();
+                }
+                return result;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+        }
+
+        private MemoryIOStream<T> FNullStream = new MemoryIOStream<T>();
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
-        
+        private MemoryIOStream<T> FUpstreamStream;
+        private int FLength;
+        private int* FUpStreamSlices;
+
         public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
         {
             FNodeIn = nodeIn;
             FNodeIn.SetConnectionHandler(handler, this);
             FAutoValidate = nodeIn.AutoValidate;
+            FUpstreamStream = FNullStream;
         }
-        
+
         public NodeInStream(INodeIn nodeIn)
             : this(nodeIn, new DefaultConnectionHandler())
         {
         }
-        
-        unsafe public override bool Sync()
+
+        public IStreamReader<T> GetReader()
+        {
+            if (FNodeIn.IsConvoluted)
+                return new ConvolutedReader(FUpstreamStream, FLength, FUpStreamSlices);
+            return FUpstreamStream.GetReader();
+        } 
+
+        public int Length
+        {
+            get { return FLength; }
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Sync()
         {
             IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
             if (IsChanged)
             {
-                Length = FNodeIn.SliceCount;
-                using (var writer = GetWriter())
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                FUpstreamStream = usI as MemoryIOStream<T>;
+                if (FUpstreamStream != null)
+                    FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
+                else
                 {
-                    object usI;
-                    FNodeIn.GetUpstreamInterface(out usI);
-                    var upstreamInterface = usI as IGenericIO;
-
-                    int upStreamSliceCount;
-                    int* upStreamSlices;
-                    FNodeIn.GetUpStreamSlices(out upStreamSliceCount, out upStreamSlices);
-
-                    Debug.Assert(upStreamSliceCount == Length, "up stream slice counts mismatch");
-                    
-                    for (int i = 0; i < Length; i++)
-                    {
-                        var result = default(T);
-                        if (upstreamInterface != null)
-                            result = (T) upstreamInterface.GetSlice(upStreamSlices[i]);
-                        writer.Write(result);
-                    }
+                    FLength = FNodeIn.SliceCount;
+                    FUpstreamStream = FNullStream;
+                    FUpstreamStream.Length = FLength;
                 }
             }
-            return base.Sync();
+            return IsChanged;
+        }
+
+        public bool IsChanged
+        {
+            get;
+            private set;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return GetReader();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetReader();
         }
     }
 
@@ -415,7 +559,6 @@ namespace VVVV.Hosting.IO.Streams
 
         private readonly IRawIn FRawIn;
         private readonly bool FAutoValidate;
-        private int FLength;
         
         public RawInStream(IRawIn rawIn)
         {
