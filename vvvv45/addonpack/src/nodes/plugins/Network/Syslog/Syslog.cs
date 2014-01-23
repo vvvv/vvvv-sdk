@@ -110,8 +110,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Logger", 
                 Version = "", 
                 Category = "VVVV", 
-                Help = "logs a given String to the TTY/Syslog", 
-                Tags = "Debug, Log",
+                Help = "Logs a given String to the TTY", 
+                Tags = "debug",
                 Author= "sebl",
                 AutoEvaluate = true)]
     #endregion PluginInfo
