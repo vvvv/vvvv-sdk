@@ -64,8 +64,14 @@ namespace VVVV.Nodes
 				FOutPin.SliceCount = spreadMax;
 				FOutPin.GetColorPointer(out outData);
 				
+				int incr = 0;
 				for (int i=0; i<spreadMax*4; i++)
-					outData[i] = inData[i%inCount];
+				{
+					outData[i] = inData[incr];
+					incr++;
+					if (incr >= inCount)
+						incr=0;
+				}
 			}
 		}
 	}
