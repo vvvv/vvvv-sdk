@@ -24,7 +24,7 @@ namespace VVVV.Nodes
                 Version = "", 
                 Category = "Raw", 
                 Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
-                Tags = "Debug, Log",
+                Tags = "Debug",
                 Author= "sebl")]
     #endregion PluginInfo
     public class SyslogStringNode : Syslog.AbstractSyslog, IPluginEvaluate, IPartImportsSatisfiedNotification
