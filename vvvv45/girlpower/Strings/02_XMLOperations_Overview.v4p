@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\02_XMLOperations_Overview.v4p" systemname="XMLOperations_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\XMLOperations_Overview.v4p">
-   <BOUNDS type="Window" left="270" top="225" width="18300" height="15435">
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\02_XMLOperations_Overview.v4p" systemname="XMLOperations_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\XMLOperations_Overview.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="18300" height="15435">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="375" top="195" type="Node" width="945">
@@ -599,17 +599,15 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input String" visible="1" slicecount="2" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="80" srcpinname="Output" dstnodeid="81" dstpinname="Input String">
-   </LINK>
    <NODE componentmode="InABox" id="84" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="795" top="7965" type="Node" width="7425">
    </BOUNDS>
    <BOUNDS height="3525" left="795" top="7965" type="Box" width="3585">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The AsXElement (XML) converts the Input string into the XElement datatype.&cr;&lf;&cr;&lf;The GetElements (XElement ByXPath) picks only the elements from the defined &apos;XPath&apos;. Check its twin brohter GetElements (XElement ByName).&cr;&lf;&cr;&lf;The Element (XElement Split) breaks down the Input Element into its components.&cr;&lf;&cr;&lf;The GetAttributes (XElement ByXPath) picks only the attributes from the defined &apos;XPath&apos;. Check its twin brother GetAttributes (XElement ByName).&cr;&lf;&cr;&lf;The Attribute (XElement Split) breaks down the Input Attribute into its components.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The AsXElement (XML) converts the Input string into the XElement datatype.&cr;&lf;&cr;&lf;The GetElements (XElement ByXPath) picks only the elements from the defined &apos;XPath&apos;. Check its twin brother GetElements (XElement ByName).&cr;&lf;&cr;&lf;The Element (XElement Split) breaks down the Input Element into its components.&cr;&lf;&cr;&lf;The GetAttributes (XElement ByXPath) picks only the attributes from the defined &apos;XPath&apos;. Check its twin brother GetAttributes (XElement ByName).&cr;&lf;&cr;&lf;The Attribute (XElement Split) breaks down the Input Attribute into its components.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -999,7 +997,7 @@
    </BOUNDS>
    <BOUNDS height="3150" left="11655" top="8775" type="Box" width="4125">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|First of all, the innermost element is constructed using the Element (XElement Join). It receives the name, the value and the previously constructed attribute.&cr;&lf;&cr;&lf;Then this element becomes a child of the bigger element. Note, that it is plugged into the &apos;Children&apos; pin.&cr;&lf;&cr;&lf;The two elements are concatenated together.&cr;&lf;&cr;&lf;And then these two joined elements are plugged as children into the outermost element.&cr;&lf;&cr;&lf;The AsString (Object) creates a string representation of the XElement Object.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|First of all, the outermost element is created. Elements are constructed by the Element (XElement Join).&cr;&lf;&cr;&lf;The &apos;Children&apos; of this element are two other elements concatenated together by the Cons (XElement).&cr;&lf;&cr;&lf;One of these children has its own child.&cr;&lf;&cr;&lf;And this child is the innermost element, it has not only the name and the value, but also the constructed attribute.&cr;&lf;&cr;&lf;The AsString (Object) creates a string representation of the XElement Object.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1011,9 +1009,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="125" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11220" top="8760" type="Node" width="315">
+   <BOUNDS height="270" left="11220" top="8775" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11220" top="8760" type="Box" width="405">
+   <BOUNDS height="390" left="11220" top="8775" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -1027,9 +1025,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="124" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11220" top="9585" type="Node" width="315">
+   <BOUNDS height="270" left="11220" top="9390" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11220" top="9585" type="Box" width="405">
+   <BOUNDS height="390" left="11220" top="9390" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -1043,9 +1041,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="123" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11220" top="10170" type="Node" width="315">
+   <BOUNDS height="270" left="11220" top="9960" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11220" top="10170" type="Box" width="405">
+   <BOUNDS height="390" left="11220" top="9960" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1059,9 +1057,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="122" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11220" top="10650" type="Node" width="315">
+   <BOUNDS height="270" left="11220" top="10455" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11220" top="10650" type="Box" width="405">
+   <BOUNDS height="390" left="11220" top="10455" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1075,9 +1073,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="121" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11220" top="11265" type="Node" width="315">
+   <BOUNDS height="270" left="11220" top="11280" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11220" top="11265" type="Box" width="405">
+   <BOUNDS height="390" left="11220" top="11280" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1095,7 +1093,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="13260" top="3150" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1111,7 +1109,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="13020" top="4110" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1127,7 +1125,7 @@
    </BOUNDS>
    <BOUNDS height="390" left="12285" top="4905" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1139,11 +1137,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="130" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11760" top="5655" type="Node" width="315">
+   <BOUNDS height="270" left="11760" top="5610" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="11760" top="5655" type="Box" width="405">
+   <BOUNDS height="390" left="11760" top="5610" type="Box" width="405">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1169,5 +1167,37 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
+   </NODE>
+   <LINK srcnodeid="80" srcpinname="Output" dstnodeid="81" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="132" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5235" top="10995" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5235" top="10995" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Tidy (XML)" nodename="Tidy (XML)" componentmode="Hidden" id="133">
+   <BOUNDS type="Node" left="6870" top="10965" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IsValid (XML DTD)" nodename="IsValid (XML DTD)" componentmode="Hidden" id="134">
+   <BOUNDS type="Node" left="6135" top="10965" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="XSLT (XML)" nodename="XSLT (XML)" componentmode="Hidden" id="135">
+   <BOUNDS type="Node" left="7800" top="10965" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="NamespaceResolver (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="NamespaceResolver (XML)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="6120" top="11340" width="100" height="100">
+   </BOUNDS>
    </NODE>
    </PATCH>

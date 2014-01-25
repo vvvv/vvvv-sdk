@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="585" left="375" top="765" type="Box" width="3720">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to save transformations and colors of a spread of boxes.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to save transformations and colors of a spread of boxes into one file.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -37,7 +37,7 @@
    </BOUNDS>
    <BOUNDS height="8640" left="720" top="1455" type="Box" width="4125">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Two RandomSpread (Spreads) nodes create spreads of random values which are used to create transformations and colors for 1000 boxes.&cr;&lf;&cr;&lf;The AsRaw (Transform) and the AsRaw (Color) encode transformations and colors into a raw byte sequences.&cr;&lf;&cr;&lf;Add (Raw) concatenates three byte sequences. At first there is the number of boxes encoded as &apos;Int32&apos; (4 bytes), then there are 1000 transformations (each encoded using 64 bytes), at last there are colors (16 bytes each).&cr;&lf;&cr;&lf;Writer (Raw) saves this big byte sequence into a file.&cr;&lf;&cr;&lf;After reading the file into a raw sequence of bytes, the first 4 bytes are picked using Take (Raw). &cr;&lf;&cr;&lf;These 4 bytes are representing an integer, which says how many transformations and colors were saved in the file. This is important to know in order to calculate the correct offsets and pick the correct bytes.&cr;&lf;&cr;&lf;Skip (Raw) returns the byte sequence without the first 4 bytes, which are already decoded and used.&cr;&lf;&cr;&lf;Each transformation matrix is encoded using 64 bytes and each color uses 16 bytes.&cr;&lf;&cr;&lf;These bytes are picked using the two GetBytes (Raw) nodes.&cr;&lf;&cr;&lf;The picked sequences are decoded as transformations and colors.&cr;&lf;&cr;&lf;S+H nodes are here to improve the performance. At the moment when the file is read and the data is decoded, the transformations and colors are being sampled. After that moment the nodes sitting above S+H nodes are spending almost no ticks because they are not being asked for data anymore.&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Two RandomSpread (Spreads) nodes create spreads of random values which are used to create transformations and colors for 1000 boxes.&cr;&lf;&cr;&lf;The AsRaw (Transform) and the AsRaw (Color) encode transformations and colors into a raw byte sequences.&cr;&lf;&cr;&lf;Add (Raw) concatenates three byte sequences. At first there is the number of boxes encoded as &apos;Int32&apos; (4 bytes), then there are 1000 transformations (each encoded using 64 bytes), at last there are colors (32 bytes each).&cr;&lf;&cr;&lf;Writer (Raw) saves this big byte sequence into a file.&cr;&lf;&cr;&lf;After reading the file into a raw sequence of bytes, the first 4 bytes are picked using Take (Raw). &cr;&lf;&cr;&lf;These 4 bytes are representing an integer, which says how many transformations and colors were saved in the file. This is important to know in order to calculate the correct offsets and pick the correct bytes.&cr;&lf;&cr;&lf;Skip (Raw) returns the byte sequence without the first 4 bytes, which are already decoded and used.&cr;&lf;&cr;&lf;Each transformation matrix is encoded using 64 bytes and each color uses 32 bytes.&cr;&lf;&cr;&lf;These bytes are picked using the two GetBytes (Raw) nodes.&cr;&lf;&cr;&lf;The picked sequences are decoded as transformations and colors.&cr;&lf;&cr;&lf;S+H nodes are here to improve the performance. At the moment when the file is read and the data is decoded, the transformations and colors are being sampled. After that moment the nodes sitting above S+H nodes are spending almost no ticks because they are not being asked for data anymore.&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -775,7 +775,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="18000" top="4440" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="16">
+   <PIN pinname="Y Input Value" slicecount="1" values="32">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>

@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9) help.v4p">
-   <BOUNDS height="10110" left="-150" top="630" type="Window" width="20145">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9) help.v4p">
+   <BOUNDS height="10110" left="2550" top="1500" type="Window" width="20145">
    </BOUNDS>
    <NODE componentmode="InABox" id="37" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="150" top="570" type="Node" width="570">
@@ -195,6 +195,8 @@
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="95" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9420" top="6135" width="540" height="240">
@@ -206,6 +208,8 @@
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="96" systemname="IOBox (String)">
@@ -367,9 +371,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="111" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8730" top="3510" width="11010" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8730" top="3510" width="3435" height="570">
+   <BOUNDS type="Box" left="8730" top="3510" width="3660" height="585">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|BinSize defines how many consecutive vertices from the &apos;VerticesXYZ&apos; spread are connected.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|BinSize defines how consecutive vertices of the &apos;VerticesXYZ&apos; spread are treated as Bins.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -537,7 +541,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\Graphics\01_Basics\Lines_Overview.v4p">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\Graphics\DX9\01_Basics\Lines_Overview.v4p">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="..\vvvv45\lib\nodes\modules\EX9\Line (EX9).v4p" id="79" nodename="Line (EX9)" systemname="Line (EX9)">
@@ -555,7 +559,7 @@
    </PIN>
    <PIN pinname="Single Input" visible="1">
    </PIN>
-   <PIN pinname="Width">
+   <PIN pinname="Width" visible="1" slicecount="2" values="10,53">
    </PIN>
    <PIN pinname="BinSize">
    </PIN>
@@ -564,6 +568,8 @@
    <PIN pinname="Pattern" visible="1">
    </PIN>
    <PIN pinname="Closed" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1" slicecount="2" values="|0.98165,0.00000,0.00000,1.00000|,|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
    <LINK srcnodeid="84" srcpinname="Output Node" dstnodeid="79" dstpinname="Render State">
@@ -575,10 +581,6 @@
    <LINK srcnodeid="90" srcpinname="Y Output Value" dstnodeid="79" dstpinname="BinSize">
    </LINK>
    <LINK srcnodeid="92" srcpinname="Y Output Value" dstnodeid="79" dstpinname="VerticesXYZ">
-   </LINK>
-   <LINK srcnodeid="94" srcpinname="Color Output" dstnodeid="79" dstpinname="Color">
-   </LINK>
-   <LINK srcnodeid="95" srcpinname="Y Output Value" dstnodeid="79" dstpinname="Width">
    </LINK>
    <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="79" dstpinname="Antialias">
    </LINK>
@@ -627,15 +629,15 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\Graphics\01_Basics\Lines_Examples.v4p">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\Graphics\DX9\01_Basics\Lines_Examples.v4p">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="221" systemname="IOBox (String)">
    <BOUNDS type="Node" left="13920" top="1050" width="1215" height="900">
    </BOUNDS>
-   <BOUNDS type="Box" left="13920" top="1050" width="1230" height="2505">
+   <BOUNDS type="Box" left="13920" top="1050" width="1275" height="3045">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Transform pin:&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;Width pin:&cr;&lf;&cr;&lf;Color pin:&cr;&lf;&cr;&lf;&cr;&lf;Enabled pin:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Transform:&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;Color:&cr;&lf;&cr;&lf;&cr;&lf;Width:&cr;&lf;&cr;&lf;&cr;&lf;Enabled:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -647,9 +649,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="222" systemname="IOBox (String)">
    <BOUNDS type="Node" left="15195" top="1050" width="1215" height="900">
    </BOUNDS>
-   <BOUNDS type="Box" left="15195" top="1050" width="4245" height="2460">
+   <BOUNDS type="Box" left="15195" top="1050" width="3645" height="3105">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If the &apos;Transform Each Bin&apos; is off, the transformation are applied to the whole drawing (all the lines) &cr;&lf;If the &apos;Transform Each Bin&apos; is on, the transformations are applied to individual sections of the lines.&cr;&lf;&cr;&lf;Width is applied all lines.&cr;&lf;&cr;&lf;Color is defined for every section (connection between two points) of the line.&cr;&lf;&cr;&lf;Every line (bin) can be disabled / enabled individually.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If the &apos;Transform Each Bin&apos; is on, each slice is applied to a Bin.&cr;&lf;If the &apos;Transform Each Bin&apos; is off, each slice is applied to the whole drawing (all Bins) thus duplicating the drawing as many times as there are slices. &cr;&lf;&cr;&lf;Each slice applies to a section (connection between two points).&cr;&lf;&cr;&lf;Each slice applies to a section (connection between two points).&cr;&lf;&cr;&lf;Each slice applies to a Bin. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -673,9 +675,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="224" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="13920" top="3540" width="1215" height="900">
+   <BOUNDS type="Node" left="13920" top="3990" width="1215" height="900">
    </BOUNDS>
-   <BOUNDS type="Box" left="13920" top="3540" width="5595" height="240">
+   <BOUNDS type="Box" left="13920" top="3990" width="5595" height="240">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="-----------------------------------------------------------------------">
    </PIN>
@@ -691,7 +693,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="13905" top="570" width="1845" height="360">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Pins and bins|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Pins and Bins|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -702,4 +704,8 @@
    <PIN pinname="Size" slicecount="1" values="11">
    </PIN>
    </NODE>
+   <LINK srcnodeid="94" srcpinname="Color Output" dstnodeid="79" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Y Output Value" dstnodeid="79" dstpinname="Width">
+   </LINK>
    </PATCH>

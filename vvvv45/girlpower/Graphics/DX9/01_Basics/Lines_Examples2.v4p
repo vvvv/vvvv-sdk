@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples2.v4p" systemname="Lines_Examples2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples2.v4p">
-   <BOUNDS type="Window" left="0" top="225" width="16815" height="9840">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\Lines_Examples2.v4p" systemname="Lines_Examples2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_Examples2.v4p">
+   <BOUNDS type="Window" left="6825" top="285" width="14430" height="8820">
    </BOUNDS>
    <NODE systemname="Line (EX9 FromTo)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9 FromTo).v4p" nodename="Line (EX9 FromTo)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="8865" top="3765" width="3825" height="270">
@@ -93,7 +93,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10800" top="2520" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.28">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.3">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -107,7 +107,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10500" top="1635" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="-0.23">
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.25">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -151,7 +151,7 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="0.62,0,-0.62">
+   <PIN pinname="Y Input Value" slicecount="3" values="0.63,0,-0.63">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="3">
    </PIN>
@@ -241,7 +241,7 @@
    </BOUNDS>
    <BOUNDS height="5550" left="705" top="1380" type="Box" width="4080">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order to create a spread of vertical lines using the Line (EX9 FromTo) two spreads of vertices have to be supplied (&apos;From&apos; and &apos;To&apos; vertices). LinearSpread (Spreads) creates 12 values, which are used as X coordinates for these two spreads of 3d vertices. But these spreads has different Y coordinate (see the Vector (3d Join) nodes.&cr;&lf;&cr;&lf;Connect the Transform (Transform 2d) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9 FromTo). Leave the &apos;Transform Each Bin&apos; pin off. &cr;&lf;&cr;&lf;The drawing made using the input vertices (12 vertical lines) is copied now 3 times and moved accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins (defined by the &apos;BinSize&apos;). Turn this on and change the values attached to the Transform (Transform 2d). If the BinSize=2, the lines are grouped in the bins of two and transformed by each slice of the transformation spread.&cr;&lf;&cr;&lf;Note: &apos;Enabled&apos; pin is spreaded with 3 Toggles. So the individual bins of lines can be turned on and off.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order to create a spread of vertical lines using the Line (EX9 FromTo) two spreads of vertices have to be supplied (&apos;From&apos; and &apos;To&apos; vertices). LinearSpread (Spreads) creates 12 values, which are used as X coordinates for these two spreads of 3d vertices. But these spreads have a different Y coordinate (see the Vector (3d Join) nodes.&cr;&lf;&cr;&lf;Connect the Transform (Transform 2d) which is spreaded with 3 values to the &apos;Transform&apos; pin of the Line (EX9 FromTo). Leave the &apos;Transform Each Bin&apos; pin off. &cr;&lf;&cr;&lf;The drawing made using the input vertices (12 vertical lines) is now duplicated 3 times and moved accordingly.&cr;&lf;&cr;&lf;If the &apos;Transform Each Bin&apos; pin is turned on, then the transformations are applied not to the complete drawing, but to the individual bins (defined by the &apos;BinSize&apos;). Turn this on and change the values attached to the Transform (Transform 2d). If the BinSize=2, the lines are grouped in the bins of two and transformed by each slice of the transformation spread.&cr;&lf;&cr;&lf;Note: The &apos;Enabled&apos; pin is spreaded with 3 Toggles. So the individual bins of lines can be turned on and off.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -333,9 +333,9 @@
    </PIN>
    </NODE>
    <NODE id="13" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Y Input Value" slicecount="1" pintype="Input" visible="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" pintype="Input" visible="1" values="0">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" pintype="Input" visible="-1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" pintype="Input" visible="-1" values="0">
    </PIN>
    <BOUNDS type="Box" left="8190" top="2310" width="570" height="630">
    </BOUNDS>
@@ -510,6 +510,4 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform">
-   </LINK>
    </PATCH>
