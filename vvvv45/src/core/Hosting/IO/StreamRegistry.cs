@@ -132,7 +132,7 @@ namespace VVVV.Hosting.IO
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringIn)));
                     var stringIn = container.RawIOObject as IStringIn;
                     var stream = new StringInStream(stringIn);
-                    // Using ManagedIOStream -> needs to be synced on managed side.
+                    // Using MemoryIOStream -> needs to be synced on managed side.
                     if (context.IOAttribute.AutoValidate)
                         return IOContainer.Create(context, stream, container, s => s.Sync());
                     else
@@ -145,7 +145,7 @@ namespace VVVV.Hosting.IO
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IRawIn)));
                     var rawIn = container.RawIOObject as IRawIn;
                     var stream = new RawInStream(rawIn);
-                    // Using ManagedIOStream -> needs to be synced on managed side.
+                    // Using MemoryIOStream -> needs to be synced on managed side.
                     if (context.IOAttribute.AutoValidate)
                         return IOContainer.Create(context, stream, container, s => s.Sync());
                     else
@@ -158,7 +158,7 @@ namespace VVVV.Hosting.IO
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IEnumIn)));
                     var enumIn = container.RawIOObject as IEnumIn;
                     var stream = new DynamicEnumInStream(enumIn, context.IOAttribute.EnumName);
-                    // Using ManagedIOStream -> needs to be synced on managed side.
+                    // Using MemoryIOStream -> needs to be synced on managed side.
                     if (context.IOAttribute.AutoValidate)
                         return IOContainer.Create(context, stream, container, s => s.Sync());
                     else
@@ -223,7 +223,11 @@ namespace VVVV.Hosting.IO
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
                                       stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject) as IInStream;
                                   }
-                                  return IOContainer.Create(context, stream, container);
+                                  // Using MemoryIOStream -> needs to be synced on managed side.
+                                  if (attribute.AutoValidate)
+                                      return IOContainer.Create(context, stream, container, s => s.Sync());
+                                  else
+                                      return IOContainer.Create(context, stream, container);
                               }
                           });
             
