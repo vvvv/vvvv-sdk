@@ -97,7 +97,7 @@ namespace VVVV.TodoMap.UI.UserControls.Osc
             }
             else
             {
-                this.engine.Osc.SetEnabled(false);
+                this.engine.Osc.SetOutputEnabled(false);
             }
 
             this.tbOutput.ReadOnly = chkOutput.Checked;
