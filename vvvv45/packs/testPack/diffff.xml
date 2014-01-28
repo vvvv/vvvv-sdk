@@ -17,6 +17,13 @@
   in the users patch.
   If there is no pack info in the users' patch, the patch is treated as if it was stored with 
   version 0.0.0 of this pack loaded.
+  In rare cases you might want to convert a patch back to an older version of your pack. Try to put your newest 
+  diffff.xml into the old pack (old dlls, old version.info). 
+  Users will only be asked to try back conversion if 
+    a) the their patch was stored with a newer version than the loaded pack
+	b) there are some rules in the diffff that show how to convert back from that newer version (new diffff in old pack!!)
+	c) some nodes of the users' patch would actually be affected by the back conversion
+  Note that we don't have back conversion of default values of pins.	
       
   * add a node tag within the patch tag for the node you want to be converted
       <NODE old="I (Spread)">
