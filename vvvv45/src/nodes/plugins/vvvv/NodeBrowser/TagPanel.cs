@@ -28,8 +28,8 @@ namespace VVVV.Nodes.NodeBrowser
         private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
         private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
         private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
-        private const int CLineHeight = 13;
-        private const int CLineLength = 200;
+        private int CLineHeight = 13; //dip-ified in constructor!
+        private int CLineLength = 200; //dip-ified in constructor!
         private int FHoverLine;
         private List<string> FTags;
         private Point FLastMouseHoverLocation = new Point(0, 0);
@@ -115,8 +115,19 @@ namespace VVVV.Nodes.NodeBrowser
         {
             get
             {
-                return  Math.Max(20, TagsTextBox.Lines.Length * CLineHeight + 7);
+            	return  Math.Max(1, TagsTextBox.Lines.Length) * CLineHeight + DIPY(7);
             }
+        }
+        
+        private float FDPIX, FDPIY;
+        private int DIPX(int pixel)
+        {
+        	return (int) Math.Round(pixel * FDPIX);
+        }
+        
+        private int DIPY(int pixel)
+        {
+        	return (int) Math.Round(pixel * FDPIY);
         }
         
         public TagPanel()
@@ -132,11 +143,20 @@ namespace VVVV.Nodes.NodeBrowser
             FToolTip.Popup += ToolTipPopupHandler;
             
             FRichTextBox.MouseWheel += DoMouseWheel;
+            
+            using (var g = this.CreateGraphics())
+            {
+            	FDPIX = g.DpiX / 96.0f;
+				FDPIY = g.DpiY / 96.0f;           	
+            }
+            
+            CLineHeight = DIPY(13);
+            CLineLength = DIPX(200);
         }
         
         private void ToolTipPopupHandler(object sender, PopupEventArgs e)
         {
-            e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, 300), e.ToolTipSize.Height);
+        	e.ToolTipSize = new Size(Math.Min(e.ToolTipSize.Width, DIPX(300)), e.ToolTipSize.Height);
         }
         
         private string NodeInfoToDisplayName(INodeInfo nodeInfo)
@@ -352,7 +372,7 @@ namespace VVVV.Nodes.NodeBrowser
             {
                 FLastMouseHoverLocation = e.Location;
                 FHoverLine = newHoverLine;
-                ShowToolTip(e.X + 15);
+                ShowToolTip(e.X + DIPX(15));
                 RedrawSelection();
             }
         }
@@ -395,7 +415,7 @@ namespace VVVV.Nodes.NodeBrowser
             if (!string.IsNullOrEmpty(ni.Credits))
                 tip += "\n CREDITS: " + ni.Credits.Trim();
             if (!string.IsNullOrEmpty(tip))
-                FToolTip.Show(tip, FRichTextBox, x, y + 15);
+            	FToolTip.Show(tip, FRichTextBox, x, y + DIPX(15));
             else
                 FToolTip.Hide(FRichTextBox);
         }
@@ -771,11 +791,11 @@ namespace VVVV.Nodes.NodeBrowser
             for (int i = 0; i < maxLine; i++)
             {
                 int index = Math.Min(i + ScrolledLine, FSelectionList.Count-1);
-                int y = (i * CLineHeight) + 4;
+                int y = (i * CLineHeight) + DIPY(4);
                 
                 if (FHoverLine == i)
                     using (SolidBrush b = new SolidBrush(CHoverColor))
-                        e.Graphics.FillRectangle(b, new Rectangle(0, y-4, 21, CLineHeight));
+                		e.Graphics.FillRectangle(b, new Rectangle(0, y-DIPY(4), DIPX(21), CLineHeight));
                 
                 var nodeType = FSelectionList[index].Type;
                 {
@@ -788,38 +808,38 @@ namespace VVVV.Nodes.NodeBrowser
                             }
                         case NodeType.Module:
                             {
-                                e.Graphics.DrawString("m", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString("m", FRichTextBox.Font, b, DIPX(5), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.Plugin:
                             {
-                                e.Graphics.DrawString("p", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString("p", FRichTextBox.Font, b, DIPX(6), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.Dynamic:
                             {
-                                e.Graphics.DrawString("d", FRichTextBox.Font, b, 6, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString("d", FRichTextBox.Font, b, DIPX(6), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.Freeframe:
                             {
-                                e.Graphics.DrawString(" f", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString(" f", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.Effect:
                             {
-                                e.Graphics.DrawString(" x", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString(" x", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.VST:
                             {
-                                e.Graphics.DrawString(" v", FRichTextBox.Font, b, 4, y-3, StringFormat.GenericDefault);
+                    			e.Graphics.DrawString(" v", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                             // Added code:
                         default:
                             {
-                                e.Graphics.DrawString("t", FRichTextBox.Font, b, 5, y-3, StringFormat.GenericDefault);
+                            	e.Graphics.DrawString("t", FRichTextBox.Font, b, DIPX(5), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                     }

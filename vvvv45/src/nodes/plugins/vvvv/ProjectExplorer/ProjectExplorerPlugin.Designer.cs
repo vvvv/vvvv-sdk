@@ -39,7 +39,6 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.FHideUnusedProjectsCheckBox = new System.Windows.Forms.CheckBox();
-			this.FPlaceHolderLabel = new System.Windows.Forms.Label();
 			this.FBuildConfigComboBox = new System.Windows.Forms.ComboBox();
 			this.FTreeViewer = new VVVV.HDE.Viewer.WinFormsViewer.TreeViewer();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -48,13 +47,12 @@ namespace VVVV.HDE.ProjectExplorer
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.AutoSize = true;
-			this.tableLayoutPanel1.BackColor = System.Drawing.Color.Gray;
+			this.tableLayoutPanel1.BackColor = System.Drawing.Color.DarkGray;
 			this.tableLayoutPanel1.ColumnCount = 3;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.Controls.Add(this.FHideUnusedProjectsCheckBox, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.FPlaceHolderLabel, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.FBuildConfigComboBox, 2, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -67,43 +65,32 @@ namespace VVVV.HDE.ProjectExplorer
 			// 
 			// FHideUnusedProjectsCheckBox
 			// 
-			this.FHideUnusedProjectsCheckBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.FHideUnusedProjectsCheckBox.AutoSize = true;
 			this.FHideUnusedProjectsCheckBox.BackColor = System.Drawing.Color.DarkGray;
+			this.FHideUnusedProjectsCheckBox.Dock = System.Windows.Forms.DockStyle.Left;
 			this.FHideUnusedProjectsCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.FHideUnusedProjectsCheckBox.ForeColor = System.Drawing.Color.White;
 			this.FHideUnusedProjectsCheckBox.Location = new System.Drawing.Point(0, 0);
 			this.FHideUnusedProjectsCheckBox.Margin = new System.Windows.Forms.Padding(0);
 			this.FHideUnusedProjectsCheckBox.Name = "FHideUnusedProjectsCheckBox";
 			this.FHideUnusedProjectsCheckBox.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-			this.FHideUnusedProjectsCheckBox.Size = new System.Drawing.Size(140, 21);
+			this.FHideUnusedProjectsCheckBox.Size = new System.Drawing.Size(126, 21);
 			this.FHideUnusedProjectsCheckBox.TabIndex = 0;
 			this.FHideUnusedProjectsCheckBox.Text = "Hide unused projects";
 			this.FHideUnusedProjectsCheckBox.UseVisualStyleBackColor = false;
 			// 
-			// FPlaceHolderLabel
-			// 
-			this.FPlaceHolderLabel.BackColor = System.Drawing.Color.DarkGray;
-			this.FPlaceHolderLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.FPlaceHolderLabel.ForeColor = System.Drawing.Color.White;
-			this.FPlaceHolderLabel.Location = new System.Drawing.Point(140, 0);
-			this.FPlaceHolderLabel.Margin = new System.Windows.Forms.Padding(0);
-			this.FPlaceHolderLabel.Name = "FPlaceHolderLabel";
-			this.FPlaceHolderLabel.Size = new System.Drawing.Size(161, 21);
-			this.FPlaceHolderLabel.TabIndex = 1;
-			this.FPlaceHolderLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
 			// FBuildConfigComboBox
 			// 
-			this.FBuildConfigComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.FBuildConfigComboBox.BackColor = System.Drawing.Color.DarkGray;
+			this.FBuildConfigComboBox.Dock = System.Windows.Forms.DockStyle.Right;
 			this.FBuildConfigComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.FBuildConfigComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.FBuildConfigComboBox.ForeColor = System.Drawing.Color.White;
 			this.FBuildConfigComboBox.FormattingEnabled = true;
-			this.FBuildConfigComboBox.Location = new System.Drawing.Point(301, 0);
+			this.FBuildConfigComboBox.Location = new System.Drawing.Point(289, 0);
 			this.FBuildConfigComboBox.Margin = new System.Windows.Forms.Padding(0);
 			this.FBuildConfigComboBox.Name = "FBuildConfigComboBox";
-			this.FBuildConfigComboBox.Size = new System.Drawing.Size(121, 21);
+			this.FBuildConfigComboBox.Size = new System.Drawing.Size(133, 21);
 			this.FBuildConfigComboBox.TabIndex = 2;
 			this.FBuildConfigComboBox.SelectedIndexChanged += new System.EventHandler(this.FBuildConfigComboBox_SelectedIndexChanged);
 			// 
@@ -130,12 +117,12 @@ namespace VVVV.HDE.ProjectExplorer
 			this.Name = "ProjectExplorerPlugin";
 			this.Size = new System.Drawing.Size(422, 330);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 		}
 		private VVVV.HDE.Viewer.WinFormsViewer.TreeViewer FTreeViewer;
 		private System.Windows.Forms.CheckBox FHideUnusedProjectsCheckBox;
-		private System.Windows.Forms.Label FPlaceHolderLabel;
 		private System.Windows.Forms.ComboBox FBuildConfigComboBox;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 	}
