@@ -230,6 +230,8 @@ namespace VVVV.Nodes.Input
         public ISpread<int> IdOut;
         [Output("Contact Area")]
         public ISpread<Vector2D> ContactAreaOut;
+        [Output("Is New")]
+        public ISpread<bool> IsNewOut;
 
         private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
         private Subscription<TouchDevice, TouchNotification> FSubscription;
@@ -239,6 +241,7 @@ namespace VVVV.Nodes.Input
             PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
             ContactAreaOut.SliceCount = 0;
+            IsNewOut.SliceCount = 0;
             FSubscription = new Subscription<TouchDevice, TouchNotification>(
                 touchDevice =>
                 {
@@ -259,6 +262,7 @@ namespace VVVV.Nodes.Input
                                 IdOut.Add(n.Id);
                                 PositionOut.Add(normalizedPosition);
                                 ContactAreaOut.Add(contactArea);
+                                IsNewOut.Add(true);
                             }
                             break;
                         case TouchNotificationKind.TouchUp:
@@ -267,6 +271,7 @@ namespace VVVV.Nodes.Input
                                 IdOut.RemoveAt(index);
                                 PositionOut.RemoveAt(index);
                                 ContactAreaOut.RemoveAt(index);
+                                IsNewOut.RemoveAt(index);
                             }
                             break;
                         case TouchNotificationKind.TouchMove:
@@ -274,6 +279,7 @@ namespace VVVV.Nodes.Input
                             {
                                 PositionOut[index] = normalizedPosition;
                                 ContactAreaOut[index] = contactArea;
+                                IsNewOut[index] = false;
                             }
                             break;
                         default:
