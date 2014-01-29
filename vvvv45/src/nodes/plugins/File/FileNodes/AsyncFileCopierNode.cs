@@ -15,6 +15,7 @@ namespace VVVV.Nodes.File
         Name = "Copier", 
         Category = "File", 
         Version = "Async",
+        Tags = "copy",
         Help = "Copies a spread of files to a location without causing vvvv to halt during the copy process. Outputs the progress of the copy process.")]
     public class AsyncFileCopierNode : IPluginEvaluate, IDisposable
     {
