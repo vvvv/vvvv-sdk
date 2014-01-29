@@ -114,12 +114,13 @@ namespace VVVV.HDE.CodeEditor
             }
             set
             {
+                if (FCompletionBinding != null)
+                    ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
+
                 FCompletionBinding = value;
                 
                 if (FCompletionBinding != null)
                     ActiveTextAreaControl.TextArea.KeyEventHandler += TextAreaKeyEventHandler;
-                else
-                    ActiveTextAreaControl.TextArea.KeyEventHandler -= TextAreaKeyEventHandler;
             }
         }
         
@@ -180,17 +181,18 @@ namespace VVVV.HDE.CodeEditor
             }
             set
             {
+                if (FLinkDataProvider != null)
+                {
+                    ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
+                    ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
+                }
+
                 FLinkDataProvider = value;
                 
                 if (FLinkDataProvider != null)
                 {
                     ActiveTextAreaControl.TextArea.MouseMove += MouseMoveCB;
                     ActiveTextAreaControl.TextArea.MouseClick += LinkClickCB;
-                }
-                else
-                {
-                    ActiveTextAreaControl.TextArea.MouseMove -= MouseMoveCB;
-                    ActiveTextAreaControl.TextArea.MouseClick -= LinkClickCB;
                 }
             }
         }
@@ -203,12 +205,13 @@ namespace VVVV.HDE.CodeEditor
             }
             set
             {
+                if (FToolTipProvider != null)
+                    ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
+
                 FToolTipProvider = value;
                 
                 if (FToolTipProvider != null)
                     ActiveTextAreaControl.TextArea.ToolTipRequest += OnToolTipRequest;
-                else
-                    ActiveTextAreaControl.TextArea.ToolTipRequest -= OnToolTipRequest;
             }
         }
         
@@ -561,7 +564,8 @@ namespace VVVV.HDE.CodeEditor
         {
             UpdateHScrollBar();
             FTimer.Stop();
-            FTimer.Start();
+            if (!FIsSynchronizing)
+                FTimer.Start();
         }
         
         /// <summary>
@@ -569,9 +573,13 @@ namespace VVVV.HDE.CodeEditor
         /// </summary>
         void TextDocumentContentChangedCB(object sender, ContentChangedEventArgs args)
         {
-            var textContent = Document.TextContent;
-            Document.Replace(0, textContent.Length, textContent);
+            var textContent = string.Empty;
+            using (var reader = new LeaveOpenStreamReader(args.NewContent))
+                textContent = reader.ReadToEnd();
+            FIsSynchronizing = true;
+            Document.Replace(0, Document.TextLength, textContent);
             Refresh();
+            FIsSynchronizing = false;
         }
         
         protected override bool ProcessKeyPreview(ref Message m)
@@ -822,6 +830,7 @@ namespace VVVV.HDE.CodeEditor
         /// Return true to handle the keypress, return false to let the text area handle the keypress
         /// </summary>
         bool inHandleKeyPress;
+        private bool FIsSynchronizing;
         bool TextAreaKeyEventHandler(char key)
         {
             if (inHandleKeyPress)
