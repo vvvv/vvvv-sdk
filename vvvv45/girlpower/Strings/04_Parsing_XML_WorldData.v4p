@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\04_Parsing_XML_WorldData.v4p" systemname="Parsing_XML_Data_World" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_XML_Data_World.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Strings\04_Parsing_XML_WorldData.v4p" systemname="Parsing_XML_Data_World" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_XML_Data_World.v4p" locked="0">
    <BOUNDS type="Window" left="630" top="390" width="18300" height="15360">
    </BOUNDS>
    <NODE systemname="AsXElement (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsXElement (XML)" componentmode="Hidden" id="198">
@@ -587,7 +587,7 @@
    </BOUNDS>
    <BOUNDS height="13275" left="675" top="1380" type="Box" width="4095">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The string is converted into the XElement representation.&cr;&lf;&cr;&lf;GetElements (XElement ByXPath) returns only &apos;country&apos; elements. This XML document contains way more information, like lakes, rivers, deserts.&cr;&lf;&cr;&lf;From every &apos;country&apos; element the &apos;name&apos; and &apos;population&apos; elements are picked.&cr;&lf;&cr;&lf;These elements are splitted and their &apos;Values&apos; (string representations of their content) are used further.&cr;&lf;&cr;&lf;GetAttributes (XElement ByXPath) retrieves the &apos;capital&apos; attribute from every &apos;country&apos; element. This attribute contains not the capital name itself, but the id, which is used to find the capital from the cities of the country.&cr;&lf;&cr;&lf;After splitting the atrribute and getting its &apos;Value&apos;, the Format (String) constructs the XPath Query (which will be used to go through all the cities to pick the capitals). The Format replaces the placesholders {0} in the &apos;Input&apos; string with the strings from the &apos;Argument 1&apos; pin.&cr;&lf;&cr;&lf;The string is made of 2 parts joined with &apos;||&apos; (OR), these are the paths to the first &apos;name&apos; child of every &apos;city&apos; element which has an id = placeholder.&cr;&lf;&cr;&lf;XPath (XML) receives the string representation of the XML document and the &apos;XPath Query&apos; and returns all the matches. In this example it returns the spread of the capitals.&cr;&lf;&cr;&lf;Some of the countries doesn&apos;t have the &apos;capital&apos; attribute, so a slice with the empty string has to be added to the spread of capitals for those contries. EQ (Value) and Select (Value) returns the indices of the slices with the &apos;Attribute Bin Size&apos; = 0, which means no such attribute.&cr;&lf;&cr;&lf;InsertSlice (String) receives the spread of the capitals and inserts the slices with empty strings. The slice indices has to be shifted by -1 for each following index because after inserting the first item, the all the following indices of the original spread are grown by 1, and so on.&cr;&lf;&cr;&lf;Countries are sorted according to their population in the descending order. The Sort (Spreads) sorts the spread of population values (in the ascending order). The Reverse (Spreads) nodes are reversing the order.&cr;&lf;&cr;&lf;The spreads of the names and the capitals have to be rearanged according to the sorted population values. The GetSlice (String) nodes are using the &apos;Former Indices&apos; output spread coming from the Sort (Spreads) to pick the slices of the spreads in this resorted order.&cr;&lf;&cr;&lf;The FormatValue (String) converts the population values into pretty formated strings.&cr;&lf;&cr;&lf;The slices of the coutries with no &apos;capital&apos; attribute are picked.&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The string is converted into an XElement representation.&cr;&lf;&cr;&lf;GetElements (XElement ByXPath) returns only &apos;country&apos; elements. This XML document contains way more information, like lakes, rivers, deserts.&cr;&lf;&cr;&lf;From every &apos;country&apos; element the &apos;name&apos; and &apos;population&apos; elements are picked.&cr;&lf;&cr;&lf;These elements are split and their &apos;Values&apos; (string representations of their content) are used further.&cr;&lf;&cr;&lf;GetAttributes (XElement ByXPath) retrieves the &apos;capital&apos; attribute from every &apos;country&apos; element. This attribute contains not the capital name itself, but the id, which is used to find the capital from the cities of the country.&cr;&lf;&cr;&lf;After splitting the atrribute and getting its &apos;Value&apos;, the Format (String) constructs the XPath Query (which will be used to go through all the cities to pick the capitals). The Format replaces the placesholders {0} in the &apos;Input&apos; string with the strings from the &apos;Argument 1&apos; pin.&cr;&lf;&cr;&lf;The string is made of 2 parts joined with &apos;||&apos; (OR), these are the paths to the first &apos;name&apos; child of every &apos;city&apos; element which has an id corresponding to the given placeholder-id.&cr;&lf;&cr;&lf;XPath (XML) receives the string representation of the XML document and the &apos;XPath Query&apos; and returns all the matches. In this example it returns a spread of the capitals.&cr;&lf;&cr;&lf;Some of the countries don&apos;t have the &apos;capital&apos; attribute, so a slice with an empty string has to be added to the spread of capitals for those countries. EQ (Value) and Select (Value) returns the indices of the slices with the &apos;Attribute Bin Size&apos; = 0, which means no such attribute.&cr;&lf;&cr;&lf;InsertSlice (String) receives the spread of capitals and inserts the slices with empty strings. The slice indices have to be shifted by -1 for each following index because after inserting the first item, all the following indices of the original spread have increased by 1, and so on.&cr;&lf;&cr;&lf;Countries are sorted according to their population in descending order. Sort (Spreads) sorts the spread of population values (in ascending order). The Reverse (Spreads) nodes are reversing the order.&cr;&lf;&cr;&lf;The spreads of names and capitals have to be rearanged according to the sorted population values. The GetSlice (String) nodes are using the &apos;Former Indices&apos; output spread coming from the Sort (Spreads) to pick the slices of the spreads in this resorted order.&cr;&lf;&cr;&lf;The FormatValue (String) converts the population values into pretty formated strings.&cr;&lf;&cr;&lf;The slices of the coutries with no &apos;capital&apos; attribute are picked.&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -615,9 +615,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="385" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="1995" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="1815" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="1995" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="1815" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -903,9 +903,9 @@
    <LINK srcnodeid="330" srcpinname="Output String" dstnodeid="331" dstpinname="XPath">
    </LINK>
    <NODE componentmode="InABox" id="405" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="2820" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="2640" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="2820" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="2640" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -919,9 +919,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="406" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="3465" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="3285" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="3465" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="3285" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -935,9 +935,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="407" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="4095" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="3915" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="4095" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="3915" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -951,9 +951,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="408" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="5130" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="4950" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="5130" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="4950" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1015,9 +1015,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="412" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="75" top="11025" type="Node" width="315">
+   <BOUNDS height="270" left="75" top="10845" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="75" top="11025" type="Box" width="600">
+   <BOUNDS height="435" left="75" top="10845" type="Box" width="600">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1031,9 +1031,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="413" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="75" top="12060" type="Node" width="315">
+   <BOUNDS height="270" left="75" top="11880" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="75" top="12060" type="Box" width="585">
+   <BOUNDS height="435" left="75" top="11880" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
@@ -1047,9 +1047,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="415" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="75" top="13320" type="Node" width="315">
+   <BOUNDS height="270" left="75" top="13140" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="75" top="13320" type="Box" width="585">
+   <BOUNDS height="435" left="75" top="13140" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="12.">
    </PIN>
@@ -1063,9 +1063,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="416" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="75" top="13950" type="Node" width="315">
+   <BOUNDS height="270" left="75" top="13770" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="75" top="13950" type="Box" width="585">
+   <BOUNDS height="435" left="75" top="13770" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="13.">
    </PIN>
@@ -1083,7 +1083,7 @@
    <LINK srcnodeid="340" srcpinname="Body" dstnodeid="198" dstpinname="XML">
    </LINK>
    <LINK srcnodeid="340" srcpinname="Body" dstnodeid="325" dstpinname="XML Input">
-   <LINKPOINT x="10620" y="2100">
+   <LINKPOINT x="10635" y="2250">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="417" systemname="IOBox (String)">
@@ -1102,4 +1102,36 @@
    </NODE>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="418" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11085" top="1815" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11085" top="1815" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="418" srcpinname="Y Output Value" dstnodeid="340" dstpinname="Refresh">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="419" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11610" top="1920" width="1890" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11610" top="1920" width="990" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Reload|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
