@@ -205,8 +205,9 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 						var lineSegment = doc.GetLineSegment(line);
 						var offset = lineSegment.Offset + startIndex;
 						var location = doc.OffsetToPosition(offset);
-						
-						var marker = new TextMarker(offset, searchTextLength, TextMarkerType.SolidBlock, Color.Beige);
+
+                        var marker = new TextMarker(offset, searchTextLength, TextMarkerType.SolidBlock, doc.HighlightingStrategy.GetColorFor("SearchResult").BackgroundColor,
+                            doc.HighlightingStrategy.GetColorFor("SearchResult").Color);
 						
 						FSearchMarkers.Add(marker);
 						markerStrategy.AddMarker(marker);
