@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="vvvv45.props" />
-  
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
@@ -9,7 +8,6 @@
     <RestorePackages>true</RestorePackages>
     <PackageOutputDir Condition="'$(PackageOutputDir)' == ''">$(MSBuildThisFileDirectory)..\..\build\packages</PackageOutputDir>
   </PropertyGroup>
-  
   <!-- Override vvvvv45.props -->
   <!-- Zip -->
   <PropertyGroup>
@@ -22,7 +20,6 @@
     <ZipReadOnlyFiles>lib\nodes\*.*</ZipReadOnlyFiles>
     <ZipHiddenFiles>vvvv.exe.config</ZipHiddenFiles>
   </PropertyGroup>
-
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
     <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
@@ -36,6 +33,10 @@
     <ProjectReference Include="..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
       <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\common\src\core\UtilsIL\UtilsIL.csproj">
+      <Project>{93cdb07f-0bb6-4891-b793-9c02114a88ae}</Project>
+      <Name>UtilsIL</Name>
     </ProjectReference>
     <ProjectReference Include="core\Hosting\Hosting.csproj">
       <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
@@ -69,6 +70,14 @@
       <Project>{639A1C44-DA07-4F08-8A90-8B8845515BF4}</Project>
       <Name>Timeliner</Name>
     </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Devices\Leap\Leap.csproj">
+      <Project>{e0c5b55a-37ea-48d6-95b9-5eef07c4ad8e}</Project>
+      <Name>Leap</Name>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\File\FileNodes\FileNodes.csproj">
+      <Project>{e051bb88-5211-4ef7-962b-59657d171297}</Project>
+      <Name>FileNodes</Name>
+    </ProjectReference>
     <ProjectReference Include="nodes\plugins\Mesh\ColladaLoader\PluginColladaLoader.csproj">
       <Project>{8B9D2C28-4394-4C86-A14C-B0021EC29089}</Project>
       <Name>PluginColladaLoader</Name>
@@ -81,34 +90,27 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  
   <Target Name="CleanPackages">
     <ItemGroup>
-      <PackagesToRemove Include="$(PackageOutputDir)\*.nupkg"/>
+      <PackagesToRemove Include="$(PackageOutputDir)\*.nupkg" />
     </ItemGroup>
     <Delete Files="@(PackagesToRemove)" />
   </Target>
-  
   <Target Name="RestoreAllPackages">
     <ItemGroup>
       <ProjectsToRestore Include="..\..\common\src\core\*\*.csproj" />
       <ProjectsToRestore Include="core\*\*.csproj" />
     </ItemGroup>
-    <MSBuild Projects="@(ProjectsToRestore)" 
-             Targets="RestorePackages" />
+    <MSBuild Projects="@(ProjectsToRestore)" Targets="RestorePackages" />
   </Target>
-  
   <Target Name="BuildPackages" DependsOnTargets="CleanPackages;RestoreAllPackages">
     <MakeDir Directories="$(PackageOutputDir)" />
     <ItemGroup>
       <ProjectsToPack Include="..\..\common\src\core\*\*.csproj" />
       <ProjectsToPack Include="core\*\*.csproj" />
     </ItemGroup>
-    <MSBuild Projects="@(ProjectsToPack)" 
-             Targets="BuildPackage" 
-             Properties="PackageOutputDir=$(PackageOutputDir)" />
+    <MSBuild Projects="@(ProjectsToPack)" Targets="BuildPackage" Properties="PackageOutputDir=$(PackageOutputDir)" />
   </Target>
-  
   <Import Project="vvvv45.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
