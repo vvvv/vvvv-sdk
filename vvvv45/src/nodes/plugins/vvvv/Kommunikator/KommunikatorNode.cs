@@ -63,6 +63,26 @@ namespace VVVV.Nodes.Kommunikator
             
             FRectPen = new Pen(Color.Black);
             FRectPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            
+            using (var g = this.CreateGraphics())
+            {
+            	FDPIX = g.DpiX / 96.0f;
+				FDPIY = g.DpiY / 96.0f;           	
+            }
+            
+            panel1.Width = DIPX(165);
+            panel2.Height = DIPY(85);
+        }
+        
+        private float FDPIX, FDPIY;
+        private int DIPX(int pixel)
+        {
+        	return (int) Math.Round(pixel * FDPIX);
+        }
+        
+        private int DIPY(int pixel)
+        {
+        	return (int) Math.Round(pixel * FDPIY);
         }
         
         private void InitializeComponent()
@@ -74,11 +94,11 @@ namespace VVVV.Nodes.Kommunikator
         	this.ScreenshotDescriptionTextBox = new System.Windows.Forms.TextBox();
         	this.ScreenshotTitleTextBox = new System.Windows.Forms.TextBox();
         	this.panel1 = new System.Windows.Forms.Panel();
+        	this.UseAsHeaderCheckBox = new System.Windows.Forms.CheckBox();
         	this.panel3 = new System.Windows.Forms.Panel();
         	this.UploadButton = new System.Windows.Forms.Button();
         	this.SaveButton = new System.Windows.Forms.Button();
         	this.CloseButton = new System.Windows.Forms.Button();
-        	this.UseAsHeaderCheckBox = new System.Windows.Forms.CheckBox();
         	this.PasswordTextBox = new System.Windows.Forms.TextBox();
         	this.UsernameTextBox = new System.Windows.Forms.TextBox();
         	this.ConsoleTextBox = new System.Windows.Forms.TextBox();
@@ -92,6 +112,7 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// panelScreenshot
         	// 
+        	this.panelScreenshot.AutoSize = true;
         	this.panelScreenshot.Controls.Add(this.FPictureBox);
         	this.panelScreenshot.Controls.Add(this.ScreenshotInfoLabel);
         	this.panelScreenshot.Controls.Add(this.panel2);
@@ -99,7 +120,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.panelScreenshot.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.panelScreenshot.Location = new System.Drawing.Point(0, 0);
         	this.panelScreenshot.Name = "panelScreenshot";
-        	this.panelScreenshot.Size = new System.Drawing.Size(489, 402);
+        	this.panelScreenshot.Size = new System.Drawing.Size(538, 430);
         	this.panelScreenshot.TabIndex = 2;
         	// 
         	// FPictureBox
@@ -111,21 +132,22 @@ namespace VVVV.Nodes.Kommunikator
         	this.FPictureBox.InitialImage = null;
         	this.FPictureBox.Location = new System.Drawing.Point(0, 0);
         	this.FPictureBox.Name = "FPictureBox";
-        	this.FPictureBox.Size = new System.Drawing.Size(489, 279);
+        	this.FPictureBox.Size = new System.Drawing.Size(538, 312);
         	this.FPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
         	this.FPictureBox.TabIndex = 3;
         	this.FPictureBox.TabStop = false;
-        	this.FPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseMove);
-        	this.FPictureBox.Resize += new System.EventHandler(this.PictureBoxResize);
         	this.FPictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseDown);
+        	this.FPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseMove);
         	this.FPictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PictureBoxMouseUp);
+        	this.FPictureBox.Resize += new System.EventHandler(this.PictureBoxResize);
         	// 
         	// ScreenshotInfoLabel
         	// 
+        	this.ScreenshotInfoLabel.AutoSize = true;
         	this.ScreenshotInfoLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.ScreenshotInfoLabel.Location = new System.Drawing.Point(0, 279);
+        	this.ScreenshotInfoLabel.Location = new System.Drawing.Point(0, 312);
         	this.ScreenshotInfoLabel.Name = "ScreenshotInfoLabel";
-        	this.ScreenshotInfoLabel.Size = new System.Drawing.Size(489, 18);
+        	this.ScreenshotInfoLabel.Size = new System.Drawing.Size(79, 13);
         	this.ScreenshotInfoLabel.TabIndex = 10;
         	this.ScreenshotInfoLabel.Text = "ScreenshotInfo";
         	// 
@@ -135,9 +157,9 @@ namespace VVVV.Nodes.Kommunikator
         	this.panel2.Controls.Add(this.ScreenshotTitleTextBox);
         	this.panel2.Controls.Add(this.panel1);
         	this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.panel2.Location = new System.Drawing.Point(0, 297);
+        	this.panel2.Location = new System.Drawing.Point(0, 325);
         	this.panel2.Name = "panel2";
-        	this.panel2.Size = new System.Drawing.Size(489, 85);
+        	this.panel2.Size = new System.Drawing.Size(538, 85);
         	this.panel2.TabIndex = 9;
         	// 
         	// ScreenshotDescriptionTextBox
@@ -147,7 +169,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.ScreenshotDescriptionTextBox.Location = new System.Drawing.Point(0, 20);
         	this.ScreenshotDescriptionTextBox.Multiline = true;
         	this.ScreenshotDescriptionTextBox.Name = "ScreenshotDescriptionTextBox";
-        	this.ScreenshotDescriptionTextBox.Size = new System.Drawing.Size(344, 65);
+        	this.ScreenshotDescriptionTextBox.Size = new System.Drawing.Size(373, 65);
         	this.ScreenshotDescriptionTextBox.TabIndex = 1;
         	// 
         	// ScreenshotTitleTextBox
@@ -156,39 +178,56 @@ namespace VVVV.Nodes.Kommunikator
         	this.ScreenshotTitleTextBox.Dock = System.Windows.Forms.DockStyle.Top;
         	this.ScreenshotTitleTextBox.Location = new System.Drawing.Point(0, 0);
         	this.ScreenshotTitleTextBox.Name = "ScreenshotTitleTextBox";
-        	this.ScreenshotTitleTextBox.Size = new System.Drawing.Size(344, 20);
+        	this.ScreenshotTitleTextBox.Size = new System.Drawing.Size(373, 20);
         	this.ScreenshotTitleTextBox.TabIndex = 0;
         	// 
         	// panel1
         	// 
-        	this.panel1.Controls.Add(this.panel3);
         	this.panel1.Controls.Add(this.UseAsHeaderCheckBox);
+        	this.panel1.Controls.Add(this.panel3);
         	this.panel1.Controls.Add(this.PasswordTextBox);
         	this.panel1.Controls.Add(this.UsernameTextBox);
         	this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-        	this.panel1.Location = new System.Drawing.Point(344, 0);
+        	this.panel1.Location = new System.Drawing.Point(373, 0);
         	this.panel1.Name = "panel1";
-        	this.panel1.Size = new System.Drawing.Size(145, 85);
+        	this.panel1.Size = new System.Drawing.Size(165, 85);
         	this.panel1.TabIndex = 9;
+        	// 
+        	// UseAsHeaderCheckBox
+        	// 
+        	this.UseAsHeaderCheckBox.AutoSize = true;
+        	this.UseAsHeaderCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        	this.UseAsHeaderCheckBox.Enabled = false;
+        	this.UseAsHeaderCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+        	this.UseAsHeaderCheckBox.Location = new System.Drawing.Point(0, 40);
+        	this.UseAsHeaderCheckBox.Name = "UseAsHeaderCheckBox";
+        	this.UseAsHeaderCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
+        	this.UseAsHeaderCheckBox.Size = new System.Drawing.Size(165, 20);
+        	this.UseAsHeaderCheckBox.TabIndex = 4;
+        	this.UseAsHeaderCheckBox.Text = "use image as header";
+        	this.UseAsHeaderCheckBox.UseVisualStyleBackColor = true;
+        	this.UseAsHeaderCheckBox.CheckedChanged += new System.EventHandler(this.UseAsHeaderCheckBoxCheckedChanged);
         	// 
         	// panel3
         	// 
+        	this.panel3.AutoSize = true;
         	this.panel3.Controls.Add(this.UploadButton);
         	this.panel3.Controls.Add(this.SaveButton);
         	this.panel3.Controls.Add(this.CloseButton);
         	this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.panel3.Location = new System.Drawing.Point(0, 63);
+        	this.panel3.Location = new System.Drawing.Point(0, 60);
         	this.panel3.Name = "panel3";
-        	this.panel3.Size = new System.Drawing.Size(145, 22);
+        	this.panel3.Size = new System.Drawing.Size(165, 25);
         	this.panel3.TabIndex = 17;
         	// 
         	// UploadButton
         	// 
+        	this.UploadButton.AutoSize = true;
         	this.UploadButton.Dock = System.Windows.Forms.DockStyle.Fill;
         	this.UploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
         	this.UploadButton.Location = new System.Drawing.Point(0, 0);
         	this.UploadButton.Name = "UploadButton";
-        	this.UploadButton.Size = new System.Drawing.Size(55, 22);
+        	this.UploadButton.Size = new System.Drawing.Size(58, 25);
         	this.UploadButton.TabIndex = 5;
         	this.UploadButton.Text = "Upload";
         	this.UploadButton.UseVisualStyleBackColor = true;
@@ -196,11 +235,12 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// SaveButton
         	// 
+        	this.SaveButton.AutoSize = true;
         	this.SaveButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.SaveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.SaveButton.Location = new System.Drawing.Point(55, 0);
+        	this.SaveButton.Location = new System.Drawing.Point(58, 0);
         	this.SaveButton.Name = "SaveButton";
-        	this.SaveButton.Size = new System.Drawing.Size(45, 22);
+        	this.SaveButton.Size = new System.Drawing.Size(47, 25);
         	this.SaveButton.TabIndex = 6;
         	this.SaveButton.Text = "Save";
         	this.SaveButton.UseVisualStyleBackColor = true;
@@ -208,29 +248,16 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// CloseButton
         	// 
+        	this.CloseButton.AutoSize = true;
         	this.CloseButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.CloseButton.Location = new System.Drawing.Point(100, 0);
+        	this.CloseButton.Location = new System.Drawing.Point(105, 0);
         	this.CloseButton.Name = "CloseButton";
-        	this.CloseButton.Size = new System.Drawing.Size(45, 22);
+        	this.CloseButton.Size = new System.Drawing.Size(60, 25);
         	this.CloseButton.TabIndex = 7;
         	this.CloseButton.Text = "Close";
         	this.CloseButton.UseVisualStyleBackColor = true;
         	this.CloseButton.Click += new System.EventHandler(this.CloseButtonClick);
-        	// 
-        	// UseAsHeaderCheckBox
-        	// 
-        	this.UseAsHeaderCheckBox.Dock = System.Windows.Forms.DockStyle.Top;
-        	this.UseAsHeaderCheckBox.Enabled = false;
-        	this.UseAsHeaderCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.UseAsHeaderCheckBox.Location = new System.Drawing.Point(0, 40);
-        	this.UseAsHeaderCheckBox.Name = "UseAsHeaderCheckBox";
-        	this.UseAsHeaderCheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-        	this.UseAsHeaderCheckBox.Size = new System.Drawing.Size(145, 21);
-        	this.UseAsHeaderCheckBox.TabIndex = 4;
-        	this.UseAsHeaderCheckBox.Text = "use image as header";
-        	this.UseAsHeaderCheckBox.UseVisualStyleBackColor = true;
-        	this.UseAsHeaderCheckBox.CheckedChanged += new System.EventHandler(this.UseAsHeaderCheckBoxCheckedChanged);
         	// 
         	// PasswordTextBox
         	// 
@@ -239,7 +266,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.PasswordTextBox.Location = new System.Drawing.Point(0, 20);
         	this.PasswordTextBox.Name = "PasswordTextBox";
         	this.PasswordTextBox.PasswordChar = '*';
-        	this.PasswordTextBox.Size = new System.Drawing.Size(145, 20);
+        	this.PasswordTextBox.Size = new System.Drawing.Size(165, 20);
         	this.PasswordTextBox.TabIndex = 3;
         	this.PasswordTextBox.Text = "guest";
         	// 
@@ -249,7 +276,7 @@ namespace VVVV.Nodes.Kommunikator
         	this.UsernameTextBox.Dock = System.Windows.Forms.DockStyle.Top;
         	this.UsernameTextBox.Location = new System.Drawing.Point(0, 0);
         	this.UsernameTextBox.Name = "UsernameTextBox";
-        	this.UsernameTextBox.Size = new System.Drawing.Size(145, 20);
+        	this.UsernameTextBox.Size = new System.Drawing.Size(165, 20);
         	this.UsernameTextBox.TabIndex = 2;
         	this.UsernameTextBox.Text = "guest";
         	// 
@@ -257,9 +284,9 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	this.ConsoleTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
         	this.ConsoleTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
-        	this.ConsoleTextBox.Location = new System.Drawing.Point(0, 382);
+        	this.ConsoleTextBox.Location = new System.Drawing.Point(0, 410);
         	this.ConsoleTextBox.Name = "ConsoleTextBox";
-        	this.ConsoleTextBox.Size = new System.Drawing.Size(489, 20);
+        	this.ConsoleTextBox.Size = new System.Drawing.Size(538, 20);
         	this.ConsoleTextBox.TabIndex = 11;
         	this.ConsoleTextBox.TabStop = false;
         	// 
@@ -270,10 +297,11 @@ namespace VVVV.Nodes.Kommunikator
         	// 
         	// KommunikatorPluginNode
         	// 
+        	this.AutoSize = true;
         	this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
         	this.Controls.Add(this.panelScreenshot);
         	this.Name = "KommunikatorPluginNode";
-        	this.Size = new System.Drawing.Size(489, 402);
+        	this.Size = new System.Drawing.Size(538, 430);
         	this.panelScreenshot.ResumeLayout(false);
         	this.panelScreenshot.PerformLayout();
         	((System.ComponentModel.ISupportInitialize)(this.FPictureBox)).EndInit();
@@ -282,7 +310,9 @@ namespace VVVV.Nodes.Kommunikator
         	this.panel1.ResumeLayout(false);
         	this.panel1.PerformLayout();
         	this.panel3.ResumeLayout(false);
+        	this.panel3.PerformLayout();
         	this.ResumeLayout(false);
+        	this.PerformLayout();
         }
         private System.Windows.Forms.PictureBox FPictureBox;
         private System.Windows.Forms.TextBox ScreenshotDescriptionTextBox;

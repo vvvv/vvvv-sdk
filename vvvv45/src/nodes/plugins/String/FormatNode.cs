@@ -9,7 +9,7 @@ namespace VVVV.Nodes.String
     [PluginInfo(
         Name = "Format",
         Category = "String",
-        Help = "Replaces the format items in a specified string")]
+        Help = "Replaces the placeholder items in the input string")]
     public class FormatNode : IPluginEvaluate
     {
         [Input("Input")]

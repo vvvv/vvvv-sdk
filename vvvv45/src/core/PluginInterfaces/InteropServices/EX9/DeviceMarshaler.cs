@@ -30,10 +30,14 @@ namespace VVVV.PluginInterfaces.InteropServices.EX9
             {
             	IntPtr pD3ex;
             	Marshal.QueryInterface(pNativeData, ref FDX9EX, out pD3ex);
-            	if (pD3ex == IntPtr.Zero)
-                	return Device.FromPointer(pNativeData);
-            	else
-            		return DeviceEx.FromPointer(pD3ex);
+                if (pD3ex == IntPtr.Zero)
+                    return Device.FromPointer(pNativeData);
+                else
+                {
+                    // QueryInterface increased the reference count -> need to decrease it again
+                    Marshal.Release(pD3ex);
+                    return DeviceEx.FromPointer(pD3ex);
+                }
             }
         }
         

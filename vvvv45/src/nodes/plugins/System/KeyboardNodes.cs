@@ -235,7 +235,7 @@ namespace VVVV.Nodes.Input
         public ISpread<Keyboard> KeyboardIn;
 
         [Input("Queue Mode")]
-        public ISpread<ScheduleMode> ScheduleModeIn;
+        public ISpread<QueueMode> QueueModeIn;
 
         [Output("Key Name")]
         public ISpread<ISpread<string>> KeyNameOut;
@@ -311,7 +311,7 @@ namespace VVVV.Nodes.Input
                 //resubsribe if necessary
                 FSubscriptions[i].Update(KeyboardIn[i]);
                 //process events
-                FSchedulers[i].Run(ScheduleModeIn[i]);
+                FSchedulers[i].Run(QueueModeIn[i]);
             }
         }
     }

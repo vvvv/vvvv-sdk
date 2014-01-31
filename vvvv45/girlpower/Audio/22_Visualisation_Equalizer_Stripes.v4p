@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Audio\22_Visualisation_Equalizer_Stripes.v4p" systemname="Bar_Equalizer_with_Audio_File" filename="C:\Work\Girlpower - next gen\Audio\Audio Input\Bar_Equalizer_with_Audio_File.v4p">
-   <BOUNDS type="Window" left="6225" top="0" width="17940" height="17085">
+   <BOUNDS type="Window" left="6225" top="0" width="17940" height="17040">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
    <BOUNDS type="Node" left="12690" top="3615" width="1410" height="270">
@@ -163,7 +163,7 @@
    </BOUNDS>
    <BOUNDS height="1500" left="6345" top="14025" type="Box" width="4665">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Lines are drawn using Line (DX9). All vertices are coming through &apos;VerticesXYZ&apos; pin, that is why &apos;Single Input&apos; pin is set to 1. Every line is drawn using 2 vertices, so &apos;BinSize&apos; pin is set to 2.&cr;&lf;&cr;&lf;Lines and Quads are grouped together and rendered on a black background.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Lines are drawn using Line (DX9). Every line is drawn using 2 vertices, so &apos;BinSize&apos; pin is set to 2.&cr;&lf;&cr;&lf;Lines and Quads are grouped together and rendered on a black background.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -624,26 +624,10 @@
    </LINK>
    <LINK srcnodeid="192" srcpinname="Output" dstnodeid="190" dstpinname="Y">
    </LINK>
-   <NODE systemname="Line (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="194">
-   <BOUNDS type="Node" left="6825" top="10620" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Single Input" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="6825" top="10620">
-   </BOUNDS>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="190" srcpinname="XYZ" dstnodeid="194" dstpinname="VerticesXYZ">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="195">
    <BOUNDS type="Node" left="9180" top="11610" width="1605" height="270">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -657,9 +641,9 @@
    <LINK srcnodeid="195" srcpinname="Layer" dstnodeid="147" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="196" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7605" top="10110" width="315" height="240">
+   <BOUNDS type="Box" left="7620" top="10110" width="315" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7605" top="10110" width="0" height="0">
+   <BOUNDS type="Node" left="7620" top="10110" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
@@ -670,8 +654,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="196" srcpinname="Y Output Value" dstnodeid="194" dstpinname="BinSize">
-   </LINK>
    <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="197">
    <BOUNDS type="Node" left="7950" top="8475" width="100" height="100">
    </BOUNDS>
@@ -694,8 +676,6 @@
    <PIN pinname="Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="198" srcpinname="Output" dstnodeid="194" dstpinname="Color">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="199" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9135" top="9555" width="435" height="240">
    </BOUNDS>
@@ -733,22 +713,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="201" srcpinname="Color Output" dstnodeid="198" dstpinname="Input">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="202" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7095" top="10110" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7095" top="10110" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="202" srcpinname="Y Output Value" dstnodeid="194" dstpinname="Single Input">
    </LINK>
    <NODE componentmode="InABox" id="204" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="10800" top="3945" type="Node" width="315">
@@ -876,8 +840,6 @@
    </LINK>
    <LINK srcnodeid="130" srcpinname="Layer" dstnodeid="195" dstpinname="Layer 2">
    </LINK>
-   <LINK srcnodeid="194" srcpinname="Layer" dstnodeid="195" dstpinname="Layer 1">
-   </LINK>
    <NODE componentmode="InABox" id="229" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="13455" top="8805" type="Node" width="315">
    </BOUNDS>
@@ -991,9 +953,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="236" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6195" top="10575" type="Node" width="315">
+   <BOUNDS height="270" left="6360" top="10575" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="375" left="6195" top="10575" type="Box" width="585">
+   <BOUNDS height="375" left="6360" top="10575" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="14.">
    </PIN>
@@ -1041,9 +1003,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="240" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5775" top="14850" type="Node" width="315">
+   <BOUNDS height="270" left="5775" top="14655" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="375" left="5775" top="14850" type="Box" width="585">
+   <BOUNDS height="375" left="5775" top="14655" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="15.">
    </PIN>
@@ -1111,7 +1073,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="12690" top="1215" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.mp3">
+   <PIN pinname="Input String" slicecount="1" values="..\..\lib\assets\sounds\vvvv.mp3">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -1516,4 +1478,26 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="Line (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="194">
+   <BOUNDS type="Node" left="6990" top="10620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Single Input">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="6990" top="10620">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="190" srcpinname="XYZ" dstnodeid="194" dstpinname="VerticesXYZ">
+   </LINK>
+   <LINK srcnodeid="196" srcpinname="Y Output Value" dstnodeid="194" dstpinname="BinSize">
+   </LINK>
+   <LINK srcnodeid="198" srcpinname="Output" dstnodeid="194" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="194" srcpinname="Layer" dstnodeid="195" dstpinname="Layer 1">
+   </LINK>
    </PATCH>

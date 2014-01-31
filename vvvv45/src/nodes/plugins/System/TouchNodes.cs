@@ -221,8 +221,8 @@ namespace VVVV.Nodes.Input
     {
         [Input("Touch Device", IsSingle = true)]
         public ISpread<TouchDevice> MouseIn;
-        [Input("Schedule Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
-        public ISpread<ScheduleMode> ScheduleModeIn;
+        [Input("Queue Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
+        public ISpread<QueueMode> QueueModeIn;
 
         [Output("Position")]
         public ISpread<Vector2D> PositionOut;
@@ -294,7 +294,7 @@ namespace VVVV.Nodes.Input
             //resubsribe if necessary
             FSubscription.Update(MouseIn[0]);
             //process events
-            FScheduler.Run(ScheduleModeIn[0]);
+            FScheduler.Run(QueueModeIn[0]);
         }
     }
 }

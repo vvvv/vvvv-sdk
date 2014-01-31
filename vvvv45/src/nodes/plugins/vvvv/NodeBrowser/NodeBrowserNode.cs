@@ -172,6 +172,7 @@ namespace VVVV.Nodes.NodeBrowser
             FTagsTextBox.MouseWheel += FTagsTextBoxMouseWheel;
             
             FNodeTagPanel.TagsTextBox = FTagsTextBox;
+            FTopPanel.Height = FNodeTagPanel.TextBoxHeight;
         }
 
         void FCategoryFilterPanel_OnFilterChanged()
@@ -295,7 +296,7 @@ namespace VVVV.Nodes.NodeBrowser
         	this.FTagsTextBox.Location = new System.Drawing.Point(0, 0);
         	this.FTagsTextBox.Multiline = true;
         	this.FTagsTextBox.Name = "FTagsTextBox";
-        	this.FTagsTextBox.Size = new System.Drawing.Size(515, 21);
+        	this.FTagsTextBox.Size = new System.Drawing.Size(495, 21);
         	this.FTagsTextBox.TabIndex = 4;
         	this.FTagsTextBox.TabStop = false;
         	this.FTagsTextBox.TextChanged += new System.EventHandler(this.FTagsTextBoxTextChanged);
@@ -304,13 +305,14 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// FTagButton
         	// 
+        	this.FTagButton.AutoSize = true;
         	this.FTagButton.BackColor = System.Drawing.Color.Silver;
         	this.FTagButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.FTagButton.Enabled = false;
         	this.FTagButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.FTagButton.Location = new System.Drawing.Point(515, 0);
+        	this.FTagButton.Location = new System.Drawing.Point(495, 0);
         	this.FTagButton.Name = "FTagButton";
-        	this.FTagButton.Size = new System.Drawing.Size(21, 21);
+        	this.FTagButton.Size = new System.Drawing.Size(26, 21);
         	this.FTagButton.TabIndex = 5;
         	this.FTagButton.Text = "T";
         	this.FTagButton.UseVisualStyleBackColor = false;
@@ -320,13 +322,14 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// FCategoryButton
         	// 
+        	this.FCategoryButton.AutoSize = true;
         	this.FCategoryButton.BackColor = System.Drawing.Color.Silver;
         	this.FCategoryButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.FCategoryButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         	this.FCategoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.FCategoryButton.Location = new System.Drawing.Point(536, 0);
+        	this.FCategoryButton.Location = new System.Drawing.Point(521, 0);
         	this.FCategoryButton.Name = "FCategoryButton";
-        	this.FCategoryButton.Size = new System.Drawing.Size(21, 21);
+        	this.FCategoryButton.Size = new System.Drawing.Size(26, 21);
         	this.FCategoryButton.TabIndex = 2;
         	this.FCategoryButton.Text = "C";
         	this.FCategoryButton.UseVisualStyleBackColor = false;
@@ -336,13 +339,14 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// FGirlpowerButton
         	// 
+        	this.FGirlpowerButton.AutoSize = true;
         	this.FGirlpowerButton.BackColor = System.Drawing.Color.Silver;
         	this.FGirlpowerButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.FGirlpowerButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         	this.FGirlpowerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.FGirlpowerButton.Location = new System.Drawing.Point(557, 0);
+        	this.FGirlpowerButton.Location = new System.Drawing.Point(547, 0);
         	this.FGirlpowerButton.Name = "FGirlpowerButton";
-        	this.FGirlpowerButton.Size = new System.Drawing.Size(21, 21);
+        	this.FGirlpowerButton.Size = new System.Drawing.Size(27, 21);
         	this.FGirlpowerButton.TabIndex = 1;
         	this.FGirlpowerButton.Text = "G";
         	this.FGirlpowerButton.UseVisualStyleBackColor = false;
@@ -353,13 +357,14 @@ namespace VVVV.Nodes.NodeBrowser
         	// 
         	// FFilterButton
         	// 
+        	this.FFilterButton.AutoSize = true;
         	this.FFilterButton.BackColor = System.Drawing.Color.Silver;
         	this.FFilterButton.Dock = System.Windows.Forms.DockStyle.Right;
         	this.FFilterButton.FlatAppearance.BorderColor = System.Drawing.Color.Black;
         	this.FFilterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-        	this.FFilterButton.Location = new System.Drawing.Point(578, 0);
+        	this.FFilterButton.Location = new System.Drawing.Point(574, 0);
         	this.FFilterButton.Name = "FFilterButton";
-        	this.FFilterButton.Size = new System.Drawing.Size(21, 21);
+        	this.FFilterButton.Size = new System.Drawing.Size(25, 21);
         	this.FFilterButton.TabIndex = 0;
         	this.FFilterButton.Text = "F";
         	this.FFilterButton.UseVisualStyleBackColor = false;
