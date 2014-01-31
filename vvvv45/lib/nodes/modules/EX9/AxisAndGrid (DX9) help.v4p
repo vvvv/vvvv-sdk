@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\EX9\AxisAndGrid (DX9) help.v4p">
    <BOUNDS height="5910" left="420" top="300" type="Window" width="7350">
    </BOUNDS>
    <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="525" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="1575" left="255" top="525" type="Box" width="4350">
+   <BOUNDS height="945" left="255" top="525" type="Box" width="5985">
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
@@ -15,6 +15,8 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="255" top="165" type="Node" width="915">
@@ -23,7 +25,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|AxisAndGrid - DX9|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AxisAndGrid (DX9)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -33,17 +35,17 @@
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="5" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
-   <BOUNDS height="270" left="1095" top="4515" type="Node" width="2115">
+   <BOUNDS height="270" left="255" top="4785" type="Node" width="2115">
    </BOUNDS>
    <BOUNDS height="5910" left="7815" top="300" type="Window" width="5670">
    </BOUNDS>
-   <BOUNDS height="1800" left="1095" top="4515" type="Box" width="2400">
+   <BOUNDS height="1800" left="255" top="4785" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Projection" visible="1">
    </PIN>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
@@ -57,7 +59,7 @@
    </PIN>
    </NODE>
    <NODE id="4" nodename="Perspective (Transform)" systemname="Perspective (Transform)">
-   <BOUNDS height="0" left="3390" top="3645" type="Node" width="0">
+   <BOUNDS height="0" left="2595" top="3885" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -67,7 +69,7 @@
    </PIN>
    </NODE>
    <NODE id="3" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
-   <BOUNDS height="0" left="2700" top="3645" type="Node" width="0">
+   <BOUNDS height="0" left="1875" top="3885" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -77,7 +79,7 @@
    <LINK dstnodeid="5" dstpinname="Projection" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
    <NODE id="2" nodename="Translate (Transform)" systemname="Translate (Transform)">
-   <BOUNDS height="0" left="3240" top="3015" type="Node" width="0">
+   <BOUNDS height="0" left="2415" top="3255" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -91,9 +93,9 @@
    <LINK dstnodeid="3" dstpinname="Source" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="4155" top="3015" type="Node" width="1290">
+   <BOUNDS height="270" left="3300" top="3255" type="Node" width="1290">
    </BOUNDS>
-   <BOUNDS height="270" left="4155" top="3015" type="Box" width="1290">
+   <BOUNDS height="270" left="3300" top="3255" type="Box" width="1290">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -104,62 +106,72 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="9" managers="" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p">
-   <BOUNDS height="10845" left="465" top="4965" type="Window" width="13575">
-   </BOUNDS>
-   <BOUNDS height="100" left="1080" top="3600" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="1080" top="3600" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Layer" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Draw Mode" pintype="Input" slicecount="1" visible="1" values="WireFrame">
-   </PIN>
-   <PIN pinname="Patch" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Text" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
-   </LINK>
    <LINK srcnodeid="3" srcpinname="Transform Out" dstnodeid="5" dstpinname="View">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1080" top="2985" width="480" height="480">
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="12" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="255" top="3330" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1080" top="2985" width="0" height="0">
+   <BOUNDS type="Node" left="255" top="3330" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Labels">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1050" top="2490" width="1305" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="255" top="3075" width="1950" height="1110">
    </BOUNDS>
-   <BOUNDS type="Box" left="1050" top="2490" width="885" height="435">
+   <BOUNDS type="Box" left="255" top="3075" width="915" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Axis Labels&cr;&lf;v|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Transform">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
+   <NODE id="9" componentmode="Hidden" hiddenwhenlocked="0" managers="" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p">
+   <BOUNDS type="Node" left="255" top="3885" height="100" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="3885" height="3600" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" height="10845" left="465" top="4965" width="13575">
+   </BOUNDS>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Draw Mode" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output Node" dstnodeid="9" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="1755" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1080" left="255" top="1755" type="Box" width="3600">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use these keys in the Renderer window:&cr;&lf;&quot;g&quot; - to toggle the Grid&cr;&lf;&quot;a&quot; - to toggle the Axis&cr;&lf;&quot;l&quot; - to toggle the Labels|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
    </NODE>
    </PATCH>
