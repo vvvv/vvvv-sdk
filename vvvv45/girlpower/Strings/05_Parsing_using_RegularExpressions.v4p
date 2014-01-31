@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\05_Parsing_using_RegularExpressions.v4p" systemname="World Cities Parser" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\World Cities Parser.v4p">
-   <BOUNDS height="14490" left="6150" top="0" type="Window" width="17445">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Strings\05_Parsing_using_RegularExpressions.v4p" systemname="World Cities Parser" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\World Cities Parser.v4p">
+   <BOUNDS height="14355" left="6150" top="0" type="Window" width="17445">
    </BOUNDS>
    <NODE id="21" nodename="RegExpr (String)" systemname="RegExpr (String)">
    <BOUNDS height="270" left="9465" top="2745" type="Node" width="7425">
@@ -574,40 +574,6 @@
    </LINK>
    <LINK dstnodeid="51" dstpinname="Transform" srcnodeid="41" srcpinname="Transform Out">
    </LINK>
-   <NODE id="40" nodename="Cartesian (3d)" systemname="Cartesian (3d)">
-   <BOUNDS height="0" left="11310" top="7125" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Pitch" visible="1" slicecount="119" values="0">
-   </PIN>
-   <PIN pinname="Yaw" visible="1" slicecount="119" values="0">
-   </PIN>
-   <PIN pinname="Length" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="39" nodename="Vector (3d Join)" systemname="Vector (3d Join)">
-   <BOUNDS height="270" left="11310" top="7815" type="Node" width="750">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="39" dstpinname="X" srcnodeid="40" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="39" dstpinname="Y" srcnodeid="40" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="39" dstpinname="Z" srcnodeid="40" srcpinname="Z">
-   </LINK>
    <NODE componentmode="InABox" id="38" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="14025" top="6495" type="Node" width="0">
    </BOUNDS>
@@ -622,8 +588,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="40" dstpinname="Length" srcnodeid="38" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="37" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="270" left="10575" top="9615" type="Node" width="795">
    </BOUNDS>
@@ -643,8 +607,6 @@
    <LINK dstnodeid="37" dstpinname="Transform In" srcnodeid="46" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="42" dstpinname="Transform In" srcnodeid="37" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="37" dstpinname="XYZ" srcnodeid="39" srcpinname="XYZ">
    </LINK>
    <NODE id="36" nodename="Multiply (Value)" systemname="Multiply (Value)">
    <BOUNDS height="0" left="14040" top="8520" type="Node" width="0">
@@ -769,7 +731,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="64" systemname="IOBox (String)">
    <BOUNDS type="Node" left="315" top="4185" width="240" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="315" top="4185" width="240" height="270">
+   <BOUNDS type="Box" left="315" top="4185" width="285" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="1">
    </PIN>
@@ -1015,9 +977,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="88" systemname="IOBox (String)">
    <BOUNDS type="Node" left="495" top="4590" width="330" height="3630">
    </BOUNDS>
-   <BOUNDS type="Box" left="495" top="4590" width="8385" height="3450">
+   <BOUNDS type="Box" left="495" top="4590" width="7860" height="3450">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|(.*?) - 1st capturing group. It matches any characters, before the next token appears. Matched: Ludwigshafen&cr;&lf;,\s? - It matches a comma and any spaces if there are any&cr;&lf;(.*?) - 2nd capturing group. See 1. Matched: Deutschland&cr;&lf;\t - matches tab&cr;&lf;(\d*?) - 3rd capturing group. It maches as digits before the next token. Matched: 49&cr;&lf;\s*\t - matches spaces if there are any and a tab&cr;&lf;(\d*?) - 4th capturing group. See 5. Matched: 28&cr;&lf;\s* - matches spaces if there are any&cr;&lf;(\D) - 5th capturing group. It matches any non-digit. Matched: N&cr;&lf;\s* - see 8&cr;&lf;(.*?) - 6th capturing group. See 1. Matched: 8&cr;&lf;\t- matches tab&cr;&lf;(\d*?) - 5th capturing group. See 5. Matched: 27&cr;&lf;\s* - see 8&cr;&lf;(\D) - 6th capturing group. Matched: E&cr;&lf;.*?\r\n - matches any character, as many as there are before \r (Carriage return) and \n (New line).&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|(.*?) - 1st capturing group. It matches any characters, before the next token appears. Matched: Ludwigshafen&cr;&lf;,\s? - It matches a comma and any spaces if there are any&cr;&lf;(.*?) - 2nd capturing group. See 1. Matched: Deutschland&cr;&lf;\t - matches tab&cr;&lf;(\d*?) - 3rd capturing group. It maches all digits before the next token. Matched: 49&cr;&lf;\s*\t - matches spaces if there are any and a tab&cr;&lf;(\d*?) - 4th capturing group. See 5. Matched: 28&cr;&lf;\s* - matches spaces if there are any&cr;&lf;(\D) - 5th capturing group. It matches any non-digit. Matched: N&cr;&lf;\s* - see 8&cr;&lf;(.*?) - 6th capturing group. See 1. Matched: 8&cr;&lf;\t- matches tab&cr;&lf;(\d*?) - 5th capturing group. See 5. Matched: 27&cr;&lf;\s* - see 8&cr;&lf;(\D) - 6th capturing group. Matched: E&cr;&lf;.*?\r\n - matches any character, as many as there are before \r (Carriage return) and \n (New line).&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1059,9 +1021,9 @@
    <NODE componentmode="InABox" id="92" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="1380" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1305" left="675" top="1380" type="Box" width="3705">
+   <BOUNDS height="1365" left="675" top="1380" type="Box" width="3705">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (String) reads a text file and returns it as a big string.&cr;&lf;&cr;&lf;The string is parced using the regular expression. Select the RegExpr (String) and open the Inspektor to see the Expression String.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (String) reads a text file and returns it as a single large string.&cr;&lf;&cr;&lf;The string is parsed using a regular expression. Select the RegExpr (String) and open the Inspektor to see the Expression String.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1139,9 +1101,9 @@
    <NODE componentmode="InABox" id="98" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="615" top="9060" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="5190" left="615" top="9060" type="Box" width="4605">
+   <BOUNDS height="4560" left="615" top="9060" type="Box" width="4530">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Degrees and minutes of the Latitude are converted into values.&cr;&lf;&cr;&lf;The next letter tells if it is the nothern hemisphere or not. If it is, then &apos;1&apos; is used for further calculations, else &apos;-1&apos;.&cr;&lf;&cr;&lf;Expr (Value) calculates the pitch angle based on the latitude coordinates.&cr;&lf;&cr;&lf;Exactly the same happes for the Longitude, only the last letter tells if is western hemisphere. After that the Yaw angle is caltulated based on the longitude.&cr;&lf;&cr;&lf;Cartesian (3d) transforms polar coordinates (represented by the Pitch and Yaw angles and the distance) into XYZ coordinates (Cartesian system).&cr;&lf;&cr;&lf;All the XYZ points are transformed by the Rotate (Transform) which creates a rotation on Y axis.&cr;&lf;&cr;&lf;The first Sphere (DX9) draws all the red dots representing cities and the next one draws Earth.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Degrees and minutes of the Latitude are converted into values.&cr;&lf;&cr;&lf;The next letter tells if it is the nothern hemisphere or not. If it is, then &apos;1&apos; is used for further calculations, else &apos;-1&apos;.&cr;&lf;&cr;&lf;Expr (Value) calculates the pitch angle based on the latitude coordinates.&cr;&lf;&cr;&lf;Exactly the same happes for the Longitude, only the last letter tells if is western hemisphere. After that the Yaw angle is caltulated based on the longitude.&cr;&lf;&cr;&lf;Cartesian (3d Vector) transforms polar coordinates (represented by the Pitch and Yaw angles and the distance) into XYZ coordinates (Cartesian system).&cr;&lf;&cr;&lf;All the XYZ points are transformed by the Rotate (Transform) which creates a rotation on Y axis.&cr;&lf;&cr;&lf;The first Sphere (DX9) draws all the red dots representing cities and the second one draws the Earth.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1388,8 +1350,6 @@
    </LINK>
    <LINK srcnodeid="19" srcpinname="Output" dstnodeid="113" dstpinname="A">
    </LINK>
-   <LINK srcnodeid="113" srcpinname="Output" dstnodeid="40" dstpinname="Pitch">
-   </LINK>
    <NODE systemname="Expr (Value)" nodename="Expr (Value)" componentmode="Hidden" id="114">
    <BOUNDS type="Node" left="14055" top="5475" width="2430" height="270">
    </BOUNDS>
@@ -1413,8 +1373,6 @@
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="114" dstpinname="C">
    </LINK>
    <LINK srcnodeid="101" srcpinname="Output String" dstnodeid="114" dstpinname="Term">
-   </LINK>
-   <LINK srcnodeid="114" srcpinname="Output" dstnodeid="40" dstpinname="Yaw">
    </LINK>
    <NODE componentmode="InABox" id="115" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="180" top="10095" type="Node" width="315">
@@ -1544,4 +1502,32 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE id="40" nodename="Cartesian (3d Vector)" systemname="Cartesian (3d Vector)">
+   <BOUNDS height="0" left="11310" top="7125" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="40" dstpinname="Length" srcnodeid="38" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="113" srcpinname="Output" dstnodeid="40" dstpinname="Pitch">
+   </LINK>
+   <LINK srcnodeid="114" srcpinname="Output" dstnodeid="40" dstpinname="Yaw">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="XYZ" dstnodeid="37" dstpinname="XYZ">
+   </LINK>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
    </PATCH>
