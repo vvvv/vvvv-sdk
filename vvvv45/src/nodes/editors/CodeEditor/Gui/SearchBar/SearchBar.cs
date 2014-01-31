@@ -92,6 +92,7 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 		
 		public void CloseSearchBar()
 		{
+            this.ClearMarkers();
 			Hide();
 		}
 		
@@ -164,6 +165,21 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 		{
 			UpdateControlBounds();
 		}
+
+        private void ClearMarkers()
+        {
+            var doc = FTextEditorControl.Document;
+
+            foreach (var marker in FSearchMarkers)
+            {
+                var markerLocation = doc.OffsetToPosition(marker.Offset);
+
+                doc.MarkerStrategy.RemoveMarker(marker);
+
+                doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, markerLocation));
+            }
+            FSearchMarkers.Clear();
+        }
 		
 		protected void JumpToOffset(TextAreaControl textAreaControl, IDocument doc, int offset)
 		{
@@ -180,16 +196,8 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 			var markerStrategy = doc.MarkerStrategy;
 			
 			// Clear all previous markers
-			foreach (var marker in FSearchMarkers)
-			{
-				var markerLocation = doc.OffsetToPosition(marker.Offset);
-				
-				markerStrategy.RemoveMarker(marker);
-				
-				doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, markerLocation));
-			}
-			FSearchMarkers.Clear();
-			
+            this.ClearMarkers();
+
 			var searchText = FSearchTextBox.Text;
 			var searchTextLength = searchText.Length;
 			var stringComparison = CaseSensitive ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
