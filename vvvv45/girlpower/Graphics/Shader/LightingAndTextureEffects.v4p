@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\girlpower\LightingAndTextureEffects.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\02_Advanced\Shader\LightingAndTextureEffects.v4p">
    <BOUNDS height="4395" left="165" top="120" type="Window" width="13335">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="53" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
@@ -57,7 +57,7 @@
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\lib\assets\images\wimp.jpg" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\..\..\lib\assets\images\wimp.jpg">
    </PIN>
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
@@ -67,7 +67,7 @@
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
-   <PIN pinname="Filename" slicecount="1" values="..\lib\assets\geometries\soft-cube.x" encoded="0">
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\..\..\lib\assets\geometries\soft-cube.x">
    </PIN>
    <PIN pinname="Calculate Normals">
    </PIN>
@@ -463,7 +463,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw the vectors representing &cr;&lf;the light direction|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|draw the vectors representing &cr;&lf;the light direction|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -477,7 +477,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|set the direction of the light (directional light)|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|set the direction of the light (directional light)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -491,7 +491,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|set the shininess for the specular highlight, also called power|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|set the shininess for the specular highlight, also called power|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -505,7 +505,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="lightdirection" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="lightdirection">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -519,7 +519,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="shininess" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="shininess">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -533,7 +533,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="2400" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|6 basic lighting models &cr;&lf;&cr;&lf;from left to right:&cr;&lf;*  Flat Shading calculates one color per polygon (very oldschool).&cr;&lf;*  Gouraud calculates the lighting per vertex and interpolates the computed colors over the pixels.&cr;&lf;have a look at the shader code for inspecting the lighting equations used.&cr;&lf;*  Phong interpolates the normals of the polygon vertices over the pixels and calcualtes the lighting for each pixel.&cr;&lf;Blinn does the same interpolation of the normals, but uses the half vector for the calculation of the specular light&cr;&lf;instead of the reflection vector, which Phong uses.&cr;&lf;for a general introduction to Phong and Blinn see:  http://www.delphi3d.net/articles/viewarticle.php?article=phong.htm&cr;&lf;further information : &quot;Real Time Rendering&quot;, Thomas Akenine Möller, Eric Haines &cr;&lf;&cr;&lf;downwards:&cr;&lf;* upper objects are lit up by a directional light source (sun)&cr;&lf;* lower objects are lit up by a near point light. in general this is more expensive to render.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|6 basic lighting models &cr;&lf;&cr;&lf;from left to right:&cr;&lf;*  Flat Shading calculates one color per polygon (very oldschool).&cr;&lf;*  Gouraud calculates the lighting per vertex and interpolates the computed colors over the pixels.&cr;&lf;have a look at the shader code for inspecting the lighting equations used.&cr;&lf;*  Phong interpolates the normals of the polygon vertices over the pixels and calcualtes the lighting for each pixel.&cr;&lf;Blinn does the same interpolation of the normals, but uses the half vector for the calculation of the specular light&cr;&lf;instead of the reflection vector, which Phong uses.&cr;&lf;for a general introduction to Phong and Blinn see:  http://www.delphi3d.net/articles/viewarticle.php?article=phong.htm&cr;&lf;further information : &quot;Real Time Rendering&quot;, Thomas Akenine Möller, Eric Haines &cr;&lf;&cr;&lf;downwards:&cr;&lf;* upper objects are lit up by a directional light source (sun)&cr;&lf;* lower objects are lit up by a near point light. in general this is more expensive to render.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -547,7 +547,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|resolution of sphere|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|resolution of sphere|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1031,7 +1031,7 @@
    </PIN>
    <PIN pinname="Y Output Value" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
    </PIN>
@@ -1097,13 +1097,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|transform the color of the &cr;&lf; sampled pixel with a color&cr;&lf;transform matrix|" encoded="0">
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" encoded="0" values="|transform the color of the &cr;&lf; sampled pixel with a color&cr;&lf;transform matrix|">
    </PIN>
    <PIN pinname="Output String" pintype="Output" visible="0">
    </PIN>
    <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
    </PIN>
@@ -1137,7 +1137,7 @@
    </PIN>
    <PIN pinname="Luminance Adaption" pintype="Input" slicecount="1" visible="1" values="|Preserve Luminance (linear color space)|">
    </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
    </PIN>

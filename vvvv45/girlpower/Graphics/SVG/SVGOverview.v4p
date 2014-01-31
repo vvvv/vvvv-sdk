@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\SVGOverview.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\girlpower\SVGOverview.v4p" systemname="SVGOverview">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\02_Advanced\SVG\SVGOverview.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\girlpower\SVGOverview.v4p" systemname="SVGOverview">
    <BOUNDS height="11880" left="0" top="0" type="Window" width="11340">
    </BOUNDS>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="190" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
@@ -36,7 +36,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="201" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="201" nodename="Renderer (SVG)" systemname="RENDERER (SVG)">
    <BOUNDS height="6915" left="11580" top="0" type="Window" width="7560">
    </BOUNDS>
    <BOUNDS height="270" left="4440" top="6465" type="Node" width="2310">
@@ -51,7 +51,7 @@
    </PIN>
    <PIN pinname="View Box " visible="1">
    </PIN>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Ignore View" slicecount="1" values="0">
    </PIN>
@@ -112,8 +112,8 @@
    <PIN pinname="Stroke Width" slicecount="1" values="0.1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="176" nodename="Group (SVG)" systemname="Group (SVG)">
-   <PIN pinname="Input 1" visible="1">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="176" nodename="Group (SVG)" systemname="GROUP (SVG)">
+   <PIN pinname="Layer 1" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
@@ -121,20 +121,20 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Layer 2" visible="1">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="5">
+   <PIN pinname="Layer Count" slicecount="1" values="5">
    </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Layer 3" visible="1">
    </PIN>
-   <PIN pinname="Input 4" visible="1">
+   <PIN pinname="Layer 4" visible="1">
    </PIN>
-   <PIN pinname="Input 5" visible="1">
+   <PIN pinname="Layer 5" visible="1">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="176" dstpinname="Input 1" srcnodeid="209" srcpinname="Layer">
+   <LINK dstnodeid="176" dstpinname="Layer 1" srcnodeid="209" srcpinname="Layer">
    </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="228" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
    <BOUNDS height="100" left="3750" top="2595" type="Node" width="100">
@@ -152,7 +152,7 @@
    </LINK>
    <LINK dstnodeid="228" dstpinname="ScaleY" hiddenwhenlocked="1" srcnodeid="195" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="176" dstpinname="Input 2" srcnodeid="207" srcpinname="Layer">
+   <LINK dstnodeid="176" dstpinname="Layer 2" srcnodeid="207" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="228" dstpinname="TranslateX" hiddenwhenlocked="1" srcnodeid="190" srcpinname="Output X">
    </LINK>
@@ -206,7 +206,7 @@
    <PIN pinname="Max Flatten Error" slicecount="1" values="0.25">
    </PIN>
    </NODE>
-   <LINK dstnodeid="201" dstpinname="Layer" srcnodeid="176" srcpinname="Layer">
+   <LINK dstnodeid="201" dstpinname="Layers" srcnodeid="176" srcpinname="Layer">
    <LINKPOINT x="4455" y="5441">
    </LINKPOINT>
    </LINK>
@@ -342,9 +342,9 @@
    <PIN pinname="Stroke Width" slicecount="1" values="0.01">
    </PIN>
    </NODE>
-   <LINK dstnodeid="176" dstpinname="Input 4" srcnodeid="286" srcpinname="Layer">
+   <LINK dstnodeid="176" dstpinname="Layer 4" srcnodeid="286" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="176" dstpinname="Input 5" srcnodeid="287" srcpinname="Layer">
+   <LINK dstnodeid="176" dstpinname="Layer 5" srcnodeid="287" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="228" dstpinname="TranslateY" hiddenwhenlocked="1" srcnodeid="190" srcpinname="Output Y">
    </LINK>
@@ -476,7 +476,7 @@
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="300" nodename="GetElements (SVG)" systemname="GetElements (SVG)">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="300" nodename="GetElements (SVG)" systemname="GETELEMENTS (SVG)">
    <BOUNDS height="100" left="7080" top="4755" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -762,7 +762,7 @@
    </NODE>
    <LINK dstnodeid="285" dstpinname="Fill" srcnodeid="299" srcpinname="Color Output">
    </LINK>
-   <LINK dstnodeid="176" dstpinname="Input 3" srcnodeid="285" srcpinname="Layer">
+   <LINK dstnodeid="176" dstpinname="Layer 3" srcnodeid="285" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="285" dstpinname="VerticesXY" hiddenwhenlocked="0" srcnodeid="291" srcpinname="XY">
    <LINKPOINT x="6315" y="2205">
@@ -799,11 +799,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4620" top="7785" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="file.svg" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="file.svg">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="file.svg" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="file.svg">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="|SVG Files (*.svg)||*.svg|" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="|SVG Files (*.svg)||*.svg|">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -819,7 +819,7 @@
    </PIN>
    <PIN pinname="Document" visible="1">
    </PIN>
-   <PIN encoded="0" pinname="Filename" visible="1">
+   <PIN encoded="0" pinname="Filename" visible="1" slicecount="1" values="file.svg">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -857,11 +857,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="765" top="4875" width="1260" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="2" values="file.svg,..\lib\assets\images\Circles.svg" encoded="0">
+   <PIN pinname="Input String" slicecount="2" encoded="0" values="file.svg,..\..\..\..\lib\assets\images\Circles.svg">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="file.svg" encoded="0">
+   <PIN pinname="Default" slicecount="1" encoded="0" values="file.svg">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="|SVG Files (*.svg)||*.svg|" encoded="0">
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="|SVG Files (*.svg)||*.svg|">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -871,9 +871,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="327" srcpinname="Output String" dstnodeid="247" dstpinname="Filename">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="328" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1935" top="6750" width="0" height="0">
    </BOUNDS>
@@ -881,7 +881,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -893,5 +893,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="328" srcpinname="Y Output Value" dstnodeid="326" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="327" srcpinname="Output String" dstnodeid="247" dstpinname="Filename">
    </LINK>
    </PATCH>
