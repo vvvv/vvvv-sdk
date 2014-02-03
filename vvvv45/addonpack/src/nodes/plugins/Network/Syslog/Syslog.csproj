@@ -2,10 +2,27 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="..\..\Default.Plugin.Project.settings" />
   <PropertyGroup>
-    <ProjectGuid>{6D3FF79B-FD8F-4F7E-B9A4-57DAB4980722}</ProjectGuid>
+    <ProjectGuid>{66841413-5FB8-4E5E-ABF7-DBA3F09A9BF7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Nodes</RootNamespace>
-    <AssemblyName>NetworkWOL</AssemblyName>
+    <AssemblyName>Syslog</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Optimize>true</Optimize>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -18,13 +35,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NetworkWOLNode.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="abstractSyslog.cs" />
+    <Compile Include="Syslog.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core %28core\Core%29</Name>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Utils\Utils.csproj">
       <Project>{c3773330-81fa-4253-823e-1bde1529aa99}</Project>
