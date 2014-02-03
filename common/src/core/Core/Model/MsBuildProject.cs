@@ -154,10 +154,17 @@ namespace VVVV.Core.Model
                         var absoluteRefPath = Path.IsPathRooted(trimmedRefPath)
                             ? trimmedRefPath
                             : Path.Combine(projectDir, trimmedRefPath);
-                        absoluteRefPath = Path.GetFullPath(absoluteRefPath);
-                        if (!ReferencePaths.Contains(absoluteRefPath) && Directory.Exists(absoluteRefPath))
+                        try
                         {
-                            ReferencePaths.Add(absoluteRefPath);
+                            absoluteRefPath = Path.GetFullPath(absoluteRefPath);
+                            if (!ReferencePaths.Contains(absoluteRefPath) && Directory.Exists(absoluteRefPath))
+                            {
+                                ReferencePaths.Add(absoluteRefPath);
+                            }
+                        }
+                        catch (NotSupportedException)
+                        {
+                            // Ignore
                         }
                     }
                 }

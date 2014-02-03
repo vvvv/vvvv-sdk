@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_CSV_Data.v4p" systemname="Parsing_CSV_Data" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_CSV_Data.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Strings\03_Parsing_CSV_Data.v4p" systemname="Parsing_CSV_Data" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_CSV_Data.v4p">
    <BOUNDS type="Window" left="0" top="0" width="18105" height="10095">
    </BOUNDS>
    <NODE systemname="Reader (String)" filename="%VVVV%\lib\nodes\modules\String\Reader (String).v4p" nodename="Reader (String)" componentmode="Hidden" id="19">
@@ -215,7 +215,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="9420" top="6255" width="3030" height="300">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Choose an index of the row to show.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Choose the index of the row to show.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -241,7 +241,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="78" systemname="IOBox (String)">
    <BOUNDS type="Node" left="120" top="465" width="9525" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="120" top="465" width="2460" height="270">
+   <BOUNDS type="Box" left="120" top="465" width="2415" height="300">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to parse a CSV-File.|">
    </PIN>
@@ -337,9 +337,9 @@
    <NODE componentmode="InABox" id="90" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="420" top="1200" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="5160" left="420" top="1200" type="Box" width="4170">
+   <BOUNDS height="5850" left="420" top="1200" type="Box" width="4230">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (String) reads a text file and returns it as a big string. This string is separated into slices at the positions of the new line characters. &cr;&lf;&cr;&lf;Note, that the &apos;Keep Quotes&apos; pin is on.&cr;&lf;&cr;&lf;CAR (String) returns the first slice (this is the first line from the file - table&apos;s header) on its left pin and all other slices are on its right pin.&cr;&lf;&cr;&lf;The first slice is further separated into individual slices at the positions of the commas. These slices column names.&cr;&lf;&cr;&lf;All other slices are also separated at the position of the commas. So there is a big spread of individual cells from all the rows.&cr;&lf;&cr;&lf;The GetSlice (String) with it&apos;s &apos;Bin Size&apos; pin set to the number of the columns picks only the slices from one of the rows (which selected on the &apos;Index&apos; pin).&cr;&lf;&cr;&lf;Use the Inspektor to set how many Output pins the Unzip (String) should have. In this example the CSV file has 6 columns.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Reader (String) reads a text file and returns it as a single string. This string is separated into slices at the positions of the new line characters. &cr;&lf;&cr;&lf;Note, that the &apos;Keep Quotes&apos; pin is on.&cr;&lf;&cr;&lf;CAR (String) returns the first slice (this is the first line from the file - the table&apos;s header) on its left pin and all other slices are on its right pin.&cr;&lf;&cr;&lf;The first slice is further separated into individual slices at the positions of the commas. These slices are the column names.&cr;&lf;&cr;&lf;All other slices are also separated at the position of the commas which results in a large spread where each slice holds the content of a single cell of the original data-matrix.&cr;&lf;&cr;&lf;The GetSlice (String) with it&apos;s &apos;Bin Size&apos; pin set to the number of the columns in the matrix, picks only the slices which belong to one of the rows (which is selected via the &apos;Index&apos; pin).&cr;&lf;&cr;&lf;Use the Inspektor to set how many Output pins the Unzip (String) should have. In this example the CSV file has 6 columns.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -633,9 +633,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="109" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="15" top="3915" type="Node" width="315">
+   <BOUNDS height="270" left="15" top="4140" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="15" top="3915" type="Box" width="405">
+   <BOUNDS height="390" left="15" top="4140" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -649,9 +649,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="110" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="15" top="4755" type="Node" width="315">
+   <BOUNDS height="270" left="15" top="5145" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="15" top="4755" type="Box" width="405">
+   <BOUNDS height="390" left="15" top="5145" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -665,9 +665,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="111" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="15" top="5580" type="Node" width="315">
+   <BOUNDS height="270" left="15" top="6225" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="15" top="5580" type="Box" width="405">
+   <BOUNDS height="390" left="15" top="6225" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -712,4 +712,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
    </PATCH>

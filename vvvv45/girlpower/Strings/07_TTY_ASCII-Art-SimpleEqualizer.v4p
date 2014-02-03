@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\07_TTY_ASCII-Art-SimpleEqualizer.v4p" systemname="07_TTY_ASCII-Art-SimpleEqualizer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\07_TTY_ASCII-Art-SimpleEqualizer.v4p" locked="0">
-   <BOUNDS type="Window" left="0" top="0" width="12315" height="11610">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Strings\07_TTY_ASCII-Art-SimpleEqualizer.v4p" systemname="07_TTY_ASCII-Art-SimpleEqualizer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\07_TTY_ASCII-Art-SimpleEqualizer.v4p" locked="0">
+   <BOUNDS type="Window" left="0" top="0" width="10635" height="11190">
    </BOUNDS>
    <NODE systemname="WritePage (TTY)" nodename="WritePage (TTY)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="7005" top="8085" width="100" height="100">
@@ -17,7 +17,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7020" top="9240" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="12330" top="0" width="5445" height="6030">
+   <BOUNDS type="Window" left="10695" top="0" width="5445" height="8130">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -613,7 +613,7 @@
    </BOUNDS>
    <BOUNDS height="4560" left="765" top="4005" type="Box" width="3855">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|After smoothing the spread of 32 amplitudes using the Damper (Animation) these are mapped to a different range. In this example the maximum amplitude is represented using 50 characters.&cr;&lf;&cr;&lf;The Repeat (String) does its job of repeating the string from its &apos;Text&apos; pin &apos;Count&apos; times. It does so for all 32 amplitudes.&cr;&lf;&cr;&lf;All these 32 strings are concatenated together into one big string placing the new line (&apos;LineFeed&apos;) between them.&cr;&lf;&cr;&lf;The WritePage (TTY) clears the TTY Renderer and writes there the string from its &apos;Input&apos;. The &apos;DoWrite&apos; pin is activated each time the string has changed.&cr;&lf;&cr;&lf;The Renderer (TTY) has its &apos;Log Messages&apos; pin off in order to protect the precious Ascii-art from the annoying vvvv-messages. See also the colors for the text (&apos;Foreground Color&apos;) and the &apos;Background Color&apos;.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|After smoothing the spread of 32 amplitudes using the Damper (Animation) these are mapped to a different range. In this example the maximum amplitude is represented using 50 characters.&cr;&lf;&cr;&lf;The Repeat (String) does its job of repeating the string from its &apos;Text&apos; pin &apos;Count&apos; times. It does so for all 32 amplitudes.&cr;&lf;&cr;&lf;All these 32 strings are concatenated together into one big string placing a new line (&apos;LineFeed&apos;) between them.&cr;&lf;&cr;&lf;WritePage (TTY) clears the TTY Renderer and writes out the string from its &apos;Input&apos;. The &apos;DoWrite&apos; pin is activated each time the string has changed.&cr;&lf;&cr;&lf;The Renderer (TTY) has its &apos;Log Messages&apos; pin off in order to protect the precious Ascii-art from the annoying vvvv-messages. See also the colors for the text (&apos;Foreground Color&apos;) and the &apos;Background Color&apos;.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -704,42 +704,10 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="97" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="765" top="8910" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="780" left="765" top="8910" type="Box" width="3930">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, the MainLoop (VVVV) has the &apos;Maximum foreground fps&apos; set to 30 in order to avoid flickering in the TTY Renderer.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="98" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="8865" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="600" left="405" top="8865" type="Box" width="315">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="25">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="100">
-   <BOUNDS type="Node" left="765" top="10530" width="100" height="100">
+   <BOUNDS type="Node" left="765" top="10080" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="765" top="10530" width="2970" height="240">
+   <BOUNDS type="Box" left="765" top="10080" width="2970" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
@@ -747,9 +715,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="99" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="765" top="9975" type="Node" width="7425">
+   <BOUNDS height="270" left="765" top="9525" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="525" left="765" top="9975" type="Box" width="3090">
+   <BOUNDS height="525" left="765" top="9525" type="Box" width="3090">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For more advanced spred-juggling check&cr;&lf;this vertical ASCII-Art EQ:|">
    </PIN>
@@ -762,40 +730,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="MainLoop (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
-   <BOUNDS type="Node" left="10635" top="1440" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="101" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10650" top="1005" width="465" height="255">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10650" top="1005" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="30">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="101" srcpinname="Y Output Value" dstnodeid="-6" dstpinname="Maximum forground fps">
-   </LINK>
-   <NODE componentmode="InABox" id="102" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="10245" top="1185" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="600" left="10245" top="1185" type="Box" width="315">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="25">
-   </PIN>
-   </NODE>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
    </PATCH>

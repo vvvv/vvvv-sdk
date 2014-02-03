@@ -190,6 +190,16 @@ namespace VVVV.Hosting
         {
 			get;
 		}
+
+        /// <summary>
+        /// Disables the short cuts of vvvv. Each disable call needs to followed by an enable call.
+        /// </summary>
+        void DisableShortCuts();
+
+        /// <summary>
+        /// Enables the short cuts of vvvv.
+        /// </summary>
+        void EnableShortCuts();
     }
     
     #region Listeners

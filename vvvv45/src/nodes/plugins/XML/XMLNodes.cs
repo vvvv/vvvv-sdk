@@ -28,14 +28,37 @@ namespace VVVV.Nodes.XML
         public static readonly ISpread<XAttribute> NoAttributes = new Spread<XAttribute>();
 
         [Node]
-        public static void Split(this XElement element, out string name, out string value, out ISpread<XElement> childs,
+        public static void Split(this XElement element, out string name, out string value, out string deepvalue, out ISpread<XElement> childs,
             out ISpread<XAttribute> attributes, out XElement documentRoot, out XElement parent,
             out XElement next, out XmlNodeType nodeType) //, out bool changed)
         {
             if (element != null)
             {
                 name = element.Name.LocalName;
-                value = element.Value;
+
+                //deepvalue now gets you the legacy value out implementation: all the text contents of all text nodes of this element and its childs get concatenated
+                //it is a strange default implementation for value, since it blurrs every NESTED text value into one big string, which is not related to how the value is set.
+                deepvalue = element.Value;
+                // anyway: we output this thing as deepvalue to get legacy patches working.
+
+                //now here comes the new implementation:                
+                    //http://stackoverflow.com/questions/4251215/how-to-get-xelements-value-and-not-value-of-all-child-nodes
+                    //value = string.Concat(element.Nodes().OfType<XText>().Select(t => t.Value));
+                
+                    //still not satisfied. trim spaces in front and at the back.
+                    //value = string.Concat(element.Nodes().OfType<XText>().Select(t => t.Value)).Trim();
+
+                //still not satisfied. actually we don't want to trim blindly. 
+                //we just want to pick that single text node (if existant), that has more than just whitespace in it and output it without modification.
+                //this covers the standard case in which text value is NOT spread all over the element, separated by child nodes.
+                //when found it is returned without modification. we shouldn't delete information for no reason.
+                var textNode = element.Nodes().OfType<XText>().FirstOrDefault(t => !string.IsNullOrWhiteSpace(t.Value));
+                // if there is just none, let's output the first text nodes' value in all its glory.
+                textNode = textNode ?? element.Nodes().OfType<XText>().FirstOrDefault();
+                //in summary: out value now just supports the std. case, where only ONE text value is placed into the xelement. 
+                //(join nodes shouldn't construct anything else anyway)
+                value = textNode != null ? textNode.Value : "";
+                                
                 childs = element.Elements().ToSpread();
                 attributes = element.Attributes().ToSpread();
                 if (element.Document != null)
@@ -51,6 +74,7 @@ namespace VVVV.Nodes.XML
             {
                 name = "";
                 value = "";
+                deepvalue = "";
                 childs = NoElements;
                 attributes = NoAttributes;
                 documentRoot = null;
