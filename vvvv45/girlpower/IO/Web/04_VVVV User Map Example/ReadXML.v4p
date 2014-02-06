@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\04_VVVV User Map Example\ReadXML.v4p" systemname="ReadXML">
    <BOUNDS height="9900" left="720" top="405" type="Window" width="14520">
    </BOUNDS>
@@ -41,9 +41,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="100" left="10815" top="360" type="Node" width="100">
+   <BOUNDS height="100" left="10815" top="285" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="480" left="10815" top="360" type="Box" width="480">
+   <BOUNDS height="480" left="10815" top="285" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -145,9 +145,9 @@
    <LINK dstnodeid="45" dstpinname="Select" srcnodeid="43" srcpinname="Count">
    </LINK>
    <NODE componentmode="Hidden" id="46" nodename="HTTP (Network Get)" systemname="HTTP (Network Get String)">
-   <BOUNDS height="270" left="6690" top="1230" type="Node" width="4185">
+   <BOUNDS height="270" left="6690" top="1530" type="Node" width="4185">
    </BOUNDS>
-   <BOUNDS height="0" left="6690" top="1230" type="Box" width="0">
+   <BOUNDS height="0" left="6690" top="1530" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="3855" top="2565" type="Window" width="0">
    </BOUNDS>
@@ -165,12 +165,12 @@
    </PIN>
    <PIN pinname="Body" visible="1">
    </PIN>
+   <PIN pinname="Refresh" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="XML Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="46" srcpinname="Body">
+   <LINK dstnodeid="5" dstpinname="XML Input" hiddenwhenlocked="0" linkstyle="PolyLine" srcnodeid="46" srcpinname="Body">
    </LINK>
-   <LINK dstnodeid="46" dstpinname="Refresh" srcnodeid="14" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="XML Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="46" srcpinname="Body">
+   <LINK dstnodeid="26" dstpinname="XML Input" hiddenwhenlocked="0" linkstyle="PolyLine" srcnodeid="46" srcpinname="Body">
    </LINK>
    <NODE componentmode="Hidden" id="56" nodename="Sort (String)" systemname="Sort (String)">
    <BOUNDS height="100" left="8790" top="4320" type="Node" width="100">
@@ -310,7 +310,7 @@
    </NODE>
    <LINK srcnodeid="79" srcpinname="Output String" dstnodeid="81" dstpinname="Filter">
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Status" dstnodeid="81" dstpinname="Input" linkstyle="PolyLine" hiddenwhenlocked="1">
+   <LINK srcnodeid="46" srcpinname="Status" dstnodeid="81" dstpinname="Input" linkstyle="PolyLine" hiddenwhenlocked="0">
    </LINK>
    <NODE componentmode="InABox" id="95" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="30" top="60" type="Node" width="2190">
@@ -537,9 +537,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="110" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="10995" top="1215" type="Node" width="315">
+   <BOUNDS height="270" left="10995" top="1515" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="300" left="10995" top="1215" type="Box" width="330">
+   <BOUNDS height="300" left="10995" top="1515" type="Box" width="330">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
    </PIN>
@@ -754,7 +754,7 @@
    </LINK>
    <LINK srcnodeid="117" srcpinname="Output" dstnodeid="124" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Body" dstnodeid="129" dstpinname="XML Input" hiddenwhenlocked="1">
+   <LINK srcnodeid="46" srcpinname="Body" dstnodeid="129" dstpinname="XML Input" hiddenwhenlocked="0">
    </LINK>
    <NODE id="97" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS type="Node" height="270" left="240" top="3690" width="315">
@@ -788,4 +788,16 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="134">
+   <BOUNDS type="Node" left="10815" top="1095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="134" srcpinname="Bang" dstnodeid="46" dstpinname="Refresh">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="134" dstpinname="Simulate">
+   </LINK>
    </PATCH>

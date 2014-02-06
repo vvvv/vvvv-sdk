@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
    <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Audio\21_Visualisation_Equalizer_Bars.v4p" systemname="AudioInput_Bar_Equalizer" filename="C:\Work\girlpower - next gen\Audio\Audio Input\AudioInput_Bar_Equalizer.v4p">
    <BOUNDS type="Window" left="6570" top="375" width="19455" height="15315">
    </BOUNDS>
@@ -317,7 +317,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 4" visible="1">
    </PIN>
@@ -363,7 +363,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="11355" top="690" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\lib\assets\sounds\vvvv.mp3">
+   <PIN pinname="Input String" slicecount="1" values="..\..\lib\assets\sounds\vvvv.mp3">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="file.avi">
    </PIN>
@@ -426,22 +426,8 @@
    </NODE>
    <LINK srcnodeid="38" srcpinname="Output" dstnodeid="5" dstpinname="TranslateX">
    </LINK>
-   <NODE systemname="Line (EX9)" nodename="Line (EX9)" componentmode="Hidden" id="3" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p">
-   <BOUNDS type="Node" left="13650" top="9090" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="VerticesXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Single Input" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.89992,0.89992,0.89992,1.00000|">
-   </PIN>
-   <BOUNDS type="Box" left="13650" top="9090">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="14295" top="8325" width="570" height="270">
+   <BOUNDS type="Node" left="14145" top="8235" width="570" height="270">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -451,8 +437,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="38" srcpinname="Output" dstnodeid="2" dstpinname="X">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="XYZ" dstnodeid="3" dstpinname="VerticesXYZ">
    </LINK>
    <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="15930" top="7335" width="100" height="100">
@@ -880,8 +864,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 3">
-   </LINK>
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 4">
    </LINK>
    <NODE componentmode="InABox" id="97" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -900,22 +882,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="98" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="14130" top="8685" width="315" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="14130" top="8685" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Single Input">
-   </LINK>
    <NODE componentmode="InABox" id="100" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="30" top="11340" type="Node" width="315">
    </BOUNDS>
@@ -1351,5 +1317,23 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Line (EX9)" nodename="Line (EX9)" componentmode="Hidden" id="3" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p">
+   <BOUNDS type="Node" left="13650" top="9090" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Single Input">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.89992,0.89992,0.89992,1.00000|">
+   </PIN>
+   <BOUNDS type="Box" left="13650" top="9090">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="XYZ" dstnodeid="3" dstpinname="VerticesXYZ">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="13" dstpinname="Layer 3">
    </LINK>
    </PATCH>
