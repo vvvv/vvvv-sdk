@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.Utils.VMath;
+using SlimDX;
 
 namespace VVVV.Hosting.Pins.Input
 {
@@ -36,6 +38,116 @@ namespace VVVV.Hosting.Pins.Input
             if (IsChanged)
             {
                 this.AssignFrom(FInStream);
+            }
+            return base.Sync();
+        }
+    }
+    
+    class BufferedInputMatrix4x4IOStream : MemoryIOStream<Matrix4x4>
+    {
+        private readonly IInStream<Matrix4x4> FInStream;
+        
+        public BufferedInputMatrix4x4IOStream(IInStream<Matrix4x4> inStream)
+        {
+            FInStream = inStream;
+        }
+        
+        public override bool Sync()
+        {
+            IsChanged = FInStream.Sync();
+            if (IsChanged)
+            {
+            	var buffer = MemoryPool<Matrix4x4>.GetArray();
+	            try
+	            {
+	            	var anySliceChanged = this.Length != FInStream.Length;
+	                this.Length = FInStream.Length;
+            
+		            using (var reader = FInStream.GetReader())
+	                using (var writer = this.GetWriter())
+	                {
+	                    while (!reader.Eos)
+	                    {
+	                    	var offset = reader.Position;
+	                        int numSlicesRead = reader.Read(buffer, 0, buffer.Length);
+	                        if (!anySliceChanged)
+	                        {
+		                        for (int i = 0; i < numSlicesRead; i++)
+		                        {
+		                        	var previousSlice = this.Buffer[offset + i];
+		                        	var newSlice = buffer[i];
+		                        	if (newSlice != previousSlice)
+		                        	{
+		                        		anySliceChanged = true;
+		                        		break;
+		                        	}
+		                        }
+	                        }
+	                        writer.Write(buffer, 0, numSlicesRead);
+	                    }
+	                }
+		            
+		            IsChanged = anySliceChanged;
+	            }
+	            finally
+	            {
+	                MemoryPool<Matrix4x4>.PutArray(buffer);
+	            }
+            }
+            return base.Sync();
+        }
+    }
+    
+    class BufferedInputMatrixIOStream : MemoryIOStream<Matrix>
+    {
+        private readonly IInStream<Matrix> FInStream;
+        
+        public BufferedInputMatrixIOStream(IInStream<Matrix> inStream)
+        {
+            FInStream = inStream;
+        }
+        
+        public override bool Sync()
+        {
+            IsChanged = FInStream.Sync();
+            if (IsChanged)
+            {
+            	var buffer = MemoryPool<Matrix>.GetArray();
+	            try
+	            {
+	            	var anySliceChanged = this.Length != FInStream.Length;
+	                this.Length = FInStream.Length;
+            
+		            using (var reader = FInStream.GetReader())
+	                using (var writer = this.GetWriter())
+	                {
+	                    while (!reader.Eos)
+	                    {
+	                    	var offset = reader.Position;
+	                        int numSlicesRead = reader.Read(buffer, 0, buffer.Length);
+	                        if (!anySliceChanged)
+	                        {
+		                        for (int i = 0; i < numSlicesRead; i++)
+		                        {
+		                        	var previousSlice = this.Buffer[offset + i];
+		                        	var newSlice = buffer[i];
+		                        	if (newSlice != previousSlice)
+		                        	{
+		                        		anySliceChanged = true;
+		                        		break;
+		                        	}
+		                        }
+	                        }
+	                        writer.Write(buffer, 0, numSlicesRead);
+	                    }
+	                }
+		            
+		            IsChanged = anySliceChanged;
+	            }
+	            finally
+	            {
+	                MemoryPool<Matrix>.PutArray(buffer);
+	            }
             }
             return base.Sync();
         }
