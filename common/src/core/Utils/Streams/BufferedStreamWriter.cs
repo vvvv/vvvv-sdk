@@ -35,7 +35,7 @@ namespace VVVV.Utils.Streams
             }
             else
             {
-                for (int i = 0; i < length; i++)
+                for (int i = index; i < length; i++)
                     Write(buffer[i]);
             }
             return length;
