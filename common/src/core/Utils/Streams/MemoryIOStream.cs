@@ -212,7 +212,7 @@ namespace VVVV.Utils.Streams
         {
         }
         
-        public MemoryIOStream(int initialCapacity = 0, int length = 0, bool canExpand = false)
+        public MemoryIOStream(int initialCapacity, int length, bool canExpand)
             : this(new T[initialCapacity], length, canExpand)
         {
         }
