@@ -137,6 +137,11 @@ namespace VVVV.Utils.Streams
         {
             return new BufferedStreamWriter<T>(stream);
         }
+
+        public static DynamicStreamWriter<T> GetDynamicWriter<T>(this IOutStream<T> stream)
+        {
+            return new DynamicStreamWriter<T>(stream);
+        }
         
         public static int GetNumSlicesAhead(IStreamer streamer, int index, int length, int stride)
         {
