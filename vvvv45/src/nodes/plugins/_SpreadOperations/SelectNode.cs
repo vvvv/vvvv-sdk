@@ -23,6 +23,7 @@ namespace VVVV.Nodes
         {
             // Check if any inputs changed (important for string)
             if (!StreamUtils.AnyChanged(FDataIn, FSelectIn)) return;
+            spreadMax = StreamUtils.GetSpreadMax(FDataIn, FSelectIn);
 
             // Compute the output length
             var outputLength = 0;
