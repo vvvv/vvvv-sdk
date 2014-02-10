@@ -27,7 +27,6 @@ namespace VVVV.Nodes.Texture.HTML
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
         private readonly DXResource<EX9.Texture, CefBrowser> FTextureResource;
-        private readonly List<EX9.Texture> FTextures = new List<EX9.Texture>();
         private volatile bool FEnabled;
         private CefBrowser FBrowser;
         private string FUrl;
@@ -207,7 +206,7 @@ namespace VVVV.Nodes.Texture.HTML
                 var size = new Size(Math.Max(1, value.Width), Math.Max(1, value.Height));
                 if (size != FSize)
                 {
-                    lock (FTextures)
+                    lock (FTextureResource)
                     {
                         FTextureResource.Dispose();
                         FSize = size;
@@ -410,16 +409,17 @@ namespace VVVV.Nodes.Texture.HTML
         internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
         {
             if (!FEnabled) return;
-            lock (FTextures)
+            lock (FTextureResource)
             {
                 try
                 {
                     for (int i = 0; i < cefRects.Length; i++)
                     {
                         var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
-                        foreach (var texture in FTextures)
+                        foreach (var texture in FTextureResource.DeviceResources)
                         {
-                            WriteToTexture(rect, buffer, stride, texture);
+                            var sysmemTexture = texture.Tag as EX9.Texture;
+                            WriteToTexture(rect, buffer, stride, sysmemTexture);
                         }
                     }
                 }
@@ -435,7 +435,7 @@ namespace VVVV.Nodes.Texture.HTML
             // Rect needs to be inside of Width/Height
             rect = Rectangle.Intersect(new Rectangle(0, 0, FSize.Width, FSize.Height), rect);
             if (rect == Rectangle.Empty) return;
-            var dataRect = texture.LockRectangle(0, rect, LockFlags.None);
+            var dataRect = texture.LockRectangle(0, rect, LockFlags.Discard);
             try
             {
                 var dataStream = dataRect.Data;
@@ -463,32 +463,31 @@ namespace VVVV.Nodes.Texture.HTML
         private EX9.Texture CreateTexture(CefBrowser browser, Device device)
         {
             // TODO: Fix exceptions on start up.
-            lock (FTextures)
+            lock (FTextureResource)
             {
+
                 var usage = Usage.None & ~Usage.AutoGenerateMipMap;
-                var pool = Pool.Managed;
-                if (device is DeviceEx)
-                {
-                    usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
-                    pool = Pool.Default;
-                }
-                var texture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, pool);
+                var texture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.Default);
+                var sysmemTexture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.SystemMemory);
+                texture.Tag = sysmemTexture;
                 var rect = new CefRect(0, 0, FSize.Width, FSize.Height);
                 FBrowser.Invalidate(rect);
-                FTextures.Add(texture);
                 return texture;
             }
         }
 
         private void UpdateTexture(CefBrowser browser, EX9.Texture texture)
         {
+            var sysmemTexture = texture.Tag as EX9.Texture;
+            texture.Device.UpdateTexture(sysmemTexture, texture);
         }
 
         private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
         {
-            lock (FTextures)
+            lock (FTextureResource)
             {
-                FTextures.Remove(texture);
+                var sysmemTexture = texture.Tag as EX9.Texture;
+                sysmemTexture.Dispose();
                 texture.Dispose();
             }
         }

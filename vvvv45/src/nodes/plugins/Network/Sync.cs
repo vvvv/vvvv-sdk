@@ -1,6 +1,7 @@
 ﻿#region usings
 using System;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Timers;
@@ -150,7 +151,12 @@ namespace VVVV.Nodes
 			{
 				lock(FLock)
 				{
-					FServer.Send(Encoding.ASCII.GetBytes(FStreamTime.ToString() + ";" + FTimeStamp.ToString()), e.RemoteSender);
+					using(var stream = new MemoryStream())
+					{
+						stream.Write(BitConverter.GetBytes(FStreamTime), 0, 8);
+						stream.Write(BitConverter.GetBytes(FTimeStamp), 0, 8);
+						FServer.Send(stream.ToArray(), e.RemoteSender);
+					}
 					
 					//FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
 				}
@@ -160,12 +166,11 @@ namespace VVVV.Nodes
 		void ReceiveServerAnswer(byte[] data)
 		{
 			FHalfRoundTripDelay = (FHost.RealTime - FRequestSentTimeStamp) * 0.5;
-			var s = Encoding.ASCII.GetString(data).Split(';');
 			
 			lock(FLock)
 			{
-				FReceivedStreamTime = Double.Parse(s[0]);
-				FReceivedTimeStamp = Double.Parse(s[1]);
+				FReceivedStreamTime = BitConverter.ToDouble(data, 0);
+				FReceivedTimeStamp = BitConverter.ToDouble(data, 8);
 			}
 		}
 		
