@@ -204,6 +204,9 @@ namespace VVVV.Nodes.Input
                         case KeyNotificationKind.KeyUp:
                             notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i]);
                             break;
+                        case KeyNotificationKind.DeviceLost:
+                            notification = new KeyboardLostNotification();
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -227,17 +230,21 @@ namespace VVVV.Nodes.Input
             {
                 if (x.Kind == y.Kind)
                 {
-                    if (x.Kind == KeyNotificationKind.KeyPress)
+                    switch (x.Kind)
                     {
-                        var xPress = x as KeyPressNotification;
-                        var yPress = y as KeyPressNotification;
-                        return xPress.KeyChar == yPress.KeyChar;
-                    }
-                    else
-                    {
-                        var xCode = x as KeyCodeNotification;
-                        var yCode = y as KeyCodeNotification;
-                        return xCode.KeyCode == yCode.KeyCode;
+                        case KeyNotificationKind.KeyDown:
+                        case KeyNotificationKind.KeyUp:
+                            var xCode = x as KeyCodeNotification;
+                            var yCode = y as KeyCodeNotification;
+                            return xCode.KeyCode == yCode.KeyCode;
+                        case KeyNotificationKind.KeyPress:
+                            var xPress = x as KeyPressNotification;
+                            var yPress = y as KeyPressNotification;
+                            return xPress.KeyChar == yPress.KeyChar;
+                        case KeyNotificationKind.DeviceLost:
+                            return true;
+                        default:
+                            break;
                     }
                 }
                 return false;
@@ -441,6 +448,10 @@ namespace VVVV.Nodes.Input
                         case KeyNotificationKind.KeyUp:
                             var keyUp = notification as KeyUpNotification;
                             KeyCodeOut[bin][i] = (int)keyUp.KeyCode;
+                            KeyCharOut[bin][i] = null;
+                            break;
+                        case KeyNotificationKind.DeviceLost:
+                            KeyCodeOut[bin][i] = 0;
                             KeyCharOut[bin][i] = null;
                             break;
                         default:
