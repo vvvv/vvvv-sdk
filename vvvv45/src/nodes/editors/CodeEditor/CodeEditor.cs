@@ -379,8 +379,19 @@ namespace VVVV.HDE.CodeEditor
                         {
                             var offset = lineSegment.Offset + word.Offset + start;
                             var location = doc.OffsetToPosition(offset);
+
+                            SD.TextMarker marker;
                             
-                            var marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, Color.LightGray);
+                            if (this.HasForeGround("TypeHighlight"))
+                            {
+                                marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, this.GetBackColor("TypeHighlight"));
+                            }
+                            else
+                            {
+                                marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock,
+                                    this.GetBackColor("TypeHighlight"), this.GetForeColor("TypeHighlight"));
+                            }
+                            
                             FSelectionMarkers.Add(marker);
                             doc.MarkerStrategy.AddMarker(marker);
                             
@@ -503,11 +514,11 @@ namespace VVVV.HDE.CodeEditor
                             var hoverRegion = FLink.HoverRegion;
                             int offset = doc.PositionToOffset(hoverRegion.ToTextLocation());
                             int length = hoverRegion.EndColumn - hoverRegion.BeginColumn;
-                            
-                            FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Color.Blue);
+
+                            FUnderlineMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.Underlined, Document.HighlightingStrategy.GetColorFor("Link").Color);
                             doc.MarkerStrategy.AddMarker(FUnderlineMarker);
-                            
-                            FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Color.Blue);
+
+                            FHighlightMarker = new SD.TextMarker(offset, length, SD.TextMarkerType.SolidBlock, Document.HighlightingStrategy.GetColorFor("Default").BackgroundColor, Document.HighlightingStrategy.GetColorFor("Link").Color);
                             doc.MarkerStrategy.AddMarker(FHighlightMarker);
                             
                             doc.RequestUpdate(new TextAreaUpdate(TextAreaUpdateType.PositionToLineEnd, doc.OffsetToPosition(offset)));
@@ -688,8 +699,8 @@ namespace VVVV.HDE.CodeEditor
             foreach (var compilerError in compilerErrors)
             {
                 var color = compilerError.IsWarning
-                    ? Color.Orange
-                    : Color.Red;
+                    ? this.GetForeColor("Warning")
+                    : this.GetForeColor("Error");
                 try
                 {
                     if (string.Compare(compilerError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -710,7 +721,8 @@ namespace VVVV.HDE.CodeEditor
             ClearErrorMarkers(FCompilerErrorMarkers);
             Document.CommitUpdate();
         }
-        
+
+           
         List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
         internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErrors)
         {
@@ -722,12 +734,12 @@ namespace VVVV.HDE.CodeEditor
                 if (!string.IsNullOrEmpty(runtimeError.FileName))
                 {
                     if (string.Compare(runtimeError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
-                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1, Color.Red);
+                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1, this.GetForeColor("Error"));
                 }
                 else
                 {
                     // Showing the error in wrong editor is better than not to.
-                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0, Color.Red);
+                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0, this.GetForeColor("Error"));
                 }
             }
 
@@ -766,6 +778,27 @@ namespace VVVV.HDE.CodeEditor
             ActiveTextAreaControl.ScrollTo(line, column);
             ActiveTextAreaControl.Caret.Line = line;
             ActiveTextAreaControl.Caret.Column = column;
+        }
+
+        private bool HasForeGround(string key)
+        {
+            return Document.HighlightingStrategy.GetColorFor(key).HasForeground;
+        }
+
+        private bool HasBackGround(string key)
+        {
+            return Document.HighlightingStrategy.GetColorFor(key).HasBackground;
+        }
+
+        private Color GetForeColor(string key)
+        {
+            return Document.HighlightingStrategy.GetColorFor(key).Color;
+        }
+
+
+        private Color GetBackColor(string key)
+        {
+            return Document.HighlightingStrategy.GetColorFor(key).BackgroundColor;
         }
         
         #region Code completion
