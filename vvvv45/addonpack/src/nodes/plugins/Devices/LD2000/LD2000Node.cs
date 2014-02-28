@@ -438,6 +438,10 @@ namespace LD2000
 		        		pointBuffer[i].Y = v;
 		        		
 		        		FColorIn.GetColor(pointId, out color);
+		        		//swapping r'n'b 
+		        		var r = color.R;
+		        		color.R = color.B;
+		        		color.B = r;
 		        		pointBuffer[i].Color = color.Color.ToArgb();
 		        		
 		        		if (pointFlagMap.TryGetValue(pointId, out flag))

@@ -112,26 +112,24 @@ namespace VVVV.Utils.Streams
 
         public void Dispose()
         {
-            if (FPosition > FStreamLength)
+            if (FStreamWriter != null)
             {
-                FMemoryStreamWriter.Dispose();
-                FMemoryStreamWriter = null;
-                FStream.Length += FMemoryStream.Length;
-                var buffer = MemoryPool<T>.GetArray();
-                try
-                {
-                    FStreamWriter.Write(FMemoryStream, buffer);
-                }
-                finally
-                {
-                    MemoryPool<T>.PutArray(buffer);
-                }
                 FStreamWriter.Dispose();
-                FMemoryStream = null;
-            }
-            else
-            {
-                FStream.Length = FPosition;
+                FStreamWriter = null;
+
+                if (FPosition > FStreamLength)
+                {
+                    // Stream is larger now
+                    FStream.Append(FMemoryStream);
+                    FMemoryStreamWriter.Dispose();
+                    FMemoryStreamWriter = null;
+                    FMemoryStream = null;
+                }
+                else
+                {
+                    // Stream is smaller now
+                    FStream.Length = FPosition;
+                }
             }
         }
     }

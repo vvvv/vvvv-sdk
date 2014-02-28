@@ -134,7 +134,12 @@ namespace VVVV.Nodes.Input
                         throw new NotImplementedException();
                 }
 
-                FSubscription = result.ObserveOn(FScheduler)
+                //on keyboard lost: keep toggle state when in toggle mode; in any other case just release the key 
+                if (FKeyMode != KeyMode.Toggle)
+                    result = result.Merge(FKeyboard.KeyNotifications.OfType<KeyboardLostNotification>().Select(_ => false));
+
+                FSubscription = result
+                    .ObserveOn(FScheduler)
                     .Subscribe(v => Output = v);
             }
 

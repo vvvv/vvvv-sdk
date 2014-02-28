@@ -29,7 +29,7 @@ namespace VVVV.Nodes.Input
 
         private readonly List<Subclass> FSubclasses = new List<Subclass>();
 
-        public void OnImportsSatisfied()
+        public virtual void OnImportsSatisfied()
         {
             var windowMessages = Observable.FromEventPattern<WindowEventArgs>(FHost, "WindowAdded")
                 .Select(p => p.EventArgs.Window)

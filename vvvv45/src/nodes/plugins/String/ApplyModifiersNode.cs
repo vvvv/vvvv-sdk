@@ -50,6 +50,7 @@ namespace VVVV.Nodes
                                     Output[slice] = new string(keyPress.KeyChar, 1);
                                     break;
                                 case KeyNotificationKind.KeyUp:
+                                case KeyNotificationKind.DeviceLost:
                                     Output[slice] = string.Empty;
                                     break;
                             }

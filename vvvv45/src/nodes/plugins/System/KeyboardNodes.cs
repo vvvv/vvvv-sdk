@@ -26,12 +26,30 @@ namespace VVVV.Nodes.Input
 	            Category = "Devices", 
 	            Version = "Window",
 	            Help = "Returns the keyboard of the current render window.")]
-    public class KeyboardNode : WindowMessageNode, IPluginEvaluate
+    public class KeyboardNode : WindowMessageNode, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Output("Device", IsSingle = true)]
         public ISpread<Keyboard> KeyboardOut;
 
         private PluginContainer FKeyboardStatesSplitNode;
+
+        [Import]
+        protected IHDEHost FHost;
+        private IObservable<KeyNotification> FDeviceLostNotifications;
+
+        public override void OnImportsSatisfied()
+        {
+            FDeviceLostNotifications =
+                Observable.FromEventPattern<WindowEventArgs>(FHost, "WindowSelectionChanged")
+                .Select(p => p.EventArgs.Window)
+                .OfType<Window>()
+                .Select(w => w.UserInputWindow != null)
+                .DistinctUntilChanged()
+                .Where(assigned => !assigned)
+                .Select(_ => new KeyboardLostNotification());
+
+            base.OnImportsSatisfied();
+        }
 
         protected override void Initialize(IObservable<WMEventArgs> windowMessages)
         {
@@ -54,7 +72,7 @@ namespace VVVV.Nodes.Input
                 }
                 )
                 .OfType<KeyNotification>();
-            KeyboardOut[0] = new Keyboard(keyNotifications);
+            KeyboardOut[0] = new Keyboard(keyNotifications.Merge(FDeviceLostNotifications));
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyStates" && n.Category == "Keyboard" && n.Version == "Split");
@@ -186,6 +204,9 @@ namespace VVVV.Nodes.Input
                         case KeyNotificationKind.KeyUp:
                             notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i]);
                             break;
+                        case KeyNotificationKind.DeviceLost:
+                            notification = new KeyboardLostNotification();
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -209,17 +230,21 @@ namespace VVVV.Nodes.Input
             {
                 if (x.Kind == y.Kind)
                 {
-                    if (x.Kind == KeyNotificationKind.KeyPress)
+                    switch (x.Kind)
                     {
-                        var xPress = x as KeyPressNotification;
-                        var yPress = y as KeyPressNotification;
-                        return xPress.KeyChar == yPress.KeyChar;
-                    }
-                    else
-                    {
-                        var xCode = x as KeyCodeNotification;
-                        var yCode = y as KeyCodeNotification;
-                        return xCode.KeyCode == yCode.KeyCode;
+                        case KeyNotificationKind.KeyDown:
+                        case KeyNotificationKind.KeyUp:
+                            var xCode = x as KeyCodeNotification;
+                            var yCode = y as KeyCodeNotification;
+                            return xCode.KeyCode == yCode.KeyCode;
+                        case KeyNotificationKind.KeyPress:
+                            var xPress = x as KeyPressNotification;
+                            var yPress = y as KeyPressNotification;
+                            return xPress.KeyChar == yPress.KeyChar;
+                        case KeyNotificationKind.DeviceLost:
+                            return true;
+                        default:
+                            break;
                     }
                 }
                 return false;
@@ -295,6 +320,11 @@ namespace VVVV.Nodes.Input
                                     var keyUp = n as KeyUpNotification;
                                     keyCodeOut.RemoveAll(k => k == (int)keyUp.KeyCode);
                                     keyNameOut.RemoveAll(k => k == keyUp.KeyCode.ToString());
+                                    KeyCharOut[slice] = string.Empty;
+                                    break;
+                                case KeyNotificationKind.DeviceLost:
+                                    keyCodeOut.SliceCount = 0;
+                                    keyNameOut.SliceCount = 0;
                                     KeyCharOut[slice] = string.Empty;
                                     break;
                                 default:
@@ -418,6 +448,10 @@ namespace VVVV.Nodes.Input
                         case KeyNotificationKind.KeyUp:
                             var keyUp = notification as KeyUpNotification;
                             KeyCodeOut[bin][i] = (int)keyUp.KeyCode;
+                            KeyCharOut[bin][i] = null;
+                            break;
+                        case KeyNotificationKind.DeviceLost:
+                            KeyCodeOut[bin][i] = 0;
                             KeyCharOut[bin][i] = null;
                             break;
                         default:

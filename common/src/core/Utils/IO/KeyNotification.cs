@@ -11,7 +11,8 @@ namespace VVVV.Utils.IO
     {
         KeyDown,
         KeyPress,
-        KeyUp
+        KeyUp,
+        DeviceLost
     }
 
     public abstract class KeyNotification
@@ -55,6 +56,14 @@ namespace VVVV.Utils.IO
     {
         public KeyUpNotification(Keys keyCode)
             : base(KeyNotificationKind.KeyUp, keyCode)
+        {
+        }
+    }
+
+    public class KeyboardLostNotification : KeyNotification
+    {
+        public KeyboardLostNotification()
+            : base(KeyNotificationKind.DeviceLost)
         {
         }
     }
