@@ -433,7 +433,7 @@ namespace VVVV.Core.Model
                     .Where(fi => MsBuildProject.DynamicRegExp.Match(fi.FullName).Success)
                     .OrderBy(fi => fi.LastWriteTime)
                     .Select(fi => fi.FullName)
-                    .FirstOrDefault();
+                    .LastOrDefault();
             }
             return null;
         }
