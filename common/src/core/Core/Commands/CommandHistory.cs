@@ -75,9 +75,20 @@ namespace VVVV.Core.Commands
         /// <param name="command">The command to be executed.</param>
         public virtual void Insert(Command command)
         {
-            DebugHelpers.CatchAndLog(() =>
+        	InsertCommand(command, true);
+        }
+        
+        public virtual void InsertOnly(Command command)
+        {
+        	InsertCommand(command, false);
+        }
+        
+        private void InsertCommand(Command command, bool execute)
+        {
+        	DebugHelpers.CatchAndLog(() =>
             {
-                command.Execute();
+        	    if (execute)
+        	    	command.Execute();
 
                 if (command.HasUndo)
                 {
@@ -92,7 +103,7 @@ namespace VVVV.Core.Commands
                     FCurrentNode = FFirstNode;
                 }
 
-                Debug.WriteLine(string.Format("Command {0} executed.", command));
+                //Debug.WriteLine(string.Format("Command {0} executed.", command));
             },
             string.Format("Execution of command {0}", command));
         	
