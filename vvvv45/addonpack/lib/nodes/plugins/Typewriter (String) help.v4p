@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Typewriter (String) help.v4p" locked="0">
-   <BOUNDS height="11250" left="8010" top="165" type="Window" width="10785">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Typewriter (String) help.v4p" locked="0">
+   <BOUNDS height="11385" left="13200" top="1620" type="Window" width="10785">
    </BOUNDS>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)">
    <BOUNDS height="255" left="120" top="600" type="Node" width="570">
@@ -562,18 +562,6 @@
    </NODE>
    <LINK srcnodeid="108" srcpinname="Output String" dstnodeid="21" dstpinname="Text">
    </LINK>
-   <NODE systemname="Keyboard (System Global Legacy2)" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Global).v4p" nodename="Keyboard (System Global)" componentmode="Hidden" id="113">
-   <BOUNDS type="Node" left="60" top="2085" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="State" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="20565" top="825" width="4725" height="5595">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="113" srcpinname="Keyboard" dstnodeid="21" dstpinname="Keyboard">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="117" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1395" top="9465" width="5000" height="450">
    </BOUNDS>
@@ -591,11 +579,11 @@
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="116">
    <BOUNDS type="Node" left="1395" top="10065" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1395" top="10065" width="2850" height="240">
+   <BOUNDS type="Box" left="1395" top="10065" width="3015" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Basics.v4p">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="118" systemname="IOBox (String)">
@@ -627,7 +615,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5670" top="1965" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -641,9 +629,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="122" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6330" top="1950" width="1110" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6330" top="1950" width="1110" height="270">
+   <BOUNDS type="Box" left="6330" top="1950" width="3210" height="330">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Max Length|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Max Length. &quot;-1&quot; means no restrictions.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -678,6 +666,30 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="60" top="2085" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="State" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="20565" top="825" width="4725" height="5595">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="113" srcpinname="Device" dstnodeid="21" dstpinname="Keyboard">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="125">
+   <BOUNDS type="Node" left="1395" top="10395" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1395" top="10395" width="3015" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p">
    </PIN>
    </NODE>
    </PATCH>
