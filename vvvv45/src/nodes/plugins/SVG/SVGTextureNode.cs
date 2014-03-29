@@ -418,7 +418,7 @@ namespace VVVV.Nodes
 				FSVGDoc = new SvgDocument();
 				foreach(var elem in FSVGIn)
 				{
-					if(elem != null) FSVGDoc.Children.AddAndFixID(elem, true, true, LogIDFix);
+					if(elem != null) FSVGDoc.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
 				}
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
