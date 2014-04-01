@@ -576,6 +576,12 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return "[4D](" + x.ToString("C3") + ", " + y.ToString("C3") + ", " + z.ToString("C3") + ", " + w.ToString("C3") + ") ";
+        }
+
 		#endregion
 
 	}

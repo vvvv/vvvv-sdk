@@ -7,7 +7,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -16,7 +15,6 @@ namespace VVVV.Utils.VMath
 	/// Fast 2d vector struct with operators
 	/// </summary>
 	[StructLayout(LayoutKind.Sequential)]
-    [DataContract]
 	public struct Vector2D
     {
         #region constants
@@ -28,13 +26,11 @@ namespace VVVV.Utils.VMath
         /// <summary>
 		/// Data component for the x dimension
 		/// </summary>
-		[DataMember]
-        public double x;
+		public double x;
 		/// <summary>
 		/// Data component for the y dimension
 		/// </summary>
-        [DataMember]
-        public double y;
+		public double y;
 		
 		#endregion data fields
 		
@@ -446,6 +442,11 @@ namespace VVVV.Utils.VMath
                 hashCode += 1000000009 * y.GetHashCode();
             }
             return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return "[2D]("+x.ToString("C3")+", "+y.ToString("C3")+") ";
         }
 		#endregion
 

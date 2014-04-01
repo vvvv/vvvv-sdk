@@ -218,6 +218,12 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return "[2x2](" + a.ToString("C3") + ", " + b.ToString("C3") + "), " + c.ToString("C3") + ", " + d.ToString("C3") + ") ";
+        }
+
         #endregion Equals and GetHashCode implementation
     }
 }
