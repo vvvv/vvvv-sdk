@@ -802,6 +802,8 @@ namespace VVVV.Nodes
 						{
 							p.Flatten(new System.Drawing.Drawing2D.Matrix(), FMaxFlattenInput[i] * 0.1f);
 						}
+						
+						p.Transform(elem.Transforms.GetMatrix());
 							          
 						po.SliceCount = p.PointCount;
 						pto.SliceCount = p.PointCount;
