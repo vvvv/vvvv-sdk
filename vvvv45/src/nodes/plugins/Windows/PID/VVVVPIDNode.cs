@@ -19,9 +19,9 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "PID", 
 				Category = "Windows", 
 				Help = "Returns the process ID of a given process name.", 
-				Tags = "process")]
+				Tags = "process, id")]
 	#endregion PluginInfo
-	public class VVVVPIDNode : IPluginEvaluate
+	public class PIDNode : IPluginEvaluate
 	{
 		#region fields & pins
 		[Input("Process Name", DefaultString="vvvv")]
@@ -30,7 +30,7 @@ namespace VVVV.Nodes
 		[Input("Update", IsBang = true, IsSingle = true)]
 		public ISpread<bool> FUpdate;
 		
-		[Output("ID")]
+		[Output("Process ID")]
         public ISpread<ISpread<int>> FOutput;
 		#endregion fields & pins
 
@@ -54,6 +54,22 @@ namespace VVVV.Nodes
 					i++;
 				}
 			}
+		}
+	}
+	
+	[PluginInfo(Name = "PID", 
+                Category = "VVVV", 
+                Tags = "self, process, id",
+                Help = "Returns the process ID of this vvvv instance.")]
+	public class VVVVPIDNode : IPluginEvaluate
+	{
+		[Output("Process ID")]
+		ISpread<int> FOutput;
+
+		//called when data for any output pin is requested
+		public void Evaluate(int SpreadMax)
+		{
+			FOutput[0] = Process.GetCurrentProcess().Id;
 		}
 	}
 }
