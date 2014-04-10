@@ -342,8 +342,8 @@ namespace VVVV.Hosting.IO.Streams
 
         public override bool Sync()
         {
-            IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
-            if (IsChanged)
+            var nodeConnectionChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (nodeConnectionChanged)
             {
                 Length = FNodeIn.SliceCount;
 
@@ -370,33 +370,37 @@ namespace VVVV.Hosting.IO.Streams
                                         keyboardState = new KeyboardState(keys, keyboardState.CapsLock, keyboardState.Time + 1);
                                         break;
                                 }
-                                this.Buffer[slice] = keyboardState;
+                                SetKeyboardState(slice, keyboardState);
                             }
                         );
                     }
                 );
 
-                using (var writer = GetWriter())
-                {
-                    object usI;
-                    FNodeIn.GetUpstreamInterface(out usI);
-                    var upstreamInterface = usI as IGenericIO;
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                var upstreamInterface = usI as IGenericIO;
 
-                    for (int i = 0; i < Length; i++)
+                for (int i = 0; i < Length; i++)
+                {
+                    int usS;
+                    var keyboard = Keyboard.Empty;
+                    if (upstreamInterface != null)
                     {
-                        int usS;
-                        var keyboard = Keyboard.Empty;
-                        if (upstreamInterface != null)
-                        {
-                            FNodeIn.GetUpsreamSlice(i, out usS);
-                            keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
-                        }
-                        writer.Write(KeyboardState.Empty);
-                        FSubscriptions[i].Update(keyboard);
+                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
                     }
+                    SetKeyboardState(i, KeyboardState.Empty);
+                    FSubscriptions[i].Update(keyboard);
                 }
             }
             return base.Sync();
+        }
+
+        private void SetKeyboardState(int i, KeyboardState keyboardState)
+        {
+            if (this.Buffer[i] != keyboardState)
+                this.IsChanged = true;
+            this.Buffer[i] = keyboardState;
         }
     }
 
@@ -421,8 +425,8 @@ namespace VVVV.Hosting.IO.Streams
         
         public override bool Sync()
         {
-            IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
-            if (IsChanged)
+            var nodeConnectionChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (nodeConnectionChanged)
             {
                 Length = FNodeIn.SliceCount;
 
@@ -460,33 +464,38 @@ namespace VVVV.Hosting.IO.Streams
                                         mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, wheel);
                                         break;
                                 }
-                                this.Buffer[slice] = mouseState;
+                                SetMouseState(slice, ref mouseState);
                             }
                         );
                     }
                 );
 
-                using (var writer = GetWriter())
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                var upstreamInterface = usI as IGenericIO;
+
+                var emptyMouseState = new MouseState();
+                for (int i = 0; i < Length; i++)
                 {
-                    object usI;
-                    FNodeIn.GetUpstreamInterface(out usI);
-                    var upstreamInterface = usI as IGenericIO;
-                    
-                    for (int i = 0; i < Length; i++)
+                    int usS;
+                    var mouse = Mouse.Empty;
+                    if (upstreamInterface != null)
                     {
-                        int usS;
-                        var mouse = Mouse.Empty;
-                        if (upstreamInterface != null)
-                        {
-                            FNodeIn.GetUpsreamSlice(i, out usS);
-                            mouse = (Mouse) upstreamInterface.GetSlice(usS);
-                        }
-                        writer.Write(new MouseState());
-                        FSubscriptions[i].Update(mouse);
+                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        mouse = (Mouse)upstreamInterface.GetSlice(usS);
                     }
+                    SetMouseState(i, ref emptyMouseState);
+                    FSubscriptions[i].Update(mouse);
                 }
             }
             return base.Sync();
+        }
+
+        private void SetMouseState(int i, ref MouseState mouseState)
+        {
+            if (this.Buffer[i] != mouseState)
+                this.IsChanged = true;
+            this.Buffer[i] = mouseState;
         }
     }
 
