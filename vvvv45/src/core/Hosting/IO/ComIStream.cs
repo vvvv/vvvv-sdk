@@ -16,6 +16,8 @@ namespace System.IO
 
         public ComIStream(Stream source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             this.source = source;
         }
 
