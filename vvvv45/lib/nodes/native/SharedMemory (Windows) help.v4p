@@ -1,0 +1,267 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\SharedMemory (Windows) help.v4p">
+   <BOUNDS height="7230" left="4125" top="5535" type="Window" width="8970">
+   </BOUNDS>
+   <NODE id="12" nodename="SharedMemory (EX9.Texture)" systemname="SharedMemory (EX9.Texture)">
+   <BOUNDS height="270" left="7020" top="2370" type="Node" width="1170">
+   </BOUNDS>
+   <PIN pinname="Shared Memory Name" slicecount="1" visible="1" values="|any name for the shared memory location|">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="320">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" visible="1" values="240">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="X8R8G8B8">
+   </PIN>
+   <PIN pinname="Repair" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Flip Vertically" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Bytes per Pixel" slicecount="1" visible="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="VideoOut (DShow9 SharedMemory)" systemname="VideoOut (DShow9 SharedMemory)">
+   <BOUNDS height="0" left="7020" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Shared Name" slicecount="1" visible="1" values="|any name for the shared memory location|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="2925">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Can access a shared memory file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="3630">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SharedMemory (Windows)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6960" top="1665" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="270" left="6960" top="1665" type="Box" width="1605">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="SharedMemory (Windows)" systemname="SharedMemory (Windows)">
+   <BOUNDS height="0" left="1005" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shared Memory Name" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1005" top="4605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9195" top="10770" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1290" left="1005" top="4605" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1995" top="3030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9285" top="9240" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1995" top="3030" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="anystring">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Random (Value)" systemname="Random (Value)">
+   <BOUNDS height="0" left="1005" top="2355" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="AsString (Value)" systemname="AsString (Value)">
+   <BOUNDS height="0" left="1005" top="2850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="SharedMemory (Windows)" systemname="SharedMemory (Windows)">
+   <BOUNDS height="0" left="4380" top="4200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shared Memory Name" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Size in Bytes" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4380" top="4650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9495" top="11070" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1335" left="4380" top="4650" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4065" top="2445" type="Node" width="4380">
+   </BOUNDS>
+   <BOUNDS height="510" left="4065" top="2445" type="Box" width="2370">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|a fast way of sharing memory between different applications.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="SharedMemory (DShow9 TransformInPlace)" systemname="SharedMemory (DShow9 TransformInPlace)">
+   <BOUNDS height="0" left="7020" top="2730" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="1020" top="1950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="4" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1905" top="1575" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1905" top="1575" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Select">
+   </LINK>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="1695" top="3555" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="16" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="16" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="7" dstpinname="Shared Memory Name">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="2" dstpinname="Shared Memory Name">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1035" top="1230" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1035" top="1230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="1" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3405" top="3495" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3405" top="3495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="500">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Size in Bytes">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Size in Bytes">
+   </LINK>
+   <NODE systemname="SharedMemory (Raw)" nodename="SharedMemory (Raw)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="7020" top="2010" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

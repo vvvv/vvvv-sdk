@@ -1,0 +1,375 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\3d\Stereographic\Stereographic (3d) help.v4p">
+   <BOUNDS height="8820" left="1290" top="2655" type="Window" width="9315">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="435" left="270" top="210" type="Box" width="4980">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stereographic Projection Inverse|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="270" left="210" top="720" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="945" left="210" top="720" type="Box" width="4305">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Maps the XY plane into the unit sphere.&cr;&lf;&cr;&lf;http://en.wikipedia.org/wiki/Stereographic_projection|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <INFO author="fibo" description="Maps the XY plane into the unit sphere" tags="3d">
+   </INFO>
+   <NODE componentmode="InAWindow" id="20" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="690" top="7980" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="690" top="7980" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4860" left="11985" top="6450" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="19" nodename="TypoSpread (Spreads)">
+   <BOUNDS height="270" left="1380" top="3405" type="Node" width="1080">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="-1" values="500">
+   </PIN>
+   <PIN pinname="Text" pintype="Input" slicecount="1" visible="-1" values="hello">
+   </PIN>
+   <PIN pinname="Spacing" pintype="Input" slicecount="1" visible="-1" values="0.2">
+   </PIN>
+   <PIN pinname="Line Spacing" pintype="Input" slicecount="1" visible="-1" values="-3.46944695195361E-018">
+   </PIN>
+   <PIN pinname="Factor" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input Y" visible="1">
+   </PIN>
+   <PIN pinname="Input X" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" slicecount="1" visible="-1" values="0.71">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" slicecount="1" visible="-1" values="1.17">
+   </PIN>
+   <PIN pinname="Character Encoding" pintype="Input" slicecount="1" visible="-1" values="ANSI">
+   </PIN>
+   <PIN pinname="Font" pintype="Input" slicecount="1" visible="-1" values="Arial">
+   </PIN>
+   <PIN pinname="Fill Square" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="18" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="705" top="6540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="17" nodename="Group (EX9)">
+   <BOUNDS height="270" left="705" top="6975" type="Node" width="6210">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Layers" srcnodeid="17" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="16" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="2925" top="5670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="15" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Program Files\vvvv_40beta21\modules\vvvv group\Transform\">
+   <BOUNDS height="0" left="1650" top="7425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1650" top="7425" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="8385" top="9420" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Inital Distance" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="View Transform" srcnodeid="15" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Projection Transform" srcnodeid="15" srcpinname="Projection">
+   </LINK>
+   <NODE componentmode="Hidden" id="14" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="2745" top="6390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.34668,0.34668,0.34668,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="885" top="5670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.02">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="Translate (Transform)">
+   <BOUNDS height="270" left="885" top="4860" type="Node" width="1560">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Transform In" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="1665" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="330" left="1665" top="6015" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="7095" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" values="|0.88990,0.73203,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Color" srcnodeid="11" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2910" top="5115" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Transform In" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="X" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="19" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="19" srcpinname="Output Y">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1380" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="1380" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="Map (Value)">
+   <BOUNDS height="0" left="1380" top="2655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input X" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2400" top="1860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="2400" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="Map (Value)">
+   <BOUNDS height="0" left="2400" top="2655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input Y" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Sphere (EX9.Geometry)">
+   <BOUNDS height="0" left="4950" top="5685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="0.97">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="40">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="40">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename=":EFFECTS:\Constant.fx">
+   <BOUNDS height="0" left="4785" top="6090" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="4785" top="6090" type="Box" width="6000">
+   </BOUNDS>
+   <BOUNDS height="12000" left="7650" top="8340" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.25657,0.25657,0.25657,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Mesh" srcnodeid="3" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layer 3" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="4785" top="5160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="ColorAsAlphaAdd">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Render State" srcnodeid="1" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\Stereographic.dll|VVVV.Nodes.Stereographic">
+   <BOUNDS height="0" left="1380" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1380" top="4080" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="8625" top="6300" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Input X" visible="1">
+   </PIN>
+   <PIN pinname="Input Y" visible="1">
+   </PIN>
+   <PIN pinname="Output Z" visible="1">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input X" srcnodeid="19" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input Y" srcnodeid="19" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="X" srcnodeid="0" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y" srcnodeid="0" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Z" srcnodeid="0" srcpinname="Output Z">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="13" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="16" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layer 1" srcnodeid="18" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Layer 2" srcnodeid="14" srcpinname="Layer">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="3975" top="2415" width="4845" height="900">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3975" top="2415" width="4845" height="900">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This plugin is the implementation of the inverse of Stereopraphic projection but i think it&apos;s ok to call it just &quot;Stereographic&quot;, infact adding a point at infinity in the three dimensional space&cr;&lf;Sterographic projections turns into a self-inverse transformation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
