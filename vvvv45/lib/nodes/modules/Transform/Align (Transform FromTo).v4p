@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.8.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform).v4p" systemname="Align (Transform)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform).v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform FromTo).v4p" systemname="Align (Transform)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform).v4p">
    <BOUNDS height="6015" left="16560" top="390" type="Window" width="5115">
    </BOUNDS>
    <NODE componentmode="Hidden" id="7" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
@@ -23,13 +23,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="6" nodename="Subtract (Value)" systemname="Subtract (Value)">
-   <BOUNDS height="100" left="2265" top="1755" type="Node" width="100">
+   <BOUNDS height="100" left="2265" top="1275" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="0" left="2265" top="1755" type="Box" width="0">
+   <BOUNDS height="0" left="2265" top="1275" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7395" top="7560" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -103,7 +103,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="14475" top="7425" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="PositionXYZ">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="FromXYZ">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -115,11 +115,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="15555" top="7395" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="NormalXYZ">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="ToXYZ">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Translate XYZ">
@@ -138,7 +140,7 @@
    </NODE>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Input 2">
    </LINK>
-   <INFO author="vvvv group" description="Returns an aligning transformation given a point and a normal" tags="">
+   <INFO author="vvvv group" description="Returns an aligning transformation between 2 given points" tags="">
    </INFO>
    <NODE componentmode="Hidden" id="5" nodename="Polar (3d Vector)" systemname="Polar (3d Vector)">
    <BOUNDS height="100" left="2280" top="2205" type="Node" width="100">

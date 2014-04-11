@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.8.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform) help.v4p" systemname="Align (Transform)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform).v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform FromTo) help.v4p" systemname="Align (Transform)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Align (Transform).v4p">
    <BOUNDS type="Window" left="6960" top="375" width="9480" height="10350">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Align (Transform)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Align (Transform FromTo)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -17,9 +17,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="600" width="2625" height="510">
+   <BOUNDS type="Box" left="225" top="600" width="2970" height="495">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns an aligning transformation given a point and a normal|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns an aligning transformation between 2 given points|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -113,7 +113,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="3765" top="3105" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" values="-2,0,0">
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -320,6 +320,24 @@
    </NODE>
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Spread Count">
    </LINK>
+   <NODE systemname="Align (Transform FromTo)" filename="%VVVV%\lib\nodes\modules\Transform\Align (Transform FromTo).v4p" nodename="Align (Transform FromTo)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="3615" top="4590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="To XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="16560" top="390" width="5115" height="6015">
+   </BOUNDS>
+   <PIN pinname="From XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="32" dstpinname="ToXYZ">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="19" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="32" dstpinname="FromXYZ">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="37" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4275" top="7755" width="795" height="720">
    </BOUNDS>
@@ -337,23 +355,5 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Initial Interest">
-   </LINK>
-   <NODE systemname="Align (Transform)" filename="%VVVV%\lib\nodes\modules\Transform\Align (Transform).v4p" nodename="Align (Transform)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="3615" top="4590" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="To XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="16560" top="390" width="5115" height="6015">
-   </BOUNDS>
-   <PIN pinname="From XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="32" dstpinname="NormalXYZ">
-   </LINK>
-   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="19" dstpinname="Transform In">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="32" dstpinname="PositionXYZ">
    </LINK>
    </PATCH>
