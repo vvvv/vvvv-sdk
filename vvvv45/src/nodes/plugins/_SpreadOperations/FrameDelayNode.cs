@@ -132,7 +132,7 @@ namespace VVVV.Nodes
             var clonedSpread = new Spread<T>(spread.SliceCount);
             var clonedBuffer = clonedSpread.Stream.Buffer;
             var buffer = spread.Stream.Buffer;
-            for (int i = 0; i < buffer.Length; i++)
+            for (int i = 0; i < spread.SliceCount; i++)
             {
                 clonedBuffer[i] = CloneSlice(buffer[i]);
             }
