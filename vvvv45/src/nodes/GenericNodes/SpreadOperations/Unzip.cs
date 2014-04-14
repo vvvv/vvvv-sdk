@@ -9,7 +9,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes.Generic
 {
 
-	public abstract class UnzipNode<T> : IPluginEvaluate
+	public abstract class Unzip<T> : IPluginEvaluate
 	{
 		[Input("Input", BinSize = -2)]
 		protected IInStream<T> FInputStream;

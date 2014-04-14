@@ -15,8 +15,6 @@ using VVVV.Nodes.Generic;
 
 namespace VVVV.Nodes
 {
-
-
     [PluginInfo(Name = "Cons",
                 Category = "Spreads",
                 Help = "Concatenates all input spreads to one output spread",
