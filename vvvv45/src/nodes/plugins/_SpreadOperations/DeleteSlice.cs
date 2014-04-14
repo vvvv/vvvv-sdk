@@ -10,37 +10,11 @@ using VVVV.Utils.VMath;
 using System.Linq;
 
 using VVVV.Core.Logging;
+using VVVV.Nodes.Generic;
 #endregion usings
 
 namespace VVVV.Nodes
 {
-
-	public class DeleteSlice<T> : IPluginEvaluate
-	{
-		#region fields & pins	
-		#pragma warning disable 649
-		[Input("Input", BinSize =  1, BinName = "Bin Size")]
-		IDiffSpread<ISpread<T>> FInput;
-		
-		[Input("Index")]
-		IDiffSpread<int> FIndex;
-
-		[Output("Output")]
-		ISpread<ISpread<T>> FOutput;
-		#pragma warning restore
-		#endregion fields & pins
-
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			if (FInput.IsChanged || FIndex.IsChanged)
-			{
-	  			FOutput.AssignFrom(FInput);
-	  			foreach (int i in FIndex.Select(x => x%FInput.SliceCount).Distinct().OrderByDescending(x => x))
-	  				FOutput.RemoveAt(i);
-			}
-		}
-	}
 	
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using VVVV.PluginInterfaces.V2;
 using System.ComponentModel.Composition;
 using VVVV.Core.Logging;
+using VVVV.Nodes.Generic;
 
 
 namespace VVVV.Nodes.XML
