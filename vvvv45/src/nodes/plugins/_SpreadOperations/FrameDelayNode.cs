@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes
 {
-    public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
+    public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable, IPluginFeedbackLoop
     {
-        [Config("Count", DefaultValue = 1, MinValue = 0, IsSingle = true)]
+        [Config("Count", DefaultValue = 1, MinValue = 1, IsSingle = true)]
         public IDiffSpread<int> CountIn;
 
         public Spread<IIOContainer<ISpread<T>>> InputContainers = new Spread<IIOContainer<ISpread<T>>>();
         public Spread<IIOContainer<ISpread<T>>> DefaultContainers = new Spread<IIOContainer<ISpread<T>>>();
         public Spread<IIOContainer<ISpread<T>>> OutputContainers = new Spread<IIOContainer<ISpread<T>>>();
 
-        [Input("Initialize", IsSingle = true, Order = int.MaxValue)]
+        [Input("Initialize", IsSingle = true, IsBang = true, Order = int.MaxValue)]
         public ISpread<bool> InitializeIn;
 
         [Import]
@@ -31,27 +32,32 @@ namespace VVVV.Nodes
         {
             var inputAttribute = new InputAttribute("Input") { };
             CountIn.Changed += HandlePinCountChanged;
-            FMainLoop.OnResetCache += HandleOnResetCache;
+            FMainLoop.OnPrepareGraph += HandleOnPrepareGraph;
         }
 
         public void Dispose()
         {
             CountIn.Changed -= HandlePinCountChanged;
-            FMainLoop.OnResetCache -= HandleOnResetCache;
+            FMainLoop.OnPrepareGraph -= HandleOnPrepareGraph;
+        }
+
+        public bool OutputRequiresInputEvaluation(IPluginIO inputPin, IPluginIO outputPin)
+        {
+            // Feedback loops are only allowed for our regular input pins (not the default pins).
+            return !(InputContainers.Any(c => c.GetPluginIO() == inputPin));
         }
 		
 		private void HandlePinCountChanged(IDiffSpread<int> sender)
 		{
-            var count = CountIn[0];
-            ResizePinGroups(count, InputContainers, (i) => new InputAttribute(string.Format("Input {0}", i)));
-            ResizePinGroups(count, DefaultContainers, (i) => new InputAttribute(string.Format("Default {0}", i)));
-            ResizePinGroups(count, OutputContainers, (i) => new OutputAttribute(string.Format("Output {0}", i)) { AllowFeedback = true });
+            var count = Math.Max(1, CountIn[0]);
+            ResizePinGroups(count, InputContainers, (i) => new InputAttribute(string.Format("Input {0}", i)) { AutoValidate = false });
+            ResizePinGroups(count, DefaultContainers, (i) => new InputAttribute(string.Format("Default {0}", i)) { AutoValidate = false });
+            ResizePinGroups(count, OutputContainers, (i) => new OutputAttribute(string.Format("Output {0}", i)));
             FBuffers.Resize(
                 count,
                 i => new Spread<T>(1),
                 DisposeSpread
             );
-            WriteBufferedDataToOutputs();
 		}
 
         private static void DisposeSpread(ISpread<T> spread)
@@ -77,30 +83,47 @@ namespace VVVV.Nodes
             );
         }
 
-        public void Evaluate(int SpreadMax)
+        bool FFirstFrame = true;
+        public void Evaluate(int spreadMax)
         {
-            var inputSpreads = InitializeIn.SliceCount > 0 && InitializeIn[0]
-                ? DefaultContainers.Select(c => c.IOObject)
-                : InputContainers.Select(c => c.IOObject);
-            var i = 0;
-            foreach (var inputSpread in inputSpreads)
+            var init = InitializeIn.SliceCount > 0 && InitializeIn[0];
+            if (FFirstFrame || init)
             {
-                FBuffers[i++] = CloneSpread(inputSpread);
+                FFirstFrame = false;
+                for (int i = 0; i < FBuffers.SliceCount; i++)
+                {
+                    var defaultSpread = DefaultContainers[i].IOObject;
+                    // Validate the default input
+                    defaultSpread.Sync();
+                    // And write it to the output
+                    var outputSpread = OutputContainers[i].IOObject;
+                    outputSpread.AssignFrom(defaultSpread);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < FBuffers.SliceCount; i++)
+                {
+                    var buffer = FBuffers[i];
+                    // Write the cached result from the last frame
+                    var outputSpread = OutputContainers[i].IOObject;
+                    outputSpread.AssignFrom(buffer);
+                }
             }
         }
 
-        void HandleOnResetCache(object sender, EventArgs e)
+        void HandleOnPrepareGraph(object sender, EventArgs e)
         {
-            WriteBufferedDataToOutputs();
-        }
+            // Might trigger our Evaluate if no one asked for the data of our outputs yet
+            FIOFactory.PluginHost.Evaluate();
 
-        private void WriteBufferedDataToOutputs()
-        {
-            var outputSpreads = OutputContainers.Select(c => c.IOObject);
-            var i = 0;
-            foreach (var outputSpread in outputSpreads)
+            for (int i = 0; i < FBuffers.SliceCount; i++)
             {
-                outputSpread.AssignFrom(FBuffers[i++]);
+                var inputSpread = InputContainers[i].IOObject;
+                // Validate the regular input
+                inputSpread.Sync();
+                // And cache the result for the next frame
+                FBuffers[i] = CloneSpread(inputSpread);
             }
         }
 
@@ -119,7 +142,7 @@ namespace VVVV.Nodes
         protected abstract T CloneSlice(T slice);
     }
 
-    [PluginInfo(Name = "FrameDelay", Category = "Raw", AutoEvaluate = true)]
+    [PluginInfo(Name = "FrameDelay", Category = "Raw")]
     public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
     {
         protected override System.IO.Stream CloneSlice(System.IO.Stream slice)
