@@ -16,6 +16,12 @@ namespace VVVV.Core.Commands
 		void Insert(Command command);
 		
 		/// <summary>
+		/// Adds a command to history but does not execute it. (e.g. if the command was executed already)
+		/// </summary>
+		/// <param name="command">The command to be added to the history.</param>
+		void InsertOnly(Command command);
+		
+		/// <summary>
 		/// Undo last command.
 		/// </summary>
 		void Undo();

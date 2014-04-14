@@ -12,12 +12,14 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.IO;
 using VVVV.Utils.Win32;
 using WindowsInput;
+using WindowsInput.Native;
 
 namespace VVVV.Nodes.Input
 {
     [PluginInfo(Name = "Keyboard", Category = "System", Version = "Global Legacy2", AutoEvaluate = true)]
     public class LegacyGlobalKeyboardNode : GlobalInputNode
     {
+        private static readonly IInputSimulator InputSimulator = new InputSimulator();
 #pragma warning disable 0649
         [Input("Keyboard", IsSingle = true)]
         ISpread<Keyboard> FKeyboardIn;
@@ -59,13 +61,13 @@ namespace VVVV.Nodes.Input
                         switch (notification.Kind)
                         {
                             case KeyNotificationKind.KeyDown:
-                                InputSimulator.SimulateKeyDown((VirtualKeyCode)((KeyDownNotification)notification).KeyCode);
+                                InputSimulator.Keyboard.KeyDown((VirtualKeyCode)((KeyDownNotification)notification).KeyCode);
                                 break;
                             case KeyNotificationKind.KeyPress:
-                                InputSimulator.SimulateKeyPress((VirtualKeyCode)((KeyPressNotification)notification).KeyChar);
+                                InputSimulator.Keyboard.TextEntry(((KeyPressNotification)notification).KeyChar);
                                 break;
                             case KeyNotificationKind.KeyUp:
-                                InputSimulator.SimulateKeyUp((VirtualKeyCode)((KeyUpNotification)notification).KeyCode);
+                                InputSimulator.Keyboard.KeyUp((VirtualKeyCode)((KeyUpNotification)notification).KeyCode);
                                 break;
                             default:
                                 break;

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\Chain.v4p">
-   <BOUNDS height="13725" left="7080" top="1005" type="Window" width="8445">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Transformations\Chain.v4p">
+   <BOUNDS height="13725" left="7080" top="1005" type="Window" width="8490">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="60" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="1005" top="12390" type="Node" width="0">
@@ -131,7 +131,7 @@
    <NODE id="49" nodename="GetSpread (Spreads)">
    <BOUNDS height="0" left="3240" top="5340" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Count" slicecount="1" values="2">
+   <PIN pinname="Count" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -140,38 +140,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="48" nodename="Points2Vector (2d)">
-   <BOUNDS height="0" left="3465" top="6480" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X1" visible="1">
-   </PIN>
-   <PIN pinname="Y1" visible="1">
-   </PIN>
-   <PIN pinname="X2" visible="1">
-   </PIN>
-   <PIN pinname="Y2" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Angle" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="47" nodename="Vector (2d Split)">
-   <BOUNDS height="0" left="3330" top="5880" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="46" nodename="GetSpread (Spreads)">
    <BOUNDS height="0" left="4275" top="5325" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Count" slicecount="1" values="2">
+   <PIN pinname="Count" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -181,7 +153,7 @@
    </PIN>
    </NODE>
    <NODE id="45" nodename="Add (Value)">
-   <BOUNDS height="0" left="4380" top="4800" type="Node" width="0">
+   <BOUNDS height="0" left="4650" top="4965" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -192,52 +164,8 @@
    </NODE>
    <LINK dstnodeid="46" dstpinname="Offset" srcnodeid="45" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="47" dstpinname="XY" srcnodeid="49" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="48" dstpinname="X1" srcnodeid="47" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="48" dstpinname="Y1" srcnodeid="47" srcpinname="Y">
-   </LINK>
-   <NODE id="44" nodename="Vector (2d Split)">
-   <BOUNDS height="0" left="4260" top="5895" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="44" dstpinname="XY" srcnodeid="46" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="48" dstpinname="X2" srcnodeid="44" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="48" dstpinname="Y2" srcnodeid="44" srcpinname="Y">
-   </LINK>
-   <NODE id="43" nodename="Vector2Points (2d)">
-   <BOUNDS height="0" left="3495" top="7110" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Length" visible="1">
-   </PIN>
-   <PIN pinname="Angle" visible="1">
-   </PIN>
-   <PIN pinname="X2" visible="1">
-   </PIN>
-   <PIN pinname="Y2" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="43" dstpinname="X" srcnodeid="48" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="43" dstpinname="Y" srcnodeid="48" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="43" dstpinname="Angle" srcnodeid="48" srcpinname="Angle">
-   </LINK>
    <NODE id="42" nodename="FrameDelay (Animation)">
-   <BOUNDS height="270" left="4320" top="4095" type="Node" width="960">
+   <BOUNDS height="270" left="4320" top="3930" type="Node" width="960">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -271,7 +199,7 @@
    <LINK dstnodeid="40" dstpinname="Input" srcnodeid="41" srcpinname="OnChange">
    </LINK>
    <NODE id="39" nodename="Cons (Spreads Legacy)">
-   <BOUNDS height="0" left="3510" top="8265" type="Node" width="0">
+   <BOUNDS height="0" left="3060" top="8190" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -280,26 +208,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="38" nodename="Vector (2d Join)">
-   <BOUNDS height="0" left="3990" top="7680" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="38" dstpinname="X" srcnodeid="43" srcpinname="X2">
-   </LINK>
-   <LINK dstnodeid="38" dstpinname="Y" srcnodeid="43" srcpinname="Y2">
-   </LINK>
-   <LINK dstnodeid="39" dstpinname="Input 2" srcnodeid="38" srcpinname="XY">
-   </LINK>
    <LINK dstnodeid="42" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="39" srcpinname="Output">
-   <LINKPOINT x="5760" y="11700">
+   <LINKPOINT x="5460" y="11595">
    </LINKPOINT>
-   <LINKPOINT x="10950" y="960">
+   <LINKPOINT x="10800" y="825">
    </LINKPOINT>
    </LINK>
    <NODE id="37" nodename="I (Spreads)">
@@ -331,7 +243,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="2">
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -345,23 +257,21 @@
    <LINK dstnodeid="53" dstpinname="XY" srcnodeid="39" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="34" nodename="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="0" left="4680" top="6600" type="Node" width="0">
+   <BOUNDS height="0" left="4920" top="6135" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="25680" top="7740" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="4680" top="6600" type="Box" width="630">
+   <BOUNDS height="240" left="4920" top="6135" type="Box" width="630">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="43" dstpinname="Length" srcnodeid="34" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="33" nodename="IOBox (String)">
-   <BOUNDS height="270" left="5325" top="6585" type="Node" width="780">
+   <BOUNDS height="270" left="5565" top="6120" type="Node" width="780">
    </BOUNDS>
-   <BOUNDS height="270" left="5325" top="6585" type="Box" width="780">
+   <BOUNDS height="270" left="5565" top="6120" type="Box" width="780">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -411,5 +321,73 @@
    <LINK srcnodeid="61" srcpinname="PositionXY" dstnodeid="50" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="61" srcpinname="PositionXY" dstnodeid="39" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5040" top="4290" width="330" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5040" top="4290" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="46" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="49" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Cartesian (2d Vector)" nodename="Cartesian (2d Vector)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="3825" top="6810" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="Length" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="64" dstpinname="Length">
+   </LINK>
+   <NODE systemname="Slope (2d)" filename="%VVVV%\lib\nodes\modules\2D\Slope (2d).v4p" nodename="Slope (2d)" componentmode="Hidden" id="65">
+   <BOUNDS type="Node" left="3825" top="6120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY1" visible="1">
+   </PIN>
+   <PIN pinname="XY2" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="65" dstpinname="XY1">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Output" dstnodeid="65" dstpinname="XY2">
+   </LINK>
+   <LINK srcnodeid="65" srcpinname="Angle" dstnodeid="64" dstpinname="Angle">
+   </LINK>
+   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="66">
+   <BOUNDS type="Node" left="3555" top="7425" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="66" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="39" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="64" srcpinname="XY" dstnodeid="66" dstpinname="Input 2">
    </LINK>
    </PATCH>

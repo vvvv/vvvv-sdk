@@ -72,7 +72,7 @@ namespace VVVV.Nodes
 				var idToSet = FIDIn[i];
 				if(!string.IsNullOrWhiteSpace(idToSet))
 				{
-					elem.SetAndFixID(idToSet, true, LogIDFix);
+					elem.SetAndForceUniqueID(idToSet, true, LogIDFix);
 				}
 			}
 			
@@ -965,7 +965,7 @@ namespace VVVV.Nodes
 					{
 						var elem = FInput[j];
 						if(elem != null)
-							g.Children.AddAndFixID(elem, true, true, LogIDFix);
+							g.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
 					}
 					
 					var b = FModeIn[i] == SvgNormalizeMode.None ? new RectangleF() : g.Path.GetBounds();
@@ -1097,7 +1097,7 @@ namespace VVVV.Nodes
 							{
 								var elem = pin[j];
 								if(elem != null)
-									g.Children.AddAndFixID(elem, true, true, LogIDFix);
+									g.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
 							}
 						}
 					}

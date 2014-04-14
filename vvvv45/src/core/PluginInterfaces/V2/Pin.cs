@@ -45,7 +45,9 @@ namespace VVVV.PluginInterfaces.V2
 		{
 		    FFactory = factory;
 			FPluginIO = pluginIO;
-            FConnected = pluginIO.IsConnected;
+            // Can be null in case of Texture and Mesh pins which call CreateTextureOutput2/CreateMeshOutput2 internally
+            if (pluginIO != null)
+                FConnected = pluginIO.IsConnected;
 			
 			FFactory.Connected += HandleConnected;
 			FFactory.Disconnected += HandleDisconnected;
