@@ -59,17 +59,19 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "PID", 
                 Category = "VVVV", 
-                Tags = "self, process, id",
+                Tags = "self, this, process, id",
                 Help = "Returns the process ID of this vvvv instance.")]
 	public class VVVVPIDNode : IPluginEvaluate
 	{
-		[Output("Process ID")]
-		ISpread<int> FOutput;
-
-		//called when data for any output pin is requested
+		[ImportingConstructor]
+		public VVVVPIDNode([Output("Process ID")] ISpread<int> output)
+		{
+			output[0] = Process.GetCurrentProcess().Id;
+		}
+		
 		public void Evaluate(int SpreadMax)
 		{
-			FOutput[0] = Process.GetCurrentProcess().Id;
+			//nothing to do here
 		}
 	}
 }
