@@ -14,5 +14,5 @@ namespace VVVV.Nodes
                 Category = "Value",
                 Help = "Select which slices and how many form the output spread",
 	            Tags = "resample")]
-    public class ValueSelectNode : SelectNode<double> { }
+    public class ValueSelectNode : Select<double> {}
 }

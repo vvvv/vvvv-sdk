@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace VVVV.Nodes.Generic
 {
 
-	public abstract class ZipNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
+	public abstract class Zip<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		[Input("Input", IsPinGroup = true)]
 		protected IInStream<IInStream<T>> FInputStreams;

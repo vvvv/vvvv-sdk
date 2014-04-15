@@ -9,9 +9,9 @@ using VVVV.Utils.VMath;
 using VVVV.PluginInterfaces.V1;
 using System.ComponentModel.Composition;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Generic
 {
-    public class BaseStackNode<T> : IPluginEvaluate
+    public class StackNode<T> : IPluginEvaluate
     {
         #region Fields
         #pragma warning disable 649
@@ -57,7 +57,7 @@ namespace VVVV.Nodes
         #endregion
 
 
-        public BaseStackNode()
+        public StackNode()
         {
             FStack = new Stack<List<T>>();
         }
