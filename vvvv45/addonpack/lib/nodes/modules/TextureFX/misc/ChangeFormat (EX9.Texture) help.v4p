@@ -1,0 +1,179 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.5.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture) help.v4p" systemname="ChangeFormat (EX9.Texture).v4p)" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture) help.v4p">
+   <BOUNDS type="Window" left="6660" top="6450" width="6240" height="5760">
+   </BOUNDS>
+   <NODE systemname="ChangeFormat (EX9.Texture)" filename="ChangeFormat (EX9.Texture).v4p" nodename="ChangeFormat (EX9.Texture)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="165" top="3180" width="2640" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
+   </PIN>
+   <BOUNDS type="Box" left="165" top="3180">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="30">
+   <BOUNDS type="Node" left="165" top="4395" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="4395" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6660" top="1425" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="33" top="405" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="33" top="405" type="Box" width="3285">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Re-render texture with given format and mipmap count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="33" top="30" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="33" top="30" type="Box" width="3585">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|ChangeFormat - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2418" top="3855" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="2418" top="3855" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Resize (EX9.Texture)" filename="Resize (EX9.Texture).v4p" nodename="Resize (EX9.Texture)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="2430" top="4335" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Palette (EX9.Texture Source)" filename="..\Source\Palette\Palette (EX9.Texture Source).v4p" nodename="Palette (EX9.Texture Source)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="150" top="1200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="| XY_HSV|">
+   </PIN>
+   <BOUNDS type="Window" left="8955" top="4665" width="13215" height="8190">
+   </BOUNDS>
+   <PIN pinname="Format" slicecount="1" values="A32B32G32R32F">
+   </PIN>
+   <BOUNDS type="Box" left="150" top="1200">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="67" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3825" top="477" width="435" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3825" top="477" width="2070" height="4590">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|List of working formats (tested on Geforce GTX470)&cr;&lf;&cr;&lf;No Specific&cr;A8R8G8B8&cr;X8R8G8B8&cr;R5G6B5&cr;X1R5G5B5&cr;A2B10G10R10&cr;G16R16&cr;A2R10G10B10&cr;A16B16G16R16&cr;L8&cr;L16&cr;R16F&cr;G16R16F&cr;A16B16G16R16F&cr;R32F&cr;G32R32F&cr;A32B32G32R32F&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="165" top="4020" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="165" top="4020">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Layer" dstnodeid="30" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Output" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="71" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="77" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="1893" top="2430" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1893" top="2430" width="1125" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Mip Map Count|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="77" srcpinname="Output Enum" dstnodeid="0" dstpinname="Mip Map Count">
+   </LINK>
+   <NODE id="43" nodename="IOBox (Enumerations)" componentmode="InABox" systemname="IOBox (Enumerations)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" width="1080" height="240" left="1005" top="1920">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1005" top="1920" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" pintype="Input" visible="1" values="A8R8G8B8">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" pintype="Configuration" values="Format">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Style" pintype="Configuration" slicecount="1" values="PullDown">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output Enum" dstnodeid="0" dstpinname="Format">
+   </LINK>
+   </PATCH>

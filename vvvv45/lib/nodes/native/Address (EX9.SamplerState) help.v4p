@@ -1,0 +1,199 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Address (EX9.SamplerState) help.v4p">
+   <BOUNDS height="6480" left="45" top="60" type="Window" width="4890">
+   </BOUNDS>
+   <NODE id="12" nodename="Address (EX9.SamplerState)" systemname="Address (EX9.SamplerState)">
+   <BOUNDS height="0" left="1920" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   <PIN pinname="Texture Address Mode U" visible="1">
+   </PIN>
+   <PIN pinname="Texture Address Mode V" visible="1">
+   </PIN>
+   <PIN pinname="Cycle U" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Cycle V" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Border Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="11" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="1425" top="5460" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="4935" top="60" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1425" top="5460" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="1425" top="5010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <NODE id="9" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="165" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   <LINKPOINT x="180" y="4410">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Sampler State" srcnodeid="12" srcpinname="Sampler State Out">
+   </LINK>
+   <NODE id="8" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
+   <BOUNDS height="0" left="840" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="..\..\assets\images\wimp.jpg" encoded="0">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
+   <LINKPOINT x="1770" y="4470">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="7" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
+   <BOUNDS height="0" left="2520" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Texture Transform" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="3015" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="WaveShaper (Value)" systemname="WaveShaper (Value)">
+   <BOUNDS height="0" left="3015" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="Map (Value)" systemname="Map (Value)">
+   <BOUNDS height="0" left="3015" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="ScaleX" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="ScaleY" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="1575" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3810" top="2955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1170" left="1575" top="1620" type="Box" width="1020">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Wrap">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture Address Mode U" srcnodeid="3" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2745" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4110" top="3255" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1170" left="2745" top="1620" type="Box" width="1020">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Mirror">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Texture Address Mode V" srcnodeid="2" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="240" type="Node" width="450">
+   </BOUNDS>
+   <BOUNDS height="555" left="240" top="240" type="Box" width="4050">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Address (EX9.SamplerState)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="750" type="Node" width="4500">
+   </BOUNDS>
+   <BOUNDS height="540" left="255" top="750" type="Box" width="3735">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Define how the texture sampler uses the texture coordinates.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
