@@ -4,7 +4,7 @@ using VVVV.Nodes.Generic;
 
 namespace VVVV.Nodes
 {
-	//1.) delete this class and do a 'replace all' of REPLACEME_TYPE with the name of your own type
+	//1.) delete this class and do a 'replace all' of REPLACEME_CLASS with the name of your own type
 	public class REPLACEME_CLASS {}
 	
 	//2.) do a 'replace all' for NODECATEGORY to set the category and the class name prefix for all nodes
