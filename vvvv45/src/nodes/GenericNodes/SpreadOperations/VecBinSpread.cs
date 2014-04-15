@@ -6,7 +6,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 #endregion usings
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Generic
 {
 	public class VecBinSpread<T>		
 	{	

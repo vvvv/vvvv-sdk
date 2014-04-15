@@ -127,6 +127,7 @@ namespace VVVV.Nodes
 	           )]
 	public class NODECATEGORYStoreNode: Store<REPLACEME_CLASS> {}
 	
+	
 	[PluginInfo(Name = "Stack",
 				Category = "NODECATEGORY",
 				Tags = "",
@@ -135,5 +136,39 @@ namespace VVVV.Nodes
 	public class NODECATEGORYStackNode : StackNode<REPLACEME_CLASS> {}
 	
 	
+	[PluginInfo(Name = "CAR", 
+	            Category = "NODECATEGORY", 
+	            Version = "Bin", 
+	            Help = "CAR with bin size", 
+	            Author = "woei"
+	           )]
+	public class NODECATEGORYCARBinNode : CARBin<REPLACEME_CLASS> {}
+	
+	
+	[PluginInfo(Name = "CDR", 
+	            Category = "NODECATEGORY", 
+	            Version = "Bin", 
+	            Help = "CDR with bin size", 
+	            Author = "woei"
+	           )]
+	public class NODECATEGORYCDRBinNode : CDRBin<REPLACEME_CLASS> {}
+	
+	
+	[PluginInfo(Name = "Reverse", 
+	            Category = "NODECATEGORY", 
+	            Version = "Bin", 
+	            Help = "Reverse with bin size",
+	            Author = "woei"
+	           )]
+	public class NODECATEGORYReverseBinNode : ReverseBin<REPLACEME_CLASS> {}
+	
+
+	[PluginInfo(Name = "Shift", 
+	            Category = "NODECATEGORY", 
+	            Version = "Bin", 
+	            Help = "Shift with bin size", 
+	            Author = "woei"
+	           )]
+	public class NODECATEGORYShiftBinNode : ShiftBin<REPLACEME_CLASS> {}
 }
 

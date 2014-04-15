@@ -1,12 +1,13 @@
 #region usings
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
+using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 
-using System.Collections.Generic;
 #endregion usings
 
 namespace VVVV.Nodes
