@@ -14,6 +14,9 @@ namespace VVVV.Nodes
 
         #region Fields
         private MouseDataHolder FData;
+		
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
 
         [Input("Receive String", IsSingle = true, DefaultString = "send")]
         IDiffSpread<string> FReceive;
@@ -91,6 +94,9 @@ namespace VVVV.Nodes
 
         #region Fields
         private KeyboardDataHolder FData;
+		
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
 
         [Input("Receive String", IsSingle = true, DefaultString = "send")]
         IDiffSpread<string> FReceive;
@@ -168,6 +174,9 @@ namespace VVVV.Nodes
 
         #region Fields
         private TouchDeviceDataHolder FData;
+		
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
 
         [Input("Receive String", IsSingle = true, DefaultString = "send")]
         IDiffSpread<string> FReceive;

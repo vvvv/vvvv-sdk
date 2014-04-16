@@ -15,6 +15,8 @@ namespace System.IO
 
         public ComStream(win32.IStream source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             this.source = source;
             this.mInt64 = iop.Marshal.AllocCoTaskMem(8);
         }

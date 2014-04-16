@@ -328,7 +328,7 @@ namespace VVVV.Hosting.IO.Streams
 
             public void Write(System.IO.Stream value, int stride = 1)
             {
-                this.FRawOutStream.FRawOut.SetData(this.Position, new ComIStream(value));
+                this.FRawOutStream.FRawOut.SetData(this.Position, value != null ? new ComIStream(value) : null);
                 this.Position += stride;
             }
 

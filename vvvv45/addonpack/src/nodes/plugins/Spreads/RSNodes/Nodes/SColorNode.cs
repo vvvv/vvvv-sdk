@@ -41,6 +41,7 @@ namespace VVVV.Nodes
         private IPluginHost FHost;
         private ColorDataHolder FData;
 
+		private IValueConfig FPinDisplayChannel;
         private IColorIn FPinInput;
         private IStringIn FPinInSendString;
         private string FKey = null;
@@ -60,6 +61,9 @@ namespace VVVV.Nodes
             this.FHost = Host;
 
             this.FData = ColorDataHolder.Instance;
+			
+			this.FHost.CreateValueConfig("Display Channel", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinDisplayChannel);
+			this.FPinDisplayChannel.SetSubType(0, 1, 1, 1, false, true, false);
      
             this.FHost.CreateColorInput("Input", TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
             this.FPinInput.SetSubType(VColor.Black,true);
