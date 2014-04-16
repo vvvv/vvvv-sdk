@@ -1,33 +1,17 @@
-﻿/*
- * Erstellt mit SharpDevelop.
- * Benutzer: Elias
- * Datum: 21.08.2009
- * Zeit: 23:20
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Drawing;
-using System.Runtime.InteropServices;
 
-using ColladaSlimDX.ColladaDocument;
 using ColladaSlimDX.ColladaModel;
 using ColladaSlimDX.Utils;
 using SlimDX;
-using SlimDX.Direct3D9;
 using VVVV.Core.Logging;
-using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes
 {
     [PluginInfo(Name = "Camera",
-                Category = "EX9.Geometry",
+                Category = "Transform",
                 Version = "Collada",
                 Author = "vvvv group",
                 Help = "Returns view and projection matrix of selected cameras.",
