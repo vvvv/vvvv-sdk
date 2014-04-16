@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes
 {
@@ -130,6 +131,25 @@ namespace VVVV.Nodes
         protected abstract T CloneSlice(T slice);
     }
 
+
+    [PluginInfo(Name = "FrameDelay", Category = "Color")]
+    public class ColorFrameDelayNode : FrameDelayNode<RGBAColor>
+    {
+        protected override RGBAColor CloneSlice(RGBAColor slice)
+        {
+            return slice;
+        }
+    }
+
+    [PluginInfo(Name = "FrameDelay", Category = "Enumerations")]
+    public class EnumerationsFrameDelayNode : FrameDelayNode<EnumEntry>
+    {
+        protected override EnumEntry CloneSlice(EnumEntry slice)
+        {
+            return slice;
+        }
+    }
+
     [PluginInfo(Name = "FrameDelay", Category = "Raw")]
     public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
     {
@@ -141,4 +161,23 @@ namespace VVVV.Nodes
             return clone;
         }
     }
+
+    [PluginInfo(Name = "FrameDelay", Category = "String")]
+    public class StringFrameDelayNode : FrameDelayNode<string>
+    {
+        protected override string CloneSlice(string slice)
+        {
+            return slice;
+        }
+    }
+
+    [PluginInfo(Name = "FrameDelay", Category = "Value")]
+    public class ValueFrameDelayNode : FrameDelayNode<double>
+    {
+        protected override double CloneSlice(double slice)
+        {
+            return slice;
+        }
+    }
+
 }
