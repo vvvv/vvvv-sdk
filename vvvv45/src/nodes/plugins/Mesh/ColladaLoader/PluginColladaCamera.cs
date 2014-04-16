@@ -15,7 +15,7 @@ namespace VVVV.Nodes
                 Version = "Collada",
                 Author = "vvvv group",
                 Help = "Returns view and projection matrix of selected cameras.",
-                Tags = "collada, dae")]
+                Tags = "dae")]
     public class PluginColladaCamera : IPluginEvaluate
     {
         #region field declaration
