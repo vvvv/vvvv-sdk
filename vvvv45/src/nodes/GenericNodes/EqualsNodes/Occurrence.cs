@@ -71,7 +71,7 @@ namespace VVVV.Nodes.Generic
     	public bool eval = false;
     	#endregion fields & pins
 
-    	public virtual bool Equals<T>(T a, T b)
+    	public virtual bool Equals(T a, T b)
     	{
     		return a.Equals(b);
     	}

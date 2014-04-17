@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using VVVV.PluginInterfaces.V2;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Generic
 {
-    public abstract class BaseNearestNeighbourNode<T> : IPluginEvaluate
+    public abstract class NearestNeighbour<T> : IPluginEvaluate
     {
         [Input("Reference")]
         ISpread<T> FInReference;
