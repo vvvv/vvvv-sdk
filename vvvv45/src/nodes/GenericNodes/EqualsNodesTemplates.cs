@@ -10,6 +10,8 @@ namespace VVVV.Nodes
 	
 	//3.) you might also override the Equals method of your type which is used to check whether two instances are the same
 
+	#region SingleValue
+	
 	[PluginInfo(Name = "Equals", 
 	            Category = "NODECATEGORY",
 	            Help = "returns true if the values at the inputs are equal",
@@ -17,11 +19,14 @@ namespace VVVV.Nodes
 	           )]
 	public class NODECATEGORYEqualsNode: Equals<REPLACEME_CLASS> {}
 	
+	#endregion SingleValue
+	
+	#region SpreadOps
+	
 	[PluginInfo(Name = "Occurrence", 
-	            Category = "Spreads",
-	            Version = "NODECATEGORY",
+	            Category = "NODECATEGORY",
 	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Tags = "count, spectral, generic, spreadop",
 	           	Author = "woei"
 	           )]
 	public class NODECATEGORYOccurrenceNode: Occurrence<REPLACEME_CLASS> 
@@ -32,6 +37,8 @@ namespace VVVV.Nodes
 //			return a.Equals(b);
 //		}
 	}
+	
+	#endregion SpreadOps
 
 }
 

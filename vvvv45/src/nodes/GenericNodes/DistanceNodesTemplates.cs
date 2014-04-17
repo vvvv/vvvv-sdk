@@ -9,10 +9,10 @@ namespace VVVV.Nodes
 	//2.) do a 'replace all' for NODECATEGORY to set the version and the class name prefix for all node (e.g. Value, Color...)
 	
 	//3.) you have to override the Distance method for your type
-
+	
 	[PluginInfo(Name = "NearestNeighbour",
-	            Category = "Spreads",
-	            Version = "NODECATEGORY",
+	            Category = "NODECATEGORY",
+	            Tags = "generic, spreadop",
 	            Author = "vux"
 	           )]
     public class NODECATEGORYNearestNeighbourNode : NearestNeighbour<REPLACEME_CLASS>
