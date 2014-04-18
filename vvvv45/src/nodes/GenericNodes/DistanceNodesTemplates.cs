@@ -12,7 +12,8 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "NearestNeighbour",
 	            Category = "NODECATEGORY",
-	            Tags = "generic, spreadop",
+	            Help = "Finds nearest neighbours among given values.",
+	            Tags = "generic",
 	            Author = "vux"
 	           )]
     public class NODECATEGORYNearestNeighbourNode : NearestNeighbour<REPLACEME_CLASS>

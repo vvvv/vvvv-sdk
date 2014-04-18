@@ -25,8 +25,8 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "NODECATEGORY",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, spectral, generic, spreadop",
+	            Help = "Counts the occurrence of equal slices.",
+	            Tags = "count, spectral, generic",
 	           	Author = "woei"
 	           )]
 	public class NODECATEGORYOccurrenceNode: Occurrence<REPLACEME_CLASS> 
