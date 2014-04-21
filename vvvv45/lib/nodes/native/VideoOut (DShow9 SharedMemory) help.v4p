@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha14.1.dtd" >
-   <PATCH nodename="Y:\vvvv33_trunk\help\VideoOut (DShow9 SharedMemory) help.v4p">
-   <BOUNDS height="4290" left="1305" top="5610" type="Window" width="6105">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\VideoOut (DShow9 SharedMemory) help.v4p">
+   <BOUNDS height="4710" left="1305" top="5610" type="Window" width="6105">
    </BOUNDS>
    <NODE id="6" nodename="SharedMemory (EX9.Texture)">
    <BOUNDS height="270" left="375" top="3465" type="Node" width="1170">
@@ -22,12 +22,14 @@
    <PIN pinname="Bytes per Pixel" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <NODE id="5" nodename="VideoIn (DShow9)">
+   <NODE id="5" nodename="VIDEOIN (DSHOW9)">
    <BOUNDS height="0" left="840" top="1245" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
-   <PIN pinname="Video Format" slicecount="1" values="RGB24">
+   <PIN pinname="Video Format" slicecount="1" values="YUY2">
+   </PIN>
+   <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE id="4" nodename="VideoOut (DShow9 SharedMemory)">
@@ -75,7 +77,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|VideoOut - SharedMemory|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|VideoOut (SharedMemory)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -112,4 +114,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
