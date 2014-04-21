@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\String\CharacterBrightness (String).v4p" systemname="CharacterBrightness (String)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\String\CharacterBrightness (String).v4p">
-   <BOUNDS type="Window" left="3015" top="0" width="11070" height="11070">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\lib\nodes\modules\String\CharacterBrightness (String).v4p" systemname="CharacterBrightness (String)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\String\CharacterBrightness (String).v4p">
+   <BOUNDS type="Window" left="3015" top="0" width="11070" height="15045">
    </BOUNDS>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="84">
    <BOUNDS type="Node" left="2970" top="1645" width="100" height="100">
@@ -633,13 +633,15 @@
    </BOUNDS>
    <PIN pinname="Source Maximum" visible="1">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="0">
+   <PIN pinname="Destination Maximum" slicecount="1" values="0" visible="1">
    </PIN>
    <PIN pinname="Destination Minimum" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Minimum" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="96" srcpinname="Output" dstnodeid="101" dstpinname="Input">
@@ -654,6 +656,8 @@
    <PIN pinname="Center" visible="1">
    </PIN>
    <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="96" srcpinname="Output" dstnodeid="102" dstpinname="Input">
@@ -694,22 +698,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="105" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4485" top="14595" width="375" height="255">
-   </BOUNDS>
-   <BOUNDS type="Node" left="4485" top="14595" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="105" srcpinname="Y Output Value" dstnodeid="101" dstpinname="Destination Maximum">
-   </LINK>
    <LINK srcnodeid="70" srcpinname="Texture Out" dstnodeid="59" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="85" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="90" srcpinname="Minimum" dstnodeid="91" dstpinname="Source Minimum">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Minimum" dstnodeid="101" dstpinname="Source Minimum">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Minimum" dstnodeid="101" dstpinname="Destination Maximum">
    </LINK>
    </PATCH>
