@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\06_2D_Segments_PieChart.v4p" systemname="06_2D_Segments_PieChart" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\06_2D_Segments_PieChart.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\2D_Segments_PieChart.v4p" systemname="06_2D_Segments_PieChart" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\06_2D_Segments_PieChart.v4p">
    <BOUNDS type="Window" left="0" top="0" width="15525" height="11400">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="10">
@@ -367,9 +367,9 @@
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="2310" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="6900" left="675" top="2310" type="Box" width="4665">
+   <BOUNDS height="6390" left="675" top="2310" type="Box" width="4665">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|First of all the incoming values are normalized (there sum must be 1, because the full circle is when the cycle=1). So all the values are summed up by the Add (Value Spectral) and then every value is divided by this sum.&cr;&lf;&cr;&lf;There is a separate segment drawn for every piece of pie. Every segment is has its own &apos;Cycle&apos; value (how big is the piece) and every segment is rotated (where the piece is placed). &cr;&lf;&cr;&lf;The normalized incoming values define the &apos;Cycle&apos; for every piece. And their partial sums (0, 0+1, 0+1+2, 0+1+2+3) define the rotataion of each segment. So the first segment is not rotated, the second is rotated as much as the &apos;Cycle&apos; value of the first one, and so on. The Integral (Spreads) calculates these partial sums and CDR (Spreads) picks all of them except for the last sum, which is not used (it&apos;s the sum of all values, which is 1).&cr;&lf;&cr;&lf;The GridSegment (DX9) draws all the segments.&cr;&lf;&cr;&lf;There are also numbers drawn for every segment. To place them along the pie a half the normalized value (how big is the piece) is added to the value of the rotation for every segment. The result is used by the Cartesian (2d) along with the value on its &apos;Length&apos; pin to calculate XY positions for every number. So from the angle and the length (which are polar coordinates) a cartesian XY coordinates are calculated.&cr;&lf;&cr;&lf;The Text (EX9) calculates draws the numbers, which are converted from the values into strings and formatted using the FormatValue (String).&cr;&lf;&cr;&lf;The segments and texts grouped together and rendered.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In a first step all the incoming values are normalized (their sum must be 1, because the full circle is when the cycle=1). So all the values are summed up by the Add (Value Spectral) and then every value is divided by this sum.&cr;&lf;&cr;&lf;There is a separate segment drawn for every piece of pie. Every segment has its own &apos;Cycle&apos; value (size of the piece) and every segment is rotated (where the piece is placed). &cr;&lf;&cr;&lf;The normalized incoming values define the &apos;Cycle&apos; for every piece. And their partial sums (0, 0+1, 0+1+2, 0+1+2+3) define the rotataion of each segment. So the first segment is not rotated, the second is rotated as much as the &apos;Cycle&apos; value of the first one, and so on. The Integral (Spreads) calculates these partial sums and CDR (Spreads) picks all of them except for the last sum, which is not used (it&apos;s the sum of all values, which is 1).&cr;&lf;&cr;&lf;The GridSegment (DX9) draws all the segments.&cr;&lf;&cr;&lf;There are also numbers drawn for every segment. To place them along the pie half of the normalized value (size of the piece) is added to the value of the rotation for every segment. The result is used by the Cartesian (2d) along with the value on its &apos;Length&apos; pin to calculate XY positions for every number. So from the angle and the length (which are polar coordinates) cartesian XY coordinates are calculated.&cr;&lf;&cr;&lf;Text (EX9) draws the numbers, which are converted from values into strings and formatted using FormatValue (String).&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -528,22 +528,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9780" top="6825" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="390" left="9780" top="6825" type="Box" width="405">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="6" srcpinname="Transform Out" dstnodeid="8" dstpinname="Transform">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="51" systemname="IOBox (String)">
@@ -606,22 +590,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="55" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="8730" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="375" left="255" top="8730" type="Box" width="390">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
    <BOUNDS type="Node" left="2445" top="825" width="2910" height="3000">
    </BOUNDS>
@@ -651,5 +619,7 @@
    </PIN>
    </NODE>
    <PACK Name="testPack" Version="0.1.0">
+   </PACK>
+   <PACK Name="addonpack" Version="31.9.0">
    </PACK>
    </PATCH>

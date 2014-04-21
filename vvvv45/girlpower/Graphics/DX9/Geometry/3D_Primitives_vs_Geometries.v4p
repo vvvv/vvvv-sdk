@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Primitives_vs_Geometries.v4p" systemname="10_3D_Primitives_vs_Geometries" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\10_3D_Primitives_vs_Geometries.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Primitives_vs_Geometries.v4p" systemname="10_3D_Primitives_vs_Geometries" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\10_3D_Primitives_vs_Geometries.v4p">
    <BOUNDS type="Window" left="0" top="0" width="15135" height="12315">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="555" top="240" width="4350" height="435">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives versus Geometries|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives vs. Geometries|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -279,7 +279,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="555" top="7125" width="3495" height="3285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives in DX9 category combine the 3d geometry and the drawing effect (ie. shader) in one node. They are always only drawn with constant shading. No lights, no multitexturing, only some dafaults geometries.&cr;&lf;&cr;&lf;These nodes return &apos;Layer&apos; which can be directly plugged in into the Renderer, or the Group.&cr;&lf;&cr;&lf;Primitives can be colored (see the &apos;Color&apos; pin) and textured (see the &apos;Texture&apos; pin).&cr;&lf;&cr;&lf;DX9 nodes internally use the direct3d fixed function pipeline (to whom this may mean something).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives in the DX9 category combine a 3d geometry and a drawing effect (ie. shader) in one node. They are always only drawn with constant shading, no lighting.&cr;&lf;&cr;&lf;These nodes return a &apos;Layer&apos; which can be directly plugged in into the Renderer, or the Group.&cr;&lf;&cr;&lf;Primitives can be colored (see the &apos;Color&apos; pin) and textured (see the &apos;Texture&apos; pin).&cr;&lf;&cr;&lf;DX9 nodes internally use the direct3d fixed function pipeline (to whom this may mean something).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -535,5 +535,35 @@
    <LINK srcnodeid="152" srcpinname="Output String" dstnodeid="119" dstpinname="Filename">
    </LINK>
    <PACK Name="testPack" Version="0.1.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="153" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="11145" width="4695" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="11145" width="4830" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/tutorial-of-effects-and-shaders">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="154" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="10875" width="1560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="10875" width="1830" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Effects/Shaders Tutorial|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
    </PACK>
    </PATCH>
