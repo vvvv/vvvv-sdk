@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Spreading\TTY_ASCII-Art-Vertical_Equalizer.v4p" systemname="TTY_ASCII-Art-Vertical_Equalizer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Spreading\TTY_ASCII-Art-Vertical_Equalizer.v4p">
-   <BOUNDS type="Window" left="330" top="0" width="11310" height="10650">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Spreading\TTY_ASCII-Art-Vertical_Equalizer.v4p" systemname="TTY_ASCII-Art-Vertical_Equalizer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Spreading\TTY_ASCII-Art-Vertical_Equalizer.v4p">
+   <BOUNDS type="Window" left="330" top="0" width="11310" height="12015">
    </BOUNDS>
    <NODE systemname="WritePage (TTY)" nodename="WritePage (TTY)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="5805" top="10965" width="100" height="100">
@@ -613,7 +613,7 @@
    </BOUNDS>
    <BOUNDS height="9285" left="765" top="5505" type="Box" width="3945">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The FFT (DShow9) returns a spread of 256 amplitudes, which is then reduced to 43 values by the Resample (Spreads). These values are smoothed over time by the Damper (Animation), and mapped to a new range, with the maximum amplitude set to 32.&cr;&lf;&cr;&lf;The first Pad (String) creates a string for every one of 43 amplitudes. It receives an empty string and padds it with so many &apos;V&apos; as the value of the amplitude of each slice.&cr;&lf;&cr;&lf;The second Pad (String) padds these strings with spaces, so that each string will be exactly 32 characters long.&cr;&lf;&cr;&lf;The Split (String) splits the each string into slices (characters).&cr;&lf;&cr;&lf;So now the spread contains bars of the equalizer which are following each other. 32 characters are for the first bar, next 32 are for the second bar and so on.&cr;&lf;&cr;&lf;In step 9 these bars are written to the TTY Renderer line by line: the first line contains first values for every bar, the second line  - next values for every bar and so on. The SwapDim (Strings) swaps the order of the slices in the spread. Insted of BarBarBar the spread will look like BBBaaarrr.&cr;&lf;&cr;&lf;The Add (String Spectral) concatenates every 43 slices together: these are strings to write to tty. After that these strings are concatenated together into one big string.&cr;&lf;&cr;&lf;WritePage (TTY) clears the TTY Renderer and writes out the string from its &apos;Input&apos;. The &apos;DoWrite&apos; pin is activated each time the string has changed.&cr;&lf;&cr;&lf;The Renderer (TTY) has its &apos;Log Messages&apos; pin off in order to protect the precious Ascii-art from the annoying vvvv-messages. See also the colors for the text (&apos;Foreground Color&apos;) and the &apos;Background Color&apos;.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The FFT (DShow9) returns a spread of 256 amplitudes, which is then reduced to 43 values by the Resample (Spreads). These values are smoothed over time by the Damper (Animation), and mapped to a new range, with the maximum amplitude set to 32.&cr;&lf;&cr;&lf;The first Pad (String) creates a string for each of the 43 amplitudes. It takes an empty string and pads it out with a number of V&apos;s corresponding to the amplitude value of each slice. &cr;&lf;&cr;&lf;The second Pad (String) pads these strings with spaces, so that each string now is exactly 32 characters long.&cr;&lf;&cr;&lf;The Split (String) splits the each string so that every character is now a slice.&cr;&lf;&cr;&lf;So now the spread contains bars of the equalizer which are following each other. 32 characters are for the first bar, next 32 are for the second bar and so on.&cr;&lf;&cr;&lf;In step 9 these bars are written to the TTY Renderer line by line: the first line contains first values for every bar, the second line the next values for every bar and so on. The SwapDim (Strings) swaps the order of the slices in the spread. Instead of BarBarBar the spread will look like BBBaaarrr.&cr;&lf;&cr;&lf;The Add (String Spectral) concatenates every 43 slices together: these are strings to write to tty. After that these strings are concatenated together into one big string.&cr;&lf;&cr;&lf;WritePage (TTY) clears the TTY Renderer and writes out the string from its &apos;Input&apos;. The &apos;DoWrite&apos; pin is activated each time the string has changed.&cr;&lf;&cr;&lf;The Renderer (TTY) has its &apos;Log Messages&apos; pin off in order to protect the precious Ascii-art from the annoying vvvv-messages. See also the colors for the text (&apos;Foreground Color&apos;) and the &apos;Background Color&apos;.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1064,4 +1064,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>

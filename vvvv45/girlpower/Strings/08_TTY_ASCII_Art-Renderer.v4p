@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="16545" height="10875">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p">
+   <BOUNDS type="Window" left="2415" top="9015" width="18105" height="4830">
    </BOUNDS>
    <PACK Name="addonpack" Version="31.9.0">
    </PACK>
@@ -127,7 +127,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5805" top="3345" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="13110" top="0" width="4770" height="5010">
+   <BOUNDS type="Window" left="12105" top="4020" width="4770" height="5010">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -291,7 +291,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7260" top="10980" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="13110" top="5040" width="9705" height="9030">
+   <BOUNDS type="Window" left="2415" top="0" width="9705" height="9030">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -353,9 +353,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="336" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="13365" top="13305" width="1440" height="240">
+   <BOUNDS type="Box" left="10830" top="1050" width="1395" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="13365" top="13305" width="0" height="0">
+   <BOUNDS type="Node" left="10830" top="1050" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="ASCII-Art.html">
    </PIN>
@@ -745,9 +745,9 @@
    <NODE id="391" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="375" top="660" width="9525" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="375" top="660" width="4245" height="285">
+   <BOUNDS type="Box" left="375" top="660" width="4545" height="315">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" pintype="Input" values="|Render your scenes in TTY window or save them as HTML.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" pintype="Input" values="|Render your scenes in the TTY window or save them as HTML.|">
    </PIN>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -793,9 +793,9 @@
    <NODE componentmode="InABox" id="390" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="765" top="1440" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="7335" left="765" top="1440" type="Box" width="4005">
+   <BOUNDS height="6540" left="765" top="1440" type="Box" width="4005">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The scene of the rotating torus and a 3d camera is rendered to a texture (a new texture every frame of animation).&cr;&lf;&cr;&lf;The spread of characters which will be used to represent a texture.&cr;&lf;&cr;&lf;A brightness (0..1) for every character is calculated and then the spread of characters is sorted according to their brightness by the Sort (Spreads) and GetSlice (String) nodes.&cr;&lf;&cr;&lf;The AsASCII (EX9.Texture) returns a spread of strings representing the texture rendered in step 1.&cr;&lf;&cr;&lf;These strings are concatenated together into one big string and then written to the TTY Layer by the WritePage (TTY).&cr;&lf;&cr;&lf;The same strings from the step 4 are encoded to be used in HTML and also concatenated together but now using the &apos;&lt;br&gt;&apos; tag to separate the lines.&cr;&lf;&cr;&lf;The Queue (String) creates a spread of these strings (each slice is a big string representing one frame of the animation). These frames are then concatenated together.&cr;&lf;&cr;&lf;The Substitute (String) replaces the placeholder in the HTML template with the strings of the animation and the Writer (Strings) saves the file.&cr;&lf;&cr;&lf;Open the HTML in the browser to and check it in the text editor.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The scene of the rotating torus watched with a 3d camera is rendered to a texture (a new texture every frame of animation).&cr;&lf;&cr;&lf;The spread of characters which will be used to represent a texture.&cr;&lf;&cr;&lf;A brightness value (0..1) is calculated for each character and then the spread of characters is sorted according to their brightness by the Sort (Spreads) and GetSlice (String) nodes.&cr;&lf;&cr;&lf;The AsASCII (EX9.Texture) returns a spread of strings representing the texture rendered in step 1.&cr;&lf;&cr;&lf;These strings are concatenated together into one big string and then written to the TTY by WritePage (TTY).&cr;&lf;&cr;&lf;The same strings from step 4 are encoded to be used in HTML and also concatenated together but now using the &apos;&lt;br&gt;&apos; tag to separate the lines.&cr;&lf;&cr;&lf;The Queue (String) creates a spread of these strings (each slice is a big string representing one frame of the animation). These frames are then concatenated together.&cr;&lf;&cr;&lf;The Substitute (String) replaces the placeholder in the HTML template with the strings of the animation and the Writer (String) saves the file.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -887,9 +887,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="380" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="5400" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="5235" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="5400" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="5235" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -903,9 +903,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="379" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="6255" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="6075" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="6255" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="6075" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1037,9 +1037,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="403" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="7305" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="7125" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="7305" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="7125" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1152,4 +1152,118 @@
    </LINK>
    <LINK srcnodeid="238" srcpinname="Texture Out" dstnodeid="235" dstpinname="Image">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="414" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="3030" width="2340" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="3030" width="2340" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for tons of demos see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="413" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="3315" width="4260" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="3315" width="1125" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="..\..\girlpower">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="412" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="13515" top="855" type="Node" width="2610">
+   </BOUNDS>
+   <BOUNDS height="570" left="13515" top="855" type="Box" width="3435">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="vvvv_45beta32">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="19">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="411" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="1830" width="3255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="1830" width="3480" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/change-log">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="410" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="1530" width="1290" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="1530" width="1290" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for changes see|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="409" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="2580" width="3255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="2580" width="3480" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/tutorials">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="408" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13935" top="2280" width="1290" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13935" top="2280" width="1860" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for getting started see|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="415" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10440" top="720" width="1620" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10440" top="720" width="1620" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|v- open in a browser|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
