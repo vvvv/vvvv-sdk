@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Texture\Textures_Overview.v4p" systemname="Textures_Overview" filename="C:\Work\Anton-work\Graphics\01_Basics\Textures_Overview.v4p">
-   <BOUNDS type="Window" left="150" top="0" width="19320" height="9165">
+   <BOUNDS type="Window" left="0" top="0" width="15690" height="9645">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="555" top="240" width="1185" height="270">
+   <BOUNDS type="Node" left="570" top="210" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="555" top="240" width="2880" height="465">
+   <BOUNDS type="Box" left="570" top="210" width="4650" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Textures Overview|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Texture sources / An Overview|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -19,17 +19,17 @@
    </PIN>
    </NODE>
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="1305" top="3645" width="100" height="100">
+   <BOUNDS type="Node" left="705" top="3645" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="1320" top="3180" width="1965" height="240">
+   <BOUNDS type="Box" left="720" top="3180" width="1965" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1320" top="3180" width="0" height="0">
+   <BOUNDS type="Node" left="720" top="3180" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\vvvv-sdk\vvvv45\lib\assets\images\earth_512x512.jpg">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\lib\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="image.jpg">
    </PIN>
@@ -43,17 +43,19 @@
    <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="4" dstpinname="Filename">
    </LINK>
    <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="6300" top="5235" width="100" height="100">
+   <BOUNDS type="Node" left="705" top="4770" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
+   <BOUNDS type="Box" left="705" top="4770">
+   </BOUNDS>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="7">
-   <BOUNDS type="Node" left="6300" top="5790" width="100" height="100">
+   <BOUNDS type="Node" left="705" top="5265" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6300" top="5790" width="3615" height="2670">
+   <BOUNDS type="Box" left="705" top="5265" width="1980" height="1515">
    </BOUNDS>
    <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
    </BOUNDS>
@@ -63,7 +65,7 @@
    <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
    </LINK>
    <NODE systemname="VideoTexture (EX9.Texture VMR9)" nodename="VideoTexture (EX9.Texture VMR9)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="7350" top="4020" width="100" height="100">
+   <BOUNDS type="Node" left="6750" top="4020" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -71,7 +73,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="6990" top="3570" width="100" height="100">
+   <BOUNDS type="Node" left="6390" top="3570" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
@@ -79,9 +81,9 @@
    <LINK srcnodeid="10" srcpinname="Video" dstnodeid="9" dstpinname="Video">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7005" top="2910" width="480" height="480">
+   <BOUNDS type="Box" left="6405" top="2910" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="7005" top="2910" width="0" height="0">
+   <BOUNDS type="Node" left="6405" top="2910" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -97,9 +99,9 @@
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Play">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="8130" top="3150" width="1950" height="240">
+   <BOUNDS type="Box" left="7530" top="3150" width="1950" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8130" top="3150" width="0" height="0">
+   <BOUNDS type="Node" left="7530" top="3150" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="||">
    </PIN>
@@ -115,9 +117,9 @@
    <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="10" dstpinname="Filename">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8085" top="2865" width="765" height="270">
+   <BOUNDS type="Node" left="7485" top="2865" width="765" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8085" top="2865" width="2085" height="285">
+   <BOUNDS type="Box" left="7485" top="2865" width="2085" height="285">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Righclick to choose a video|">
    </PIN>
@@ -129,9 +131,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6960" top="2610" width="420" height="270">
+   <BOUNDS type="Node" left="6360" top="2610" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6960" top="2610" width="420" height="270">
+   <BOUNDS type="Box" left="6360" top="2610" width="420" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Play">
    </PIN>
@@ -142,26 +144,18 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="FileStream (EX9.Texture VLC)" filename="%VVVV%\addonpack\lib\nodes\plugins\FileStreamVLC.dll" nodename="FileStream (EX9.Texture VLC)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="10710" top="3930" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10710" top="3930">
-   </BOUNDS>
-   <PIN pinname="Filename" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="HTMLTexture (EX9.Texture URL)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture URL)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="19710" top="3855" width="100" height="100">
+   <BOUNDS type="Node" left="18360" top="3255" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="19710" top="3855">
+   <BOUNDS type="Box" left="18360" top="3255">
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="19725" top="3195" width="1395" height="240">
+   <BOUNDS type="Box" left="18375" top="2895" width="1395" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="19725" top="3195" width="0" height="0">
+   <BOUNDS type="Node" left="18375" top="2895" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="http://vvvv.org">
    </PIN>
@@ -175,11 +169,11 @@
    <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="16" dstpinname="Url">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="19650" top="2910" width="1470" height="270">
+   <BOUNDS type="Node" left="18300" top="2610" width="1470" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="19650" top="2910" width="1470" height="270">
+   <BOUNDS type="Box" left="18300" top="2610" width="1470" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Your favourite URL|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Your favourite URL:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -189,9 +183,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10710" top="3270" width="480" height="480">
+   <BOUNDS type="Box" left="10110" top="2970" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="10710" top="3270" width="0" height="0">
+   <BOUNDS type="Node" left="10110" top="2970" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -206,12 +200,10 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Play">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10680" top="3000" width="420" height="270">
+   <BOUNDS type="Node" left="10080" top="2700" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10680" top="3000" width="420" height="270">
+   <BOUNDS type="Box" left="10080" top="2700" width="420" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Play">
    </PIN>
@@ -223,9 +215,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="12135" top="3420" width="1950" height="240">
+   <BOUNDS type="Box" left="11535" top="3120" width="1950" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12135" top="3420" width="0" height="0">
+   <BOUNDS type="Node" left="11535" top="3120" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="||">
    </PIN>
@@ -241,9 +233,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12090" top="3135" width="765" height="270">
+   <BOUNDS type="Node" left="11490" top="2835" width="765" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="12090" top="3135" width="1995" height="270">
+   <BOUNDS type="Box" left="11490" top="2835" width="1995" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Righclick to choose a video|">
    </PIN>
@@ -254,14 +246,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="15" dstpinname="Filename">
-   </LINK>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="3795" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="3195" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3795" top="975" width="285" height="2460">
+   <BOUNDS type="Box" left="3195" top="975" width="285" height="2460">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -273,9 +263,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="10290" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="9690" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10290" top="975" width="285" height="2400">
+   <BOUNDS type="Box" left="9690" top="975" width="285" height="2400">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -287,9 +277,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="14295" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="13695" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="14295" top="975" width="285" height="2445">
+   <BOUNDS type="Box" left="13695" top="975" width="285" height="2445">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -301,9 +291,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1230" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="630" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1230" top="975" width="1110" height="405">
+   <BOUNDS type="Box" left="630" top="975" width="1110" height="405">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Image">
    </PIN>
@@ -316,26 +306,10 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="6885" top="975" width="1185" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6885" top="975" width="2490" height="435">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Video (DShow9)|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="12">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="10605" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="10005" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10605" top="975" width="1635" height="405">
+   <BOUNDS type="Box" left="10005" top="975" width="1635" height="405">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Video (VLC)|">
    </PIN>
@@ -349,9 +323,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="19620" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="18270" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="19620" top="975" width="840" height="375">
+   <BOUNDS type="Box" left="18270" top="975" width="840" height="375">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="HTML">
    </PIN>
@@ -365,9 +339,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="6570" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="5970" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6570" top="975" width="285" height="2415">
+   <BOUNDS type="Box" left="5970" top="975" width="285" height="2415">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -379,13 +353,15 @@
    </PIN>
    </NODE>
    <NODE systemname="Player (EX9.Texture)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Player (EX9.Texture)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="4560" top="3795" width="100" height="100">
+   <BOUNDS type="Node" left="3960" top="3795" width="100" height="100">
    </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="4560" top="3135" width="1230" height="240">
+   <BOUNDS type="Box" left="3960" top="3135" width="1230" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4560" top="3135" width="0" height="0">
+   <BOUNDS type="Node" left="3960" top="3135" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="||">
    </PIN>
@@ -401,9 +377,9 @@
    <LINK srcnodeid="32" srcpinname="Output String" dstnodeid="31" dstpinname="Directory">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="4155" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="3555" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4155" top="975" width="2115" height="390">
+   <BOUNDS type="Box" left="3555" top="975" width="2115" height="390">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Image sequence|">
    </PIN>
@@ -417,9 +393,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="19110" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="17760" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="19110" top="975" width="285" height="2445">
+   <BOUNDS type="Box" left="17760" top="975" width="285" height="2445">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -431,9 +407,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="14775" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="14175" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="14775" top="975" width="1440" height="375">
+   <BOUNDS type="Box" left="14175" top="975" width="1440" height="375">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Live video|">
    </PIN>
@@ -447,9 +423,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="15360" top="2895" width="345" height="240">
+   <BOUNDS type="Box" left="14760" top="2715" width="345" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="15360" top="2895" width="0" height="0">
+   <BOUNDS type="Node" left="14760" top="2715" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="320">
    </PIN>
@@ -463,9 +439,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="15795" top="2880" width="435" height="240">
+   <BOUNDS type="Box" left="15195" top="2700" width="435" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="15795" top="2880" width="0" height="0">
+   <BOUNDS type="Node" left="15195" top="2700" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="240">
    </PIN>
@@ -479,7 +455,7 @@
    </PIN>
    </NODE>
    <NODE systemname="VideoIn (DShow9)" nodename="VideoIn (DShow9)" componentmode="Hidden" id="43">
-   <BOUNDS type="Node" left="15150" top="3375" width="100" height="100">
+   <BOUNDS type="Node" left="14550" top="3375" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Video Format" slicecount="1" values="RGB24">
    </PIN>
@@ -495,19 +471,23 @@
    </PIN>
    </NODE>
    <NODE systemname="VideoTexture (EX9.Texture VMR9)" nodename="VideoTexture (EX9.Texture VMR9)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="15165" top="3855" width="100" height="100">
+   <BOUNDS type="Node" left="14565" top="3855" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
+   <PIN pinname="Adapter" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="NonPow2">
+   </PIN>
    </NODE>
    <LINK srcnodeid="43" srcpinname="Video" dstnodeid="44" dstpinname="Video">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="45" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="17145" top="2850" width="1590" height="240">
+   <BOUNDS type="Box" left="15840" top="3045" width="1590" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="17145" top="2850" width="0" height="0">
+   <BOUNDS type="Node" left="15840" top="3045" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="|Integrated Camera|">
    </PIN>
@@ -515,9 +495,9 @@
    <LINK srcnodeid="45" srcpinname="Output Enum" dstnodeid="43" dstpinname="Driver">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="46" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="16275" top="2865" width="765" height="240">
+   <BOUNDS type="Box" left="15675" top="2685" width="765" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="16275" top="2865" width="0" height="0">
+   <BOUNDS type="Node" left="15675" top="2685" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="RGB24">
    </PIN>
@@ -529,11 +509,11 @@
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Height">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="47" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="14760" top="2700" width="480" height="480">
+   <BOUNDS type="Box" left="14160" top="2700" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="14760" top="2700" width="0" height="0">
+   <BOUNDS type="Node" left="14160" top="2700" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -543,15 +523,15 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="47" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Enabled">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="14715" top="2430" width="600" height="270">
+   <BOUNDS type="Node" left="14115" top="2430" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="14715" top="2430" width="600" height="270">
+   <BOUNDS type="Box" left="14115" top="2430" width="600" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Enable">
    </PIN>
@@ -563,9 +543,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="22215" top="975" width="420" height="270">
+   <BOUNDS type="Node" left="20865" top="975" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="22215" top="975" width="285" height="2445">
+   <BOUNDS type="Box" left="20865" top="975" width="285" height="2445">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -577,9 +557,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="22785" top="975" width="1185" height="270">
+   <BOUNDS type="Node" left="21435" top="975" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="22785" top="975" width="1185" height="405">
+   <BOUNDS type="Box" left="21435" top="975" width="1185" height="405">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Dynamic">
    </PIN>
@@ -593,25 +573,371 @@
    </PIN>
    </NODE>
    <NODE systemname="DynamicTexture (EX9.Texture Color)" nodename="DynamicTexture (EX9.Texture Color)" componentmode="Hidden" id="51">
-   <BOUNDS type="Node" left="22845" top="3855" width="100" height="100">
+   <BOUNDS type="Node" left="21495" top="3255" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Color)" componentmode="InABox" id="52" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="23955" top="3165" width="465" height="435">
-   </BOUNDS>
-   <BOUNDS type="Node" left="23955" top="3165" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Color Input" slicecount="3" values="|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   <PIN pinname="Color" slicecount="3" visible="1" values="|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="52" srcpinname="Color Output" dstnodeid="51" dstpinname="Color">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Texture Out" dstnodeid="6" dstpinname="Texture">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14880" top="8340" width="480" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14880" top="8340" width="480" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="---&gt;">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="54" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="12570" top="8250" width="1185" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12570" top="8250" width="2295" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|scroll for more|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="1440" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="1440" width="1485" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to load an image.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="57" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3540" top="1425" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3540" top="1425" width="2100" height="1395">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Waht to play a video in highest quality? Save it as an image sequence and play it via Player (EX9.Texture). |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="58" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6345" top="1470" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6345" top="1470" width="2775" height="1110">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (DShow9) can play some windows file formats and codecs installed on your system.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="3960" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="3960" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="60">
+   <BOUNDS type="Node" left="3960" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3960" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Layer" dstnodeid="60" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Texture" dstnodeid="61" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="6750" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="6750" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="62">
+   <BOUNDS type="Node" left="6750" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6750" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Layer" dstnodeid="62" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="63" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="65">
+   <BOUNDS type="Node" left="10095" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="10095" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="64">
+   <BOUNDS type="Node" left="10095" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10095" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="65" srcpinname="Layer" dstnodeid="64" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="68">
+   <BOUNDS type="Node" left="14565" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="14565" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="67">
+   <BOUNDS type="Node" left="14565" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14565" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="68" srcpinname="Layer" dstnodeid="67" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="70">
+   <BOUNDS type="Node" left="18360" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="18360" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="69">
+   <BOUNDS type="Node" left="18360" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18360" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="Layer" dstnodeid="69" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="70" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="21480" top="4770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="21480" top="4770">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="71">
+   <BOUNDS type="Node" left="21480" top="5265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="21480" top="5265" width="1980" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="6270" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Layer" dstnodeid="71" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Texture Out" dstnodeid="72" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Texture Out" dstnodeid="68" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="75" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10020" top="1440" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10020" top="1440" width="2775" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (EX9.Texure VLC) can play plenty of video formats / codecs. It needs VLC media player installed on your machine.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="77">
+   <BOUNDS type="Node" left="10095" top="7320" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10095" top="7320" width="2175" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://www.videolan.org/vlc/index.html">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="78" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10035" top="7020" width="2130" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10035" top="7020" width="2130" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Download VLC media player:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="79" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14175" top="1365" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14175" top="1365" width="2775" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Need a live video from a camera or webcam? Use the VideoIn (DShow9).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="81" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18270" top="1365" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18270" top="1365" width="2370" height="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Want to render a website? The HTMLTexture (EX9.Texture URL) is what you are looking for.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="82" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="21465" top="1365" width="2205" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="21465" top="1365" width="2370" height="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Textures can be created on the fly out of spreads of colors, values or raw data.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="84">
+   <BOUNDS type="Node" left="22605" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="22605" top="2625" width="495" height="420">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1" slicecount="3" values="|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|,|0.12002,0.80734,0.97918,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="84" srcpinname="Color Output" dstnodeid="51" dstpinname="Color">
+   </LINK>
+   <NODE systemname="FileStream (EX9.Texture VLC)" filename="%VVVV%\addonpack\lib\nodes\plugins\FileStreamVLC.dll" nodename="FileStream (EX9.Texture VLC)" componentmode="Hidden" id="89">
+   <BOUNDS type="Node" left="10110" top="3630" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10110" top="3630">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="89" dstpinname="Play">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="89" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="89" srcpinname="Texture Out" dstnodeid="65" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)" exposed="0">
+   <BOUNDS type="Node" left="6345" top="975" width="1185" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6345" top="975" width="1995" height="405">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Video (DShow9)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="91" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="720" top="7530" width="11100" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="720" top="7530" width="4785" height="765">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Basic tutorials and examples on how to use TextureFX nodes to work with the same tricks and techniques you could previously achieve only in Photoshop or After Effects:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="92">
+   <BOUNDS type="Node" left="765" top="8310" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="765" top="8310" width="4500" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/contribution/video-effects-and-compositing-tutorials">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
    </PATCH>
