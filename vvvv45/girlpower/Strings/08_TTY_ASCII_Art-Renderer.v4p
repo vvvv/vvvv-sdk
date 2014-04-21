@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p">
    <BOUNDS type="Window" left="2415" top="9015" width="18105" height="4830">
    </BOUNDS>
    <PACK Name="addonpack" Version="31.9.0">
@@ -642,20 +642,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="372" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="14910" top="13260" width="3465" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="14910" top="13260" width="1980" height="525">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; now press &apos;open&apos; to show this in the browser|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE id="350" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
    <PIN pinname="Input String" slicecount="1" visible="0" values="|everything you know is wrong!|">
    </PIN>
@@ -681,7 +667,7 @@
    <NODE id="375" systemname="Sort (Spreads)" nodename="Sort (Spreads)" componentmode="Hidden">
    <BOUNDS type="Node" left="9120" top="6390" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="64" values="1,0.494117647058824,1,0.392156862745098,0.431372549019608,0.474509803921569,0.470588235294118,1,0.368627450980392,0.447058823529412,0.643137254901961,0.588235294117647,1,1,1,0.72156862745098,0.411764705882353,0.482352941176471,0.443137254901961,0.482352941176471,0.423529411764706,0.419607843137255,0.407843137254902,0.490196078431373,0.4,0.415686274509804,0.603921568627451,0.537254901960784,0.525490196078431,0.333333333333333,0.513725490196078,0.6,0.372549019607843,0.47843137254902,0.403921568627451,0.470588235294118,0.431372549019608,0.388235294117647,0.435294117647059,0.450980392156863,0.423529411764706,0.454901960784314,0.533333333333333,0.466666666666667,0.509803921568627,0.392156862745098,0.411764705882353,0.458823529411765,0.443137254901961,0.458823529411765,0.431372549019608,0.431372549019608,0.513725490196078,0.482352941176471,0.525490196078431,0.447058823529412,0.458823529411765,0.537254901960784,0.423529411764706,0.305882352941176,0.756862745098039,1,1,1">
    </PIN>
    <PIN pinname="Former Index" visible="1">
    </PIN>
@@ -696,18 +682,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="373" systemname="CharacterBrightness (String)" filename="%VVVV%\lib\nodes\modules\String\CharacterBrightness (String).v4p" nodename="CharacterBrightness (String)" componentmode="Hidden">
-   <BOUNDS type="Node" left="9120" top="5910" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="373" srcpinname="Output" dstnodeid="375" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="375" srcpinname="Former Index" dstnodeid="374" dstpinname="Index">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="378" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="13995" top="7065" width="435" height="240">
    </BOUNDS>
@@ -723,8 +697,6 @@
    <LINK srcnodeid="378" srcpinname="Y Output Value" dstnodeid="370" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="350" srcpinname="Output String" dstnodeid="376" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="373" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="374" dstpinname="Input">
    </LINK>
@@ -1253,11 +1225,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="415" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10440" top="720" width="1620" height="270">
+   <BOUNDS type="Node" left="10485" top="585" width="1620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10440" top="720" width="1620" height="270">
+   <BOUNDS type="Box" left="10485" top="585" width="1410" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|v- open in a browser|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|open in a browser&cr;&lf;v|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1266,4 +1238,24 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="375" srcpinname="Former Index" dstnodeid="374" dstpinname="Index">
+   </LINK>
+   <NODE id="373" systemname="CharacterBrightness (String)" filename="%VVVV%\lib\nodes\modules\String\CharacterBrightness (String).v4p" nodename="CharacterBrightness (String)" componentmode="Hidden">
+   <BOUNDS type="Node" left="9120" top="5910" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Normalize">
+   </PIN>
+   <PIN pinname="Invert" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Normalize Output" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="373" srcpinname="Output" dstnodeid="375" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="373" dstpinname="Input">
+   </LINK>
    </PATCH>
