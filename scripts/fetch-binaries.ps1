@@ -2,7 +2,7 @@
 Param(
     [string][ValidateSet("x86", "x64")]$platform = "x86",
     [int]$maxCount = 100,
-    [string]$branch = "refs/heads/develop"
+    [string]$branch = "develop"
 )
 
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
