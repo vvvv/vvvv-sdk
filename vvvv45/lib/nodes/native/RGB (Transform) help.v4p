@@ -1,5 +1,5 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\RGB (Transform) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\RGB (Transform) help.v4p" locked="0">
    <BOUNDS height="9675" left="45" top="30" type="Window" width="15150">
    </BOUNDS>
    <NODE id="61" nodename="RGB (Color Split)">
@@ -30,7 +30,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="59" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="59" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2925" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="15840" top="10215" type="Window" width="215">
@@ -50,7 +50,7 @@
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="58" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="58" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4710" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="17250" top="10185" type="Window" width="215">
@@ -70,7 +70,7 @@
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="57" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="57" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3810" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="15870" top="10035" type="Window" width="215">
@@ -128,25 +128,35 @@
    <LINKPOINT x="9345" y="5910">
    </LINKPOINT>
    </LINK>
-   <NODE hiddenwhenlocked="1" id="54" nodename="Renderer (EX9)">
+   <NODE hiddenwhenlocked="1" id="54" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="10800" top="8640" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4110" left="2415" top="9720" type="Window" width="4110">
    </BOUNDS>
    <BOUNDS height="1800" left="10800" top="8640" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="1" id="53" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <NODE hiddenwhenlocked="1" id="53" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
    <BOUNDS height="0" left="11295" top="8280" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="9675" top="15600" type="Window" width="9000">
@@ -159,7 +169,7 @@
    </PIN>
    <PIN pinname="Inital Distance" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Near Plane" slicecount="1" values="1E-5">
+   <PIN pinname="Near Plane" slicecount="1" values="1E-005">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="52" nodename="Box (EX9.Geometry)">
@@ -390,14 +400,14 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="1" id="35" nodename="SetSlice (Spreads)">
+   <NODE hiddenwhenlocked="1" id="35" nodename="SETSLICE (SPREADS LEGACY)">
    <BOUNDS height="0" left="10755" top="4680" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Spread" visible="1">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="0.18">
    </PIN>
-   <PIN pinname="Slice Index" slicecount="3" values="0,1,2">
+   <PIN pinname="Index" slicecount="3" values="0,1,2">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -478,7 +488,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="28" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="28" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="14145" top="6720" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="2715" top="9120" type="Window" width="215">
@@ -562,7 +572,7 @@
    </LINK>
    <LINK dstnodeid="60" dstpinname="Alpha" srcnodeid="61" srcpinname="Alpha">
    </LINK>
-   <NODE hiddenwhenlocked="1" id="24" nodename=":MODULES:\AxisAndGrid (DX9).v4p">
+   <NODE hiddenwhenlocked="1" id="24" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p">
    <BOUNDS height="0" left="13680" top="8235" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="8835" top="16590" type="Window" width="9000">
@@ -572,9 +582,9 @@
    <PIN pinname="Render Pass" slicecount="1" values="0.00000">
    </PIN>
    </NODE>
-   <LINK dstnodeid="54" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="53" srcpinname="View Projection">
+   <LINK dstnodeid="54" dstpinname="View" hiddenwhenlocked="1" srcnodeid="53" srcpinname="View Projection">
    </LINK>
-   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="23" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5550" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="17550" top="10485" type="Window" width="215">
@@ -650,28 +660,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="18" nodename="girlpowercameracontrols (help).v4p">
-   <BOUNDS height="0" left="8280" top="8700" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="5025" left="15525" top="2520" type="Window" width="4485">
-   </BOUNDS>
-   <BOUNDS height="3600" left="8280" top="8700" type="Box" width="4800">
-   </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
-   <BOUNDS height="255" left="8220" top="8115" type="Node" width="3780">
-   </BOUNDS>
-   <BOUNDS height="540" left="8220" top="8115" type="Box" width="2205">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|rightclickt the node below to learn how to use the camera|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE id="16" nodename="Spectrum (Color)">
    <BOUNDS height="0" left="9315" top="1995" type="Node" width="0">
    </BOUNDS>
@@ -708,7 +696,7 @@
    <LINKPOINT x="11880" y="7095">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="14" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="14" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="11595" top="4665" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3015" top="9420" type="Window" width="215">
@@ -752,7 +740,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="15" top="3210" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3960" top="6870" type="Window" width="215">
@@ -860,7 +848,7 @@
    <BOUNDS height="0" left="285" top="7455" type="Node" width="0">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1275" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="16140" top="10515" type="Window" width="215">
@@ -880,7 +868,7 @@
    <PIN pinname="Maximum" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2100" top="1035" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="16170" top="10335" type="Window" width="215">
@@ -963,7 +951,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2040" top="37260" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|RGB - Transform|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RGB (Transform)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1000,4 +988,6 @@
    </LINK>
    <LINK srcnodeid="63" srcpinname="Layer" dstnodeid="54" dstpinname="Layers">
    </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>

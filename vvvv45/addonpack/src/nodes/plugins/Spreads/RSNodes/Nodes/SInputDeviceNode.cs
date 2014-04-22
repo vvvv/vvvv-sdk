@@ -15,6 +15,9 @@ namespace VVVV.Nodes
         private IPluginHost FHost;
         private MouseDataHolder FData;
 
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
+		
         [Input("Input")]
         IDiffSpread<Mouse> FInput;
 
@@ -28,7 +31,6 @@ namespace VVVV.Nodes
         {
             this.FData = MouseDataHolder.Instance;
         }
-
 
         #region Evaluate
         public void Evaluate(int SpreadMax)
@@ -87,6 +89,9 @@ namespace VVVV.Nodes
         #region Fields
         private KeyboardDataHolder FData;
 
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
+		
         [Input("Input")]
         IDiffSpread<Keyboard> FInput;
 
@@ -100,7 +105,6 @@ namespace VVVV.Nodes
         {
             this.FData = KeyboardDataHolder.Instance;
         }
-
 
         #region Evaluate
         public void Evaluate(int SpreadMax)
@@ -160,6 +164,9 @@ namespace VVVV.Nodes
         private IPluginHost FHost;
         private TouchDeviceDataHolder FData;
 
+		[Config("Display Channel", DefaultBoolean=true)]
+		ISpread<bool> FDisplayChannel;
+		
         [Input("Input")]
         IDiffSpread<TouchDevice> FInput;
 
@@ -173,7 +180,6 @@ namespace VVVV.Nodes
         {
             this.FData = TouchDeviceDataHolder.Instance;
         }
-
 
         #region Evaluate
         public void Evaluate(int SpreadMax)
