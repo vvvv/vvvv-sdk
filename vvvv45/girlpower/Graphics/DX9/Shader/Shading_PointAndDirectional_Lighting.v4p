@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Shader\Shading_PointAndDirectional_Lighting.v4p" systemname="3D_Shading_PointAndDirectional" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\3D_Shading_PointAndDirectional.v4p">
-   <BOUNDS type="Window" left="1905" top="2370" width="16815" height="12960">
+   <BOUNDS type="Window" left="0" top="0" width="16815" height="10275">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="4">
    <BOUNDS type="Node" left="7200" top="5820" width="100" height="100">
@@ -135,7 +135,7 @@
    <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Height">
    </LINK>
    <NODE systemname="GouraudDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\GouraudDirectional.fx" nodename="GouraudDirectional (EX9.Effect)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="11490" top="4500" width="100" height="100">
+   <BOUNDS type="Node" left="11490" top="4635" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Light Attenuation 1">
    </PIN>
@@ -393,11 +393,11 @@
    <LINK srcnodeid="12" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="555" top="240" width="1185" height="270">
+   <BOUNDS type="Node" left="690" top="240" width="1185" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="555" top="240" width="4530" height="435">
+   <BOUNDS type="Box" left="690" top="240" width="5190" height="420">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Point and Directional shaders|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Point and Directional Light shaders|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -406,6 +406,204 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="675" top="960" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="2895" left="675" top="960" type="Box" width="4560">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|These are two built-in Gouraud shaders, but the first one uses Point light type and the second uses Directional light.&cr;&lf;Here are the differences:&cr;&lf;&cr;&lf;Point light is like a light bulb. It has color and position within a scene, but no single direction. It gives off light equally in all directions. Point lights are affected by attenuation and range, and illuminate a mesh on a vertex-by-vertex basis.&cr;&lf;&cr;&lf;Directional light lit the scene like rays from the sun. It has color and direction, but no position. Every object in the scene is lit from the same direction. Directional lights are not affected by attenuation or range.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="1785" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="285" top="1785" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="2835" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="285" top="2835" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5715" top="4575" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5715" top="4575" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="675" top="4035" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="270" left="675" top="4035" type="Box" width="2160">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|For more information, check:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="52">
+   <BOUNDS type="Node" left="675" top="4365" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="4365" width="3480" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://msdn.microsoft.com/en-us/library/windows/desktop/bb174697%28v=vs.85%29.aspx">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="53">
+   <BOUNDS type="Node" left="675" top="4695" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="4695" width="3480" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://en.wikipedia.org/wiki/Shading">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="10995" top="4575" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="10995" top="4575" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4005" top="7035" width="6300" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4005" top="7035" width="2550" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Hold the &apos;O&apos; key and click and drag left mouse button in the Renderer to orbit the camera in the scene.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6660" top="7125" width="6300" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6660" top="7125" width="315" height="435">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="&gt;">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="57" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="675" top="5295" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="300" left="675" top="5295" type="Box" width="1980">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Built-in shaders overview:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="58">
+   <BOUNDS type="Node" left="675" top="5595" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="5595" width="1950" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="Shading_Overview.v4p">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="60" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="675" top="6105" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="300" left="675" top="6105" type="Box" width="1980">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Shader contributions:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="59">
+   <BOUNDS type="Node" left="675" top="6375" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="6375" width="1950" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/contributions/1351/1554+3270+1584+2696+1547+1507+1583+2242+1574+1555">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
    </PATCH>
