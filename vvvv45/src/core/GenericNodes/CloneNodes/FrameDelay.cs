@@ -7,7 +7,7 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Generic
 {
     public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable, IPluginFeedbackLoop
     {
@@ -45,14 +45,14 @@ namespace VVVV.Nodes
             // Feedback loops are only allowed for our regular input pins (not the default pins).
             return !(InputContainers.Any(c => c.GetPluginIO() == inputPin));
         }
-		
-		private void HandlePinCountChanged(IDiffSpread<int> sender)
-		{
+
+        private void HandlePinCountChanged(IDiffSpread<int> sender)
+        {
             var count = Math.Max(1, CountIn[0]);
             ResizePinGroups(count, InputContainers, (i) => new InputAttribute(string.Format("Input {0}", i)) { AutoValidate = false });
             ResizePinGroups(count, DefaultContainers, (i) => new InputAttribute(string.Format("Default {0}", i)) { AutoValidate = false });
             ResizePinGroups(count, OutputContainers, (i) => new OutputAttribute(string.Format("Output {0}", i)));
-		}
+        }
 
         private static void DisposeSpread(ISpread<T> spread)
         {
@@ -64,7 +64,7 @@ namespace VVVV.Nodes
             }
         }
 
-        private void ResizePinGroups<TSpread>(int count, Spread<IIOContainer<TSpread>> pinSpread, Func<int, IOAttribute> ioAttributeFactory) 
+        private void ResizePinGroups<TSpread>(int count, Spread<IIOContainer<TSpread>> pinSpread, Func<int, IOAttribute> ioAttributeFactory)
             where TSpread : class
         {
             pinSpread.ResizeAndDispose(
@@ -129,55 +129,6 @@ namespace VVVV.Nodes
         }
 
         protected abstract T CloneSlice(T slice);
-    }
-
-
-    [PluginInfo(Name = "FrameDelay", Category = "Color")]
-    public class ColorFrameDelayNode : FrameDelayNode<RGBAColor>
-    {
-        protected override RGBAColor CloneSlice(RGBAColor slice)
-        {
-            return slice;
-        }
-    }
-
-    [PluginInfo(Name = "FrameDelay", Category = "Enumerations")]
-    public class EnumerationsFrameDelayNode : FrameDelayNode<EnumEntry>
-    {
-        protected override EnumEntry CloneSlice(EnumEntry slice)
-        {
-            return slice;
-        }
-    }
-
-    [PluginInfo(Name = "FrameDelay", Category = "Raw")]
-    public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
-    {
-        protected override System.IO.Stream CloneSlice(System.IO.Stream slice)
-        {
-            var clone = new System.IO.MemoryStream((int)slice.Length);
-            slice.Position = 0;
-            slice.CopyTo(clone);
-            return clone;
-        }
-    }
-
-    [PluginInfo(Name = "FrameDelay", Category = "String")]
-    public class StringFrameDelayNode : FrameDelayNode<string>
-    {
-        protected override string CloneSlice(string slice)
-        {
-            return slice;
-        }
-    }
-
-    [PluginInfo(Name = "FrameDelay", Category = "Value")]
-    public class ValueFrameDelayNode : FrameDelayNode<double>
-    {
-        protected override double CloneSlice(double slice)
-        {
-            return slice;
-        }
     }
 
 }
