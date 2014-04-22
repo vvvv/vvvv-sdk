@@ -84,6 +84,22 @@ namespace VVVV.PluginInterfaces.V1
 		void DisconnectPin(IPluginIO pin);
 	}
 
+    /// <summary>
+    /// Optional interface to be implemented on a plugin that wants to allow feedback loops.
+    /// </summary>
+    [Guid("E4CCB6C4-A875-47DF-BA4F-625457A067FD"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IPluginFeedbackLoop
+    {
+        /// <summary>
+        /// Called by the PluginHost for every input/output pair to decide whether or not the
+        /// input needs to be evaluated before the output can be validated.
+        /// </summary>
+        /// <param name="inputPin">The input pin.</param>
+        /// <param name="outputPin">The output pin.</param>
+        bool OutputRequiresInputEvaluation(IPluginIO inputPin, IPluginIO outputPin);
+    }
+
 	#endregion plugin
 	
 	#region PluginDXInterfaces
