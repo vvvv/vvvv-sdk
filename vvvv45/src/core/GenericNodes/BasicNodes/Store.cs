@@ -42,7 +42,7 @@ namespace VVVV.Nodes.Generic
     	
 		
 		[Import()]
-		ILogger FLogger;
+		protected ILogger FLogger;
 		#endregion fields & pins
 
 		

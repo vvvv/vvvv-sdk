@@ -14,16 +14,16 @@ namespace VVVV.Nodes.Generic
 	{
 	    #region fields & pins
 	    [Input("Input")]
-	    IInStream<IInStream<T>> FInput;
+        protected IInStream<IInStream<T>> FInput;
 	    
 	    [Input("Offset")]
-	    IInStream<int> FOffset;
+        protected IInStream<int> FOffset;
 	    
 	    [Input("Count", DefaultValue = 1)]
-	    IInStream<int> FCount;
+        protected IInStream<int> FCount;
 	
 	    [Output("Output")]
-	    IOutStream<IInStream<T>> FOutput;
+        protected IOutStream<IInStream<T>> FOutput;
 	    #endregion fields & pins
 	
 	    //called when data for any output pin is requested

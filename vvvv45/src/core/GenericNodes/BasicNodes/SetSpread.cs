@@ -17,16 +17,16 @@ namespace VVVV.Nodes.Generic
 	{
 		#region fields & pins
 		[Input("Spread")]
-		ISpread<ISpread<T>> FSpread;
+        protected ISpread<ISpread<T>> FSpread;
 		
 		[Input("Input", BinSize =  1, BinName = "Count", BinOrder = 1)]
-		ISpread<ISpread<T>> FInput;
+        protected ISpread<ISpread<T>> FInput;
 		
 		[Input("Offset")]
-		ISpread<int> FOffset;
+        protected ISpread<int> FOffset;
 
 		[Output("Output")]
-		ISpread<ISpread<T>> FOutput;
+        protected ISpread<ISpread<T>> FOutput;
 		#endregion fields & pins
 
 		//called when data for any output pin is requested

@@ -9,13 +9,13 @@ namespace VVVV.Nodes.Generic
     public abstract class NearestNeighbour<T> : IPluginEvaluate
     {
         [Input("Reference")]
-        ISpread<T> FInReference;
+        protected ISpread<T> FInReference;
 
         [Input("Input")]
-        ISpread<T> FInput;
+        protected ISpread<T> FInput;
 
         [Output("Nearest Index")]
-        ISpread<int> FOutput;
+        protected ISpread<int> FOutput;
 
         public void Evaluate(int SpreadMax)
         {

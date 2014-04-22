@@ -41,34 +41,34 @@ namespace VVVV.Nodes.Generic
     {	          	
     	#region fields & pins
     	[Input("Input")]
-    	IDiffSpread<ISpread<T>> FInput;
+        protected IDiffSpread<ISpread<T>> FInput;
     	
     	
     	[Output("Count")]
-    	ISpread<int> FCountOut;
+        protected ISpread<int> FCountOut;
     	
     	[Output("First Occurrence")]
-    	ISpread<int> FFirstOcc;
+        protected ISpread<int> FFirstOcc;
     	
     	[Output("Unique")]
-    	ISpread<T> FUniques;
+        protected ISpread<T> FUniques;
     	
     	[Output("Bin Size")]
-    	ISpread<int> FBinSize;
+        protected ISpread<int> FBinSize;
     
     	
     	[Output("Former Index")]//, Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<ISpread<int>> FFormerIndex;
+        protected ISpread<ISpread<int>> FFormerIndex;
     
     	
     	[Output("Unique Index", Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<int> FUniIds;
+        protected ISpread<int> FUniIds;
     	
     	[Output("Occurrence Index", Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<int> FOccIndex;
-    
-    	
-    	public bool eval = false;
+        protected ISpread<int> FOccIndex;
+
+
+        protected bool eval = false;
     	#endregion fields & pins
 
     	public virtual bool Equals(T a, T b)
