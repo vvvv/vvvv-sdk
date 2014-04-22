@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\2D_Segments_Timer.v4p" systemname="Segments_Timer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Segments_Timer.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\2D_Segments_Timer.v4p" systemname="Segments_Timer" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Segments_Timer.v4p">
    <BOUNDS type="Window" left="0" top="0" width="13170" height="9615">
    </BOUNDS>
    <NODE systemname="Segment (DX9)" nodename="Segment (DX9)" componentmode="Hidden" id="1">
@@ -231,7 +231,7 @@
    <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform">
    </LINK>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="7200" top="8325" width="100" height="100">
+   <BOUNDS type="Node" left="7095" top="8310" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Aspect Width" visible="1">
    </PIN>
@@ -535,7 +535,7 @@
    </BOUNDS>
    <BOUNDS height="6030" left="675" top="960" type="Box" width="3600">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The CurrentTime (Astronomy) and the TimeToString (String) nodes return the current date and time as a string. The RegExpr (String) picks only last two characters (which represent seconds), open the Inspektor and check the Regular Expression used.&cr;&lf;&cr;&lf;These two characters are converted into a value of seconds by the AsValue (String). This value, converted from the range (0..60) to the (0..1) and smoothed by the Newton (Animation) is used for the two GridSegments: the white one (growing with every second past) and the orange one (moving around).&cr;&lf;&cr;&lf;The &quot;growing&quot; white circle is just a GridSegment (DX9) with its &apos;Cycles&apos; pin slowly going from 0 to 1.&cr;&lf;&cr;&lf;The &quot;moving&quot; orange circle is also a GridSegment (DX9) with its &apos;Cycles&apos; pin set to a static value of 1/60, but the Transform (Transform 2d) connected to it has its &apos;Rotate&apos; pin changing with every second.&cr;&lf;&cr;&lf;This Segment (DX9) is just a dark backgound.&cr;&lf;&cr;&lf;The Text (EX9) draws the text in the middle.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The CurrentTime (Astronomy) and the TimeToString (String) nodes return the current date and time as a string. The RegExpr (String) picks only the last two characters (which represent seconds), open the Inspektor and check the Regular Expression used.&cr;&lf;&cr;&lf;These two characters are converted into a value of seconds by the AsValue (String). This value, converted from the range (0..60) to (0..1) and smoothed by the Newton (Animation) is used for the two GridSegments: the white one (growing with every second past) and the orange one (moving around).&cr;&lf;&cr;&lf;The &quot;growing&quot; white circle is just a GridSegment (DX9) with its &apos;Cycles&apos; pin slowly going from 0 to 1.&cr;&lf;&cr;&lf;The &quot;moving&quot; orange circle is also a GridSegment (DX9) with its &apos;Cycles&apos; pin set to a static value of 1/60, but the Transform (Transform 2d) connected to it has its &apos;Rotate&apos; pin changing with every second.&cr;&lf;&cr;&lf;This Segment (DX9) is just a dark backgound.&cr;&lf;&cr;&lf;The Text (EX9) draws the text in the middle.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -741,11 +741,13 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5790" top="5880" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.07423,0.07423,0.07423,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.14281,0.14281,0.14281,1.00000|">
    </PIN>
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="65" srcpinname="Color Output" dstnodeid="1" dstpinname="Color">
    </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
