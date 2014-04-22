@@ -7,6 +7,8 @@
     <RootNamespace>VVVV.Nodes.Generic</RootNamespace>
     <AssemblyName>VVVV.Nodes.Generic</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RestorePackages>true</RestorePackages>
+    <PackageIsAnyCPU>false</PackageIsAnyCPU>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
@@ -21,6 +23,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="BasicNodes\Cast.cs" />
     <Compile Include="BasicNodesTemplates.cs" />
     <Compile Include="DistanceNodesTemplates.cs" />
@@ -51,10 +54,7 @@
     <Compile Include="BasicNodes\Zip.cs" />
     <Compile Include="REPLACEME_CLASS.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EqualsNodes" />
-    <Folder Include="DistanceNodes" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
@@ -74,4 +74,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>
