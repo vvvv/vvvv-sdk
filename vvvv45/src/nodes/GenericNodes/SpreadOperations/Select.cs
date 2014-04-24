@@ -6,9 +6,9 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils;
 using VVVV.Utils.Streams;
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Generic
 {
-    public class SelectNode<T> : IPluginEvaluate
+    public class Select<T> : IPluginEvaluate
     {
         [Input("Input")]
         protected IInStream<T> FDataIn;
@@ -100,10 +100,4 @@ namespace VVVV.Nodes
             }
         }
     }
-
-    [PluginInfo(Name = "Select",
-                Category = "Value",
-                Help = "Select which slices and how many form the output spread",
-	            Tags = "resample")]
-    public class ValueSelectNode : SelectNode<double> { }
 }

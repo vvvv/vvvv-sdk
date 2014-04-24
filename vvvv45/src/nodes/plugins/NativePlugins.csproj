@@ -23,9 +23,6 @@
     <Reference Include="Gma.QrCodeNet.Encoding">
       <HintPath>..\..\..\..\common\src\thirdparty\Gma.QrCodeNet.Encoding.dll</HintPath>
     </Reference>
-    <Reference Include="InputSimulator">
-      <HintPath>..\..\..\..\common\src\thirdparty\InputSimulator\InputSimulator.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\..\..\common\src\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -80,6 +77,9 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsInput">
+      <HintPath>..\..\..\..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="2d\TreemapNode.cs" />
@@ -98,6 +98,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Raw\AsValueNode.cs" />
+    <Compile Include="Raw\EqualsNode.cs" />
     <Compile Include="Raw\PlusSpectralNode.cs" />
     <Compile Include="Raw\TakeNode.cs" />
     <Compile Include="Raw\SkipNode.cs" />
@@ -116,6 +117,8 @@
     </Compile>
     <Compile Include="System\DeviceComparer.cs" />
     <Compile Include="System\DesktopDeviceInputNode.cs" />
+    <Compile Include="System\SendMouseNode.cs" />
+    <Compile Include="System\SendKeyboardNode.cs" />
     <Compile Include="System\TouchNodes.cs" />
     <Compile Include="System\Legacy\DeltaMouse.cs" />
     <Compile Include="System\Legacy\GlobalInputNode.cs" />
@@ -231,10 +234,10 @@
     <Compile Include="_SpreadOperations\Queue.cs" />
     <Compile Include="_SpreadOperations\DeleteSlice.cs" />
     <Compile Include="_SpreadOperations\RingBuffer.cs" />
-    <Compile Include="_SpreadOperations\SelectNode.cs" />
+    <Compile Include="_SpreadOperations\Select.cs" />
     <Compile Include="_SpreadOperations\SetSlice.cs" />
-    <Compile Include="_SpreadOperations\UnzipNode.cs" />
-    <Compile Include="_SpreadOperations\ZipNode.cs" />
+    <Compile Include="_SpreadOperations\Unzip.cs" />
+    <Compile Include="_SpreadOperations\Zip.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="vvvv\Finder\FinderNode.resx">
@@ -289,6 +292,10 @@
     <ProjectReference Include="..\..\core\Utils3rdParty\Utils3rdParty.csproj">
       <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
       <Name>Utils3rdParty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GenericNodes\GenericNodes.csproj">
+      <Project>{9A20948B-DF40-4D71-B1CD-39DA080C044C}</Project>
+      <Name>GenericNodes</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

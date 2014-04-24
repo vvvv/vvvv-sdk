@@ -28,7 +28,7 @@
 //use what you need
 using System;
 using System.ComponentModel.Composition;
-
+using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
@@ -37,101 +37,6 @@ using VVVV.Utils.VMath;
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-	public class Occurrence<T>: IPluginEvaluate
-    {	          	
-    	#region fields & pins
-    	[Input("Input")]
-    	IDiffSpread<ISpread<T>> FInput;
-    	
-    	
-    	[Output("Count")]
-    	ISpread<int> FCountOut;
-    	
-    	[Output("First Occurrence")]
-    	ISpread<int> FFirstOcc;
-    	
-    	[Output("Unique")]
-    	ISpread<T> FUniques;
-    	
-    	[Output("Bin Size")]
-    	ISpread<int> FBinSize;
-    
-    	
-    	[Output("Former Index")]//, Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<ISpread<int>> FFormerIndex;
-    
-    	
-    	[Output("Unique Index", Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<int> FUniIds;
-    	
-    	[Output("Occurrence Index", Visibility = PinVisibility.OnlyInspector)]
-    	ISpread<int> FOccIndex;
-    
-    	
-    	public bool eval = false;
-    	#endregion fields & pins
-    	
-    	
-    	
-    
-    	public virtual bool Equals<T>(T a, T b)
-    	{
-    		return a.Equals(b);
-    	}
-    	
-        public virtual void Evaluate(int SpreadMax)
-        {     	
-        	if (FInput.IsChanged || eval)
-        	{	
-        		eval = false;
-        		FCountOut.SliceCount=0;
-        		FFirstOcc.SliceCount=0;
-        		FUniques.SliceCount=0;
-        		FBinSize.SliceCount=0;
-        		
-        		FFormerIndex.SliceCount=0;
-        		
-        		FUniIds.SliceCount=0;
-        		FOccIndex.SliceCount=0;
-        		int oIncr = 0;
-        		for (int b=0; b<FInput.SliceCount; b++)
-        		{
-        			for (int s=0; s<FInput[b].SliceCount; s++)
-        			{
-        				bool isUnique = true;
-        				for (int o=oIncr; o<FUniques.SliceCount; o++)
-        				{
-	        				if (Equals(FInput[b][s],FUniques[o]))
-	        				{
-	        					isUnique=false;
-	        					FUniIds.Add(o);
-	        					FFormerIndex[o].Add(s);
-	        					FOccIndex.Add(FCountOut[o]);
-	        					
-	        					FCountOut[o]++;
-	        					break;
-	        				}	
-        				}
-        				if (isUnique)
-        				{
-        					FUniIds.Add(FUniques.SliceCount);
-	        				FOccIndex.Add(0);
-	        				FFormerIndex.Add(new Spread<int>(0));
-	        				FFormerIndex[FFormerIndex.SliceCount-1].Add(s);
-	        					
-	        				FUniques.Add(FInput[b][s]);
-	        				FCountOut.Add(1);
-	        				FFirstOcc.Add(s);
-        				}
-        			}
-        			FBinSize.Add(FUniques.SliceCount-oIncr);
-        			oIncr=FUniques.SliceCount;
-        		}   		
-        	}      	
-        }
-	
-	}
-	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Value",
 	            Help = "counts the occurrence of equal slices",

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
@@ -14,153 +15,110 @@ namespace VVVV.Nodes
         public const string TAGS = "spread, split";
     }
 
-	public abstract class UnzipNode<T> : IPluginEvaluate
-	{
-		[Input("Input", BinSize = -2)]
-		protected IInStream<T> FInputStream;
-
-		[Output("Output", IsPinGroup = true)]
-		protected IInStream<IOutStream<T>> FOutputStreams;
-		
-		public void Evaluate(int SpreadMax)
-		{
-			FOutputStreams.SetLengthBy(FInputStream);
-	
-			var buffer = MemoryPool<T>.GetArray();			
-			try
-			{
-				var outputStreamsLength = FOutputStreams.Length;
-				
-				using (var reader = FInputStream.GetCyclicReader())
-				{
-					int i = 0;
-					foreach (var outputStream in FOutputStreams)
-					{
-						int numSlicesToWrite = Math.Min(outputStream.Length, buffer.Length);
-						
-						reader.Position = i++;
-						using (var writer = outputStream.GetWriter())
-						{
-							while (!writer.Eos)
-							{
-								reader.Read(buffer, 0, numSlicesToWrite, outputStreamsLength);
-								writer.Write(buffer, 0, numSlicesToWrite);
-							}
-						}
-					}
-				}
-			}
-			finally
-			{
-				MemoryPool<T>.PutArray(buffer);
-			}
-		}
-	}
-	
 	[PluginInfo(Name = "Unzip", Category = "Value", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class ValueUnzipNode : UnzipNode<double>
+	public class ValueUnzipNode : Unzip<double>
 	{
 		
 	}
 	
 	[PluginInfo(Name = "Unzip", Category = "Value", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class ValueBinSizeUnzipNode : UnzipNode<IInStream<double>>
+	public class ValueBinSizeUnzipNode : Unzip<IInStream<double>>
 	{
 		
 	}
 	
 	[PluginInfo(Name = "Unzip", Category = "2d", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class Vector2DUnzipNode : UnzipNode<Vector2D>
+	public class Vector2DUnzipNode : Unzip<Vector2D>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "2d", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class Vector2DBinSizeUnzipNode : UnzipNode<IInStream<Vector2D>>
+    public class Vector2DBinSizeUnzipNode : Unzip<IInStream<Vector2D>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "3d", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class Vector3DUnzipNode : UnzipNode<Vector3D>
+	public class Vector3DUnzipNode : Unzip<Vector3D>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "3d", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class Vector3DBinSizeUnzipNode : UnzipNode<IInStream<Vector3D>>
+    public class Vector3DBinSizeUnzipNode : Unzip<IInStream<Vector3D>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "4d", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class Vector4DUnzipNode : UnzipNode<Vector4D>
+	public class Vector4DUnzipNode : Unzip<Vector4D>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "4d", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class Vector4DBinSizeUnzipNode : UnzipNode<IInStream<Vector4D>>
+    public class Vector4DBinSizeUnzipNode : Unzip<IInStream<Vector4D>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "Color", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class ColorUnzipNode : UnzipNode<RGBAColor>
+	public class ColorUnzipNode : Unzip<RGBAColor>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "Color", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class ColorBinSizeUnzipNode : UnzipNode<IInStream<RGBAColor>>
+    public class ColorBinSizeUnzipNode : Unzip<IInStream<RGBAColor>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "String", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class StringUnzipNode : UnzipNode<string>
+	public class StringUnzipNode : Unzip<string>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "String", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class StringBinSizeUnzipNode : UnzipNode<IInStream<string>>
+    public class StringBinSizeUnzipNode : Unzip<IInStream<string>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "Transform", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class TransformUnzipNode : UnzipNode<Matrix4x4>
+	public class TransformUnzipNode : Unzip<Matrix4x4>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "Transform", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class TransformBinSizeUnzipNode : UnzipNode<IInStream<Matrix4x4>>
+    public class TransformBinSizeUnzipNode : Unzip<IInStream<Matrix4x4>>
     {
 
     }
 	
 	[PluginInfo(Name = "Unzip", Category = "Enumerations", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class EnumUnzipNode : UnzipNode<EnumEntry>
+	public class EnumUnzipNode : Unzip<EnumEntry>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "Enumerations", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class EnumBinSizeUnzipNode : UnzipNode<IInStream<EnumEntry>>
+    public class EnumBinSizeUnzipNode : Unzip<IInStream<EnumEntry>>
     {
 
     }
     
     [PluginInfo(Name = "Unzip", Category = "Raw", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-	public class RawUnzipNode : UnzipNode<System.IO.Stream>
+	public class RawUnzipNode : Unzip<System.IO.Stream>
 	{
 		
 	}
 
     [PluginInfo(Name = "Unzip", Category = "Raw", Version = "Bin", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
-    public class RawBinSizeUnzipNode : UnzipNode<IInStream<System.IO.Stream>>
+    public class RawBinSizeUnzipNode : Unzip<IInStream<System.IO.Stream>>
     {
 
     }
