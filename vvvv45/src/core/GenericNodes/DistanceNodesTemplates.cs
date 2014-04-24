@@ -20,7 +20,8 @@ namespace VVVV.Nodes
     {
 		protected override double Distance(REPLACEME_CLASS a, REPLACEME_CLASS b)
 		{
-			return 0; //calculate distance between a and b
+			//calculate distance between a and b
+			throw new NotImplementedException("You need to implement the Distance method");
 		}
     }
 	

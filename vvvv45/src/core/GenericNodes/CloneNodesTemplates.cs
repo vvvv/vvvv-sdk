@@ -19,7 +19,7 @@ namespace VVVV.Nodes
     {
         protected override REPLACEME_CLASS CloneSlice(REPLACEME_CLASS slice)
         {
-            return slice;
+            throw new NotImplementedException("You need to implement the Clone method");
         }
     }
 
