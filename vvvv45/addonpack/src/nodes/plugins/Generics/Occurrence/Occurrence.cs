@@ -47,11 +47,9 @@ namespace VVVV.Nodes
 		[Input("Epsilon", IsSingle = true, MinValue=0, Order = 1)]
     	IDiffSpread<double> FEps;
 		
-		public override bool Equals<T>(T a, T b)
+		public override bool Equals(double a, double b)
 		{
-			double _a = (double)(a as object);
-			double _b = (double)(b as object);
-			return (_a>=_b-FEps[0] && _a<=_b+FEps[0]);
+			return (a >= b-FEps[0] && a <= b+FEps[0]);
 		}
 		
 		public override void Evaluate(int SpreadMax)
@@ -72,16 +70,15 @@ namespace VVVV.Nodes
 		[Input("Case Sensitive", IsSingle = true, Order = 1)]
 		IDiffSpread<bool> FCase;
 		
-		public override bool Equals<T>(T a, T b)
+		public override bool Equals(string a, string b)
 		{
-			string _a = (string)(a as object);
-			string _b = (string)(b as object);
 			if (!FCase[0])
 			{
-				_a = _a.ToLower();
-				_b = _b.ToLower();
+				a = a.ToLower();
+				b = b.ToLower();
 			}
-			return _a==_b;
+			
+			return a == b;
 		}
 		
 		public override void Evaluate(int SpreadMax)
@@ -103,14 +100,12 @@ namespace VVVV.Nodes
 		[Input("Epsilon", IsSingle = true, Order = 1)]
     	IDiffSpread<Vector4D> FEps;
     	
-		public override bool Equals<T>(T a, T b)
+		public override bool Equals(RGBAColor a, RGBAColor b)
 		{
-			RGBAColor _a = (RGBAColor)(a as object);
-			RGBAColor _b = (RGBAColor)(b as object);
-			return 	(_a.R>=_b.R-FEps[0].x && _a.R<=_b.R+FEps[0].x) &&
-					(_a.G>=_b.G-FEps[0].x && _a.G<=_b.G+FEps[0].y) &&
-					(_a.B>=_b.B-FEps[0].z && _a.B<=_b.B+FEps[0].z) &&
-					(_a.A>=_b.A-FEps[0].w && _a.A<=_b.A+FEps[0].w);
+			return 	(a.R >= b.R-FEps[0].x && a.R <= b.R+FEps[0].x) &&
+					(a.G >= b.G-FEps[0].x && a.G <= b.G+FEps[0].y) &&
+					(a.B >= b.B-FEps[0].z && a.B <= b.B+FEps[0].z) &&
+					(a.A >= b.A-FEps[0].w && a.A <= b.A+FEps[0].w);
 		}
 		
 		public override void Evaluate(int SpreadMax)

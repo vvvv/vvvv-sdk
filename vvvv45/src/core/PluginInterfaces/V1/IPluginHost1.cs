@@ -272,6 +272,10 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="Index">Index of the EnumEntry.</param>
 		/// <param name="EntryName">String representation of the EnumEntry.</param>
 		void GetEnumEntry(string EnumName, int Index, out string EntryName);
+        /// <summary>
+        /// Triggers Evaluate() of the plugin - if not evaluated yet in that frame. 
+        /// </summary>
+        void Evaluate();
 	}
 	#endregion host
 }

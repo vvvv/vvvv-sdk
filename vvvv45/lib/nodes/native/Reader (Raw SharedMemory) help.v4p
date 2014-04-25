@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Reader (Raw SharedMemory) help.v4p">
-   <BOUNDS type="Window" left="15975" top="4350" width="10185" height="6750">
+   <BOUNDS type="Window" left="1560" top="2565" width="10185" height="6750">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reader (Raw SharedMemory)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reader/Writer (Raw SharedMemory)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="600" width="5100" height="600">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the contents of a sharedmemory location as raw data|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the contents of a sharedmemory location as raw data.&cr;&lf;Writes raw data into a sharedmemory location.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -41,6 +41,8 @@
    </PIN>
    <PIN pinname="Shared Memory Name" visible="1">
    </PIN>
+   <PIN pinname="Use Sync" slicecount="1" visible="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="8" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="3240" top="4425" width="4275" height="960">
@@ -58,6 +60,8 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Size in Bytes" visible="1">
+   </PIN>
+   <PIN pinname="Use Sync" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="AsRaw (Value)" nodename="AsRaw (Value)" componentmode="Hidden" id="4" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
@@ -145,11 +149,11 @@
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="21" dstpinname="Phase">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4545" top="2115" width="14895" height="270">
+   <BOUNDS type="Node" left="4605" top="2685" width="14895" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4545" top="2115" width="4725" height="1035">
+   <BOUNDS type="Box" left="4605" top="2685" width="4725" height="1035">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|the node is using a mutex internally to sync read/write on a shared memory location. if you need to sync with a thirdparty application prefix the memorylocation name with an &apos;m&apos; for the mutex location name.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|When &apos;Use Sync&apos; is active the node is using a mutex internally to sync read/write on a shared memory location. if you need to sync with a thirdparty application prefix the memorylocation name with an &apos;m&apos; for the mutex location name.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -158,4 +162,44 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3015" top="2955" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3015" top="2955" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Use Sync">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Use Sync">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3525" top="3075" width="615" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3525" top="3075" width="870" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Use Sync|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
