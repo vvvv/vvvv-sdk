@@ -384,12 +384,13 @@ namespace VVVV.HDE.CodeEditor
                             
                             if (this.HasForeGround("TypeHighlight"))
                             {
-                                marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock, this.GetBackColor("TypeHighlight"));
+                                marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock,
+                                    this.GetBackColor("TypeHighlight"), this.GetForeColor("TypeHighlight"));
                             }
                             else
                             {
                                 marker = new SD.TextMarker(offset, selectedText.Length, SD.TextMarkerType.SolidBlock,
-                                    this.GetBackColor("TypeHighlight"), this.GetForeColor("TypeHighlight"));
+                                    this.GetBackColor("TypeHighlight"));
                             }
                             
                             FSelectionMarkers.Add(marker);
