@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V1;
 using System.Runtime.InteropServices;
-using VVVV.MSKinect.Lib;
 using System.ComponentModel.Composition;
 using SlimDX.Direct3D9;
 using SlimDX;
 using Microsoft.Kinect;
+
+using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V1;
+using VVVV.Utils;
+using VVVV.MSKinect.Lib;
 
 namespace VVVV.MSKinect.Nodes
 {
@@ -21,6 +22,10 @@ namespace VVVV.MSKinect.Nodes
 	            Help = "Returns a 16bit depthmap from the Kinects depth camera.")]
     public unsafe class KinectDepthTextureNode : IPluginEvaluate, IPluginConnections, IPluginDXTexture2
     {
+        //memcopy method
+        [DllImport("Kernel32.dll", EntryPoint="RtlMoveMemory", SetLastError=false)]
+        static extern void CopyMemory(IntPtr dest, IntPtr src, int size);
+        
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
 
@@ -69,7 +74,6 @@ namespace VVVV.MSKinect.Nodes
                     {
                         this.FInRuntime[0].DepthFrameReady += DepthFrameReady;
                     }
-                    
                 }
 
                 this.FInvalidateConnect = false;
@@ -126,21 +130,37 @@ namespace VVVV.MSKinect.Nodes
                 if (this.FInvalidate)
                 {
                     Texture tx = this.FDepthTex[OnDevice];
-                    Surface srf = tx.GetSurfaceLevel(0);
-                    DataRectangle rect = srf.LockRectangle(LockFlags.Discard);
-
-                    int pos = 0;
-                    lock (this.m_lock)
+  
+                    //lock the vvvv texture
+                    DataRectangle rect;
+                    if (tx.Device is DeviceEx)
+                        rect = tx.LockRectangle(0, LockFlags.None);
+                    else
+                        rect = tx.LockRectangle(0, LockFlags.Discard);
+                    
+                    try
                     {
-                        rect.Data.WriteRange(this.rawdepth);
+                        lock (this.m_lock)
+                        {
+                            var row = 640 * 2;
+                            
+                            fixed (short* p = this.rawdepth)
+                            {
+                                IntPtr src = (IntPtr)p;
+                                //copy one row a time
+                                for (int i = 0; i < 480; i++)
+                                { 
+                                    CopyMemory(rect.Data.DataPointer.Move(rect.Pitch * i), src, row);
+                                    src = src.Move(row);
+                                }
+                            }
+                        }
                     }
-
-
-                    //rect.Data.WriteRange(this.depthimage);
-
-                    srf.UnlockRectangle();
-
-
+                    finally
+                    {
+                        tx.UnlockRectangle(0);
+                    }
+                    
                     this.FInvalidate = false;
                 }
             }
