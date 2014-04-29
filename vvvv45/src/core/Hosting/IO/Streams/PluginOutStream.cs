@@ -117,7 +117,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    class KeyboardStateToKeyboardOutStream : MemoryIOStream<KeyboardState>, IGenericIO, IDisposable
+    class KeyboardStateToKeyboardOutStream : MemoryIOStream<KeyboardState>, IDisposable
     {
         private readonly INodeOut FNodeOut;
         private readonly Spread<Subject<KeyNotification>> FSubjects = new Spread<Subject<KeyNotification>>();
@@ -127,17 +127,12 @@ namespace VVVV.Hosting.IO.Streams
         public KeyboardStateToKeyboardOutStream(INodeOut nodeOut)
         {
             FNodeOut = nodeOut;
-            FNodeOut.SetInterface(this);
+            FNodeOut.SetInterface(FKeyboards.Stream);
         }
 
         public void Dispose()
         {
             FSubjects.ResizeAndDispose(0);
-        }
-
-        object IGenericIO.GetSlice(int index)
-        {
-            return FKeyboards[index];
         }
 
         public override void Flush(bool force = false)
@@ -178,7 +173,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    class MouseStateToMouseOutStream : MemoryIOStream<MouseState>, IGenericIO, IDisposable
+    class MouseStateToMouseOutStream : MemoryIOStream<MouseState>, IDisposable
     {
         private readonly INodeOut FNodeOut;
         private readonly Spread<Subject<MouseNotification>> FSubjects = new Spread<Subject<MouseNotification>>();
@@ -188,17 +183,12 @@ namespace VVVV.Hosting.IO.Streams
         public MouseStateToMouseOutStream(INodeOut nodeOut)
         {
             FNodeOut = nodeOut;
-            FNodeOut.SetInterface(this);
+            FNodeOut.SetInterface(FMouses.Stream);
         }
 
         public void Dispose()
         {
             FSubjects.ResizeAndDispose(0);
-        }
-
-        object IGenericIO.GetSlice(int index)
-        {
-            return FMouses[index];
         }
 
         public override void Flush(bool force = false)
