@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.ComponentModel.Composition;
-using Microsoft.FSharp.Collections;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
