@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\FrameDelay (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.10.dtd" >
+   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\plugins\FrameDelay (Value) help.v4p">
    <BOUNDS height="5835" left="4485" top="6405" type="Window" width="14880">
    </BOUNDS>
    <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
@@ -60,20 +60,6 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE id="9" nodename="FrameDelay (Animation)">
-   <BOUNDS height="0" left="2400" top="3750" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Default 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   <PIN pinname="Initialize" visible="1">
-   </PIN>
-   <PIN pinname="Count" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="810" top="3780" type="Node" width="0">
    </BOUNDS>
@@ -109,7 +95,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Feedback Value|">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="49.1000000000004">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -139,10 +125,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="4" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Default 1" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
@@ -174,8 +156,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Initialize" srcnodeid="3" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="270" left="2400" top="4080" type="Node" width="465">
    </BOUNDS>
@@ -218,6 +198,26 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE id="9" nodename="FrameDelay (Value)" systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="2400" top="3750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Default 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Initialize" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Default 1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Initialize" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output 1">
    <LINKPOINT x="2985" y="4335">
    </LINKPOINT>
@@ -230,4 +230,6 @@
    <LINKPOINT x="3615" y="825">
    </LINKPOINT>
    </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
