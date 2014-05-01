@@ -15,7 +15,10 @@ namespace VVVV.Nodes.Input
             var yIndex = FClassCodeOrdering.IndexOf(y.GetClassCode());
             if (xIndex == -1) xIndex = int.MaxValue;
             if (yIndex == -1) yIndex = int.MaxValue;
-            return xIndex.CompareTo(yIndex);
+            if (xIndex != yIndex)
+                return xIndex.CompareTo(yIndex);
+            else
+                return x.Handle.ToInt64().CompareTo(y.Handle.ToInt64());
         }
     }
 }
