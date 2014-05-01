@@ -7,8 +7,13 @@
     <RootNamespace>VVVV.HDE.Viewer.PiccoloGraphicalEditor</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>VVVV.HDE.Viewer.PiccoloGraphicalEditor</AssemblyName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\vvvv45\src\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -42,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GraphElement Classes.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\core\Core\Core.csproj">
@@ -50,4 +56,5 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

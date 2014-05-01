@@ -7,6 +7,8 @@
     <RootNamespace>VVVV.HDE.CodeEditor</RootNamespace>
     <AssemblyName>CodeEditor</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
@@ -18,6 +20,9 @@
     </Reference>
     <Reference Include="ICSharpCode.TextEditor">
       <HintPath>Dependencies\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex">
@@ -100,4 +105,8 @@
       <Name>PluginInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

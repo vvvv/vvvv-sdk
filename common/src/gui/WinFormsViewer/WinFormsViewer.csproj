@@ -7,8 +7,13 @@
     <RootNamespace>VVVV.HDE.Viewer.WinFormsViewer</RootNamespace>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>VVVV.HDE.Viewer.WinFormsViewer</AssemblyName>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\vvvv45\src\packages\SharpDX.2.5.0\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -71,5 +76,9 @@
       <Name>PiccoloGraphicalEditor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

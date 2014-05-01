@@ -15,8 +15,8 @@ namespace VVVV.Utils.VMath
 	/// <summary>
 	/// Fast 4d vector struct with operators
 	/// </summary>
-	[DataContract]
-    [StructLayout(LayoutKind.Sequential)]
+	[StructLayout(LayoutKind.Sequential)]
+    [DataContract]
 	public struct Vector4D
 	{
 		#region data fields
@@ -576,6 +576,12 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return "[4D](" + x.ToString("C3") + ", " + y.ToString("C3") + ", " + z.ToString("C3") + ", " + w.ToString("C3") + ") ";
+        }
+
 		#endregion
 
 	}
