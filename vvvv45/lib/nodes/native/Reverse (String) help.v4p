@@ -1,0 +1,81 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Q:\meso\vvvv\vvvvdev\help\Reverse (String) help.v4p">
+   <BOUNDS height="6540" left="3225" top="5595" type="Window" width="3900">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverses the order of the slices in the spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverse - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="Reverse (String)" id="13">
+   <BOUNDS type="Node" left="390" top="2940" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="375" top="855" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5700" top="7455" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="375" top="855" width="780" height="1830">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="6" values="null,one,two,three,four,five">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="420" top="3570" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6000" top="7755" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="3570" width="720" height="1935">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="17" dstpinname="Input String" linkstyle="PolyLine">
+   <LINKPOINT x="420" y="3330">
+   </LINKPOINT>
+   <LINKPOINT x="1110" y="3330">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   </PATCH>

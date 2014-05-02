@@ -1,0 +1,117 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Shade (EX9.RenderState) help.v4p">
+   <BOUNDS height="6885" left="1620" top="3165" type="Window" width="8940">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="120" top="1065" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3135" left="120" top="1065" type="Box" width="3480">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="675" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6420" top="5955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="765" left="675" top="4620" type="Box" width="1530">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Flat">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Shade (EX9.RenderState)">
+   <BOUNDS height="0" left="135" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" visible="1">
+   </PIN>
+   <PIN pinname="Pixel Fog Mode">
+   </PIN>
+   <PIN pinname="Vertex Fog Mode">
+   </PIN>
+   <PIN pinname="Fog Color">
+   </PIN>
+   <PIN pinname="Range From">
+   </PIN>
+   <PIN pinname="Enable RangeFog (Vertex Fog)">
+   </PIN>
+   <PIN pinname="Enable">
+   </PIN>
+   <PIN pinname="Shading" slicecount="1" visible="1" values="Flat">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Pillow (DX9)">
+   <BOUNDS height="0" left="150" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Fade Amount" slicecount="1" values="0.22">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="4875" left="3660" top="1065" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="4455" left="3660" top="1065" type="Box" width="4980">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Flat shade mode:&cr;&lf;The color and specular component of the first vertex in the triangle are used to determine the color and specular component of the face. These colors remain constant across the triangle; that is, they are not interpolated. The specular alpha is interpolated. &cr;&lf;&cr;&lf;Gouraud shade mode:&cr;&lf;The color and specular components of the face are determined by a linear interpolation between all three of the triangle&apos;s vertices.&cr;&lf;&cr;&lf;Phong shade mode:&cr;&lf;Currently not supported by DirectX. &cr;&lf;&cr;&lf;REMARKS:&cr;&lf;The first vertex of a triangle for flat shading mode is defined in the following manner.&cr;&lf;&cr;&lf;    * For a triangle list, the first vertex of the triangle i is i * 3.&cr;&lf;    * For a triangle strip, the first vertex of the triangle i is vertex i.&cr;&lf;    * For a triangle fan, the first vertex of the triangle i is vertex i + 1.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Shading" srcnodeid="5" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="6270">
+   </BOUNDS>
+   <BOUNDS height="160" left="9510" top="41640" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Control the fixed function pipelines shading mode (flat, gouraud, phong) of a DX Object|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9510" top="41640" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Shade - EX9.RenderState|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
+   </LINK>
+   </PATCH>
