@@ -24,16 +24,6 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    </NODE>
-   <NODE nodename="Winding (2d)" componentmode="Hidden" id="0" systemname="Winding (2d)" filename="%VVVV%\lib\nodes\modules\2D\Winding (2d).v4p">
-   <BOUNDS type="Node" left="3630" top="4215" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3630" top="4215" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="16935" top="6465" width="8100" height="7185">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3630" top="4920" width="480" height="480">
    </BOUNDS>
@@ -47,11 +37,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="4" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="3630" top="3645" width="100" height="100">
+   <BOUNDS type="Node" left="3000" top="3645" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1" slicecount="10" values="0.02,0.0161803398874989,0.00618033988749894,-0.00618033988749895,-0.016180339887499,-0.02,-0.016180339887499,-0.00618033988749895,0.00618033988749896,0.0161803398874989">
    </PIN>
@@ -60,10 +50,8 @@
    <PIN pinname="XY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="0" dstpinname="InputXY">
-   </LINK>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="3450" top="3045" width="100" height="100">
+   <BOUNDS type="Node" left="2820" top="3045" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Width" visible="1" slicecount="1" values="1">
    </PIN>
@@ -201,13 +189,11 @@
    </PIN>
    <PIN pinname="ScaleY" visible="1">
    </PIN>
-   <PIN pinname="TranslateXY" visible="1">
+   <PIN pinname="TranslateXY" visible="1" slicecount="40" values="3.06151588455594E-017,0.5,0.25,0.433012701892219,0.433012701892219,0.25,0.5,0,0.433012701892219,-0.25,0.25,-0.433012701892219,-9.18454765366783E-017,-0.5,-0.25,-0.433012701892219,-0.433012701892219,-0.25,-0.5,6.12303176911189E-017,-0.433012701892219,0.25,-0.25,0.433012701892219,0.65,0.365,0.865667568261897,0.25809397513309,0.955,0,0.865667568261897,-0.25809397513309,0.65,-0.365,0.434332431738103,-0.25809397513309,0.345,4.46981319145168E-017,0.434332431738103,0.25809397513309">
    </PIN>
    <PIN pinname="ScaleXY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="17" dstpinname="TranslateXY">
-   </LINK>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="17" dstpinname="ScaleXY">
    </LINK>
    <NODE systemname="Text (EX9)" nodename="Text (EX9)" componentmode="Hidden" id="16" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
@@ -260,4 +246,20 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="Winding (2d)" componentmode="Hidden" id="25" systemname="Winding (2d)" filename="%VVVV%\lib\nodes\modules\2D\Winding (2d).v4p">
+   <BOUNDS type="Node" left="3630" top="4215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3630" top="4215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="16935" top="6465" width="8100" height="7185">
+   </BOUNDS>
+   <PIN pinname="Bin Size" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="4" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="25" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="17" dstpinname="TranslateXY">
+   </LINK>
    </PATCH>
