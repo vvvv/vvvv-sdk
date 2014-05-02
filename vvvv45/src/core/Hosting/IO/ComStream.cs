@@ -36,6 +36,23 @@ namespace System.IO
             base.Dispose(disposing);
         }
 
+        public bool Equals(ComStream stream)
+        {
+            if (stream == null)
+                return false;
+            return stream.source == this.source;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ComStream);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.source.GetHashCode();
+        }
+
         public override bool CanRead { get { return true; } }
         public override bool CanSeek { get { return true; } }
         public override bool CanWrite { get { return true; } }
