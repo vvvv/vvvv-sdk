@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.10.dtd" >
-   <PATCH nodename="E:\develop\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\MonoFlop (Animation Framebased) help.v4p">
-   <BOUNDS type="Window" left="14595" top="9855" width="12870" height="6000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\MonoFlop (Animation Framebased) help.v4p">
+   <BOUNDS type="Window" left="5490" top="7350" width="13500" height="6225">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -55,13 +55,15 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1215" top="1560" width="6015" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="1215" top="1560" width="3030" height="510">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Bang to set the MonoFlop (Animation)&apos;s output to 1 for the given frame count.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Bang to set the MonoFlop&apos;s output to 1 for the given frame count.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -239,7 +241,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6810" top="1965" width="2460" height="1425">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; The MonoFlop is retriggerable, ie. if it receives a bang on its input while its output is set, the time the output stays set always prolongs by the given time.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; The MonoFlop is retriggerable, ie. if it receives a bang on its input while its output is set, the number of frames the output stays set always prolongs by the given frame count.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -410,6 +412,8 @@
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
