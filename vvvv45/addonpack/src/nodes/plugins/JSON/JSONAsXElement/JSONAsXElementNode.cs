@@ -52,8 +52,12 @@ namespace VVVV.Nodes
 			{
 				XElement result = ConvertToXElement(FInput[i]);
 				RootElement[i] = result;
-				Document[i] = result.Document;
-				FSuccess[i] = result != null;				
+                var success = result != null;
+                FSuccess[i] = success;
+                if (success)
+                    Document[i] = result.Document;
+                else
+                    Document[i] = null;
 			}
 		}
 
