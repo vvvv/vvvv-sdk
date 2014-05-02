@@ -13,6 +13,12 @@
     <PackageIsAnyCPU>false</PackageIsAnyCPU>
     <DocumentationFile>$(OutputPath)\VVVV.Nodes.Generic.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -30,6 +36,7 @@
   <ItemGroup>
     <Compile Include="CloneNodes\FrameDelay.cs" />
     <Compile Include="CloneNodesTemplates.cs" />
+    <Compile Include="EqualsNodes\ChangeNode.cs" />
     <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="BasicNodes\Cast.cs" />
     <Compile Include="BasicNodesTemplates.cs" />
