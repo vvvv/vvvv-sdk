@@ -167,7 +167,18 @@ namespace VVVV.Utils.Streams
             {
                 FStream.IsChanged = true;
 
-                int slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
+                int slicesToWrite;
+                if (FStream.CanExpand)
+                {
+                    var remainingSpace = Length - Position;
+                    var requestedSpace = length * stride;
+                    var neededSpace = requestedSpace - remainingSpace;
+                    if (neededSpace > 0)
+                        FStream.Length += neededSpace;
+                    slicesToWrite = length;
+                }
+                else
+                    slicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 
                 switch (stride)
                 {
@@ -195,20 +206,34 @@ namespace VVVV.Utils.Streams
         private int FLength;
         private int FCapacity;
         protected int FChangeCount;
-        
+
         public MemoryIOStream(int initialCapacity = 0)
+            : this(new T[initialCapacity], 0, false)
         {
-            FCapacity = initialCapacity;
-            FBuffer = new T[initialCapacity];
-            IsChanged = true;
+        }
+        
+        public MemoryIOStream(int initialCapacity, int length, bool canExpand)
+            : this(new T[initialCapacity], length, canExpand)
+        {
+        }
+
+        public MemoryIOStream(bool canExpand)
+            : this(0, 0, canExpand)
+        {
         }
 
         public MemoryIOStream(T[] buffer)
+            : this(buffer, buffer.Length, false)
+        {
+        }
+
+        private MemoryIOStream(T[] buffer, int length, bool canExpand)
         {
             FCapacity = buffer.Length;
             FBuffer = buffer;
-            FLength = buffer.Length;
+            FLength = length;
             IsChanged = true;
+            CanExpand = canExpand;
         }
         
         public virtual bool Sync()
@@ -228,6 +253,8 @@ namespace VVVV.Utils.Streams
             get { return FChangeCount > 0; }
             set { if (value) FChangeCount++; else FChangeCount = 0; }
         }
+
+        public bool CanExpand { get; private set; }
         
         public int Length
         {

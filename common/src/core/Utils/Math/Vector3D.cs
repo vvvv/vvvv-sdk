@@ -7,6 +7,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace VVVV.Utils.VMath
 {
@@ -14,6 +15,7 @@ namespace VVVV.Utils.VMath
 	/// <summary>
 	/// Fast 3d vector struct with operators
 	/// </summary>
+	[DataContract]
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector3D
 	{
@@ -22,15 +24,18 @@ namespace VVVV.Utils.VMath
 		/// <summary>
 		/// Data component for the x dimension
 		/// </summary>
-		public double x;
+        [DataMember]
+        public double x;
 		/// <summary>
 		/// Data component for the y dimension
 		/// </summary>
-		public double y;
+        [DataMember]
+        public double y;
 		/// <summary>
 		/// Data component for the z dimension
 		/// </summary>
-		public double z;
+        [DataMember]
+        public double z;
 		
 		/// <summary>
 		/// (0, 0, 0) Vector

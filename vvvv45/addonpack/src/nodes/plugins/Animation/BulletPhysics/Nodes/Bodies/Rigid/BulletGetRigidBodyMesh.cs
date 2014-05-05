@@ -36,7 +36,7 @@ namespace VVVV.Nodes.Bullet
 		public void Evaluate(int SpreadMax)
 		{
 			int cnt = 0;
-			for (int i = 0; i < this.FBodies.SliceCount; i++)
+            for (int i = 0; i < SpreadMax; i++)
 			{
 				RigidBody body = this.FBodies[i];
 				CollisionShape shape = body.CollisionShape;

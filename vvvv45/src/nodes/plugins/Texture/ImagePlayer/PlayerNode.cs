@@ -73,6 +73,7 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly ILogger FLogger;
         private readonly IOTaskScheduler FIOTaskScheduler = new IOTaskScheduler();
         private readonly MemoryPool FMemoryPool = new MemoryPool();
+        private readonly TexturePool FTexturePool = new TexturePool();
         private readonly IDXDeviceService FDeviceService;
         
         [ImportingConstructor]
@@ -90,6 +91,7 @@ namespace VVVV.Nodes.ImagePlayer
         		FLogger, 
         		FIOTaskScheduler, 
         		FMemoryPool,
+                FTexturePool,
                 FDeviceService
         	);
         }
@@ -121,6 +123,16 @@ namespace VVVV.Nodes.ImagePlayer
             FDurationTextureOut.SliceCount = spreadMax;
             FUnusedFramesOut.SliceCount = spreadMax;
             FLoadedOut.SliceCount = spreadMax;
+
+            // Release unused resources
+            // Textures are accessed by render thread only
+            // -> if a texture is in the pool it's really not in use 
+            // -> release all
+            FTexturePool.ReleaseUnused(0);
+            // Memory is accessed by multiple threads 
+            // -> if memory is in the pool it could be used by one of them in just a moment 
+            // -> keep a little of it to avoid too many reallocations
+            FMemoryPool.ReleaseUnused(Environment.ProcessorCount);
             
             for (int i = 0; i < spreadMax; i++)
             {
@@ -151,7 +163,6 @@ namespace VVVV.Nodes.ImagePlayer
                 if (reload)
                 {
                     imagePlayer.Reload();
-                    FMemoryPool.Clear();
                 }
                 else if (rescan)
                 {
@@ -198,6 +209,7 @@ namespace VVVV.Nodes.ImagePlayer
             FImagePlayers.SliceCount = 0;
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
+            FTexturePool.Dispose();
         }
 
         static EX9.Format EnumEntryToEx9Format(EnumEntry entry)

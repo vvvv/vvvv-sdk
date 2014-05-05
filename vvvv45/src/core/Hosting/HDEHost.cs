@@ -151,6 +151,9 @@ namespace VVVV.Hosting
         
         public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
         {
+        	//set blackbox mode?
+        	this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
+        	
             // Set VVVV45 to this running vvvv.exe
             Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
             
@@ -657,6 +660,12 @@ namespace VVVV.Hosting
             private set;
         }
         
+        public bool IsBlackBoxMode
+        {
+        	get;
+        	private set;
+        }
+        
         #endregion 
         
         protected IEnumerable<INode2> GetAffectedNodes(INodeInfo nodeInfo)
@@ -772,6 +781,16 @@ namespace VVVV.Hosting
         }
         
         #endregion
-   
+
+
+        public void DisableShortCuts()
+        {
+            FVVVVHost.DisableShortCuts();
+        }
+
+        public void EnableShortCuts()
+        {
+            FVVVVHost.EnableShortCuts();
+        }
     }
 }

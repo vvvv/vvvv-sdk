@@ -8,6 +8,10 @@ namespace VVVV.PluginInterfaces.V2
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginHost2 : IPluginHost, INode
 	{
-		
+        IPluginBase Plugin
+        {
+            get;
+            set;
+        }
 	}
 }

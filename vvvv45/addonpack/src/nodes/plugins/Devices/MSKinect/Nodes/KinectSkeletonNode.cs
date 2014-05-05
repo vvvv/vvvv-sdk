@@ -10,7 +10,12 @@ using Microsoft.Kinect;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name="Skeleton",Category="Kinect",Version="Microsoft",Author="vux")]
+    [PluginInfo(Name="Skeleton", 
+	            Category="Kinect", 
+	            Version="Microsoft", 
+	            Author="vux", 
+	            Tags = "EX9",
+	            Help = "Returns skeleton data for each tracked user")]
     public class KinectSkeletonNode : IPluginEvaluate, IPluginConnections
     {
         [Input("Kinect Runtime")]

@@ -40,18 +40,25 @@ namespace VVVV.Utils.OSC
 	public class OSCBundle : OSCPacket
 	{
 		protected const string BUNDLE = "#bundle";
-		private long timestamp = 0;
-		
-		public OSCBundle(long ts)
+		private DateTime timestamp = new DateTime();
+
+        public OSCBundle(DateTime ts, bool extendedMode = false) : base(extendedMode)
 		{
 			this.address = BUNDLE;
 			this.timestamp = ts;
 		}
 
-		public OSCBundle()
+		public OSCBundle(long ts, bool extendedMode = false) : base (extendedMode)
+		{
+            DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            timestamp = start.AddMilliseconds(ts).ToLocalTime();		    
+		}
+
+
+		public OSCBundle(bool extendedMode = false) : base (extendedMode)
 		{
 			this.address = BUNDLE;
-			this.timestamp = 0;
+			this.timestamp = DateTime.Now;
 		}
 
 		override protected void pack()
@@ -60,11 +67,10 @@ namespace VVVV.Utils.OSC
 
 			addBytes(data, packString(this.Address));
 			padNull(data);
-			addBytes(data, packLong(0)); // TODO
+			addBytes(data, packTimeTag(timestamp));  // fixed point, 8 bytes
 			
-			foreach(object value in this.Values)
+			foreach(OSCPacket oscPacket in this.Values)
 			{
-			    var oscPacket = value as OSCPacket;
 				if (oscPacket != null)
 				{
 					byte[] bs = oscPacket.BinaryData;
@@ -80,29 +86,27 @@ namespace VVVV.Utils.OSC
 			this.binaryData = (byte[])data.ToArray(typeof(byte));
 		}
 
-		public static new OSCBundle Unpack(byte[] bytes, ref int start, int end)
+		public static new OSCBundle Unpack(byte[] bytes, ref int start, int end, bool extendedMode = false)
 		{
 
 			string address = unpackString(bytes, ref start);
 			//Console.WriteLine("bundle: " + address);
 			if(!address.Equals(BUNDLE)) return null; // TODO
 
-			long timestamp = unpackLong(bytes, ref start);
-			OSCBundle bundle = new OSCBundle(timestamp);
+			DateTime timestamp = unpackTimeTag(bytes, ref start);
+            OSCBundle bundle = new OSCBundle(timestamp, extendedMode);
 			
 			while(start < end)
 			{
 				int length = unpackInt(bytes, ref start);
 				int sub_end = start + length;
-				//Console.WriteLine(bytes.Length +" "+ start+" "+length+" "+sub_end);
-				bundle.Append(OSCPacket.Unpack(bytes, ref start, sub_end));
-
+				bundle.Append(OSCPacket.Unpack(bytes, ref start, sub_end, extendedMode));
 			}
 
 			return bundle;
 		}
 
-		public long getTimeStamp() {
+		public DateTime getTimeStamp() {
 			return timestamp;
 		}
 

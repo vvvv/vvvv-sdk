@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\modules\System\Keyboard (System Window ToBeLegacy).v4p" systemname="Keyboard (System Window ToBeLegacy)" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\modules\System\Keyboard (System Window ToBeLegacy).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\System\Keyboard (System Window Legacy).v4p" systemname="Keyboard (System Window ToBeLegacy)" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\modules\System\Keyboard (System Window ToBeLegacy).v4p">
    <BOUNDS type="Window" left="4200" top="8175" width="9000" height="6000">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
@@ -51,10 +51,10 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="KeyCode">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="0" visible="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="Keyboard (System Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Window)" componentmode="Hidden" id="5">
+   <NODE systemname="Keyboard (System Window Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Window)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="1875" top="1545" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Keyboard Output" visible="1" pintype="Output">
@@ -80,8 +80,6 @@
    </LINK>
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="2" dstpinname="Input String">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Key Code" dstnodeid="3" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="4155" top="3240" width="0" height="0">
    </BOUNDS>
@@ -100,4 +98,18 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Caps Lock" dstnodeid="7" dstpinname="Y Input Value">
    </LINK>
+   <NODE systemname="AvoidNIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\AvoidNIL (Spreads).v4p" nodename="AvoidNIL (Spreads)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="2370" top="2625" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Key Code" dstnodeid="8" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
    </PATCH>

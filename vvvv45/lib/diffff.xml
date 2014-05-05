@@ -18,7 +18,7 @@
   ========================================================================================================
 	  
   How to edit this file 
-  * if you are not an internal developer you can contribute to this via the SDK and by making pull request
+  * if you are not an internal developer you can contribute to this via the SDK and by making a pull request
   
   * HOWEVER you are also invited to use this tool to convert temporarily   
    
@@ -953,8 +953,14 @@
   	<NODE old="MTRotarySlider (GUI Multitouch)" new="ToggleButton (GUI Multitouch)"></NODE>
   	<NODE old="Delete (SQlite Network)" new="Delete (SQLite Network)"></NODE>
   	<NODE old="QueryBatch (SQlite Network)" new="QueryBatch (SQLite Network)"></NODE>
-  </PATCH>
-	<PATCH version="45alpha28">
+  	<NODE old=":MODULES:\vvvv group\EX9\MultiScreen (EX9 Dualview).v4p" new="MultiScreen (EX9 Dualview Legacy)"> </NODE>
+	<NODE old="MultiScreen (EX9 Dualview).v4p" new="MultiScreen (EX9 Dualview Legacy)"> </NODE>
+	<NODE old="MultiScreen (EX9 Dualview)" new="MultiScreen (EX9 Dualview Legacy)"> </NODE>
+	<NODE old=":MODULES:\vvvv group\EX9\MultiScreen (EX9 Spanmode).v4p" new="MultiScreen (EX9 SpanmodeLegacy)"> </NODE>
+	<NODE old="MultiScreen (EX9 Spanmode).v4p" new="MultiScreen (EX9 Spanmode Legacy)"> </NODE>
+	<NODE old="MultiScreen (EX9 Spanmode)" new="MultiScreen (EX9 Spanmode Legacy)"> </NODE>
+  </PATCH>	
+  <PATCH version="45alpha28">
   	<NODE old="AlphaLevels (EX9.Texture Filter)" new="AlphaLevels (EX9.Texture Filter Legacy)"> </NODE>
   	<NODE old="PreviewRGBA (EX9.Texture)" new="Preview (EX9.Texture)"> </NODE>
   	<NODE old="DisplacementMap (EX9.Texture Source)" new="TexCoords (EX9.Texture Source)"> </NODE>
@@ -1199,5 +1205,160 @@
 	  </NODE>
 	  <NODE old="FFT (DShow9 4Channels Win7)" new="FFT (DShow9 4Channels)"></NODE>
 	  <NODE old="FFT (DShow9 4Channels)" new="FFT (DShow9 4Channels WinXP)"></NODE>	  
+  </PATCH>
+  <PATCH version="45debug30.3">
+	  <NODE old="MAC (Network)">
+		<PIN old="Name (or IP, blank for local)" new="Host Name"></PIN>
+	  </NODE>
+	  <NODE old="Prune (XML)" new="Prune (XElement Legacy)"></NODE> <!-- has been forgotten the other day (29.6) -->
+	  <NODE old="Prune (XElement)" new="Prune (XElement Legacy)"></NODE>
+	  <NODE old="Perspective (Transform Kinect)" new="Perspective (Transform Kinect Legacy)"></NODE>
+  </PATCH>  
+  <PATCH version="45debug31.1">
+    <NODE old="Metaballs (EX9.Geometry)">
+      <PIN old="Position XYZ" new="PositionXYZ"/>
+    </NODE>
+	<NODE old="MidiNote (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiController (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiController (Devices Relative)" new="MidiController (Devices Endless)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiBend (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiProgram (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiTimeCode (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiClock (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiShort (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiSysex (Devices)">
+	  <PIN old="Enabled" olddefault="0"> </PIN>
+	</NODE>
+	<NODE old="MidiShortOutput (Devices)" new="MidiShortOut (Devices)"> </NODE>
+	<NODE old="MidiSysexOutput (Devices)" new="MidiSysexOut (Devices)"> </NODE>
+	<NODE old="TUIODecoder (Network 1.0)" new="TUIODecoder (Network 1.0 Legacy)"> </NODE>
+	<NODE old="Quad (DX11.Layer)">
+	  <PIN old="Transform In" new="Transform"> </PIN>
+	  <PIN old="Texture In" new="Texture"> </PIN>
+	  <PIN old="Samper State" new="Sampler State"> </PIN>
+	  <PIN old="Layer Out" new="Layer"> </PIN>
+	</NODE>
+  </PATCH>
+  <PATCH version="45debug31.3">
+    <NODE old="GetElements (SVG)">
+		<PIN old="Name" new="ID"></PIN>
+	</NODE>	
+	<NODE old="PhidgetRFID (Devices)" new="RFID (Devices Phidget)"></NODE>
+  </PATCH>
+  <PATCH version="45debug31.5">
+    <NODE old="Mouse (System Window)" new="Mouse (System Window Legacy2)"/>
+    <NODE old="Mouse (System Global)" new="Mouse (System Global Legacy2)"/>
+    <NODE old="MouseState (System Join)" new="MouseState (System Join Legacy)"/>
+    <NODE old="MouseState (System Split)" new="MouseState (System Split Legacy)"/>
+    <NODE old="Keyboard (System Window)" new="Keyboard (System Window Legacy2)"/>
+    <NODE old="Keyboard (System Global)" new="Keyboard (System Global Legacy2)"/>
+    <NODE old="KeyboardState (System Join)" new="KeyboardState (System Join Legacy)"/>
+    <NODE old="KeyboardState (System Split)" new="KeyboardState (System Split Legacy)"/>
+    <NODE old="KeyMatch (String)" new="KeyMatch (Keyboard)"/>
+    <NODE old="RadioKeyMatch (String)" new="RadioKeyMatch (Keyboard)"/>
+    <NODE old="ApplyModifiers (String)" new="ApplyModifiers (String Legacy)"/>
+    <NODE old="R (KeyboardState Advanced)" new="R (Keyboard)"/>
+    <NODE old="S (KeyboardState Advanced)" new="S (Keyboard)"/>
+    <NODE old="R (MouseState Advanced)" new="R (Mouse)"/>
+    <NODE old="S (MouseState Advanced)" new="S (Mouse)"/>
+	<NODE old="Typewriter (String)">
+		<PIN old="Keyboard State" new="Keyboard"></PIN>
+	</NODE>	
+	<NODE old="I2CDecode (Devices Firmata 2.x)" new="I2CDecode (Firmata 2.x)"/>
+	<NODE old="I2CEncode (Devices Firmata 2.x)" new="I2CEncode (Firmata 2.x)"/>
+	<NODE old="Database (SQL Server Network)" new="Database (SQLServer Network)"/>
+	<NODE old="Delete (SQL Server Network)" new="Delete (SQLServer Network)"/>
+	<NODE old="Insert (SQL Server Network)" new="Insert (SQLServer Network)"/>
+	<NODE old="Select (SQL Server Network)" new="Select (SQLServer Network)"/>
+	<NODE old="Update (SQL Server Network)" new="Update (SQLServer Network)"/>
+	<NODE old="CircleGesture (Devices Leap)" new="CircleGesture (Leap)"/>
+	<NODE old="SwipeGesture (Devices Leap)" new="SwipeGesture (Leap)"/>
+	<NODE old="KeyTabGesture (Devices Leap)" new="KeyTabGesture (Leap)"/>
+	<NODE old="ScreenTabGesture (Devices Leap)" new="ScreenTabGesture (Leap)"/>
+	<NODE old="Levin (Spreads)" new="Levin (Spreads Simple)"/>
+	<NODE old="Line (EX9)" new="Line (EX9 Legacy)"/>
+  </PATCH>
+  <PATCH version="45debug31.6">
+    <NODE old="TouchStates (Touch Split)">
+      <PIN old="Schedule Mode" new="Queue Mode" />
+    </NODE>
+    <NODE old="GetAttributes (XElement ByXPath)">
+      <PIN old="NameSpace Resolver" new="Namespace Resolver" />
+    </NODE>
+    <NODE old="MainLoop (VVVV)">
+      <PIN old="Increase Timing Precision" olddefault="0" />
+    </NODE>
+    <NODE old="Element (XElement Split)">
+      <PIN old="Value" new="Deep Value" />
+    </NODE>
+  </PATCH>
+  <PATCH version="45debug31.7">
+    <NODE old="Copier (File Async)" new="Copier (File Async Legacy)" />
+    <NODE old="VertexBuffer (EX9.Geometry Join)">
+      <PIN old="Apply On Device Change" olddefault="0" />
+    </NODE>
+    <NODE old="VertexBuffer (EX9.Geometry Join Advanced)">
+      <PIN old="Apply On Device Change" olddefault="0" />
+    </NODE>
+    <NODE old="Mesh (EX9.Geometry Join)">
+      <PIN old="Apply On Device Change" olddefault="0" />
+    </NODE>
+	<NODE old="PID (Windows)">
+      <PIN old="ID" new="Process ID" />
+    </NODE>
+  </PATCH>
+  <PATCH version="45debug31.9">
+	<NODE old="S (Value)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Value)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="S (String)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (String)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="S (Color)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Color)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="S (Node)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Node)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="Finder (HDE)" new="Finder (VVVV)">
+    </NODE>
+	<NODE old="Camera (EX9.Geometry Collada)" new="Camera (Transform Collada)">
+    </NODE>
+	<NODE old="HWND (Windows)" new="HandleFromCaption (Windows)">
+    </NODE>
+  </PATCH>
+  <PATCH version="45debug31.10">
+	<NODE old="FrameDelay (Animation)" new="FrameDelay (Animation Legacy)" />
+	<NODE old="FrameDelay (Color)" new="FrameDelay (Color Legacy)" />
+	<NODE old="FrameDelay (String)" new="FrameDelay (String Legacy)" />
+	<NODE old="FrameDelay (Transform)" new="FrameDelay (Transform Legacy)" />
   </PATCH>  
 </CONVVVVERTER>

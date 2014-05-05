@@ -4,6 +4,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Text;
+using System.Runtime.InteropServices;
 using VVVV.Hosting.Factories;
 using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V1;
@@ -11,7 +12,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Hosting.IO
 {
-    public class PluginContainer : IPlugin, IDisposable
+    public class PluginContainer : IPlugin, IDisposable, ICustomQueryInterface, IPluginContainer
     {
         [Export(typeof(IIOFactory))]
         [Export(typeof(IOFactory))]
@@ -86,6 +87,30 @@ namespace VVVV.Hosting.IO
             {
                 return FAutoEvaluate;
             }
+        }
+        
+        public CustomQueryInterfaceResult GetInterface(ref Guid iid, out IntPtr ppv)
+        {
+        	var id = iid;
+        	
+        	var interfaceType = typeof(PluginContainer).GetInterfaces().FirstOrDefault(i => i.GUID == id);
+        	if (interfaceType != null)
+        	{
+	        	ppv = Marshal.GetComInterfaceForObject(this, interfaceType, CustomQueryInterfaceMode.Ignore);
+	        	if (ppv != null)
+		        	return CustomQueryInterfaceResult.Handled;
+        	}
+        	
+        	var runtimeType = PluginBase.GetType();
+        	interfaceType = runtimeType.GetInterfaces().FirstOrDefault(i => i.GUID == id);
+        	if (interfaceType != null)
+        	{
+	        	ppv = Marshal.GetComInterfaceForObject(PluginBase, interfaceType);
+	        	if (ppv != null)
+		        	return CustomQueryInterfaceResult.Handled;
+        	}
+        	ppv = IntPtr.Zero;
+        	return CustomQueryInterfaceResult.NotHandled;
         }
     }
 }

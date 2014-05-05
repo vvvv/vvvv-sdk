@@ -331,6 +331,25 @@ namespace VVVV.PluginInterfaces.V2
         {
             get;
         }
+        
+        		
+		/// <summary>
+		/// Indicates whether this IHDEHost is running in encypted mode.
+		/// </summary>
+		bool IsBlackBoxMode
+		{
+			get;
+		}
+
+        /// <summary>
+        /// Disables the short cuts of vvvv. Each disable call needs to be followed by an enable call.
+        /// </summary>
+        void DisableShortCuts();
+
+        /// <summary>
+        /// Enables the short cuts of vvvv.
+        /// </summary>
+        void EnableShortCuts();
 	}
 	#endregion IHDEHost
 	

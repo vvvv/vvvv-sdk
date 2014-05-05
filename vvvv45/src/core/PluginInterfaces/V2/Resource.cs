@@ -60,6 +60,8 @@ namespace VVVV.PluginInterfaces.V2
             }
         }
 
+        public IEnumerable<TResource> DeviceResources { get { return FResources.Values; } }
+
         protected virtual TResource CreateResoure(TMetadata metadata, TDevice device)
         {
             return FCreateResourceFunc(metadata, device);

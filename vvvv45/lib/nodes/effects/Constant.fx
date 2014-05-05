@@ -28,6 +28,7 @@ sampler Samp = sampler_state    //sampler for doing the texture-lookup
 };
 
 float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
+float4x4 tColor <string uiname="Color Transform";>;
 
 //the data structure: vertexshader to pixelshader
 //used as output data with the VS function
@@ -67,7 +68,8 @@ float4 PS(vs2ps In): COLOR
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
 
     float4 col = tex2D(Samp, In.TexCd) * cAmb;
-    col.a *= Alpha;
+    col = mul(col, tColor);
+	col.a *= Alpha;
     return col;
 }
 

@@ -10,7 +10,7 @@ install:
 - extract the vvvv directory from the .zip archive to a
   nice place on your harddisk.
 
-- start at least once crack.exe (needs admin rights!)
+- start at least once setup.exe (needs admin rights!)
 
 - if you face troubles, see:
     http://vvvv.org/documentation/troubleshooting
@@ -47,7 +47,7 @@ system recommendations:
 
 uninstall:
 - before deleting the directory containing vvvv run 
-  crack.exe and click 'uninstall'
+  setup.exe and click 'uninstall'
 
 
 

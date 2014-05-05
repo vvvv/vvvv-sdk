@@ -43,7 +43,7 @@ namespace VVVV.Nodes.ImagePlayer
 
         public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream, Format preferedFormat)
         {
-            var extension = Path.GetExtension(filename);
+            var extension = Path.GetExtension(filename).ToLowerInvariant();
             // In case the prefered format is not supported on one device, fall back to one which works.
             var format = GetFallbackFormatIfPreferedFormatIsNotSupported(preferedFormat);
             Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, Format, FrameDecoder> decoderFactory = null;

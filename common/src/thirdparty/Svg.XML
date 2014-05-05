@@ -131,6 +131,11 @@
             The base class of which all SVG elements are derived from.
             </summary>
         </member>
+        <member name="F:Svg.SvgElement._content">
+            <summary>
+            Gets or sets the content of the element.
+            </summary>
+        </member>
         <member name="M:Svg.SvgElement.HasChildren">
             <summary>
             Gets a value to determine whether the element has children.
@@ -159,6 +164,12 @@
             Removes any previously applied transforms from the specified <see cref="T:Svg.SvgRenderer"/>.
             </summary>
             <param name="renderer">The <see cref="T:Svg.SvgRenderer"/> that should have transforms removed.</param>
+        </member>
+        <member name="M:Svg.SvgElement.FixID(System.String)">
+            <summary>
+            Only used by the ID Manager
+            </summary>
+            <param name="newID"></param>
         </member>
         <member name="M:Svg.SvgElement.AddElement(Svg.SvgElement,System.Int32)">
             <summary>
@@ -239,14 +250,22 @@
             A new object that is a copy of this instance.
             </returns>
         </member>
+        <member name="M:Svg.SvgElement.RegisterEvents(Svg.ISvgEventCaller)">
+            <summary>
+            Use this method to provide your implementation ISvgEventCaller which can register Actions 
+            and call them if one of the events occurs. Make sure, that your SvgElement has a unique ID.
+            </summary>
+            <param name="caller"></param>
+        </member>
+        <member name="M:Svg.SvgElement.UnregisterEvents(Svg.ISvgEventCaller)">
+            <summary>
+            Use this method to provide your implementation ISvgEventCaller to unregister Actions
+            </summary>
+            <param name="caller"></param>
+        </member>
         <member name="P:Svg.SvgElement.ElementName">
             <summary>
             Gets the name of the element.
-            </summary>
-        </member>
-        <member name="P:Svg.SvgElement.Content">
-            <summary>
-            Gets or sets the content of the element.
             </summary>
         </member>
         <member name="P:Svg.SvgElement.Events">
@@ -280,6 +299,11 @@
             Gets a collection of element attributes.
             </summary>
         </member>
+        <member name="P:Svg.SvgElement.CustomAttributes">
+            <summary>
+            Gets a collection of custom attributes
+            </summary>
+        </member>
         <member name="P:Svg.SvgElement.Transforms">
             <summary>
             Gets or sets the element transforms.
@@ -291,6 +315,11 @@
             Gets or sets the ID of the element.
             </summary>
             <exception cref="T:Svg.SvgException">The ID is already used within the <see cref="T:Svg.SvgDocument"/>.</exception>
+        </member>
+        <member name="E:Svg.SvgElement.AttributeChanged">
+            <summary>
+            Fired when an Atrribute of this Element has changed
+            </summary>
         </member>
         <member name="T:Svg.ISvgStylable">
             <summary>
@@ -491,6 +520,11 @@
             Gets the bounds of the element.
             </summary>
             <value>The bounds.</value>
+        </member>
+        <member name="T:Svg.SvgExtentions">
+            <summary>
+            Svg helpers
+            </summary>
         </member>
         <member name="T:Svg.SvgElementAttribute">
             <summary>
@@ -729,6 +763,11 @@
             </summary>
             <returns>The result of all transforms</returns>
         </member>
+        <member name="E:Svg.Transforms.SvgTransformCollection.TransformChanged">
+            <summary>
+            Fired when an SvgTransform has changed
+            </summary>
+        </member>
         <member name="M:Svg.SvgUse.PushTransforms(Svg.SvgRenderer)">
             <summary>
             Applies the required transforms to <see cref="T:Svg.SvgRenderer"/>.
@@ -827,6 +866,14 @@
             Initializes a new instance of the <see cref="T:Svg.SvgDocument"/> class.
             </summary>
         </member>
+        <member name="M:Svg.SvgDocument.OverwriteIdManager(Svg.SvgElementIdManager)">
+            <summary>
+            Overwrites the current IdManager with a custom implementation. 
+            Be careful with this: If elements have been inserted into the document before,
+            you have to take care that the new IdManager also knows of them.
+            </summary>
+            <param name="manager"></param>
+        </member>
         <member name="M:Svg.SvgDocument.GetElementById(System.String)">
             <summary>
             Retrieves the <see cref="T:Svg.SvgElement"/> with the specified ID.
@@ -849,7 +896,15 @@
             <returns>An <see cref="T:Svg.SvgDocument"/> with the contents loaded.</returns>
             <exception cref="T:System.IO.FileNotFoundException">The document at the specified <paramref name="path"/> cannot be found.</exception>
         </member>
-        <member name="M:Svg.SvgDocument.Open(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+        <member name="M:Svg.SvgDocument.Open``1(System.String)">
+            <summary>
+            Opens the document at the specified path and loads the SVG contents.
+            </summary>
+            <param name="path">A <see cref="T:System.String"/> containing the path of the file to open.</param>
+            <returns>An <see cref="T:Svg.SvgDocument"/> with the contents loaded.</returns>
+            <exception cref="T:System.IO.FileNotFoundException">The document at the specified <paramref name="path"/> cannot be found.</exception>
+        </member>
+        <member name="M:Svg.SvgDocument.Open``1(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             Opens the document at the specified path and loads the SVG contents.
             </summary>
@@ -858,13 +913,13 @@
             <returns>An <see cref="T:Svg.SvgDocument"/> with the contents loaded.</returns>
             <exception cref="T:System.IO.FileNotFoundException">The document at the specified <paramref name="path"/> cannot be found.</exception>
         </member>
-        <member name="M:Svg.SvgDocument.Open(System.IO.Stream)">
+        <member name="M:Svg.SvgDocument.Open``1(System.IO.Stream)">
             <summary>
             Attempts to open an SVG document from the specified <see cref="T:System.IO.Stream"/>.
             </summary>
             <param name="stream">The <see cref="T:System.IO.Stream"/> containing the SVG document to open.</param>
         </member>
-        <member name="M:Svg.SvgDocument.Open(System.IO.Stream,System.Collections.Generic.Dictionary{System.String,System.String})">
+        <member name="M:Svg.SvgDocument.Open``1(System.IO.Stream,System.Collections.Generic.Dictionary{System.String,System.String})">
             <summary>
             Opens an SVG document from the specified <see cref="T:System.IO.Stream"/> and adds the specified entities.
             </summary>
@@ -941,6 +996,11 @@
             <param name="isRelativeY"><b>true</b> if <paramref name="y"/> contains relative coordinate value, otherwise <b>false</b>.</param>
             <returns><see cref="T:System.Drawing.PointF"/> that contains absolute coordinates.</returns>
         </member>
+        <member name="F:Svg.SvgColourServer.NotSet">
+            <summary>
+            An unspecified <see cref="T:Svg.SvgPaintServer"/>.
+            </summary>
+        </member>
         <member name="M:Svg.SvgDtdResolver.GetEntity(System.Uri,System.String,System.Type)">
             <summary>
             Maps a URI to an object containing the actual resource.
@@ -992,7 +1052,7 @@
             Provides the methods required in order to parse and create <see cref="T:Svg.SvgElement"/> instances from XML.
             </summary>
         </member>
-        <member name="M:Svg.SvgElementFactory.CreateDocument(System.Xml.XmlTextReader)">
+        <member name="M:Svg.SvgElementFactory.CreateDocument``1(System.Xml.XmlTextReader)">
             <summary>
             Creates an <see cref="T:Svg.SvgDocument"/> from the current node in the specified <see cref="T:System.Xml.XmlTextReader"/>.
             </summary>
@@ -1113,24 +1173,6 @@
             Gets the center point of the circle.
             </summary>
             <value>The center.</value>
-        </member>
-        <member name="P:Svg.SvgCircle.CenterX">
-            <summary>
-            Gets or sets the center X co-ordinate.
-            </summary>
-            <value>The center X.</value>
-        </member>
-        <member name="P:Svg.SvgCircle.CenterY">
-            <summary>
-            Gets or sets the center Y co-ordinate.
-            </summary>
-            <value>The center Y.</value>
-        </member>
-        <member name="P:Svg.SvgCircle.Radius">
-            <summary>
-            Gets or sets the radius of the circle.
-            </summary>
-            <value>The radius.</value>
         </member>
         <member name="P:Svg.SvgCircle.Bounds">
             <summary>
@@ -1396,6 +1438,46 @@
             <param name="attributeName">A <see cref="T:System.String"/> containing the attribute name.</param>
             <returns>The attribute value associated with the specified name; If there is no attribute the parent's value will be inherited.</returns>
         </member>
+        <member name="E:Svg.SvgAttributeCollection.AttributeChanged">
+            <summary>
+            Fired when an Atrribute has changed
+            </summary>
+        </member>
+        <member name="T:Svg.SvgCustomAttributeCollection">
+            <summary>
+            A collection of Custom Attributes
+            </summary>
+        </member>
+        <member name="M:Svg.SvgCustomAttributeCollection.#ctor(Svg.SvgElement)">
+            <summary>
+            Initialises a new instance of a <see cref="T:Svg.SvgAttributeCollection"/> with the given <see cref="T:Svg.SvgElement"/> as the owner.
+            </summary>
+            <param name="owner">The <see cref="T:Svg.SvgElement"/> owner of the collection.</param>
+        </member>
+        <member name="P:Svg.SvgCustomAttributeCollection.Item(System.String)">
+            <summary>
+            Gets the attribute with the specified name.
+            </summary>
+            <param name="attributeName">A <see cref="T:System.String"/> containing the attribute name.</param>
+            <returns>The attribute value associated with the specified name; If there is no attribute the parent's value will be inherited.</returns>
+        </member>
+        <member name="E:Svg.SvgCustomAttributeCollection.AttributeChanged">
+            <summary>
+            Fired when an Atrribute has changed
+            </summary>
+        </member>
+        <member name="T:Svg.SvgDefaults">
+            <summary>
+            Holds a dictionary of the default values of the SVG specification 
+            </summary>
+        </member>
+        <member name="M:Svg.SvgDefaults.IsDefault(System.String,System.String)">
+            <summary>
+            Checks whether the property value is the default value of the svg definition.
+            </summary>
+            <param name="attributeName">Name of the svg attribute</param>
+            <param name="propertyValue">.NET value of the attribute</param>
+        </member>
         <member name="T:Svg.SvgClipPath">
             <summary>
             Defines a path that can be used by other <see cref="T:Svg.ISvgClipable"/> elements.
@@ -1650,12 +1732,6 @@
             Renders the <see cref="T:Svg.SvgElement"/> and contents to the specified <see cref="T:System.Drawing.Graphics"/> object.
             </summary>
             <param name="graphics">The <see cref="T:System.Drawing.Graphics"/> object to render to.</param>
-        </member>
-        <member name="P:Svg.SvgGroup.Fill">
-            <summary>
-            Gets or sets the fill.
-            </summary>
-            <value>The fill.</value>
         </member>
         <member name="P:Svg.SvgGroup.Path">
             <summary>
@@ -1975,13 +2051,23 @@
             </summary>
             <param name="element">The <see cref="T:Svg.SvgElement"/> to be managed.</param>
         </member>
+        <member name="M:Svg.SvgElementIdManager.AddAndFixID(Svg.SvgElement,System.Boolean,System.Action{Svg.SvgElement,System.String,System.String})">
+            <summary>
+            Adds the specified <see cref="T:Svg.SvgElement"/> for ID management. 
+            And can auto fix the ID if it already exists or it starts with a number.
+            </summary>
+            <param name="element">The <see cref="T:Svg.SvgElement"/> to be managed.</param>
+            <param name="autoFixID">Pass true here, if you want the ID to be fixed</param>
+            <param name="logElementOldIDNewID">If not null, the action is called before the id is fixed</param>
+            <returns>true, if ID was altered</returns>
+        </member>
         <member name="M:Svg.SvgElementIdManager.Remove(Svg.SvgElement)">
             <summary>
             Removed the specified <see cref="T:Svg.SvgElement"/> from ID management.
             </summary>
             <param name="element">The <see cref="T:Svg.SvgElement"/> to be removed from ID management.</param>
         </member>
-        <member name="M:Svg.SvgElementIdManager.EnsureValidId(System.String)">
+        <member name="M:Svg.SvgElementIdManager.EnsureValidId(System.String,System.Boolean)">
             <summary>
             Ensures that the specified ID is valid within the containing <see cref="T:Svg.SvgDocument"/>.
             </summary>
@@ -1996,6 +2082,26 @@
             Initialises a new instance of an <see cref="T:Svg.SvgElementIdManager"/>.
             </summary>
             <param name="document">The <see cref="T:Svg.SvgDocument"/> containing the <see cref="T:Svg.SvgElement"/>s to manage.</param>
+        </member>
+        <member name="T:Svg.AttributeEventArgs">
+            <summary>
+            Describes the Attribute which was set
+            </summary>
+        </member>
+        <member name="T:Svg.MouseArg">
+            <summary>
+            Represents the state of the mouse at the moment the event occured.
+            </summary>
+        </member>
+        <member name="F:Svg.MouseArg.Button">
+            <summary>
+            1 = left, 2 = middle, 3 = right
+            </summary>
+        </member>
+        <member name="T:Svg.PointArg">
+            <summary>
+            Represents the mouse position at the moment the event occured.
+            </summary>
         </member>
         <member name="T:Svg.SvgColourConverter">
             <summary>

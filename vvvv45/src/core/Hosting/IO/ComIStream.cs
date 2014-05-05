@@ -16,7 +16,26 @@ namespace System.IO
 
         public ComIStream(Stream source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             this.source = source;
+        }
+
+        public bool Equals(ComIStream stream)
+        {
+            if (stream == null)
+                return false;
+            return stream.source == this.source;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ComIStream);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.source.GetHashCode();
         }
 
         public void Clone(out win32.IStream ppstm)

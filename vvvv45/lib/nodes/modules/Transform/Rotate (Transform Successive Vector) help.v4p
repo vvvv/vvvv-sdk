@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Transform\Rotate (Transform Successive Vector) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\Transform\Rotate (Transform Successive Vector) help.v4p" componentmode="InAWindow">
    <BOUNDS height="9420" left="825" top="600" type="Window" width="7335">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="16" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -35,7 +35,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="0,0,0" visible="1">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,0">
    </PIN>
    <PIN pinname="X Input Value" slicecount="3" values="1,1,1">
    </PIN>
@@ -182,18 +182,6 @@
    </NODE>
    <LINK srcnodeid="23" srcpinname="Mesh" dstnodeid="24" dstpinname="Mesh">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="3120" top="1455" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="3405" top="2670" width="100" height="100">
    </BOUNDS>
@@ -227,40 +215,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="27" srcpinname="Output" dstnodeid="28" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="25" srcpinname="Y" dstnodeid="26" dstpinname="X">
-   </LINK>
-   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="3660" top="2265" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="25" srcpinname="X" dstnodeid="31" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="26" dstpinname="Y">
-   </LINK>
-   <LINK srcnodeid="25" srcpinname="Left Button" dstnodeid="28" dstpinname="Set">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="4395" top="2085" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4395" top="2085" width="360" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="3390" top="4245" width="100" height="100">
@@ -328,8 +282,6 @@
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="36" dstpinname="Layer 2">
    </LINK>
-   <LINK srcnodeid="25" srcpinname="Mouse" dstnodeid="37" dstpinname="Mouse">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
    <BOUNDS type="Node" left="180" top="1785" width="2460" height="270">
    </BOUNDS>
@@ -345,5 +297,45 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="24" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="39">
+   <BOUNDS type="Node" left="3270" top="1275" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Device" dstnodeid="37" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="3435" top="1710" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="PositionXY" dstnodeid="40" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Y" dstnodeid="26" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Left Button" dstnodeid="28" dstpinname="Set">
+   </LINK>
+   <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="3645" top="2250" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="X" dstnodeid="42" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="26" dstpinname="Y">
    </LINK>
    </PATCH>

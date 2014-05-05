@@ -1,10 +1,18 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using VVVV.Hosting.Pins;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils;
+using VVVV.Utils.IO;
+using VVVV.Utils.Reflection;
 using VVVV.Utils.Streams;
-using System.IO;
+using VVVV.Utils.VMath;
+using VVVV.Utils.Win32;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -106,50 +114,388 @@ namespace VVVV.Hosting.IO.Streams
             return IsChanged;
         }
     }
-    
-    class NodeInStream<T> : MemoryIOStream<T>
+
+    unsafe class NodeInStream<T> : IInStream<T>
     {
+        class ConvolutedReader : IStreamReader<T>
+        {
+            private readonly MemoryIOStream<T> FStream;
+            private readonly int* FUpstreamSlices;
+            private readonly int FLength;
+
+            public ConvolutedReader(MemoryIOStream<T> stream, int length, int* upstreamSlices)
+            {
+                FStream = stream;
+                FUpstreamSlices = upstreamSlices;
+                FLength = length;
+            }
+
+            public T Read(int stride = 1)
+            {
+                var upstreamSlice = VMath.Zmod(FUpstreamSlices[Position], FStream.Length);
+                Position += stride;
+                return FStream.Buffer[upstreamSlice];
+            }
+
+            public int Read(T[] buffer, int offset, int length, int stride = 1)
+            {
+                int slicesAhead = Length - Position;
+
+                if (stride > 1)
+                {
+                    int r = 0;
+                    slicesAhead = Math.DivRem(slicesAhead, stride, out r);
+                    if (r > 0)
+                        slicesAhead++;
+                }
+
+                int numSlicesToRead = Math.Max(Math.Min(length, slicesAhead), 0);
+
+                switch (numSlicesToRead)
+                {
+                    case 0:
+                        return 0;
+                    case 1:
+                        buffer[offset] = Read(stride);
+                        return 1;
+                    default:
+                        switch (stride)
+                        {
+                            case 0:
+                                if (offset == 0 && numSlicesToRead == buffer.Length)
+                                    buffer.Init(Read(stride)); // Slightly faster
+                                else
+                                    buffer.Fill(offset, numSlicesToRead, Read(stride));
+                                break;
+                            default:
+                                Debug.Assert(Position + numSlicesToRead <= Length);
+                                int* position = FUpstreamSlices + Position;
+                                for (int i = offset; i < numSlicesToRead; i++)
+                                {
+                                    var upstreamSlice = VMath.Zmod(*position, FStream.Length);
+                                    buffer[i] = FStream.Buffer[upstreamSlice];
+                                    position += stride;
+                                }
+                                Position += numSlicesToRead * stride;
+                                break;
+                        }
+                        break;
+                }
+
+                return numSlicesToRead;
+            }
+
+            public bool Eos
+            {
+                get { return Position >= Length; }
+            }
+
+            public int Position
+            {
+                get;
+                set;
+            }
+
+            public int Length
+            {
+                get { return FLength; }
+            }
+
+            public void Dispose()
+            {
+                
+            }
+
+            public T Current
+            {
+                get;
+                private set;
+            }
+
+            object System.Collections.IEnumerator.Current
+            {
+                get { return Current; }
+            }
+
+            public bool MoveNext()
+            {
+                var result = !Eos;
+                if (result)
+                {
+                    Current = Read();
+                }
+                return result;
+            }
+
+            public void Reset()
+            {
+                Position = 0;
+            }
+        }
+
+        private MemoryIOStream<T> FNullStream = new MemoryIOStream<T>();
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
-        
+        private MemoryIOStream<T> FUpstreamStream;
+        private int FLength;
+        private int* FUpStreamSlices;
+
         public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
         {
             FNodeIn = nodeIn;
             FNodeIn.SetConnectionHandler(handler, this);
             FAutoValidate = nodeIn.AutoValidate;
+            FUpstreamStream = FNullStream;
         }
-        
+
         public NodeInStream(INodeIn nodeIn)
             : this(nodeIn, new DefaultConnectionHandler())
         {
         }
-        
-        public override bool Sync()
+
+        public IStreamReader<T> GetReader()
+        {
+            if (FNodeIn.IsConvoluted)
+                return new ConvolutedReader(FUpstreamStream, FLength, FUpStreamSlices);
+            return FUpstreamStream.GetReader();
+        } 
+
+        public int Length
+        {
+            get { return FLength; }
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Sync()
         {
             IsChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
             if (IsChanged)
             {
-                Length = FNodeIn.SliceCount;
-                using (var writer = GetWriter())
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                // Check fastest way first: TUpstream == T 
+                FUpstreamStream = usI as MemoryIOStream<T>;
+                if (FUpstreamStream != null)
+                    FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
+                else
                 {
-                    object usI;
-                    FNodeIn.GetUpstreamInterface(out usI);
-                    var upstreamInterface = usI as IGenericIO;
-                    
-                    for (int i = 0; i < Length; i++)
+                    FLength = FNodeIn.SliceCount;
+                    // TUpstream is a subtype of T
+                    var enumerable = usI as IEnumerable<T>;
+                    if (enumerable != null)
                     {
-                        int usS;
-                        var result = default(T);
-                        if (upstreamInterface != null)
-                        {
-                            FNodeIn.GetUpsreamSlice(i, out usS);
-                            result = (T) upstreamInterface.GetSlice(usS);
-                        }
-                        writer.Write(result);
+                        FUpstreamStream = new MemoryIOStream<T>(FLength);
+                        FUpstreamStream.Length = FLength;
+                        using (var writer = FUpstreamStream.GetWriter())
+                            foreach (var item in enumerable)
+                                writer.Write(item);
+                    }
+                    else
+                    {
+                        // Not connected
+                        FUpstreamStream = FNullStream;
+                        FUpstreamStream.Length = FLength;
                     }
                 }
             }
+            return IsChanged;
+        }
+
+        public bool IsChanged
+        {
+            get;
+            private set;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return GetReader();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetReader();
+        }
+    }
+
+    class KeyboardToKeyboardStateInStream : MemoryIOStream<KeyboardState>, IDisposable
+    {
+        private readonly INodeIn FNodeIn;
+        private readonly bool FAutoValidate;
+        private readonly Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
+
+        public KeyboardToKeyboardStateInStream(INodeIn nodeIn)
+        {
+            FNodeIn = nodeIn;
+            FAutoValidate = nodeIn.AutoValidate;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+        }
+
+        public override bool Sync()
+        {
+            var nodeConnectionChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (nodeConnectionChanged)
+            {
+                Length = FNodeIn.SliceCount;
+
+                FSubscriptions.ResizeAndDispose(
+                    Length,
+                    slice =>
+                    {
+                        return new Subscription<Keyboard, KeyNotification>(
+                            keyboard => keyboard.KeyNotifications,
+                            (keyboard, n) =>
+                            {
+                                var keyboardState = this.Buffer[slice];
+                                IEnumerable<Keys> keys;
+                                switch (n.Kind)
+                                {
+                                    case KeyNotificationKind.KeyDown:
+                                        var downNotification = n as KeyDownNotification;
+                                        keys = keyboardState.KeyCodes.Concat(new [] { downNotification.KeyCode });
+                                        keyboardState = new KeyboardState(keys, keyboard.CapsLock, keyboardState.Time + 1);
+                                        break;
+                                    case KeyNotificationKind.KeyUp:
+                                        var upNotification = n as KeyUpNotification;
+                                        keys = keyboardState.KeyCodes.Except(new[] { upNotification.KeyCode });
+                                        keyboardState = new KeyboardState(keys, keyboardState.CapsLock, keyboardState.Time + 1);
+                                        break;
+                                }
+                                SetKeyboardState(slice, keyboardState);
+                            }
+                        );
+                    }
+                );
+
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                var upstreamInterface = usI as IGenericIO;
+
+                for (int i = 0; i < Length; i++)
+                {
+                    int usS;
+                    var keyboard = Keyboard.Empty;
+                    if (upstreamInterface != null)
+                    {
+                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
+                    }
+                    SetKeyboardState(i, KeyboardState.Empty);
+                    FSubscriptions[i].Update(keyboard);
+                }
+            }
             return base.Sync();
+        }
+
+        private void SetKeyboardState(int i, KeyboardState keyboardState)
+        {
+            if (this.Buffer[i] != keyboardState)
+                this.IsChanged = true;
+            this.Buffer[i] = keyboardState;
+        }
+    }
+
+    class MouseToMouseStateInStream : MemoryIOStream<MouseState>, IDisposable
+    {
+        private readonly INodeIn FNodeIn;
+        private readonly bool FAutoValidate;
+        private readonly Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse, MouseNotification>>();
+        private readonly Spread<int> FRawMouseWheels = new Spread<int>();
+        
+        public MouseToMouseStateInStream(INodeIn nodeIn)
+        {
+            FNodeIn = nodeIn;
+            FAutoValidate = nodeIn.AutoValidate;
+        }
+
+        public void Dispose()
+        {
+            foreach (var subscription in FSubscriptions)
+                subscription.Dispose();
+        }
+        
+        public override bool Sync()
+        {
+            var nodeConnectionChanged = FAutoValidate ? FNodeIn.PinIsChanged : FNodeIn.Validate();
+            if (nodeConnectionChanged)
+            {
+                Length = FNodeIn.SliceCount;
+
+                FRawMouseWheels.SliceCount = Length;
+                FSubscriptions.ResizeAndDispose(
+                    Length,
+                    slice =>
+                    {
+                        return new Subscription<Mouse, MouseNotification>(
+                            mouse => mouse.MouseNotifications,
+                            (mouse, n) =>
+                            {
+                                var position = new Vector2D(n.Position.X, n.Position.Y);
+                                var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+
+                                var mouseState = this.Buffer[slice];
+                                switch (n.Kind)
+                                {
+                                    case MouseNotificationKind.MouseDown:
+                                        var downNotification = n as MouseButtonNotification;
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons | downNotification.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseUp:
+                                        var upNotification = n as MouseButtonNotification;
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons & ~upNotification.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseMove:
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseWheel:
+                                        var wheelNotification = n as MouseWheelNotification;
+                                        FRawMouseWheels[slice] += wheelNotification.WheelDelta;
+                                        var wheel = (int)Math.Round((float)FRawMouseWheels[slice] / Const.WHEEL_DELTA);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, wheel);
+                                        break;
+                                }
+                                SetMouseState(slice, ref mouseState);
+                            }
+                        );
+                    }
+                );
+
+                object usI;
+                FNodeIn.GetUpstreamInterface(out usI);
+                var upstreamInterface = usI as IGenericIO;
+
+                var emptyMouseState = new MouseState();
+                for (int i = 0; i < Length; i++)
+                {
+                    int usS;
+                    var mouse = Mouse.Empty;
+                    if (upstreamInterface != null)
+                    {
+                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        mouse = (Mouse)upstreamInterface.GetSlice(usS);
+                    }
+                    SetMouseState(i, ref emptyMouseState);
+                    FSubscriptions[i].Update(mouse);
+                }
+            }
+            return base.Sync();
+        }
+
+        private void SetMouseState(int i, ref MouseState mouseState)
+        {
+            if (this.Buffer[i] != mouseState)
+                this.IsChanged = true;
+            this.Buffer[i] = mouseState;
         }
     }
 
@@ -237,7 +583,6 @@ namespace VVVV.Hosting.IO.Streams
 
         private readonly IRawIn FRawIn;
         private readonly bool FAutoValidate;
-        private int FLength;
         
         public RawInStream(IRawIn rawIn)
         {

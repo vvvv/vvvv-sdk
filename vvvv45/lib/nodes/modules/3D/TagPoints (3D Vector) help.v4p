@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\TagPoints (3D Vector) help.v4p" locked="0">
-   <BOUNDS height="11070" left="12015" top="780" type="Window" width="9120">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\3D\TagPoints (3D Vector) help.v4p" locked="0">
+   <BOUNDS height="11070" left="5430" top="780" type="Window" width="9120">
    </BOUNDS>
    <INFO author="vvvv group" description="edit a point cloud via mouse and keyboard within the ex9 renderer." tags="ex9, GUI, edit, modelling, point, cloud, mesh">
    </INFO>
@@ -413,7 +413,7 @@
    </PIN>
    <PIN pinname="Points Visible" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="31" dstpinname="Point Size" srcnodeid="10" srcpinname="Y Output Value">
@@ -457,7 +457,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="32" dstpinname="View Projection" srcnodeid="25" srcpinname="Output Node">
@@ -508,14 +508,16 @@
    </LINK>
    <LINK srcnodeid="28" srcpinname="XYZ Transformed" dstnodeid="31" dstpinname="Points">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="36">
+   <NODE id="36" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden">
    <BOUNDS type="Node" left="3990" top="4320" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Mouse" dstnodeid="31" dstpinname="Mouse">
+   <LINK srcnodeid="36" srcpinname="Device" dstnodeid="31" dstpinname="Mouse">
    </LINK>
-   <LINK srcnodeid="36" srcpinname="Mouse" dstnodeid="32" dstpinname="Mouse">
+   <LINK srcnodeid="36" srcpinname="Device" dstnodeid="32" dstpinname="Mouse">
    </LINK>
    </PATCH>

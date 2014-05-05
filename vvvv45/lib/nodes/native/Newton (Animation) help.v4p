@@ -1,5 +1,5 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Newton (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Newton (Animation) help.v4p">
    <BOUNDS height="5340" left="405" top="2460" type="Window" width="8445">
    </BOUNDS>
    <NODE componentmode="InABox" id="11" managers="" nodename="Renderer (GDI)">
@@ -16,12 +16,12 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="630" top="1380" type="Node" width="0">
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="630" top="1560" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8660" top="7356" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="255" left="630" top="1380" type="Box" width="690">
+   <BOUNDS height="255" left="630" top="1560" type="Box" width="690">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -29,29 +29,15 @@
    </PIN>
    </NODE>
    <NODE id="9" nodename="HLine (GDI)">
-   <BOUNDS height="0" left="1410" top="1395" type="Node" width="0">
+   <BOUNDS height="0" left="1410" top="1575" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
    </PIN>
    <PIN pinname="Render Pass" slicecount="1" values="1.00000">
    </PIN>
    </NODE>
-   <NODE id="-2" nodename="Mouse (System Global)">
-   <BOUNDS height="0" left="1095" top="765" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="-2" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Y" linkstyle="VHV" srcnodeid="-2" srcpinname="Y">
-   <LINKPOINT x="1290" y="1215">
-   </LINKPOINT>
-   <LINKPOINT x="1440" y="1215">
-   </LINKPOINT>
-   </LINK>
    <NODE id="8" nodename="Newton (Animation)">
-   <BOUNDS height="0" left="1260" top="3405" type="Node" width="0">
+   <BOUNDS height="0" left="1365" top="3450" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Position Out" visible="1">
    </PIN>
@@ -66,14 +52,10 @@
    <PIN pinname="Acceleration" slicecount="10" visible="1" values="9.81000">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Go To Position" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="10" srcpinname="Y Output Value">
-   <LINKPOINT x="1290" y="2520">
-   </LINKPOINT>
-   <LINKPOINT x="1290" y="2520">
-   </LINKPOINT>
+   <LINK dstnodeid="8" dstpinname="Go To Position" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="10" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="7" nodename="Point (GDI)">
-   <BOUNDS height="0" left="1110" top="3885" type="Node" width="0">
+   <NODE id="7" nodename="POINT (GDI)">
+   <BOUNDS height="0" left="1185" top="3930" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -103,13 +85,11 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="X" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
-   <LINKPOINT x="1575" y="2295">
-   </LINKPOINT>
-   <LINKPOINT x="1140" y="2295">
+   <LINKPOINT x="1215" y="2505">
    </LINKPOINT>
    </LINK>
    <NODE id="5" nodename="Add (Value)">
-   <BOUNDS height="0" left="1545" top="2370" type="Node" width="0">
+   <BOUNDS height="0" left="1545" top="2355" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -121,7 +101,7 @@
    <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="6" srcpinname="Output">
    </LINK>
    <NODE id="4" nodename="Multiply (Value)">
-   <BOUNDS height="0" left="1560" top="2745" type="Node" width="0">
+   <BOUNDS height="0" left="1560" top="2730" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -134,7 +114,7 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Acceleration" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2850" top="1155" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5040" top="6345" type="Window" width="215">
@@ -147,13 +127,13 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
-   <LINKPOINT x="1590" y="3195">
+   <LINKPOINT x="1590" y="3183">
    </LINKPOINT>
-   <LINKPOINT x="2700" y="3195">
+   <LINKPOINT x="2700" y="3186">
    </LINKPOINT>
-   <LINKPOINT x="2700" y="885">
+   <LINKPOINT x="2700" y="879">
    </LINKPOINT>
-   <LINKPOINT x="3705" y="885">
+   <LINKPOINT x="3705" y="882">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
@@ -201,9 +181,29 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="11" dstpinname="Layers">
-   <LINKPOINT x="1140" y="4365">
+   <LINKPOINT x="1190" y="4395">
    </LINKPOINT>
-   <LINKPOINT x="3840" y="4365">
+   <LINKPOINT x="3910" y="4395">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="750" top="765" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="900" top="1155" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="PositionXY" dstnodeid="14" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="9" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="10" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

@@ -1,7 +1,9 @@
 ﻿using System;
+using VVVV.Utils;
 
 namespace VVVV.Core.Commands
 {
+	
     /// <summary>
     /// a command history accepts commands, allows redo and undo
     /// </summary>
@@ -12,6 +14,12 @@ namespace VVVV.Core.Commands
 		/// </summary>
 		/// <param name="command">The command to be executed.</param>
 		void Insert(Command command);
+		
+		/// <summary>
+		/// Adds a command to history but does not execute it. (e.g. if the command was executed already)
+		/// </summary>
+		/// <param name="command">The command to be added to the history.</param>
+		void InsertOnly(Command command);
 		
 		/// <summary>
 		/// Undo last command.
@@ -38,5 +46,9 @@ namespace VVVV.Core.Commands
 		{
 		    get;
 		}
+		
+		event EventHandler<EventArgs<Command>> CommandInserted;
+		event EventHandler<EventArgs<Command>> Undone;
+		event EventHandler<EventArgs<Command>> Redone;
 	}
 }

@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
+using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes
 {
     [PluginInfo(Name="NearestNeighbour", Category="Value", Author="vux")]
-    public class NearestNeighbourValueNode : BaseNearestNeighbourNode<double>
+    public class NearestNeighbourValueNode : NearestNeighbour<double>
     {
         protected override double Distance(double t1, double t2)
         {
@@ -17,7 +19,7 @@ namespace VVVV.Nodes
     }
 
     [PluginInfo(Name = "NearestNeighbour", Category = "2d", Author = "vux")]
-    public class NearestNeighbour2dNode : BaseNearestNeighbourNode<Vector2D>
+    public class NearestNeighbour2dNode : NearestNeighbour<Vector2D>
     {
         protected override double Distance(Vector2D t1, Vector2D t2)
         {
@@ -27,7 +29,7 @@ namespace VVVV.Nodes
     }
 
     [PluginInfo(Name = "NearestNeighbour", Category = "3d", Author = "vux")]
-    public class NearestNeighbour3dNode : BaseNearestNeighbourNode<Vector3D>
+    public class NearestNeighbour3dNode : NearestNeighbour<Vector3D>
     {
         protected override double Distance(Vector3D t1, Vector3D t2)
         {
@@ -37,7 +39,7 @@ namespace VVVV.Nodes
     }
 
     [PluginInfo(Name = "NearestNeighbour", Category = "4d", Author = "vux")]
-    public class NearestNeighbour4dNode : BaseNearestNeighbourNode<Vector4D>
+    public class NearestNeighbour4dNode : NearestNeighbour<Vector4D>
     {
         protected override double Distance(Vector4D t1, Vector4D t2)
         {

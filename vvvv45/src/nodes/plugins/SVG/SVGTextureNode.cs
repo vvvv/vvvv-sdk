@@ -19,6 +19,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.SlimDX;
+using VVVV.Utils.ManagedVCL;
 using Svg;
 using Svg.Transforms;
 
@@ -46,7 +47,7 @@ namespace VVVV.Nodes
 	            Help = "Reads an XML string and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgStringReaderNode : DucumentSvgReaderNode
+	public class DocumentSvgStringReaderNode : DocumentSvgReaderNode
 	{
 	    #pragma warning disable 649
 		[Input("XML", DefaultString = "<SVG></SVG>")]
@@ -59,7 +60,7 @@ namespace VVVV.Nodes
 			try
 			{
 				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
-				doc = SvgDocument.Open(s, null);
+				doc = SvgDocument.Open<SvgDocument>(s);
 			}
 			catch (Exception e)
 			{
@@ -81,7 +82,7 @@ namespace VVVV.Nodes
 	            Help = "Reads and returns an SVG document, its elements (layers) and other properties",
 	            Tags = "xml")]
 	#endregion PluginInfo
-	public class DucumentSvgFileReaderNode : DucumentSvgReaderNode
+	public class DocumentSvgFileReaderNode : DocumentSvgReaderNode
 	{
 	    #pragma warning disable 649
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
@@ -109,7 +110,7 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	public abstract class DucumentSvgReaderNode : IPluginEvaluate
+	public abstract class DocumentSvgReaderNode : IPluginEvaluate
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
@@ -225,7 +226,7 @@ namespace VVVV.Nodes
 		protected abstract bool InputChanged();
 	}
 	
-	public abstract class DucumentSvgWriterNode : IPluginEvaluate
+	public abstract class DocumentSvgWriterNode : IPluginEvaluate
 	{
 	    #pragma warning disable 649
 		[Input("Document")]
@@ -277,7 +278,7 @@ namespace VVVV.Nodes
 	            Tags = "xml",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class DucumentSvgFileWriterNode : DucumentSvgWriterNode
+	public class DocumentSvgFileWriterNode : DocumentSvgWriterNode
 	{	
 	    #pragma warning disable 649
 		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
@@ -302,7 +303,7 @@ namespace VVVV.Nodes
 	            Tags = "xml",
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class DucumentSvgStringWriterNode : DucumentSvgWriterNode
+	public class DocumentSvgStringWriterNode : DocumentSvgWriterNode
 	{	
 	    #pragma warning disable 649
 		[Output("XML")]
@@ -339,7 +340,7 @@ namespace VVVV.Nodes
                 InitialWindowHeight = 300,
 	            InitialComponentMode = TComponentMode.InAWindow)]
 	#endregion PluginInfo
-    public class SvgRendererNode : UserControl, IPluginEvaluate, IUserInputWindow
+    public class SvgRendererNode : TopControl, IPluginEvaluate, IUserInputWindow, IBackgroundColor
 	{
 		#region fields & pins
 		#pragma warning disable 649,169
@@ -374,6 +375,9 @@ namespace VVVV.Nodes
 		
 		[Import]
 		INode FThisNode;
+		
+		[Import]
+		ILogger FLogger;
 		#pragma warning restore
 		
 		#endregion fields & pins
@@ -389,18 +393,22 @@ namespace VVVV.Nodes
 			Controls.Add(FPicBox);
 			
 			this.Resize	+= new EventHandler(SvgRendererNode_Resize);
-			
 		}
 
 		void SvgRendererNode_Resize(object sender, EventArgs e)
 		{
 			FResized = true;
 		}
+		
+		void LogIDFix(SvgElement elem, string oldID, string newID)
+		{
+			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
+			FLogger.Log(LogType.Warning, msg);
+		}
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-
 			//update
 			if (FSVGIn.IsChanged || FSizeIn.IsChanged || FBackgroundIn.IsChanged ||
 			   FIgnoreView.IsChanged || FViewIn.IsChanged || FResized)
@@ -410,7 +418,7 @@ namespace VVVV.Nodes
 				FSVGDoc = new SvgDocument();
 				foreach(var elem in FSVGIn)
 				{
-					if(elem != null) FSVGDoc.Children.Add(elem);
+					if(elem != null) FSVGDoc.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
 				}
 				
 				FSVGDoc.Transforms = new SvgTransformCollection();
@@ -444,6 +452,7 @@ namespace VVVV.Nodes
 				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
 				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
 			}
+
 			
 			//render to window
 			if(FThisNode.Window != null)
@@ -463,6 +472,10 @@ namespace VVVV.Nodes
 				g.Clear(FBackgroundIn[0].Color);
 				g.Dispose();
 				
+				//also set controls backcolor so it does not flash when going fullscreen
+				if (FBackgroundIn.IsChanged)
+					this.BackColor = FBackgroundIn[0].Color;
+				
 				FSVGDoc.Draw(FBitMap);
 				FPicBox.Image = FBitMap;
 			}
@@ -472,6 +485,11 @@ namespace VVVV.Nodes
         {
             get { return FPicBox.Handle; }
         }
+        
+        public RGBAColor BackgroundColor
+		{
+			get { return FBackgroundIn[0]; }
+		}
     }
 	
 	#region PluginInfo

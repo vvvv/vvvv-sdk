@@ -1,6 +1,6 @@
 #region Copyright notice
 /*
-A Firmata Plugin for VVVV - v 1.2
+A Firmata Plugin for VVVV - v 1.3
 ----------------------------------
 Encoding control and configuration messages for Firmata enabled MCUs. This
 Plugin encodes to a ANSI string and a byte array, so you can send via any
@@ -71,7 +71,7 @@ namespace VVVV.Nodes
               Category = "Devices",
               Author = "jens a. ewald",
               Help = "Decodes the firmata protocol version 2.x",
-              Tags = "Arduino")]
+              Tags = "arduino")]
   #endregion PluginInfo
   public class FirmataDecode : IPluginEvaluate
   {
@@ -110,7 +110,10 @@ namespace VVVV.Nodes
     [Output("Capabilities", Visibility = PinVisibility.Hidden)]
     ISpread<string> FCapabilities;
 
-    [Output("I2C Data",Visibility = PinVisibility.OnlyInspector)]
+    [Output("String",Visibility = PinVisibility.Hidden)]
+    ISpread<string> StringOut;
+
+    [Output("I2C Data", Visibility = PinVisibility.OnlyInspector)]
     IOutStream<Stream> FI2CData;
 
     #endregion fields & pins
@@ -122,6 +125,8 @@ namespace VVVV.Nodes
       /// Configure the output count
       if (FAnalogIns.IsChanged) FAnalogIns.SliceCount  = FAnalogInputCount[0];
       if (FDigitalIns.IsChanged) FDigitalIns.SliceCount = FDigitalInputCount[0];
+
+      StringOut.SliceCount = 0;
 
       /// If there is nothing new to read, there is nothing to parse
       if (!FirmataIn.IsChanged) return;
@@ -248,8 +253,12 @@ namespace VVVV.Nodes
           FFirmwareName[0] = name.ToString();
           FFirmwareVersion[0] = the_name;
           break;
-
-          /// Handle I2C replies
+        case Command.STRING_DATA:
+          string message = Encoding.ASCII.GetString(data.ToArray());
+          StringOut.Add(message);
+          StringOut.Flush(true); // Signal change, regardless of the message
+          break;
+        /// Handle I2C replies
         case Command.I2C_REPLY:
           try {
 
@@ -335,11 +344,11 @@ namespace VVVV.Nodes
 
   #region PluginInfo
   [PluginInfo(Name = "I2CDecode",
-              Category = "Devices",
+              Category = "Firmata",
               Version  = "2.x",
               Author = "jens a. ewald",
               Help = "Decodes I2C data from Firmata messages",
-              Tags = "Firmata,Arduino")]
+              Tags = "arduino")]
   #endregion PluginInfo
   public class I2CDecode : IPluginEvaluate
   {

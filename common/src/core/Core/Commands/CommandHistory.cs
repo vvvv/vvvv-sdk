@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VVVV.Core.Logging;
 using System.Xml.Linq;
 using VVVV.Core.Serialization;
+using VVVV.Utils;
 
 namespace VVVV.Core.Commands
 {
@@ -74,9 +75,30 @@ namespace VVVV.Core.Commands
         /// <param name="command">The command to be executed.</param>
         public virtual void Insert(Command command)
         {
-            DebugHelpers.CatchAndLog(() =>
+        	InsertCommand(command, true);
+        }
+        
+        public virtual void InsertOnly(Command command)
+        {
+        	InsertCommand(command, false);
+        }
+        
+        private void InsertCommand(Command command, bool execute)
+        {
+        	DebugHelpers.CatchAndLog(() =>
             {
-                command.Execute();
+        	    if(command is CompoundCommand)
+           		{
+            		var comp = (command as CompoundCommand);
+            		if(comp.IsEmptyRecursive())
+            		{
+            			Debug.WriteLine("History rejected empty compound command");
+            			return;
+            		}
+            	}               	
+        	                         	
+        	    if (execute)
+        	    	command.Execute();
 
                 if (command.HasUndo)
                 {
@@ -89,11 +111,14 @@ namespace VVVV.Core.Commands
                 {
                     FFirstNode.Next = null;
                     FCurrentNode = FFirstNode;
+                    Debug.WriteLine("undo history cleared");
                 }
 
-                Debug.WriteLine(string.Format("Command {0} executed.", command));
+                Debug.WriteLine(string.Format("Command inserted: {0}", command));
             },
             string.Format("Execution of command {0}", command));
+        	
+        	OnCommandInserted(command);
         }
 
         public virtual void Insert(string xml)
@@ -114,10 +139,12 @@ namespace VVVV.Core.Commands
                 {
                     command.Undo();
                     FCurrentNode = FCurrentNode.Previous;
-                    Debug.WriteLine(string.Format("Command {0} undone.", command));
+                    Debug.WriteLine(string.Format("Command undone: {0}", command));
                 },
                 string.Format("Undo of command {0}", command));
             }
+            
+            OnUndone(command);
         }
 
         /// <summary>
@@ -132,10 +159,12 @@ namespace VVVV.Core.Commands
                 {
                     command.Redo();
                     FCurrentNode = FCurrentNode.Next;
-                    Debug.WriteLine(string.Format("Command {0} redone.", command));
+                    Debug.WriteLine(string.Format("Command redone: {0}", command));
                 },
                 string.Format("Redo of command {0}", command));
             }
+            
+            OnRedone(command);
         }
 
         //IIDItem Interface
@@ -145,5 +174,38 @@ namespace VVVV.Core.Commands
         {
             get { return "History"; }
         }
+    	
+		public event EventHandler<EventArgs<Command>> CommandInserted;
+		
+		protected void OnCommandInserted(Command command)
+		{
+			var handler = CommandInserted;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
+    	
+		public event EventHandler<EventArgs<Command>> Undone;
+		
+		protected void OnUndone(Command command)
+		{
+			var handler = Undone;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
+    	
+		public event EventHandler<EventArgs<Command>> Redone;
+		
+		protected void OnRedone(Command command)
+		{
+			var handler = Redone;
+			if(handler != null)
+			{
+				handler(this, handler.CreateArgs(command));
+			}
+		}
     }
 }

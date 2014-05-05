@@ -5,8 +5,10 @@ using VVVV.Hosting.Pins.Input;
 using VVVV.Hosting.Pins.Output;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.Streams;
 using VVVV.PluginInterfaces.V2.NonGeneric;
+using VVVV.Utils.Streams;
+using VVVV.Utils.VMath;
+using SlimDX;
 
 namespace VVVV.Hosting.IO
 {
@@ -28,8 +30,11 @@ namespace VVVV.Hosting.IO
                                       {
                                           spreadType = typeof(InputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
                                       }
-                                      
-                                      spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+
+                                      if (context.BinSizeIOContainer != null)
+                                          spread = Activator.CreateInstance(spreadType, factory, attribute.Clone(), context.BinSizeIOContainer) as ISpread;
+                                      else
+                                          spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                       if (attribute.AutoValidate)
                                           return GenericIOContainer.Create(context, factory, spread, s => s.Sync());
                                       else
@@ -69,11 +74,17 @@ namespace VVVV.Hosting.IO
                                           return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
                                   }
                               }
+                              
                               var container = factory.CreateIOContainer(typeof(IInStream<>).MakeGenericType(context.DataType), attribute, false);
                               var pinType = typeof(DiffInputPin<>).MakeGenericType(context.DataType);
-                              spread = Activator.CreateInstance(pinType, factory, container.GetPluginIO(), container.RawIOObject) as ISpread;
+                              if (context.DataType == typeof(Matrix4x4)) //special diff pin for transform pins until IsChanged gets fixed in delphi
+                                  spread = new DiffInputPin<Matrix4x4>(factory, container.GetPluginIO() as IPluginIn, new BufferedInputMatrix4x4IOStream(container.RawIOObject as IInStream<Matrix4x4>));
+                              else if (context.DataType == typeof(Matrix))
+                                  spread = new DiffInputPin<Matrix>(factory, container.GetPluginIO() as IPluginIn, new BufferedInputMatrixIOStream(container.RawIOObject as IInStream<Matrix>));
+                              else	
+                                  spread = Activator.CreateInstance(pinType, factory, container.GetPluginIO(), container.RawIOObject) as ISpread;
                               if (attribute.AutoValidate)
-                                  return IOContainer.Create(context, spread, container, s => s.Sync());
+                                  return IOContainer.Create(context, spread, container, s => s.Sync(), s => s.Flush());
                               else
                                   return IOContainer.Create(context, spread, container);
                           },
@@ -92,8 +103,12 @@ namespace VVVV.Hosting.IO
                                        {
                                            spreadType = typeof(OutputSpreadList<>).MakeGenericType(t.GetGenericArguments().First());
                                        }
-                                       
-                                       var spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
+
+                                       ISpread spread;
+                                       if (context.BinSizeIOContainer != null)
+                                           spread = Activator.CreateInstance(spreadType, factory, attribute.Clone(), context.BinSizeIOContainer) as ISpread;
+                                       else
+                                           spread = Activator.CreateInstance(spreadType, factory, attribute.Clone()) as ISpread;
                                        if (context.IOAttribute.AutoFlush)
                                            return GenericIOContainer.Create(context, factory, spread, null, s => s.Flush());
                                        else

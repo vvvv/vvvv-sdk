@@ -18,11 +18,11 @@ namespace VVVV.Nodes
                 {
                     FPluginInfo = new PluginInfo();
                     FPluginInfo.Name = "Select";
-                    FPluginInfo.Category = "SQL Server";
+                    FPluginInfo.Category = "SQLServer";
                     FPluginInfo.Version = "Network";
                     FPluginInfo.Author = "vux";
                     FPluginInfo.Help = "SQL Server select object";
-                    FPluginInfo.Tags = "";
+                    FPluginInfo.Tags = "database";
                     FPluginInfo.Credits = "";
                     FPluginInfo.Bugs = "";
                     FPluginInfo.Warnings = "";

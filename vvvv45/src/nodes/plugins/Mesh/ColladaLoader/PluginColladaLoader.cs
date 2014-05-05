@@ -43,6 +43,9 @@ namespace VVVV.Nodes
 		[Input("Filename", IsSingle = true, StringType = StringType.Filename, FileMask = "COLLADA Files (*.dae)|*.dae")]
 		protected IDiffSpread<string> FFileNameInput;
 		
+		[Input("Reload", IsSingle = true, IsBang = true)]
+		protected ISpread<bool> FReloadInput;
+		
 		[Output("COLLADA Model")]
 		protected ISpread<Model> FColladaModelOutput;
 		
@@ -326,7 +329,7 @@ namespace VVVV.Nodes
 		    
 			//if any of the inputs has changed
 			//recompute the outputs
-			if (FFileNameInput.IsChanged)
+			if (FFileNameInput.IsChanged || FReloadInput[0])
 			{
 				FColladaDocument = null;
 				FColladaModel = null;

@@ -18,7 +18,12 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "WOL", Category = "Network", Help = "Wake On Lan by a given MAC adress", Tags = "")]
+	[PluginInfo(Name = "WOL", 
+                Category = "Network", 
+                Help = "Wake On Lan by a given MAC adress", 
+                Tags = "",
+                AutoEvaluate = true,
+                Author = "sebl")]
 	#endregion PluginInfo
 	public class NetworkWOLNode : IPluginEvaluate
 	{

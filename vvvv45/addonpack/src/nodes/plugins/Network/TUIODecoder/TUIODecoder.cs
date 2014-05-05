@@ -27,7 +27,7 @@ namespace TUIODecoder
         //output pin declaration
         private IValueOut FSessionIDOut;
         private IValueOut FClassIDOut;
-        private IValueOut FUniqueIDOut;
+        private IValueOut FTypeIDOut;
         private IValueOut FPosXOut;
         private IValueOut FPosYOut;
         private IValueOut FWidthOut;
@@ -167,8 +167,8 @@ namespace TUIODecoder
             FHost.CreateValueOutput("Class ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FClassIDOut);
             FClassIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
-            FHost.CreateValueOutput("Unique ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FUniqueIDOut);
-            FUniqueIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
+            FHost.CreateValueOutput("Type", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FTypeIDOut);
+            FTypeIDOut.SetSubType(0, int.MaxValue, 1, 0, false, false, true);
 
             FHost.CreateValueOutput("Position X", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FPosXOut);
             FPosXOut.SetSubType(0, 1, 0.0001, 0, false, false, false);
@@ -249,17 +249,17 @@ namespace TUIODecoder
                         currentPacket = currentPacket.Substring(nextpos);
                     }
 
-                    OSC.NET.OSCPacket packet = OSC.NET.OSCPacket.Unpack(OSC.NET.OSCPacket.ASCIIEncoding8Bit.GetBytes(currentSeperatedPacket));
+                    VVVV.Utils.OSC.OSCPacket packet = VVVV.Utils.OSC.OSCPacket.Unpack(VVVV.Utils.OSC.OSCPacket.ASCIIEncoding8Bit.GetBytes(currentSeperatedPacket));
                     if (packet.IsBundle())
                     {
                         ArrayList messages = packet.Values;
                         for (int i = 0; i < messages.Count; i++)
                         {
-                            FTuioClient.ProcessMessage((OSC.NET.OSCMessage)messages[i]);
+                            FTuioClient.ProcessMessage((VVVV.Utils.OSC.OSCMessage)messages[i]);
                         }
                     }
                     else
-                        FTuioClient.ProcessMessage((OSC.NET.OSCMessage)packet);
+                        FTuioClient.ProcessMessage((VVVV.Utils.OSC.OSCMessage)packet);
                 }
             }
             List<TuioCursor> cursors = FTuioClient.getTuioCursors();
@@ -268,7 +268,7 @@ namespace TUIODecoder
             int slicecount = cursors.Count + objects.Count + blobs.Count;
             FSessionIDOut.SliceCount = slicecount;
             FClassIDOut.SliceCount = slicecount;
-            FUniqueIDOut.SliceCount = slicecount;
+            FTypeIDOut.SliceCount = slicecount;
             FPosXOut.SliceCount = slicecount;
             FPosYOut.SliceCount = slicecount;
             FWidthOut.SliceCount = slicecount;
@@ -287,8 +287,8 @@ namespace TUIODecoder
             {
                 TuioCursor cur = cursors[i];
                 FSessionIDOut.SetValue(curindex, cur.getSessionID());
-                FClassIDOut.SetValue(curindex, 0);
-                FUniqueIDOut.SetValue(curindex, cur.getFingerID());
+                FClassIDOut.SetValue(curindex, cur.getFingerID());
+                FTypeIDOut.SetValue(curindex, 0);
                 FPosXOut.SetValue(curindex, cur.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -cur.getPosition().getY() * 2 + 1);
                 FAngleOut.SetValue(curindex, 0);
@@ -305,8 +305,8 @@ namespace TUIODecoder
             {
                 TuioObject obj = objects[i];
                 FSessionIDOut.SetValue(curindex, obj.getSessionID());
-                FClassIDOut.SetValue(curindex, 1);
-                FUniqueIDOut.SetValue(curindex, obj.getFiducialID() + objectOffset);
+                FClassIDOut.SetValue(curindex, obj.getFiducialID());
+                FTypeIDOut.SetValue(curindex,  1);
                 FPosXOut.SetValue(curindex, obj.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -obj.getPosition().getY() * 2 + 1);
                 FAngleOut.SetValue(curindex, 1 - ((obj.getAngle()) / (Math.PI + Math.PI)));
@@ -324,8 +324,8 @@ namespace TUIODecoder
             {
                 TuioBlob blb = blobs[i];
                 FSessionIDOut.SetValue(curindex, blb.getSessionID());
-                FClassIDOut.SetValue(curindex, 2);
-                FUniqueIDOut.SetValue(curindex, blb.getBlobID() + blobOffset);
+                FClassIDOut.SetValue(curindex, blb.getBlobID());
+                FTypeIDOut.SetValue(curindex, 2);
                 FPosXOut.SetValue(curindex, blb.getPosition().getX() * 2 - 1);
                 FPosYOut.SetValue(curindex, -blb.getPosition().getY() * 2 + 1);
                 FWidthOut.SetValue(curindex, blb.getWidth());

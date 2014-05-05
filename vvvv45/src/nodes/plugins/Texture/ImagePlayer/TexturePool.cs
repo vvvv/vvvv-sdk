@@ -4,14 +4,15 @@ using System.Linq;
 using SlimDX.Direct3D9;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace VVVV.Nodes.ImagePlayer
 {
     public class TexturePool : IDisposable
     {
-        private readonly Dictionary<Device, Dictionary<int, ObjectPool<Texture>>> FTexturePools = new Dictionary<Device, Dictionary<int, ObjectPool<Texture>>>();
+        private readonly Dictionary<Device, Dictionary<int, Stack<Texture>>> FTexturePools = new Dictionary<Device, Dictionary<int, Stack<Texture>>>();
         private readonly Dictionary<Device, int> FRefCount = new Dictionary<Device, int>();
-        
+
         public Texture GetTexture(
             Device device,
             int width,
@@ -21,25 +22,28 @@ namespace VVVV.Nodes.ImagePlayer
             Format format,
             Pool pool)
         {
-            Dictionary<int, ObjectPool<Texture>> devicePool;
+            Dictionary<int, Stack<Texture>> devicePool;
             if (!FTexturePools.TryGetValue(device, out devicePool))
             {
-                devicePool = new Dictionary<int, ObjectPool<Texture>>();
+                devicePool = new Dictionary<int, Stack<Texture>>();
                 FTexturePools[device] = devicePool;
                 FRefCount[device] = 0;
             }
 
             int key = GetKey(width, height, levelCount, usage, format, pool);
-            
-            ObjectPool<Texture> texturePool = null;
+
+            Stack<Texture> texturePool = null;
             if (!devicePool.TryGetValue(key, out texturePool))
             {
-                texturePool = new ObjectPool<Texture>(() => new Texture(device, width, height, levelCount, usage, format, pool));
+                texturePool = new Stack<Texture>(1);
                 devicePool[key] = texturePool;
             }
 
             FRefCount[device]++;
-            return texturePool.GetObject();
+            if (texturePool.Count > 0)
+                return texturePool.Pop();
+            else
+                return new Texture(device, width, height, levelCount, usage, format, pool);
         }
         
         public void PutTexture(Texture texture)
@@ -56,7 +60,7 @@ namespace VVVV.Nodes.ImagePlayer
             var devicePool = FTexturePools[texture.Device];
             var texturePool = devicePool[key];
             FRefCount[texture.Device]--;
-            texturePool.PutObject(texture);
+            texturePool.Push(texture);
         }
         
         private int GetKey(
@@ -88,8 +92,9 @@ namespace VVVV.Nodes.ImagePlayer
                 var devicePool = FTexturePools[device];
                 foreach (var texturePool in devicePool.Values)
                 {
-                    foreach (var texture in texturePool.ToArrayAndClear())
+                    while (texturePool.Count > 0)
                     {
+                        var texture = texturePool.Pop();
                         texture.Dispose();
                     }
                 }
@@ -99,7 +104,23 @@ namespace VVVV.Nodes.ImagePlayer
             return refCount;
         }
 
-        public void Clear()
+        public void ReleaseUnused(int capacity)
+        {
+            foreach (var deviceTexturePool in FTexturePools.Values.ToArray())
+            {
+                foreach (var texturePool in deviceTexturePool.Values.ToArray())
+                {
+                    while (texturePool.Count > capacity)
+                    {
+                        var texture = texturePool.Pop();
+                        Debug.WriteLine("Released texture {0}.", texture);
+                        texture.Dispose();
+                    }
+                }
+            }
+        }
+        
+        public void Dispose()
         {
             foreach (var device in FTexturePools.Keys.ToArray())
             {
@@ -111,15 +132,21 @@ namespace VVVV.Nodes.ImagePlayer
             }
             FTexturePools.Clear();
         }
-        
-        public void Dispose()
-        {
-            Clear();
-        }
 
         public bool HasTextureForDevice(Device device)
         {
             return FRefCount.ContainsKey(device);
+        }
+
+        public override string ToString()
+        {
+            var sb = new System.Text.StringBuilder();
+            foreach (var device in FRefCount.Keys.ToArray())
+            {
+                sb.AppendLine(string.Format("Device {0}", device));
+                sb.AppendLine(string.Format("  Unused: {0}, Used: {1}", FTexturePools[device].Values.Select(p => p.Count).Sum(), FRefCount[device]));
+            }
+            return sb.ToString();
         }
     }
 }

@@ -1,21 +1,31 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH componentmode="InAWindow" nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\GridPick (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\GridPick (2d) help.v4p" componentmode="InAWindow">
    <BOUNDS height="7380" left="765" top="480" type="Window" width="11235">
    </BOUNDS>
-   <NODE componentmode="InABox" id="31" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="31" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="285" top="1860" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5940" left="5670" top="3525" type="Window" width="5475">
    </BOUNDS>
    <BOUNDS height="3180" left="285" top="1860" type="Box" width="3345">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
    </PIN>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="30" nodename="QUAD (DX9)">
@@ -89,9 +99,9 @@
    <NODE id="26" nodename="GridPick (2d)">
    <BOUNDS height="0" left="5490" top="2775" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="X" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Y" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Width" slicecount="1" visible="1" values="1">
    </PIN>
@@ -102,16 +112,6 @@
    <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Height" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <NODE id="25" nodename="Mouse (System Window)">
-   <BOUNDS height="0" left="5895" top="360" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
    </PIN>
    </NODE>
    <NODE id="24" nodename="QUAD (DX9)">
@@ -143,9 +143,9 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="X" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Y" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="29" dstpinname="Index" srcnodeid="26" srcpinname="Index">
@@ -202,7 +202,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8640" top="465" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7230" top="10980" type="Window" width="215">
@@ -226,7 +226,7 @@
    <LINKPOINT x="5445" y="1740">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="9855" top="465" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8025" top="10875" type="Window" width="215">
@@ -378,10 +378,10 @@
    <PIN pinname="Source" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Projection Transform" srcnodeid="8" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="Projection" srcnodeid="8" srcpinname="Transform Out">
    </LINK>
    <NODE id="7" nodename="AspectRatio (Transform)">
-   <BOUNDS height="0" left="4185" top="360" type="Node" width="0">
+   <BOUNDS height="0" left="4125" top="285" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -390,54 +390,10 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Source" srcnodeid="7" srcpinname="Transform Out">
    </LINK>
-   <NODE id="6" nodename="ApplyTransform (Transform)">
-   <BOUNDS height="0" left="4455" top="945" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X UnTransformed" visible="1">
-   </PIN>
-   <PIN pinname="Y UnTransformed" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="X Transformed" visible="1">
-   </PIN>
-   <PIN pinname="Y Transformed" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="X UnTransformed" srcnodeid="25" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Y UnTransformed" srcnodeid="25" srcpinname="Y">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
-   </LINK>
    <LINK dstnodeid="11" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="17" srcpinname="Y Output Value">
    <LINKPOINT x="9405" y="1650">
    </LINKPOINT>
    <LINKPOINT x="7290" y="1650">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="X" linkstyle="Bezier" srcnodeid="6" srcpinname="X Transformed">
-   <LINKPOINT x="4485" y="1995">
-   </LINKPOINT>
-   <LINKPOINT x="5115" y="1995">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="X" linkstyle="Bezier" srcnodeid="6" srcpinname="X Transformed">
-   <LINKPOINT x="4485" y="2325">
-   </LINKPOINT>
-   <LINKPOINT x="9240" y="2325">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="Y" linkstyle="Bezier" srcnodeid="6" srcpinname="Y Transformed">
-   <LINKPOINT x="5070" y="1995">
-   </LINKPOINT>
-   <LINKPOINT x="5280" y="1995">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Y" linkstyle="Bezier" srcnodeid="6" srcpinname="Y Transformed">
-   <LINKPOINT x="5070" y="2325">
-   </LINKPOINT>
-   <LINKPOINT x="9495" y="2325">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
@@ -555,5 +511,67 @@
    </LINKPOINT>
    <LINKPOINT x="315" y="1635">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="5520" top="270" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="5670" top="660" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="PositionXY" dstnodeid="34" dstpinname="XY">
+   </LINK>
+   <NODE id="6" nodename="ApplyTransform (Transform)" systemname="ApplyTransform (Transform)">
+   <BOUNDS type="Node" height="0" left="5325" top="1065" width="0">
+   </BOUNDS>
+   <PIN pinname="X UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Y UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="X Transformed" visible="1">
+   </PIN>
+   <PIN pinname="Y Transformed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Transformed" dstnodeid="22" dstpinname="Y" linkstyle="Bezier">
+   <LINKPOINT x="5650" y="2405">
+   </LINKPOINT>
+   <LINKPOINT x="9785" y="2365">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Transformed" dstnodeid="26" dstpinname="Y" linkstyle="Bezier">
+   <LINKPOINT x="5650" y="2075">
+   </LINKPOINT>
+   <LINKPOINT x="5570" y="2035">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="X Transformed" dstnodeid="22" dstpinname="X" linkstyle="Bezier">
+   <LINKPOINT x="5065" y="2405">
+   </LINKPOINT>
+   <LINKPOINT x="9530" y="2365">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="X Transformed" dstnodeid="26" dstpinname="X" linkstyle="Bezier">
+   <LINKPOINT x="5065" y="2075">
+   </LINKPOINT>
+   <LINKPOINT x="5405" y="2035">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Transform Out" dstnodeid="6" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="X" dstnodeid="6" dstpinname="X UnTransformed">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Y" dstnodeid="6" dstpinname="Y UnTransformed">
    </LINK>
    </PATCH>

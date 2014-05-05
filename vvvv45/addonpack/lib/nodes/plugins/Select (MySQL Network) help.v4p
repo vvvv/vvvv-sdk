@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Select (MySQL Network) help.v4p" systemname="Select (MySQL Network) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Select (MySQL Network) help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="7440" height="9900">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Select (MySQL Network) help.v4p" systemname="Select (MySQL Network) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Select (MySQL Network) help.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="7440" height="11865">
    </BOUNDS>
    <NODE systemname="Select (MySQL Network)" filename="%VVVV%\addonpack\lib\nodes\plugins\MySQLNodes.dll" nodename="Select (MySQL Network)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="735" top="6720" width="5280" height="270">
@@ -99,7 +99,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="8835" top="15420" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Select - MySQL Network|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Select (MySQL Network)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -450,4 +450,28 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Status" dstnodeid="35" dstpinname="Input String">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="9525" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="9525" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="39">
+   <BOUNDS type="Node" left="600" top="10125" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="10125" width="2850" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\girlpower\IO\Databases\MySQL_Example.v4p|">
+   </PIN>
+   </NODE>
    </PATCH>

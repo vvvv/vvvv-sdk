@@ -43,7 +43,6 @@ namespace VVVV.Nodes.ImagePlayer
         private readonly LinkedList<FrameInfo> FScheduledFrameInfos = new LinkedList<FrameInfo>();
         private readonly Dictionary<FrameInfo, Frame> FPreloadedFrames = new Dictionary<FrameInfo, Frame>();
         private readonly IDXDeviceService FDeviceService;
-        private bool FClearedMemoryPool;
         
         public ImagePlayer(
             int threadsIO,
@@ -51,14 +50,15 @@ namespace VVVV.Nodes.ImagePlayer
             ILogger logger,
             IOTaskScheduler ioTaskScheduler,
             MemoryPool memoryPool,
+            TexturePool texturePool,
             IDXDeviceService deviceService
            )
         {
             FThreadsIO = threadsIO;
             FThreadsTexture = threadsTexture;
             FLogger = logger;
-            
-            FTexturePool = new TexturePool();
+
+            FTexturePool = texturePool;
             FMemoryPool = memoryPool;
             FDeviceService = deviceService;
             
@@ -138,10 +138,6 @@ namespace VVVV.Nodes.ImagePlayer
             catch (AggregateException)
             {
                 // TODO: Check if these are only exceptions of type OperationCancledException
-            }
-            finally
-            {
-                FTexturePool.Dispose();
             }
         }
         
@@ -385,14 +381,6 @@ namespace VVVV.Nodes.ImagePlayer
                 }
             }
 
-            // Free resources if there're no frames to preload and we didn't free them yet
-            if (preloadFiles.Length == 0 && !FClearedMemoryPool)
-            {
-                FMemoryPool.Clear();
-                // Remember that we cleared the pool 
-                FClearedMemoryPool = true;
-            }
-
             // Schedule new frames
             foreach (var file in preloadFiles)
             {
@@ -400,8 +388,6 @@ namespace VVVV.Nodes.ImagePlayer
                 {
                     Enqueue(file);
                 }
-                // We're back using resources from the pool -> not clean anymore
-                FClearedMemoryPool = false;
             }
 
             // Write the "is loaded" state

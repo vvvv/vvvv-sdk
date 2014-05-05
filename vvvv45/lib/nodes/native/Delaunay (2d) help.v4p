@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Delaunay (2d) help.v4p" systemname="Delaunay (2d) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Delaunay (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\Delaunay (2d) help.v4p" systemname="Delaunay (2d) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Delaunay (2d) help.v4p">
    <BOUNDS height="13080" left="420" top="570" type="Window" width="13170">
    </BOUNDS>
    <NODE id="33" nodename="Delaunay (2d)" systemname="Delaunay (2d)">
@@ -20,36 +20,6 @@
    <PIN pinname="Indices" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="0" id="32" nodename="Mouse (System Window)" systemname="Mouse (System Window)">
-   <BOUNDS height="270" left="6360" top="645" type="Node" width="1815">
-   </BOUNDS>
-   <PIN pinname="Mouse Wheel" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Middle Button" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Right Button" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
-   <NODE hiddenwhenlocked="0" id="30" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
-   <BOUNDS height="0" left="6360" top="1080" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="30" dstpinname="X" hiddenwhenlocked="0" srcnodeid="32" srcpinname="X">
-   </LINK>
-   <LINK dstnodeid="30" dstpinname="Y" hiddenwhenlocked="0" srcnodeid="32" srcpinname="Y">
-   </LINK>
    <NODE id="24" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
    <BOUNDS height="270" left="6375" top="2985" type="Node" width="1065">
    </BOUNDS>
@@ -287,7 +257,7 @@
    </PIN>
    <PIN pinname="X Output Value" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Rebuild" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Rebuild">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
@@ -325,19 +295,19 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="3" values="-1,-1,-1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Bin Size|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Bin Size|">
    </PIN>
    </NODE>
    <LINK dstnodeid="33" dstpinname="Bin Size" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8550" top="705" type="Node" width="7980">
+   <BOUNDS height="270" left="7980" top="630" type="Node" width="7980">
    </BOUNDS>
-   <BOUNDS height="720" left="8550" top="705" type="Box" width="2790">
+   <BOUNDS height="720" left="7980" top="630" type="Box" width="2790">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; This allows you to create XY-points by left-clicking in the render window. Click right to restart.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|&lt; This allows you to create XY-points by left-clicking in the render window. Click right to restart.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -351,7 +321,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="300" top="300" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|These are the individual points, drawn as white pixels.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|These are the individual points, drawn as white pixels.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -365,7 +335,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="600" top="600" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how you can use the indices calculated by the Delaunay node: feed them into a Mesh node to connect all the given points.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|This is how you can use the indices calculated by the Delaunay node: feed them into a Mesh node to connect all the given points.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -379,7 +349,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Left-click in the render window to start adding points. Delaunay will start to connect these (starting at 3) in a way that results in a (mostly) consistent, convex mesh.&cr;&lf;&cr;&lf;Try the different Border modes for other interesting results, and see what happens if you add points with Rebuild set to off.&cr;&lf;&cr;&lf;The Bin Size pin allows you to connect points in separate groups (of 3 or more points). Notice the behavior when using more or less points than available at the inputs.&cr;&lf;&cr;&lf;The Bin Size output reports the number of faces constructed in this way.|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Left-click in the render window to start adding points. Delaunay will start to connect these (starting at 3) in a way that results in a (mostly) consistent, convex mesh.&cr;&lf;&cr;&lf;Try the different Border modes for other interesting results, and see what happens if you add points with Rebuild set to off.&cr;&lf;&cr;&lf;The Bin Size pin allows you to connect points in separate groups (of 3 or more points). Notice the behavior when using more or less points than available at the inputs.&cr;&lf;&cr;&lf;The Bin Size output reports the number of faces constructed in this way.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -415,7 +385,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="870" top="11220" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|returns the mouse coordinates (with the window being (-1,-1)..(1,1)) while it is in one of the render windows|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Connects points using the Delaunay algorithm|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -425,11 +395,11 @@
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="195" top="285" type="Node" width="915">
    </BOUNDS>
-   <BOUNDS height="390" left="195" top="285" type="Box" width="4095">
+   <BOUNDS height="375" left="195" top="285" type="Box" width="1935">
    </BOUNDS>
    <BOUNDS height="160" left="870" top="11220" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Mouse - System Window|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Delaunay (2d)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -456,14 +426,12 @@
    <PIN pinname="Reset" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Input" hiddenwhenlocked="0" srcnodeid="30" srcpinname="XY">
-   </LINK>
    <NODE hiddenwhenlocked="0" id="41" nodename="Counter (Animation)" systemname="Counter (Animation)">
-   <BOUNDS height="270" left="7485" top="1740" type="Node" width="720">
+   <BOUNDS height="270" left="7140" top="1740" type="Node" width="720">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Reset" visible="1">
+   <PIN pinname="Reset" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Up" visible="1">
    </PIN>
@@ -473,20 +441,16 @@
    <LINK srcnodeid="41" srcpinname="Output" dstnodeid="31" dstpinname="Frame Count">
    </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="7485" top="1275" width="100" height="100">
+   <BOUNDS type="Node" left="6750" top="1245" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Left Button" dstnodeid="42" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="42" srcpinname="Up Edge" dstnodeid="41" dstpinname="Up">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Up Edge" dstnodeid="31" dstpinname="Insert">
-   </LINK>
-   <LINK srcnodeid="32" srcpinname="Right Button" dstnodeid="41" dstpinname="Reset">
    </LINK>
    <NODE systemname="AvoidNIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\AvoidNIL (Spreads).v4p" nodename="AvoidNIL (Spreads)" componentmode="Hidden" id="43">
    <BOUNDS type="Node" left="6375" top="2610" width="100" height="100">
@@ -499,5 +463,29 @@
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="43" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="43" srcpinname="Output" dstnodeid="24" dstpinname="XY">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="32" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="270" left="6045" top="645" type="Node" width="1815">
+   </BOUNDS>
+   <PIN pinname="Mouse Wheel" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Middle Button" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Right Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Left Button" dstnodeid="42" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Right Button" dstnodeid="41" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="PositionXY" dstnodeid="31" dstpinname="Input">
    </LINK>
    </PATCH>
