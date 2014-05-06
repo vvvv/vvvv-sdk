@@ -1,0 +1,257 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="C:\SVN_ROOT\vvvv\plugins\c#\Animation\ChaosToys\CliffordAttractor (Animation) help.v4p">
+   <BOUNDS height="7035" left="1110" top="840" type="Window" width="5670">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="15" type="Box" width="4500">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CliffordAttractor - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="10" nodename="Renderer (EX9)">
+   <BOUNDS height="270" left="525" top="5565" type="Node" width="3825">
+   </BOUNDS>
+   <BOUNDS height="5445" left="525" top="5565" type="Box" width="5970">
+   </BOUNDS>
+   <BOUNDS height="7950" left="6780" top="825" type="Window" width="9375">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" pintype="Input" slicecount="1" visible="-1" values="||">
+   </PIN>
+   <PIN pinname="Clear" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="-1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Backbuffer Width" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Fullscreen" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="X" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Y" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Left Button" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Middle Button" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Is Fullscreen" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Right Button" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="EX9 Out" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4680" top="6135" type="Node" width="630">
+   </BOUNDS>
+   <BOUNDS height="270" left="4680" top="6135" type="Box" width="630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by fibo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="900" left="75" top="495" type="Node" width="4200">
+   </BOUNDS>
+   <BOUNDS height="900" left="75" top="495" type="Box" width="4200">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Yet another simple formula that generate chaos.&cr;&lf;&cr;&lf;http://local.wasp.uwa.edu.au/~pbourke/fractals/clifford/|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="720" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="3045" top="5190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="View Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename="UniformScale (Transform)">
+   <BOUNDS height="0" left="720" top="4050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.04">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Cross (2d)">
+   <BOUNDS height="0" left="1050" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="2" managers="" nodename="Pillow (DX9)">
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Fade Color" pintype="Input" slicecount="1" visible="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fade Amount" pintype="Input" slicecount="1" visible="1" values="0.1">
+   </PIN>
+   <PIN pinname="Round Edges" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <BOUNDS height="0" left="540" top="4560" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="0" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="1050" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Factor" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input X" slicecount="1" values="0.2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="X In" srcnodeid="1" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y In" srcnodeid="1" srcpinname="Output Y">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1350" top="4935" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="1350" top="4935" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="4395" top="5610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Clear" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename=":PLUGINS:\ChaosToys.dll|VVVV.Nodes.CliffordAttractor" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="1035" top="3135" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1035" top="3135" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4935" top="4680" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input X" visible="1">
+   </PIN>
+   <PIN pinname="Input Y" visible="1">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="X Out" dstnodeid="12" dstpinname="Input X">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y Out" dstnodeid="12" dstpinname="Input Y">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output X" dstnodeid="6" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output Y" dstnodeid="6" dstpinname="Y">
+   </LINK>
+   </PATCH>

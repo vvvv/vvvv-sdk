@@ -1,0 +1,187 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\I (Spreads) help.v4p">
+   <BOUNDS height="6720" left="4365" top="2235" type="Window" width="8745">
+   </BOUNDS>
+   <NODE id="11" nodename="SpellValue (String)" systemname="SpellValue (String)">
+   <BOUNDS height="300" left="945" top="2655" type="Node" width="855">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="Roman">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Add (String Spectral)" systemname="Add (String Spectral)">
+   <BOUNDS height="300" left="945" top="3045" type="Node" width="450">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Space">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="1335" left="945" top="4215" type="Box" width="6825">
+   </BOUNDS>
+   <BOUNDS height="160" left="4579" top="4368" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="945" top="4215" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input String" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="270" left="270" top="1275" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="4480" top="4206" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="270" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="285" left="1140" top="1260" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="4511" top="4200" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="1140" top="1260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="75">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|convert to roman numbers &cr;&lf;and convert the spread to one &cr;&lf;long string |" encoded="0">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="795" left="1845" top="2595" type="Box" width="2340">
+   </BOUNDS>
+   <BOUNDS height="255" left="1845" top="2595" type="Node" width="1950">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="from" encoded="0">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="285" top="960" type="Box" width="630">
+   </BOUNDS>
+   <BOUNDS height="255" left="285" top="960" type="Node" width="630">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|to (exclusive)|" encoded="0">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1140" top="945" type="Box" width="1125">
+   </BOUNDS>
+   <BOUNDS height="255" left="1140" top="945" type="Node" width="465">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|learn more:&cr;&lf;&cr;&lf;If the minimum is larger than the maximum, the spread counts backwards. &cr;&lf;If both numbers are equal, an empty spread is generated.&cr;&lf;&cr;&lf;The phase input will shift the integers in the slices|" encoded="0">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2070" left="4500" top="1650" type="Box" width="3225">
+   </BOUNDS>
+   <BOUNDS height="1080" left="4500" top="1650" type="Node" width="3240">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|create a spread with integers|" encoded="0">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="1470" top="1800" type="Box" width="2295">
+   </BOUNDS>
+   <BOUNDS height="255" left="1470" top="1800" type="Node" width="2040">
+   </BOUNDS>
+   </NODE>
+   <NODE id="0" nodename="I (Spreads)" systemname="I (Spreads)">
+   <BOUNDS height="300" left="960" top="1800" type="Node" width="450">
+   </BOUNDS>
+   <PIN pinname="Integer" visible="1">
+   </PIN>
+   <PIN pinname="Max" visible="1">
+   </PIN>
+   <PIN pinname="Min" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="[ From .." visible="1">
+   </PIN>
+   <PIN pinname=".. To [" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="[ From .." srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname=".. To [" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="4065">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns a spread of integers counting from min to max|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|I - Spreads|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
