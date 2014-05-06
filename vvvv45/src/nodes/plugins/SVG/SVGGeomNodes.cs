@@ -761,6 +761,9 @@ namespace VVVV.Nodes
 		[Input("Layer")]
 		ISpread<SvgElement> FInput;
 		
+		[Input("Transform Path", DefaultValue = 1)]
+		ISpread<bool> FTransformPathInput;
+		
 		[Input("Flatten", DefaultValue = 1)]
 		ISpread<bool> FFlattenInput;
 		
@@ -797,6 +800,9 @@ namespace VVVV.Nodes
 						if(elem is SvgGroup) p = ((SvgGroup)elem).Path;
 						else if(elem is SvgVisualElement) p = (GraphicsPath)((SvgVisualElement)elem).Path.Clone();
 						else p = ((SvgFragment)elem).Path;
+						
+						if(FTransformPathInput[i])
+							p.Transform(elem.Transforms.GetMatrix());
 						
 						if(FFlattenInput[i])
 						{
