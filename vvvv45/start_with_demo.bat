@@ -1,2 +1,2 @@
 @ECHO OFF
-start vvvv.exe /o "demo.v4p"
+start vvvv.exe /o "girlpower\demo.v4p"
