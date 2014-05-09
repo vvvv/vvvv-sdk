@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.8.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.1.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\GetPath (SVG) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\GetPath (SVG) help.v4p" systemname="GetPath (SVG) help">
-   <BOUNDS height="15690" left="1560" top="1425" type="Window" width="12405">
+   <BOUNDS height="15690" left="1560" top="1425" type="Window" width="12495">
    </BOUNDS>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="190" nodename="CircularSpread (Spreads)" systemname="CircularSpread (Spreads)">
    <BOUNDS height="100" left="4380" top="555" type="Node" width="100">
@@ -106,7 +106,7 @@
    </LINK>
    <LINK dstnodeid="228" dstpinname="TranslateX" hiddenwhenlocked="0" srcnodeid="190" srcpinname="Output X">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="261" nodename="GetPath (SVG)" systemname="GetPath (SVG)">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="261" nodename="GetPath (SVG)" systemname="GETPATH (SVG)">
    <BOUNDS height="270" left="5115" top="8325" type="Node" width="2715">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -122,6 +122,8 @@
    <PIN pinname="Max Flatten Error">
    </PIN>
    <PIN pinname="Flatten">
+   </PIN>
+   <PIN pinname="Transform Path" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="276" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -139,7 +141,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
-   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Update">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -391,9 +393,9 @@
    <LINK dstnodeid="311" dstpinname="Y Input Value" srcnodeid="261" srcpinname="Path XY">
    </LINK>
    <NODE componentmode="InABox" id="312" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8835" top="9585" type="Node" width="4755">
+   <BOUNDS height="270" left="8910" top="7935" type="Node" width="4755">
    </BOUNDS>
-   <BOUNDS height="1320" left="8835" top="9585" type="Box" width="1860">
+   <BOUNDS height="1320" left="8910" top="7935" type="Box" width="1860">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; gets the path data as 2d vector data. this can be a slow process on bigger scenes so use the update pin wisely...|">
    </PIN>
@@ -508,20 +510,6 @@
    </NODE>
    <LINK dstnodeid="322" dstpinname="Y Input Value" srcnodeid="300" srcpinname="Level">
    </LINK>
-   <NODE componentmode="InABox" id="324" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8700" top="8055" type="Node" width="780">
-   </BOUNDS>
-   <BOUNDS height="270" left="8700" top="8055" type="Box" width="780">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Update|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" id="325" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
    <BOUNDS height="100" left="5130" top="8745" type="Node" width="100">
    </BOUNDS>
@@ -577,9 +565,9 @@
    <LINK dstnodeid="261" dstpinname="Max Flatten Error" srcnodeid="327" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="328" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7965" top="7155" type="Node" width="1650">
+   <BOUNDS height="270" left="8520" top="6990" type="Node" width="1650">
    </BOUNDS>
-   <BOUNDS height="675" left="7965" top="7155" type="Box" width="2130">
+   <BOUNDS height="675" left="8520" top="6990" type="Box" width="2130">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|maximum approximation error. smaller values give higher resolution|">
    </PIN>
@@ -591,9 +579,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="329" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7020" top="6615" type="Node" width="4995">
+   <BOUNDS height="270" left="7095" top="6510" type="Node" width="4995">
    </BOUNDS>
-   <BOUNDS height="480" left="7020" top="6615" type="Box" width="2790">
+   <BOUNDS height="480" left="7095" top="6510" type="Box" width="2790">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|if enabled, the curves of the path get approximated by line segments|">
    </PIN>
@@ -657,9 +645,9 @@
    <LINK srcnodeid="330" srcpinname="Y Output Value" dstnodeid="261" dstpinname="Transform Path">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="331" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5205" top="6765" width="3480" height="270">
+   <BOUNDS type="Node" left="5190" top="6480" width="3480" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5205" top="6765" width="1200" height="720">
+   <BOUNDS type="Box" left="5190" top="6480" width="1200" height="720">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|transforms the path by its SVG Transformation|">
    </PIN>
@@ -670,4 +658,34 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="332" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="840" top="11250" width="7950" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="840" top="11250" width="4080" height="345">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://msdn.microsoft.com/en-us/library/system.drawing.drawing2d.graphicspath.pathtypes(v=vs.110).aspx">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="333" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="855" top="10785" width="5940" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="855" top="10785" width="3450" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for more information about the &quot;Path Type&quot; output, check this documentation page:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
