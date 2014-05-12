@@ -277,23 +277,16 @@ namespace VVVV.Hosting.IO.Streams
             {
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
+                FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
                 // Check fastest way first: TUpstream == T 
                 FUpstreamStream = usI as MemoryIOStream<T>;
-                if (FUpstreamStream != null)
-                    FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
-                else
+                if (FUpstreamStream == null)
                 {
-                    FLength = FNodeIn.SliceCount;
                     // TUpstream is a subtype of T
+                    // Copy the upstream stream through the covariant IEnumerable interface
                     var enumerable = usI as IEnumerable<T>;
                     if (enumerable != null)
-                    {
-                        FUpstreamStream = new MemoryIOStream<T>(FLength);
-                        FUpstreamStream.Length = FLength;
-                        using (var writer = FUpstreamStream.GetWriter())
-                            foreach (var item in enumerable)
-                                writer.Write(item);
-                    }
+                        FUpstreamStream = enumerable.ToStream();
                     else
                     {
                         // Not connected
