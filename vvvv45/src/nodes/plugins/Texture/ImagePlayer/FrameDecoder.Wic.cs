@@ -57,6 +57,7 @@ namespace VVVV.Nodes.ImagePlayer
                         }
                     }
 
+                    FChosenFormat = GetFallbackFormatIfPreferedFormatIsNotSupported(FChosenFormat);
                     var chosenPixelFormat = TextureToPixelFormat(FChosenFormat);
                     Width = frame.Size.Width;
                     Height = frame.Size.Height;
@@ -112,6 +113,7 @@ namespace VVVV.Nodes.ImagePlayer
                         FMemoryPool.UnmanagedPool.PutMemory(FBuffer);
                         FBuffer = newBuffer;
                     }
+                    FChosenFormat = format;
                 }
 
                 var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
