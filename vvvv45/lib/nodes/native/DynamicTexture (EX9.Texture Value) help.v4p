@@ -1,0 +1,291 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha22.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vvvv_trunk\help\DynamicTexture (EX9.Texture Value) help.v4p">
+   <BOUNDS height="7425" left="3330" top="1620" type="Window" width="9345">
+   </BOUNDS>
+   <NODE id="17" nodename="DynamicTexture (EX9.Texture Color)">
+   <BOUNDS height="0" left="1905" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="1605" top="3960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="15" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2820" top="6765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4455" left="3330" top="9060" type="Window" width="9360">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2820" top="6765" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Texture" srcnodeid="17" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="14" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="3075" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Color" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="13" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="3060" top="750" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="20">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Users\joreg\dev\vvvv_trunk\modules\vvvv group\Transform\">
+   <BOUNDS height="0" left="3780" top="6360" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="11370" top="9315" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3780" top="6360" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="View Transform" srcnodeid="12" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Projection Transform" srcnodeid="12" srcpinname="Projection">
+   </LINK>
+   <NODE id="11" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1755" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" slicecount="3" values="8.14,8.14,8.14">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="3075" top="1095" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="LeftJustified">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Hue" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE id="9" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1770" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="-0.61">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="8" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="5130" top="3960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="5310" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.61">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="11" srcpinname="Transform Out">
+   <LINKPOINT x="1785" y="2910">
+   </LINKPOINT>
+   <LINKPOINT x="5310" y="2715">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="6" nodename="DynamicTexture (EX9.Texture Value)">
+   <BOUNDS height="0" left="5445" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Red" visible="1">
+   </PIN>
+   <PIN pinname="Green" visible="1">
+   </PIN>
+   <PIN pinname="Blue" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Texture Format" slicecount="1" values="A8R8G8B8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Texture" srcnodeid="6" srcpinname="Texture Out">
+   </LINK>
+   <NODE id="5" nodename="RGB (Color Split)">
+   <BOUNDS height="270" left="6015" top="2655" type="Node" width="660">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Red" visible="1">
+   </PIN>
+   <PIN pinname="Green" visible="1">
+   </PIN>
+   <PIN pinname="Blue" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" linkstyle="Bezier" srcnodeid="14" srcpinname="Output">
+   <LINKPOINT x="3105" y="2175">
+   </LINKPOINT>
+   <LINKPOINT x="6075" y="2010">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Red" srcnodeid="5" srcpinname="Red">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Green" srcnodeid="5" srcpinname="Green">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Blue" srcnodeid="5" srcpinname="Blue">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Alpha" srcnodeid="5" srcpinname="Alpha">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5055" top="4455" type="Node" width="2625">
+   </BOUNDS>
+   <BOUNDS height="1800" left="5055" top="4455" type="Box" width="2925">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the DynamicTexture (Value) takes the values for R, G, B,  A and writes them to the texture (from upper left to bottom right). Set Width, Height and Depth (for Volume Textures). Open the Inspector to set the Texture Format. Note that not all Graphic Hardware support all the different Formats.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1530" top="4455" type="Node" width="2625">
+   </BOUNDS>
+   <BOUNDS height="1140" left="1530" top="4455" type="Box" width="2640">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the DynamicTexture (Color) takes a color and writes it to the texture (from upper left to bottom right). Set Width, Height and Depth (for Volume Textures).  |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4740">
+   </BOUNDS>
+   <BOUNDS height="160" left="7950" top="5220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DynamicTexture - EX9.Texture Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="390" type="Node" width="8220">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|creates a texture dynamically writing input color spread into it&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Group (EX9)">
+   <BOUNDS height="0" left="2805" top="5910" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="16" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="480" left="6105" top="960" type="Node" width="3975">
+   </BOUNDS>
+   <BOUNDS height="1155" left="6105" top="960" type="Box" width="2310">
+   </BOUNDS>
+   <BOUNDS height="160" left="-285" top="465" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|note: &cr;&lf;to get a spread of textures out of the node you need to spread one of the configuration inputs via Hrn. Inspektor. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,169 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Scroll (String) help.v4p">
+   <BOUNDS height="7290" left="1650" top="1725" type="Window" width="7395">
+   </BOUNDS>
+   <NODE id="9" nodename="Scroll (String)">
+   <BOUNDS height="0" left="345" top="3000" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Input Index" visible="1">
+   </PIN>
+   <PIN pinname="Output Index" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Minimum" values="-100" slices="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="330" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="100" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="English">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="330" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3057" top="5177" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2460" left="330" top="4170" type="Box" width="1920">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input String" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="435" top="1800" type="Node" width="2385">
+   </BOUNDS>
+   <BOUNDS height="345" left="435" top="1800" type="Box" width="5520">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- this spread contains 100 slices (null, one, two, .. , ninety nine)|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1560" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2960" top="5116" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1560" top="2250" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000" slices="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="100.00000" slices="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-100.00000" slices="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input Index" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2475" top="2160" type="Node" width="1890">
+   </BOUNDS>
+   <BOUNDS height="525" left="2475" top="2160" type="Box" width="3270">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|use the input index to specify the scroll position in the input spread|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="750" left="2355" top="4155" type="Node" width="4770">
+   </BOUNDS>
+   <BOUNDS height="2265" left="2355" top="4155" type="Box" width="4770">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|learn more: &cr;&lf;&cr;&lf;OutputIndex - the output index specifies the the position of the selected input slice in the output spread. &cr;&lf;&cr;&lf;Output Index is 0 by default, so the selected slice will be the first in the output. &cr;&lf;&cr;&lf;slices outside of the scroll window will contain an empty string&cr;&lf;|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1455" top="2850" type="Node" width="4590">
+   </BOUNDS>
+   <BOUNDS height="825" left="1455" top="2850" type="Box" width="3060">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|cut out a sequence of slices. &cr;&lf;spread count is set to 10, so we will get 10 slices out of the input spread|" slices="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="I (Spreads)">
+   <BOUNDS height="0" left="345" top="1005" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Phase" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Max" slicecount="1">
+   </PIN>
+   <PIN pinname="Min" slicecount="1">
+   </PIN>
+   <PIN pinname="Integer" visible="1">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="100.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="5280">
+   </BOUNDS>
+   <BOUNDS height="160" left="15030" top="39690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|generates a spread with a given number of slices out of the input spread. &cr;&lf;Allow for scolling in the source|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="15030" top="39690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Scroll - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
