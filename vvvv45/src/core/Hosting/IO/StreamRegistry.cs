@@ -210,13 +210,13 @@ namespace VVVV.Hosting.IO
                                   {
                                       context = context.ReplaceDataType(typeof(Mouse));
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                      stream = Activator.CreateInstance(typeof(MouseToMouseStateInStream), container.RawIOObject) as IInStream;
+                                      stream = new MouseToMouseStateInStream(factory, container.GetPluginIO() as INodeIn);
                                   }
                                   else if (context.DataType == typeof(KeyboardState))
                                   {
                                       context = context.ReplaceDataType(typeof(Keyboard));
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                      stream = Activator.CreateInstance(typeof(KeyboardToKeyboardStateInStream), container.RawIOObject) as IInStream;
+                                      stream = new KeyboardToKeyboardStateInStream(factory, container.GetPluginIO() as INodeIn);
                                   }
                                   else
                                   {

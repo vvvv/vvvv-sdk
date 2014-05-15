@@ -84,7 +84,7 @@ namespace VVVV.Hosting.IO
                               else	
                                   spread = Activator.CreateInstance(pinType, factory, container.GetPluginIO(), container.RawIOObject) as ISpread;
                               if (attribute.AutoValidate)
-                                  return IOContainer.Create(context, spread, container, s => s.Sync(), s => s.Flush());
+                                  return IOContainer.Create(context, spread, container, s => s.Sync());
                               else
                                   return IOContainer.Create(context, spread, container);
                           },

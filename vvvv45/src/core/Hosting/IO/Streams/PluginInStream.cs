@@ -317,20 +317,30 @@ namespace VVVV.Hosting.IO.Streams
 
     class KeyboardToKeyboardStateInStream : MemoryIOStream<KeyboardState>, IDisposable
     {
+        private readonly IIOFactory FFactory;
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
 
-        public KeyboardToKeyboardStateInStream(INodeIn nodeIn)
+        public KeyboardToKeyboardStateInStream(IIOFactory factory, INodeIn nodeIn)
         {
+            FFactory = factory;
             FNodeIn = nodeIn;
             FAutoValidate = nodeIn.AutoValidate;
+            FFactory.Flushing += FFactory_Flushing;
         }
 
         public void Dispose()
         {
+            FFactory.Flushing -= FFactory_Flushing;
             foreach (var subscription in FSubscriptions)
                 subscription.Dispose();
+        }
+
+        void FFactory_Flushing(object sender, EventArgs e)
+        {
+            // Reset IsChanged flag
+            Flush();
         }
 
         public override bool Sync()
@@ -399,21 +409,31 @@ namespace VVVV.Hosting.IO.Streams
 
     class MouseToMouseStateInStream : MemoryIOStream<MouseState>, IDisposable
     {
+        private readonly IIOFactory FFactory;
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse, MouseNotification>>();
         private readonly Spread<int> FRawMouseWheels = new Spread<int>();
         
-        public MouseToMouseStateInStream(INodeIn nodeIn)
+        public MouseToMouseStateInStream(IIOFactory factory, INodeIn nodeIn)
         {
+            FFactory = factory;
             FNodeIn = nodeIn;
             FAutoValidate = nodeIn.AutoValidate;
+            FFactory.Flushing += FFactory_Flushing;
         }
 
         public void Dispose()
         {
+            FFactory.Flushing -= FFactory_Flushing;
             foreach (var subscription in FSubscriptions)
                 subscription.Dispose();
+        }
+
+        void FFactory_Flushing(object sender, EventArgs e)
+        {
+            // Reset IsChanged flag
+            Flush();
         }
         
         public override bool Sync()
