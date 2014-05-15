@@ -17,7 +17,7 @@ namespace VVVV.Nodes.Input
         [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
         public ISpread<bool> EnabledIn;
 
-        [Input("Index", Order = int.MinValue + 1, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Index", Order = int.MinValue + 1, Visibility = PinVisibility.OnlyInspector, MinValue = -1, DefaultValue = -1)]
         public IDiffSpread<int> IndexIn;
 
         [Output("Device")]
@@ -28,6 +28,9 @@ namespace VVVV.Nodes.Input
 
         [Output("Device Description", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<string> DeviceDescriptionOut;
+
+        [Output("Device Count", Order = int.MaxValue, Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+        public ISpread<int> DeviceCountOut;
 
         [Import]
         protected IOFactory FIOFactory;
@@ -82,13 +85,23 @@ namespace VVVV.Nodes.Input
                 DeviceOut.SliceCount = spreadMax;
                 DeviceNameOut.SliceCount = spreadMax;
                 DeviceDescriptionOut.SliceCount = spreadMax;
+                // An index of -1 means to merge all devices into one
                 for (int i = 0; i < spreadMax; i++)
                 {
-                    var index = VMath.Zmod(IndexIn[i], spreadMax);
-                    var device = devices[index % devices.Count];
-                    DeviceOut[i] = CreateDevice(device, i);
-                    DeviceNameOut[i] = device.DeviceName;
-                    DeviceDescriptionOut[i] = device.GetDeviceDescription();
+                    var index = IndexIn[i];
+                    if (index < 0)
+                    {
+                        DeviceOut[i] = CreateMergedDevice(i);
+                        DeviceNameOut[i] = string.Empty;
+                        DeviceDescriptionOut[i] = "Merged";
+                    }
+                    else
+                    {
+                        var device = devices[index % devices.Count];
+                        DeviceOut[i] = CreateDevice(device, i);
+                        DeviceNameOut[i] = device.DeviceName;
+                        DeviceDescriptionOut[i] = device.GetDeviceDescription();
+                    }
                 }
             }
             else
@@ -97,6 +110,7 @@ namespace VVVV.Nodes.Input
                 DeviceNameOut.SliceCount = 0;
                 DeviceDescriptionOut.SliceCount = 0;
             }
+            DeviceCountOut[0] = devices.Count;
         }
 
         protected virtual int GetMaxSpreadCount()
@@ -105,6 +119,7 @@ namespace VVVV.Nodes.Input
         }
 
         protected abstract TDevice CreateDevice(DeviceInfo deviceInfo, int slice);
+        protected abstract TDevice CreateMergedDevice(int slice);
 
         public void Evaluate(int spreadMax)
         {

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\plugins\Keyboard (Devices Desktop) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
+   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\plugins\Keyboard (Devices Desktop) help.v4p">
    <BOUNDS height="10530" left="600" top="4620" type="Window" width="14010">
    </BOUNDS>
    <NODE componentmode="InABox" id="99" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -91,7 +91,7 @@
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Input Node" visible="1">
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="92" systemname="IOBox (String)">
@@ -105,7 +105,7 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="Menu">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="91" systemname="IOBox (String)">
@@ -167,45 +167,9 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE id="82" nodename="Keyboard (Devices Desktop)" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <BOUNDS type="Node" height="270" left="3465" top="4200" width="4545">
-   </BOUNDS>
-   <PIN pinname="Keyboard Output" visible="1">
-   </PIN>
-   <PIN pinname="KeyCode" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard Input" encoded="0">
-   </PIN>
-   <PIN pinname="Keyboard Spread" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <PIN pinname="Schedule Mode" visible="1">
-   </PIN>
-   <PIN pinname="Key Name" visible="1">
-   </PIN>
-   <PIN pinname="Key Char" visible="1">
-   </PIN>
-   <PIN pinname="Queue Mode" visible="1">
-   </PIN>
-   <PIN pinname="Index" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Key Name Bin Size" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="Key Code Bin Size" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="99" srcpinname="Y Output Value" dstnodeid="82" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="82" srcpinname="Device" dstnodeid="93" dstpinname="Input Node">
-   </LINK>
    <NODE nodename="Keyboard (Devices Window)" componentmode="Hidden" id="81" systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
    <BOUNDS type="Node" left="1440" top="9270" width="100" height="100">
    </BOUNDS>
@@ -222,10 +186,6 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="82" srcpinname="Key Name" dstnodeid="92" dstpinname="Input String" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="82" srcpinname="Key Char" dstnodeid="84" dstpinname="Input String">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="79" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="6945" top="5745" width="795" height="240">
    </BOUNDS>
@@ -237,11 +197,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="18">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="82" srcpinname="Key Code" dstnodeid="79" dstpinname="Y Input Value" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="80" srcpinname="Output Enum" dstnodeid="82" dstpinname="Queue Mode">
-   </LINK>
    <NODE systemname="KeyStates (Keyboard Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyStates (Keyboard Split)" componentmode="Hidden" id="76">
    <BOUNDS type="Node" left="2535" top="9270" width="100" height="100">
    </BOUNDS>
@@ -375,9 +333,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="82" srcpinname="Key Name Bin Size" dstnodeid="112" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="113" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5235" top="6045" width="1710" height="270">
    </BOUNDS>
@@ -417,7 +375,7 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="115" systemname="IOBox (String)">
@@ -434,8 +392,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="82" srcpinname="Key Code Bin Size" dstnodeid="116" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="117" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9975" top="6045" width="1710" height="270">
    </BOUNDS>
@@ -467,11 +423,11 @@
    <NODE componentmode="InABox" id="119" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="4215" top="1305" type="Node" width="8250">
    </BOUNDS>
-   <BOUNDS height="795" left="4215" top="1305" type="Box" width="2475">
+   <BOUNDS height="1080" left="4215" top="1305" type="Box" width="3330">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|If you have multiple keyboards use the &quot;Index&quot; pin to choose which to use or even spread it.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|If you have multiple keyboards use the &quot;Index&quot; pin to choose which to use or even spread it.&cr;&lf;&cr;&lf;An &quot;Index&quot; of -1 (default) means to merge all available keyboards into one.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -480,4 +436,26 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <NODE id="120" nodename="Keyboard (Devices Desktop)" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
+   <BOUNDS type="Node" height="270" left="3465" top="4200" width="4545">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="99" srcpinname="Y Output Value" dstnodeid="120" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Device" dstnodeid="93" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Key Name" dstnodeid="92" dstpinname="Input String" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Key Char" dstnodeid="84" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Key Code" dstnodeid="79" dstpinname="Y Input Value" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="80" srcpinname="Output Enum" dstnodeid="120" dstpinname="Queue Mode">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Key Name Bin Size" dstnodeid="112" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Key Code Bin Size" dstnodeid="116" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

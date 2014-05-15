@@ -186,7 +186,9 @@ namespace VVVV.Nodes.Input
                 DeviceOut.SliceCount = 1;
                 DeviceDescriptionOut.SliceCount = 1;
                 DeviceOut[0] = CreateCursorMouse();
+                DeviceNameOut[0] = string.Empty;
                 DeviceDescriptionOut[0] = "Cursor";
+                DeviceCountOut[0] = 0;
             }
             else
             {
@@ -203,6 +205,18 @@ namespace VVVV.Nodes.Input
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
             var notifications = mouseInput
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
+                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+            return new Mouse(notifications);
+        }
+
+        protected override Mouse CreateMergedDevice(int slice)
+        {
+            // Ignore cycleMode
+            var initialPosition = Control.MousePosition;
+            var mouseData = new MouseData() { Position = initialPosition };
+            var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
+                    .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
+            var notifications = mouseInput
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
             return new Mouse(notifications);
         }

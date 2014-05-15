@@ -115,6 +115,16 @@ namespace VVVV.Nodes.Input
             return new Keyboard(notifications, true);
         }
 
+        protected override Keyboard CreateMergedDevice(int slice)
+        {
+            var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
+                .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
+                .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
+                .Where(args => args != null)
+                .SelectMany(args => GenerateKeyNotifications(args, slice));
+            return new Keyboard(notifications, true);
+        }
+
         private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)
         {
             DeviceOut[slice].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
