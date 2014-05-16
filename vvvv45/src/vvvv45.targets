@@ -56,9 +56,9 @@
           Command="attrib +H &quot;$(ZipTempDir)$(ZipHiddenFiles)&quot;" />
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
     <!-- Call /nodelist without any arguments to include native nodes -->
-    <Exec Condition="Exists('$(TempVVVVExe)')" Command="&quot;$(TempVVVVExe)&quot; /allowmultiple /dx9ex /nodelist" />
+    <Exec Condition="Exists('$(TempVVVVExe)')" Command="&quot;$(TempVVVVExe)&quot; /allowmultiple /nodelist" />
     <!-- Call /nodelist with arguments to filter for specific directory -->
-    <Exec Condition="!Exists('$(TempVVVVExe)')" Command="&quot;$(VVVVExe)&quot; /allowmultiple /dx9ex /nodelist &quot;$(ZipTempDir)lib\nodes&quot;" />
+    <Exec Condition="!Exists('$(TempVVVVExe)')" Command="&quot;$(VVVVExe)&quot; /allowmultiple /nodelist &quot;$(ZipTempDir)lib\nodes&quot;" />
     <!-- Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
     <Exec Command="&quot;$(SevenZip)&quot; a -r &quot;$(ZipFileName)&quot; &quot;$(ZipTempDir)&quot;" />
     <!--
