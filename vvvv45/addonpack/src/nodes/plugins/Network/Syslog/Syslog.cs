@@ -68,7 +68,7 @@ namespace VVVV.Nodes
             {
                 if (FMessageIn.IsChanged || FFacility.IsChanged || FLevel.IsChanged)
                 {
-                    byte[] message = ConstructMessage(FLevel[i], FFacility[i], FMessageIn[i]);
+                    byte[] message = ConstructMessage(FLevel[i], FFacility[i], FTag[i], FMessageIn[i]);
 
                     Stream outputStream = FStreamOut[i];
 
@@ -82,7 +82,7 @@ namespace VVVV.Nodes
         }
 
 
-        private byte[] ConstructMessage(Level level, Facility facility, string tag, string message = "")
+        private byte[] ConstructMessage(Level level, Facility facility, string tag, string message)
         {
             int prival = (( int )facility) * 8 + (( int )level);
             string pri = string.Format("<{0}>", prival);
@@ -115,7 +115,7 @@ namespace VVVV.Nodes
                 Author= "sebl",
                 AutoEvaluate = true)]
     #endregion PluginInfo
-    public class LogNode : Syslog.AbstractSyslog, IPluginEvaluate
+    public class LogNode :  IPluginEvaluate
     {
         
         #region fields & pins
