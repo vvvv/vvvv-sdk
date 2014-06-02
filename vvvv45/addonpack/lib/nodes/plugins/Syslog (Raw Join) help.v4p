@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.0.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Syslog (Raw) help.v4p" systemname="Syslog (String) help" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Syslog (String) help.v4p">
-   <BOUNDS type="Window" left="3045" top="405" width="13890" height="9585">
+   <PATCH nodename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Join) help.v4p" systemname="Syslog (Raw Join) help" filename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Join) help.v4p">
+   <BOUNDS type="Window" left="3045" top="405" width="13890" height="15090">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5940" top="5700" width="495" height="270">
@@ -99,6 +99,8 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="13" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="7335" top="3450" width="1095" height="555">
@@ -162,20 +164,6 @@
    </NODE>
    <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="0" dstpinname="Remote Host">
    </LINK>
-   <NODE componentmode="Hidden" id="31" nodename="UDP (Network Server)" systemname="UDP (Network Server String)" filename="%VVVV%\lib\nodes\modules\Network\UDP (Network Server String).v4p" hiddenwhenlocked="1">
-   <BOUNDS height="270" left="270" top="5910" type="Node" width="750">
-   </BOUNDS>
-   <PIN pinname="Queue Mode" slicecount="1" values="Spread">
-   </PIN>
-   <BOUNDS type="Box" left="270" top="5910">
-   </BOUNDS>
-   <PIN pinname="Local Port" visible="1">
-   </PIN>
-   <PIN pinname="Queue Count" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)" hiddenwhenlocked="1">
    <BOUNDS type="Box" left="270" top="7170" width="7320" height="1485">
    </BOUNDS>
@@ -258,8 +246,6 @@
    </NODE>
    <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Prevent from doubles" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Local Port" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="48" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="6240" top="3075" width="100" height="100">
    </BOUNDS>
@@ -295,7 +281,7 @@
    <NODE systemname="Queue (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Queue (String)" componentmode="Hidden" id="45" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="270" top="6330" width="750" height="270">
    </BOUNDS>
-   <PIN pinname="Insert" visible="1">
+   <PIN pinname="Insert" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -308,10 +294,6 @@
    <BOUNDS type="Box" left="270" top="6330">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Queue Count" dstnodeid="45" dstpinname="Insert" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="45" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InABox" id="51">
    <BOUNDS type="Node" left="7680" top="7185" width="100" height="100">
    </BOUNDS>
@@ -352,28 +334,82 @@
    <BOUNDS height="390" left="120" top="135" type="Box" width="3465">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Syslog (Raw)" filename="Syslog.dll" nodename="Syslog (Raw)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="4065" top="4680" width="3315" height="270">
-   </BOUNDS>
-   <PIN pinname="Tag" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="4065" top="4680">
-   </BOUNDS>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="19" dstpinname="Facility" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Message" dstnodeid="0" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="19" dstpinname="Level" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Output String" dstnodeid="19" dstpinname="Tag" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Output" dstnodeid="19" dstpinname="Message">
-   </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
    <PACK Name="addonpack" Version="31.9.0">
    </PACK>
+   <NODE systemname="Syslog (Raw Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Syslog.dll" nodename="Syslog (Raw Join)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="4065" top="4680" width="3315" height="270">
+   </BOUNDS>
+   <PIN pinname="Tag" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="4065" top="4680">
+   </BOUNDS>
+   <PIN pinname="Message" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Facility" visible="1">
+   </PIN>
+   <PIN pinname="Level" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Output" dstnodeid="19" dstpinname="Message">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Output String" dstnodeid="19" dstpinname="Tag">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="19" dstpinname="Facility">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="19" dstpinname="Level">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Message" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <NODE nodename="Syslog (Raw Split)" componentmode="Hidden" id="54" systemname="Syslog (Raw Split)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Syslog.dll">
+   <BOUNDS type="Node" left="285" top="8970" width="7920" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="8970" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Raw In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="31" nodename="UDP (Network Server)" systemname="UDP (Network Server)" filename="" hiddenwhenlocked="1">
+   <BOUNDS height="270" left="270" top="5910" type="Node" width="750">
+   </BOUNDS>
+   <PIN pinname="Queue Mode" slicecount="1" values="Spread">
+   </PIN>
+   <BOUNDS type="Box" left="270" top="5910">
+   </BOUNDS>
+   <PIN pinname="Local Port" visible="1">
+   </PIN>
+   <PIN pinname="Queue Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Local Port" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Queue Count" dstnodeid="45" dstpinname="Insert" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="54" dstpinname="Raw In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="270" top="9720" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="270" top="9720" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Tag" dstnodeid="55" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="56" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="2760" top="9900" width="1590" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2760" top="9900" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Facility" dstnodeid="56" dstpinname="Input Enum">
+   </LINK>
    </PATCH>

@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
 
 using System.Net;
 using System.Text;
@@ -15,19 +16,21 @@ using VVVV.Core.Logging;
 
 using VVVV.Nodes.Syslog;
 
+
 #endregion usings
 
 namespace VVVV.Nodes
 {
     #region PluginInfo
     [PluginInfo(Name = "Syslog", 
-                Version = "", 
+                Version = "Join", 
                 Category = "Raw", 
                 Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
                 Tags = "Debug",
-                Author= "sebl")]
+                Author= "sebl",
+                Credits = "Michiel Fortuin")]
     #endregion PluginInfo
-    public class SyslogStringNode : Syslog.AbstractSyslog, IPluginEvaluate, IPartImportsSatisfiedNotification
+    public class SyslogJoinNode : Syslog.AbstractSyslog, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
 
         #region fields & pins
@@ -81,7 +84,6 @@ namespace VVVV.Nodes
             FStreamOut.Flush(true);
         }
 
-
         private byte[] ConstructMessage(Level level, Facility facility, string tag, string message)
         {
             int prival = (( int )facility) * 8 + (( int )level);
@@ -100,6 +102,58 @@ namespace VVVV.Nodes
             return syslogMsg.ToArray();
         }
 
+    }
+
+    #region PluginInfo
+    [PluginInfo(Name = "Syslog",
+                Version = "Split",
+                Category = "Raw",
+                Help = "Creates a (raw) Syslog message that can be sent to a syslog server",
+                Tags = "Debug",
+                Author = "sebl")]
+    #endregion PluginInfo
+    public class SyslogStringSplit : Syslog.SyslogMessage , IPluginEvaluate
+    {
+
+        #region fields & pins
+        [Input("Raw In")]
+        public IDiffSpread<Stream> FStreamIn;
+
+        [Output("Tag")]
+        public ISpread<string> FTag;
+
+        [Output("Facility", DefaultEnumEntry = "local0")]
+        public ISpread<Facility> FFacility;
+
+        [Output("Level", DefaultEnumEntry = "Debug")]
+        public ISpread<Level> FLevel;
+
+        [Output("Message")]
+        public ISpread<String> FMessage;
+        #endregion fields & pins
+
+        //called when data for any output pin is requested
+        public void Evaluate(int spreadMax)
+        {
+            FTag.SliceCount = spreadMax;
+            FFacility.SliceCount = spreadMax;
+            FLevel.SliceCount = spreadMax;
+            FMessage.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                if (FStreamIn.IsChanged)
+                {
+                    SyslogMessage msg = ParseSyslogMessage(FStreamIn[i]);
+
+                    FTag[i] = msg.Tag;
+                    FFacility[i] = msg.Facility;
+                    FLevel[i] = msg.Level;
+                    FMessage[i] = msg.Message;
+                    
+                }
+            }
+        }
 
 
     }
@@ -129,7 +183,6 @@ namespace VVVV.Nodes
         ILogger FLogger;
         #endregion fields & pins
 
-
         public void Evaluate(int spreadMax)
         {
             for (int i = 0; i < spreadMax; i++)
@@ -141,10 +194,6 @@ namespace VVVV.Nodes
                 }
             }
         }
-
-
     }
-
-
 
 }
