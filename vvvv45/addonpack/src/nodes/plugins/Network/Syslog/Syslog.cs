@@ -2,24 +2,18 @@
 using System;
 using System.IO;
 using System.ComponentModel.Composition;
-
-using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.Streams;
-
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.Streams;
 using VVVV.Core.Logging;
-
-using VVVV.Nodes.Syslog;
-
-
+using VVVV.Nodes.Syslog.Parser;
 #endregion usings
 
-namespace VVVV.Nodes
+namespace VVVV.Nodes.Syslog
 {
     #region PluginInfo
     [PluginInfo(Name = "Syslog", 
@@ -28,23 +22,38 @@ namespace VVVV.Nodes
                 Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
                 Tags = "Debug",
                 Author= "sebl",
-                Credits = "Michiel Fortuin")]
+                Credits = "")]
     #endregion PluginInfo
-    public class SyslogJoinNode : Syslog.AbstractSyslog, IPluginEvaluate, IPartImportsSatisfiedNotification
+    public class SyslogJoinNode : Syslog.SyslogMessage, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
 
         #region fields & pins
         [Input("Message")]
         public IDiffSpread<string> FMessageIn;
 
-        [Input("Tag")]
-        public IDiffSpread<string> FTag;
-
         [Input("Facility", DefaultEnumEntry = "local0")]
-        public IDiffSpread<Facility> FFacility;
+        public IDiffSpread<SyslogFacility> FFacility;
 
-        [Input("Level", DefaultEnumEntry = "Debug")]
-        public IDiffSpread<Level> FLevel;
+        [Input("Severity", DefaultEnumEntry = "Debug")]
+        public IDiffSpread<SyslogSeverity> FSeverity;
+
+        [Input("Hostname", DefaultString = "")]
+        public IDiffSpread<string> FHostname;
+
+        [Input("AppName", DefaultString = "", Visibility = PinVisibility.Hidden)]
+        public IDiffSpread<string> FAppName;
+
+        [Input("Process ID", DefaultValue = -1, Visibility = PinVisibility.Hidden)]
+        public IDiffSpread<int> FProcId;
+
+        [Input("Message ID", DefaultValue = -1, Visibility = PinVisibility.Hidden)]
+        public IDiffSpread<int> FMsgId;
+
+        [Input("Structured Data Name", DefaultString = "")]
+        public ISpread<ISpread<string>> FStructuredDataName;
+
+        [Input("Structured Data Value", DefaultString = "")]
+        public ISpread<ISpread<string>> FStructuredDataValue;
 
         [Output("Message")]
         public ISpread<Stream> FStreamOut;
@@ -60,46 +69,66 @@ namespace VVVV.Nodes
             FStreamOut.SliceCount = 0;
         }
 
+        public static int Max(params int[] values)
+        {
+            return Enumerable.Max(values);
+        }
+
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
+            spreadMax = Max(FMessageIn.SliceCount, FFacility.SliceCount, FSeverity.SliceCount, FHostname.SliceCount, FAppName.SliceCount, FProcId.SliceCount, FMsgId.SliceCount, FStructuredDataName.SliceCount, FStructuredDataValue.SliceCount);
+            
             //ResizeAndDispose will adjust the spread length and thereby call
             //the given constructor function for new slices and Dispose on old
             //slices.
             FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+
             for (int i = 0; i < spreadMax; i++)
             {
-                if (FMessageIn.IsChanged || FFacility.IsChanged || FLevel.IsChanged)
+                if (FMessageIn.IsChanged || 
+                    FFacility.IsChanged || 
+                    FSeverity.IsChanged ||
+                    FHostname.IsChanged ||
+                    FAppName.IsChanged ||
+                    FProcId.IsChanged ||
+                    FMsgId.IsChanged /*||
+                    FStructuredData.IsChanged*/ )
                 {
-                    byte[] message = ConstructMessage(FLevel[i], FFacility[i], FTag[i], FMessageIn[i]);
+                    //create msg
+                    SyslogMessage msg = Create(FFacility[i], FSeverity[i], FMessageIn[i]);
 
+                    // add properties
+                    if (FHostname[i] != string.Empty) msg.HostName = FHostname[i];
+                    if (FAppName[i] != string.Empty) msg.AppName = FAppName[i];
+                    if (FProcId[i] != -1) msg.ProcessID = FProcId[i].ToString();
+                    if (FMsgId[i] != -1) msg.MessageID = FMsgId[i].ToString();
+
+                    // add structured Data
+                    List<StructuredDataElement> sd = new List<StructuredDataElement>();
+
+                    for (int s = 0; s < FStructuredDataName[i].SliceCount; s++)
+                    {
+                        StructuredDataElement sde = new StructuredDataElement();
+                        sde.Properties.Add(FStructuredDataName[i][s], FStructuredDataValue[i][s]);
+
+                        sd.Add(sde);
+                    }
+                    msg.StructuredData = sd;
+
+                    
+                    // convert to stream
+                    byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(msg.ToIetfSyslogString());
                     Stream outputStream = FStreamOut[i];
 
+                    // write out
                     outputStream.Position = 0;
-                    outputStream.SetLength(message.Length);
-                    outputStream.Write(message, 0, message.Length);
+                    outputStream.SetLength(byteMessage.Length);
+                    outputStream.Write(byteMessage, 0, byteMessage.Length);
                 }
             }
             //this will force the changed flag of the output pin to be set
             FStreamOut.Flush(true);
-        }
-
-        private byte[] ConstructMessage(Level level, Facility facility, string tag, string message)
-        {
-            int prival = (( int )facility) * 8 + (( int )level);
-            string pri = string.Format("<{0}>", prival);
-            string timestamp =
-            new DateTimeOffset(DateTime.Now, TimeZoneInfo.Local.GetUtcOffset(DateTime.Now)).ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
-            string hostname = Dns.GetHostEntry(Environment.UserDomainName).HostName;
-
-            string header = string.Format("{0}{1} {2} {3} {4}", pri, VERSION, timestamp, hostname, tag);
-
-            List<byte> syslogMsg = new List<byte>();
-            syslogMsg.AddRange(System.Text.Encoding.ASCII.GetBytes(header));
-            syslogMsg.AddRange(System.Text.Encoding.ASCII.GetBytes(" "));
-            syslogMsg.AddRange(System.Text.Encoding.UTF8.GetBytes(message));
-
-            return syslogMsg.ToArray();
         }
 
     }
@@ -119,38 +148,85 @@ namespace VVVV.Nodes
         [Input("Raw In")]
         public IDiffSpread<Stream> FStreamIn;
 
-        [Output("Tag")]
-        public ISpread<string> FTag;
-
-        [Output("Facility", DefaultEnumEntry = "local0")]
-        public ISpread<Facility> FFacility;
-
-        [Output("Level", DefaultEnumEntry = "Debug")]
-        public ISpread<Level> FLevel;
-
         [Output("Message")]
         public ISpread<String> FMessage;
+
+        [Output("Facility")]
+        public ISpread<SyslogFacility> FFacility;
+
+        [Output("Severity")]
+        public ISpread<SyslogSeverity> FSeverity;
+
+        [Output("Hostname")]
+        public ISpread<string> FHostname;
+
+        [Output("AppName")]
+        public ISpread<string> FAppName;
+
+        [Output("Process ID")]
+        public ISpread<string> FProcId;
+
+        [Output("Message ID")]
+        public ISpread<string> FMsgId;
+
+        [Output("Structured Data Name")]
+        public ISpread<ISpread<string>> FStructuredDataName;
+
+        [Output("Structured Data Value")]
+        public ISpread<ISpread<string>> FStructuredDataValue;
+
         #endregion fields & pins
 
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
-            FTag.SliceCount = spreadMax;
-            FFacility.SliceCount = spreadMax;
-            FLevel.SliceCount = spreadMax;
+            spreadMax = FStreamIn.SliceCount;
+
             FMessage.SliceCount = spreadMax;
+            FFacility.SliceCount = spreadMax;
+            FSeverity.SliceCount = spreadMax;
+            FHostname.SliceCount = spreadMax;
+            FAppName.SliceCount = spreadMax;
+            FProcId.SliceCount = spreadMax;
+            FMsgId.SliceCount = spreadMax;
+            FStructuredDataName.SliceCount = spreadMax;
+            FStructuredDataValue.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
                 if (FStreamIn.IsChanged)
                 {
-                    SyslogMessage msg = ParseSyslogMessage(FStreamIn[i]);
+                    // Stream > string
+                    byte[] buffer = new byte[FStreamIn[i].Length];
+                    int test = FStreamIn[i].Read(buffer, 0, (int)FStreamIn[i].Length);
+                    string stringMessage = System.Text.Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 
-                    FTag[i] = msg.Tag;
-                    FFacility[i] = msg.Facility;
-                    FLevel[i] = msg.Level;
-                    FMessage[i] = msg.Message;
-                    
+                    SyslogParser prs = new SyslogParser();
+                    SyslogMessage msg = prs.Parse(stringMessage);
+
+                    if (msg != null)
+                    {
+                        FMessage[i] = msg.MessageText;
+                        FFacility[i] = msg.Facility;
+                        FSeverity[i] = msg.Severity;
+                        FHostname[i] = msg.HostName;
+                        FAppName[i] = msg.AppName;
+                        FProcId[i] = msg.ProcessID;
+                        FMsgId[i] = msg.MessageID;
+
+                        int c = msg.StructuredData.Count;
+
+                        FStructuredDataName[i].SliceCount = c;
+                        FStructuredDataValue[i].SliceCount = c;
+
+                        for (int s =0; s < msg.StructuredData.Count; s++)
+                        {
+                            string key = msg.StructuredData[s].Properties.Keys[0];
+                            string value = msg.StructuredData[s].Properties.Get(key);
+                            FStructuredDataName[i][s] = key;
+                            FStructuredDataValue[i][s] = value;
+                        }
+                    }
                 }
             }
         }

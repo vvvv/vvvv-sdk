@@ -19,9 +19,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="abstractSyslog.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Format\BsdSyslogFormat.cs" />
+    <Compile Include="Format\IetfSyslogFormat.cs" />
+    <Compile Include="Format\ISyslogFormat.cs" />
+    <Compile Include="Parser\TextReaderExtensions.cs" />
+    <Compile Include="StructuredDataElement.cs" />
     <Compile Include="Syslog.cs" />
+    <Compile Include="SyslogConstants.cs" />
     <Compile Include="syslogMessage.cs" />
+    <Compile Include="Parser\Syslogparser.cs" />
+    <Compile Include="Utils\Rfc3339DateFormat.cs" />
+    <Compile Include="Utils\SyslogUtil.cs" />
+    <Compile Include="Utils\WordStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Core\Core.csproj">
