@@ -83,7 +83,15 @@ namespace VVVV.Nodes.Syslog
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
-            spreadMax = Max(FMessageIn.SliceCount, FFacility.SliceCount, FSeverity.SliceCount, FHostname.SliceCount, FAppName.SliceCount, FProcId.SliceCount, FMsgId.SliceCount, FStructuredDataName.SliceCount, FStructuredDataValue.SliceCount);
+            spreadMax = Max(FMessageIn.SliceCount, 
+                            FFacility.SliceCount, 
+                            FSeverity.SliceCount, 
+                            FHostname.SliceCount, 
+                            FAppName.SliceCount, 
+                            FProcId.SliceCount, 
+                            FMsgId.SliceCount, 
+                            FStructuredDataName.SliceCount, 
+                            FStructuredDataValue.SliceCount);
             
             //ResizeAndDispose will adjust the spread length and thereby call
             //the given constructor function for new slices and Dispose on old
@@ -146,7 +154,7 @@ namespace VVVV.Nodes.Syslog
                 Tags = "Debug",
                 Author = "sebl")]
     #endregion PluginInfo
-    public class SyslogStringSplit : Syslog.SyslogMessage , IPluginEvaluate
+    public class SyslogSplit : IPluginEvaluate
     {
         #region fields & pins
         [Input("Raw In")]
@@ -160,6 +168,9 @@ namespace VVVV.Nodes.Syslog
 
         [Output("Severity")]
         public ISpread<SyslogSeverity> FSeverity;
+
+        [Output("Timestamp")]
+        public ISpread<string> FTimestamp;
 
         [Output("Hostname")]
         public ISpread<string> FHostname;
@@ -179,7 +190,8 @@ namespace VVVV.Nodes.Syslog
         [Output("Structured Data Value")]
         public ISpread<ISpread<string>> FStructuredDataValue;
 
-        //ISpread<Stream> oldStream;
+        //List<Stream> oldStream;
+        //bool firstrun = true;
 
         #endregion fields & pins
 
@@ -189,6 +201,7 @@ namespace VVVV.Nodes.Syslog
             FMessage.SliceCount = spreadMax;
             FFacility.SliceCount = spreadMax;
             FSeverity.SliceCount = spreadMax;
+            FTimestamp.SliceCount = spreadMax;
             FHostname.SliceCount = spreadMax;
             FAppName.SliceCount = spreadMax;
             FProcId.SliceCount = spreadMax;
@@ -196,17 +209,31 @@ namespace VVVV.Nodes.Syslog
             FStructuredDataName.SliceCount = spreadMax;
             FStructuredDataValue.SliceCount = spreadMax;
 
-            //bool testor = oldStream != FStreamIn;
 
-            if (FStreamIn.IsChanged)  //IsChanged doesn't work with Streams
+            //if (firstrun)
+            //    oldStream = new List<Stream>();
+
+            //if (firstrun || oldStream.Count != FStreamIn.SliceCount)
+            //{
+            //    //if (oldStream != null)  
+            //        oldStream.Clear();
+
+            //    foreach (Stream s in FStreamIn)
+            //        oldStream.Add(s);
+            //        //oldStream = FStreamIn[0];
+            //}
+
+
+            for (int i = 0; i < spreadMax; i++)
             {
-                //if (firstrun == true) firstrun = false;
-                //oldStream = FStreamIn;
+                //if (firstrun || oldStream[i] != FStreamIn[i]  )  //IsChanged doesn't work with Streams
+                //{
+                //    if (firstrun == true)
+                //        firstrun = false;
+                //    oldStream[i] = FStreamIn[i];
 
-
-                for (int i = 0; i < spreadMax; i++)
+                if (FStreamIn[i].Length > 0)
                 {
-
                     // Stream > string
                     byte[] buffer = new byte[FStreamIn[i].Length];
                     int test = FStreamIn[i].Read(buffer, 0, (int)FStreamIn[i].Length);
@@ -220,6 +247,7 @@ namespace VVVV.Nodes.Syslog
                         FMessage[i] = msg.MessageText;
                         FFacility[i] = msg.Facility;
                         FSeverity[i] = msg.Severity;
+                        FTimestamp[i] = msg.TimeStamp.ToString();
                         FHostname[i] = msg.HostName;
                         FAppName[i] = msg.AppName;
                         FProcId[i] = msg.ProcessID;
@@ -229,18 +257,31 @@ namespace VVVV.Nodes.Syslog
 
                         FStructuredDataName[i].SliceCount = 0;
                         FStructuredDataValue[i].SliceCount = 0;
-                        
+
                         for (int s = 0; s < sdCount; s++)
                         {
                             // each sd contains n sd elements
                             int keycount = msg.StructuredData[s].Properties.Count;
 
-                            for (int k =0; k < keycount; k++)
+                            for (int k = 0; k < keycount; k++)
                             {
                                 FStructuredDataName[i].Add<string>(msg.StructuredData[s].Properties.AllKeys[k]);
                                 FStructuredDataValue[i].Add<string>(msg.StructuredData[s].Properties.GetValues(k)[0]);
                             }
                         }
+                    }
+                    else
+                    {
+                        FMessage[i] = "corrupt message";
+                        FFacility[i] = SyslogFacility.Unknown;
+                        FSeverity[i] = SyslogSeverity.Unknown;
+                        FTimestamp[i] = "";
+                        FHostname[i] = "";
+                        FAppName[i] = "";
+                        FProcId[i] = "";
+                        FMsgId[i] = "";
+                        FStructuredDataName[i].SliceCount = 0;
+                        FStructuredDataValue[i].SliceCount = 0;
                     }
                 }
             }
