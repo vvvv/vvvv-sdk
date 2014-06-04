@@ -17,7 +17,7 @@ namespace VVVV.Nodes.Syslog
 {
     #region PluginInfo
     [PluginInfo(Name = "Syslog", 
-                Version = "Join", 
+                Version = "join", 
                 Category = "Raw", 
                 Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
                 Tags = "Debug",
@@ -40,20 +40,26 @@ namespace VVVV.Nodes.Syslog
         [Input("Hostname", DefaultString = "")]
         public IDiffSpread<string> FHostname;
 
-        [Input("AppName", DefaultString = "", Visibility = PinVisibility.Hidden)]
+        [Input("AppName", DefaultString = "")]
         public IDiffSpread<string> FAppName;
 
-        [Input("Process ID", DefaultValue = -1, Visibility = PinVisibility.Hidden)]
-        public IDiffSpread<int> FProcId;
+        [Input("Process ID", DefaultString = "")]
+        public IDiffSpread<string> FProcId;
 
-        [Input("Message ID", DefaultValue = -1, Visibility = PinVisibility.Hidden)]
-        public IDiffSpread<int> FMsgId;
+        [Input("Message ID", DefaultString = "")]
+        public IDiffSpread<string> FMsgId;
 
         [Input("Structured Data Name", DefaultString = "")]
         public ISpread<ISpread<string>> FStructuredDataName;
 
         [Input("Structured Data Value", DefaultString = "")]
         public ISpread<ISpread<string>> FStructuredDataValue;
+
+        [Input("Structured Data ID", DefaultString = "vvvv", Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+        public ISpread<string> FSDID;
+
+        [Input("Enterprise ID", DefaultString = "44444", Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
+        public ISpread<string> FEID;
 
         [Output("Message")]
         public ISpread<Stream> FStreamOut;
@@ -101,21 +107,20 @@ namespace VVVV.Nodes.Syslog
                     // add properties
                     if (FHostname[i] != string.Empty) msg.HostName = FHostname[i];
                     if (FAppName[i] != string.Empty) msg.AppName = FAppName[i];
-                    if (FProcId[i] != -1) msg.ProcessID = FProcId[i].ToString();
-                    if (FMsgId[i] != -1) msg.MessageID = FMsgId[i].ToString();
+                    if (FProcId[i] != string.Empty) msg.ProcessID = FProcId[i];
+                    if (FMsgId[i] != string.Empty) msg.MessageID = FMsgId[i];
 
                     // add structured Data
                     List<StructuredDataElement> sd = new List<StructuredDataElement>();
+                    StructuredDataElement sde = new StructuredDataElement();
+                    sde.ID = FSDID[0] + "@" + FEID[0];  // set id according to rfc5424 ... the enterprise ID is a wildcard anyway
 
                     for (int s = 0; s < FStructuredDataName[i].SliceCount; s++)
                     {
-                        StructuredDataElement sde = new StructuredDataElement();
                         sde.Properties.Add(FStructuredDataName[i][s], FStructuredDataValue[i][s]);
-
-                        sd.Add(sde);
                     }
+                    sd.Add(sde);
                     msg.StructuredData = sd;
-
                     
                     // convert to stream
                     byte[] byteMessage = System.Text.Encoding.ASCII.GetBytes(msg.ToIetfSyslogString());
@@ -135,18 +140,17 @@ namespace VVVV.Nodes.Syslog
 
     #region PluginInfo
     [PluginInfo(Name = "Syslog",
-                Version = "Split",
+                Version = "split",
                 Category = "Raw",
-                Help = "Creates a (raw) Syslog message that can be sent to a syslog server",
+                Help = "splits a (raw) Syslog message into its atomics",
                 Tags = "Debug",
                 Author = "sebl")]
     #endregion PluginInfo
     public class SyslogStringSplit : Syslog.SyslogMessage , IPluginEvaluate
     {
-
         #region fields & pins
         [Input("Raw In")]
-        public IDiffSpread<Stream> FStreamIn;
+        public ISpread<Stream> FStreamIn;
 
         [Output("Message")]
         public ISpread<String> FMessage;
@@ -175,13 +179,13 @@ namespace VVVV.Nodes.Syslog
         [Output("Structured Data Value")]
         public ISpread<ISpread<string>> FStructuredDataValue;
 
+        //ISpread<Stream> oldStream;
+
         #endregion fields & pins
 
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
-            spreadMax = FStreamIn.SliceCount;
-
             FMessage.SliceCount = spreadMax;
             FFacility.SliceCount = spreadMax;
             FSeverity.SliceCount = spreadMax;
@@ -192,10 +196,17 @@ namespace VVVV.Nodes.Syslog
             FStructuredDataName.SliceCount = spreadMax;
             FStructuredDataValue.SliceCount = spreadMax;
 
-            for (int i = 0; i < spreadMax; i++)
+            //bool testor = oldStream != FStreamIn;
+
+            if (FStreamIn.IsChanged)  //IsChanged doesn't work with Streams
             {
-                if (FStreamIn.IsChanged)
+                //if (firstrun == true) firstrun = false;
+                //oldStream = FStreamIn;
+
+
+                for (int i = 0; i < spreadMax; i++)
                 {
+
                     // Stream > string
                     byte[] buffer = new byte[FStreamIn[i].Length];
                     int test = FStreamIn[i].Read(buffer, 0, (int)FStreamIn[i].Length);
@@ -214,24 +225,26 @@ namespace VVVV.Nodes.Syslog
                         FProcId[i] = msg.ProcessID;
                         FMsgId[i] = msg.MessageID;
 
-                        int c = msg.StructuredData.Count;
+                        int sdCount = msg.StructuredData.Count; // is normally 1 (when created with Syslog (Raw join), because it can't pack several sd packages )
 
-                        FStructuredDataName[i].SliceCount = c;
-                        FStructuredDataValue[i].SliceCount = c;
-
-                        for (int s =0; s < msg.StructuredData.Count; s++)
+                        FStructuredDataName[i].SliceCount = 0;
+                        FStructuredDataValue[i].SliceCount = 0;
+                        
+                        for (int s = 0; s < sdCount; s++)
                         {
-                            string key = msg.StructuredData[s].Properties.Keys[0];
-                            string value = msg.StructuredData[s].Properties.Get(key);
-                            FStructuredDataName[i][s] = key;
-                            FStructuredDataValue[i][s] = value;
+                            // each sd contains n sd elements
+                            int keycount = msg.StructuredData[s].Properties.Count;
+
+                            for (int k =0; k < keycount; k++)
+                            {
+                                FStructuredDataName[i].Add<string>(msg.StructuredData[s].Properties.AllKeys[k]);
+                                FStructuredDataValue[i].Add<string>(msg.StructuredData[s].Properties.GetValues(k)[0]);
+                            }
                         }
                     }
                 }
             }
         }
-
-
     }
 
 
