@@ -17,12 +17,12 @@ namespace VVVV.Nodes.Syslog
 {
     #region PluginInfo
     [PluginInfo(Name = "Syslog", 
-                Version = "join", 
+                Version = "Join", 
                 Category = "Raw", 
                 Help = "Creates a (raw) Syslog message that can be sent to a syslog server", 
-                Tags = "Debug",
+                Tags = "debug",
                 Author= "sebl",
-                Credits = "")]
+                Credits = "syslog library from https://github.com/amazing-andrew/Syslog")]
     #endregion PluginInfo
     public class SyslogJoinNode : Syslog.SyslogMessage, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
@@ -61,10 +61,8 @@ namespace VVVV.Nodes.Syslog
         [Input("Enterprise ID", DefaultString = "44444", Visibility = PinVisibility.OnlyInspector, IsSingle = true)]
         public ISpread<string> FEID;
 
-        [Output("Message")]
+        [Output("Output")]
         public ISpread<Stream> FStreamOut;
-
-        private const int VERSION = 1;
 
         #endregion fields & pins
 
@@ -121,7 +119,7 @@ namespace VVVV.Nodes.Syslog
                     // add structured Data
                     List<StructuredDataElement> sd = new List<StructuredDataElement>();
                     StructuredDataElement sde = new StructuredDataElement();
-                    sde.ID = FSDID[0] + "@" + FEID[0];  // set id according to rfc5424 ... the enterprise ID is a wildcard anyway
+                    sde.ID = FSDID[0] + "@" + FEID[0];  // set id according to rfc5424 ... the enterprise ID is a wildcard anyway, since one is not registered at the IANA
 
                     for (int s = 0; s < FStructuredDataName[i].SliceCount; s++)
                     {
@@ -148,16 +146,17 @@ namespace VVVV.Nodes.Syslog
 
     #region PluginInfo
     [PluginInfo(Name = "Syslog",
-                Version = "split",
+                Version = "Split",
                 Category = "Raw",
-                Help = "splits a (raw) Syslog message into its atomics",
-                Tags = "Debug",
-                Author = "sebl")]
+                Help = "Splits a (raw) Syslog message into its atomics",
+                Tags = "debug",
+                Author = "sebl",
+                Credits = "syslog library from https://github.com/amazing-andrew/Syslog")]
     #endregion PluginInfo
-    public class SyslogSplit : IPluginEvaluate
+    public class SyslogSplitNode : IPluginEvaluate
     {
         #region fields & pins
-        [Input("Raw In")]
+        [Input("Input")]
         public ISpread<Stream> FStreamIn;
 
         [Output("Message")]
@@ -192,10 +191,8 @@ namespace VVVV.Nodes.Syslog
 
         //List<Stream> oldStream;
         //bool firstrun = true;
-
         #endregion fields & pins
 
-        //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
             FMessage.SliceCount = spreadMax;
@@ -209,28 +206,28 @@ namespace VVVV.Nodes.Syslog
             FStructuredDataName.SliceCount = spreadMax;
             FStructuredDataValue.SliceCount = spreadMax;
 
-
+            #region test
             //if (firstrun)
             //    oldStream = new List<Stream>();
 
             //if (firstrun || oldStream.Count != FStreamIn.SliceCount)
             //{
-            //    //if (oldStream != null)  
-            //        oldStream.Clear();
+            //    oldStream.Clear();
 
             //    foreach (Stream s in FStreamIn)
             //        oldStream.Add(s);
-            //        //oldStream = FStreamIn[0];
             //}
-
+            #endregion test
 
             for (int i = 0; i < spreadMax; i++)
             {
+                #region test
                 //if (firstrun || oldStream[i] != FStreamIn[i]  )  //IsChanged doesn't work with Streams
                 //{
                 //    if (firstrun == true)
                 //        firstrun = false;
                 //    oldStream[i] = FStreamIn[i];
+                #endregion test
 
                 if (FStreamIn[i].Length > 0)
                 {
@@ -253,7 +250,7 @@ namespace VVVV.Nodes.Syslog
                         FProcId[i] = msg.ProcessID;
                         FMsgId[i] = msg.MessageID;
 
-                        int sdCount = msg.StructuredData.Count; // is normally 1 (when created with Syslog (Raw join), because it can't pack several sd packages )
+                        int sdCount = msg.StructuredData.Count; // is normally 1 (when created with Syslog (Raw join), because it can't pack several sd elements into one sd package)
 
                         FStructuredDataName[i].SliceCount = 0;
                         FStructuredDataValue[i].SliceCount = 0;
