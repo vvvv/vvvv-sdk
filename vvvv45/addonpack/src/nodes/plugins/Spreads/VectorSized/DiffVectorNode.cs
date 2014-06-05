@@ -1,9 +1,10 @@
 #region usings
 using System;
 using System.ComponentModel.Composition;
-
+using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+
 #endregion usings
 
 namespace VVVV.Nodes

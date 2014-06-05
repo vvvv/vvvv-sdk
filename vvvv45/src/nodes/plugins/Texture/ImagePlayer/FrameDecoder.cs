@@ -12,205 +12,57 @@ using SharpDX.WIC;
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    abstract class FrameDecoder : IDisposable
+    /// <summary>
+    /// Decodes a frame (image of some sort) to a texture with the prefered texture format.
+    /// If the prefered texture format is not supported by the hardware a fallback format
+    /// will be chosen.
+    /// Implementations should do all the hard work in their constructor, as it is called
+    /// from a background thread. The Decode method is called on the UI thread and should
+    /// therefor avoid heavy computations.
+    /// If the prefered format is set to unknown, a subclass must set the FChosenFormat
+    /// field in its constructor based on the info of the data stream.
+    /// Note that the final chosen texture format in the call to Decode is not necessarily
+    /// the one written to FChosenFormat.
+    /// </summary>
+    abstract partial class FrameDecoder : IDisposable
     {
-        class BitmapFrameDecoder : FrameDecoder
-        {
-            private static ImagingFactory Factory = new ImagingFactory();
-
-            private DataPointer FBuffer;
-            private readonly int FStride;
-            private readonly int FLength;
-            
-            public BitmapFrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
-                : base(textureFactory, memoryPool)
-            {
-                var dataStream = stream as SharpDX.DataStream;
-                using (var wicStream = new WICStream(Factory, new SharpDX.DataPointer(dataStream.DataPointer, (int)dataStream.Length)))
-                using (var decoder = new BitmapDecoder(Factory, wicStream, DecodeOptions.CacheOnLoad))
-                {
-                    using (var frame = decoder.GetFrame(0))
-                    {
-                        var dstPixelFormat = PixelFormat.Format32bppBGRA;
-                            
-                        Width = frame.Size.Width;
-                        Height = frame.Size.Height;
-                        FStride = PixelFormat.GetStride(dstPixelFormat, Width);
-                        FLength = FStride * Height;
-
-                        FBuffer = memoryPool.UnmanagedPool.GetMemory(FLength);
-
-                        if (frame.PixelFormat != dstPixelFormat)
-                        {
-                            using (var converter = new FormatConverter(Factory))
-                            {
-                                converter.Initialize(frame, dstPixelFormat);
-                                converter.CopyPixels(FStride, FBuffer);
-                            }
-                        }
-                        else
-                        {
-                            frame.CopyPixels(FStride, FBuffer);
-                        }
-                    }
-                }
-                memoryPool.StreamPool.PutStream(stream);
-            }
-
-            public override void Dispose()
-            {
-                if (FBuffer != null)
-                {
-                    FMemoryPool.UnmanagedPool.PutMemory(FBuffer);
-                    FBuffer = DataPointer.Zero;
-                }
-                base.Dispose();
-            }
-            
-            public override Texture Decode(Device device)
-            {
-                var usage = Usage.Dynamic & ~Usage.AutoGenerateMipMap;
-                var texture = FTextureFactory(device, Width, Height, 1, Format.A8R8G8B8, usage);
-                var dataRectangle = texture.LockRectangle(0, LockFlags.Discard);
-
-                try
-                {
-                    if (dataRectangle.Pitch == FStride)
-                    {
-                        Utilities.CopyMemory(dataRectangle.DataPointer, FBuffer.Pointer, FBuffer.Size);
-                    }
-                    else
-                    {
-                        for (int y = 0; y < Height; y++)
-                        {
-                            var src = FBuffer.Pointer +  y * FStride;
-                            var dst = dataRectangle.DataPointer + y * dataRectangle.Pitch;
-                            Utilities.CopyMemory(dst, src, FStride);
-                        }
-                    }
-                }
-                finally
-                {
-                    texture.UnlockRectangle(0);
-                }
-                
-                return texture;
-            }
-            
-            public static IEnumerable<string> SupportedFileExtensions
-            {
-                get
-                {
-                    yield return ".bmp";
-                    yield return ".gif";
-                    yield return ".ico";
-                    yield return ".jpg";
-                    yield return ".jpeg";
-                    yield return ".png";
-                    yield return ".tif";
-                    yield return ".tiff";
-                    yield return ".wmp";
-                    yield break;
-                }
-            }
-        }
-        
-        class Direct3D9FrameDecoder : FrameDecoder
-        {
-            private readonly ImageInformation FImageInformation;
-            private Stream FStream;
-            
-            public Direct3D9FrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
-                : base(textureFactory, memoryPool)
-            {
-                FStream = stream;
-                FImageInformation = ImageInformation.FromStream(stream);
-                Width = FImageInformation.Width;
-                Height = FImageInformation.Height;
-            }
-            
-            public override Texture Decode(Device device)
-            {
-                Format format;
-                switch (FImageInformation.Format)
-                {
-                    case Format.Dxt1:
-                    case Format.Dxt2:
-                    case Format.Dxt3:
-                    case Format.Dxt4:
-                    case Format.Dxt5:
-                        format = FImageInformation.Format;
-                        break;
-                    default:
-                        format = Format.A8R8G8B8;
-                        break;
-                }
-
-                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
-                var texture = FTextureFactory(
-                    device,
-                    FImageInformation.Width,
-                    FImageInformation.Height,
-                    FImageInformation.MipLevels,
-                    format,
-                    usage);
-
-                using (var surface = texture.GetSurfaceLevel(0))
-                {
-                    FStream.Position = 0;
-                    Surface.FromFileInStream(surface, FStream, Filter.None, 0);
-                }
-                return texture;
-            }
-
-            public override void Dispose()
-            {
-                if (FStream != null)
-                {
-                    FMemoryPool.StreamPool.PutStream(FStream);
-                    FStream = null;
-                }
-                base.Dispose();
-            }
-            
-            public static IEnumerable<string> SupportedFileExtensions
-            {
-                get
-                {
-                    return 
-                        from extension in Enum.GetNames(typeof(ImageFileFormat))
-                        select string.Format(".{0}", extension.ToLower());
-                }
-            }
-        }
-        
-        private static Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder>>();
+        private static Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, Format, FrameDecoder>> FDecoderFactories = new Dictionary<string, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, Format, FrameDecoder>>();
+        private static Dictionary<Format, Format> FFallbackFormats = new Dictionary<Format, Format>();
         
         static FrameDecoder()
         {
             Register(
-                Direct3D9FrameDecoder.SupportedFileExtensions, 
-                (textureFactory, memoryPool, stream) => new Direct3D9FrameDecoder(textureFactory, memoryPool, stream)
+                Direct3D9FrameDecoder.SupportedFileExtensions,
+                (textureFactory, memoryPool, stream, preferedFormat) => new Direct3D9FrameDecoder(textureFactory, memoryPool, stream, preferedFormat)
                );
             Register(
-                BitmapFrameDecoder.SupportedFileExtensions, 
-                (textureFactory, memoryPool, stream) => new BitmapFrameDecoder(textureFactory, memoryPool, stream)
+                BitmapFrameDecoder.SupportedFileExtensions,
+                (textureFactory, memoryPool, stream, preferedFormat) => new BitmapFrameDecoder(textureFactory, memoryPool, stream, preferedFormat)
                );
         }
-        
-        public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream)
+
+        public static FrameDecoder Create(string filename, Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Stream stream, Format preferedFormat)
         {
             var extension = Path.GetExtension(filename).ToLowerInvariant();
-
-            Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory = null;
+            // In case the prefered format is not supported on one device, fall back to one which works.
+            var format = GetFallbackFormatIfPreferedFormatIsNotSupported(preferedFormat);
+            Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, Format, FrameDecoder> decoderFactory = null;
             if (!FDecoderFactories.TryGetValue(extension, out decoderFactory))
             {
-                return new BitmapFrameDecoder(textureFactory, memoryPool, stream);
+                return new BitmapFrameDecoder(textureFactory, memoryPool, stream, format);
             }
-            return decoderFactory(textureFactory, memoryPool, stream);
+            return decoderFactory(textureFactory, memoryPool, stream, format);
+        }
+
+        static Format GetFallbackFormatIfPreferedFormatIsNotSupported(Format preferedFormat)
+        {
+            Format result;
+            if (FFallbackFormats.TryGetValue(preferedFormat, out result))
+                return result;
+            return preferedFormat;
         }
         
-        public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, FrameDecoder> decoderFactory)
+        public static void Register(IEnumerable<string> extensions, Func<Func<Device, int, int, int, Format, Usage, Texture>, MemoryPool, Stream, Format, FrameDecoder> decoderFactory)
         {
             foreach (var extension in extensions)
             {
@@ -220,11 +72,13 @@ namespace VVVV.Nodes.ImagePlayer
         
         protected Func<Device, int, int, int, Format, Usage, Texture> FTextureFactory;
         protected MemoryPool FMemoryPool;
+        protected Format FChosenFormat;
         
-        public FrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool)
+        public FrameDecoder(Func<Device, int, int, int, Format, Usage, Texture> textureFactory, MemoryPool memoryPool, Format preferedFormat)
         {
             FTextureFactory = textureFactory;
             FMemoryPool = memoryPool;
+            FChosenFormat = preferedFormat;
         }
         
         public virtual void Dispose()
@@ -232,8 +86,39 @@ namespace VVVV.Nodes.ImagePlayer
             FTextureFactory = null;
             FMemoryPool = null;
         }
-        
-        public abstract Texture Decode(Device device);
+
+        public Texture Decode(Device device)
+        {
+            // Assertions
+            System.Diagnostics.Debug.Assert(FChosenFormat != Format.Unknown);
+
+            Format format;
+            if (!FFallbackFormats.TryGetValue(FChosenFormat, out format))
+            {
+                // Check if the texture format is supported on this device
+                using (var direct3D = device.Direct3D)
+                {
+                    var adapter = 0;
+                    var displayMode = direct3D.GetAdapterDisplayMode(adapter);
+                    if (!direct3D.CheckDeviceFormat(adapter, DeviceType.Hardware, direct3D.GetAdapterDisplayMode(0).Format, Usage.None, ResourceType.Texture, FChosenFormat))
+                    {
+                        // Ouch - the chosen format is not supported on this device
+                        // Add this format to the list of unsupported formats so we 
+                        // can avoid this for future frames.
+                        var fallbackFormat = Format.A8R8G8B8;
+                        FFallbackFormats.Add(FChosenFormat, fallbackFormat);
+                        format = fallbackFormat;
+                    }
+                    else
+                    {
+                        format = FChosenFormat;
+                    }
+                }
+            }
+            return Decode(device, format);
+        }
+
+        protected abstract Texture Decode(Device device, Format format);
 
         public int Width { get; set; }
         public int Height { get; set; }

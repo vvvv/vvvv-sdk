@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
    <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\plugins\Take (Raw) help.v4p">
    <BOUNDS type="Window" left="870" top="600" width="9000" height="7395">
    </BOUNDS>
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the first n bytes from each byte sequence|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the first n bytes of each byte sequence|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -113,7 +113,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="645" top="1605" width="3240" height="2745">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|A string and a value are encoded as raw bytes. In this example the string has 6 characters and UTF-8 format uses one byte for every character. The value is encoded as 16bit integer (takes 2 bytes).&cr;&lf;&cr;&lf;Two byte sequences are concatenated together. Rollover the mouse over the output pin to peek at this 8 bytes sequence.&cr;&lf;&cr;&lf;Take (Raw) returns the first 6 bytes. These bytes represent the string from step 1.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|A string and a value are encoded as raw bytes. In this example the string has 6 characters and the UTF-8 format uses one byte for each character. The value is encoded as 16bit integer (takes 2 bytes).&cr;&lf;&cr;&lf;Two byte sequences are concatenated together. Rollover the mouse over the output pin to peek at this 8 bytes sequence.&cr;&lf;&cr;&lf;Take (Raw) returns the first 6 bytes. These bytes represent the string from step 1.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -249,7 +249,7 @@
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="34" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6000" top="5775" width="795" height="240">
+   <BOUNDS type="Box" left="6000" top="5775" width="915" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="6000" top="5775" width="0" height="0">
    </BOUNDS>
@@ -290,4 +290,40 @@
    <BOUNDS type="Box" left="945" top="5835">
    </BOUNDS>
    </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="44" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="6660" top="4845" width="675" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6660" top="4845" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="utf-8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="34" dstpinname="Encoding">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="46" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4830" top="3240" width="480" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4830" top="3240" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="6">
+   </PIN>
+   </NODE>
+   <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="4830" top="2745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="48" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Count" dstnodeid="46" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>

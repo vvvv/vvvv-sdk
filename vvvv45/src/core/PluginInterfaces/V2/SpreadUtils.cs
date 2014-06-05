@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using VVVV.PluginInterfaces.V2.NonGeneric;
 
@@ -52,6 +53,20 @@ namespace VVVV.PluginInterfaces.V2
         }
 
         public static int SpreadMax(params ISpread[] spreads)
+        {
+            var max = 0;
+            foreach (var spread in spreads)
+            {
+                var sliceCount = spread.SliceCount;
+                if (sliceCount == 0)
+                    return 0;
+                else
+                    max = Math.Max(sliceCount, max);
+            }
+            return max;
+        }
+
+        public static int SpreadMax(IEnumerable<ISpread> spreads)
         {
             var max = 0;
             foreach (var spread in spreads)

@@ -781,6 +781,16 @@ namespace VVVV.Hosting
         }
         
         #endregion
-   
+
+
+        public void DisableShortCuts()
+        {
+            FVVVVHost.DisableShortCuts();
+        }
+
+        public void EnableShortCuts()
+        {
+            FVVVVHost.EnableShortCuts();
+        }
     }
 }

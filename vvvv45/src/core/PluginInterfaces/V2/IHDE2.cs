@@ -340,7 +340,16 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
-        
+
+        /// <summary>
+        /// Disables the short cuts of vvvv. Each disable call needs to be followed by an enable call.
+        /// </summary>
+        void DisableShortCuts();
+
+        /// <summary>
+        /// Enables the short cuts of vvvv.
+        /// </summary>
+        void EnableShortCuts();
 	}
 	#endregion IHDEHost
 	

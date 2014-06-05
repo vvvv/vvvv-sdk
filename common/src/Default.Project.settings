@@ -5,7 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <MSBuildCommunityTasksPath>$(MSBuildThisFileDirectory)\.build</MSBuildCommunityTasksPath>
   </PropertyGroup>
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+  
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
@@ -29,4 +32,54 @@
   <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
+  
+  <!-- Version Number -->
+  <!-- Set by build server -->
+  <!-- 
+    For explanation see: http://stackoverflow.com/questions/64602/what-are-differences-between-assemblyversion-assemblyfileversion-and-assemblyin
+                    and: http://docs.nuget.org/docs/reference/versioning 
+  -->
+  <PropertyGroup>
+    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">1.0.0.0</AssemblyVersion>
+    <FileVersion Condition=" '$(FileVersion)' == '' ">1.0.0.0</FileVersion>
+    <InformationalVersion Condition=" '$(InformationalVersion)' == '' ">1.0.0.0</InformationalVersion>
+    <AssemblyCompany Condition=" '$(AssemblyCompany)' == '' ">vvvv group</AssemblyCompany>
+    <AssemblyCopyright Condition=" '$(AssemblyCopyright)' == '' ">Copyright © $(AssemblyCompany). All rights reserved.</AssemblyCopyright>
+    <AssemblyProduct Condition=" '$(AssemblyProduct)' == '' ">vvvv</AssemblyProduct>
+    <AssemblyDescription Condition=" '$(AssemblyDescription)' == '' ">$(AssemblyName)</AssemblyDescription>
+  </PropertyGroup>
+  
+  <Target Name="_SetYearProperty_">
+    <Time>
+      <Output TaskParameter="Year" PropertyName="Year" />
+    </Time>
+  </Target>
+  
+  <Target Name="Version" DependsOnTargets="_SetYearProperty_">
+    <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
+    <Message Text="FileVersion: $(FileVersion)"/>
+    <Message Text="InformationalVersion: $(InformationalVersion)"/>
+
+    <Attrib Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs" ReadOnly="False" />
+
+    <AssemblyInfo CodeLanguage="CS"
+                  OutputFile="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs"
+                  GenerateClass="true"
+                  AssemblyCopyright="$(AssemblyCopyright)"
+                  AssemblyConfiguration="$(Configuration)"
+                  AssemblyCompany="$(AssemblyCompany)"
+                  AssemblyDescription="$(AssemblyDescription)"
+                  AssemblyProduct="$(AssemblyProduct)"
+                  AssemblyTitle="$(AssemblyName)"
+                  AssemblyVersion="$(AssemblyVersion)"
+                  AssemblyFileVersion="$(FileVersion)"
+                  AssemblyInformationalVersion="$(InformationalVersion)" />
+                  
+    <!-- Remove stupid comment -->
+    <FileUpdate Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs"
+                Regex="\/\/ &lt;auto-generated&gt;.*?\/\/ &lt;\/auto-generated&gt;"
+                Singleline="true"
+                Multiline="true"
+                ReplacementText="// Auto-generated. Do not modify." />
+  </Target>
 </Project>

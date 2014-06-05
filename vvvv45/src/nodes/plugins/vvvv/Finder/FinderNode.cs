@@ -24,10 +24,10 @@ using VVVV.Utils.Linq;
 namespace VVVV.Nodes.Finder
 {
     [PluginInfo(Name = "Finder",
-                Category = "HDE",
+                Category = "VVVV",
                 Shortcut = "Ctrl+F",
                 Author = "vvvv group",
-                Help = "Finds Nodes, Comments and Send/Receive channels and more.",
+                Help = "Finds Nodes, Comments, Send/Receive channels and more.",
                 InitialBoxWidth = 200,
                 InitialBoxHeight = 250,
                 InitialWindowWidth = 340,

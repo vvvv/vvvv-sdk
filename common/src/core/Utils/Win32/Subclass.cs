@@ -50,13 +50,21 @@ namespace VVVV.Utils.Win32
         public event EventHandler<WMEventArgs> WindowMessage;
         public event EventHandler Disposed;
 
-        private IntPtr SubclassProc(IntPtr hWnd, WM msg, IntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData)
+        private IntPtr SubclassProc(IntPtr hWnd, WM msg, UIntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData)
         {
+            var handled = false;
             if (WindowMessage != null)
-                WindowMessage(this, new WMEventArgs(hWnd, msg, wParam, lParam));
+            {
+                var args = new WMEventArgs(hWnd, msg, wParam, lParam);
+                WindowMessage(this, args);
+                handled = args.Handled;
+            }
             if (msg == WM.NCDESTROY)
                 Dispose();
-            return ComCtl32.DefSubclassProc(hWnd, msg, wParam, lParam);
+            if (!handled)
+                return ComCtl32.DefSubclassProc(hWnd, msg, wParam, lParam);
+            else
+                return IntPtr.Zero;
         }
     }
 }

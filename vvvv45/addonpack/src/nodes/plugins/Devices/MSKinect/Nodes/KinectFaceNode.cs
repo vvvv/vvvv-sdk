@@ -236,7 +236,7 @@ namespace VVVV.MSKinect.Nodes
                     SkeletonFaceTracker skeletonFaceTracker;
                     if (this.trackedSkeletons.TryGetValue(skeleton.TrackingId, out skeletonFaceTracker))
                     {
-                        skeletonFaceTracker.OnFrameReady(this.runtime.Runtime, ColorImageFormat.RgbResolution640x480Fps30, colorImage, DepthImageFormat.Resolution320x240Fps30, depthImage, skeleton);
+                        skeletonFaceTracker.OnFrameReady(this.runtime.Runtime, ColorImageFormat.RgbResolution640x480Fps30, colorImage, DepthImageFormat.Resolution640x480Fps30, depthImage, skeleton);
                         skeletonFaceTracker.LastTrackedFrame = skeletonFrame.FrameNumber;
                     }
                 }

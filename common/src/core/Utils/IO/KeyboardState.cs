@@ -90,39 +90,6 @@ namespace VVVV.Utils.IO
             }
         }
 
-        #region virtual keycode to character translation
-
-        // From: http://stackoverflow.com/questions/6214326/translate-keys-to-char
-        private static char? FromKeys(Keys keys, bool capsLock, InputLanguage inputLanguage = null, bool firstChance = true)
-        {
-            inputLanguage = inputLanguage ?? InputLanguage.CurrentInputLanguage;
-
-            byte[] keyStates = new byte[256];
-
-            keyStates[(int)(keys & Keys.KeyCode)] = Const.KEY_PRESSED;
-            keyStates[(int)Keys.Capital] = capsLock ? (byte)0x01 : (byte)0;
-            keyStates[(int)Keys.ShiftKey] = ((keys & Keys.Shift) == Keys.Shift) ? Const.KEY_PRESSED : (byte)0;
-            keyStates[(int)Keys.ControlKey] = ((keys & Keys.Control) == Keys.Control) ? Const.KEY_PRESSED : (byte)0;
-            keyStates[(int)Keys.Menu] = ((keys & Keys.Alt) == Keys.Alt) ? Const.KEY_PRESSED : (byte)0;
-
-            StringBuilder sb = new StringBuilder(10);
-            int ret = User32.ToUnicodeEx(keys, 0, keyStates, sb, sb.Capacity, 0, inputLanguage.Handle);
-            if (ret == 1) return sb[0];
-
-            if (ret == -1)
-            {
-                // dead letter
-                if (firstChance)
-                {
-                    return FromKeys(keys, capsLock, inputLanguage, false);
-                }
-                return null;
-            }
-            return null;
-        }
-
-        #endregion
-
         private readonly ReadOnlyCollection<Keys> FKeys;
         private readonly bool FCapsLock;
         private readonly int FTime;
@@ -136,14 +103,14 @@ namespace VVVV.Utils.IO
         // This overload will try to compute the chars from the given keys (doesn't work with dead keys)
         public KeyboardState(IEnumerable<Keys> keys, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeys = keys.ReplaceModifierKeys().Distinct().Where(k => k != Keys.None).ToReadOnlyCollection();
         	FCapsLock = capsLock;
             FTime = time;
         }
 
         public KeyboardState(IEnumerable<Keys> keys, IEnumerable<char> chars, bool capsLock = false, int time = 0)
         {
-            FKeys = keys.Distinct().ToReadOnlyCollection();
+            FKeys = keys.ReplaceModifierKeys().Distinct().Where(k => k != Keys.None).ToReadOnlyCollection();
             FKeyChars = chars.Distinct().ToReadOnlyCollection();
             FCapsLock = capsLock;
             FTime = time;
@@ -213,32 +180,13 @@ namespace VVVV.Utils.IO
 
         private void InitModifiers()
         {
-            FModifiers = Keys.None;
-            foreach (var key in FKeys)
-            {
-                switch (key)
-                {
-                    case Keys.ShiftKey:
-                    case Keys.LShiftKey:
-                    case Keys.RShiftKey:
-                        FModifiers |= Keys.Shift;
-                        break;
-                    case Keys.ControlKey:
-                        FModifiers |= Keys.Control;
-                        break;
-                    case Keys.Menu:
-                    case Keys.LMenu:
-                    case Keys.RMenu:
-                        FModifiers |= Keys.Alt;
-                        break;
-                }
-            }
+            FModifiers = FKeys.GetModifiers();
         }
 
         private void InitChars()
         {
             FKeyChars = FKeys
-                .Select(keyCode => FromKeys(keyCode | Modifiers, FCapsLock))
+                .Select(keyCode => (keyCode | Modifiers).ToChar(FCapsLock))
                 .Where(c => c != null)
                 .Select(c => c.Value)
                 .ToReadOnlyCollection();

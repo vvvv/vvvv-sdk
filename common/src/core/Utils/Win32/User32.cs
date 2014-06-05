@@ -10,6 +10,13 @@ namespace VVVV.Utils.Win32
 {
     public static class User32
     {
+        public enum TouchWindowFlags : uint
+        {
+            None = 0,
+            FineTouch = 1,
+            WantPalm = 2
+        }
+
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
@@ -17,6 +24,10 @@ namespace VVVV.Utils.Win32
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport("user32")]
         public static extern int GetMessageTime();
@@ -36,5 +47,17 @@ namespace VVVV.Utils.Win32
 
         [DllImport("user32")]
         public static extern short GetKeyState(System.Windows.Forms.Keys vKey);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool RegisterTouchWindow(System.IntPtr hWnd, TouchWindowFlags ulFlags);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetTouchInputInfo(System.IntPtr hTouchInput, int cInputs, [In, Out] TOUCHINPUT[] pInputs, int cbSize);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CloseTouchInputHandle(System.IntPtr lParam);
     }
 }

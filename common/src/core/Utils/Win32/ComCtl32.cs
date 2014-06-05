@@ -9,7 +9,7 @@ namespace VVVV.Utils.Win32
     public static class ComCtl32
     {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate IntPtr SubClassProc(IntPtr hWnd, WM msg, IntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData);
+        public delegate IntPtr SubClassProc(IntPtr hWnd, WM msg, UIntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData);
 
         [DllImport("ComCtl32", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -20,6 +20,6 @@ namespace VVVV.Utils.Win32
         public static extern bool RemoveWindowSubclass(IntPtr hWnd, SubClassProc newProc, UIntPtr uIdSubclass);
 
         [DllImport("ComCtl32", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-        public static extern IntPtr DefSubclassProc(IntPtr hWnd, WM msg, IntPtr wParam, IntPtr lParam);
+        public static extern IntPtr DefSubclassProc(IntPtr hWnd, WM msg, UIntPtr wParam, IntPtr lParam);
     }
 }

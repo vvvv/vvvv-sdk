@@ -12,11 +12,7 @@ namespace vvvv.Nodes.Subtitles
         #region Load From String
         public static TSubtitleList LoadFromFile(string path)
         {
-            string content;
-            StreamReader sr = new StreamReader(path);
-            content = sr.ReadToEnd();
-            sr.Close();
-
+            string content = File.ReadAllText(path, Encoding.Default);
             return LoadFromString(content);
         }
         #endregion

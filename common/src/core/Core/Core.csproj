@@ -6,7 +6,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VVVV.Core</RootNamespace>
     <AssemblyName>VVVV.Core</AssemblyName>
+    <AssemblyDescription>The VVVV Core Library</AssemblyDescription>
     <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine">
@@ -22,15 +25,6 @@
       <HintPath>..\..\thirdparty\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
-    <Reference Include="Microsoft.Cci.MetadataHelper">
-      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataHelper.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Cci.MetadataModel">
-      <HintPath>..\..\thirdparty\Microsoft.Cci.MetadataModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Cci.PeReader">
-      <HintPath>..\..\thirdparty\Microsoft.Cci.PeReader.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\thirdparty\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
@@ -38,8 +32,9 @@
       <HintPath>..\..\thirdparty\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition.Codeplex">
-      <HintPath>..\..\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    <Reference Include="System.ComponentModel.Composition.CodePlex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\packages\System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -79,6 +74,7 @@
     <Compile Include="Commands\SetPropertyCommand.cs" />
     <Compile Include="Helper\NodeAndPinAttributes.cs" />
     <Compile Include="Model\MissingDocument.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
     <Compile Include="Model\_Interfaces\EventArgs.cs" />
     <Compile Include="View\MissingDocumentViewProvider.cs" />
     <Compile Include="View\DocumentViewProvider.cs" />
@@ -257,5 +253,11 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Core.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

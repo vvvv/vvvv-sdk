@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using VVVV.Utils.Streams;
@@ -494,6 +495,41 @@ namespace VVVV.PluginInterfaces.V2
         	}
         	
         	return false;
+        }
+
+        public static bool SpreadEqual<TSource>(this ISpread<TSource> first, ISpread<TSource> second)
+        {
+            return SpreadEqual(first, second, EqualityComparer<TSource>.Default);
+        }
+
+        public static bool SpreadEqual<TSource>(this ISpread<TSource> first, ISpread<TSource> second, IEqualityComparer<TSource> comparer)
+        {
+            var firstSliceCount = first.SliceCount;
+            var secondSliceCount = second.SliceCount;
+            var spreadMax = firstSliceCount.CombineSpreads(secondSliceCount);
+            if (spreadMax != 0)
+            {
+                for (int i = 0; i < spreadMax; i++)
+                {
+                    if (!comparer.Equals(first[i], second[i]))
+                        return false;
+                }
+                return true;
+            }
+            else
+            {
+                // Are both empty spreads?
+                return firstSliceCount == secondSliceCount;
+            }
+        }
+        public static IObservable<T> ToObservable<T>(this IDiffSpread<T> spread, int slice)
+        {
+            return Observable.FromEvent<SpreadChangedEventHander<T>, IDiffSpread<T>>(
+                        h => spread.Changed += h,
+                        h => spread.Changed -= h
+                    )
+                    .Where(s => s.SliceCount > 0)
+                    .Select(s => s[slice]);
         }
 		
 //		public static TAccumulate FoldL<TSource, TAccumulate>(

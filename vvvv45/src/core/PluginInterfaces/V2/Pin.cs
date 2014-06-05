@@ -38,12 +38,16 @@ namespace VVVV.PluginInterfaces.V2
 	{
 	    private readonly IIOFactory FFactory;
 		private readonly IPluginIO FPluginIO;
+        private bool FConnected;
 		
 		public Pin(IIOFactory factory, IPluginIO pluginIO, MemoryIOStream<T> stream)
 			: base(stream)
 		{
 		    FFactory = factory;
 			FPluginIO = pluginIO;
+            // Can be null in case of Texture and Mesh pins which call CreateTextureOutput2/CreateMeshOutput2 internally
+            if (pluginIO != null)
+                FConnected = pluginIO.IsConnected;
 			
 			FFactory.Connected += HandleConnected;
 			FFactory.Disconnected += HandleDisconnected;
@@ -59,6 +63,11 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			return base.ToString() + ": " + FPluginIO.Name;
 		}
+
+        public bool IsConnected
+        {
+            get { return FConnected; }
+        }
 		
 		public IPluginIO PluginIO
 		{
@@ -92,16 +101,18 @@ namespace VVVV.PluginInterfaces.V2
 		{
             if (e.PluginIO == FPluginIO)
             {
+                FConnected = this.PluginIO.IsConnected;
                 OnConnected(new PinConnectionEventArgs(e.OtherPin));
             }
 		}
 		
 		void HandleDisconnected(object sender, ConnectionEventArgs e)
 		{
-		    if (e.PluginIO == FPluginIO)
-		    {
-		      OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
-		    }
+            if (e.PluginIO == FPluginIO)
+            {
+                FConnected = this.PluginIO.IsConnected;
+                OnDisconnected(new PinConnectionEventArgs(e.OtherPin));
+            }
 		}
 	}
 }

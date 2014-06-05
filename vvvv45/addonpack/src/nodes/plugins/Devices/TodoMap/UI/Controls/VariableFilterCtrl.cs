@@ -85,22 +85,10 @@ namespace VVVV.TodoMap.UI.Controls
         {
             if (this.tbvarname.Text.Trim().Length > 0)
             {
+                string cat = this.cmbCatFilter.Text.Trim().Length == 0 ? "Global" : this.cmbCatFilter.Text.Trim();
                 TodoVariable var = new TodoVariable(this.tbvarname.Text);
-                if (this.cmbCatFilter.Items.Count > 0)
-                {
-                    if (this.cmbCatFilter.SelectedIndex == 0)
-                    {
-                        var.Category = "Global";
-                    }
-                    else
-                    {
-                        var.Category = this.cmbCatFilter.SelectedItem.ToString();
-                    }
-                }
-                else
-                {
-                    var.Category = "Global";
-                }
+                var.Category = cat;
+
                 this.engine.RegisterVariable(var,true);  
             }           
         }

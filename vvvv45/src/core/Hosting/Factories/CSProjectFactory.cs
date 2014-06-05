@@ -166,13 +166,15 @@ namespace VVVV.Hosting.Factories
         
         private bool IsAssemblyUpToDate(CSProject project)
         {
-            if (project.AssemblyLocation == null) return false;
+            var assemblyLocation = project.AssemblyLocation;
+            if (assemblyLocation == null) return false;
+            if (!File.Exists(assemblyLocation)) return false;
 
             var now = DateTime.Now;
             var projectTime = new [] { File.GetLastWriteTime(project.LocalPath) }
                 .Concat(project.Documents.Select(d => File.GetLastWriteTime(d.LocalPath)))
                 .Max();
-            var assemblyTime = File.GetLastWriteTime(project.AssemblyLocation);
+            var assemblyTime = File.GetLastWriteTime(assemblyLocation);
             
             // This can happen in case the computer time is wrong or
             // in a different time zone than the project was created in.
@@ -181,25 +183,34 @@ namespace VVVV.Hosting.Factories
                 projectTime = now - TimeSpan.FromSeconds(10.0);
             }
             
-            if (File.Exists(project.AssemblyLocation) && (projectTime <= assemblyTime))
+            if (projectTime <= assemblyTime)
             {
                 // We also need to check if the version info of the referenced assemblies
                 // is the same as the one referenced by the project file.
                 // We only check the PluginInterfaces assembly here to save performance.
-                var assembly = Assembly.ReflectionOnlyLoadFrom(project.AssemblyLocation);
-                var piAssembly = assembly.GetReferencedAssemblies().Where(assemblyName => assemblyName.Name == typeof(IPluginBase).Assembly.GetName().Name).FirstOrDefault();
-
-                if (piAssembly != null && piAssembly.Version != FPluginInterfacesVersion)
-                    return false;
-
-                switch (project.BuildConfiguration)
+                try
                 {
-                    case BuildConfiguration.Release:
-                        return !IsAssemblyDebugBuild(assembly);
-                    case BuildConfiguration.Debug:
-                        return IsAssemblyDebugBuild(assembly);
-                    default:
-                        return true;
+                    var assembly = Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+                    var piAssembly = assembly.GetReferencedAssemblies().Where(assemblyName => assemblyName.Name == typeof(IPluginBase).Assembly.GetName().Name).FirstOrDefault();
+
+                    if (piAssembly != null && piAssembly.Version != FPluginInterfacesVersion)
+                        return false;
+
+                    switch (project.BuildConfiguration)
+                    {
+                        case BuildConfiguration.Release:
+                            return !IsAssemblyDebugBuild(assembly);
+                        case BuildConfiguration.Debug:
+                            return IsAssemblyDebugBuild(assembly);
+                        default:
+                            return true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Log the exception and return true
+                    FLogger.Log(e);
+                    return true;
                 }
             }
             

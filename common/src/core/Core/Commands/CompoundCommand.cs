@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -57,7 +58,17 @@ namespace VVVV.Core.Commands
         
         public void Append(Command command)
         {
-            FCommands.Add(command);
+//        	if(command is CompoundCommand)
+//        	{
+//        		var comp = (command as CompoundCommand);
+//        		if(comp.IsEmptyRecursive())
+//        		{
+//        			Debug.WriteLine("Empty compound command appended");
+//        			Debug.WriteLine(new StackTrace());
+//        		}
+//        	}
+        	
+        	FCommands.Add(command);
         }
         
         public override bool HasUndo 
@@ -99,6 +110,57 @@ namespace VVVV.Core.Commands
         {
             return string.Join(", ", (from cmd in FCommands select cmd.ToString()).ToArray());
         }
-
+        
+        /// <summary>
+        /// The number of subcommands in ths compound command
+        /// </summary>
+        public int CommandCount
+        {
+        	get
+        	{
+        		return FCommands.Count;
+        	}
+        }
+        
+        List<CompoundCommand> FCompoundCommandsToCheck = new List<CompoundCommand>();
+        /// <summary>
+        /// Checks this and all sub commands for empty commands
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmptyRecursive()
+        {
+        	if(FCommands.Count > 0)
+        	{
+        		FCompoundCommandsToCheck.Clear();
+        		
+        		//test for normal command
+        		foreach (var com in FCommands) 
+        		{
+        			if(com is CompoundCommand)
+        			{
+        				FCompoundCommandsToCheck.Add(com as CompoundCommand);
+        			}
+        			else
+        			{
+        				return false;
+        			}
+        		}
+        		
+        		//if all sub commands are compound commands check them too
+        		foreach (var comp in FCompoundCommandsToCheck) 
+        		{
+        			//return false if any is not empty
+        			if(!comp.IsEmptyRecursive())
+        				return false;
+        		}
+        		
+        		//all is empty return true
+        		return true;
+        	}
+        	else
+        	{
+        		return true;
+        	}
+        }
     }
 }

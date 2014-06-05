@@ -137,6 +137,11 @@ namespace VVVV.Utils.Streams
         {
             return new BufferedStreamWriter<T>(stream);
         }
+
+        public static DynamicStreamWriter<T> GetDynamicWriter<T>(this IOutStream<T> stream)
+        {
+            return new DynamicStreamWriter<T>(stream);
+        }
         
         public static int GetNumSlicesAhead(IStreamer streamer, int index, int length, int stride)
         {
@@ -299,6 +304,30 @@ namespace VVVV.Utils.Streams
                 MemoryPool<T>.PutArray(buffer);
             }
         }
+
+        public static void Append<T>(this IOutStream<T> outStream, IInStream<T> inStream, T[] buffer)
+        {
+            var initialOutLength = outStream.Length;
+            outStream.Length += inStream.Length;
+            using (var writer = outStream.GetWriter())
+            {
+                writer.Position = initialOutLength;
+                writer.Write(inStream, buffer);
+            }
+        }
+
+        public static void Append<T>(this IOutStream<T> outStream, IInStream<T> inStream)
+        {
+            var buffer = MemoryPool<T>.GetArray();
+            try
+            {
+                outStream.Append(inStream, buffer);
+            }
+            finally
+            {
+                MemoryPool<T>.PutArray(buffer);
+            }
+        }
         
         // From: http://en.wikipedia.org/wiki/Power_of_two
         public static bool IsPowerOfTwo(int x)
@@ -406,7 +435,8 @@ namespace VVVV.Utils.Streams
                         var blockSize = reader.Read(buffer, 0, StreamUtils.BUFFER_SIZE);
                         for (int i = 0; i < blockSize; i++)
                         {
-                            destructor(buffer[i]);
+                        	if(buffer[i] != null)
+                            	destructor(buffer[i]);
                         }
                         numSlicesToRead -= blockSize;
                     }

@@ -40,6 +40,7 @@ namespace VVVV.Nodes
         private IPluginHost FHost;
         private DoubleDataHolder FData;
 
+		private IValueConfig FPinDisplayChannel;
         private IValueIn FPinInput;
         private IStringIn FPinInSendString;
         private string FKey = null;
@@ -60,11 +61,14 @@ namespace VVVV.Nodes
 
             this.FData = DoubleDataHolder.Instance;
      
+			this.FHost.CreateValueConfig("Display Channel", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out this.FPinDisplayChannel);
+			this.FPinDisplayChannel.SetSubType(0, 1, 1, 1, false, true, false);
+			
             this.FHost.CreateValueInput("Input", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInput);
             this.FPinInput.SetSubType(double.MinValue, double.MaxValue, 0.01, 0, false, false, false);
 
             this.FHost.CreateStringInput("Send String", TSliceMode.Single, TPinVisibility.True, out this.FPinInSendString);
-            this.FPinInSendString.SetSubType("send", false); 
+            this.FPinInSendString.SetSubType("send", false);
         }
         #endregion
 

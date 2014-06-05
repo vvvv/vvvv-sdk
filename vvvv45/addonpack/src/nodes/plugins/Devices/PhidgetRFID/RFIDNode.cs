@@ -27,7 +27,13 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "PhidgetRFID", Category = "Devices", Help = "Plugin for managing multiple Phidget RFID", Tags = "phidget rfid velcrome")]
+	[PluginInfo(Name = "RFID", 
+	            Category = "Devices",
+                Version = "Phidget", 
+	            Help = "Manages multiple Phidget RFID", 
+	            Tags = "",
+	            Author = "velcrome"
+	           )]
 	#endregion PluginInfo
 	public class DevicesRFIDNode : IPluginEvaluate, IDisposable
 	{

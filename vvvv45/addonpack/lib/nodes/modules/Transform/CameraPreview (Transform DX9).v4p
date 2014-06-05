@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\CameraPreview (Transform DX9).v4p" systemname="CameraPreview (Transform DX9)" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\CameraPreview (Transform DX9).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\CameraPreview (Transform DX9).v4p" systemname="CameraPreview (Transform DX9)" filename="C:\vvvv\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\CameraPreview (Transform DX9).v4p">
    <BOUNDS type="Window" left="1350" top="5190" width="10410" height="6105">
    </BOUNDS>
-   <INFO author="elliotwoods" description="draws a camera&apos;s frustum in your scene given extrinsics and normalised intrinsics" tags="">
+   <INFO author="elliot woods" description="draws a camera&apos;s frustum in your scene given extrinsics and normalised intrinsics" tags="">
    </INFO>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="0">
    <BOUNDS type="Node" left="2625" top="165" width="100" height="100">
@@ -269,5 +269,25 @@
    </LINKPOINT>
    <LINKPOINT x="8160" y="2115">
    </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9045" top="3495" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9045" top="3495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Enabled">
    </LINK>
    </PATCH>

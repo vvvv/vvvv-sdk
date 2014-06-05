@@ -15,6 +15,8 @@ namespace System.IO
 
         public ComStream(win32.IStream source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             this.source = source;
             this.mInt64 = iop.Marshal.AllocCoTaskMem(8);
         }
@@ -32,6 +34,23 @@ namespace System.IO
                 this.mInt64 = IntPtr.Zero;
             }
             base.Dispose(disposing);
+        }
+
+        public bool Equals(ComStream stream)
+        {
+            if (stream == null)
+                return false;
+            return stream.source == this.source;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as ComStream);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.source.GetHashCode();
         }
 
         public override bool CanRead { get { return true; } }

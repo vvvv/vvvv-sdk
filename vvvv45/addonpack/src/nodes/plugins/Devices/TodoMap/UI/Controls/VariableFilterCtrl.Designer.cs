@@ -32,8 +32,8 @@
             this.tbvarname = new System.Windows.Forms.TextBox();
             this.lblnewVar = new System.Windows.Forms.Label();
             this.cmbCatFilter = new System.Windows.Forms.ComboBox();
-            this.lblsave = new System.Windows.Forms.Label();
             this.lblsetdefault = new System.Windows.Forms.Label();
+            this.lblsave = new System.Windows.Forms.Label();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +59,7 @@
             // 
             // lblnewVar
             // 
-            this.lblnewVar.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblnewVar.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.lblnewVar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblnewVar.Location = new System.Drawing.Point(109, 0);
             this.lblnewVar.Name = "lblnewVar";
@@ -71,7 +71,6 @@
             // 
             // cmbCatFilter
             // 
-            this.cmbCatFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCatFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cmbCatFilter.FormattingEnabled = true;
             this.cmbCatFilter.Location = new System.Drawing.Point(215, 3);
@@ -79,21 +78,9 @@
             this.cmbCatFilter.Size = new System.Drawing.Size(121, 21);
             this.cmbCatFilter.TabIndex = 0;
             // 
-            // lblsave
-            // 
-            this.lblsave.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblsave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblsave.Location = new System.Drawing.Point(445, 0);
-            this.lblsave.Name = "lblsave";
-            this.lblsave.Size = new System.Drawing.Size(56, 23);
-            this.lblsave.TabIndex = 2;
-            this.lblsave.Text = "Save";
-            this.lblsave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblsave.Click += new System.EventHandler(this.lblsave_Click);
-            // 
             // lblsetdefault
             // 
-            this.lblsetdefault.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lblsetdefault.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.lblsetdefault.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblsetdefault.Location = new System.Drawing.Point(342, 0);
             this.lblsetdefault.Name = "lblsetdefault";
@@ -103,6 +90,18 @@
             this.lblsetdefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblsetdefault.Visible = false;
             this.lblsetdefault.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lblsave
+            // 
+            this.lblsave.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.lblsave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblsave.Location = new System.Drawing.Point(445, 0);
+            this.lblsave.Name = "lblsave";
+            this.lblsave.Size = new System.Drawing.Size(56, 23);
+            this.lblsave.TabIndex = 2;
+            this.lblsave.Text = "Save";
+            this.lblsave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblsave.Click += new System.EventHandler(this.lblsave_Click);
             // 
             // VariableFilterCtrl
             // 

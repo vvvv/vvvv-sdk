@@ -10,7 +10,14 @@ using VVVV.TodoMap.Lib.Persist;
 
 namespace VVVV.TodoMap.Nodes
 {
-    [PluginInfo(Name="TodoMap",Category="TodoMap",Author="vux",InitialComponentMode=TComponentMode.InAWindow,InitialWindowWidth=700,InitialWindowHeight=500,AutoEvaluate=true)]
+    [PluginInfo(Name = "TodoMap",
+	            Category = "TodoMap",
+	            Author = "vux",
+	            Tags = "midi, osc",
+	            InitialComponentMode = TComponentMode.InAWindow,
+	            InitialWindowWidth = 700,
+	            InitialWindowHeight = 500,
+	            AutoEvaluate = true)]
     public partial class TodoMapNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
         [Input("Selected Variable", IsSingle=true)]

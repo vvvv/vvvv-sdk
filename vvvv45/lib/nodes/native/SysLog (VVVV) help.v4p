@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\SysLog (VVVV) help.v4p" systemname="SysLog (VVVV) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\SysLog (VVVV) help.v4p">
-   <BOUNDS height="11895" left="3075" top="735" type="Window" width="11370">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\SysLog (VVVV) help.v4p" systemname="SysLog (VVVV) help" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\SysLog (VVVV) help.v4p">
+   <BOUNDS height="11895" left="3075" top="735" type="Window" width="11805">
    </BOUNDS>
    <NODE componentmode="Hidden" id="17" nodename="SysLog (VVVV)" systemname="SysLog (VVVV)">
    <BOUNDS height="270" left="315" top="3180" type="Node" width="1935">
@@ -9,9 +9,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
-   <BOUNDS height="0" left="4860" top="1620" type="Node" width="0">
+   <BOUNDS height="0" left="5310" top="1650" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="2580" left="4860" top="1620" type="Box" width="5925">
+   <BOUNDS height="2580" left="5310" top="1650" type="Box" width="5925">
    </BOUNDS>
    <BOUNDS height="4860" left="16965" top="1215" type="Window" width="6120">
    </BOUNDS>
@@ -67,7 +67,7 @@
    </PIN>
    <PIN pinname="Input String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="||">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="11" nodename="S+H (String)" systemname="S+H (String)">
@@ -217,13 +217,13 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="0" values="lib\assets\images\earth_512x512.jpg" encoded="0">
+   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="0" encoded="0" values="lib\assets\images\earth_512x512.jpg">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Intersperse" pintype="Input" slicecount="1" visible="-1" values="None">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="earth_512x512.jpg" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="earth_512x512.jpg">
    </PIN>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Output">
@@ -249,7 +249,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="13980" top="45960" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|SysLog - VVVV|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|SysLog (VVVV)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -265,7 +265,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="14205" top="46440" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|broadcasts the system log in RFC3164 BSD Syslog Protocol &cr;&lf;|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|broadcasts the system log in RFC3164 BSD Syslog Protocol &cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -277,7 +277,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2385" top="1695" width="2355" height="690">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; allows to specify a threshold to prevent certain messages to be sent.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; allows to specify a threshold to prevent certain messages to be sent.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -287,11 +287,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2385" top="5115" width="2640" height="270">
+   <BOUNDS type="Node" left="1935" top="5115" width="2640" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2385" top="5115" width="2640" height="270">
+   <BOUNDS type="Box" left="1935" top="5115" width="2640" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; can be received  on UDP port 514|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; can be received  on UDP port 514|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -300,7 +300,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="24" nodename="UDP (Network Server)" systemname="UDP (Network Server)">
+   <NODE componentmode="Hidden" id="24" nodename="UDP (Network Server)" systemname="UDP (Network Server String)">
    <BOUNDS height="270" left="315" top="5115" type="Node" width="1410">
    </BOUNDS>
    <PIN pinname="Queue Count" visible="1">
@@ -321,7 +321,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="514">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -351,7 +351,21 @@
    </BOUNDS>
    <BOUNDS type="Box" left="3870" top="8970" width="2700" height="705">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; this is just here to provoke some system message to be thrown for demonstration purposes.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; this is just here to provoke some system message to be thrown for demonstration purposes.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2370" top="3180" width="4950" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2370" top="3180" width="2685" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; broadcasts to port 514 by default. &cr;&lf;Change Host and Port via Inspektor. Leave Host blank for broadcast.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

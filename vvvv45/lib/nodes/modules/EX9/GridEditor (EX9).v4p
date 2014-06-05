@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\GridEditor (EX9).v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
+   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\EX9\GridEditor (EX9).v4p" componentmode="InAWindow">
    <BOUNDS height="12750" left="2745" top="2580" type="Window" width="16965">
    </BOUNDS>
    <NODE id="81" nodename="Cross (2d)" systemname="Cross (2d)">
@@ -1199,7 +1199,7 @@
    </PIN>
    <PIN pinname="Mouse State" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="0" dstpinname="Input" srcnodeid="78" srcpinname="XYZ">
@@ -1246,8 +1246,8 @@
    </NODE>
    <LINK dstnodeid="0" dstpinname="Enabled" srcnodeid="82" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="76" nodename="Mouse (System Window)" systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="1215" top="4680" type="Node" width="100">
+   <NODE id="76" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
+   <BOUNDS type="Node" height="100" left="1215" top="4680" width="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -1263,7 +1263,9 @@
    </PIN>
    <PIN pinname="Mouse" visible="1">
    </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="76" srcpinname="Mouse" dstnodeid="0" dstpinname="Mouse">
+   <LINK srcnodeid="76" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
    </LINK>
    </PATCH>

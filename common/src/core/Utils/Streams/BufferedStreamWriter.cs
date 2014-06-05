@@ -30,12 +30,12 @@ namespace VVVV.Utils.Streams
             if (stride != 1) throw new NotSupportedException();
             if (FOffset + length < FBuffer.Length)
             {
-                Buffer.BlockCopy(buffer, index, FBuffer, FOffset, length);
+                Array.Copy(buffer, index, FBuffer, FOffset, length);
                 FOffset += length;
             }
             else
             {
-                for (int i = 0; i < length; i++)
+                for (int i = index; i < length; i++)
                     Write(buffer[i]);
             }
             return length;

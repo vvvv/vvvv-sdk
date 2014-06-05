@@ -30,6 +30,9 @@ namespace VVVV.Nodes.ImagePlayer
         [Input("IO Buffer Size", DefaultValue = ImagePlayer.DEFAULT_BUFFER_SIZE, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<int> FBufferSizeIn;
 
+        [Input("Format", EnumName = "TextureFormat", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<EnumEntry> FFormatIn;
+
         [Input("Preload Frames")]
         public ISpread<ISpread<int>> FPreloadFramesIn;
 
@@ -104,6 +107,7 @@ namespace VVVV.Nodes.ImagePlayer
             spreadMax = FDirectoryIn
                 .CombineWith(FFilemaskIn)
                 .CombineWith(FBufferSizeIn)
+                .CombineWith(FFormatIn)
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
@@ -132,9 +136,8 @@ namespace VVVV.Nodes.ImagePlayer
             
             for (int i = 0; i < spreadMax; i++)
             {
-                bool reload = FReloadIn[i] || FDirectoryIn.IsChanged || FFilemaskIn.IsChanged;
-                
                 var imagePlayer = FImagePlayers[i];
+                var reload = FReloadIn[i];
                 
                 if (imagePlayer.ThreadsIO != FThreadsIOConfig[i] || imagePlayer.ThreadsTexture != FThreadsTextureConfig[i])
                 {
@@ -143,13 +146,27 @@ namespace VVVV.Nodes.ImagePlayer
                 	reload = true;
                 	FImagePlayers[i] = imagePlayer;
                 }
-                
-                imagePlayer.Directories = FDirectoryIn[i];
-                imagePlayer.Filemasks = FFilemaskIn[i];
+
+                var rescan = false;
+                // Make copies to check for slice wise change
+                if (!imagePlayer.Directories.SpreadEqual(FDirectoryIn[i]))
+                {
+                    imagePlayer.Directories = FDirectoryIn[i].ToSpread();
+                    rescan = true;
+                }
+                if (!imagePlayer.Filemasks.SpreadEqual(FFilemaskIn[i]))
+                {
+                    imagePlayer.Filemasks = FFilemaskIn[i].ToSpread();
+                    rescan = true;
+                }
                 
                 if (reload)
                 {
                     imagePlayer.Reload();
+                }
+                else if (rescan)
+                {
+                    imagePlayer.ScanDirectoriesAsync();
                 }
 
                 int frameCount = 0;
@@ -157,11 +174,13 @@ namespace VVVV.Nodes.ImagePlayer
                 double durationTexture = 0.0;
                 int unusedFrames = 0;
                 var loadedFrames = FLoadedOut[i];
+                var format = EnumEntryToEx9Format(FFormatIn[i]);
                 
                 var frame = imagePlayer.Preload(
                     FVisibleFramesIn[i],
                     FPreloadFramesIn[i],
                     FBufferSizeIn[i],
+                    format,
                     out frameCount,
                     out durationIO,
                     out durationTexture,
@@ -191,6 +210,14 @@ namespace VVVV.Nodes.ImagePlayer
             FIOTaskScheduler.Dispose();
             FMemoryPool.Dispose();
             FTexturePool.Dispose();
+        }
+
+        static EX9.Format EnumEntryToEx9Format(EnumEntry entry)
+        {
+            var enumName = entry.Name
+                .Replace("_", string.Empty)
+                .Replace("No Specific", "Unknown");
+            return (EX9.Format)Enum.Parse(typeof(EX9.Format), enumName, true);
         }
     }
 }
