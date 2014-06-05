@@ -104,7 +104,7 @@ namespace VVVV.Nodes.Table
 
 			if (FPinInSave[0])
 			{
-				FTable.OnDataChange(this);
+				Save();
 			}
 
 			if (FPinInClear[0])

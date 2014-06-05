@@ -17,6 +17,7 @@ namespace VVVV.Nodes.Table
 		ISpread<ISpread<double>> FInput;
 
 		[Input("Insert", IsBang = true, DefaultValue=-1)]
+		[Input("Insert", IsBang = true)]
 		ISpread<bool> FInsert;
 
 		[Input("Index")]
