@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Texture\TransparentTexture.v4p" systemname="TransparentTexture" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Texture\TransparentTexture.v4p">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Texture\TransparentTexture.v4p" systemname="TransparentTexture" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Texture\TransparentTexture.v4p">
    <BOUNDS type="Window" left="0" top="465" width="15885" height="11910">
    </BOUNDS>
    <PACK Name="addonpack" Version="31.9.0">
@@ -41,7 +41,7 @@
    </BOUNDS>
    <BOUNDS height="3045" left="675" top="1830" type="Box" width="3660">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A 3d sphere with the texture is rendered on the black transparent background. Note, that the &apos;Background Color&apos; of the Renderer has an alpha channel set to 0.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the texture. The &apos;Format&apos; pin (hidden by default) is set to &apos;A8R8G8B8&apos;, because the texture needs an Alpha channel (A8 = 8 bit for Alpha).&cr;&lf;&cr;&lf;Note: for more advanced cases you need to deal with the color in the semi-transparent regions of the image (like the ones from anti-aliasing). This node is destined to help:&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|A 3d sphere with a texture is rendered on a black transparent background. Note, that the &apos;Background Color&apos; of the Renderer has its alpha channel set to 0.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the texture. The &apos;Format&apos; pin (hidden by default) is set to &apos;A8R8G8B8&apos;, because the texture needs an Alpha channel (A8 = 8 bit for Alpha).&cr;&lf;&cr;&lf;Note: for more advanced cases you need to deal with the color in the semi-transparent regions of the image (like the ones from anti-aliasing). This node is destined to help:&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -269,7 +269,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="675" top="600" width="3480" height="750">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|This is how to renderer textures with transparent background. You may need it when working with post-fx and compositing.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|This is how to render textures with transparent background. You may need it when working with post-fx and compositing.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -607,6 +607,8 @@
    </PIN>
    <PIN pinname="Render State" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="285" srcpinname="Transform Out" dstnodeid="287" dstpinname="Transform">
    </LINK>
@@ -629,7 +631,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7575" top="5970" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1.98">
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -661,13 +663,19 @@
    </PIN>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
+   <PIN pinname="Enable" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Vertex Fog Mode" slicecount="1" values="Exp2">
+   </PIN>
+   <PIN pinname="Pixel Fog Mode" slicecount="1" values="None">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="296" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5475" top="6810" width="525" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="5475" top="6810" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.75">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -841,7 +849,7 @@
    </BOUNDS>
    <BOUNDS height="4740" left="675" top="5595" type="Box" width="3600">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The BlurGlow (EX9.Texture Filter) and the ShiftRGB (EX9.Texture Filter) TextureFX filter are applied to the rendered texture. Note the &apos;Alpha&apos; pin (hidden by default) of the BlurGlow must be turned on.&cr;&lf;&cr;&lf;The resulting texture is applied to a FullscreenQuad (DX9) which will be set on top of the stars. The &apos;Blend Mode&apos; pin must be set to &apos;Blend&apos; in this case.&cr;&lf;&cr;&lf;The stars are just very small Quads (DX9) with the Fog (EX9.RenderState) applied to them during the render process.&cr;&lf;&cr;&lf;The stars and the FullscreenQuad (rotating Earth on the transparent background) on top of them are rendered to a window.&cr;&lf;&cr;&lf;To check the transparency, create the Preview (EX9.Texture) node and connect the output of the ShiftRGB (EX9.Texture Filter) to its &apos;Input&apos;.&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The BlurGlow (EX9.Texture Filter) and the ShiftRGB (EX9.Texture Filter) TextureFX filter are applied to the rendered texture. Note the &apos;Alpha&apos; pin (hidden by default) of the BlurGlow must be turned on.&cr;&lf;&cr;&lf;The resulting texture is applied to a FullscreenQuad (DX9) which will be set on top of the stars. The &apos;Blend Mode&apos; pin must be set to &apos;Blend&apos; in this case.&cr;&lf;&cr;&lf;The stars are just very small Quads (DX9) with Fog (EX9.RenderState) applied to them during the render process.&cr;&lf;&cr;&lf;The stars and the FullscreenQuad (rotating Earth on the transparent background) on top of them are rendered to a window.&cr;&lf;&cr;&lf;To check the transparency, create a Preview (EX9.Texture) node and connect the output of the ShiftRGB (EX9.Texture Filter) to its &apos;Input&apos;.&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -857,7 +865,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7470" top="6810" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.006">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.01">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
