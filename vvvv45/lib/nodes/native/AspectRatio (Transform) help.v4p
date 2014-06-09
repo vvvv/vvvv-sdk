@@ -1,19 +1,29 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="V:\releases\vvvv_33beta9a\help\AspectRatio (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\lib\nodes\native\AspectRatio (Transform) help.v4p">
    <BOUNDS height="6045" left="615" top="810" type="Window" width="12660">
    </BOUNDS>
-   <NODE componentmode="InABox" id="21" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="21" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="105" top="1080" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4500" left="15885" top="11070" type="Window" width="6000">
    </BOUNDS>
    <BOUNDS height="3675" left="105" top="1080" type="Box" width="3705">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="20" nodename="Fill (EX9.RenderState)">
@@ -100,18 +110,28 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="14" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="14" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="8430" top="1680" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4500" left="24195" top="10995" type="Window" width="6000">
    </BOUNDS>
    <BOUNDS height="2475" left="8430" top="1680" type="Box" width="3705">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="13" nodename="AspectRatio (Transform)">
@@ -138,7 +158,7 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Source" srcnodeid="13" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="14" dstpinname="Projection Transform" srcnodeid="12" srcpinname="Transform Out">
+   <LINK dstnodeid="14" dstpinname="Projection" srcnodeid="12" srcpinname="Transform Out">
    </LINK>
    <NODE id="11" nodename="Quad (DX9)">
    <BOUNDS height="0" left="5565" top="4365" type="Node" width="0">
@@ -220,7 +240,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6990" top="1680" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5216" top="3342" type="Window" width="215">
@@ -281,7 +301,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-60" top="10080" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|AspectRatio - Transform|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AspectRatio (Transform)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -330,4 +350,6 @@
    </LINK>
    <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="14" dstpinname="Layers">
    </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
