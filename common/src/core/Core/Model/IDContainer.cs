@@ -33,6 +33,12 @@ namespace VVVV.Core.Model
         {
             return ((IList) Items).GetEnumerator();
         }
+    	
+		public void Sort(Comparison<T> comparison)
+		{
+			var list = base.Items as List<T>;
+			list.Sort(comparison);
+		}
     }
 
 
