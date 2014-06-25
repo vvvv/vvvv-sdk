@@ -8,7 +8,6 @@
     <AssemblyName>VVVV.Core</AssemblyName>
     <AssemblyDescription>The VVVV Core Library</AssemblyDescription>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
@@ -259,5 +258,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>
