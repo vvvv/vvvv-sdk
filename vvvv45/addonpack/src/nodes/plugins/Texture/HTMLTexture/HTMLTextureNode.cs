@@ -1,7 +1,7 @@
 ﻿using System;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
-using CefGlue;
+using Xilium.CefGlue;
 using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 using System.ComponentModel.Composition;
@@ -40,7 +40,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
         {
-            renderer.LoadURL(FUrlIn[slice]);
+            renderer.LoadUrl(FUrlIn[slice]);
         }
     }
     
