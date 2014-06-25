@@ -58,7 +58,7 @@ namespace VVVV.Hosting.Factories
         
         [ImportingConstructor]
         public DotNetPluginFactory(CompositionContainer parentContainer)
-            : this(parentContainer, ".dll")
+            : this(parentContainer, ".dll;.exe")
         {
 
         }
