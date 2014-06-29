@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap (EX9.Texture Filter).v4p" systemname="DisplacementMap (EX9.Texture Filter)" filename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap (EX9.Texture Filter).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\DisplacementMap\DisplacementMap (EX9.Texture Filter).v4p" systemname="DisplacementMap (EX9.Texture Filter)" filename="C:\GiggelzGoggelz\extras\effects\DisplacementMap\DisplacementMap (EX9.Texture Filter).v4p">
    <BOUNDS type="Window" left="16395" top="9975" width="5415" height="4575">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="6" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="6" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="2895" top="1890" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="2895" top="1890" type="Box" width="2400">
@@ -14,6 +14,16 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="5" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
@@ -48,7 +58,7 @@
    <PIN pinname="Texture" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="1" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="180" top="2580" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1830" left="180" top="2580" type="Box" width="2835">
@@ -58,6 +68,16 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|direction vectors|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="2" srcpinname="Layer">
@@ -215,7 +235,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
@@ -230,4 +250,6 @@
    </LINK>
    <LINK srcnodeid="3" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform">
    </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
