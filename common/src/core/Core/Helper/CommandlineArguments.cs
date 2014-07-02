@@ -35,25 +35,28 @@ namespace VVVV.Core
         {
             var parser = new CommandLineParser();
 
-            try //parse Args.txt
+            if(File.Exists("Args.txt"))
             {
-                var streamReader = new StreamReader(Path.Combine(Environment.CurrentDirectory, "Args.txt"));
-                var text = streamReader.ReadToEnd();
-                var args = text.Split('\n');
-                streamReader.Close();
-                if (!parser.ParseArguments(args, this, Console.Out))
-                {
-                    Console.WriteLine("Args.txt has syntax error(s):");
-                    foreach (var arg in args)
-                    {
-                        Console.WriteLine(arg);
-                    }
-                    Console.WriteLine();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Could not parse Args.txt: " + e.Message);
+            	try //parse Args.txt
+            	{
+            		var streamReader = new StreamReader(Path.Combine(Environment.CurrentDirectory, "Args.txt"));
+            		var text = streamReader.ReadToEnd();
+            		var args = text.Split('\n');
+            		streamReader.Close();
+            		if (!parser.ParseArguments(args, this, Console.Out))
+            		{
+            			Console.WriteLine("Args.txt has syntax error(s):");
+            			foreach (var arg in args)
+            			{
+            				Console.WriteLine(arg);
+            			}
+            			Console.WriteLine();
+            		}
+            	}
+            	catch (Exception e)
+            	{
+            		Console.WriteLine("Could not parse Args.txt: " + e.Message);
+            	}
             }
 
             //parse commandline
