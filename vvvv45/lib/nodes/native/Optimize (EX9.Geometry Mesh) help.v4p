@@ -1,0 +1,185 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Optimize (EX9.Geometry Mesh) help.v4p">
+   <BOUNDS height="4680" left="1890" top="3525" type="Window" width="11010">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="10" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="6900" top="180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="1890" top="8220" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3420" left="6900" top="180" type="Box" width="3810">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="1440" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="1455" top="2010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Render State In" srcnodeid="8" srcpinname="Render State Out">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="6" managers="" nodename="Rotate (Transform)">
+   <PIN pinname="Y" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2430" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" pintype="Input" slicecount="1" visible="1" values="-0.66">
+   </PIN>
+   <PIN pinname="Z" pintype="Input" slicecount="1" visible="1" values="-0.22">
+   </PIN>
+   <PIN pinname="Transform Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="5" managers="" nodename="LFO (Animation)">
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="2805" top="2190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Period" pintype="Input" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pause" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reverse" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reset" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Optimize (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="2115" top="1800" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="MeshIn" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="135" top="3705" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="540" left="135" top="3705" type="Box" width="10695">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Uses the DirectX method Mesh.Optimize to increase performance. Mainly used for imported X files!&cr;&lf;http://msdn.microsoft.com/library/default.asp?url=/library/en-us/directx9_m/directx/ref/ns/microsoft.directx.direct3d/c/mesh/m/optimize.asp|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="-30" top="20130" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Controls the reordering of mesh faces and vertices to optimize performance and generate an output mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4035">
+   </BOUNDS>
+   <BOUNDS height="160" left="-30" top="20130" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Optimize - EX9.Geometry Mesh|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename=":EFFECTS:\GouraudDirectional.fx" componentmode="Hidden">
+   <BOUNDS height="0" left="1965" top="3030" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.19244,0.34788,0.40424,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.00000,0.75158,0.91494,1.00000|">
+   </PIN>
+   <BOUNDS left="1965" top="3030" type="Box">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TGouraudDirectional|">
+   </PIN>
+   <BOUNDS type="Window" left="2220" top="10245" width="16020" height="17355">
+   </BOUNDS>
+   <PIN pinname="Specular Color" slicecount="1" values="|0.23494,0.23494,0.23494,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Transform" linkstyle="VHV" srcnodeid="6" srcpinname="Transform Out">
+   <LINKPOINT x="2460" y="2940">
+   </LINKPOINT>
+   <LINKPOINT x="2460" y="2940">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="13" srcpinname="Layer">
+   <LINKPOINT x="1980" y="3495">
+   </LINKPOINT>
+   <LINKPOINT x="6600" y="3495">
+   </LINKPOINT>
+   <LINKPOINT x="6600" y="180">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Render State Out" dstnodeid="13" dstpinname="Render State">
+   </LINK>
+   <NODE id="14" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="2115" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Mesh" srcnodeid="14" srcpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Mesh" dstnodeid="13" dstpinname="Mesh">
+   </LINK>
+   </PATCH>
