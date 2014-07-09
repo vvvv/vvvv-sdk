@@ -14,8 +14,8 @@ namespace VVVV.Utils.VMath
     /// <summary>
     /// 2x2 transform matrix struct with operators
     /// </summary>
-    [DataContract]
     [StructLayout(LayoutKind.Sequential)]
+    [DataContract]
     public struct Matrix2x2
     {
         #region data fields
@@ -39,12 +39,13 @@ namespace VVVV.Utils.VMath
         /// The 2. data element of 2. row
         /// </summary>
         public double d;
+
         [DataMember]
         public double[] Values
         {
             get
             {
-                double[] l = { a, b, c, d };
+                double[] l = { a, b, c, d};
                 return l;
             }
             set
@@ -55,6 +56,7 @@ namespace VVVV.Utils.VMath
                 d = value[3];
             }
         }
+        
         #endregion data fields
 
         #region constructors
@@ -101,6 +103,20 @@ namespace VVVV.Utils.VMath
         #endregion constructors
 
         #region operators
+
+        [DataMember]
+        public double[] Matrix
+        {
+            get
+            {
+                double[] l = { a,b,c,d };
+                return l;
+            }
+            set
+            {
+                a = value[0]; b = value[1]; c = value[2]; d = value[3];
+            }
+        }
 
         /// <summary>
         /// matrix / value, divides all matrix components with a value
@@ -202,6 +218,12 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return "[2x2](" + a.ToString("C3") + ", " + b.ToString("C3") + "), " + c.ToString("C3") + ", " + d.ToString("C3") + ") ";
+        }
+
         #endregion Equals and GetHashCode implementation
     }
 }
