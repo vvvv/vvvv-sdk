@@ -8,7 +8,7 @@ Param(
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $packagesPath = Join-Path $scriptPath "..\packages"
 $vvvvRootPath = Join-Path $scriptPath "..\vvvv45"
-$nugetExe = Join-Path $scriptPath  "..\tools\NuGet.exe"
+$nugetExe = Join-Path $scriptPath  "..\tools\nuget.exe"
 $packageName = "VVVV.Binaries.$platform"
 $packageVersion = ""
 
