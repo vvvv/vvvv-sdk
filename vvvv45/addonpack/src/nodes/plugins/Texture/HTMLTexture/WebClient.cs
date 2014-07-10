@@ -3,6 +3,9 @@ using Xilium.CefGlue;
 using VVVV.Core;
 using VVVV.Core.Logging;
 using System.Xml.Linq;
+using System.IO;
+using System.Text;
+using System.Collections.Specialized;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -71,6 +74,93 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override void OnScrollOffsetChanged(CefBrowser browser)
             {
+            }
+        }
+
+        class RequestHandler : CefRequestHandler
+        {
+            class HtmlStringResourceHandler : CefResourceHandler
+            {
+                private readonly Stream FStream;
+                private readonly byte[] FBuffer = new byte[1024];
+
+                public HtmlStringResourceHandler(string text)
+                {
+                    FStream = new MemoryStream(Encoding.UTF8.GetBytes(text));
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    FStream.Dispose();
+                    base.Dispose(disposing);
+                }
+
+                protected override bool CanGetCookie(CefCookie cookie)
+                {
+                    return true;
+                }
+
+                protected override bool CanSetCookie(CefCookie cookie)
+                {
+                    return true;
+                }
+
+                protected override void Cancel()
+                {
+                    
+                }
+
+                protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
+                {
+                    response.MimeType = "text/html";
+                    response.Status = 200;
+                    response.StatusText = "OK";
+
+                    var headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
+                    headers.Add("Cache-Control", "private");
+                    response.SetHeaderMap(headers);
+
+                    responseLength = FStream.Length;
+                    redirectUrl = null;
+                }
+
+                protected override bool ProcessRequest(CefRequest request, CefCallback callback)
+                {
+                    callback.Continue();
+                    return true;
+                }
+
+                protected override bool ReadResponse(Stream response, int bytesToRead, out int bytesRead, CefCallback callback)
+                {
+                    bytesRead = 0;
+                    while (bytesRead < bytesToRead)
+                    {
+                        var readCount = FStream.Read(FBuffer, 0, Math.Min(FBuffer.Length, bytesToRead));
+                        response.Write(FBuffer, 0, readCount);
+                        bytesRead += readCount;
+                    }
+                    return true;
+                }
+            }
+
+            private readonly WebClient FWebClient;
+            private readonly HTMLTextureRenderer FRenderer;
+
+            public RequestHandler(WebClient webClient, HTMLTextureRenderer renderer)
+            {
+                FWebClient = webClient;
+                FRenderer = renderer;
+            }
+
+            protected override CefResourceHandler GetResourceHandler(CefBrowser browser, CefFrame frame, CefRequest request)
+            {
+                if (frame.IsMain && request.Method == "GET")
+                {
+                    var html = FRenderer.CurrentHTML;
+                    if (html != null)
+                        return new HtmlStringResourceHandler(html);
+                }
+                return base.GetResourceHandler(browser, frame, request);
             }
         }
         
@@ -170,6 +260,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         private readonly HTMLTextureRenderer FRenderer;
         private readonly CefRenderHandler FRenderHandler;
+        private readonly CefRequestHandler FRequestHandler;
         private readonly CefLifeSpanHandler FLifeSpanHandler;
         private readonly CefLoadHandler FLoadHandler;
         private readonly CefKeyboardHandler FKeyboardHandler;
@@ -179,6 +270,7 @@ namespace VVVV.Nodes.Texture.HTML
         {
             FRenderer = renderer;
             FRenderHandler = new RenderHandler(renderer);
+            FRequestHandler = new RequestHandler(this, renderer);
             FLifeSpanHandler = new LifeSpanHandler(this, renderer);
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
@@ -213,6 +305,11 @@ namespace VVVV.Nodes.Texture.HTML
         protected override CefLoadHandler GetLoadHandler()
         {
             return FLoadHandler;
+        }
+
+        protected override CefRequestHandler GetRequestHandler()
+        {
+            return FRequestHandler;
         }
         
         protected override CefRenderHandler GetRenderHandler()

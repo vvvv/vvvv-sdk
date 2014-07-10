@@ -9,21 +9,6 @@ namespace VVVV.Nodes.Texture.HTML
 {
     internal sealed class SchemeHandler : CefResourceHandler
     {
-        class Task : CefTask
-        {
-            private readonly Action action;
-
-            public Task(Action action)
-            {
-                this.action = action;
-            }
-
-            protected override void Execute()
-            {
-                this.action();
-            }
-        }
-
         class WebPluginVisitor : CefWebPluginInfoVisitor
         {
             public List<CefWebPluginInfo> Plugins { get; private set; }

@@ -33,7 +33,7 @@ namespace VVVV.Nodes.Texture.HTML
         private CefBrowser FBrowser;
         private CefBrowserHost FBrowserHost;
         private string FUrl;
-        private string FHtml = string.Empty;
+        private string FHtml;
         private readonly object FLock = new object();
         private XDocument FCurrentDom;
         private string FCurrentUrl;
@@ -110,6 +110,7 @@ namespace VVVV.Nodes.Texture.HTML
             if (FUrl != url)
             {
                 FUrl = string.IsNullOrEmpty(url) ? "about:blank" : url;
+                FHtml = null;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
                     // Seems important that url is valid
@@ -123,14 +124,13 @@ namespace VVVV.Nodes.Texture.HTML
         {
             if (FUrl != baseUrl || FHtml != html)
             {
-                FUrl = baseUrl;
+                FUrl = string.IsNullOrEmpty(baseUrl) ? "about:blank" : baseUrl;
                 FHtml = html ?? string.Empty;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
                     // Seems important that url is valid
-                    var uri = new UriBuilder(baseUrl).Uri;
-                    mainFrame.LoadUrl("about:blank");
-                    mainFrame.LoadString(FHtml, uri.ToString());
+                    var uri = new UriBuilder(FUrl).Uri;
+                    mainFrame.LoadUrl(uri.ToString());
                 }
             }
         }
@@ -197,6 +197,11 @@ namespace VVVV.Nodes.Texture.HTML
                     return FErrorText;
                 }
             }
+        }
+
+        public string CurrentHTML
+        {
+            get { return FHtml; }
         }
 
         private Size FSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
