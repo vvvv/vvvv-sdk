@@ -9,6 +9,7 @@ using VVVV.Utils.IO;
 using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
 using System.Drawing;
+using System.IO;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -20,12 +21,16 @@ namespace VVVV.Nodes.Texture.HTML
     {
         [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
         public ISpread<string> FHtmlIn;
-        [Input("Base Url", DefaultString = "about:blank")]
+        [Input("Base Url")]
         public ISpread<string> FBaseUrlIn;
+        [Import]
+        protected IPluginHost2 FHost;
 
         protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
         {
-            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice]);
+            string patchPath;
+            FHost.GetHostPath(out patchPath);
+            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice], Path.GetDirectoryName(patchPath));
         }
     }
 
@@ -83,11 +88,11 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<string> FErrorTextOut;
 
         [Import]
-        private ILogger FLogger;
+        protected ILogger FLogger;
 
         private readonly Spread<HTMLTextureRenderer> FWebRenderers = new Spread<HTMLTextureRenderer>();
 
-        public void OnImportsSatisfied()
+        public virtual void OnImportsSatisfied()
         {
             FTextureOut.SliceCount = 0;
         }

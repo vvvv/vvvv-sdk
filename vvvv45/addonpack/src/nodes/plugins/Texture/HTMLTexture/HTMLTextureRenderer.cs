@@ -120,19 +120,26 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        public void LoadString(string html, string baseUrl)
+        private void LoadString(string html, string baseUrl)
         {
             if (FUrl != baseUrl || FHtml != html)
             {
-                FUrl = string.IsNullOrEmpty(baseUrl) ? "about:blank" : baseUrl;
-                FHtml = html ?? string.Empty;
+                FUrl = baseUrl;
+                FHtml = html;
                 using (var mainFrame = FBrowser.GetMainFrame())
-                {
-                    // Seems important that url is valid
-                    var uri = new UriBuilder(FUrl).Uri;
-                    mainFrame.LoadUrl(uri.ToString());
-                }
+                    mainFrame.LoadUrl(baseUrl);
             }
+        }
+
+        public void LoadString(string html, string baseUrl, string patchPath)
+        {
+            baseUrl = string.IsNullOrEmpty(baseUrl) ? patchPath : baseUrl;
+            html = html ?? string.Empty;
+            var uri = new UriBuilder(baseUrl).Uri;
+            if (uri.IsFile && !uri.ToString().EndsWith("/"))
+                // Append trailing slash
+                uri = new UriBuilder(uri.ToString() + "/").Uri;
+            LoadString(html, uri.ToString());
         }
 
         public void ExecuteJavaScript(string javaScript)
