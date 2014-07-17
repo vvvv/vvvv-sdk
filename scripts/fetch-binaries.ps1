@@ -37,7 +37,7 @@ foreach ($c in $localCommits)
         $p = "VVVV\.[^\.]*\.([0-9]+)\.([0-9]+)\.([0-9]+)([^\.]*)\.nupkg"
         $major, $minor, $patch, $preRelease = ([regex]$p).Match($file.name).Groups | select -skip 1 | %{$_.Value}
         $packageVersion = "$major.$minor.$patch$preRelease"
-        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath"
+        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath" -Source "http://vvvv.org:8111/guestAuth/app/nuget/v1/FeedService.svc/"
         $contentFolder = Join-Path $packagesPath (Join-Path "VVVV.Binaries.$platform.$packageVersion" "content")
         Copy-Item (Join-Path $contentFolder "\*") -Destination $vvvvRootPath -Recurse -Force
         break
