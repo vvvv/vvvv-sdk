@@ -123,9 +123,6 @@ namespace VVVV.Nodes.Texture.HTML
                 webRenderer.Enabled = FEnabledIn[i];
                 if (!webRenderer.Enabled) continue;
 
-                // LoadUrl or LoadString
-                LoadContent(webRenderer, i);
-
                 // Assign inputs
                 webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
                 webRenderer.ZoomLevel = FZoomLevelIn[i];
@@ -155,6 +152,9 @@ namespace VVVV.Nodes.Texture.HTML
                 FIsLoadingOut[i] = webRenderer.IsLoading;
                 FCurrentUrlOut[i] = webRenderer.CurrentUrl;
                 FErrorTextOut[i] = webRenderer.CurrentError;
+
+                // LoadUrl or LoadString
+                LoadContent(webRenderer, i);
             }
 
             FTextureOut.MarkPinAsChanged();

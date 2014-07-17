@@ -232,7 +232,7 @@ namespace VVVV.Nodes.Texture.HTML
                 if (FSize != value)
                 {
                     // Size changed, textures are not valid anymore - destroy them
-                    DestroyResources();
+                    DestroyResourcesOfDifferentSize(value);
                     // Set the new size
                     FSize = value;
                     // Computed document size depends on this value - invalidate it
@@ -256,8 +256,8 @@ namespace VVVV.Nodes.Texture.HTML
                 if (value != FDocumentSize)
                 {
                     // Should the size of the texture depend on this computed value destroy them
-                    if (IsAutoSize)
-                        DestroyResources();
+                    if (IsAutoSize && value != Size.Empty)
+                        DestroyResourcesOfDifferentSize(value);
                     // Set the new size
                     FDocumentSize = value;
                     // Notify the browser about the change in case the size depends on this value
@@ -581,6 +581,22 @@ namespace VVVV.Nodes.Texture.HTML
                 {
                     var texture = FTextures[i];
                     if (texture.Device == device)
+                    {
+                        FTextures.Remove(texture);
+                        texture.Dispose();
+                    }
+                }
+            }
+        }
+
+        private void DestroyResourcesOfDifferentSize(Size size)
+        {
+            lock (FTextures)
+            {
+                for (int i = FTextures.Count - 1; i >= 0; i--)
+                {
+                    var texture = FTextures[i];
+                    if (texture.Size != size)
                     {
                         FTextures.Remove(texture);
                         texture.Dispose();
