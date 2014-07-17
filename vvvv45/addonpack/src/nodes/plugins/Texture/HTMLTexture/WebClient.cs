@@ -74,6 +74,9 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override void OnScrollOffsetChanged(CefBrowser browser)
             {
+                // Do not report the change as long as the renderer is busy loading content
+                if (!FRenderer.IsLoading)
+                    FRenderer.UpdateDocumentSize();
             }
         }
 
@@ -209,23 +212,17 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 FRenderer = renderer;
             }
-            
-            protected override void OnLoadStart(CefBrowser browser, CefFrame frame)
-            {
-                FRenderer.OnLoadStart(frame);
-                base.OnLoadStart(browser, frame);
-            }
 
             protected override void OnLoadError(CefBrowser browser, CefFrame frame, CefErrorCode errorCode, string errorText, string failedUrl)
             {
                 FRenderer.OnLoadError(frame, errorCode, failedUrl, errorText);
                 base.OnLoadError(browser, frame, errorCode, errorText, failedUrl);
             }
-            
-            protected override void OnLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode)
+
+            protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
             {
-                FRenderer.OnLoadEnd(frame, httpStatusCode);
-                base.OnLoadEnd(browser, frame, httpStatusCode);
+                FRenderer.OnLoadingStateChange(isLoading, canGoBack, canGoForward);
+                base.OnLoadingStateChange(browser, isLoading, canGoBack, canGoForward);
             }
         }
 
@@ -319,11 +316,13 @@ namespace VVVV.Nodes.Texture.HTML
 
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
+            long identifier;
+            CefFrame frame;
             switch (message.Name)
             {
                 case "dom-response":
-                    var identifier = message.GetFrameIdentifier();
-                    var frame = browser.GetFrame(identifier);
+                    identifier = message.GetFrameIdentifier();
+                    frame = browser.GetFrame(identifier);
                     if (frame != null)
                     {
                         var arguments = message.Arguments;
@@ -336,6 +335,17 @@ namespace VVVV.Nodes.Texture.HTML
                         }
                         else
                             FRenderer.OnError(s);
+                    }
+                    return true;
+                case "document-size-response":
+                    identifier = message.GetFrameIdentifier();
+                    frame = browser.GetFrame(identifier);
+                    if (frame != null)
+                    {
+                        var arguments = message.Arguments;
+                        var width = arguments.GetInt(2);
+                        var height = arguments.GetInt(3);
+                        FRenderer.OnDocumentSize(frame, width, height);
                     }
                     return true;
                 default:
