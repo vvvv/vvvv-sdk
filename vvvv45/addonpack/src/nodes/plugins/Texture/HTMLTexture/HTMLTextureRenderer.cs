@@ -19,25 +19,27 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using VVVV.Utils.Win32;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.Texture.HTML
 {
     public class HTMLTextureRenderer : IDisposable
     {
         public const string DEFAULT_URL = "http://vvvv.org";
+        public const string DEFAULT_CONTENT = @"<html><head></head><body bgcolor=""#ffffff""></body></html>";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
-        private readonly DXResource<EX9.Texture, CefBrowser> FTextureResource;
+
         private volatile bool FEnabled;
         private readonly WebClient FWebClient;
         private CefBrowser FBrowser;
         private CefBrowserHost FBrowserHost;
         private string FUrl;
         private string FHtml;
-        private readonly object FLock = new object();
         private XDocument FCurrentDom;
         private string FCurrentUrl;
         private string FErrorText;
+        private Size FSize;
         public ILogger Logger;
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
@@ -60,13 +62,6 @@ namespace VVVV.Nodes.Texture.HTML
             CefBrowserHost.CreateBrowser(windowInfo, FWebClient, settings);
             // Block until browser is created
             FBrowserAttachedEvent.WaitOne();
-
-            FTextureResource = new DXResource<EX9.Texture, CefBrowser>(
-                FBrowser,
-                CreateTexture,
-                UpdateTexture,
-                DestroyTexture
-               );
         }
 
         internal void Attach(CefBrowser browser)
@@ -86,11 +81,7 @@ namespace VVVV.Nodes.Texture.HTML
         {
             FBrowserHost.CloseBrowser(true);
             FBrowserDetachedEvent.WaitOne();
-            lock (FLock)
-            {
-                FBrowser.Dispose();
-                FTextureResource.Dispose();
-            }
+            FBrowser.Dispose();
             FBrowserAttachedEvent.Dispose();
             FBrowserDetachedEvent.Dispose();
             if (FMouseSubscription != null)
@@ -103,43 +94,59 @@ namespace VVVV.Nodes.Texture.HTML
                 FKeyboardSubscription.Dispose();
                 FKeyboardSubscription = null;
             }
+            DestroyResources();
         }
 
         public void LoadUrl(string url)
         {
+            // Normalize inputs
+            url = string.IsNullOrEmpty(url) ? "about:blank" : url;
             if (FUrl != url)
             {
-                FUrl = string.IsNullOrEmpty(url) ? "about:blank" : url;
+                // Reset all computed values
+                Reset();
+                // Set new values
+                FUrl = url;
                 FHtml = null;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
-                    // Seems important that url is valid
+                    // Create a valid url
                     var uri = new UriBuilder(FUrl).Uri;
                     mainFrame.LoadUrl(uri.ToString());
                 }
             }
         }
 
-        private void LoadString(string html, string baseUrl)
+        public void LoadString(string html, string baseUrl, string patchPath)
         {
+            // Normalize inputs
+            baseUrl = string.IsNullOrEmpty(baseUrl) ? patchPath : baseUrl;
+            html = html ?? string.Empty;
             if (FUrl != baseUrl || FHtml != html)
             {
+                // Reset all computed values
+                Reset();
+                // Set new values
                 FUrl = baseUrl;
                 FHtml = html;
                 using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    // Create a valid url
+                    var uri = new UriBuilder(baseUrl).Uri;
+                    if (uri.IsFile && !uri.ToString().EndsWith("/"))
+                        // Append trailing slash
+                        uri = new UriBuilder(uri.ToString() + "/").Uri;
                     mainFrame.LoadUrl(baseUrl);
+                }
             }
         }
 
-        public void LoadString(string html, string baseUrl, string patchPath)
+        private void Reset()
         {
-            baseUrl = string.IsNullOrEmpty(baseUrl) ? patchPath : baseUrl;
-            html = html ?? string.Empty;
-            var uri = new UriBuilder(baseUrl).Uri;
-            if (uri.IsFile && !uri.ToString().EndsWith("/"))
-                // Append trailing slash
-                uri = new UriBuilder(uri.ToString() + "/").Uri;
-            LoadString(html, uri.ToString());
+            FCurrentUrl = null;
+            FCurrentDom = null;
+            DocumentSize = Size.Empty;
+            FErrorText = string.Empty;
         }
 
         public void ExecuteJavaScript(string javaScript)
@@ -163,47 +170,45 @@ namespace VVVV.Nodes.Texture.HTML
             FBrowser.SendProcessMessage(CefProcessId.Renderer, request);
         }
 
+        internal void OnUpdateDom(XDocument dom)
+        {
+            FCurrentDom = dom;
+        }
+
+        public void UpdateDocumentSize()
+        {
+            using (var frame = FBrowser.GetMainFrame())
+            {
+                var request = CefProcessMessage.Create("document-size-request");
+                request.SetFrameIdentifier(frame.Identifier);
+                FBrowser.SendProcessMessage(CefProcessId.Renderer, request);
+            }
+        }
+
+        internal void OnDocumentSize(CefFrame frame, int width, int height)
+        {
+            if (frame.IsMain)
+                DocumentSize = new Size(width, height);
+        }
+
         public void Reload()
         {
             FBrowser.Reload();
         }
 
-        public DXResource<EX9.Texture, CefBrowser> TextureResource
-        {
-            get { return FTextureResource; }
-        }
-
         public XDocument CurrentDom
         {
-            get 
-            {
-                lock (FLock)
-                {
-                    return FCurrentDom;
-                }
-            }
+            get { return FCurrentDom; }
         }
 
         public string CurrentUrl
         {
-            get 
-            {
-                lock (FLock)
-                {
-                    return FCurrentUrl;
-                }
-            }
+            get { return FCurrentUrl; }
         }
 
         public string CurrentError
         {
-            get 
-            {
-                lock (FLock)
-                {
-                    return FErrorText;
-                }
-            }
+            get { return FErrorText; }
         }
 
         public string CurrentHTML
@@ -211,22 +216,53 @@ namespace VVVV.Nodes.Texture.HTML
             get { return FHtml; }
         }
 
-        private Size FSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         public Size Size
         {
-            get { return FSize; }
+            get
+            {
+                var size = FSize;
+                if (size.Width <= 0)
+                    size.Width = DocumentSize.Width;
+                if (size.Height <= 0)
+                    size.Height = DocumentSize.Height;
+                return size;
+            }
             set
             {
-                // Normalize inputs
-                var size = new Size(Math.Max(1, value.Width), Math.Max(1, value.Height));
-                if (size != FSize)
+                if (FSize != value)
                 {
-                    lock (FTextureResource)
-                    {
-                        FTextureResource.Dispose();
-                        FSize = size;
+                    // Size changed, textures are not valid anymore - destroy them
+                    DestroyResources();
+                    // Set the new size
+                    FSize = value;
+                    // Computed document size depends on this value - invalidate it
+                    FDocumentSize = Size.Empty;
+                    // Notify the browser host about the change
+                    FBrowserHost.WasResized();
+                }
+            }
+        }
+
+        public bool IsAutoWidth { get { return FSize.Width <= 0; } }
+        public bool IsAutoHeight { get { return FSize.Height <= 0; } }
+        public bool IsAutoSize { get { return IsAutoWidth || IsAutoHeight; } }
+
+        private Size FDocumentSize;
+        public Size DocumentSize
+        {
+            get { return FDocumentSize; }
+            private set
+            {
+                if (value != FDocumentSize)
+                {
+                    // Should the size of the texture depend on this computed value destroy them
+                    if (IsAutoSize)
+                        DestroyResources();
+                    // Set the new size
+                    FDocumentSize = value;
+                    // Notify the browser about the change in case the size depends on this value
+                    if (IsAutoSize)
                         FBrowserHost.WasResized();
-                    }
                 }
             }
         }
@@ -295,8 +331,8 @@ namespace VVVV.Nodes.Texture.HTML
                         (mouse, n) =>
                         {
                             var mouseEvent = new CefMouseEvent(
-                                (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, FSize.Width, TMapMode.Clamp),
-                                (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, FSize.Height, TMapMode.Clamp),
+                                (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, Size.Width, TMapMode.Clamp),
+                                (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, Size.Height, TMapMode.Clamp),
                                 GetMouseModifiers(mouse.PressedButtons));
                             switch (n.Kind)
                             {
@@ -424,16 +460,10 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        private int FLoadCount;
+        private bool FIsLoading;
         public bool IsLoading
         {
-            get
-            {
-                lock (FLock)
-                {
-                    return FLoadCount > 0;
-                }
-            }
+            get { return FIsLoading; }
         }
 
         public bool Enabled
@@ -443,38 +473,67 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 if (FEnabled != value)
                 {
-                    lock (FLock)
+                    if (FEnabled)
                     {
-                        if (FEnabled)
-                        {
-                            FBrowser.StopLoad();
-                            FBrowserHost.WasHidden(true);
-                        }
-                        FEnabled = value;
-                        if (FEnabled)
-                        {
-                            FBrowserHost.WasHidden(false);
-                            FBrowserHost.Invalidate(new CefRectangle(0, 0, FSize.Width, FSize.Height), CefPaintElementType.View);
-                        }
+                        FBrowser.StopLoad();
+                        FBrowserHost.WasHidden(true);
+                    }
+                    FEnabled = value;
+                    if (FEnabled)
+                    {
+                        FBrowserHost.WasHidden(false);
+                        FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
                     }
                 }
             }
         }
 
+        internal void OnLoadError(CefFrame frame, CefErrorCode errorCode, string failedUrl, string errorText)
+        {
+            if (frame.IsMain)
+            {
+                FCurrentDom = null;
+                FErrorText = errorText;
+            }
+        }
+
+        internal void OnLoadingStateChange(bool isLoading, bool canGoBack, bool canGoForward)
+        {
+            FIsLoading = isLoading;
+            if (!isLoading)
+            {
+                using (var frame = FBrowser.GetMainFrame())
+                {
+                    FCurrentUrl = frame.Url;
+                    UpdateDom(frame);
+                    UpdateDocumentSize();
+                }
+            }
+            else
+                // Reset computed values like document size or DOM
+                Reset();
+        }
+
+        internal void OnError(string error)
+        {
+            FErrorText = error;
+        }
+
+        private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
+
         internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride)
         {
             if (!FEnabled) return;
-            lock (FTextureResource)
+            lock (FTextures)
             {
                 try
                 {
                     for (int i = 0; i < cefRects.Length; i++)
                     {
                         var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
-                        foreach (var texture in FTextureResource.DeviceResources)
+                        foreach (var texture in FTextures)
                         {
-                            var sysmemTexture = texture.Tag as EX9.Texture;
-                            WriteToTexture(rect, buffer, stride, sysmemTexture);
+                            texture.Write(rect, buffer, stride);
                         }
                     }
                 }
@@ -485,120 +544,59 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, EX9.Texture texture)
+        internal void UpdateResources(Device device)
         {
-            // Rect needs to be inside of Width/Height
-            rect = Rectangle.Intersect(new Rectangle(0, 0, FSize.Width, FSize.Height), rect);
-            if (rect == Rectangle.Empty) return;
-            var dataRect = texture.LockRectangle(0, rect, LockFlags.Discard);
-            try
+            lock (FTextures)
             {
-                var dataStream = dataRect.Data;
-                if (rect.Width == FSize.Width && rect.Height == FSize.Height && dataRect.Pitch == stride)
+                var size = Size;
+                if (size.Width <= 0 || size.Height <= 0)
+                    return;
+                if (!FTextures.Any(t => t.Device == device))
                 {
-                    dataStream.WriteRange(buffer, FSize.Height * dataRect.Pitch);
+                    var texture = new DoubleBufferedTexture(device, size);
+                    FTextures.Add(texture);
+                    // Trigger a redraw
+                    FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
                 }
+            }
+        }
+
+        internal EX9.Texture GetTexture(Device device)
+        {
+            lock (FTextures)
+            {
+                var texture = FTextures.FirstOrDefault(t => t.Device == device);
+                if (texture != null)
+                    return texture.Swap();
                 else
+                    return null;
+            }
+        }
+
+        internal void DestroyResources(Device device)
+        {
+            lock (FTextures)
+            {
+                for (int i = FTextures.Count - 1; i >= 0; i--)
                 {
-                    var offset = stride * rect.Y + 4 * rect.X;
-                    var source = buffer + offset;
-                    for (int y = 0; y < rect.Height; y++)
+                    var texture = FTextures[i];
+                    if (texture.Device == device)
                     {
-                        dataStream.Position = y * dataRect.Pitch;
-                        dataStream.WriteRange(source + y * stride, rect.Width * 4);
+                        FTextures.Remove(texture);
+                        texture.Dispose();
                     }
                 }
             }
-            finally
-            {
-                texture.UnlockRectangle(0);
-            }
         }
 
-        private EX9.Texture CreateTexture(CefBrowser browser, Device device)
+        private void DestroyResources()
         {
-            lock (FTextureResource)
+            lock (FTextures)
             {
-                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
-                var texture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.Default);
-                var sysmemTexture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.SystemMemory);
-                texture.Tag = sysmemTexture;
-                var rect = new CefRectangle(0, 0, FSize.Width, FSize.Height);
-                FBrowserHost.Invalidate(rect, CefPaintElementType.View);
-                return texture;
+                foreach (var texture in FTextures)
+                    texture.Dispose();
+                FTextures.Clear();
             }
-        }
-
-        private void UpdateTexture(CefBrowser browser, EX9.Texture texture)
-        {
-            lock (FTextureResource)
-            {
-                var sysmemTexture = texture.Tag as EX9.Texture;
-                texture.Device.UpdateTexture(sysmemTexture, texture);
-            }
-        }
-
-        private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
-        {
-            lock (FTextureResource)
-            {
-                var sysmemTexture = texture.Tag as EX9.Texture;
-                sysmemTexture.Dispose();
-                texture.Dispose();
-            }
-        }
-
-        internal void OnLoadStart(CefFrame frame)
-        {
-            lock (FLock)
-            {
-                FLoadCount++;
-                if (frame.IsMain)    
-                {
-                    
-                    FCurrentDom = null;
-                    FErrorText = string.Empty;
-                    FCurrentUrl = frame.Url;
-                }
-            }
-        }
-
-        internal void OnLoadError(CefFrame frame, CefErrorCode errorCode, string failedUrl, string errorText)
-        {
-            lock (FLock)
-            {
-                if (frame.IsMain)
-                {
-                    FCurrentDom = null;
-                    FErrorText = errorText;
-                }
-            }
-        }
-
-        internal void OnLoadEnd(CefFrame frame, int httpStatusCode)
-        {
-            lock (FLock)
-            {
-                FLoadCount--;
-                if (frame.IsMain)
-                {
-                    UpdateDom(frame);
-                }
-            }
-        }
-
-        internal void OnUpdateDom(XDocument dom)
-        {
-            lock (FLock)
-            {
-                FCurrentDom = dom;
-            }
-        }
-
-        internal void OnError(string error)
-        {
-            lock (FLock)
-                FErrorText = error;
         }
     }
 }

@@ -150,6 +150,39 @@ namespace VVVV.Nodes.Texture.HTML
 
         class RenderProcessHandler : CefRenderProcessHandler
         {
+            class CustomCallbackHandler : CefV8Handler
+            {
+                public const string ReportDocumentSize = "cefReportDocumentSize";
+
+                private readonly CefBrowser Browser;
+                private readonly CefFrame Frame;
+                public CustomCallbackHandler(CefBrowser browser, CefFrame frame)
+                {
+                    Browser = browser;
+                    Frame = frame;
+                }
+
+                protected override bool Execute(string name, CefV8Value obj, CefV8Value[] arguments, out CefV8Value returnValue, out string exception)
+                {
+                    switch (name)
+                    {
+                        case ReportDocumentSize:
+                            var message = CefProcessMessage.Create("document-size-response");
+                            message.SetFrameIdentifier(Frame.Identifier);
+                            message.Arguments.SetInt(2, arguments[0].GetIntValue());
+                            message.Arguments.SetInt(3, arguments[1].GetIntValue());
+                            Browser.SendProcessMessage(CefProcessId.Browser, message);
+                            returnValue = null;
+                            exception = null;
+                            return true;
+                        default:
+                            returnValue = null;
+                            exception = null;
+                            return false;
+                    }
+                }
+            }
+
             protected override void OnRenderThreadCreated(CefListValue extraInfo)
             {
                 base.OnRenderThreadCreated(extraInfo);
@@ -157,15 +190,36 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
             {
+                long identifier;
                 switch (message.Name)
                 {
                     case "dom-request":
-                        var identifier = message.GetFrameIdentifier();
+                        identifier = message.GetFrameIdentifier();
                         HandleDomRequest(browser, sourceProcess, identifier);
+                        return true;
+                    case "document-size-request":
+                        identifier = message.GetFrameIdentifier();
+                        HandleDocumentSizeRequest(browser, sourceProcess, identifier);
                         return true;
                     default:
                         return base.OnProcessMessageReceived(browser, sourceProcess, message);
                 }
+            }
+
+            protected override void OnContextCreated(CefBrowser browser, CefFrame frame, CefV8Context context)
+            {
+                if (frame.IsMain)
+                {
+                    // Retrieve the context's window object and install the "cefReportDocumentSize" function
+                    // used to tell the node about the document size.
+                    using (var window = context.GetGlobal())
+                    {
+                        var handler = new CustomCallbackHandler(browser, frame);
+                        var reportDocumentSizeFunc = CefV8Value.CreateFunction(CustomCallbackHandler.ReportDocumentSize, handler);
+                        window.SetValue(CustomCallbackHandler.ReportDocumentSize, reportDocumentSizeFunc, CefV8PropertyAttribute.None);
+                    }
+                }
+                base.OnContextCreated(browser, frame, context);
             }
 
             private void HandleDomRequest(CefBrowser browser, CefProcessId sourceProcess, long frameIdentifier)
@@ -192,6 +246,28 @@ namespace VVVV.Nodes.Texture.HTML
                                 response.Arguments.SetString(3, visitor.Exception.ToString());
                             }
                             browser.SendProcessMessage(sourceProcess, response);
+                        }
+                    },
+                    CancellationToken.None,
+                    TaskCreationOptions.None,
+                    scheduler);
+            }
+
+            private void HandleDocumentSizeRequest(CefBrowser browser, CefProcessId sourceProcess, long frameIdentifier)
+            {
+                var scheduler = GetTaskScheduler(CefThreadId.Renderer);
+                Task.Factory.StartNew(
+                    () =>
+                    {
+                        var frame = browser.GetFrame(frameIdentifier);
+                        if (frame != null)
+                        {
+                            var js = new StringBuilder();
+                            js.AppendLine("var body = document.body;");
+                            js.AppendLine("var width = body.scrollWidth;");
+                            js.AppendLine("var height = body.scrollHeight;");
+                            js.AppendLine(string.Format("window.{0}(width, height);", CustomCallbackHandler.ReportDocumentSize));
+                            frame.ExecuteJavaScript(js.ToString(), string.Empty, 0);
                         }
                     },
                     CancellationToken.None,

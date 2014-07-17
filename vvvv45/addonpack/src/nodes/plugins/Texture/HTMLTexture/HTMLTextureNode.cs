@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using EX9 = SlimDX.Direct3D9;
 using System.Drawing;
 using System.IO;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -19,7 +20,7 @@ namespace VVVV.Nodes.Texture.HTML
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
     public class HTMLTextureStringNode : HTMLTextureNode
     {
-        [Input("HTML", DefaultString = @"<html><head></head><body bgcolor=""#ffffff""></body></html>")]
+        [Input("HTML", DefaultString = HTMLTextureRenderer.DEFAULT_CONTENT)]
         public ISpread<string> FHtmlIn;
         [Input("Base Url")]
         public ISpread<string> FBaseUrlIn;
@@ -48,8 +49,8 @@ namespace VVVV.Nodes.Texture.HTML
             renderer.LoadUrl(FUrlIn[slice]);
         }
     }
-    
-    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+
+    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification, IPluginDXTexture2
     {
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
@@ -75,11 +76,15 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<bool> FEnabledIn;
 
         [Output("Output")]
-        public ISpread<DXResource<EX9.Texture, CefBrowser>> FTextureOut;
+        public IDXTextureOut FTextureOut;
         [Output("Root Element")]
         public ISpread<XElement> FRootElementOut;
         [Output("Document")]
         public ISpread<XDocument> FDomOut;
+        [Output("Document Width")]
+        public ISpread<int> FDocumentWidthOut;
+        [Output("Document Height")]
+        public ISpread<int> FDocumentHeightOut;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;
         [Output("Current Url")]
@@ -104,6 +109,8 @@ namespace VVVV.Nodes.Texture.HTML
             FTextureOut.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
             FDomOut.SliceCount = spreadMax;
+            FDocumentWidthOut.SliceCount = spreadMax;
+            FDocumentHeightOut.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
             FCurrentUrlOut.SliceCount = spreadMax;
@@ -136,7 +143,6 @@ namespace VVVV.Nodes.Texture.HTML
                     webRenderer.Reload();
 
                 // Set outputs
-                FTextureOut[i] = webRenderer.TextureResource;
                 if (FDomOut[i] != webRenderer.CurrentDom)
                     FDomOut[i] = webRenderer.CurrentDom;
                 var rootElement = webRenderer.CurrentDom != null
@@ -144,17 +150,40 @@ namespace VVVV.Nodes.Texture.HTML
                     : null;
                 if (FRootElementOut[i] != rootElement)
                     FRootElementOut[i] = rootElement;
+                FDocumentWidthOut[i] = webRenderer.DocumentSize.Width;
+                FDocumentHeightOut[i] = webRenderer.DocumentSize.Height;
                 FIsLoadingOut[i] = webRenderer.IsLoading;
                 FCurrentUrlOut[i] = webRenderer.CurrentUrl;
                 FErrorTextOut[i] = webRenderer.CurrentError;
             }
+
+            FTextureOut.MarkPinAsChanged();
         }
 
         protected abstract void LoadContent(HTMLTextureRenderer renderer, int slice);
 
         public void Dispose()
         {
-            FWebRenderers.ResizeAndDispose(0, () => new HTMLTextureRenderer(FLogger));
+            foreach (var renderer in FWebRenderers)
+                renderer.Dispose();
+        }
+
+        EX9.Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, EX9.Device device, int slice)
+        {
+            var renderer = FWebRenderers[slice];
+            return renderer.GetTexture(device);
+        }
+
+        void IPluginDXResource.UpdateResource(IPluginOut pin, EX9.Device device)
+        {
+            foreach (var renderer in FWebRenderers)
+                renderer.UpdateResources(device);
+        }
+
+        void IPluginDXResource.DestroyResource(IPluginOut pin, EX9.Device device, bool onlyUnmanaged)
+        {
+            foreach (var renderer in FWebRenderers)
+                renderer.DestroyResources(device);
         }
     }
 }
