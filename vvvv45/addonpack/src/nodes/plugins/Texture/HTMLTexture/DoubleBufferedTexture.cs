@@ -13,31 +13,52 @@ namespace VVVV.Nodes.Texture.HTML
     {
         public readonly Device Device;
         public readonly Size Size;
-        private readonly Texture CpuTexture;
-        private readonly Texture GpuTexture;
+        public readonly bool IsDegraded;
+        public readonly Texture LastCompleteTexture;
+        private readonly Texture IncompleteTexture;
+        private bool IsTextureComplete;
 
         public DoubleBufferedTexture(Device device, Size size)
+            : this(device, size, false, CreateTexture(device, size, Pool.SystemMemory), CreateTexture(device, size, Pool.Default))
+        {
+        }
+
+        private DoubleBufferedTexture(Device device, Size size, bool isDegraded, Texture incompleteTexture, Texture lastCompleteTexture)
         {
             Device = device;
-            Size = new Size(Math.Min(size.Width, device.Capabilities.MaxTextureWidth), Math.Min(size.Height, device.Capabilities.MaxTextureHeight));
+            Size = size;
+            IsDegraded = isDegraded;
+            IncompleteTexture = incompleteTexture;
+            LastCompleteTexture = lastCompleteTexture;
+        }
 
+        private static Size GetDeviceSize(Device device, Size size)
+        {
+            return new Size(
+                Math.Min(size.Width, device.Capabilities.MaxTextureWidth), 
+                Math.Min(size.Height, device.Capabilities.MaxTextureHeight));
+        }
+
+        private static Texture CreateTexture(Device device, Size size, Pool pool)
+        {
+            var deviceSize = GetDeviceSize(device, size);
             var usage = Usage.None & ~Usage.AutoGenerateMipMap;
-            CpuTexture = new Texture(device, Size.Width, Size.Height, 1, usage, Format.A8R8G8B8, Pool.SystemMemory);
-            GpuTexture = new Texture(device, Size.Width, Size.Height, 1, usage, Format.A8R8G8B8, Pool.Default);
+            return new Texture(device, deviceSize.Width, deviceSize.Height, 1, usage, Format.A8R8G8B8, pool);
         }
 
         public void Write(Rectangle rect, IntPtr buffer, int stride)
         {
             // Rect needs to be inside of Width/Height
-            rect = Rectangle.Intersect(new Rectangle(0, 0, Size.Width, Size.Height), rect);
+            var size = GetDeviceSize(Device, Size);
+            rect = Rectangle.Intersect(new Rectangle(0, 0, size.Width, size.Height), rect);
             if (rect == Rectangle.Empty) return;
-            var dataRect = CpuTexture.LockRectangle(0, rect, LockFlags.None);
+            var dataRect = IncompleteTexture.LockRectangle(0, rect, LockFlags.None);
             try
             {
                 var dataStream = dataRect.Data;
-                if (rect.Width == Size.Width && rect.Height == Size.Height && dataRect.Pitch == stride)
+                if (rect.Width == size.Width && rect.Height == size.Height && dataRect.Pitch == stride)
                 {
-                    dataStream.WriteRange(buffer, Size.Height * dataRect.Pitch);
+                    dataStream.WriteRange(buffer, size.Height * dataRect.Pitch);
                 }
                 else
                 {
@@ -52,20 +73,57 @@ namespace VVVV.Nodes.Texture.HTML
             }
             finally
             {
-                CpuTexture.UnlockRectangle(0);
+                IncompleteTexture.UnlockRectangle(0);
             }
+            IsTextureComplete = true;
         }
 
-        public Texture Swap()
+        private void UpdateTexture()
         {
-            Device.UpdateTexture(CpuTexture, GpuTexture);
-            return GpuTexture;
+            if (!IsDegraded)
+                Device.UpdateTexture(IncompleteTexture, LastCompleteTexture);
+        }
+
+        public DoubleBufferedTexture Update(Size newSize)
+        {
+            // Should the size be invalid stick with the old one
+            if (newSize.Width <= 0 || newSize.Height <= 0)
+            {
+                UpdateTexture();
+                return this;
+            }
+            // Should the size change switch to the degraded state
+            if (newSize != Size)
+            {
+                IncompleteTexture.Dispose();
+                return new DoubleBufferedTexture(Device, newSize, true, CreateTexture(Device, newSize, Pool.SystemMemory), LastCompleteTexture);
+            }
+            // Size is the same
+            if (IsDegraded)
+            {
+                // We're degraded -> sizes of textures differ
+                if (IsTextureComplete)
+                {
+                    // We can switch to the non-degraded state
+                    LastCompleteTexture.Dispose();
+                    return new DoubleBufferedTexture(Device, Size, false, IncompleteTexture, CreateTexture(Device, Size, Pool.Default));
+                }
+                else
+                    // Stay in the degraded state
+                    return this;
+            }
+            else
+            {
+                // Juhu, we're not degraded
+                UpdateTexture();
+                return this;
+            }
         }
 
         public void Dispose()
         {
-            CpuTexture.Dispose();
-            GpuTexture.Dispose();
+            IncompleteTexture.Dispose();
+            LastCompleteTexture.Dispose();
         }
     }
 }
