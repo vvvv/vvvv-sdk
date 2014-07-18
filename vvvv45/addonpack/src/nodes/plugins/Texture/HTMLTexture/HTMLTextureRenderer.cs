@@ -143,9 +143,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void Reset()
         {
-            FCurrentUrl = null;
-            FCurrentDom = null;
-            DocumentSize = Size.Empty;
+            FDocumentSizeIsValid = false;
             FErrorText = string.Empty;
         }
 
@@ -221,22 +219,20 @@ namespace VVVV.Nodes.Texture.HTML
             get
             {
                 var size = FSize;
-                if (size.Width <= 0)
-                    size.Width = DocumentSize.Width;
-                if (size.Height <= 0)
-                    size.Height = DocumentSize.Height;
+                if (IsAutoWidth)
+                    size.Width = FDocumentSizeIsValid ? FDocumentSize.Width : 0;
+                if (IsAutoHeight)
+                    size.Height = FDocumentSizeIsValid ? FDocumentSize.Height : 0;
                 return size;
             }
             set
             {
                 if (FSize != value)
                 {
-                    // Size changed, textures are not valid anymore - destroy them
-                    DestroyResourcesOfDifferentSize(value);
                     // Set the new size
                     FSize = value;
-                    // Computed document size depends on this value - invalidate it
-                    FDocumentSize = Size.Empty;
+                    // Invalidate the document size (depends on our size)
+                    FDocumentSizeIsValid = false;
                     // Notify the browser host about the change
                     FBrowserHost.WasResized();
                 }
@@ -247,22 +243,24 @@ namespace VVVV.Nodes.Texture.HTML
         public bool IsAutoHeight { get { return FSize.Height <= 0; } }
         public bool IsAutoSize { get { return IsAutoWidth || IsAutoHeight; } }
 
+        private bool FDocumentSizeIsValid;
         private Size FDocumentSize;
         public Size DocumentSize
         {
             get { return FDocumentSize; }
             private set
             {
-                if (value != FDocumentSize)
+                // Retrieve the current size
+                var size = Size;
+                // Set the new values
+                FDocumentSize = value;
+                FDocumentSizeIsValid = true;
+                // Notify the browser about the change in case the size was affected
+                // by this change
+                if (IsAutoSize && size != Size)
                 {
-                    // Should the size of the texture depend on this computed value destroy them
-                    if (IsAutoSize && value != Size.Empty)
-                        DestroyResourcesOfDifferentSize(value);
-                    // Set the new size
-                    FDocumentSize = value;
-                    // Notify the browser about the change in case the size depends on this value
-                    if (IsAutoSize)
-                        FBrowserHost.WasResized();
+                    FBrowserHost.WasResized();
+                    FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
                 }
             }
         }
@@ -523,6 +521,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride)
         {
+            // Do nothing if disabled
             if (!FEnabled) return;
             lock (FTextures)
             {
@@ -549,28 +548,41 @@ namespace VVVV.Nodes.Texture.HTML
             lock (FTextures)
             {
                 var size = Size;
-                if (size.Width <= 0 || size.Height <= 0)
-                    return;
-                if (!FTextures.Any(t => t.Device == device))
+                // Create new textures for valid sizes only
+                if (size.Width > 0 && size.Height > 0)
                 {
-                    var texture = new DoubleBufferedTexture(device, size);
-                    FTextures.Add(texture);
-                    // Trigger a redraw
-                    FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                    if (!FTextures.Any(t => t.Device == device))
+                    {
+                        var texture = new DoubleBufferedTexture(device, size);
+                        FTextures.Add(texture);
+                        // Trigger a redraw
+                        FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                    }
+                }
+                // Tell all textures to update - in case the size is not valid
+                // the texture will stick to the old one
+                for (int i = 0; i < FTextures.Count; i++)
+                {
+                    var texture = FTextures[i];
+                    if (texture.Device == device)
+                    {
+                        var newTexture = texture.Update(size);
+                        // If the "new" texture is in a degraded state trigger a redraw
+                        if (newTexture != texture && newTexture.IsDegraded)
+                            FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                        FTextures[i] = newTexture;
+                    }
                 }
             }
         }
 
         internal EX9.Texture GetTexture(Device device)
         {
-            lock (FTextures)
-            {
-                var texture = FTextures.FirstOrDefault(t => t.Device == device);
-                if (texture != null)
-                    return texture.Swap();
-                else
-                    return null;
-            }
+            var texture = FTextures.FirstOrDefault(t => t.Device == device);
+            if (texture != null)
+                return texture.LastCompleteTexture;
+            else
+                return null;
         }
 
         internal void DestroyResources(Device device)
@@ -581,22 +593,6 @@ namespace VVVV.Nodes.Texture.HTML
                 {
                     var texture = FTextures[i];
                     if (texture.Device == device)
-                    {
-                        FTextures.Remove(texture);
-                        texture.Dispose();
-                    }
-                }
-            }
-        }
-
-        private void DestroyResourcesOfDifferentSize(Size size)
-        {
-            lock (FTextures)
-            {
-                for (int i = FTextures.Count - 1; i >= 0; i--)
-                {
-                    var texture = FTextures[i];
-                    if (texture.Size != size)
                     {
                         FTextures.Remove(texture);
                         texture.Dispose();
