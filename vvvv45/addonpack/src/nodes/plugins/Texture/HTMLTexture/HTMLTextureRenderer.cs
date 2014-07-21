@@ -145,6 +145,7 @@ namespace VVVV.Nodes.Texture.HTML
         {
             FDocumentSizeIsValid = false;
             FErrorText = string.Empty;
+            FBrowserHost.WasResized();
         }
 
         public void ExecuteJavaScript(string javaScript)
