@@ -36,6 +36,7 @@ namespace VVVV.Nodes.Texture.HTML
         private CefBrowserHost FBrowserHost;
         private string FUrl;
         private string FHtml;
+        private bool FDomIsValid;
         private XDocument FCurrentDom;
         private string FCurrentUrl;
         private string FErrorText;
@@ -99,15 +100,21 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void LoadUrl(string url)
         {
+            LoadUrl(FSize, url);
+        }
+
+        public void LoadUrl(Size size, string url)
+        {
             // Normalize inputs
             url = string.IsNullOrEmpty(url) ? "about:blank" : url;
-            if (FUrl != url)
+            if (FUrl != url || FSize != size)
             {
-                // Reset all computed values
-                Reset();
                 // Set new values
                 FUrl = url;
                 FHtml = null;
+                FSize = size;
+                // Reset all computed values
+                Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
                     // Create a valid url
@@ -117,18 +124,19 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        public void LoadString(string html, string baseUrl, string patchPath)
+        public void LoadString(Size size, string html, string baseUrl, string patchPath)
         {
             // Normalize inputs
             baseUrl = string.IsNullOrEmpty(baseUrl) ? patchPath : baseUrl;
             html = html ?? string.Empty;
-            if (FUrl != baseUrl || FHtml != html)
+            if (FUrl != baseUrl || FHtml != html || FSize != size)
             {
-                // Reset all computed values
-                Reset();
                 // Set new values
                 FUrl = baseUrl;
                 FHtml = html;
+                FSize = size;
+                // Reset all computed values
+                Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
                     // Create a valid url
@@ -144,8 +152,10 @@ namespace VVVV.Nodes.Texture.HTML
         private void Reset()
         {
             FDocumentSizeIsValid = false;
+            FDomIsValid = false;
             FErrorText = string.Empty;
-            FBrowserHost.WasResized();
+            if (IsAutoSize)
+                FBrowserHost.WasResized();
         }
 
         public void ExecuteJavaScript(string javaScript)
@@ -172,6 +182,13 @@ namespace VVVV.Nodes.Texture.HTML
         internal void OnUpdateDom(XDocument dom)
         {
             FCurrentDom = dom;
+            FDomIsValid = true;
+        }
+
+        internal void OnUpdateDom(string error)
+        {
+            FCurrentDom = null;
+            FDomIsValid = true;
         }
 
         public void UpdateDocumentSize()
@@ -187,7 +204,20 @@ namespace VVVV.Nodes.Texture.HTML
         internal void OnDocumentSize(CefFrame frame, int width, int height)
         {
             if (frame.IsMain)
-                DocumentSize = new Size(width, height);
+            {
+                // Retrieve the current size
+                var size = Size;
+                // Set the new values
+                FDocumentSize = new Size(width, height);
+                FDocumentSizeIsValid = true;
+                // Notify the browser about the change in case the size was affected
+                // by this change
+                if (IsAutoSize && size != Size)
+                {
+                    FBrowserHost.WasResized();
+                    FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
+                }
+            }
         }
 
         public void Reload()
@@ -226,18 +256,6 @@ namespace VVVV.Nodes.Texture.HTML
                     size.Height = FDocumentSizeIsValid ? FDocumentSize.Height : 0;
                 return size;
             }
-            set
-            {
-                if (FSize != value)
-                {
-                    // Set the new size
-                    FSize = value;
-                    // Invalidate the document size (depends on our size)
-                    FDocumentSizeIsValid = false;
-                    // Notify the browser host about the change
-                    FBrowserHost.WasResized();
-                }
-            }
         }
 
         public bool IsAutoWidth { get { return FSize.Width <= 0; } }
@@ -249,21 +267,6 @@ namespace VVVV.Nodes.Texture.HTML
         public Size DocumentSize
         {
             get { return FDocumentSize; }
-            private set
-            {
-                // Retrieve the current size
-                var size = Size;
-                // Set the new values
-                FDocumentSize = value;
-                FDocumentSizeIsValid = true;
-                // Notify the browser about the change in case the size was affected
-                // by this change
-                if (IsAutoSize && size != Size)
-                {
-                    FBrowserHost.WasResized();
-                    FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
-                }
-            }
         }
 
         private double FZoomLevel;
@@ -462,7 +465,7 @@ namespace VVVV.Nodes.Texture.HTML
         private bool FIsLoading;
         public bool IsLoading
         {
-            get { return FIsLoading; }
+            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid); }
         }
 
         public bool Enabled
@@ -492,6 +495,7 @@ namespace VVVV.Nodes.Texture.HTML
             if (frame.IsMain)
             {
                 FCurrentDom = null;
+                FDomIsValid = true;
                 FErrorText = errorText;
             }
         }
@@ -511,11 +515,6 @@ namespace VVVV.Nodes.Texture.HTML
             else
                 // Reset computed values like document size or DOM
                 Reset();
-        }
-
-        internal void OnError(string error)
-        {
-            FErrorText = error;
         }
 
         private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
