@@ -490,7 +490,7 @@ namespace VVVV.Nodes.Texture.HTML
                                 var value = entry.Value;
                                 if (key.StartsWith("xmlns"))
                                 {
-                                    var prefix = GetPrefix(key);
+                                    var prefix = GetLocalName(key);
                                     namespaceManager.AddNamespace(prefix, value);
                                     break;
                                 }
