@@ -334,7 +334,7 @@ namespace VVVV.Nodes.Texture.HTML
                             FRenderer.OnUpdateDom(dom);
                         }
                         else
-                            FRenderer.OnError(s);
+                            FRenderer.OnUpdateDom(s);
                     }
                     return true;
                 case "document-size-response":

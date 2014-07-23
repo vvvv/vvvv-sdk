@@ -27,11 +27,11 @@ namespace VVVV.Nodes.Texture.HTML
         [Import]
         protected IPluginHost2 FHost;
 
-        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
+        protected override void LoadContent(HTMLTextureRenderer renderer, Size size, int slice)
         {
             string patchPath;
             FHost.GetHostPath(out patchPath);
-            renderer.LoadString(FHtmlIn[slice], FBaseUrlIn[slice], Path.GetDirectoryName(patchPath));
+            renderer.LoadString(size, FHtmlIn[slice], FBaseUrlIn[slice], Path.GetDirectoryName(patchPath));
         }
     }
 
@@ -44,9 +44,9 @@ namespace VVVV.Nodes.Texture.HTML
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
         public ISpread<string> FUrlIn;
 
-        protected override void LoadContent(HTMLTextureRenderer renderer, int slice)
+        protected override void LoadContent(HTMLTextureRenderer renderer, Size size, int slice)
         {
-            renderer.LoadUrl(FUrlIn[slice]);
+            renderer.LoadUrl(size, FUrlIn[slice]);
         }
     }
 
@@ -123,8 +123,10 @@ namespace VVVV.Nodes.Texture.HTML
                 webRenderer.Enabled = FEnabledIn[i];
                 if (!webRenderer.Enabled) continue;
 
+                // LoadUrl or LoadString
+                LoadContent(webRenderer, new Size(FWidthIn[i], FHeightIn[i]), i);
+
                 // Assign inputs
-                webRenderer.Size = new Size(FWidthIn[i], FHeightIn[i]);
                 webRenderer.ZoomLevel = FZoomLevelIn[i];
                 webRenderer.Mouse = FMouseIn[i];
                 webRenderer.Keyboard = FKeyboardIn[i];
@@ -147,20 +149,18 @@ namespace VVVV.Nodes.Texture.HTML
                     : null;
                 if (FRootElementOut[i] != rootElement)
                     FRootElementOut[i] = rootElement;
-                FDocumentWidthOut[i] = webRenderer.DocumentSize.Width;
-                FDocumentHeightOut[i] = webRenderer.DocumentSize.Height;
+                var documentSize = webRenderer.DocumentSize;
+                FDocumentWidthOut[i] = documentSize.Width;
+                FDocumentHeightOut[i] = documentSize.Height;
                 FIsLoadingOut[i] = webRenderer.IsLoading;
                 FCurrentUrlOut[i] = webRenderer.CurrentUrl;
                 FErrorTextOut[i] = webRenderer.CurrentError;
-
-                // LoadUrl or LoadString
-                LoadContent(webRenderer, i);
             }
 
             FTextureOut.MarkPinAsChanged();
         }
 
-        protected abstract void LoadContent(HTMLTextureRenderer renderer, int slice);
+        protected abstract void LoadContent(HTMLTextureRenderer renderer, Size size, int slice);
 
         public void Dispose()
         {

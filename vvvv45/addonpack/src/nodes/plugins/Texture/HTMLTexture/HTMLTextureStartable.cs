@@ -28,6 +28,8 @@ namespace VVVV.Nodes.Texture.HTML
 #if DEBUG
             cefSettings.ReleaseDCheckEnabled = true;
             cefSettings.LogSeverity = CefLogSeverity.Error;
+            // Set to true to debug DOM / JavaScript
+            cefSettings.SingleProcess = false;
 #else
             cefSettings.ReleaseDCheckEnabled = false;
             cefSettings.LogSeverity = CefLogSeverity.Disable;
