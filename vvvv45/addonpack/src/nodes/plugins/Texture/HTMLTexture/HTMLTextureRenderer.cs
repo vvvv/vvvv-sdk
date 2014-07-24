@@ -75,6 +75,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal void Detach()
         {
+            FBrowser.Dispose();
             FBrowserDetachedEvent.Set();
         }
 
@@ -82,7 +83,6 @@ namespace VVVV.Nodes.Texture.HTML
         {
             FBrowserHost.CloseBrowser(true);
             FBrowserDetachedEvent.WaitOne();
-            FBrowser.Dispose();
             FBrowserAttachedEvent.Dispose();
             FBrowserDetachedEvent.Dispose();
             if (FMouseSubscription != null)
@@ -212,10 +212,18 @@ namespace VVVV.Nodes.Texture.HTML
                 FDocumentSizeIsValid = true;
                 // Notify the browser about the change in case the size was affected
                 // by this change
-                if (IsAutoSize && size != Size)
+                var newSize = Size;
+                if (IsAutoSize && size != newSize)
                 {
+                    // Put all textures in the degraded state
+                    lock (FTextures)
+                    {
+                        for (int i = 0; i < FTextures.Count; i++)
+                            if (FTextures[i].Size != newSize)
+                                FTextures[i] = FTextures[i].Update(newSize);
+                    }
                     FBrowserHost.WasResized();
-                    FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
+                    FBrowserHost.Invalidate(new CefRectangle(0, 0, newSize.Width, newSize.Height), CefPaintElementType.View);
                 }
             }
         }
@@ -465,7 +473,7 @@ namespace VVVV.Nodes.Texture.HTML
         private bool FIsLoading;
         public bool IsLoading
         {
-            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid); }
+            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => t.IsDegraded); }
         }
 
         public bool Enabled
