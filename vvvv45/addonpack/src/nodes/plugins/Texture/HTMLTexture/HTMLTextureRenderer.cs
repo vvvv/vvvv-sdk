@@ -473,7 +473,7 @@ namespace VVVV.Nodes.Texture.HTML
         private bool FIsLoading;
         public bool IsLoading
         {
-            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => t.IsDegraded); }
+            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => !t.IsValid); }
         }
 
         public bool Enabled
@@ -531,6 +531,8 @@ namespace VVVV.Nodes.Texture.HTML
         {
             // Do nothing if disabled
             if (!FEnabled) return;
+            // If auto size is enabled ignore paint calls as long as document size is invalid
+            if (IsAutoSize && !FDocumentSizeIsValid) return;
             lock (FTextures)
             {
                 try
