@@ -142,19 +142,23 @@ namespace VVVV.Nodes.Texture.HTML
                     webRenderer.Reload();
 
                 // Set outputs
-                if (FDomOut[i] != webRenderer.CurrentDom)
-                    FDomOut[i] = webRenderer.CurrentDom;
-                var rootElement = webRenderer.CurrentDom != null
-                    ? webRenderer.CurrentDom.Root
-                    : null;
-                if (FRootElementOut[i] != rootElement)
-                    FRootElementOut[i] = rootElement;
-                var documentSize = webRenderer.DocumentSize;
-                FDocumentWidthOut[i] = documentSize.Width;
-                FDocumentHeightOut[i] = documentSize.Height;
-                FIsLoadingOut[i] = webRenderer.IsLoading;
-                FCurrentUrlOut[i] = webRenderer.CurrentUrl;
                 FErrorTextOut[i] = webRenderer.CurrentError;
+                FIsLoadingOut[i] = webRenderer.IsLoading;
+                // As long as the renderer is in the loading state stick to the old values
+                if (!webRenderer.IsLoading)
+                {
+                    if (FDomOut[i] != webRenderer.CurrentDom)
+                        FDomOut[i] = webRenderer.CurrentDom;
+                    var rootElement = webRenderer.CurrentDom != null
+                        ? webRenderer.CurrentDom.Root
+                        : null;
+                    if (FRootElementOut[i] != rootElement)
+                        FRootElementOut[i] = rootElement;
+                    var documentSize = webRenderer.DocumentSize;
+                    FDocumentWidthOut[i] = documentSize.Width;
+                    FDocumentHeightOut[i] = documentSize.Height;
+                    FCurrentUrlOut[i] = webRenderer.CurrentUrl;
+                }
             }
 
             FTextureOut.MarkPinAsChanged();

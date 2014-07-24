@@ -101,15 +101,18 @@ namespace VVVV.Nodes.Texture.HTML
             // Size is the same
             if (IsDegraded)
             {
-                // We're degraded -> sizes of textures differ
+                // We're degraded (sizes of textures differ)
                 if (IsTextureComplete)
                 {
                     // We can switch to the non-degraded state
                     LastCompleteTexture.Dispose();
-                    return new DoubleBufferedTexture(Device, Size, false, IncompleteTexture, CreateTexture(Device, Size, Pool.Default));
+                    var result = new DoubleBufferedTexture(Device, Size, false, IncompleteTexture, CreateTexture(Device, Size, Pool.Default));
+                    // And since we already have a result upload the texture immediately
+                    result.UpdateTexture();
+                    return result;
                 }
                 else
-                    // Stay in the degraded state
+                    // Write hasn't been called yet - stay in the degraded state
                     return this;
             }
             else
