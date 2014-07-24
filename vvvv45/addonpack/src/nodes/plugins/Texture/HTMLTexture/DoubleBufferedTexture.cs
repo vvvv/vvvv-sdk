@@ -16,7 +16,7 @@ namespace VVVV.Nodes.Texture.HTML
         public readonly bool IsDegraded;
         public readonly Texture LastCompleteTexture;
         private readonly Texture IncompleteTexture;
-        private bool IsTextureComplete;
+        private bool IsDirty;
 
         public DoubleBufferedTexture(Device device, Size size)
             : this(device, size, false, CreateTexture(device, size, Pool.SystemMemory), CreateTexture(device, size, Pool.Default))
@@ -28,6 +28,7 @@ namespace VVVV.Nodes.Texture.HTML
             Device = device;
             Size = size;
             IsDegraded = isDegraded;
+            IsDirty = true;
             IncompleteTexture = incompleteTexture;
             LastCompleteTexture = lastCompleteTexture;
         }
@@ -75,13 +76,16 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 IncompleteTexture.UnlockRectangle(0);
             }
-            IsTextureComplete = true;
+            IsDirty = true;
         }
 
         private void UpdateTexture()
         {
             if (!IsDegraded)
+            {
                 Device.UpdateTexture(IncompleteTexture, LastCompleteTexture);
+                IsDirty = false;
+            }
         }
 
         public DoubleBufferedTexture Update(Size newSize)
@@ -102,7 +106,7 @@ namespace VVVV.Nodes.Texture.HTML
             if (IsDegraded)
             {
                 // We're degraded (sizes of textures differ)
-                if (IsTextureComplete)
+                if (IsDirty)
                 {
                     // We can switch to the non-degraded state
                     LastCompleteTexture.Dispose();
@@ -121,6 +125,11 @@ namespace VVVV.Nodes.Texture.HTML
                 UpdateTexture();
                 return this;
             }
+        }
+
+        public bool IsValid
+        {
+            get { return !IsDirty && !IsDegraded; }
         }
 
         public void Dispose()
