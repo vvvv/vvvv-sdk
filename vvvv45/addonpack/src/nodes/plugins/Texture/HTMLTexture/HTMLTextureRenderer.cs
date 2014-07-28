@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using CefGlue;
+using Xilium.CefGlue;
 using SlimDX.Direct3D9;
 using VVVV.Core;
 using VVVV.Core.Logging;
@@ -18,24 +18,29 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
 using VVVV.Utils.Win32;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace VVVV.Nodes.Texture.HTML
 {
     public class HTMLTextureRenderer : IDisposable
     {
         public const string DEFAULT_URL = "http://vvvv.org";
+        public const string DEFAULT_CONTENT = @"<html><head></head><body bgcolor=""#ffffff""></body></html>";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
-        private readonly DXResource<EX9.Texture, CefBrowser> FTextureResource;
+
         private volatile bool FEnabled;
+        private readonly WebClient FWebClient;
         private CefBrowser FBrowser;
+        private CefBrowserHost FBrowserHost;
         private string FUrl;
-        private string FHtml = string.Empty;
-        private readonly object FLock = new object();
+        private string FHtml;
         private XDocument FCurrentDom;
         private string FCurrentUrl;
         private string FErrorText;
-        private ILogger Logger;
+        private Size FSize;
+        public ILogger Logger;
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
 
@@ -44,47 +49,41 @@ namespace VVVV.Nodes.Texture.HTML
             Logger = logger;
 
             var settings = new CefBrowserSettings();
-            settings.DeveloperToolsDisabled = true;
-            // TODO: Needs to be disabled or WebGL won't work at all.
-            settings.AcceleratedCompositingEnabled = false;
-            settings.FileAccessFromFileUrlsAllowed = true;
-            settings.UniversalAccessFromFileUrlsAllowed = true;
-            //settings.PluginsDisabled = true;
+            settings.AcceleratedCompositing = CefState.Enabled;
+            settings.FileAccessFromFileUrls = CefState.Enabled;
+            settings.UniversalAccessFromFileUrls = CefState.Enabled;
 
-            using (var windowInfo = new CefWindowInfo())
-            {
-                windowInfo.TransparentPainting = true;
-                windowInfo.SetAsOffScreen(IntPtr.Zero);
+            var windowInfo = CefWindowInfo.Create();
+            windowInfo.TransparentPainting = true;
+            windowInfo.SetAsOffScreen(IntPtr.Zero);
 
-                var webClient = new WebClient(this);
-                CefBrowser.Create(windowInfo, webClient, DEFAULT_URL, settings);
-                // Block till the browser is attached
-                FBrowserAttachedEvent.WaitOne();
-            }
+            FWebClient = new WebClient(this);
+            // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
+            CefBrowserHost.CreateBrowser(windowInfo, FWebClient, settings);
+            // Block until browser is created
+            FBrowserAttachedEvent.WaitOne();
+        }
 
-            FTextureResource = new DXResource<EX9.Texture, CefBrowser>(
-                FBrowser,
-                CreateTexture,
-                UpdateTexture,
-                DestroyTexture
-               );
+        internal void Attach(CefBrowser browser)
+        {
+            FBrowser = browser;
+            FBrowserHost = browser.GetHost();
+            FBrowserHost.SetMouseCursorChangeDisabled(true);
+            FBrowserAttachedEvent.Set();
+        }
+
+        internal void Detach()
+        {
+            FBrowserDetachedEvent.Set();
         }
 
         public void Dispose()
         {
-            if (FBrowser != null)
-            {
-                FBrowser.Close();
-                FBrowserDetachedEvent.WaitOne();
-                lock (FLock)
-                {
-                    FBrowser.Dispose();
-                    FBrowser = null;
-                    FTextureResource.Dispose();
-                }
-                FBrowserAttachedEvent.Dispose();
-                FBrowserDetachedEvent.Dispose();
-            }
+            FBrowserHost.CloseBrowser(true);
+            FBrowserDetachedEvent.WaitOne();
+            FBrowser.Dispose();
+            FBrowserAttachedEvent.Dispose();
+            FBrowserDetachedEvent.Dispose();
             if (FMouseSubscription != null)
             {
                 FMouseSubscription.Dispose();
@@ -95,36 +94,59 @@ namespace VVVV.Nodes.Texture.HTML
                 FKeyboardSubscription.Dispose();
                 FKeyboardSubscription = null;
             }
+            DestroyResources();
         }
 
-        public void LoadURL(string url)
+        public void LoadUrl(string url)
         {
+            // Normalize inputs
+            url = string.IsNullOrEmpty(url) ? "about:blank" : url;
             if (FUrl != url)
             {
-                FUrl = string.IsNullOrEmpty(url) ? "about:blank" : url;
-                DoLoadURL(FUrl);
-            }
-        }
-
-        internal void DoLoadURL(string url)
-        {
-            using (var mainFrame = FBrowser.GetMainFrame())
-            {
-                mainFrame.LoadURL(url);
-            }
-        }
-
-        public void LoadString(string html, string baseUrl)
-        {
-            if (FUrl != baseUrl || FHtml != html)
-            {
-                FUrl = baseUrl;
-                FHtml = html ?? string.Empty;
+                // Reset all computed values
+                Reset();
+                // Set new values
+                FUrl = url;
+                FHtml = null;
                 using (var mainFrame = FBrowser.GetMainFrame())
                 {
-                    mainFrame.LoadString(html, baseUrl);
+                    // Create a valid url
+                    var uri = new UriBuilder(FUrl).Uri;
+                    mainFrame.LoadUrl(uri.ToString());
                 }
             }
+        }
+
+        public void LoadString(string html, string baseUrl, string patchPath)
+        {
+            // Normalize inputs
+            baseUrl = string.IsNullOrEmpty(baseUrl) ? patchPath : baseUrl;
+            html = html ?? string.Empty;
+            if (FUrl != baseUrl || FHtml != html)
+            {
+                // Reset all computed values
+                Reset();
+                // Set new values
+                FUrl = baseUrl;
+                FHtml = html;
+                using (var mainFrame = FBrowser.GetMainFrame())
+                {
+                    // Create a valid url
+                    var uri = new UriBuilder(baseUrl).Uri;
+                    if (uri.IsFile && !uri.ToString().EndsWith("/"))
+                        // Append trailing slash
+                        uri = new UriBuilder(uri.ToString() + "/").Uri;
+                    mainFrame.LoadUrl(baseUrl);
+                }
+            }
+        }
+
+        private void Reset()
+        {
+            FCurrentUrl = null;
+            FCurrentDom = null;
+            DocumentSize = Size.Empty;
+            FErrorText = string.Empty;
         }
 
         public void ExecuteJavaScript(string javaScript)
@@ -137,20 +159,36 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void UpdateDom()
         {
-            lock (FLock)
-            {
-                using (var frame = FBrowser.GetMainFrame())
-                {
-                    UpdateDom(frame);
-                }
-            }
+            using (var frame = FBrowser.GetMainFrame())
+                UpdateDom(frame);
         }
 
         private void UpdateDom(CefFrame frame)
         {
-            var visitor = new DomVisitor(this);
-            // Note: Call is async. Will at some point lead to OnVisitDom a few lines down.
-            frame.VisitDom(visitor);
+            var request = CefProcessMessage.Create("dom-request");
+            request.SetFrameIdentifier(frame.Identifier);
+            FBrowser.SendProcessMessage(CefProcessId.Renderer, request);
+        }
+
+        internal void OnUpdateDom(XDocument dom)
+        {
+            FCurrentDom = dom;
+        }
+
+        public void UpdateDocumentSize()
+        {
+            using (var frame = FBrowser.GetMainFrame())
+            {
+                var request = CefProcessMessage.Create("document-size-request");
+                request.SetFrameIdentifier(frame.Identifier);
+                FBrowser.SendProcessMessage(CefProcessId.Renderer, request);
+            }
+        }
+
+        internal void OnDocumentSize(CefFrame frame, int width, int height)
+        {
+            if (frame.IsMain)
+                DocumentSize = new Size(width, height);
         }
 
         public void Reload()
@@ -158,60 +196,73 @@ namespace VVVV.Nodes.Texture.HTML
             FBrowser.Reload();
         }
 
-        public DXResource<EX9.Texture, CefBrowser> TextureResource
-        {
-            get { return FTextureResource; }
-        }
-
         public XDocument CurrentDom
         {
-            get 
-            {
-                lock (FLock)
-                {
-                    return FCurrentDom;
-                }
-            }
+            get { return FCurrentDom; }
         }
 
         public string CurrentUrl
         {
-            get 
-            {
-                lock (FLock)
-                {
-                    return FCurrentUrl;
-                }
-            }
+            get { return FCurrentUrl; }
         }
 
         public string CurrentError
         {
-            get 
+            get { return FErrorText; }
+        }
+
+        public string CurrentHTML
+        {
+            get { return FHtml; }
+        }
+
+        public Size Size
+        {
+            get
             {
-                lock (FLock)
+                var size = FSize;
+                if (size.Width <= 0)
+                    size.Width = DocumentSize.Width;
+                if (size.Height <= 0)
+                    size.Height = DocumentSize.Height;
+                return size;
+            }
+            set
+            {
+                if (FSize != value)
                 {
-                    return FErrorText;
+                    // Size changed, textures are not valid anymore - destroy them
+                    DestroyResources();
+                    // Set the new size
+                    FSize = value;
+                    // Computed document size depends on this value - invalidate it
+                    FDocumentSize = Size.Empty;
+                    // Notify the browser host about the change
+                    FBrowserHost.WasResized();
                 }
             }
         }
 
-        private Size FSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        public Size Size
+        public bool IsAutoWidth { get { return FSize.Width <= 0; } }
+        public bool IsAutoHeight { get { return FSize.Height <= 0; } }
+        public bool IsAutoSize { get { return IsAutoWidth || IsAutoHeight; } }
+
+        private Size FDocumentSize;
+        public Size DocumentSize
         {
-            get { return FSize; }
-            set
+            get { return FDocumentSize; }
+            private set
             {
-                // Normalize inputs
-                var size = new Size(Math.Max(1, value.Width), Math.Max(1, value.Height));
-                if (size != FSize)
+                if (value != FDocumentSize)
                 {
-                    lock (FTextureResource)
-                    {
-                        FTextureResource.Dispose();
-                        FSize = size;
-                        FBrowser.SetSize(CefPaintElementType.View, size.Width, size.Height);
-                    }
+                    // Should the size of the texture depend on this computed value destroy them
+                    if (IsAutoSize)
+                        DestroyResources();
+                    // Set the new size
+                    FDocumentSize = value;
+                    // Notify the browser about the change in case the size depends on this value
+                    if (IsAutoSize)
+                        FBrowserHost.WasResized();
                 }
             }
         }
@@ -224,8 +275,8 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 if (FZoomLevel != value)
                 {
-                    FBrowser.ZoomLevel = value;
                     FZoomLevel = value;
+                    FBrowserHost.SetZoomLevel(value);
                 }
             }
         }
@@ -264,17 +315,25 @@ namespace VVVV.Nodes.Texture.HTML
 
         private Subscription<Mouse, MouseNotification> FMouseSubscription;
         private int FMouseWheel;
+        private int FClickCount;
+        private MouseButtons FLastClickButton;
+        private Point FLastClickPosition;
+        private Stopwatch FStopwatch;
         public Mouse Mouse
         {
             set
             {
                 if (FMouseSubscription == null)
+                {
+                    FStopwatch = Stopwatch.StartNew();
                     FMouseSubscription = new Subscription<Mouse, MouseNotification>(
                         mouse => mouse.MouseNotifications,
                         (mouse, n) =>
                         {
-                            var x = (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, FSize.Width, TMapMode.Clamp);
-                            var y = (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, FSize.Height, TMapMode.Clamp);
+                            var mouseEvent = new CefMouseEvent(
+                                (int)VMath.Map(n.Position.X, 0, n.ClientArea.Width, 0, Size.Width, TMapMode.Clamp),
+                                (int)VMath.Map(n.Position.Y, 0, n.ClientArea.Height, 0, Size.Height, TMapMode.Clamp),
+                                GetMouseModifiers(mouse.PressedButtons));
                             switch (n.Kind)
                             {
                                 case MouseNotificationKind.MouseDown:
@@ -296,25 +355,61 @@ namespace VVVV.Nodes.Texture.HTML
                                             cefButtons = CefMouseButtonType.Left;
                                             break;
                                     }
-                                    FBrowser.SendMouseClickEvent(x, y, cefButtons, n.Kind == MouseNotificationKind.MouseUp, 1);
+
+                                    switch (n.Kind)
+                                    {
+                                        case MouseNotificationKind.MouseDown:
+                                            // Manage the click count
+                                            var elapsedTime = FStopwatch.ElapsedMilliseconds;
+                                            FStopwatch.Restart();
+                                            if (FLastClickButton == mouseButtonNotification.Buttons &&
+                                                elapsedTime <= SystemInformation.DoubleClickTime &&
+                                                Math.Abs(FLastClickPosition.X - mouseButtonNotification.Position.X) <= SystemInformation.DoubleClickSize.Width &&
+                                                Math.Abs(FLastClickPosition.Y - mouseButtonNotification.Position.Y) <= SystemInformation.DoubleClickSize.Height)
+                                                FClickCount++;
+                                            else
+                                                FClickCount = 1;
+
+                                            FBrowserHost.SendMouseClickEvent(mouseEvent, cefButtons, false, FClickCount);
+                                            break;
+                                        case MouseNotificationKind.MouseUp:
+                                            FBrowserHost.SendMouseClickEvent(mouseEvent, cefButtons, true, FClickCount);
+                                            break;
+                                    }
+
+                                    FLastClickPosition = mouseButtonNotification.Position;
+                                    FLastClickButton = mouseButtonNotification.Buttons;
                                     break;
                                 case MouseNotificationKind.MouseMove:
-                                    FBrowser.SendMouseMoveEvent(x, y, false);
+                                    FBrowserHost.SendMouseMoveEvent(mouseEvent, false);
                                     break;
                                 case MouseNotificationKind.MouseWheel:
                                     var mouseWheel = n as MouseWheelNotification;
                                     var wheel = FMouseWheel;
                                     FMouseWheel += mouseWheel.WheelDelta;
                                     var delta = (int)Math.Round((float)(FMouseWheel - wheel) / Const.WHEEL_DELTA);
-                                    FBrowser.SendMouseWheelEvent(x, y, 0, mouseWheel.WheelDelta);
+                                    FBrowserHost.SendMouseWheelEvent(mouseEvent, 0, mouseWheel.WheelDelta);
                                     break;
                                 default:
                                     throw new NotImplementedException();
                             }
                         }
                     );
+                }
                 FMouseSubscription.Update(value);
             }
+        }
+
+        private static CefEventFlags GetMouseModifiers(MouseButtons buttons)
+        {
+            var result = CefEventFlags.None;
+            if ((buttons & MouseButtons.Left) != 0)
+                result |= CefEventFlags.LeftMouseButton;
+            if ((buttons & MouseButtons.Middle) != 0)
+                result |= CefEventFlags.MiddleMouseButton;
+            if ((buttons & MouseButtons.Right) != 0)
+                result |= CefEventFlags.RightMouseButton;
+            return result;
         }
 
         private Subscription<Keyboard, KeyNotification> FKeyboardSubscription;
@@ -328,28 +423,36 @@ namespace VVVV.Nodes.Texture.HTML
                         keyboard => keyboard.KeyNotifications,
                         (keyboard, n) =>
                         {
-                            CefKeyInfo cefKey;
-                            var modifiers = (CefHandlerKeyEventModifiers)((int)(FKeyboard.Modifiers) >> 16);
+                            var keyEvent = new CefKeyEvent()
+                            {
+                                Modifiers = (CefEventFlags)((int)(FKeyboard.Modifiers) >> 15)
+                            };
                             switch (n.Kind)
                             {
                                 case KeyNotificationKind.KeyDown:
                                     var keyDown = n as KeyDownNotification;
-                                    cefKey = new CefKeyInfo((int)keyDown.KeyCode, false, false);
-                                    FBrowser.SendKeyEvent(CefKeyType.KeyDown, cefKey, modifiers);
+                                    keyEvent.EventType = CefKeyEventType.KeyDown;
+                                    keyEvent.WindowsKeyCode = (int)keyDown.KeyCode;
+                                    keyEvent.NativeKeyCode = (int)keyDown.KeyCode;
                                     break;
                                 case KeyNotificationKind.KeyPress:
                                     var keyPress = n as KeyPressNotification;
-                                    cefKey = new CefKeyInfo((int)keyPress.KeyChar, false, false);
-                                    FBrowser.SendKeyEvent(CefKeyType.Char, cefKey, modifiers);
+                                    keyEvent.EventType = CefKeyEventType.Char;
+                                    keyEvent.Character = keyPress.KeyChar;
+                                    keyEvent.UnmodifiedCharacter = keyPress.KeyChar;
+                                    keyEvent.WindowsKeyCode = (int)keyPress.KeyChar;
+                                    keyEvent.NativeKeyCode = (int)keyPress.KeyChar;
                                     break;
                                 case KeyNotificationKind.KeyUp:
                                     var keyUp = n as KeyUpNotification;
-                                    cefKey = new CefKeyInfo((int)keyUp.KeyCode, false, false);
-                                    FBrowser.SendKeyEvent(CefKeyType.KeyUp, cefKey, modifiers);
+                                    keyEvent.EventType = CefKeyEventType.KeyUp;
+                                    keyEvent.WindowsKeyCode = (int)keyUp.KeyCode;
+                                    keyEvent.NativeKeyCode = (int)keyUp.KeyCode;
                                     break;
                                 default:
                                     break;
                             }
+                            FBrowserHost.SendKeyEvent(keyEvent);
                         }
                     );
                 FKeyboard = value;
@@ -357,16 +460,10 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        private int FLoadCount;
+        private bool FIsLoading;
         public bool IsLoading
         {
-            get
-            {
-                lock (FLock)
-                {
-                    return FLoadCount > 0;
-                }
-            }
+            get { return FIsLoading; }
         }
 
         public bool Enabled
@@ -376,50 +473,67 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 if (FEnabled != value)
                 {
-                    lock (FLock)
+                    if (FEnabled)
                     {
-                        if (FEnabled)
-                        {
-                            FBrowser.StopLoad();
-                        }
-                        FEnabled = value;
-                        if (FEnabled)
-                        {
-                            FBrowser.Invalidate(new CefRect(0, 0, FSize.Width, FSize.Height));
-                        }
+                        FBrowser.StopLoad();
+                        FBrowserHost.WasHidden(true);
+                    }
+                    FEnabled = value;
+                    if (FEnabled)
+                    {
+                        FBrowserHost.WasHidden(false);
+                        FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
                     }
                 }
             }
         }
 
-        internal void Attach(CefBrowser browser)
+        internal void OnLoadError(CefFrame frame, CefErrorCode errorCode, string failedUrl, string errorText)
         {
-            FBrowser = browser;
-            FBrowser.SetSize(CefPaintElementType.View, FSize.Width, FSize.Height);
-            FBrowser.SendFocusEvent(true);
-            FErrorText = string.Empty;
-            FBrowserAttachedEvent.Set();
+            if (frame.IsMain)
+            {
+                FCurrentDom = null;
+                FErrorText = errorText;
+            }
         }
 
-        internal void Detach()
+        internal void OnLoadingStateChange(bool isLoading, bool canGoBack, bool canGoForward)
         {
-            FBrowserDetachedEvent.Set();
+            FIsLoading = isLoading;
+            if (!isLoading)
+            {
+                using (var frame = FBrowser.GetMainFrame())
+                {
+                    FCurrentUrl = frame.Url;
+                    UpdateDom(frame);
+                    UpdateDocumentSize();
+                }
+            }
+            else
+                // Reset computed values like document size or DOM
+                Reset();
         }
 
-        internal void Paint(CefRect[] cefRects, IntPtr buffer, int stride)
+        internal void OnError(string error)
+        {
+            FErrorText = error;
+        }
+
+        private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
+
+        internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride)
         {
             if (!FEnabled) return;
-            lock (FTextureResource)
+            lock (FTextures)
             {
                 try
                 {
                     for (int i = 0; i < cefRects.Length; i++)
                     {
                         var rect = new Rectangle(cefRects[i].X, cefRects[i].Y, cefRects[i].Width, cefRects[i].Height);
-                        foreach (var texture in FTextureResource.DeviceResources)
+                        foreach (var texture in FTextures)
                         {
-                            var sysmemTexture = texture.Tag as EX9.Texture;
-                            WriteToTexture(rect, buffer, stride, sysmemTexture);
+                            texture.Write(rect, buffer, stride);
                         }
                     }
                 }
@@ -430,128 +544,58 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
-        private void WriteToTexture(Rectangle rect, IntPtr buffer, int stride, EX9.Texture texture)
+        internal void UpdateResources(Device device)
         {
-            // Rect needs to be inside of Width/Height
-            rect = Rectangle.Intersect(new Rectangle(0, 0, FSize.Width, FSize.Height), rect);
-            if (rect == Rectangle.Empty) return;
-            var dataRect = texture.LockRectangle(0, rect, LockFlags.Discard);
-            try
+            lock (FTextures)
             {
-                var dataStream = dataRect.Data;
-                if (rect.Width == FSize.Width && rect.Height == FSize.Height && dataRect.Pitch == stride)
+                var size = Size;
+                if (size.Width <= 0 || size.Height <= 0)
+                    return;
+                if (!FTextures.Any(t => t.Device == device))
                 {
-                    dataStream.WriteRange(buffer, FSize.Height * dataRect.Pitch);
+                    var texture = new DoubleBufferedTexture(device, size);
+                    FTextures.Add(texture);
+                    // Trigger a redraw
+                    FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
                 }
+            }
+        }
+
+        internal EX9.Texture GetTexture(Device device)
+        {
+            lock (FTextures)
+            {
+                var texture = FTextures.FirstOrDefault(t => t.Device == device);
+                if (texture != null)
+                    return texture.Swap();
                 else
+                    return null;
+            }
+        }
+
+        internal void DestroyResources(Device device)
+        {
+            lock (FTextures)
+            {
+                for (int i = FTextures.Count - 1; i >= 0; i--)
                 {
-                    var offset = stride * rect.Y + 4 * rect.X;
-                    var source = buffer + offset;
-                    for (int y = 0; y < rect.Height; y++)
+                    var texture = FTextures[i];
+                    if (texture.Device == device)
                     {
-                        dataStream.Position = y * dataRect.Pitch;
-                        dataStream.WriteRange(source + y * stride, rect.Width * 4);
+                        FTextures.Remove(texture);
+                        texture.Dispose();
                     }
                 }
             }
-            finally
-            {
-                texture.UnlockRectangle(0);
-            }
         }
 
-        private EX9.Texture CreateTexture(CefBrowser browser, Device device)
+        private void DestroyResources()
         {
-            // TODO: Fix exceptions on start up.
-            lock (FTextureResource)
+            lock (FTextures)
             {
-
-                var usage = Usage.None & ~Usage.AutoGenerateMipMap;
-                var texture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.Default);
-                var sysmemTexture = new EX9.Texture(device, FSize.Width, FSize.Height, 1, usage, Format.A8R8G8B8, Pool.SystemMemory);
-                texture.Tag = sysmemTexture;
-                var rect = new CefRect(0, 0, FSize.Width, FSize.Height);
-                FBrowser.Invalidate(rect);
-                return texture;
-            }
-        }
-
-        private void UpdateTexture(CefBrowser browser, EX9.Texture texture)
-        {
-            var sysmemTexture = texture.Tag as EX9.Texture;
-            texture.Device.UpdateTexture(sysmemTexture, texture);
-        }
-
-        private void DestroyTexture(CefBrowser browser, EX9.Texture texture, DestroyReason reason)
-        {
-            lock (FTextureResource)
-            {
-                var sysmemTexture = texture.Tag as EX9.Texture;
-                sysmemTexture.Dispose();
-                texture.Dispose();
-            }
-        }
-
-        internal void OnLoadStart(CefFrame frame)
-        {
-            lock (FLock)
-            {
-                FLoadCount++;
-                if (frame.IsMain)    
-                {
-                    
-                    FCurrentDom = null;
-                    FErrorText = string.Empty;
-                    FCurrentUrl = frame.GetURL();
-                }
-            }
-        }
-
-        internal void OnLoadError(CefFrame frame, CefHandlerErrorCode errorCode, string failedUrl, string errorText)
-        {
-            lock (FLock)
-            {
-                FLoadCount--;
-                if (frame.IsMain)
-                {
-                    FCurrentDom = null;
-                    FErrorText = errorText;
-                }
-            }
-        }
-
-        internal void OnLoadEnd(CefFrame frame, int httpStatusCode)
-        {
-            lock (FLock)
-            {
-                FLoadCount--;
-                if (frame.IsMain)
-                {
-                    UpdateDom(frame);
-                }
-            }
-        }
-
-        // Called on UI thread
-        internal void OnVisitDom(CefDomDocument document)
-        {
-            try
-            {
-                using (var xmlReader = new CefXmlReader(document))
-                {
-                    var dom = XDocument.Load(xmlReader);
-                    lock (FLock)
-                    {
-                        FCurrentDom = dom;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                lock (FLock)
-                {
-                    FErrorText = e.ToString();
-                }
+                foreach (var texture in FTextures)
+                    texture.Dispose();
+                FTextures.Clear();
             }
         }
     }
