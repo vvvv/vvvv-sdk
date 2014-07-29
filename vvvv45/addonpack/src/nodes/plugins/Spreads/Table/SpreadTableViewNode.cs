@@ -74,42 +74,42 @@ namespace VVVV.Nodes.Table
 
 		void InitializeComponent()
 		{
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-			System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-			this.FDataGridView = new System.Windows.Forms.DataGridView();
-			((System.ComponentModel.ISupportInitialize)(this.FDataGridView)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// FDataGridView
-			// 
-			dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-			dataGridViewCellStyle1.Format = "N4";
-			dataGridViewCellStyle1.NullValue = "0.0000";
-			dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gray;
-			this.FDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-			this.FDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-			this.FDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.FDataGridView.Cursor = System.Windows.Forms.Cursors.Default;
-			this.FDataGridView.Location = new System.Drawing.Point(0, 0);
-			this.FDataGridView.Name = "FDataGridView";
-			dataGridViewCellStyle2.Format = "N4";
-			dataGridViewCellStyle2.NullValue = "0.0000";
-			dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gray;
-			this.FDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
-			this.FDataGridView.Size = this.Size;
-			this.FDataGridView.TabIndex = 0;
-			this.FDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
-			this.FDataGridView.MouseMove += new System.Windows.Forms.MouseEventHandler(FDataGridView_MouseMove);
-			// 
-			// ValueTableBufferNode
-			// 
-			this.Controls.Add(this.FDataGridView);
-			this.Name = "ValueTableBufferNode";
-			this.Size = new System.Drawing.Size(344, 368);
-			this.Resize += new System.EventHandler(this.ValueTableBufferNode_Resize);
-			((System.ComponentModel.ISupportInitialize)(this.FDataGridView)).EndInit();
-			this.ResumeLayout(false);
-
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.FDataGridView = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.FDataGridView)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // FDataGridView
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            dataGridViewCellStyle1.Format = "N4";
+            dataGridViewCellStyle1.NullValue = "0.0000";
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Gray;
+            this.FDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.FDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.FDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.FDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.FDataGridView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FDataGridView.Location = new System.Drawing.Point(0, 0);
+            this.FDataGridView.Name = "FDataGridView";
+            dataGridViewCellStyle2.Format = "N4";
+            dataGridViewCellStyle2.NullValue = "0.0000";
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Gray;
+            this.FDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.FDataGridView.Size = this.Size;
+            this.FDataGridView.TabIndex = 0;
+            this.FDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView1_CellValidating);
+            this.FDataGridView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FDataGridView_MouseMove);
+            // 
+            // SpreadTableViewNode
+            // 
+            this.Controls.Add(this.FDataGridView);
+            this.Name = "SpreadTableViewNode";
+            this.Size = new System.Drawing.Size(344, 368);
+            this.Resize += new System.EventHandler(this.ValueTableBufferNode_Resize);
+            ((System.ComponentModel.ISupportInitialize)(this.FDataGridView)).EndInit();
+            this.ResumeLayout(false);
 		}
 	
 		Point FMouseLast;
@@ -121,7 +121,6 @@ namespace VVVV.Nodes.Table
 				if (FMouseDragging)
 				{
 					int stepOrder = 0;
-					Debug.Print(Form.ModifierKeys.ToString());
 					stepOrder += Form.ModifierKeys.HasFlag(Keys.Shift) ? 1 : 0;
 					stepOrder += Form.ModifierKeys.HasFlag(Keys.Control)? 1 : 0;
 					stepOrder *= Form.ModifierKeys.HasFlag(Keys.Alt) ? 1 : -1;
