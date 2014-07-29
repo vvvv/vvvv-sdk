@@ -7,6 +7,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VMath;
 
 using System.Collections.Generic;
+using System.IO;
 #endregion usings
 
 namespace VVVV.Nodes.Table
@@ -94,6 +95,10 @@ namespace VVVV.Nodes.Table
 			if (FPinInFilename.IsChanged)
 			{
 				FFilename = FPinInFilename[0];
+				if (FAutosave)
+				{
+					this.Load();
+				}
 			}
 
 			if (FPinInLoad[0])
@@ -117,10 +122,6 @@ namespace VVVV.Nodes.Table
 
 			if (FFirstRun)
 			{
-				if (FAutosave)
-				{
-					Load();
-				}
 				FPinOutTable[0] = FTable;
 				FFirstRun = false;
 			}
@@ -139,6 +140,10 @@ namespace VVVV.Nodes.Table
 			{
 				try
 				{
+					if (!File.Exists(FFilename))
+					{
+						throw (new Exception("File not found."));
+					}
 					FTable.Clear();
 					FTable.ReadXmlSchema(FFilename);
 					FTable.ReadXml(FFilename);
