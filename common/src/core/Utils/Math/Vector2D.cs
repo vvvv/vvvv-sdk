@@ -90,6 +90,17 @@ namespace VVVV.Utils.VMath
                 this = ~this * value;
             }
         }
+        
+        /// <summary>
+        /// Gets the squared length of this vector, much faster than Length
+        /// </summary>
+        public double LengthSquared
+        {
+            get
+            {
+                return Math.Abs(this | this);
+            }
+        }
 
         //indexer
 		/// <summary>
@@ -452,7 +463,7 @@ namespace VVVV.Utils.VMath
 		#region IComparable implementation
         public int CompareTo(Vector2D other)
         {
-            return this.Length.CompareTo(other.Length);
+            return this.LengthSquared.CompareTo(other.LengthSquared);
         }
         #endregion
 	}
