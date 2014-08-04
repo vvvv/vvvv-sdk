@@ -1,0 +1,223 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="D:\work\repositories\mrvux\personal\vvvv\plugins\NewStructure\LTPNodes\bin\Release\LTP (Value) help.v4p">
+   <BOUNDS height="7860" left="2655" top="1680" type="Window" width="10905">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="5" nodename="LTPNode.dll">
+   <BOUNDS height="270" left="975" top="3945" type="Node" width="4605">
+   </BOUNDS>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Input2" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inputs Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input3" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Takeover Mode 2" visible="1">
+   </PIN>
+   <PIN pinname="Takeover Mode 3" visible="1">
+   </PIN>
+   <PIN pinname="Last Changed Pin Index" visible="1">
+   </PIN>
+   <PIN pinname="Pickup Epsilon" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Takeover Mode 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="240" top="4710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="720" left="240" top="4710" type="Box" width="810">
+   </BOUNDS>
+   <BOUNDS height="160" left="5925" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="990" top="1260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.38">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="2490" top="1965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.68">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.34">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="4020" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.45">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="3" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input 2" srcnodeid="2" srcpinname="XY">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4770" top="4710" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="720" left="4770" top="4710" type="Box" width="810">
+   </BOUNDS>
+   <BOUNDS height="160" left="5925" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Last Changed Pin Index|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Last Changed Pin Index">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input 3" srcnodeid="1" srcpinname="XY">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="5625" top="3960" width="3315" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5625" top="3960" width="3315" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- You can change input count in inspector|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="5655" top="4890" width="3240" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5655" top="4890" width="3240" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Last pin which took control of the value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="1755" top="1080" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1755" top="1080" width="1200" height="525">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7155" top="5385" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output Enum" dstnodeid="5" dstpinname="Takeover Mode 1">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3255" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="525" left="3255" top="1815" type="Box" width="1200">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="5" dstpinname="Takeover Mode 2">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4755" top="2775" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="525" left="4755" top="2775" type="Box" width="1200">
+   </BOUNDS>
+   <BOUNDS height="160" left="7155" top="5385" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="5" dstpinname="Takeover Mode 3">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="6285" top="3135" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6285" top="3135" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10920" top="5565" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Pickup epsilon|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.0001">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Pickup Epsilon" linkstyle="VHV">
+   <LINKPOINT x="7020" y="3645">
+   </LINKPOINT>
+   <LINKPOINT x="5580" y="3645">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="7170" top="3105" width="3390" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7170" top="3105" width="3390" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Useful for inputs with different precisions|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="4695" top="405" width="4710" height="1320">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="405" width="4710" height="1320">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Notes:&cr;&lf;-Priority is by pin order: if two slices change in the same frame, &cr;&lf;first pin has priority&cr;&lf;-Immediate takeover mode changes the value right away.&cr;&lf;-For pickup takeover mode, you need to reach the value first, &cr;&lf;avoids jumps between values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

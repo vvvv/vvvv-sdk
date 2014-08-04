@@ -1,0 +1,191 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Cubemap\Converter\CubeToCross\CubeToCross (EX9.Texture) help.v4p" systemname="CubeToCross (EX9.Texture) help" filename="%VVVV%\addonpack\lib\nodes\modules\CubeFX\Converter\CubeToCross\CubeToCross (EX9.Texture) help.v4p">
+   <BOUNDS type="Window" left="8565" top="5010" width="4140" height="5025">
+   </BOUNDS>
+   <NODE systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="420" top="180" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="420" top="840" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="615" top="510" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="615" top="510" width="2850" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="lib\assets\images\meso_cubemap.dds">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output String" dstnodeid="4" dstpinname="Input 2" linkstyle="VHV">
+   <LINKPOINT x="630" y="795">
+   </LINKPOINT>
+   <LINKPOINT x="630" y="795">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="4" dstpinname="Input 1" linkstyle="VHV">
+   <LINKPOINT x="450" y="645">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="645">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="420" top="1785" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Type" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="2" dstpinname="Filename" linkstyle="VHV">
+   <LINKPOINT x="450" y="1448">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="1448">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="CubeToCross (EX9.Texture)" filename="CubeToCross (EX9.Texture).v4p" nodename="CubeToCross (EX9.Texture)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="420" top="2160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="420" top="2160">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Texture Out" dstnodeid="6" dstpinname="Input" linkstyle="VHV">
+   <LINKPOINT x="450" y="2108">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="2108">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="420" top="3570" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="420" top="3570">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="10" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="420" top="2565" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="2565" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="8" dstpinname="Texture" linkstyle="VHV">
+   <LINKPOINT x="450" y="3188">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="3188">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="23">
+   <BOUNDS type="Node" left="420" top="3960" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="3960" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2310" top="5010" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="23" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="450" y="3900">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="3900">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="10" dstpinname="Input Node" linkstyle="VHV">
+   <LINKPOINT x="450" y="2498">
+   </LINKPOINT>
+   <LINKPOINT x="450" y="2498">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="28" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="1260" top="1305" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1260" top="1305" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Cube Texture|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Type">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output Enum" dstnodeid="2" dstpinname="Type" linkstyle="VHV">
+   <LINKPOINT x="1290" y="1665">
+   </LINKPOINT>
+   <LINKPOINT x="1290" y="1665">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Info (EX9.Texture)" nodename="Info (EX9.Texture)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="1620" top="3045" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="29" dstpinname="Texture" linkstyle="VHV">
+   <LINKPOINT x="630" y="2910">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="2910">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2610" top="3645" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="3645" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Type">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Type" dstnodeid="30" dstpinname="Input String" linkstyle="VHV">
+   <LINKPOINT x="2625" y="3480">
+   </LINKPOINT>
+   <LINKPOINT x="2625" y="3480">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

@@ -1,0 +1,277 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Ortho (Transform OffCenter) help.v4p">
+   <BOUNDS height="6675" left="1575" top="2790" type="Window" width="8865">
+   </BOUNDS>
+   <NODE id="16" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="480" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="15" nodename="GlobalRenderState (EX9)">
+   <BOUNDS height="0" left="3915" top="5220" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="14" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="3915" top="4815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Render State" hiddenwhenlocked="1" srcnodeid="14" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="Renderer (EX9)">
+   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="3870" top="270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="-3885" top="4725" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="4455" left="3870" top="270" type="Box" width="4500">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="90" top="4530" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="975" left="90" top="4530" type="Box" width="3375">
+   </BOUNDS>
+   <BOUNDS height="160" left="-12930" top="-1500" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Note:&cr;&lf;Use the clipping panes to specify the regian to be rendered. Everything outside the specified range will be clipped (not rendered)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="2340" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1050" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-0.23">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="-0.32">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y" linkstyle="PolyLine" srcnodeid="11" srcpinname="Output">
+   <LINKPOINT x="2370" y="3375">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="3375">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="75" top="5880" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="300" left="75" top="5880" type="Box" width="765">
+   </BOUNDS>
+   <BOUNDS height="160" left="-12630" top="-1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1155" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5895" top="3450" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1410" left="1155" top="1290" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-0.355551111111111">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="-0.650943396226415">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2190" top="1290" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6195" top="3750" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1410" left="2190" top="1290" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.588888888888889">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.443396226415095">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1095" top="1005" type="Node" width="930">
+   </BOUNDS>
+   <BOUNDS height="255" left="1095" top="1005" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|near plane|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2130" top="1005" type="Node" width="930">
+   </BOUNDS>
+   <BOUNDS height="285" left="2130" top="1005" type="Box" width="810">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|far plane|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Ortho (Transform OffCenter)">
+   <BOUNDS height="0" left="1065" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" visible="1">
+   </PIN>
+   <PIN pinname="Far Plane" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Left" slicecount="1" values="-1.72">
+   </PIN>
+   <PIN pinname="Top" slicecount="1" values="0.75">
+   </PIN>
+   <PIN pinname="Right" slicecount="1" values="1.43">
+   </PIN>
+   <PIN pinname="Bottom" slicecount="1" values="-0.87">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Near Plane" linkstyle="VHV" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="1920" y="2625">
+   </LINKPOINT>
+   <LINKPOINT x="1920" y="2625">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Far Plane" linkstyle="VHV" srcnodeid="7" srcpinname="Y Output Value">
+   <LINKPOINT x="2955" y="2835">
+   </LINKPOINT>
+   <LINKPOINT x="2085" y="2835">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="3" nodename="Ortho (Transform)">
+   <BOUNDS height="0" left="870" top="5880" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename=":EFFECTS:\FlatDirectional.fx">
+   <BOUNDS height="0" left="585" top="4005" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="-8925" top="7680" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="585" top="4005" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|0.43968,0.49666,0.09933,1.00000|">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" visible="1" values="|0.70912,0.95234,0.19047,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Mesh" linkstyle="PolyLine" srcnodeid="16" srcpinname="Mesh">
+   <LINKPOINT x="510" y="3870">
+   </LINKPOINT>
+   <LINKPOINT x="765" y="3870">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2415">
+   </BOUNDS>
+   <BOUNDS height="160" left="-4320" top="24150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Does an orthogonal projection|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="-4320" top="24150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Ortho - Transform OffCenter|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
+   <LINKPOINT x="615" y="4485">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="4485">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="330">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
