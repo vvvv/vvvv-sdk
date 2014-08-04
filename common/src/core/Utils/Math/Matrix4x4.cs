@@ -17,7 +17,7 @@ namespace VVVV.Utils.VMath
 	/// </summary>
 	[DataContract]
     [StructLayout(LayoutKind.Sequential)]
-	public struct Matrix4x4
+    public struct Matrix4x4 : IEquatable<Matrix4x4>
 	{
 		#region data fields
 
