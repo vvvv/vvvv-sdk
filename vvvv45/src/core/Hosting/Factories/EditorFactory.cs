@@ -315,7 +315,7 @@ namespace VVVV.Hosting.Factories
             var button = args.Button;
             var keys = args.ModifierKey;
             
-            if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
+            if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Shift))
             {
                 // Let the user choose which file to open.
                 
