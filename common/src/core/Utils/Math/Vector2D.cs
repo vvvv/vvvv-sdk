@@ -17,7 +17,7 @@ namespace VVVV.Utils.VMath
 	/// </summary>
 	[DataContract]
 	[StructLayout(LayoutKind.Sequential)]
-	public struct Vector2D
+	public struct Vector2D : IEquatable<Vector2D>, IComparable<Vector2D>
     {
         #region constants
         public static readonly Vector2D Zero = new Vector2D();
@@ -449,6 +449,12 @@ namespace VVVV.Utils.VMath
         }
 		#endregion
 
+		#region IComparable implementation
+        public int CompareTo(Vector2D other)
+        {
+            return this.Length.CompareTo(other.Length);
+        }
+        #endregion
 	}
 }
 
