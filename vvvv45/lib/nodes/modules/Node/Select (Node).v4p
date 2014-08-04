@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p" systemname="Select (Node)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p" systemname="Select (Node)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p">
    <BOUNDS type="Window" left="16125" top="6495" width="5190" height="5040">
    </BOUNDS>
    <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="0">
@@ -16,7 +16,7 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="3135" top="360" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3135" top="360" width="795" height="240">
@@ -30,6 +30,10 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Select">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Select">
@@ -60,9 +64,9 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Input Node">
    </LINK>
-   <INFO author="vvvv group" description="select the slices which form the new spread." tags="">
+   <INFO author="vvvv group" description="select the slices which form the new spread." tags="repeat, resample">
    </INFO>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="3120" top="3615" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3120" top="3615" width="795" height="240">
@@ -74,6 +78,10 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Former Slice|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Former Slice" dstnodeid="6" dstpinname="Y Input Value">
@@ -100,4 +108,6 @@
    </LINK>
    <LINK srcnodeid="8" srcpinname="Output" dstnodeid="1" dstpinname="Input">
    </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>
