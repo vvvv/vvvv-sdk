@@ -98,7 +98,7 @@ namespace VVVV.Utils.VMath
         {
             get
             {
-                return Math.Abs(this | this);
+                return this | this;
             }
         }
 
