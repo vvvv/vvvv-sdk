@@ -13,6 +13,6 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "Select",
                 Category = "Value",
                 Help = "Select which slices and how many form the output spread",
-	            Tags = "repeat, resample")]
+	            Tags = "repeat, resample, duplicate")]
     public class ValueSelectNode : Select<double> {}
 }

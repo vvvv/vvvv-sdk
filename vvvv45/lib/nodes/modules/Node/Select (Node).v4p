@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
    <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p" systemname="Select (Node)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\Node\Select (Node).v4p">
    <BOUNDS type="Window" left="16125" top="6495" width="5190" height="5040">
    </BOUNDS>
@@ -31,10 +31,6 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Select">
    </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
-   </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Select">
    </LINK>
@@ -64,7 +60,7 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Input Node">
    </LINK>
-   <INFO author="vvvv group" description="select the slices which form the new spread." tags="repeat, resample">
+   <INFO author="vvvv group" description="select the slices which form the new spread." tags="repeat, resample, duplicate">
    </INFO>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="3120" top="3615" width="0" height="0">
@@ -78,10 +74,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Former Slice|">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Former Slice" dstnodeid="6" dstpinname="Y Input Value">
