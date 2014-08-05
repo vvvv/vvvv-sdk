@@ -190,4 +190,40 @@
    </LINK>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2610" top="3540" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2610" top="3540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Error Message|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Error Message" dstnodeid="14" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4560" top="3450" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4560" top="3450" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Error" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
