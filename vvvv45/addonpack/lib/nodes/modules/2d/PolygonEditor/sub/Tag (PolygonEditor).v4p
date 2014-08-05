@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\Tag (PolygonEditor).v4p" systemname="SelectShapes" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\SelectShapes.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -33,7 +33,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -53,7 +53,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -69,7 +69,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Z-Index|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z-Index">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -85,7 +85,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -123,7 +123,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -145,7 +145,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -163,7 +163,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Z-Index|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z-Index">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -181,7 +181,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -405,7 +405,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Mouseover|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mouseover">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -425,7 +425,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -617,7 +617,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8250" top="1815" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Rotation|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rotation">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -631,7 +631,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8295" top="14310" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Rotation|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rotation">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -724,6 +724,20 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="45" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11175" top="1200" width="3675" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11175" top="1200" width="3120" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Remember: mouseover means Polygon Mouseover, different to Vertex Mouseover|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
    </PATCH>

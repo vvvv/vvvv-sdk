@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\TagVertices (PolygonEditor).v4p" systemname="SelectVertices" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\SelectVertices.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -33,7 +33,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -53,7 +53,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -69,7 +69,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Z-Index|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="Z-Index,Z-Index,Z-Index,Z-Index,Z-Index">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -85,7 +85,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Selected|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="Tagged,Tagged,Tagged,Tagged,Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -123,7 +123,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -145,7 +145,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -163,7 +163,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Z-Index|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z-Index">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -181,7 +181,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Selected|">
+   <PIN pinname="Descriptive Name" slicecount="29" values="Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -221,7 +221,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Mouseover|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="Mouseover,Mouseover,Mouseover,Mouseover,Mouseover">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -567,7 +567,7 @@
    <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="21" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="15780" top="10395" width="100" height="100">
+   <BOUNDS type="Node" left="15780" top="10410" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -582,12 +582,12 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Count" dstnodeid="20" dstpinname="Input">
+   <LINK srcnodeid="21" srcpinname="Count" dstnodeid="20" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="19" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="15765" top="11190" width="100" height="100">
+   <BOUNDS type="Node" left="15780" top="11190" width="1500" height="270">
    </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="2">
+   <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
@@ -595,8 +595,10 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="OnChange" dstnodeid="19" dstpinname="Input 1">
+   <LINK srcnodeid="20" srcpinname="OnChange" dstnodeid="19" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
    <NODE id="18" systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="14250" top="12855" width="810" height="270">
@@ -639,7 +641,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -663,7 +665,7 @@
    </PIN>
    <PIN pinname="Tag" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|,|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -693,7 +695,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Selected|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -735,7 +737,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Mouseover|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="Mouseover,Mouseover,Mouseover,Mouseover,Mouseover">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -755,7 +757,7 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Bin Size|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -833,7 +835,7 @@
    </PIN>
    </NODE>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="17865" top="3645" width="100" height="100">
+   <BOUNDS type="Node" left="21840" top="3360" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -843,7 +845,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="66" srcpinname="Up Edge" dstnodeid="40" dstpinname="Input 2" linkstyle="PolyLine">
-   <LINKPOINT x="11415" y="7733">
+   <LINKPOINT x="13403" y="7591">
    </LINKPOINT>
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="69">
@@ -923,8 +925,6 @@
    <LINK srcnodeid="76" srcpinname="Down Edge" dstnodeid="69" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="76" srcpinname="Up Edge" dstnodeid="43" dstpinname="Input 4" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Up Edge" dstnodeid="19" dstpinname="Input 2">
    </LINK>
    <NODE systemname="FrameDifference (Animation)" nodename="FrameDifference (Animation)" componentmode="Hidden" id="77">
    <BOUNDS type="Node" left="20415" top="7515" width="100" height="100">
@@ -1287,7 +1287,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8085" top="2460" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Rotation|">
+   <PIN pinname="Descriptive Name" slicecount="5" values="Rotation,Rotation,Rotation,Rotation,Rotation">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -1301,7 +1301,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8145" top="26550" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Rotation|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Rotation">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -1379,7 +1379,7 @@
    <LINK srcnodeid="84" srcpinname="Left Button" dstnodeid="66" dstpinname="Input">
    </LINK>
    <NODE systemname="S+H (Animation)" filename="" nodename="S+H (Animation)" componentmode="Hidden" id="30" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="15765" top="11790" width="100" height="100">
+   <BOUNDS type="Node" left="15780" top="11790" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1460,4 +1460,42 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="119" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14265" top="1815" width="3705" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14265" top="1815" width="2040" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Remember: Mouseover means Polygon Mouseover.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="120" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14310" top="13815" width="285" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14310" top="13815" width="4170" height="3045">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ when control is pressed, the mouse is released and has not been dragged (a simple click without dragging) and the vertex (or all vertices of the polygon) has been selected before the mouse was pressed (means, has not been actively selected just now), the vertex should be deselected. &cr;&lf;&cr;&lf;This enables to toggle vertex selection when pressing CTRL (for multiple selections) &cr;&lf;&cr;&lf;Simply try: Press CTRL, tag some vertices, and then click on any tagged vertex to untag.&cr;&lf;&cr;&lf;(using tagging and selecting as synonyms)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="121" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="16485" top="10740" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="76" srcpinname="Up Edge" dstnodeid="19" dstpinname="Input 3" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Bang" dstnodeid="19" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
    </PATCH>
