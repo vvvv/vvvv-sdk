@@ -284,8 +284,7 @@ namespace VVVV.Nodes.Input
         [Output("Key Char")]
         public ISpread<string> KeyCharOut;
 
-        Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
-        Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
+        Spread<Subscription2<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription2<Keyboard, KeyNotification>>();
 
         public void Dispose()
         {
@@ -300,61 +299,58 @@ namespace VVVV.Nodes.Input
             KeyCodeOut.SliceCount = spreadMax;
             KeyCharOut.SliceCount = spreadMax;
 
-            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
             FSubscriptions.ResizeAndDispose(
                 spreadMax,
                 slice =>
                 {
-                    return new Subscription<Keyboard, KeyNotification>(
+                    return new Subscription2<Keyboard, KeyNotification>(
                         keyboard =>
                         {
                             return keyboard.KeyNotifications
                                 .DistinctUntilChanged(new KeyNotificationComparer());
-                        },
-                        (keyboard, n) =>
-                        {
-                            var keyCodeOut = KeyCodeOut[slice];
-                            var keyNameOut = KeyNameOut[slice];
-                            switch (n.Kind)
-                            {
-                                case KeyNotificationKind.KeyDown:
-                                    var keyDown = n as KeyDownNotification;
-                                    if (!keyCodeOut.Contains((int)keyDown.KeyCode))
-                                    {
-                                        keyCodeOut.Add((int)keyDown.KeyCode);
-                                        keyNameOut.Add(keyDown.KeyCode.ToString());
-                                    }
-                                    break;
-                                case KeyNotificationKind.KeyPress:
-                                    var keyPress = n as KeyPressNotification;
-                                    KeyCharOut[slice] = new string(keyPress.KeyChar, 1);
-                                    break;
-                                case KeyNotificationKind.KeyUp:
-                                    var keyUp = n as KeyUpNotification;
-                                    keyCodeOut.RemoveAll(k => k == (int)keyUp.KeyCode);
-                                    keyNameOut.RemoveAll(k => k == keyUp.KeyCode.ToString());
-                                    KeyCharOut[slice] = string.Empty;
-                                    break;
-                                case KeyNotificationKind.DeviceLost:
-                                    keyCodeOut.SliceCount = 0;
-                                    keyNameOut.SliceCount = 0;
-                                    KeyCharOut[slice] = string.Empty;
-                                    break;
-                                default:
-                                    throw new NotImplementedException();
-                            }
-                        },
-                        FSchedulers[slice]
+                        }
                     );
                 }
             );
 
             for (int i = 0; i < spreadMax; i++)
             {
-                //resubsribe if necessary
-                FSubscriptions[i].Update(KeyboardIn[i]);
-                //process events
-                FSchedulers[i].Run(QueueModeIn[i]);
+                var notifications = FSubscriptions[i].Update(KeyboardIn[i]);
+                if (QueueModeIn[i] == QueueMode.Discard)
+                    notifications.TakeLast(1);
+                foreach (var n in notifications)
+                {
+                    var keyCodeOut = KeyCodeOut[i];
+                    var keyNameOut = KeyNameOut[i];
+                    switch (n.Kind)
+                    {
+                        case KeyNotificationKind.KeyDown:
+                            var keyDown = n as KeyDownNotification;
+                            if (!keyCodeOut.Contains((int)keyDown.KeyCode))
+                            {
+                                keyCodeOut.Add((int)keyDown.KeyCode);
+                                keyNameOut.Add(keyDown.KeyCode.ToString());
+                            }
+                            break;
+                        case KeyNotificationKind.KeyPress:
+                            var keyPress = n as KeyPressNotification;
+                            KeyCharOut[i] = new string(keyPress.KeyChar, 1);
+                            break;
+                        case KeyNotificationKind.KeyUp:
+                            var keyUp = n as KeyUpNotification;
+                            keyCodeOut.RemoveAll(k => k == (int)keyUp.KeyCode);
+                            keyNameOut.RemoveAll(k => k == keyUp.KeyCode.ToString());
+                            KeyCharOut[i] = string.Empty;
+                            break;
+                        case KeyNotificationKind.DeviceLost:
+                            keyCodeOut.SliceCount = 0;
+                            keyNameOut.SliceCount = 0;
+                            KeyCharOut[i] = string.Empty;
+                            break;
+                        default:
+                            throw new NotImplementedException();
+                    }
+                }
             }
         }
     }
