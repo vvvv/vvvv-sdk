@@ -169,7 +169,7 @@
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Shape Vertex Count|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Count|">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -177,7 +177,7 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Window" left="-7815" top="9705" width="10140" height="6285">
+   <BOUNDS type="Window" left="-16500" top="6405" width="10140" height="6285">
    </BOUNDS>
    <PIN pinname="Clip Device" slicecount="1" values="0">
    </PIN>
@@ -289,7 +289,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="BinSize" visible="1" slicecount="1" values="0">
+   <PIN pinname="BinSize" visible="1" slicecount="2" values="4,3">
    </PIN>
    <PIN pinname="Width" slicecount="1" values="3">
    </PIN>
@@ -403,11 +403,11 @@
    </PIN>
    <BOUNDS type="Box" left="10875" top="7845">
    </BOUNDS>
-   <PIN pinname="Bin Size" visible="1" slicecount="1" values="0">
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="4,3">
    </PIN>
    </NODE>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="406" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="12960" top="6210" width="100" height="100">
+   <BOUNDS type="Node" left="13500" top="6105" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
@@ -457,7 +457,7 @@
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
-   <PIN pinname="Bin Size" visible="1" slicecount="1" values="1">
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="4,3">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -473,7 +473,7 @@
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
-   <PIN pinname="Bin Size" visible="1" slicecount="1" values="1">
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="4,3">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1169,7 +1169,7 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="7365" top="4185" width="10260" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="-25695" top="11130" width="29040" height="15840">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
    </BOUNDS>
    <BOUNDS type="Box" left="7365" top="4185" width="4800" height="3600">
    </BOUNDS>
@@ -1219,13 +1219,13 @@
    </PIN>
    <PIN pinname="Shape Vertex Count" visible="1">
    </PIN>
-   <PIN pinname="VerticesXY" visible="1">
+   <PIN pinname="VerticesXY" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Initial Data" visible="1">
    </PIN>
    <PIN pinname="Cursor Mode" visible="1">
    </PIN>
-   <PIN pinname="Cursor Type" visible="1">
+   <PIN pinname="Cursor Type" visible="1" slicecount="1" values="(nil)">
    </PIN>
    <PIN pinname="Is Selected Shape" visible="1">
    </PIN>
@@ -1235,17 +1235,19 @@
    </PIN>
    <PIN pinname="Insert" visible="1">
    </PIN>
-   <PIN pinname="Vertex Mouseover" visible="1">
+   <PIN pinname="Vertex Mouseover" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Shape Selected" visible="1">
+   <PIN pinname="Shape Selected" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Keyboard" visible="1">
    </PIN>
-   <PIN pinname="Shape Rotation" visible="1">
+   <PIN pinname="Shape Rotation" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Insert Vertices" visible="1">
    </PIN>
    <PIN pinname="Initial Vertices" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Count" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
@@ -1290,7 +1292,7 @@
    </LINK>
    <LINK srcnodeid="467" srcpinname="Output" dstnodeid="0" dstpinname="Initial Vertices">
    </LINK>
-   <NODE systemname="CircumRectangle (EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle (EX9).v4p" componentmode="Hidden" id="347" nodename="CircumRectangle (EX9)" stayontop="1">
+   <NODE systemname="CircumRectangle" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" componentmode="Hidden" id="347" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" stayontop="1">
    <BOUNDS type="Node" left="14445" top="7305" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="14445" top="7305" width="4800" height="3600">
@@ -1301,7 +1303,7 @@
    </PIN>
    <PIN pinname="Is Selected Shape" visible="1">
    </PIN>
-   <PIN pinname="Shape Vertex Count" visible="1">
+   <PIN pinname="Shape Vertex Count" visible="1" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1309,7 +1311,7 @@
    </PIN>
    <PIN pinname="Shape Rotation" visible="1">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1" visible="0" pintype="Input">
+   <PIN pinname="Enabled" visible="0" pintype="Input" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="347" srcpinname="Output" dstnodeid="24" dstpinname="Layer 3">
@@ -1324,7 +1326,7 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Shape Rotation" dstnodeid="347" dstpinname="Shape Rotation">
    </LINK>
-   <NODE systemname="Cursor (DX9 advanced)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9 advanced).v4p" nodename="Cursor (DX9 advanced)" componentmode="Hidden" id="229">
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="229">
    <BOUNDS type="Node" left="18165" top="8445" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Window" left="-19395" top="-570" width="19065" height="13830">
@@ -1351,5 +1353,7 @@
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="229" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="229" dstpinname="Cursor Type">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Vertex Count">
    </LINK>
    </PATCH>
