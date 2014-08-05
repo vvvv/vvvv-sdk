@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\EX9\Cursor (DX9) help.v4p" locked="0">
-   <BOUNDS height="6045" left="5505" top="735" type="Window" width="6015">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Cursor (DX9) help.v4p" locked="0">
+   <BOUNDS height="6045" left="7020" top="1395" type="Window" width="7275">
    </BOUNDS>
    <INFO author="vvvv group" description="edit a point cloud via mouse and keyboard within the ex9 renderer." tags="ex9, GUI, edit, modelling, point, cloud, mesh">
    </INFO>
@@ -73,7 +73,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="10" nodename="Cursor (DX9)" systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p">
-   <BOUNDS height="100" left="1305" top="3495" type="Node" width="100">
+   <BOUNDS height="270" left="1305" top="3495" type="Node" width="2085">
    </BOUNDS>
    <BOUNDS height="3600" left="1305" top="3495" type="Box" width="4800">
    </BOUNDS>
@@ -134,10 +134,10 @@
    <LINKPOINT x="1320" y="1695">
    </LINKPOINT>
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1485" top="1845" width="0" height="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS type="Node" left="2820" top="1845" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1485" top="1845" width="795" height="240">
+   <BOUNDS type="Box" left="2820" top="1845" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -145,23 +145,27 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Size">
    </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="16" systemname="IOBox (Color)">
-   <BOUNDS type="Node" left="1440" top="2205" width="0" height="0">
+   <BOUNDS type="Node" left="2775" top="2235" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1440" top="2205" width="840" height="345">
+   <BOUNDS type="Box" left="2775" top="2235" width="840" height="345">
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Color Output" dstnodeid="10" dstpinname="Color">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" left="1800" top="2700" width="0" height="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS type="Node" left="2925" top="2700" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1800" top="2700" width="480" height="480">
+   <BOUNDS type="Box" left="2925" top="2700" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -173,13 +177,17 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
    </NODE>
    <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Selection">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2520" top="1830" width="1110" height="270">
+   <BOUNDS type="Node" left="3945" top="1905" width="1110" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2520" top="1830" width="1110" height="270">
+   <BOUNDS type="Box" left="3945" top="1905" width="1110" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Size|">
    </PIN>
@@ -191,9 +199,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2520" top="2205" width="690" height="270">
+   <BOUNDS type="Node" left="3945" top="2295" width="690" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2520" top="2205" width="690" height="270">
+   <BOUNDS type="Box" left="3945" top="2295" width="690" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Color|">
    </PIN>
@@ -205,9 +213,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2520" top="2835" width="2055" height="270">
+   <BOUNDS type="Node" left="3945" top="2805" width="2055" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2520" top="2835" width="2055" height="270">
+   <BOUNDS type="Box" left="3945" top="2805" width="2055" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Show Selection Rectangle|">
    </PIN>
@@ -219,7 +227,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="600" top="1395" width="100" height="100">
+   <BOUNDS type="Node" left="210" top="1395" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
@@ -228,4 +236,30 @@
    </NODE>
    <LINK srcnodeid="21" srcpinname="Device" dstnodeid="10" dstpinname="Mouse">
    </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="22" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1695" top="1395" width="1590" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1695" top="1395" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Cross">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output Enum" dstnodeid="10" dstpinname="Cursor Type">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3945" top="1350" width="1155" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3945" top="1350" width="2670" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; cursor Type (useful when resizing stuff, otherwise usually cross)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>
