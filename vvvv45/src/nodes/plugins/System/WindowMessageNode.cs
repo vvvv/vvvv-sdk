@@ -39,6 +39,7 @@ namespace VVVV.Nodes.Input
                 )
                 .OfType<Window>()
                 .Where(w => w.UserInputWindow != null && w.UserInputWindow.InputWindowHandle != IntPtr.Zero)
+                .Where(w => !FSubclasses.Any(s => s.HWnd == w.UserInputWindow.InputWindowHandle))
                 .Select(w => Subclass.Create(w.UserInputWindow.InputWindowHandle))
                 .Do(s =>
                     {

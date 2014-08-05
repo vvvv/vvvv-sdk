@@ -357,8 +357,10 @@ namespace VVVV.Hosting
 			nodeB.Rectangle = new Rectangle(selectionCenter.X, selectionCenter.Y, 0, 0);
 			var boxB = nodeMsg.AddBounds(BoundsType.Box);
 			boxB.Rectangle = new Rectangle(selectionCenter.X - selectionSize.Width / 2, selectionCenter.Y - selectionSize.Height / 2, selectionSize.Width, selectionSize.Height);
+			
+			//make window-pos -1/-1 so on popup it opens at mousecursor
 			var windowB = nodeMsg.AddBounds(BoundsType.Window);
-			windowB.Rectangle = new Rectangle(300 + selectionCenter.X + hdeHost.ActivePatchWindow.Bounds.X * 15, 300 + selectionCenter.Y + hdeHost.ActivePatchWindow.Bounds.Y * 15, selectionSize.Width, selectionSize.Height);
+			windowB.Rectangle = new Rectangle(-1, -1, selectionSize.Width, selectionSize.Height);
 			
 			hdeHost.SendXMLSnippet(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename, patch.ToString(), true);
 		}

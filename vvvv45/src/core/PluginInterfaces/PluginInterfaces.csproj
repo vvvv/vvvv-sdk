@@ -11,9 +11,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoWarn>1591 1587</NoWarn>
     <DocumentationFile>$(OutputPath)\VVVV.PluginInterfaces.xml</DocumentationFile>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PackageIsAnyCPU>false</PackageIsAnyCPU>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,6 +114,5 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
 </Project>

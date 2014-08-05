@@ -9,7 +9,6 @@
     <AssemblyName>VVVV.Nodes</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
@@ -109,6 +108,8 @@
     <Compile Include="String\StringInsertNode.cs" />
     <Compile Include="String\URLCoding.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
+    <Compile Include="SVG\SVGGroupNode.cs" />
+    <Compile Include="SVG\SvgRendererNode.cs" />
     <Compile Include="SVG\SVGTextureNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -148,6 +149,7 @@
     <Compile Include="Value\AsRawNode.cs" />
     <Compile Include="Value\DifferentialNode.cs" />
     <Compile Include="Value\IntegralNode.cs" />
+    <Compile Include="vvvv\Architecture\VVVVArchitectureNode.cs" />
     <Compile Include="vvvv\Finder\Enums.cs" />
     <Compile Include="vvvv\Finder\FinderNode.cs">
       <SubType>UserControl</SubType>
@@ -305,8 +307,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="vvvv\Architecture" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
 </Project>

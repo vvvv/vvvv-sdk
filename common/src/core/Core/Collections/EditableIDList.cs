@@ -412,6 +412,20 @@ namespace VVVV.Core.Collections
             }
         }
         
+        public override void Sort(Comparison<T> comparison)
+        {
+        	if (FList is KeyedIDCollection<T>)
+            {
+                (FList as KeyedIDCollection<T>).Sort(comparison);
+                OnOrderChanged();
+            }
+        	else if (FList is System.Collections.Generic.List<T>)
+            {
+                (FList as System.Collections.Generic.List<T>).Sort(comparison);
+                OnOrderChanged();
+            }
+        }
+        
         #endregion
 
         public override string ToString()

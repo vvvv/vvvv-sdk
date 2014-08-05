@@ -28,7 +28,7 @@ namespace VVVV.Core.Collections
             return new ViewableList<T>(this);
         }
 
-        public void Sort(Comparison<T> comparison)
+        public virtual void Sort(Comparison<T> comparison)
         {
             if (FList is System.Collections.Generic.List<T>)
             {
