@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="-25800" top="-30" width="29040" height="15840">
+   <BOUNDS type="Window" left="-25755" top="-45" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -239,7 +239,7 @@
    </PIN>
    </NODE>
    <NODE systemname="removeShape" filename="sub\removeShape.v4p" componentmode="Hidden" id="34" nodename="sub\removeShape.v4p" stayontop="1">
-   <BOUNDS type="Node" left="5055" top="3900" width="1275" height="270">
+   <BOUNDS type="Node" left="5055" top="3900" width="1725" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="3900" width="4800" height="3600">
    </BOUNDS>
@@ -257,7 +257,7 @@
    </PIN>
    <PIN pinname="isSelected" visible="1">
    </PIN>
-   <PIN pinname="VerticesXY" visible="1">
+   <PIN pinname="VerticesXY" visible="1" slicecount="14" values="-0.3,0.3,-0.7,0.3,-0.7,0.7,-0.3,0.7,0.211627906976744,-0.489473684210527,0.695348837209302,0.142105263157894,0.462790697674419,0.647368421052631">
    </PIN>
    <PIN pinname="Shapes Vertex Count" visible="1">
    </PIN>
@@ -267,87 +267,17 @@
    </PIN>
    <PIN pinname="Shapes Z-Index" visible="1">
    </PIN>
-   <PIN pinname="Shape Selected" visible="1">
+   <PIN pinname="Shape Selected" visible="1" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Shape Rotation" visible="1">
+   <PIN pinname="Shape Rotation" visible="1" slicecount="2" values="0,0">
    </PIN>
-   </NODE>
-   <NODE systemname="splitData" filename="sub\splitData.v4p" componentmode="Hidden" id="33" nodename="sub\splitData.v4p" stayontop="0">
-   <BOUNDS type="Node" left="5055" top="3240" width="915" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5055" top="3240" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="10470" top="3705" width="16710" height="8235">
-   </BOUNDS>
-   <PIN pinname="data input" visible="1">
+   <PIN pinname="Shape Vertex Count" slicecount="2" values="4,3">
    </PIN>
-   <PIN pinname="isSelected" visible="1">
+   <PIN pinname="Vertex Selected" slicecount="7" values="0,0,0,0,0,0,0">
    </PIN>
-   <PIN pinname="pointsXY" visible="1">
-   </PIN>
-   <PIN pinname="#pointsInShapes" visible="1">
-   </PIN>
-   <PIN pinname="shapesPointCount" visible="1">
-   </PIN>
-   <PIN pinname="shapesZIndex" visible="1">
-   </PIN>
-   <PIN pinname="VerticesXY" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Vertex Count" visible="1">
-   </PIN>
-   <PIN pinname="Is Selected" visible="1">
-   </PIN>
-   <PIN pinname="Shape Selected" visible="1">
-   </PIN>
-   <PIN pinname="Shape Rotation" visible="1">
+   <PIN pinname="Shape Z-Index" slicecount="2" values="0,1">
    </PIN>
    </NODE>
-   <NODE systemname="joinData" filename="sub\joinData.v4p" nodename="sub\joinData.v4p" componentmode="Hidden" id="32" stayontop="0">
-   <BOUNDS type="Node" left="5070" top="11595" width="8835" height="270">
-   </BOUNDS>
-   <BOUNDS type="Window" left="3045" top="3150" width="16395" height="10935">
-   </BOUNDS>
-   <PIN pinname="pointsXY" visible="1">
-   </PIN>
-   <PIN pinname="data output" visible="1">
-   </PIN>
-   <PIN pinname="isSelected" visible="1">
-   </PIN>
-   <PIN pinname="#pointsInShapes" visible="1">
-   </PIN>
-   <PIN pinname="shapesZIndex" visible="1">
-   </PIN>
-   <PIN pinname="shapesPointCount" visible="1">
-   </PIN>
-   <PIN pinname="Is Selected" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Point Count" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Data Output" visible="1">
-   </PIN>
-   <PIN pinname="VerticesXY" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Vertex Count" visible="1">
-   </PIN>
-   <PIN pinname="Shape Selected" visible="1">
-   </PIN>
-   <PIN pinname="Vertex Selected" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="5070" top="11595">
-   </BOUNDS>
-   <PIN pinname="Shape Rotation" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Data Input" linkstyle="Bezier">
-   <LINKPOINT x="615" y="13915">
-   </LINKPOINT>
-   <LINKPOINT x="1875" y="3890">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="hitTestPointsShapes" filename="sub\hitTestPointsShapes.v4p" nodename="sub\hitTestPointsShapes.v4p" componentmode="Hidden" id="31" stayontop="0">
    <BOUNDS type="Node" left="5055" top="5610" width="3375" height="270">
    </BOUNDS>
@@ -438,13 +368,7 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK srcnodeid="33" srcpinname="VerticesXY" dstnodeid="34" dstpinname="VerticesXY" hiddenwhenlocked="0">
-   </LINK>
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="34" dstpinname="Remove" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="33" srcpinname="Shape Vertex Count" dstnodeid="34" dstpinname="Shape Vertex Count" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="33" srcpinname="Vertex Selected" dstnodeid="34" dstpinname="Vertex Selected" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Box" left="17745" top="19335" width="810" height="690">
@@ -466,8 +390,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK srcnodeid="33" srcpinname="Shape Z-Index" dstnodeid="34" dstpinname="Shape Z-Index" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="27">
    <BOUNDS type="Node" left="8025" top="19320" width="100" height="100">
    </BOUNDS>
@@ -592,8 +514,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK srcnodeid="33" srcpinname="Shape Selected" dstnodeid="34" dstpinname="Shape Selected" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="snapVertices" filename="sub\snapVertices.v4p" nodename="sub\snapVertices.v4p" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="5070" top="10800" width="9555" height="270">
    </BOUNDS>
@@ -622,12 +542,6 @@
    <PIN pinname="Shape Rotation" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="VerticesXY" dstnodeid="32" dstpinname="VerticesXY" linkstyle="VHV" hiddenwhenlocked="0">
-   <LINKPOINT x="5070" y="11333">
-   </LINKPOINT>
-   <LINKPOINT x="5070" y="11333">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="12825" top="10365" width="100" height="100">
    </BOUNDS>
@@ -654,22 +568,18 @@
    </NODE>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Epsilon">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Vertex Selected" dstnodeid="32" dstpinname="Vertex Selected" linkstyle="PolyLine" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Shape Vertex Count" dstnodeid="32" dstpinname="Shape Vertex Count" linkstyle="PolyLine" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="snapVertices" filename="sub\snapVertices.v4p" nodename="sub\snapVertices.v4p" componentmode="Hidden" id="12">
    <BOUNDS type="Node" left="5055" top="15060" width="5535" height="270">
    </BOUNDS>
-   <PIN pinname="VerticesXY" visible="1">
+   <PIN pinname="VerticesXY" visible="1" slicecount="14" values="-0.3,0.3,-0.7,0.3,-0.7,0.7,-0.3,0.7,0.211627906976744,-0.489473684210527,0.695348837209302,0.142105263157894,0.462790697674419,0.647368421052631">
    </PIN>
-   <PIN pinname="Vertex Selected" visible="1">
+   <PIN pinname="Vertex Selected" visible="1" slicecount="7" values="0,0,0,0,0,0,0">
    </PIN>
-   <PIN pinname="Shape Vertex Count" visible="1">
+   <PIN pinname="Shape Vertex Count" visible="1" slicecount="2" values="4,3">
    </PIN>
-   <PIN pinname="Shape Z-Index" visible="1">
+   <PIN pinname="Shape Z-Index" visible="1" slicecount="2" values="0,1">
    </PIN>
-   <PIN pinname="Shape Selected" visible="1">
+   <PIN pinname="Shape Selected" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="Epsilon" visible="1">
    </PIN>
@@ -679,7 +589,7 @@
    </PIN>
    <BOUNDS type="Box" left="5055" top="15060">
    </BOUNDS>
-   <PIN pinname="Shape Rotation" visible="1">
+   <PIN pinname="Shape Rotation" visible="1" slicecount="2" values="0,0">
    </PIN>
    <BOUNDS type="Window" left="0" top="0" width="29040" height="16920">
    </BOUNDS>
@@ -724,38 +634,6 @@
    </LINK>
    <LINK srcnodeid="12" srcpinname="Shape Selected" dstnodeid="11" dstpinname="Shape Selected">
    </LINK>
-   <NODE systemname="splitData" filename="sub\splitData.v4p" nodename="sub\splitData.v4p" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="5055" top="14340" width="3480" height="270">
-   </BOUNDS>
-   <PIN pinname="data input" visible="1">
-   </PIN>
-   <PIN pinname="VerticesXY" visible="1">
-   </PIN>
-   <PIN pinname="Is Selected" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Vertex Count" visible="1">
-   </PIN>
-   <PIN pinname="Shapes Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Shape Selected" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="5055" top="14340">
-   </BOUNDS>
-   <PIN pinname="Shape Rotation" visible="1">
-   </PIN>
-   <PIN pinname="Data Input" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="VerticesXY" dstnodeid="12" dstpinname="VerticesXY">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Vertex Selected" dstnodeid="12" dstpinname="Vertex Selected">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Shape Vertex Count" dstnodeid="12" dstpinname="Shape Vertex Count">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Shape Z-Index" dstnodeid="12" dstpinname="Shape Z-Index">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Shape Selected" dstnodeid="12" dstpinname="Shape Selected">
-   </LINK>
    <LINK srcnodeid="11" srcpinname="VerticesXY" dstnodeid="50" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="11" srcpinname="Vertex Selected" dstnodeid="40" dstpinname="Y Input Value">
@@ -769,10 +647,6 @@
    <LINK srcnodeid="11" srcpinname="Shape ID" dstnodeid="28" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Shape Z-Index" dstnodeid="32" dstpinname="Shape Z-Index" linkstyle="PolyLine" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Shape Selected" dstnodeid="32" dstpinname="Shape Selected" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="31" dstpinname="Mouse" linkstyle="VHV">
    <LINKPOINT x="16710" y="5430">
@@ -831,7 +705,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="-19095" top="1380" width="9000" height="7335">
    </BOUNDS>
-   <PIN pinname="Initial Data" visible="1">
+   <PIN pinname="Initial Data" visible="1" slicecount="30" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
    </PIN>
    <PIN pinname="VerticesXY" visible="1">
    </PIN>
@@ -912,13 +786,7 @@
    <LINKPOINT x="9735" y="6165">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Shape Rotation" dstnodeid="34" dstpinname="Shape Rotation" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Shape Rotation" dstnodeid="6" dstpinname="Shape Rotation" linkstyle="PolyLine" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Shape Rotation" dstnodeid="32" dstpinname="Shape Rotation" hiddenwhenlocked="1" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Shape Rotation" dstnodeid="12" dstpinname="Shape Rotation">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Box" left="16035" top="19335" width="795" height="240">
@@ -967,7 +835,7 @@
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="1" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="5040" top="13215" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="30" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -976,8 +844,6 @@
    <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Data Output" dstnodeid="1" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="1" dstpinname="Input 1" linkstyle="Bezier" hiddenwhenlocked="1">
    <LINKPOINT x="895" y="13770">
    </LINKPOINT>
@@ -985,8 +851,6 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="1" srcpinname="Output" dstnodeid="47" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="10" dstpinname="Data Input">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Shape mouseover" dstnodeid="23" dstpinname="Shape Mouseover" linkstyle="PolyLine">
    </LINK>
@@ -1253,7 +1117,7 @@
    <NODE id="25" componentmode="Hidden" systemname="InsertShape" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\InsertShape.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\InsertShape.v4p" stayontop="0">
    <BOUNDS type="Window" left="-28155" top="1395" width="21000" height="10650">
    </BOUNDS>
-   <BOUNDS type="Node" left="5055" top="4470" width="1755" height="270">
+   <BOUNDS type="Node" left="5055" top="4470" width="2430" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="4470" width="4800" height="3600">
    </BOUNDS>
@@ -1305,5 +1169,147 @@
    <LINK srcnodeid="25" srcpinname="Shape Rotation" dstnodeid="31" dstpinname="Shape Rotation" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="54" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Insert Vertices">
+   </LINK>
+   <NODE systemname="PolygonEditor (Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (Split).v4p" componentmode="Hidden" id="33" nodename="PolygonEditor (Split)" stayontop="0">
+   <BOUNDS type="Node" left="5055" top="3240" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5055" top="3240" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10470" top="3705" width="16710" height="8235">
+   </BOUNDS>
+   <PIN pinname="data input" visible="1">
+   </PIN>
+   <PIN pinname="isSelected" visible="1">
+   </PIN>
+   <PIN pinname="pointsXY" visible="1">
+   </PIN>
+   <PIN pinname="#pointsInShapes" visible="1">
+   </PIN>
+   <PIN pinname="shapesPointCount" visible="1">
+   </PIN>
+   <PIN pinname="shapesZIndex" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Vertex Count" visible="1">
+   </PIN>
+   <PIN pinname="Is Selected" visible="1">
+   </PIN>
+   <PIN pinname="Shape Selected" visible="1">
+   </PIN>
+   <PIN pinname="Shape Rotation" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Data Input" linkstyle="Bezier">
+   <LINKPOINT x="615" y="13915">
+   </LINKPOINT>
+   <LINKPOINT x="1875" y="3890">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="VerticesXY" dstnodeid="34" dstpinname="VerticesXY" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Shape Vertex Count" dstnodeid="34" dstpinname="Shape Vertex Count" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Vertex Selected" dstnodeid="34" dstpinname="Vertex Selected" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Shape Z-Index" dstnodeid="34" dstpinname="Shape Z-Index" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Shape Selected" dstnodeid="34" dstpinname="Shape Selected" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Shape Rotation" dstnodeid="34" dstpinname="Shape Rotation" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="PolygonEditor (Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (Split).v4p" nodename="PolygonEditor (Split)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="5055" top="14340" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="data input" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Is Selected" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Vertex Count" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Shape Selected" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="5055" top="14340">
+   </BOUNDS>
+   <PIN pinname="Shape Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Data Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="VerticesXY" dstnodeid="12" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Vertex Selected" dstnodeid="12" dstpinname="Vertex Selected">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Shape Vertex Count" dstnodeid="12" dstpinname="Shape Vertex Count">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Shape Z-Index" dstnodeid="12" dstpinname="Shape Z-Index">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Shape Selected" dstnodeid="12" dstpinname="Shape Selected">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Shape Rotation" dstnodeid="12" dstpinname="Shape Rotation">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="10" dstpinname="Data Input">
+   </LINK>
+   <NODE systemname="PolygonEditor (Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (Join).v4p" nodename="PolygonEditor (Join)" componentmode="Hidden" id="32" stayontop="0">
+   <BOUNDS type="Node" left="5070" top="11595" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3045" top="3150" width="16395" height="10935">
+   </BOUNDS>
+   <PIN pinname="pointsXY" visible="1">
+   </PIN>
+   <PIN pinname="data output" visible="1">
+   </PIN>
+   <PIN pinname="isSelected" visible="1">
+   </PIN>
+   <PIN pinname="#pointsInShapes" visible="1">
+   </PIN>
+   <PIN pinname="shapesZIndex" visible="1">
+   </PIN>
+   <PIN pinname="shapesPointCount" visible="1">
+   </PIN>
+   <PIN pinname="Is Selected" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Point Count" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Data Output" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Shapes Vertex Count" visible="1">
+   </PIN>
+   <PIN pinname="Shape Selected" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Selected" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="5070" top="11595">
+   </BOUNDS>
+   <PIN pinname="Shape Rotation" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="VerticesXY" dstnodeid="32" dstpinname="VerticesXY" linkstyle="VHV" hiddenwhenlocked="0">
+   <LINKPOINT x="5070" y="11333">
+   </LINKPOINT>
+   <LINKPOINT x="5070" y="11333">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Vertex Selected" dstnodeid="32" dstpinname="Vertex Selected" linkstyle="PolyLine" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Shape Vertex Count" dstnodeid="32" dstpinname="Shape Vertex Count" linkstyle="PolyLine" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Shape Z-Index" dstnodeid="32" dstpinname="Shape Z-Index" linkstyle="PolyLine" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Shape Selected" dstnodeid="32" dstpinname="Shape Selected" linkstyle="PolyLine" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Shape Rotation" dstnodeid="32" dstpinname="Shape Rotation" hiddenwhenlocked="1" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Data Output" dstnodeid="1" dstpinname="Input 2">
    </LINK>
    </PATCH>
