@@ -33,8 +33,6 @@ namespace VVVV.Nodes.Input
 
         private PluginContainer FKeyboardStatesSplitNode;
 
-        [Import]
-        protected IHDEHost FHost;
         private IObservable<KeyNotification> FDeviceLostNotifications;
 
         public override void OnImportsSatisfied()
@@ -123,6 +121,11 @@ namespace VVVV.Nodes.Input
                 .Where(args => args != null)
                 .SelectMany(args => GenerateKeyNotifications(args, slice));
             return new Keyboard(notifications, true);
+        }
+
+        protected override Keyboard CreateDummy()
+        {
+            return Keyboard.Empty;
         }
 
         private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)

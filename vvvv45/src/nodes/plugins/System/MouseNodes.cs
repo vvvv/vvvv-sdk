@@ -221,6 +221,11 @@ namespace VVVV.Nodes.Input
             return new Mouse(notifications);
         }
 
+        protected override Mouse CreateDummy()
+        {
+            return Mouse.Empty;
+        }
+
         private Mouse CreateCursorMouse()
         {
             var initialPosition = Control.MousePosition;
