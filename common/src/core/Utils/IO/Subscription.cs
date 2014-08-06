@@ -90,8 +90,15 @@ namespace VVVV.Utils.IO
         public IEnumerable<TNotification> ConsumeAll(TSource source)
         {
             UpdateSource(source);
-            while (FNotifications.Count > 0)
-                yield return FNotifications.Dequeue();
+            try
+            {
+                while (FNotifications.Count > 0)
+                    yield return FNotifications.Dequeue();
+            }
+            finally
+            {
+                FNotifications.Clear();
+            }
         }
 
         private void UpdateSource(TSource source)
