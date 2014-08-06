@@ -244,6 +244,8 @@ namespace VVVV.Nodes
 		{
 			SetSlicecount(SpreadMax);
 			
+			Reset();
+			
 			for(int i=0; i<SpreadMax; i++)
 			{
 				//save to disc
@@ -267,6 +269,11 @@ namespace VVVV.Nodes
 			}
 		}
 		
+		protected virtual void Reset()
+		{
+		    
+		}
+		
 		protected abstract void SetSlicecount(int spreadMax);
 		protected abstract void WriteDoc(SvgDocument doc, int slice);
 	}
@@ -279,21 +286,55 @@ namespace VVVV.Nodes
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class DocumentSvgFileWriterNode : DocumentSvgWriterNode
-	{	
+	{
 	    #pragma warning disable 649
-		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
-		ISpread<string> FFilenameIn;
-		#pragma warning restore
-		
-		protected override void SetSlicecount(int spreadMax)
-		{
-			//nothing to do
-		}
-		
-		protected override void WriteDoc(SvgDocument doc, int slice)
-		{
-			doc.Write(FFilenameIn[slice]);
-		}
+	    [Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
+	    ISpread<string> FFilenameIn;
+	    
+	    [Output("Success")]
+	    ISpread<bool> FSuccess;
+	    
+	    [Output("Error Message")]
+	    ISpread<string> FErrorMessage;
+	    
+	    [Output("Error")]
+	    ISpread<bool> FError;
+	    
+	    #pragma warning restore
+
+	    protected override void Reset()
+	    {
+	        base.Reset();
+	        for (int slice = 0; slice < FSuccess.SliceCount; slice++)
+	        {
+	            FSuccess[slice] = false;
+	            FErrorMessage[slice] = "";
+	            FError[slice] = false;
+	        }
+	    }
+	    
+	    
+	    protected override void SetSlicecount(int spreadMax)
+	    {
+	        FSuccess.SliceCount = spreadMax;
+	        FErrorMessage.SliceCount = spreadMax;
+	        FError.SliceCount = spreadMax;
+	    }
+	    
+	    protected override void WriteDoc(SvgDocument doc, int slice)
+	    {
+	        try
+	        {
+	            doc.Write(FFilenameIn[slice]);
+	            FSuccess[slice] = true;
+	        }
+	        catch(Exception e)
+	        {
+	            FSuccess[slice] = false;
+	            FErrorMessage[slice] = e.Message;
+	            FError[slice] = true;
+	        }
+	    }
 	}
 	
 	#region PluginInfo
