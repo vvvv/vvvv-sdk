@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
    <BOUNDS type="Window" left="8445" top="5040" width="9000" height="7335">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="31.9.0">
    </PACK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
    <BOUNDS type="Node" left="600" top="720" width="100" height="100">
@@ -111,7 +111,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Data|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="30" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
+   <PIN pinname="Y Input Value" slicecount="30" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="PolygonEditor (2d Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="Hidden" id="9">
@@ -143,6 +143,8 @@
    </PIN>
    <PIN pinname="Vertex Bin Size" visible="1">
    </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Output" dstnodeid="9" dstpinname="Vertex Tagged">
    </LINK>
@@ -150,12 +152,12 @@
    </LINK>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="9" dstpinname="VerticesXY">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Data Output" dstnodeid="11" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Z-Index">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="9" dstpinname="Rotation">
    </LINK>
    <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Vertex Bin Size">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

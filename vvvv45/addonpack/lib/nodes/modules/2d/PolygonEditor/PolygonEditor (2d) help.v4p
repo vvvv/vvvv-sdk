@@ -94,16 +94,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="14310" top="3540" width="1200" height="270">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="14310" top="3540">
-   </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
    <BOUNDS type="Node" left="20370" top="1560" width="100" height="100">
    </BOUNDS>
@@ -177,7 +167,7 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Window" left="-14145" top="1965" width="10140" height="6285">
+   <BOUNDS type="Window" left="-12840" top="2130" width="7305" height="6285">
    </BOUNDS>
    <PIN pinname="Clip Device" slicecount="1" values="0">
    </PIN>
@@ -188,6 +178,10 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="62">
@@ -403,7 +397,7 @@
    <LINK srcnodeid="411" srcpinname="Output" dstnodeid="7" dstpinname="Color">
    </LINK>
    <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="412">
-   <BOUNDS type="Node" left="15825" top="3525" width="100" height="100">
+   <BOUNDS type="Node" left="15855" top="3435" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
@@ -443,8 +437,6 @@
    <LINK srcnodeid="414" srcpinname="Output" dstnodeid="411" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="412" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Enabled">
    </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="421">
    <BOUNDS type="Node" left="12735" top="1560" width="100" height="100">
@@ -1106,7 +1098,7 @@
    </LINK>
    <LINK srcnodeid="465" srcpinname="XY" dstnodeid="467" dstpinname="Input 2">
    </LINK>
-   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
+   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="7365" top="4185" width="10260" height="270">
    </BOUNDS>
    <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18180">
@@ -1123,7 +1115,7 @@
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="force regular shape" visible="1">
    </PIN>
@@ -1193,9 +1185,11 @@
    </PIN>
    <PIN pinname="Vertex Bin Size" visible="1">
    </PIN>
+   <PIN pinname="Quantise Pixel" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="PixelResolution" visible="1" slicecount="2" values="471,385">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Is Active">
    </LINK>
    <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove Polygon Index">
@@ -1235,7 +1229,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="-19395" top="-570" width="19065" height="13830">
    </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -1269,7 +1263,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="14445" top="6960" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="11550" top="870" width="14970" height="15600">
+   <BOUNDS type="Window" left="7365" top="8100" width="14970" height="15600">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
    </PIN>
@@ -1294,13 +1288,11 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="VerticesXY" dstnodeid="347" dstpinname="VerticesXY">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Vertex Bin Size" dstnodeid="347" dstpinname="Shape Vertex Count" hiddenwhenlocked="1">
+   <LINK srcnodeid="0" srcpinname="Vertex Bin Size" dstnodeid="347" dstpinname="Vertex Bin Size" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Rotation" dstnodeid="347" dstpinname="Rotation">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Tagged" dstnodeid="347" dstpinname="Tagged">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="229" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="421" srcpinname="X Output Value" dstnodeid="426" dstpinname="X">
    </LINK>
@@ -1379,5 +1371,21 @@
    <LINK srcnodeid="0" srcpinname="Vertex Bin Size" dstnodeid="476" dstpinname="BinSize" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="121" srcpinname="Output" dstnodeid="476" dstpinname="Color">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="14475" top="3420" width="1200" height="270">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="14475" top="3420">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="229" dstpinname="Mouse">
    </LINK>
    </PATCH>
