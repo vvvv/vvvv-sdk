@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture Grid).v4p">
-   <BOUNDS height="11475" left="2805" top="2130" type="Window" width="14385">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture Grid).v4p">
+   <BOUNDS height="11475" left="2805" top="2130" type="Window" width="18315">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="38" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="38" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="525" top="4725" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5115" left="10305" top="60" type="Window" width="5025">
@@ -44,6 +44,8 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
    </NODE>
    <NODE id="37" nodename="GridSplit (2d)" systemname="GridSplit (2d)">
@@ -268,7 +270,7 @@
    </LINK>
    <LINK dstnodeid="25" dstpinname="Maximum" srcnodeid="23" srcpinname="Output">
    </LINK>
-   <NODE id="22" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE id="22" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="11730" top="4890" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -702,4 +704,60 @@
    </LINK>
    <LINK dstnodeid="32" dstpinname="Input 3" srcnodeid="20" srcpinname="Output String">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13185" top="11250" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13185" top="11250" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Success">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Success" dstnodeid="39" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="40" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14100" top="11265" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14100" top="11265" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Error Message|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Error Message" dstnodeid="40" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="15720" top="11280" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15720" top="11280" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Error" dstnodeid="41" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>
