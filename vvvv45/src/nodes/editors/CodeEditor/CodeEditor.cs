@@ -819,6 +819,7 @@ namespace VVVV.HDE.CodeEditor
                 {
                     // ShowCompletionWindow can return null when the provider returns an empty list
                     FCompletionWindow.Closed += CloseCodeCompletionWindow;
+                    ActiveTextAreaControl.DoHandleMousewheel = false;
                 }
             }
             catch (Exception e)
@@ -833,8 +834,18 @@ namespace VVVV.HDE.CodeEditor
             {
                 FCompletionWindow.Close();
             }
+            ActiveTextAreaControl.DoHandleMousewheel = true;
         }
-        
+
+        protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            if (FCompletionWindow != null && !FCompletionWindow.IsDisposed)
+            {
+                FCompletionWindow.HandleMouseWheel(e);
+            }
+        }
+   
         public void ShowInsightWindow(IInsightDataProvider insightDataProvider)
         {
             try
