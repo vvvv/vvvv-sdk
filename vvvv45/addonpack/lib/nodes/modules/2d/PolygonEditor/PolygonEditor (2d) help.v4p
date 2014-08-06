@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="4695" top="1185" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -177,7 +177,7 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Window" left="-5115" top="7815" width="10140" height="6285">
+   <BOUNDS type="Window" left="-10530" top="13485" width="10140" height="6285">
    </BOUNDS>
    <PIN pinname="Clip Device" slicecount="1" values="0">
    </PIN>
@@ -354,14 +354,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="230">
-   <BOUNDS type="Node" left="18165" top="7860" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="123" srcpinname="Layer" dstnodeid="24" dstpinname="Layer 1">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
@@ -499,8 +491,6 @@
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="412" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="230" dstpinname="Enabled">
    </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="421">
    <BOUNDS type="Node" left="12735" top="1560" width="100" height="100">
@@ -1167,7 +1157,7 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="7365" top="4185" width="10260" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18240">
+   <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18180">
    </BOUNDS>
    <BOUNDS type="Box" left="7365" top="4185" width="4800" height="3600">
    </BOUNDS>
@@ -1310,8 +1300,6 @@
    <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="230" srcpinname="Device" dstnodeid="229" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="229" srcpinname="Layer" dstnodeid="24" dstpinname="Layer 4">
    </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="229" dstpinname="Enabled">
@@ -1326,7 +1314,7 @@
    </LINK>
    <LINK srcnodeid="467" srcpinname="Output" dstnodeid="0" dstpinname="Initial Vertices">
    </LINK>
-   <NODE systemname="CircumRectangle" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" componentmode="InAWindow" id="347" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" stayontop="1">
+   <NODE systemname="CircumRectangle" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" componentmode="Hidden" id="347" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" stayontop="1">
    <BOUNDS type="Node" left="14460" top="7305" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="14460" top="7305" width="4800" height="3600">
@@ -1361,5 +1349,11 @@
    <LINK srcnodeid="0" srcpinname="Rotation" dstnodeid="347" dstpinname="Rotation">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Tagged" dstnodeid="347" dstpinname="Tagged">
+   </LINK>
+   <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="470">
+   <BOUNDS type="Node" left="7695" top="11115" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="229" dstpinname="Mouse">
    </LINK>
    </PATCH>

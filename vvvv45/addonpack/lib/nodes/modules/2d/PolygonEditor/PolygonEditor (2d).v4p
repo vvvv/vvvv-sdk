@@ -664,7 +664,7 @@
    </LINK>
    <LINK srcnodeid="25" srcpinname="Rotation" dstnodeid="31" dstpinname="Rotation" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="TagVertices (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="InAWindow" id="6">
+   <NODE systemname="TagVertices (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="5055" top="6405" width="100" height="100">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
@@ -718,7 +718,7 @@
    </LINK>
    <LINK srcnodeid="31" srcpinname="Rotation" dstnodeid="6" dstpinname="Rotation" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Tag (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\Tag (PolygonEditor).v4p" componentmode="InAWindow" id="5" stayontop="1" nodename="Tag (PolygonEditor)">
+   <NODE systemname="Tag (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\Tag (PolygonEditor).v4p" componentmode="Hidden" id="5" stayontop="1" nodename="Tag (PolygonEditor)">
    <BOUNDS type="Node" left="5055" top="7155" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="7155" width="4800" height="3600">
@@ -780,7 +780,7 @@
    </LINK>
    <LINK srcnodeid="6" srcpinname="Rotation" dstnodeid="5" dstpinname="Rotation" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="CircumRectangleResize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangleResize (PolygonEditor).v4p" componentmode="InAWindow" id="23" nodename="CircumRectangleResize (PolygonEditor)" stayontop="0">
+   <NODE systemname="CircumRectangleResize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangleResize (PolygonEditor).v4p" componentmode="Hidden" id="23" nodename="CircumRectangleResize (PolygonEditor)" stayontop="0">
    <BOUNDS type="Node" left="5055" top="7920" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="7920" width="4800" height="3600">
@@ -893,9 +893,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="45" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="16715" y="8705">
+   <LINKPOINT x="16710" y="9060">
    </LINKPOINT>
-   <LINKPOINT x="12055" y="8845">
+   <LINKPOINT x="6735" y="9060">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="45" dstpinname="Mouseover" linkstyle="PolyLine">
@@ -1178,7 +1178,7 @@
    </LINK>
    <LINK srcnodeid="33" srcpinname="VerticesXY" dstnodeid="34" dstpinname="VerticesXY" hiddenwhenlocked="0">
    </LINK>
-   <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Data Input" linkstyle="Bezier">
+   <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Input" linkstyle="Bezier">
    <LINKPOINT x="615" y="13915">
    </LINKPOINT>
    <LINKPOINT x="1875" y="3890">
@@ -1232,7 +1232,7 @@
    <PIN pinname="Rotation" slicecount="2" values="0,0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Data Output" dstnodeid="1" dstpinname="Input 2">
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="1" dstpinname="Input 2">
    </LINK>
    <NODE systemname="PolygonEditor (2d Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Split).v4p" nodename="PolygonEditor (2d Split)" componentmode="Hidden" id="10">
    <BOUNDS type="Node" left="5055" top="14340" width="100" height="100">
@@ -1256,7 +1256,7 @@
    <PIN pinname="Data Input" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="10" dstpinname="Data Input">
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="10" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="10" srcpinname="VerticesXY" dstnodeid="12" dstpinname="VerticesXY">
    </LINK>
@@ -1358,12 +1358,6 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Rotation" dstnodeid="32" dstpinname="Rotation" hiddenwhenlocked="1" linkstyle="PolyLine">
    </LINK>
-   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="58">
-   <BOUNDS type="Node" left="25065" top="2910" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Receive String" slicecount="1" values="(nil)">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Is Active" hiddenwhenlocked="1" linkstyle="VHV">
    <LINKPOINT x="24285" y="7080">
    </LINKPOINT>
