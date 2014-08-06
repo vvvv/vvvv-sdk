@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\MirrorDrag.v4p" systemname="MirrorDrag" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\MirrorDrag.v4p">
-   <BOUNDS type="Window" left="2820" top="2130" width="11850" height="8505">
+   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\MirrorDrag (PolygonEditor).v4p" systemname="MirrorDrag" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\MirrorDrag.v4p">
+   <BOUNDS type="Window" left="2820" top="2130" width="15930" height="8505">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -388,4 +388,18 @@
    </LINK>
    <LINK srcnodeid="15" srcpinname="Output 1" dstnodeid="17" dstpinname="Switch">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11655" top="570" width="38250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11655" top="570" width="3630" height="2775">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|When dragging (moving) one side of the CircumRectangle, it is saved as you&apos;re dragging Minimum or Maximum (from bounds of the polygon). So when you drag the right side, it is stored (in FlipFlop) that you are dragging the X Maximum. This subpatch detects wheter you&apos;ve dragged the right side over the left side, so the NEW maximus is smaller then the OLD minimum, and swaps from dragging the Maximum to dragging the minimum (now the left side). This way, a Polygon can be resized under zero, and will then simply be mirrored.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
