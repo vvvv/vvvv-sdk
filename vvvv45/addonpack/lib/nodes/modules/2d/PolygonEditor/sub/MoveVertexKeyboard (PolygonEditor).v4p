@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\MoveVertexKeyboard (PolygonEditor).v4p" systemname="movePointKeyboard" filename="C:\Users\Domi\Documents\GitHub\dragCornersGitLocal\sub\movePointKeyboard.v4p">
-   <BOUNDS type="Window" left="3405" top="2835" width="21825" height="12060">
+   <BOUNDS type="Window" left="7740" top="4035" width="21825" height="12060">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -329,7 +329,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="29" values="|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|">
+   <PIN pinname="Descriptive Name" slicecount="29" values="Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -405,7 +405,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="29" values="|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|,|Polygon Tagged|">
+   <PIN pinname="Descriptive Name" slicecount="29" values="Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -449,9 +449,9 @@
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="5" dstpinname="XY">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="42">
-   <BOUNDS type="Node" left="11595" top="1920" width="100" height="100">
+   <BOUNDS type="Node" left="11595" top="1860" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="11595" top="1920" width="480" height="480">
+   <BOUNDS type="Box" left="11595" top="1860" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -461,11 +461,15 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
+   </PIN>
    </NODE>
    <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="2160" y="1493">
+   <LINKPOINT x="2160" y="1473">
    </LINKPOINT>
-   <LINKPOINT x="11595" y="1493">
+   <LINKPOINT x="11595" y="1453">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Input 1">
@@ -480,6 +484,8 @@
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Bin Size|">
    </PIN>
    </NODE>
    <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Y Input Value" linkstyle="Bezier">
@@ -503,6 +509,8 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Tagged">
+   </PIN>
    </NODE>
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Y Input Value" linkstyle="Bezier">
    <LINKPOINT x="6600" y="1215">
@@ -511,12 +519,6 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="35" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="10545" y="9863">
-   </LINKPOINT>
-   <LINKPOINT x="1050" y="9863">
-   </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="46">
    <BOUNDS type="Node" left="8250" top="600" width="100" height="100">
@@ -539,5 +541,53 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="825" top="10860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="XY" dstnodeid="47" dstpinname="Input 2" linkstyle="Bezier">
+   <LINKPOINT x="10545" y="9645">
+   </LINKPOINT>
+   <LINKPOINT x="1380" y="9645">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="35" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="14715" top="8280" width="600" height="270">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Up" dstnodeid="49" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Down" dstnodeid="49" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Right" dstnodeid="49" dstpinname="Input 3" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Left" dstnodeid="49" dstpinname="Input 4" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="47" dstpinname="Switch">
    </LINK>
    </PATCH>
