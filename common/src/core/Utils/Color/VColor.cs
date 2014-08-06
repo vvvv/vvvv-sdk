@@ -7,6 +7,7 @@
 
 using System;
 using System.Drawing;
+using System.Globalization;
 
 /// <summary>
 /// VVVV Color Utilities 
@@ -411,5 +412,36 @@ namespace VVVV.Utils.VColor
 		
 		#endregion color conversion
 		
+		/// <summary>
+		/// Converts a RGBAColor to a string with semicolon separator
+		/// </summary>
+		/// <param name="col"></param>
+		/// <returns></returns>
+		public static string Serialze(RGBAColor col)
+		{
+		    return col.R.ToString("r", CultureInfo.InvariantCulture) + ";" + 
+		        col.G.ToString("r", CultureInfo.InvariantCulture) + ";" + 
+		        col.B.ToString("r", CultureInfo.InvariantCulture) + ";" + 
+		        col.A.ToString("r", CultureInfo.InvariantCulture);
+		}
+		
+		/// <summary>
+		/// Converts a string with 4 double values and  semicolon separator to a RGBAColor
+		/// </summary>
+		/// <param name="col"></param>
+		/// <returns></returns>
+		public static RGBAColor Deserialze(string col)
+		{
+		    var vals = col.Split(';');
+		    var result = VColor.Black;
+		    if(vals.Length == 4)
+		    {
+		        result.R = double.Parse(vals[0], CultureInfo.InvariantCulture);
+		        result.G = double.Parse(vals[1], CultureInfo.InvariantCulture);
+		        result.B = double.Parse(vals[2], CultureInfo.InvariantCulture);
+		        result.A = double.Parse(vals[3], CultureInfo.InvariantCulture);
+		    }
+		    return result;
+		}
 	}
 }
