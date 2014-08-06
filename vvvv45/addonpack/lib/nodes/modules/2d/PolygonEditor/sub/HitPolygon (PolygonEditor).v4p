@@ -9,7 +9,7 @@
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1" slicecount="8" values="0.456043956043956,0.0679012345679013,-0.0384615384615381,0.191358024691358,-0.0604395604395604,0.5,0.5,0.5,-0.181318681318681,-0.845679012345679,-0.5,-0.5,-0.39010989010989,-0.216049382716049,0.0384615384615384,-0.512345679012346">
    </PIN>
-   <PIN pinname="Vertices Count" slicecount="3" visible="1" values="16">
+   <PIN pinname="Vertices Count" slicecount="0" visible="1" values="16">
    </PIN>
    <PIN pinname="PointsXY" visible="1" slicecount="2" values="0.452229299363057,0.853211009174312">
    </PIN>
@@ -65,8 +65,6 @@
    </LINKPOINT>
    <LINKPOINT x="1770" y="3690">
    </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Vertices Count">
    </LINK>
    <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="42">
    <BOUNDS type="Node" left="3720" top="2280" width="855" height="270">
@@ -241,9 +239,9 @@
    <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Input 3">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="54" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2100" top="6390" width="795" height="240">
+   <BOUNDS type="Box" left="2115" top="7215" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2100" top="6390" width="0" height="0">
+   <BOUNDS type="Node" left="2115" top="7215" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -261,5 +259,17 @@
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="0" dstpinname="VerticesXY">
+   </LINK>
+   <NODE systemname="AvoidNIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\AvoidNIL (Spreads).v4p" nodename="AvoidNIL (Spreads)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="2115" top="2955" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Output" dstnodeid="0" dstpinname="Vertices Count">
    </LINK>
    </PATCH>
