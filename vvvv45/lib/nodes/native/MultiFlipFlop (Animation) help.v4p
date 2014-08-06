@@ -1,0 +1,191 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\MultiFlipFlop (Animation) help.v4p">
+   <BOUNDS height="4875" left="2040" top="2445" type="Window" width="4245">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="420" left="345" top="3105" type="Node" width="5190">
+   </BOUNDS>
+   <BOUNDS height="1110" left="345" top="3105" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Use the Inspector to add or remove input pins (set Count)&cr;&lf;&cr;&lf;NOTE: if more than one pin is TRUE, the first counts, others are ignored!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="MultiFlipFlop (Animation)" systemname="MultiFlipFlop (Animation)">
+   <BOUNDS height="270" left="1065" top="2175" type="Node" width="1785">
+   </BOUNDS>
+   <PIN pinname="Set Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Set 0" visible="1">
+   </PIN>
+   <PIN pinname="Set 1" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Set 2" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Set 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="660" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5280" top="7695" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="660" top="1230" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|set 1|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Set 0" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="660" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6810" top="8520" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="660" top="2610" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Digits" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1230" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5580" top="7995" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="1230" top="1230" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|set 2|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Set 1" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1830" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6960" top="7875" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="1830" top="1230" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|set 3|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2400" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7800" top="7965" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="2400" top="1245" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|set 4|">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Set 2" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Set 3" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="3675">
+   </BOUNDS>
+   <BOUNDS height="160" left="450" top="13740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|returns the index of the first pin which is TRUE, and keeps the value if no input pin is TRUE. &cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="450" top="13740" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MultiFlipFlop - Animation|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

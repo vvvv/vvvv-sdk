@@ -1,0 +1,315 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Depth (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\work\tempest\tempest\patches\Users (Kinect OpenNI) help.v4p" systemname="Users (Kinect OpenNI) help">
+   <BOUNDS height="10005" left="7605" top="1305" type="Window" width="9090">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="3" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="100" left="4530" top="6300" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="4530" top="6300" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="1365" top="1305" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.02060,0.36864,0.22990,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
+   <BOUNDS height="100" left="4695" top="5340" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="5265" top="1350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="690" left="5265" top="1350" type="Box" width="3345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
+   <BOUNDS height="100" left="4725" top="945" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Update">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Configuration File" slicecount="1" values="OpenNIConfig.xml">
+   </PIN>
+   <PIN pinname="Driver" visible="1">
+   </PIN>
+   <PIN pinname="Mirrored" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
+   </LINK>
+   <NODE componentmode="Hidden" filename="" id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="100" left="4530" top="5880" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="12" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5265" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="5265" top="3675" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="2" nodename="Depth (Kinect OpenNI)" systemname="Depth (Kinect OpenNI)">
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Enable">
+   </PIN>
+   <BOUNDS height="100" left="4725" top="4320" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Users" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Enabled">
+   </PIN>
+   <PIN pinname="Depth Mode">
+   </PIN>
+   <PIN pinname="Adapt to RGB View">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Context" srcnodeid="0" srcpinname="Context">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Enabled" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4905" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4905" top="2340" type="Box" width="1005">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Histogram">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Depth Mode" srcnodeid="18" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5250" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="5250" top="4725" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="2" srcpinname="FOVXY">
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="585" left="255" top="525" type="Box" width="4170">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns a 16bit depthmap in two flavors: histogram or depth in mm (where only the first 13bit are being used).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Depth (Kinect OpenNI)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="22" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="100" left="1095" top="5730" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1740" top="6285" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="285" left="1740" top="6285" type="Box" width="2400">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Input String" srcnodeid="22" srcpinname="Format Description">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="480" left="270" top="2340" type="Node" width="8070">
+   </BOUNDS>
+   <BOUNDS height="2430" left="270" top="2340" type="Box" width="3945">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Histogram&cr;&lf;Here the depth is mapped to a human visible range. This is mostly useful for doing a general check on the depth.&cr;&lf;&cr;&lf;Raw&cr;&lf;Here you&apos;ll hardly see anything with your naked eye since only 13bit of the 16bit texture are in use. Mutliply a pixels value by 65535 to get mm.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6345" top="4800" type="Node" width="4665">
+   </BOUNDS>
+   <BOUNDS height="750" left="6345" top="4800" type="Box" width="2040">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; the FOV is needed to convert projective-space to world-space.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="705" top="7095" type="Node" width="3960">
+   </BOUNDS>
+   <BOUNDS height="2400" left="705" top="7095" type="Box" width="6300">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In order for a pixel to be converted from projective-space to realworld-space you need to do something like:&cr;&lf;&cr;&lf;realworld.x = (projective.x - 0.5) * projective.z * XYtoZ.x + projective.x*projective.z;&cr;&lf;realworld.y = (0.5 - projective.y) * projective.z * XYtoZ.y + projective.y*projective.z;&cr;&lf;realworld.z = projective.z;&cr;&lf;&cr;&lf;where:&cr;&lf;projective.xy = uv coordinates of a fullscreen quad&cr;&lf;projective.z = value from the depthmap&cr;&lf;XYtoZ = tan(FOV/2)*2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input String" srcnodeid="0" srcpinname="Driver">
+   </LINK>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5835" top="3765" type="Node" width="1905">
+   </BOUNDS>
+   <BOUNDS height="270" left="5835" top="3765" type="Box" width="1905">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; enable || disable output|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5100" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="5100" top="2790" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Adapt to RGB View" srcnodeid="28" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5985" top="2280" type="Node" width="1140">
+   </BOUNDS>
+   <BOUNDS height="270" left="5985" top="2280" type="Box" width="1140">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; depth mode|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5835" top="2760" type="Node" width="1530">
+   </BOUNDS>
+   <BOUNDS height="930" left="5835" top="2760" type="Box" width="1935">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; adapt to rgb view&cr;&lf;(needs an RGB (Kinect OpenNI) node connected to Kinect (OpenNI) as well)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\OpenNIKinect.dll" id="32" nodename="RGB (Kinect OpenNI)" systemname="RGB (Kinect OpenNI)">
+   <BOUNDS height="100" left="3465" top="1425" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Context" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="Context" srcnodeid="0" srcpinname="Context">
+   </LINK>
+   </PATCH>
