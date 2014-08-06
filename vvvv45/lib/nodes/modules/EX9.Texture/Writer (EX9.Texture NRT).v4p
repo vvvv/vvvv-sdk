@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture NRT).v4p">
-   <BOUNDS height="6660" left="2340" top="4005" type="Window" width="11130">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture NRT).v4p">
+   <BOUNDS height="6660" left="2445" top="8055" type="Window" width="11130">
    </BOUNDS>
    <INFO author="vvvv group" description="Render to disk. This module allows to save your animation to disk frame by frame. Not Realtime though..." tags="render, output">
    </INFO>
@@ -38,7 +38,7 @@
    <PIN pinname="Reset" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="0" id="-6" managers="" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
+   <NODE hiddenwhenlocked="0" id="-6" managers="" nodename="MainLoop (VVVV)" systemname="MAINLOOP (VVVV)">
    <BOUNDS height="0" left="9015" top="2490" type="Node" width="0">
    </BOUNDS>
    <PIN encoded="0" pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
@@ -52,6 +52,8 @@
    <PIN pinname="Current Frame" pintype="Output" visible="1">
    </PIN>
    <PIN pinname="Time Mode" slicecount="1" values="Increment">
+   </PIN>
+   <PIN pinname="Increase Timing Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="13" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -342,4 +344,60 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="17" dstpinname="Save">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6420" top="6870" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6420" top="6870" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Success">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Success" dstnodeid="21" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="7755" top="6915" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7755" top="6915" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Error Message|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Error Message" dstnodeid="22" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9495" top="7005" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9495" top="7005" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Error" dstnodeid="23" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>

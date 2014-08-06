@@ -1,21 +1,21 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture CubeCross).v4p">
-   <BOUNDS height="6090" left="10980" top="7050" type="Window" width="12675">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Writer (EX9.Texture CubeCross).v4p">
+   <BOUNDS height="7680" left="10980" top="7050" type="Window" width="12675">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="15" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="15" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="510" top="2790" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6360" left="14310" top="240" type="Window" width="4620">
    </BOUNDS>
    <BOUNDS height="2520" left="510" top="2790" type="Box" width="1650">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Layers" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Viewport Transform" pintype="Input" visible="1">
+   <PIN pinname="Viewport" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
@@ -24,6 +24,14 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Cube Cross Texture View|">
    </PIN>
    <PIN pinname="Background Color" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="14" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
@@ -40,7 +48,7 @@
    <PIN pinname="TranslateX" slicecount="6" values="0,-0.6666,0,0.6666,0,0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Viewport Transform" srcnodeid="14" srcpinname="Transform Out">
+   <LINK dstnodeid="15" dstpinname="Viewport" srcnodeid="14" srcpinname="Transform Out">
    </LINK>
    <NODE id="13" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
    <BOUNDS height="0" left="1575" top="1740" type="Node" width="0">
@@ -102,7 +110,7 @@
    <PIN pinname="Far Plane" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3135" top="810" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="22260" top="12855" type="Window" width="215">
@@ -116,7 +124,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0.10001">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4050" top="810" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="22560" top="13155" type="Window" width="215">
@@ -134,7 +142,7 @@
    </LINK>
    <LINK dstnodeid="10" dstpinname="Far Plane" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="Projection Transform" srcnodeid="10" srcpinname="Transform Out">
+   <LINK dstnodeid="15" dstpinname="Projection" srcnodeid="10" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="480" top="810" type="Node" width="0">
@@ -164,7 +172,7 @@
    </NODE>
    <LINK dstnodeid="6" dstpinname="Source" srcnodeid="15" srcpinname="EX9 Out">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5475" top="810" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="21015" top="10785" type="Window" width="215">
@@ -208,7 +216,7 @@
    </NODE>
    <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="6" srcpinname="Texture Out">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="9120" top="780" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="23505" top="7410" type="Window" width="215">
@@ -240,7 +248,7 @@
    </NODE>
    <LINK dstnodeid="12" dstpinname="Source" srcnodeid="13" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="15" dstpinname="View Transform" srcnodeid="12" srcpinname="Transform Out">
+   <LINK dstnodeid="15" dstpinname="View" srcnodeid="12" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="13" dstpinname="Transform In" srcnodeid="11" srcpinname="Output Node">
    </LINK>
@@ -264,4 +272,60 @@
    </LINK>
    <INFO author="vvvv group" description="Saves a cube texture in the &quot;cross&quot; format. " tags="environment, sky">
    </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5070" top="5535" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5070" top="5535" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Success">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Success" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6045" top="5850" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6045" top="5850" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Error Message|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Error Message" dstnodeid="17" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7530" top="5580" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7530" top="5580" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Error" dstnodeid="18" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>
