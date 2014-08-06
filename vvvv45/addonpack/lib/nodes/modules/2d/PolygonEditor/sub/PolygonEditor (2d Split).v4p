@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Split).v4p" systemname="splitData" filename="C:\Users\Domi\Documents\GitHub\dragCornersGitLocal\sub\splitData.v4p">
-   <BOUNDS type="Window" left="3225" top="2385" width="19980" height="8235">
+   <BOUNDS type="Window" left="3225" top="2385" width="11040" height="8235">
    </BOUNDS>
    <PACK Name="addonpack" Version="31.9.0">
    </PACK>
@@ -75,7 +75,7 @@
    </PIN>
    </NODE>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="4935" top="2955" width="100" height="100">
+   <BOUNDS type="Node" left="2445" top="2550" width="100" height="100">
    </BOUNDS>
    <PIN pinname=".. To [" visible="1" slicecount="1" values="1">
    </PIN>
@@ -263,55 +263,5 @@
    <LINK srcnodeid="58" srcpinname="Remainder" dstnodeid="26" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="58" srcpinname="First Slice" dstnodeid="16" dstpinname=".. To [">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="61">
-   <BOUNDS type="Node" left="12405" top="465" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="12405" top="465" width="795" height="1365">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="6">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="6" values="1,2,3,4,5,6">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   </NODE>
-   <NODE systemname="CAR (Spreads Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="CAR (Spreads Vector)" componentmode="Hidden" id="63">
-   <BOUNDS type="Node" left="12420" top="2370" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Remainder" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Bin Size" slicecount="1" values="9">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="63" dstpinname="Input">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="64">
-   <BOUNDS type="Node" left="12480" top="3420" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="12480" top="3420" width="750" height="1845">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="6">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="0,0,0,1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="63" srcpinname="Remainder" dstnodeid="64" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

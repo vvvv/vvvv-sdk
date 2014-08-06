@@ -57,7 +57,7 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" values="|0.5000,-0.5000,-0.5000,-0.5000,-0.5000,0.5000,0.5000,0.5000|">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Vertices|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="VerticesXY">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -187,9 +187,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="36">
-   <BOUNDS type="Node" left="8370" top="1140" width="100" height="100">
+   <BOUNDS type="Node" left="9780" top="1170" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="8370" top="1140" width="480" height="480">
+   <BOUNDS type="Box" left="9780" top="1170" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -205,9 +205,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="6630" top="1140" width="100" height="100">
+   <BOUNDS type="Node" left="8040" top="1170" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6630" top="1140" width="795" height="240">
+   <BOUNDS type="Box" left="8040" top="1170" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
@@ -474,28 +474,6 @@
    </LINK>
    <LINK srcnodeid="1" srcpinname="Output" dstnodeid="47" dstpinname="Input 1" hiddenwhenlocked="0">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="54" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="9465" top="1140" width="795" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9465" top="1140" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" values="0,0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Insert Vertices|">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="56">
    <BOUNDS type="Node" left="2850" top="1140" width="100" height="100">
    </BOUNDS>
@@ -549,7 +527,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="6" values="|Keyboard Sensitivity|,|Keyboard Sensitivity|,|Keyboard Sensitivity|,|Keyboard Sensitivity|,|Keyboard Sensitivity|,|Keyboard Sensitivity|">
+   <PIN pinname="Descriptive Name" slicecount="6" values="|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -609,7 +587,7 @@
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="34" dstpinname="Remove" hiddenwhenlocked="1">
    </LINK>
    <NODE id="25" componentmode="Hidden" systemname="Insert (PolygonEditor)" filename="..\PolygonEditor/sub\Insert (PolygonEditor).v4p" nodename="Insert (PolygonEditor)" stayontop="0">
-   <BOUNDS type="Window" left="390" top="2295" width="21000" height="10650">
+   <BOUNDS type="Window" left="1875" top="585" width="21000" height="10650">
    </BOUNDS>
    <BOUNDS type="Node" left="5055" top="4470" width="100" height="100">
    </BOUNDS>
@@ -635,10 +613,10 @@
    </PIN>
    <PIN pinname="Shape Rotation" visible="1">
    </PIN>
+   <PIN pinname="Polygon" slicecount="2" visible="1" values="0,0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Insert" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="54" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Insert Vertices">
    </LINK>
    <LINK srcnodeid="34" srcpinname="Vertex Bin Size" dstnodeid="25" dstpinname="Polygon Vertex Count" hiddenwhenlocked="1">
    </LINK>
@@ -1195,7 +1173,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="3240" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="3225" top="2385" width="11280" height="8235">
+   <BOUNDS type="Window" left="3225" top="2385" width="11040" height="8235">
    </BOUNDS>
    <PIN pinname="data input" visible="1">
    </PIN>
@@ -1405,5 +1383,11 @@
    <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Polygon Vertex Count">
    </LINK>
    <LINK srcnodeid="12" srcpinname="VerticesXY" dstnodeid="11" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Initial Data" dstnodeid="25" dstpinname="Polygon" linkstyle="VHV">
+   <LINKPOINT x="1470" y="4395">
+   </LINKPOINT>
+   <LINKPOINT x="6060" y="4395">
+   </LINKPOINT>
    </LINK>
    </PATCH>
