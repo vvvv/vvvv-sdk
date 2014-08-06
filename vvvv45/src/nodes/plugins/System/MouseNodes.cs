@@ -774,9 +774,9 @@ namespace VVVV.Nodes.Input
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var notifications = FSubscriptions[i].Update(MouseIn[i]);
-                if (QueueModeIn[i] == QueueMode.Discard)
-                    notifications = notifications.TakeLast(1);
+                var notifications = QueueModeIn[i] == QueueMode.Discard
+                    ? FSubscriptions[i].ConsumeAll(MouseIn[i])
+                    : FSubscriptions[i].ConsumeNext(MouseIn[i]);
                 foreach (var n in notifications)
                 {
                     switch (n.Kind)
