@@ -61,10 +61,13 @@ namespace VVVV.Nodes
 			{
 				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
 				doc = SvgDocument.Open<SvgDocument>(s);
+				FSuccess[slice] = true;
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				FLogger.Log(e);
+			    FSuccess[slice] = false;
+			    FErrorMessage[slice] = e.Message;
+			    FError[slice] = true;
 			}
 			
 			return doc;
@@ -87,21 +90,25 @@ namespace VVVV.Nodes
 	    #pragma warning disable 649
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
+		
 		#pragma warning restore
 		
 		protected override SvgDocument ReadDocument(int slice)
 		{
-			SvgDocument doc = null;
-			try
-			{
-				doc = SvgDocument.Open(FFilenameIn[slice]);
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-			}
-			
-			return doc;
+		    SvgDocument doc = null;
+		    try
+		    {
+		        doc = SvgDocument.Open(FFilenameIn[slice]);
+		        FSuccess[slice] = true;
+		    }
+		    catch(Exception e)
+		    {
+		        FSuccess[slice] = false;
+		        FErrorMessage[slice] = e.Message;
+		        FError[slice] = true;
+		    }
+		    
+		    return doc;
 		}
 		
 		protected override bool InputChanged()
@@ -137,15 +144,40 @@ namespace VVVV.Nodes
 		
 		[Output("Has Size", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FHasSizeOut;
+		
+		[Output("Success")]
+	    protected ISpread<bool> FSuccess;
+	    
+	    [Output("Error Message")]
+	    protected ISpread<string> FErrorMessage;
+	    
+	    [Output("Error")]
+	    protected ISpread<bool> FError;
 
 		[Import()]
 		protected ILogger FLogger;
 		#pragma warning restore
 		#endregion fields & pins
+		
+		protected virtual void Reset()
+	    {
+	        for (int slice = 0; slice < FSuccess.SliceCount; slice++)
+	        {
+	            FSuccess[slice] = false;
+	            FErrorMessage[slice] = "";
+	            FError[slice] = false;
+	        }
+	    }
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+		    FSuccess.SliceCount = SpreadMax;
+		    FErrorMessage.SliceCount = SpreadMax;
+		    FError.SliceCount = SpreadMax;
+		    
+		    Reset();
+		    
 			if(InputChanged() || FBackgroundIn.IsChanged || FReloadIn[0])
 			{
 				FDocOut.SliceCount = SpreadMax;				
@@ -237,6 +269,16 @@ namespace VVVV.Nodes
 		
 		[Input("Write", IsBang = true, Order = 20)]
 		ISpread<bool> FDoWriteIn;
+		
+		[Output("Success", Order = 20)]
+		protected ISpread<bool> FSuccess;
+		
+		[Output("Error Message", Order = 30)]
+		protected ISpread<string> FErrorMessage;
+		
+		[Output("Error", Order = 40)]
+		protected ISpread<bool> FError;
+		
 		#pragma warning restore
 		
 		//called when data for any output pin is requested
@@ -271,10 +313,21 @@ namespace VVVV.Nodes
 		
 		protected virtual void Reset()
 		{
-		    
+		    for (int slice = 0; slice < FSuccess.SliceCount; slice++)
+		    {
+		        FSuccess[slice] = false;
+		        FErrorMessage[slice] = "";
+		        FError[slice] = false;
+		    }
 		}
 		
-		protected abstract void SetSlicecount(int spreadMax);
+		protected virtual void SetSlicecount(int spreadMax)
+		{
+		    FSuccess.SliceCount = spreadMax;
+		    FErrorMessage.SliceCount = spreadMax;
+		    FError.SliceCount = spreadMax;
+		}
+		
 		protected abstract void WriteDoc(SvgDocument doc, int slice);
 	}
 	
@@ -290,36 +343,8 @@ namespace VVVV.Nodes
 	    #pragma warning disable 649
 	    [Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
 	    ISpread<string> FFilenameIn;
-	    
-	    [Output("Success")]
-	    ISpread<bool> FSuccess;
-	    
-	    [Output("Error Message")]
-	    ISpread<string> FErrorMessage;
-	    
-	    [Output("Error")]
-	    ISpread<bool> FError;
-	    
-	    #pragma warning restore
 
-	    protected override void Reset()
-	    {
-	        base.Reset();
-	        for (int slice = 0; slice < FSuccess.SliceCount; slice++)
-	        {
-	            FSuccess[slice] = false;
-	            FErrorMessage[slice] = "";
-	            FError[slice] = false;
-	        }
-	    }
-	    
-	    
-	    protected override void SetSlicecount(int spreadMax)
-	    {
-	        FSuccess.SliceCount = spreadMax;
-	        FErrorMessage.SliceCount = spreadMax;
-	        FError.SliceCount = spreadMax;
-	    }
+	    #pragma warning restore
 	    
 	    protected override void WriteDoc(SvgDocument doc, int slice)
 	    {
@@ -353,19 +378,30 @@ namespace VVVV.Nodes
 		
 		protected override void SetSlicecount(int spreadMax)
 		{
+		    base.SetSlicecount(spreadMax);
 			FStringOut.SliceCount = spreadMax;
 		}
 		 
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
-			using(var ms = new MemoryStream())
-            {
-                doc.Write(ms);
-                ms.Position = 0;
-                var sr = new StreamReader(ms);
-                FStringOut[slice] = sr.ReadToEnd();
-                sr.Close();
-            }
+		    using(var ms = new MemoryStream())
+		    {
+		        try
+		        {
+		            doc.Write(ms);
+		            ms.Position = 0;
+		            var sr = new StreamReader(ms);
+		            FStringOut[slice] = sr.ReadToEnd();
+		            sr.Close();
+		            FSuccess[slice] = true;
+		        }
+		        catch(Exception e)
+		        {
+		            FSuccess[slice] = false;
+		            FErrorMessage[slice] = e.Message;
+		            FError[slice] = true;
+		        }
+		    }
 		}
 	}
 
