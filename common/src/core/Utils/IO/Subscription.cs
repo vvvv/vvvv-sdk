@@ -65,4 +65,46 @@ namespace VVVV.Utils.IO
             }
         }
     }
+
+    public class Subscription2<TSource, TNotification> : IDisposable
+        where TSource : class
+    {
+        private readonly Func<TSource, IObservable<TNotification>> FSelector;
+        private TSource FSource;
+        private IEnumerator<IList<TNotification>> FEnumerator;
+
+        public Subscription2(Func<TSource, IObservable<TNotification>> selector)
+        {
+            FSelector = selector;
+        }
+
+        public IEnumerable<TNotification> Update(TSource source)
+        {
+            if (source != FSource)
+            {
+                Unsubscribe();
+                FSource = source;
+                if (FSource != null)
+                    FEnumerator = FSelector(FSource).Chunkify()
+                        .GetEnumerator();
+            }
+            if (FEnumerator != null && FEnumerator.MoveNext())
+                return FEnumerator.Current;
+            return Enumerable.Empty<TNotification>();
+        }
+
+        public void Dispose()
+        {
+            Unsubscribe();
+        }
+
+        private void Unsubscribe()
+        {
+            if (FEnumerator != null)
+            {
+                FEnumerator.Dispose();
+                FEnumerator = null;
+            }
+        }
+    }
 }

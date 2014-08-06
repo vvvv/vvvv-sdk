@@ -106,9 +106,12 @@ namespace VVVV.Nodes.Input
             }
             else
             {
-                DeviceOut.SliceCount = 0;
-                DeviceNameOut.SliceCount = 0;
-                DeviceDescriptionOut.SliceCount = 0;
+                DeviceOut.SliceCount = 1;
+                DeviceOut[0] = CreateDummy();
+                DeviceNameOut.SliceCount = 1;
+                DeviceNameOut[0] = "Dummy";
+                DeviceDescriptionOut.SliceCount = 1;
+                DeviceDescriptionOut[0] = "Dummy";
             }
             DeviceCountOut[0] = devices.Count;
         }
@@ -120,6 +123,7 @@ namespace VVVV.Nodes.Input
 
         protected abstract TDevice CreateDevice(DeviceInfo deviceInfo, int slice);
         protected abstract TDevice CreateMergedDevice(int slice);
+        protected abstract TDevice CreateDummy();
 
         public void Evaluate(int spreadMax)
         {

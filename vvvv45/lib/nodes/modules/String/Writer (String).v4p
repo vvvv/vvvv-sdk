@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\String\Writer (String).v4p" systemname="Writer (File String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (File String).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (String).v4p" systemname="Writer (File String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\String\Writer (File String).v4p">
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="2" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="2505" top="1170" width="0" height="0">
    </BOUNDS>
@@ -70,7 +70,7 @@
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="7" dstpinname="Input">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="3915" top="1170" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3915" top="1170" width="480" height="480">
@@ -89,10 +89,14 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
    </NODE>
    <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Write">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="4680" top="1170" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="4680" top="1170" width="480" height="480">
@@ -110,6 +114,10 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Append">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
    <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Append">
@@ -136,7 +144,7 @@
    </LINK>
    <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Append">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS type="Node" left="6000" top="1170" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="6000" top="1170" width="480" height="480">
@@ -155,7 +163,67 @@
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Create Directory">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="645" top="3360" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="645" top="3360" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Success">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Success" dstnodeid="13" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2610" top="3540" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2610" top="3540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Error Message|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Error Message" dstnodeid="14" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4560" top="3450" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4560" top="3450" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Error" dstnodeid="15" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
