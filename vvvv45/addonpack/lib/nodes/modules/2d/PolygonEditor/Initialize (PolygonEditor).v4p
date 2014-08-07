@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
-   <BOUNDS type="Window" left="8445" top="5040" width="9000" height="7335">
+   <BOUNDS type="Window" left="7005" top="2925" width="9000" height="7335">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -34,7 +34,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="InAWindow" id="8">
+   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="Hidden" id="8">
    <BOUNDS type="Node" left="1695" top="750" width="100" height="100">
    </BOUNDS>
    <PIN pinname="InputXY" visible="1" slicecount="2" values="0,0">
@@ -67,7 +67,7 @@
    <LINK srcnodeid="6" srcpinname="Count" dstnodeid="7" dstpinname="Count">
    </LINK>
    <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="3180" top="3480" width="100" height="100">
+   <BOUNDS type="Node" left="3390" top="3165" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -75,7 +75,7 @@
    </PIN>
    </NODE>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="3180" top="3915" width="100" height="100">
+   <BOUNDS type="Node" left="3390" top="3600" width="100" height="100">
    </BOUNDS>
    <PIN pinname=".. To [" visible="1">
    </PIN>
@@ -85,7 +85,7 @@
    <LINK srcnodeid="5" srcpinname="Count" dstnodeid="4" dstpinname=".. To [">
    </LINK>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="4050" top="3945" width="100" height="100">
+   <BOUNDS type="Node" left="4260" top="3630" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Count" visible="1">
    </PIN>
@@ -112,8 +112,8 @@
    <PIN pinname="Y Input Value" slicecount="30" visible="1" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
    </PIN>
    </NODE>
-   <NODE systemname="PolygonEditor (2d Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="600" top="4530" width="4350" height="270">
+   <NODE systemname="PolygonEditor (2d Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="InAWindow" id="9">
+   <BOUNDS type="Node" left="600" top="4530" width="5535" height="270">
    </BOUNDS>
    <PIN pinname="pointsXY" visible="1">
    </PIN>
@@ -123,7 +123,7 @@
    </PIN>
    <PIN pinname="data output" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="-14325" top="1830" width="14055" height="10680">
+   <BOUNDS type="Window" left="-23880" top="1350" width="19035" height="10680">
    </BOUNDS>
    <PIN pinname="shapesZIndex" visible="1">
    </PIN>
@@ -142,6 +142,12 @@
    <PIN pinname="Vertex Bin Size" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Mouseover" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Output" dstnodeid="9" dstpinname="Vertex Tagged">
@@ -179,5 +185,49 @@
    <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="5" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="9" dstpinname="Vertex Bin Size">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4605" top="1260" width="5850" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4605" top="1260" width="3540" height="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|! Mouseover Vertex, Mouseover, ID and Cursur Type are not used in the FrameDelay Loop, it&apos;s set at the very end just before output.&cr;&lf;&cr;&lf;ID might also be used internally in the future.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="6075" top="3645" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6075" top="3645" width="1200" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="9" dstpinname="Cursor Type">
+   </LINK>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="6525" top="4365" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" slicecount="1" values="|Cursor Mode Enum|">
+   </PIN>
+   <PIN pinname="Receive" visible="1" slicecount="1" values="(nil)">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="19" dstpinname="Receive">
+   </LINK>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="6075" top="3210" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Enum" dstnodeid="18" dstpinname="Input Enum">
    </LINK>
    </PATCH>

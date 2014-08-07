@@ -26,28 +26,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="hitPoint" filename="sub\hitPoint.v4p" nodename="sub\hitPoint.v4p" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="10140" top="4185" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="PositionXY" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Epsilon" slicecount="1" values="0.1">
-   </PIN>
-   <PIN pinname="isHit" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="4125" top="2505" width="4725" height="5145">
-   </BOUNDS>
-   <PIN pinname="mouseXY" visible="1" slicecount="2" values="0,0">
-   </PIN>
-   <BOUNDS type="Box" left="10140" top="4185">
-   </BOUNDS>
-   <PIN pinname="Is Hit" visible="1">
-   </PIN>
-   <PIN pinname="MouseXY" visible="1">
-   </PIN>
-   <PIN pinname="VertexXY" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="9465" top="12240" width="2340" height="270">
    </BOUNDS>
@@ -141,15 +119,13 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1" slicecount="7" values="0,0,0,0,0,0,0">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="7" values="0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="103" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="98" srcpinname="ControlKey" dstnodeid="102" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="98" srcpinname="ControlKey" dstnodeid="103" dstpinname="Switch">
@@ -376,8 +352,6 @@
    <LINKPOINT x="9270" y="2205">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="14" dstpinname="VertexXY">
-   </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="116">
    <BOUNDS type="Node" left="11775" top="2685" width="100" height="100">
    </BOUNDS>
@@ -497,8 +471,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="121" srcpinname="PositionXY" dstnodeid="122" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="14" dstpinname="MouseXY" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="123">
    <BOUNDS type="Node" left="7620" top="1350" width="100" height="100">
@@ -705,7 +677,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="174" systemname="IOBox (String)">
    <BOUNDS type="Node" left="12930" top="6690" width="3855" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="12930" top="6690" width="3855" height="480">
+   <BOUNDS type="Box" left="12930" top="6690" width="4035" height="585">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; don&apos;t loose values from 0 - 3&cr;&lf;(OnlyOneTrue obviously only gives out True of False)|">
    </PIN>
@@ -744,44 +716,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="OnlyOneTrue (boolean)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\OnlyOneTrue (boolean).v4p" nodename="OnlyOneTrue (boolean)" componentmode="Hidden" id="162">
-   <BOUNDS type="Node" left="9900" top="5625" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="3450" top="3525" width="14190" height="11025">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="161" srcpinname="Output" dstnodeid="162" dstpinname="Z-Index">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="162" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="162" srcpinname="Output" dstnodeid="103" dstpinname="Input 1">
-   </LINK>
-   <NODE systemname="OnlyOneTrue (boolean)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\OnlyOneTrue (boolean).v4p" componentmode="Hidden" id="134" nodename="OnlyOneTrue (boolean)">
-   <BOUNDS type="Node" left="12720" top="6060" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="12720" top="6060" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="3450" top="3525" width="8070" height="8550">
-   </BOUNDS>
-   <PIN pinname="Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="117" srcpinname="Y Output Value" dstnodeid="134" dstpinname="Z-Index">
-   </LINK>
-   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="147" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="157" srcpinname="Output" dstnodeid="134" dstpinname="Input">
-   </LINK>
    <INFO author="" description="" tags="">
    </INFO>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="177">
@@ -853,5 +787,71 @@
    <LINK srcnodeid="190" srcpinname="Output" dstnodeid="132" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="189" dstpinname="Input">
+   </LINK>
+   <NODE systemname="OnlyOneTrue (PolygonEditor Boolean)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\OnlyOneTrue (PolygonEditor Boolean).v4p" nodename="OnlyOneTrue (PolygonEditor Boolean)" componentmode="Hidden" id="162">
+   <BOUNDS type="Node" left="9900" top="5625" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="3450" top="3525" width="14190" height="11025">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="161" srcpinname="Output" dstnodeid="162" dstpinname="Z-Index">
+   </LINK>
+   <LINK srcnodeid="162" srcpinname="Output" dstnodeid="103" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="OnlyOneTrue (PolygonEditor Boolean)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\OnlyOneTrue (PolygonEditor Boolean).v4p" componentmode="Hidden" id="134" nodename="OnlyOneTrue (PolygonEditor Boolean)">
+   <BOUNDS type="Node" left="12720" top="6060" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12720" top="6060" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3450" top="3525" width="8070" height="8550">
+   </BOUNDS>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="117" srcpinname="Y Output Value" dstnodeid="134" dstpinname="Z-Index">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="147" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="157" srcpinname="Output" dstnodeid="134" dstpinname="Input">
+   </LINK>
+   <NODE systemname="HitPoint (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\HitPoint (PolygonEditor).v4p" nodename="HitPoint (PolygonEditor)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="10140" top="4185" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="isHit" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="4125" top="2505" width="4725" height="5145">
+   </BOUNDS>
+   <PIN pinname="mouseXY" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="10140" top="4185">
+   </BOUNDS>
+   <PIN pinname="Is Hit" visible="1">
+   </PIN>
+   <PIN pinname="MouseXY" visible="1">
+   </PIN>
+   <PIN pinname="VertexXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="103" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="14" dstpinname="VertexXY">
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="14" dstpinname="MouseXY" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="162" dstpinname="Input">
    </LINK>
    </PATCH>
