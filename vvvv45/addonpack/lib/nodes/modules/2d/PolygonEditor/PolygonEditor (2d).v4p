@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
    <BOUNDS type="Window" left="1605" top="2175" width="20385" height="15450">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="31.9.0">
    </PACK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="52">
    <BOUNDS type="Node" left="12885" top="1140" width="100" height="100">
@@ -500,6 +500,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Switch" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="21975" y="13020">
+   </LINKPOINT>
+   <LINKPOINT x="3915" y="13065">
+   </LINKPOINT>
+   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="74" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11400" top="15540" width="4650" height="270">
    </BOUNDS>
@@ -519,13 +525,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="15345" top="1140" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Real">
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="6" values="|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.01">
    </PIN>
    </NODE>
    <NODE systemname="Remove (PolygonEditor)" filename="..\PolygonEditor/sub\Remove (PolygonEditor).v4p" componentmode="Hidden" id="34" nodename="Remove (PolygonEditor)" stayontop="1">
@@ -1008,7 +1012,7 @@
    <LINKPOINT x="5065" y="9725">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Stepsize">
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Sensitivity">
    </LINK>
    <LINK srcnodeid="45" srcpinname="VerticesXY" dstnodeid="37" dstpinname="VerticesXY" hiddenwhenlocked="0" linkstyle="Bezier">
    <LINKPOINT x="5100" y="9745">
@@ -1386,52 +1390,4 @@
    <LINKPOINT x="6060" y="4395">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="76">
-   <BOUNDS type="Node" left="5040" top="12630" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="76" dstpinname="Input 3" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="20470" y="12390">
-   </LINKPOINT>
-   <LINKPOINT x="5810" y="12450">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="76" dstpinname="Input 2" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="10345" y="12360">
-   </LINKPOINT>
-   <LINKPOINT x="5615" y="12420">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="76" dstpinname="Input 1" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="9460" y="12375">
-   </LINKPOINT>
-   <LINKPOINT x="5420" y="12435">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="1" dstpinname="Switch">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="77" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3435" top="11280" width="9015" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3435" top="11280" width="1545" height="1605">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|remove/ insert pins should still work, also when Is Active is false. Otherwise, any calculations should be avoided if possible. &tab;           &gt;|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    </PATCH>
