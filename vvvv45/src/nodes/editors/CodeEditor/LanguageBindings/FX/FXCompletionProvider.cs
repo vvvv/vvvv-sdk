@@ -149,30 +149,6 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
             foreach(var type in FTypeReference)
                 if (!tempDict.ContainsKey(type.Key.ToLower()))
                     tempDict.Add(type.Key.ToLower(), new DefaultCompletionData(type.Key, type.Value, 0));
-            
-            //add all words of the text not part of a comment and not yet in the dict                             
-            Regex rx = new Regex(@"^[A-Za-z_]\w+$");
-            foreach(var line in textArea.Document.LineSegmentCollection)
-            {
-                var l = line.Words.ToArray();
-                if (l.Length > 0)
-                {
-                    if (!l[0].Word.StartsWith("//"))
-                        foreach(var word in line.Words)
-                    {
-                        if (word.Word.StartsWith("//"))
-                            break;
-                        else if (!tempDict.ContainsKey(word.Word.ToLower()) && rx.IsMatch(word.Word))
-                            tempDict.Add(word.Word.ToLower(), new DefaultCompletionData(word.Word, "", 2));
-                    }
-                }
-            }
-            
-            //add all letters of the alphabet
-            char[] components = Enumerable.Range('a', 'z' - 'a' + 1).Select(i => (char)i).ToArray();
-            for(int i = 0; i < components.Length; i++)
-                if (!tempDict.ContainsKey(components[i].ToString()))
-                    tempDict.Add(components[i].ToString(), new DefaultCompletionData(components[i].ToString(), "", 2));
 
             //move all completion data to the output array
             ICompletionData[] cData = new ICompletionData[tempDict.Count];
@@ -183,8 +159,13 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
                 j++;
             }
             
-            //set preselection to "" for popup to sort by first character
-            PreSelection = "";
+            //set preselection to the word directly left of the caret
+            var lineSegment = textArea.Document.GetLineSegmentForOffset(textArea.Caret.Offset);
+            var textWord = lineSegment.GetWord(textArea.Caret.Position.Column - 1);
+            if (textWord != null)
+                PreSelection = textWord.Word;
+            else
+                PreSelection = null;
             
             return cData;
         }

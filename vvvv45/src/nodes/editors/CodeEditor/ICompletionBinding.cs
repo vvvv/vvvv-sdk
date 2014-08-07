@@ -5,6 +5,7 @@ namespace VVVV.HDE.CodeEditor
 {
 	public interface ICompletionBinding
 	{
-		void HandleKeyPress(CodeEditor editor, char key);
+        // Return true to handle the key press.
+		bool HandleKeyPress(CodeEditor editor, char key);
 	}
 }

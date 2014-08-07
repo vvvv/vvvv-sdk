@@ -896,14 +896,12 @@ namespace VVVV.HDE.CodeEditor
                     }
                 }
                 
-                FCompletionBinding.HandleKeyPress(this, key);
+                return FCompletionBinding.HandleKeyPress(this, key);
             }
             finally
             {
                 inHandleKeyPress = false;
             }
-            
-            return false;
         }
         
         void CloseCodeCompletionWindow(object sender, EventArgs e)
