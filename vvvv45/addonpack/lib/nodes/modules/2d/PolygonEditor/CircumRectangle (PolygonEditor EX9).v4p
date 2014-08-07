@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\CircumRectangle.v4p" systemname="CircumRectangle render" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\CircumRectangle render.v4p">
-   <BOUNDS type="Window" left="6705" top="2490" width="14970" height="15600">
+   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\CircumRectangle (PolygonEditor EX9).v4p" systemname="CircumRectangle render" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\CircumRectangle render.v4p">
+   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -650,30 +650,8 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="92">
-   <BOUNDS type="Node" left="2040" top="1995" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Center" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="2040" top="1995">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="92" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="92" dstpinname="Bin Size">
-   </LINK>
-   <LINK srcnodeid="92" srcpinname="Center" dstnodeid="85" dstpinname="TranslateXY">
-   </LINK>
-   <LINK srcnodeid="92" srcpinname="Center" dstnodeid="85" dstpinname="CenterXY">
-   </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="93">
-   <BOUNDS type="Node" left="2865" top="2190" width="100" height="100">
+   <BOUNDS type="Node" left="2955" top="2130" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" slicecount="1" values="-1">
    </PIN>
@@ -687,7 +665,7 @@
    <LINK srcnodeid="93" srcpinname="Output" dstnodeid="85" dstpinname="Rotate">
    </LINK>
    <NODE systemname="ApplyTransform (Transform Vector)" nodename="ApplyTransform (Transform Vector)" componentmode="Hidden" id="98">
-   <BOUNDS type="Node" left="2040" top="3240" width="100" height="100">
+   <BOUNDS type="Node" left="2040" top="4110" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform" visible="1">
    </PIN>
@@ -696,8 +674,6 @@
    <PIN pinname="XYZ Transformed" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="85" srcpinname="Transform Out" dstnodeid="98" dstpinname="Transform">
-   </LINK>
    <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="99">
    <BOUNDS type="Node" left="3135" top="2850" width="100" height="100">
    </BOUNDS>
@@ -711,7 +687,7 @@
    <LINK srcnodeid="99" srcpinname="XYZ" dstnodeid="98" dstpinname="XYZ UnTransformed">
    </LINK>
    <NODE systemname="xy (2d)" nodename="xy (2d)" componentmode="Hidden" id="100">
-   <BOUNDS type="Node" left="2040" top="3690" width="100" height="100">
+   <BOUNDS type="Node" left="2025" top="4530" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
@@ -723,7 +699,7 @@
    <LINK srcnodeid="100" srcpinname="XY" dstnodeid="34" dstpinname="Input">
    </LINK>
    <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="101">
-   <BOUNDS type="Node" left="1095" top="4590" width="100" height="100">
+   <BOUNDS type="Node" left="975" top="4275" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
@@ -732,12 +708,160 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="85" srcpinname="Transform Out" dstnodeid="101" dstpinname="Source">
-   </LINK>
    <LINK srcnodeid="101" srcpinname="Transform Out" dstnodeid="71" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="101" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="101" srcpinname="Transform Out" dstnodeid="12" dstpinname="Transform In">
+   </LINK>
+   <NODE systemname="Mean (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Mean (Spectral Vector)" componentmode="Hidden" id="102">
+   <BOUNDS type="Node" left="1905" top="2100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="102" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="102" dstpinname="Bin Size">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="85" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="85" dstpinname="CenterXY">
+   </LINK>
+   <NODE systemname="Select (Transform Bin)" filename="%VVVV%\addonpack\lib\nodes\plugins\Select.dll" nodename="Select (Transform Bin)" componentmode="Hidden" id="103">
+   <BOUNDS type="Node" left="2055" top="3600" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1" slicecount="1" values="4,3">
+   </PIN>
+   <PIN pinname="Input Bin Size" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="85" srcpinname="Transform Out" dstnodeid="103" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="103" srcpinname="Output" dstnodeid="98" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="104">
+   <BOUNDS type="Node" left="17415" top="2025" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="17415" top="2025" width="2295" height="2250">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="15" values="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1">
+   </PIN>
+   </NODE>
+   <NODE systemname="ApplyTransform (Transform Vector)" nodename="ApplyTransform (Transform Vector)" componentmode="Hidden" id="106">
+   <BOUNDS type="Node" left="16290" top="5835" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Y Output Value" dstnodeid="106" dstpinname="XYZ UnTransformed">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="107">
+   <BOUNDS type="Node" left="15225" top="3465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateXY" slicecount="2" values="-0.03,-0.03">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="108">
+   <BOUNDS type="Node" left="16290" top="6750" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="16290" top="6750" width="2295" height="2250">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="6" visible="1" values="1,1,1,1,1,1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="106" srcpinname="XYZ Transformed" dstnodeid="108" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="109">
+   <BOUNDS type="Node" left="14070" top="3465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateXY" slicecount="2" values="0.12,0.12">
+   </PIN>
+   </NODE>
+   <NODE systemname="Cons (Transform)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Transform)" componentmode="Hidden" id="110">
+   <BOUNDS type="Node" left="14550" top="4410" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="109" srcpinname="Transform Out" dstnodeid="110" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Transform Out" dstnodeid="110" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="110" srcpinname="Output" dstnodeid="106" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="111">
+   <BOUNDS type="Node" left="1485" top="3555" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1485" top="3555" width="285" height="240">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="103" dstpinname="Select">
+   </LINK>
+   <NODE systemname="Select (Transform Bin)" filename="%VVVV%\addonpack\lib\nodes\plugins\Select.dll" nodename="Select (Transform Bin)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="990" top="3885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input Bin Size" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="85" srcpinname="Transform Out" dstnodeid="113" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="113" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="113" srcpinname="Output" dstnodeid="101" dstpinname="Source">
    </LINK>
    </PATCH>
