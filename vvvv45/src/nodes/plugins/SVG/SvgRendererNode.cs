@@ -60,7 +60,7 @@ namespace VVVV.Nodes
 		IDiffSpread<Vector2> FSizeIn;
 		
 		[Output("Document")]
-		ISpread<SvgDoc> FOutput;
+		ISpread<SvgDocument> FOutput;
 		
 		[Output("Size")]
 		ISpread<Vector2> FSizeOutput;
@@ -149,7 +149,8 @@ namespace VVVV.Nodes
 				FSVGDoc.Width = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Width, 1));
 				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
 				
-				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
+				FSVGDoc.SetVVVVBackgroundColor(FBackgroundIn[0]);
+				FOutput[0] = FSVGDoc;
 				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
 			}
 			
@@ -218,7 +219,7 @@ namespace VVVV.Nodes
 		IDiffSpread<Vector2> FSizeIn;
 		
 		[Output("Document")]
-		ISpread<SvgDoc> FOutput;
+		ISpread<SvgDocument> FOutput;
 		
 		[Import]
 		ILogger FLogger;
@@ -267,7 +268,8 @@ namespace VVVV.Nodes
 					doc.Width = new SvgUnit(SvgUnitType.User, Math.Max(FSizeIn[i].X, 1));
 					doc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSizeIn[i].Y, 1));
 					
-					FOutput[i] = new SvgDoc(doc, FBackgroundIn[i].Color);
+					doc.SetVVVVBackgroundColor(FBackgroundIn[i]);
+					FOutput[i] = doc;
 				}
 			}
 		}

@@ -10,6 +10,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Forms;
+using VVVV.Core.Logging;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using VVVV.Hosting.Pins.Input;
@@ -774,9 +775,9 @@ namespace VVVV.Nodes.Input
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var notifications = FSubscriptions[i].Update(MouseIn[i]);
-                if (QueueModeIn[i] == QueueMode.Discard)
-                    notifications = notifications.TakeLast(1);
+                var notifications = QueueModeIn[i] == QueueMode.Discard
+                    ? FSubscriptions[i].ConsumeAll(MouseIn[i])
+                    : FSubscriptions[i].ConsumeNext(MouseIn[i]);
                 foreach (var n in notifications)
                 {
                     switch (n.Kind)
@@ -948,5 +949,88 @@ namespace VVVV.Nodes.Input
         }
 
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
+    }
+
+    [PluginInfo(
+        Name = "MouseMatch", 
+        Category = "Mouse",
+        Help = "Detects certain mouse events like down/up/click",
+        AutoEvaluate = true, 
+        Tags = "doubleclick")]
+    public class DetectMouseNode : IPluginEvaluate
+    {
+        [Input("Mouse")]
+        public ISpread<Mouse> MouseIn;
+
+        [Input("Event Type", DefaultEnumEntry = "MouseClick")]
+        public ISpread<MouseNotificationKind> EventTypeIn;
+
+        [Input("Button", DefaultEnumEntry = "Left")]
+        public ISpread<MouseButtons> ButtonIn;
+
+        [Input("Wheel Delta")]
+        public ISpread<int> WheelDeltaIn;
+
+        [Input("Click Count", DefaultValue = 1)]
+        public ISpread<int> ClickCountIn;
+
+        [Output("Detected", IsBang = true)]
+        public ISpread<bool> DetectedOut;
+
+        [Output("Position")]
+        public ISpread<Vector2D> PositionOut;
+
+        [Import]
+        public ILogger FLogger;
+
+        private readonly Spread<Subscription2<Mouse, MouseNotification>> Subscriptions = new Spread<Subscription2<Mouse, MouseNotification>>();
+
+        public void Evaluate(int spreadMax)
+        {
+            Subscriptions.ResizeAndDispose(
+                spreadMax,
+                () => new Subscription2<Mouse, MouseNotification>(
+                    mouse => mouse.MouseNotifications.InjectMouseClicks())
+                );
+
+            DetectedOut.SliceCount = spreadMax;
+            PositionOut.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var detectedNotification = Subscriptions[i].ConsumeAll(MouseIn[i])
+                    .Where(n => n.Kind == EventTypeIn[i])
+                    .FirstOrDefault(n =>
+                        {
+                            switch (EventTypeIn[i])
+                            {
+                                case MouseNotificationKind.MouseClick:
+                                    var mouseClick = n as MouseClickNotification;
+                                    return mouseClick.Buttons == ButtonIn[i] && mouseClick.ClickCount == ClickCountIn[i];
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButton = n as MouseButtonNotification;
+                                    return mouseButton.Buttons == ButtonIn[i];
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    return mouseWheel.WheelDelta == WheelDeltaIn[i];
+                            }
+                            // Mouse move
+                            return true;
+                        });
+                if (detectedNotification != null)
+                {
+                    DetectedOut[i] = true;
+                    var position = new Vector2D(detectedNotification.Position.X, detectedNotification.Position.Y);
+                    var clientArea = new Vector2D(detectedNotification.ClientArea.Width - 1, detectedNotification.ClientArea.Height - 1);
+                    PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                }
+                else
+                {
+                    DetectedOut[i] = false;
+                    PositionOut[i] = Vector2D.Zero;
+                }
+            }
+        }
     }
 }

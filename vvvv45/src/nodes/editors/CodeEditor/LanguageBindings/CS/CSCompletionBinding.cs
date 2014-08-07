@@ -20,7 +20,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			FCtrlSpaceCompletionProvider = new CtrlSpaceCompletionProvider(editor);
 		}
 		
-		public void HandleKeyPress(CodeEditor editor, char key)
+		public bool HandleKeyPress(CodeEditor editor, char key)
 		{
 			var sdDocument = editor.Document;
 			var textAreaControl = editor.ActiveTextAreaControl;
@@ -28,7 +28,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			
 			// Do not show completion window for now if we're in a comment.
 			if (IsInComment(editor))
-				return;
+				return false;
 			
 			if (key == '(')
 			{
@@ -89,7 +89,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 					int endOffset = textAreaControl.SelectionManager.SelectionCollection[0].EndOffset;
 					// but block code completion when overwriting only part of an identifier
 					if (endOffset < sdDocument.TextLength && char.IsLetterOrDigit(sdDocument.GetCharAt(endOffset)))
-						return;
+						return false;
 					textAreaControl.SelectionManager.RemoveSelectedText();
 					textAreaControl.Caret.Position = sdDocument.OffsetToPosition(cursor);
 				}
@@ -108,8 +108,8 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 				} catch (Exception e) {
 					Debug.WriteLine(e.Message);
 				}
-				
 			}
+            return false;
 		}
 		
 		bool IsInComment(CodeEditor editor)

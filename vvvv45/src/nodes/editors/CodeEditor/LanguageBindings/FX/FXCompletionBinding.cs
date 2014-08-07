@@ -1,5 +1,5 @@
-﻿
-using System;
+﻿using System;
+using System.Windows.Forms;
 using VVVV.Core.Logging;
 
 namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
@@ -16,16 +16,20 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.FX
 			FCompletionProvider = new FXCompletionProvider(editor);
 		}
 		
-		public void HandleKeyPress(CodeEditor editor, char key)
+		public bool HandleKeyPress(CodeEditor editor, char key)
 		{
 		    // Do not show completion window for now if we're in a comment.
 			if (IsInComment(editor))
-				return;
+				return false;
 		    
-			if (char.IsLetter(key))
+            // Show only when pressing Ctrl + Space
+			if (Control.ModifierKeys == Keys.Control && char.IsWhiteSpace(key))
 			{
 				editor.ShowCompletionWindow(FCompletionProvider, key);
+                return true;
 			}
+
+            return false;
 		}
 		
 		bool IsInComment(CodeEditor editor)

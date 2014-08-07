@@ -24,12 +24,16 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			: base(member.Name, null, GetMemberImageIndex(member))
 		{
 			this.member = member;
+            this.Priority = 1.0;
+            if (member is IField || member is IProperty)
+                this.Priority = 1.5;
 		}
 		
 		public CSCompletionData(IClass c)
 			: base(c.Name, null, GetClassImageIndex(c))
 		{
 			this.c = c;
+            this.Priority = 0.5;
 		}
 		
 		int overloads = 0;
