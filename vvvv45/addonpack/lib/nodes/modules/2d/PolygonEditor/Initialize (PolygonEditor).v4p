@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.1.dtd" >
-   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
    <BOUNDS type="Window" left="8445" top="5040" width="9000" height="7335">
    </BOUNDS>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="32.2.0">
    </PACK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
    <BOUNDS type="Node" left="600" top="720" width="100" height="100">
@@ -34,8 +34,8 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2325" top="2820" width="100" height="100">
+   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="InAWindow" id="8">
+   <BOUNDS type="Node" left="1695" top="750" width="100" height="100">
    </BOUNDS>
    <PIN pinname="InputXY" visible="1" slicecount="2" values="0,0">
    </PIN>
@@ -43,7 +43,9 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="2325" top="2820">
+   <BOUNDS type="Box" left="1695" top="750">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1560" top="3255" width="5625" height="5220">
    </BOUNDS>
    </NODE>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="7">
@@ -72,8 +74,6 @@
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="5" dstpinname="Input">
-   </LINK>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="3180" top="3915" width="100" height="100">
    </BOUNDS>
@@ -94,8 +94,6 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Count" dstnodeid="3" dstpinname="Count">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Bin Size">
    </LINK>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="8" dstpinname="InputXY">
@@ -111,7 +109,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Data|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="30" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0" visible="1">
+   <PIN pinname="Y Input Value" slicecount="30" visible="1" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
    </PIN>
    </NODE>
    <NODE systemname="PolygonEditor (2d Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="Hidden" id="9">
@@ -150,14 +148,36 @@
    </LINK>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="9" dstpinname="Tagged">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="9" dstpinname="VerticesXY">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="9" dstpinname="Z-Index">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="9" dstpinname="Rotation">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Vertex Bin Size">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Unzip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (2d Bin)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="1890" top="1695" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1 Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="14" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input Bin Size">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="9" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="9" dstpinname="Vertex Bin Size">
    </LINK>
    </PATCH>
