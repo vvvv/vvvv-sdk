@@ -15,7 +15,7 @@
    </PIN>
    </NODE>
    <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="51">
-   <BOUNDS type="Node" left="7650" top="11010" width="100" height="100">
+   <BOUNDS type="Node" left="15960" top="1920" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
@@ -207,7 +207,7 @@
    </PIN>
    </NODE>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="7965" top="11475" width="100" height="100">
+   <BOUNDS type="Node" left="8010" top="11580" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -215,9 +215,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="18">
-   <BOUNDS type="Node" left="7005" top="11565" width="100" height="100">
+   <BOUNDS type="Node" left="7380" top="11580" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="7005" top="11565" width="795" height="240">
+   <BOUNDS type="Box" left="7380" top="11580" width="600" height="240">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -228,7 +228,11 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK srcnodeid="51" srcpinname="Left Button" dstnodeid="19" dstpinname="Input">
+   <LINK srcnodeid="51" srcpinname="Left Button" dstnodeid="19" dstpinname="Input" linkstyle="VHV">
+   <LINKPOINT x="16335" y="11345">
+   </LINKPOINT>
+   <LINKPOINT x="8025" y="11380">
+   </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="18300" top="1155" width="100" height="100">
@@ -241,23 +245,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="51" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="15335" y="9790">
+   <LINKPOINT x="16925" y="1500">
    </LINKPOINT>
-   <LINKPOINT x="9415" y="10325">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="6690" top="19845" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="7" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="16035" y="15020">
-   </LINKPOINT>
-   <LINKPOINT x="7755" y="17350">
+   <LINKPOINT x="16135" y="1155">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
@@ -305,9 +295,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="57" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="16215" top="2460" width="6840" height="1320">
+   <BOUNDS type="Node" left="17925" top="2940" width="6840" height="1320">
    </BOUNDS>
-   <BOUNDS type="Box" left="16215" top="2460" width="4260" height="2430">
+   <BOUNDS type="Box" left="17925" top="2940" width="4260" height="2430">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|I/O pins:&cr;&lf;&cr;&lf;when dealing with Vertices, state this in the I/O pin Name. When dealing with Polygons, do not.&cr;&lf;&cr;&lf;e.g. Vertex Tagged&cr;&lf;e.g. Tagged, not Polygon Tagged&cr;&lf;&cr;&lf;Vertex Bin Size is the number of Vertices per Polygon (input spreadable)|">
    </PIN>
@@ -812,8 +802,6 @@
    <LINKPOINT x="7460" y="18575">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Left Button" dstnodeid="12" dstpinname="Enabled">
-   </LINK>
    <NODE systemname="Sort (PolygonEditor)" filename="..\PolygonEditor/sub\Sort (PolygonEditor).v4p" nodename="Sort (PolygonEditor)" componentmode="Hidden" id="11">
    <BOUNDS type="Node" left="5040" top="21540" width="3330" height="270">
    </BOUNDS>
@@ -1009,7 +997,7 @@
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="1" dstpinname="Input 2">
    </LINK>
    <NODE systemname="PolygonEditor (2d Split)" filename="..\PolygonEditor/sub\PolygonEditor (2d Split).v4p" nodename="PolygonEditor (2d Split)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="5040" top="19755" width="100" height="100">
+   <BOUNDS type="Node" left="5040" top="19755" width="2040" height="270">
    </BOUNDS>
    <PIN pinname="data input" visible="1">
    </PIN>
@@ -1045,7 +1033,7 @@
    <LINK srcnodeid="10" srcpinname="Rotation" dstnodeid="12" dstpinname="Rotation">
    </LINK>
    <NODE systemname="SnapVertices (PolygonEditor)" filename="..\PolygonEditor/sub\SnapVertices (PolygonEditor).v4p" nodename="SnapVertices (PolygonEditor)" componentmode="Hidden" id="20">
-   <BOUNDS type="Node" left="5070" top="12090" width="2925" height="270">
+   <BOUNDS type="Node" left="5070" top="12090" width="3375" height="270">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1" slicecount="14" values="-0.234858481358579,0.215772432712097,-0.641914893617021,0.214299242424242,-0.641914893617021,0.679426894472819,-0.244835151281724,0.680229640151515,0.139287481444829,-0.15093201754386,0.68683819891143,0.318609892787524,0.423592661667872,0.694243421052631">
    </PIN>
@@ -1055,7 +1043,7 @@
    </PIN>
    <PIN pinname="isSelected (vertex)" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
    </BOUNDS>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -1287,25 +1275,15 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="80" exposed="0">
-   <BOUNDS type="Node" left="8535" top="12465" width="100" height="100">
+   <BOUNDS type="Node" left="8355" top="12510" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="8535" top="12465" width="735" height="270">
+   <BOUNDS type="Box" left="8355" top="12510" width="735" height="270">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    <PIN pinname="Input Enum" slicecount="1" values="Cross">
    </PIN>
    </NODE>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="81">
-   <BOUNDS type="Node" left="8535" top="12855" width="495" height="270">
-   </BOUNDS>
-   <PIN pinname="Enum" slicecount="1" values="|Cursor Mode Enum|">
-   </PIN>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="80" srcpinname="Output Enum" dstnodeid="81" dstpinname="Receive">
-   </LINK>
    <LINK srcnodeid="80" srcpinname="Output Enum" dstnodeid="32" dstpinname="Cursor Type">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="82">
@@ -1323,64 +1301,6 @@
    <LINK srcnodeid="79" srcpinname="Output" dstnodeid="82" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="1" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
-   </LINK>
-   <NODE systemname="Rotate (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Rotate (PolygonEditor).v4p" nodename="Rotate (PolygonEditor)" componentmode="InAWindow" id="86" stayontop="1">
-   <BOUNDS type="Node" left="5070" top="11040" width="1530" height="270">
-   </BOUNDS>
-   <PIN pinname="VerticesXY" visible="1">
-   </PIN>
-   <PIN pinname="Vertex Tagged" visible="1">
-   </PIN>
-   <PIN pinname="Shape Vertex Count" visible="1">
-   </PIN>
-   <PIN pinname="Shape Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Shape Selected" visible="1">
-   </PIN>
-   <PIN pinname="Shape Rotation" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   <BOUNDS type="Window" left="1155" top="1395" width="28470" height="12600">
-   </BOUNDS>
-   <PIN pinname="Vertex Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Tagged" visible="1">
-   </PIN>
-   <PIN pinname="Rotation" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="37" srcpinname="VerticesXY" dstnodeid="86" dstpinname="VerticesXY">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Vertex Tagged" dstnodeid="86" dstpinname="Vertex Tagged">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Vertex Bin Size" dstnodeid="86" dstpinname="Vertex Bin Size">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Z-Index" dstnodeid="86" dstpinname="Z-Index">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Tagged" dstnodeid="86" dstpinname="Tagged">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Rotation" dstnodeid="86" dstpinname="Rotation">
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="86" dstpinname="Keyboard" linkstyle="VHV">
-   <LINKPOINT x="18965" y="10940">
-   </LINKPOINT>
-   <LINKPOINT x="6265" y="10930">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="VerticesXY" dstnodeid="20" dstpinname="VerticesXY">
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="Vertex Tagged" dstnodeid="20" dstpinname="Vertex Tagged">
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="Vertex Bin Size" dstnodeid="20" dstpinname="Vertex Bin Size">
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="Z-Index" dstnodeid="20" dstpinname="Z-Index">
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="Tagged" dstnodeid="20" dstpinname="Tagged">
-   </LINK>
-   <LINK srcnodeid="86" srcpinname="Rotation" dstnodeid="20" dstpinname="Rotation">
    </LINK>
    <NODE id="88" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
    <BOUNDS type="Box" left="22005" top="10530" width="1710" height="1770">
@@ -1426,4 +1346,36 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="51" srcpinname="Left Button" dstnodeid="12" dstpinname="Enabled" linkstyle="VHV">
+   <LINKPOINT x="16320" y="20295">
+   </LINKPOINT>
+   <LINKPOINT x="7410" y="20295">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8640" top="20940" width="15015" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8640" top="20940" width="3450" height="915">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is where &apos;Vertex Mouseover&apos; and &apos;Mouseover get added to the output, they are not in the FrameDelay Loop (as they have to be calculated every frame anyway). &apos;Sort&apos; also creates the Polygon ID for the output.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="VerticesXY" dstnodeid="20" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Vertex Tagged" dstnodeid="20" dstpinname="Vertex Tagged">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Vertex Bin Size" dstnodeid="20" dstpinname="Vertex Bin Size">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Z-Index" dstnodeid="20" dstpinname="Z-Index">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Tagged" dstnodeid="20" dstpinname="Tagged">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Rotation" dstnodeid="20" dstpinname="Rotation">
+   </LINK>
    </PATCH>
