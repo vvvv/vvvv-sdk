@@ -38,18 +38,15 @@ using SD = ICSharpCode.TextEditor.Document;
 namespace VVVV.HDE.CodeEditor
 {
     [EditorInfo(".cs", ".fx", ".fxh", ".txt",".tfx",".gsfx")]
-    public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete, IPluginEvaluate
+    public class CodeEditorPlugin : TopControl, IEditor, IDisposable, IQueryDelete, IPluginBase
     {
         private Form FCodeEditorForm;
         private TableViewer FErrorTableViewer;
         private ILogger FLogger;
         private ISolution FSolution;
-        private INode2 FAttachedNode;
         private IProject FAttachedProject;
         private CodeEditor FEditor;
         private ViewableCollection<object> FErrorList;
-        private RuntimeError FLastRuntimeError;
-        private string FLastRuntimeErrorString;
         private IHDEHost FHDEHost;
         private INode FNode;
         
@@ -124,7 +121,6 @@ namespace VVVV.HDE.CodeEditor
             var registry = new MappingRegistry();
             registry.RegisterDefaultMapping<IEnumerable<Column>, ErrorCollectionColumnProvider>();
             registry.RegisterMapping<CompilerError, IEnumerable<ICell>, ErrorCellProvider>();
-            registry.RegisterMapping<RuntimeError, IEnumerable<ICell>, RuntimeErrorCellProvider>();
             
             FErrorTableViewer.Registry = registry;
             FErrorTableViewer.Input = FErrorList;
@@ -153,7 +149,7 @@ namespace VVVV.HDE.CodeEditor
                 if (string.Compare(fileName, FEditor.TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
                     MoveTo(link.Location.Line + 1, link.Location.Column + 1);
                 else
-                    FEditorFactory.Open(fileName, link.Location.Line + 1, link.Location.Column + 1, FAttachedNode, FNode.Window);
+                    FEditorFactory.Open(fileName, link.Location.Line + 1, link.Location.Column + 1, FNode.Window);
             }
         }
         
@@ -286,11 +282,6 @@ namespace VVVV.HDE.CodeEditor
                 else
                     caption = name;
                 
-                if (FAttachedNode != null)
-                {
-                    caption += string.Format(" - attached to {1} [id: {0}]", FAttachedNode.ID, FAttachedNode.NodeInfo.Username);
-                }
-                
                 window.Caption = caption;
             }
         }
@@ -303,7 +294,6 @@ namespace VVVV.HDE.CodeEditor
             {
                 OpenedFile = null;
                 AttachedProject = null;
-                AttachedNode = null;
                 
                 document.ContentChanged -= document_ContentChanged;
                 document.Renamed -= document_Renamed;
@@ -342,48 +332,6 @@ namespace VVVV.HDE.CodeEditor
             FEditor.Focus();
         }
         
-        // where we get the runtime errors from
-        public INode2 AttachedNode
-        {
-            get
-            {
-                return FAttachedNode;
-            }
-            set
-            {
-                if (FAttachedNode != null)
-                {
-                    FAttachedNode.Parent.Removed -= FAttachedNode_Parent_Removed;
-                }
-                
-                FAttachedNode = value;
-                
-                var doc = FEditor.TextDocument;
-                if (doc != null)
-                {
-                    UpdateWindowCaption(doc, doc.Name);
-                }
-                
-                if (FAttachedNode != null)
-                {
-                    FAttachedNode.Parent.Removed += FAttachedNode_Parent_Removed;
-                    
-                    var nodeInfo = FAttachedNode.NodeInfo;
-                    var project = nodeInfo.UserData as IProject;
-                    if (project != null)
-                        AttachedProject = project;
-                }
-            }
-        }
-
-        void FAttachedNode_Parent_Removed(IViewableCollection<INode2> collection, INode2 item)
-        {
-            if (item == AttachedNode)
-            {
-                AttachedNode = null;
-            }
-        }
-        
         // where we get the compile errors from
         public IProject AttachedProject
         {
@@ -407,42 +355,6 @@ namespace VVVV.HDE.CodeEditor
             }
         }
         
-        public void Evaluate(int SpreadMax)
-        {
-            if (FAttachedNode != null)
-            {
-                var lastRuntimeErrorString = FAttachedNode.LastRuntimeError;
-                
-                if (!string.IsNullOrEmpty(lastRuntimeErrorString))
-                {
-                    if (lastRuntimeErrorString != FLastRuntimeErrorString)
-                    {
-                        if (FLastRuntimeError != null)
-                            FErrorList.Remove(FLastRuntimeError);
-                        
-                        FLastRuntimeError = new RuntimeError(lastRuntimeErrorString);
-                        FErrorList.Add(FLastRuntimeError);
-                        
-                        FEditor.ShowRuntimeErrors(new RuntimeError[] { FLastRuntimeError });
-                    }
-                    FLastRuntimeErrorString = lastRuntimeErrorString;
-                }
-                else
-                    ClearRuntimeError();
-            }
-            else
-                ClearRuntimeError();
-            
-            // Show or hide error table
-            if (IsErrorTableVisible)
-            {
-                if (FErrorList.Count == 0)
-                    HideErrorTable();
-            }
-            else if (FErrorList.Count > 0)
-                ShowErrorTable();
-        }
-        
         private void ClearCompilerErrors()
         {
             FEditor.ClearCompilerErrors();
@@ -457,17 +369,6 @@ namespace VVVV.HDE.CodeEditor
             
             foreach (var compilerError in compilerErrors)
                 FErrorList.Remove(compilerError);
-        }
-        
-        private void ClearRuntimeError()
-        {
-            if (FLastRuntimeError != null)
-            {
-                FErrorList.Remove(FLastRuntimeError);
-                FLastRuntimeError = null;
-                FLastRuntimeErrorString = null;
-                FEditor.ClearRuntimeErrors();
-            }
         }
         
         private void ShowErrorTable()
@@ -499,26 +400,19 @@ namespace VVVV.HDE.CodeEditor
                 fileName = compilerError.FileName;
                 line = compilerError.Line;
             }
-            else
-            {
-                var runtimeError = sender.Model as RuntimeError;
-                fileName = runtimeError.FileName;
-                line = runtimeError.Line;
-            }
             
             if (File.Exists(fileName))
             {
                 if (string.Compare(fileName, FEditor.TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
                     MoveTo(line, 1);
                 else
-                    FEditorFactory.Open(fileName, line, 1, FAttachedNode, FNode.Window);
+                    FEditorFactory.Open(fileName, line, 1, FNode.Window);
             }
         }
         
         private void Project_CompileCompleted(object sender, CompilerEventArgs args)
         {
             ClearCompilerErrors();
-            ClearRuntimeError();
             
             var results = args.CompilerResults;
             if (results != null && (results.Errors.HasErrors || results.Errors.HasWarnings))
