@@ -646,24 +646,6 @@
    </NODE>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="41">
-   <BOUNDS type="Node" left="6000" top="13410" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="41" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="41" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="0" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
    <BOUNDS type="Node" left="660" top="195" width="1200" height="270">
    </BOUNDS>
@@ -708,26 +690,6 @@
    <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="47">
-   <BOUNDS type="Node" left="20055" top="1470" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="20055" top="1470" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Is Active|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="47" srcpinname="Y Output Value" dstnodeid="41" dstpinname="Switch" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="20085" y="13215">
-   </LINKPOINT>
-   <LINKPOINT x="6030" y="13215">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="DoubleClick (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\DoubleClick (PolygonEditor).v4p" componentmode="Hidden" id="21" nodename="DoubleClick (PolygonEditor)">
    <BOUNDS type="Node" left="12915" top="5625" width="100" height="100">
    </BOUNDS>
@@ -779,5 +741,11 @@
    <LINK srcnodeid="15" srcpinname="Output" dstnodeid="49" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="49" srcpinname="Count" dstnodeid="48" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="0" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="12570" y="13313">
+   </LINKPOINT>
+   <LINKPOINT x="6225" y="13313">
+   </LINKPOINT>
    </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="1800" top="885" width="23280" height="12645">
+   <BOUNDS type="Window" left="1515" top="1785" width="23280" height="12645">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -76,28 +76,6 @@
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
-   <BOUNDS type="Node" left="21705" top="1290" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="21705" top="1290" width="585" height="570">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -255,19 +233,13 @@
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
-   <PIN pinname="Enabled" visible="1">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
    <BOUNDS type="Box" left="19110" top="1290">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="412" dstpinname="Enabled" linkstyle="VHV">
-   <LINKPOINT x="21335" y="1020">
-   </LINKPOINT>
-   <LINKPOINT x="19540" y="960">
-   </LINKPOINT>
-   </LINK>
    <NODE id="444" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="840" top="4905" width="4110" height="270">
    </BOUNDS>
@@ -881,13 +853,13 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="7350" top="4200" width="14440" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="1125" top="1035" width="29040" height="15840">
+   <BOUNDS type="Window" left="855" top="2685" width="29040" height="15840">
    </BOUNDS>
    <BOUNDS type="Box" left="14715" top="8385" width="4800" height="3600">
    </BOUNDS>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   <PIN pinname="Evaluate" pintype="Input" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Window Handle" pintype="Output" visible="-1">
    </PIN>
@@ -970,8 +942,6 @@
    <PIN pinname="PixelResolution" visible="1" slicecount="2" values="471,385">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Is Active">
-   </LINK>
    <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove Polygon Index">
    </LINK>
    <LINK srcnodeid="102" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Bring To Front On Click">
@@ -1001,17 +971,11 @@
    </PIN>
    <BOUNDS type="Box" left="17685" top="1290">
    </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Enabled" linkstyle="VHV">
-   <LINKPOINT x="21310" y="825">
-   </LINKPOINT>
-   <LINKPOINT x="18140" y="750">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse" linkstyle="VHV">
    <LINKPOINT x="17715" y="4020">
    </LINKPOINT>
@@ -1025,7 +989,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7365" top="4800" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="-15795" top="3195" width="16560" height="10680">
+   <BOUNDS type="Window" left="-11145" top="1290" width="16560" height="10680">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1192,22 +1156,6 @@
    <BOUNDS type="Box" left="16230" top="615" width="1275" height="585">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Bing To Front On Click|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="9">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="498" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="21705" top="855" width="990" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="21705" top="855" width="825" height="330">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Is Active|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
