@@ -1030,6 +1030,18 @@ namespace VVVV.Nodes.Input
                     DetectedOut[i] = false;
                     PositionOut[i] = Vector2D.Zero;
                 }
+                //For debugging only
+                //foreach (var n in Subscriptions[i].ConsumeAll(MouseIn[i]).OfType<MouseClickNotification>())
+                //{
+                //    var s = string.Empty;
+                //    if (n.ClickCount == 2)
+                //        s = " double";
+                //    else if (n.ClickCount == 3)
+                //        s = " triple";
+                //    else if (n.ClickCount == 4)
+                //        s = " quadtruple";
+                //    FLogger.Log(LogType.Message, "{0}{1} click at position {2}.", n.Buttons, s, n.Position);
+                //}
             }
         }
     }
