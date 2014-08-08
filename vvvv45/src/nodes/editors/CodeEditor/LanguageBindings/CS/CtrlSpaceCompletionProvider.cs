@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.NRefactoryResolver;
@@ -43,14 +44,16 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
 			                                        parseInfo,
 			                                        textArea.Document.TextContent,
 			                                        expressionResult.Context);
-			
-			if (completionData != null)
-                AddCompletionData(ref resultList, completionData, expressionResult.Context);
-            
-            return resultList.ToArray();
+
+            var result = Enumerable.Empty<ICompletionData>();
+            if (completionData != null)
+                // Add the async keyword
+                result = new ICompletionData[] { new DefaultCompletionData("async", 5) }
+                    .Concat(GetCompletionData(completionData, expressionResult.Context));
+            return result.ToArray();
 		}
 		
-		void AddCompletionData(ref List<ICompletionData> resultList, ArrayList completionData, Dom.ExpressionContext context)
+		IEnumerable<ICompletionData> GetCompletionData(ArrayList completionData, Dom.ExpressionContext context)
         {
             // used to store the method names for grouping overloads
             Dictionary<string, CSCompletionData> nameDictionary = new Dictionary<string, CSCompletionData>();
@@ -63,10 +66,10 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
                 
                 if (obj is string) {
                     // namespace names are returned as string
-                    resultList.Add(new DefaultCompletionData((string)obj, "namespace " + obj, 5));
+                    yield return new DefaultCompletionData((string)obj, "namespace " + obj, 5);
                 } else if (obj is Dom.IClass) {
                     Dom.IClass c = (Dom.IClass)obj;
-                    resultList.Add(new CSCompletionData(c));
+                    yield return new CSCompletionData(c);
                 } else if (obj is Dom.IMember) {
                     Dom.IMember m = (Dom.IMember)obj;
                     if (m is Dom.IMethod && ((m as Dom.IMethod).IsConstructor)) {
@@ -81,7 +84,7 @@ namespace VVVV.HDE.CodeEditor.LanguageBindings.CS
                         data.AddOverload();
                     } else {
                         nameDictionary[m.Name] = data = new CSCompletionData(m);
-                        resultList.Add(data);
+                        yield return data;
                     }
                 } else {
                     // Current ICSharpCode.SharpDevelop.Dom should never return anything else

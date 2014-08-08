@@ -834,7 +834,6 @@ namespace VVVV.HDE.CodeEditor
             {
                 FCompletionWindow.Close();
             }
-            ActiveTextAreaControl.DoHandleMousewheel = true;
         }
 
         protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
@@ -897,14 +896,12 @@ namespace VVVV.HDE.CodeEditor
                     }
                 }
                 
-                FCompletionBinding.HandleKeyPress(this, key);
+                return FCompletionBinding.HandleKeyPress(this, key);
             }
             finally
             {
                 inHandleKeyPress = false;
             }
-            
-            return false;
         }
         
         void CloseCodeCompletionWindow(object sender, EventArgs e)
@@ -915,6 +912,7 @@ namespace VVVV.HDE.CodeEditor
                 FCompletionWindow.Dispose();
                 FCompletionWindow = null;
             }
+            ActiveTextAreaControl.DoHandleMousewheel = true;
         }
         
         void CloseInsightWindow(object sender, EventArgs e)

@@ -107,7 +107,7 @@ namespace VVVV.HDE.CodeEditor
 			
 			var bracketStack = new Stack<int>();
 			
-			for (int i = 0; i < offset; i++)
+			for (int i = 0; i <= offset; i++)
 			{
 				char ch = document.GetCharAt(i);
 				
