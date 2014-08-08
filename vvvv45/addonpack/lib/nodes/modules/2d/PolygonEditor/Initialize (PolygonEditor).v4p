@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
-   <BOUNDS type="Window" left="7005" top="2925" width="9000" height="7335">
+   <BOUNDS type="Window" left="10140" top="6000" width="12465" height="7335">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -201,9 +201,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="18">
-   <BOUNDS type="Node" left="6075" top="4110" width="100" height="100">
+   <BOUNDS type="Node" left="6075" top="3690" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6075" top="4110" width="1200" height="240">
+   <BOUNDS type="Box" left="6075" top="3690" width="1200" height="240">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -213,7 +213,7 @@
    <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="9" dstpinname="Cursor Type">
    </LINK>
    <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="20">
-   <BOUNDS type="Node" left="6075" top="3720" width="100" height="100">
+   <BOUNDS type="Node" left="6075" top="3300" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Enum" visible="1">
    </PIN>
@@ -221,9 +221,9 @@
    <LINK srcnodeid="20" srcpinname="Enum" dstnodeid="18" dstpinname="Input Enum">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6075" top="3165" width="285" height="240">
+   <BOUNDS type="Box" left="6075" top="2745" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6075" top="3165" width="0" height="0">
+   <BOUNDS type="Node" left="6075" top="2745" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -236,4 +236,18 @@
    </NODE>
    <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Ord Value">
    </LINK>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="5490" top="4050" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive" visible="1">
+   </PIN>
+   <PIN pinname="Enum" slicecount="1" values="|Cursor Mode Enum|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="24" dstpinname="Receive">
+   </LINK>
+   <NODE systemname="CreateEnumCursorType (Cursor)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor\CreateEnumCursorType (Cursor).v4p" nodename="CreateEnumCursorType (Cursor)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="6375" top="735" width="100" height="100">
+   </BOUNDS>
+   </NODE>
    </PATCH>
