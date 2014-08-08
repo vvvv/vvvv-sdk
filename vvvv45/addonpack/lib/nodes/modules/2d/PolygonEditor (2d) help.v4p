@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="15600">
+   <BOUNDS type="Window" left="-25590" top="-150" width="22440" height="12270">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -124,24 +124,6 @@
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
-   </PIN>
-   </NODE>
-   <NODE id="8" componentmode="InABox" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Window" left="12795" top="7290" width="7350" height="6300">
-   </BOUNDS>
-   <PIN pinname="Clip Device" slicecount="1" values="0">
-   </PIN>
-   <BOUNDS type="Node" left="7365" top="5490" width="1620" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7365" top="5490" width="5790" height="5220">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Width" visible="1">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="62">
@@ -894,12 +876,12 @@
    </LINK>
    <LINK srcnodeid="465" srcpinname="XY" dstnodeid="467" dstpinname="Input 2">
    </LINK>
-   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
-   <BOUNDS type="Node" left="7365" top="4185" width="14400" height="270">
+   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
+   <BOUNDS type="Node" left="7350" top="4200" width="14440" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
+   <BOUNDS type="Window" left="1920" top="8115" width="29040" height="15840">
    </BOUNDS>
-   <BOUNDS type="Box" left="7365" top="4185" width="4800" height="3600">
+   <BOUNDS type="Box" left="14715" top="8385" width="4800" height="3600">
    </BOUNDS>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
@@ -1029,9 +1011,9 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="17725" y="1875">
+   <LINKPOINT x="20175" y="3275">
    </LINKPOINT>
-   <LINKPOINT x="17810" y="1875">
+   <LINKPOINT x="22710" y="4675">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="467" srcpinname="Output" dstnodeid="0" dstpinname="VerticesXY">
@@ -1041,7 +1023,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7365" top="4800" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="6390" top="3420" width="16560" height="10680">
+   <BOUNDS type="Window" left="-15795" top="3195" width="16560" height="10680">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1051,8 +1033,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="482" dstpinname="Mouse" linkstyle="VHV">
    <LINKPOINT x="17725" y="4665">
@@ -1236,4 +1216,24 @@
    <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
    </NODE>
+   <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
+   <BOUNDS type="Node" left="7365" top="5490" width="1620" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7365" top="5490" width="10320" height="6210">
+   </BOUNDS>
+   <BOUNDS type="Window" left="-8910" top="5730" width="7350" height="6300">
+   </BOUNDS>
+   <PIN pinname="Clip Device" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   </LINK>
    </PATCH>
