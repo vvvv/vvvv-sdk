@@ -158,46 +158,49 @@ namespace VVVV.Utils.IO
             // A mouse down followed by a mouse up in the same area with the same button is considered a single click.
             // Each subsequnt mouse down in the same area in a specific time interval with the same button produces
             // another click with an increased click count.
-            var lastSeen = new Dictionary<int, DateTimeOffset>();
+            var lastSeen = new Dictionary<int, int>();
             var mouseClicks = notifications.OfType<MouseDownNotification>()
-                .Timestamp()
-                .SelectMany(down =>
+                .SelectMany((down, i) =>
                     {
                         var singleClick = notifications.OfType<MouseUpNotification>()
                             .Take(1)
-                            .Where(b => b.Buttons == down.Value.Buttons &&
-                                        Math.Abs(b.Position.X - down.Value.Position.X) <= SystemInformation.DoubleClickSize.Width &&
-                                        Math.Abs(b.Position.Y - down.Value.Position.Y) <= SystemInformation.DoubleClickSize.Height)
-                            .Select(x => Timestamped.Create(new MouseClickNotification(down.Value.Position, down.Value.ClientArea, down.Value.Buttons, 1), down.Timestamp));
+                            .Where(b => b.Buttons == down.Buttons &&
+                                        Math.Abs(b.Position.X - down.Position.X) <= SystemInformation.DoubleClickSize.Width &&
+                                        Math.Abs(b.Position.Y - down.Position.Y) <= SystemInformation.DoubleClickSize.Height)
+                            .Select(x => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, 1), i));
                         var subsequentClicks =
                                 notifications.OfType<MouseDownNotification>()
-                                    .TakeWhile(n => n.Buttons == down.Value.Buttons &&
-                                                Math.Abs(n.Position.X - down.Value.Position.X) <= SystemInformation.DoubleClickSize.Width &&
-                                                Math.Abs(n.Position.Y - down.Value.Position.Y) <= SystemInformation.DoubleClickSize.Height)
+                                    .TakeWhile(n => n.Buttons == down.Buttons &&
+                                                Math.Abs(n.Position.X - down.Position.X) <= SystemInformation.DoubleClickSize.Width &&
+                                                Math.Abs(n.Position.Y - down.Position.Y) <= SystemInformation.DoubleClickSize.Height)
                                     .TimeInterval()
                                     .TakeWhile(x => x.Interval.TotalMilliseconds <= SystemInformation.DoubleClickTime)
-                                    .Select((x, i) => Timestamped.Create(new MouseClickNotification(down.Value.Position, down.Value.ClientArea, down.Value.Buttons, i + 2), down.Timestamp));
+                                    .Select((x, j) => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, j + 2), i));
                         return singleClick.Concat(subsequentClicks);
                     }
                 )
                 // These clicks are now filtered so that three single clicks won't produce two double clicks
                 .Where(x =>
                     {
-                        var clickCount = x.Value.ClickCount;
+                        var clickCount = x.Item1.ClickCount;
                         if (clickCount == 1)
                             return true;
-                        DateTimeOffset lastTime;
+                        var timestamp = x.Item2;
+                        int lastTime;
                         if (!lastSeen.TryGetValue(clickCount, out lastTime))
                         {
-                            lastSeen.Add(clickCount, x.Timestamp);
+                            lastSeen.Add(clickCount, timestamp);
                             return true;
                         }
-                        else
-                            lastSeen[clickCount] = x.Timestamp;
-                        return (x.Timestamp - lastTime).TotalMilliseconds > SystemInformation.DoubleClickTime * (clickCount - 1);
+                        if (timestamp - lastTime > (clickCount - 1))
+                        {
+                            lastSeen[clickCount] = timestamp;
+                            return true;
+                        }
+                        return false;
                     }
                 )
-                .Select(x => x.Value);
+                .Select(x => x.Item1);
             return notifications.Merge(mouseClicks);
         }
     }
