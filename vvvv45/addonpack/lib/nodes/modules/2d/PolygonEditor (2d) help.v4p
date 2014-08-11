@@ -229,13 +229,13 @@
    </PIN>
    </NODE>
    <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="412">
-   <BOUNDS type="Node" left="19110" top="1290" width="1020" height="270">
+   <BOUNDS type="Node" left="20445" top="435" width="1020" height="270">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
    <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
-   <BOUNDS type="Box" left="19110" top="1290">
+   <BOUNDS type="Box" left="20445" top="435">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -389,7 +389,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="7125" width="5145" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" pintype="Input" values="|use the Insert + Insert VerticesXY pins to add vertices|">
+   <PIN pinname="Input String" visible="0" slicecount="1" pintype="Input" values="|use the Insert + VerticesXY + Vertex Bin Size pins to add vertices|">
    </PIN>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -433,7 +433,7 @@
    </PIN>
    </NODE>
    <NODE id="450" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" pintype="Input" values="|PolygonEditor - 2d|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" pintype="Input" values="|PolygonEditor (2d)|">
    </PIN>
    <BOUNDS type="Node" height="270" left="255" top="780" width="915">
    </BOUNDS>
@@ -579,11 +579,11 @@
    <NODE id="458" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" height="270" left="840" top="1845" width="2580">
    </BOUNDS>
-   <BOUNDS type="Box" height="345" left="840" top="1845" width="4200">
+   <BOUNDS type="Box" height="345" left="840" top="1845" width="4290">
    </BOUNDS>
    <BOUNDS type="Window" height="160" left="900" top="900" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" pintype="Input" values="|select poins or shapes by clicking on them|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" pintype="Input" values="|select points or shapes by clicking on them|">
    </PIN>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -740,20 +740,6 @@
    <BOUNDS type="Box" left="855" top="9180" width="4935" height="885">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|When Bring To Front On Click is enabled, the shapes are sorted according to their Z-Index (which is changed when you click on a shape). This is useful if you draw the shapes and want to be able to select which shapes to draw on top of others.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="463" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="855" top="10275" width="11955" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="855" top="10275" width="4380" height="1125">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|When Is Active is disabled, you cannot change any vertices or shapes. Many calculations are avoided, so always set this pin to false when you don&apos;t need any interaction.&cr;&lf;also, any mouseovers will return zero when Is Active is disabled.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -965,11 +951,11 @@
    <LINK srcnodeid="467" srcpinname="Output" dstnodeid="0" dstpinname="Initial Vertices">
    </LINK>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="17685" top="1290" width="1320" height="270">
+   <BOUNDS type="Node" left="18375" top="1065" width="1320" height="270">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="17685" top="1290">
+   <BOUNDS type="Box" left="18375" top="1065">
    </BOUNDS>
    <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
@@ -977,9 +963,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="0" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="17715" y="4020">
+   <LINKPOINT x="18175" y="1545">
    </LINKPOINT>
-   <LINKPOINT x="17835" y="4020">
+   <LINKPOINT x="18065" y="1620">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="467" srcpinname="Output" dstnodeid="0" dstpinname="VerticesXY">
@@ -1001,9 +987,9 @@
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Device" dstnodeid="482" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="17725" y="4665">
+   <LINKPOINT x="18185" y="4515">
    </LINKPOINT>
-   <LINKPOINT x="8855" y="4665">
+   <LINKPOINT x="9085" y="4590">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
@@ -1167,9 +1153,9 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InABox" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Node" left="7365" top="5490" width="1620" height="270">
+   <BOUNDS type="Node" left="7350" top="5370" width="1620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7365" top="5490" width="10320" height="6210">
+   <BOUNDS type="Box" left="7350" top="5370" width="10320" height="6210">
    </BOUNDS>
    <BOUNDS type="Window" left="-23730" top="4245" width="7350" height="6300">
    </BOUNDS>
@@ -1186,4 +1172,76 @@
    </NODE>
    <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="495" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18375" top="6555" width="2340" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18375" top="6555" width="2430" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|never tag more than one shape. ?|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="496" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18375" top="6975" width="6750" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18375" top="6975" width="3525" height="900">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|tagging:&cr;&lf;&cr;&lf;when a vertex is actively tagged (togedge up), deselect all other vertices (except if CTRL is hit)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="497" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18375" top="8250" width="1500" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18375" top="8250" width="1500" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|output cursor type|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="498" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18375" top="8940" width="1650" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18375" top="8940" width="1650" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|reorganize helppatch|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="499" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18390" top="9360" width="240" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18390" top="9360" width="630" height="1110">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="!!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="43">
+   </PIN>
+   </NODE>
    </PATCH>
