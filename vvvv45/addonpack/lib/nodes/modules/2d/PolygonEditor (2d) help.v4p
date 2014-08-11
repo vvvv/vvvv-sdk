@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="1515" top="1785" width="22545" height="6420">
+   <BOUNDS type="Window" left="1515" top="1785" width="22545" height="6480">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -729,9 +729,9 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="PolygonEditorView (EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (EX9).v4p" componentmode="Hidden" id="482" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (EX9).v4p">
-   <BOUNDS type="Node" left="5445" top="4365" width="100" height="100">
+   <BOUNDS type="Node" left="5445" top="4335" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5445" top="4365" width="4800" height="3600">
+   <BOUNDS type="Box" left="5445" top="4335" width="4800" height="3600">
    </BOUNDS>
    <BOUNDS type="Window" left="2640" top="2220" width="19170" height="10680">
    </BOUNDS>
@@ -863,9 +863,9 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Node" left="5430" top="4935" width="1620" height="270">
+   <BOUNDS type="Node" left="5445" top="5355" width="1620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5430" top="4935" width="10320" height="6210">
+   <BOUNDS type="Box" left="5445" top="5355" width="10320" height="6210">
    </BOUNDS>
    <BOUNDS type="Window" left="-23730" top="4245" width="16920" height="11580">
    </BOUNDS>
@@ -880,8 +880,6 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
-   </LINK>
    <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="482" dstpinname="Cursor Type" linkstyle="VHV">
    <LINKPOINT x="19855" y="4110">
    </LINKPOINT>
@@ -1028,4 +1026,58 @@
    </LINK>
    <PACK Name="imagepack" Version="0.1.0">
    </PACK>
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="512">
+   <BOUNDS type="Node" left="7560" top="4335" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="-19395" top="-570" width="19065" height="13830">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="Selection" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS type="Box" left="7560" top="4335">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="512" dstpinname="Cursor Type" linkstyle="VHV">
+   <LINKPOINT x="16380" y="4170">
+   </LINKPOINT>
+   <LINKPOINT x="7755" y="4170">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="512" dstpinname="Mouse" linkstyle="VHV">
+   <LINKPOINT x="15135" y="4005">
+   </LINKPOINT>
+   <LINKPOINT x="7590" y="4005">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="513">
+   <BOUNDS type="Node" left="5445" top="4965" width="1230" height="270">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="513" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="VHV">
+   <LINKPOINT x="7560" y="4770">
+   </LINKPOINT>
+   <LINKPOINT x="6105" y="4770">
+   </LINKPOINT>
+   </LINK>
    </PATCH>
