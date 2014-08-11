@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="855" top="2685" width="29040" height="15840">
+   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -73,7 +73,7 @@
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="42" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,-0.0692231568530432,-0.395723684210527,0,0.414497773379515,0.235855263157894,0,0.181939633844632,0.741118421052631,0">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
@@ -827,7 +827,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="3240" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="11085" top="3360" width="15840" height="10785">
+   <BOUNDS type="Window" left="11085" top="3360" width="13755" height="10785">
    </BOUNDS>
    <PIN pinname="data input" visible="1">
    </PIN>
@@ -1162,18 +1162,6 @@
    <LINKPOINT x="11815" y="17220">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="80" exposed="0">
-   <BOUNDS type="Node" left="8340" top="11550" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8340" top="11550" width="735" height="270">
-   </BOUNDS>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Cross">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="80" srcpinname="Output Enum" dstnodeid="32" dstpinname="Cursor Type">
-   </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="82">
    <BOUNDS type="Node" left="5070" top="18480" width="100" height="100">
    </BOUNDS>
@@ -1240,8 +1228,6 @@
    <PIN pinname="Rotation" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="10" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="5" srcpinname="VerticesXY" dstnodeid="91" dstpinname="VerticesXY">
@@ -1267,5 +1253,23 @@
    <LINK srcnodeid="91" srcpinname="Tagged" dstnodeid="23" dstpinname="Tagged">
    </LINK>
    <LINK srcnodeid="91" srcpinname="Rotation" dstnodeid="23" dstpinname="Rotation">
+   </LINK>
+   <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="93">
+   <BOUNDS type="Node" left="12180" top="18735" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12180" top="18735" width="1200" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Type|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Cursor Type" dstnodeid="93" dstpinname="Input Enum" linkstyle="Bezier">
+   <LINKPOINT x="8510" y="8730">
+   </LINKPOINT>
+   <LINKPOINT x="12325" y="13860">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
    </LINK>
    </PATCH>

@@ -839,7 +839,7 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="7350" top="4200" width="14440" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="855" top="2685" width="29040" height="15840">
+   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
    </BOUNDS>
    <BOUNDS type="Box" left="14715" top="8385" width="4800" height="3600">
    </BOUNDS>
@@ -975,13 +975,15 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7365" top="4800" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="-11145" top="1290" width="16560" height="10680">
+   <BOUNDS type="Window" left="2640" top="2220" width="16560" height="10680">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
@@ -991,8 +993,6 @@
    </LINKPOINT>
    <LINKPOINT x="9085" y="4590">
    </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="483" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6240" top="3690" width="1170" height="270">
@@ -1152,7 +1152,7 @@
    <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
    </NODE>
-   <NODE id="8" componentmode="InABox" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
+   <NODE id="8" componentmode="InAWindow" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
    <BOUNDS type="Node" left="7350" top="5370" width="1620" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="7350" top="5370" width="10320" height="6210">
@@ -1200,20 +1200,6 @@
    <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="497" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="18375" top="8250" width="1500" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="18375" top="8250" width="1500" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|output cursor type|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="498" systemname="IOBox (String)">
    <BOUNDS type="Node" left="18375" top="8940" width="1650" height="270">
    </BOUNDS>
@@ -1244,4 +1230,12 @@
    <PIN pinname="Size" slicecount="1" values="43">
    </PIN>
    </NODE>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="482" dstpinname="Cursor Type" linkstyle="VHV">
+   <LINKPOINT x="21765" y="4695">
+   </LINKPOINT>
+   <LINKPOINT x="8865" y="4695">
+   </LINKPOINT>
+   </LINK>
    </PATCH>
