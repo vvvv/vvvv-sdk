@@ -72,7 +72,7 @@ namespace VVVV.Nodes.Finder
             FTagsPin.Changed += HandleTagsPinChanged;
             
             FNodeFilter = new NodeFilter();
-            FNodeView = FNodeFilter.UpdateFilter(string.Empty, FHDEHost.RootNode);
+            FNodeView = FNodeFilter.UpdateFilter(string.Empty, FHDEHost.RootNode, ModuleCheckBox.Checked);
             
             FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
             //defer setting the active patch window as
@@ -87,6 +87,7 @@ namespace VVVV.Nodes.Finder
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.FSearchTextBox = new System.Windows.Forms.TextBox();
+            this.ModuleCheckBox = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.FNodeCountLabel = new System.Windows.Forms.Label();
             this.FHierarchyViewer = new VVVV.HDE.Viewer.WinFormsViewer.HierarchyViewer();
@@ -108,6 +109,7 @@ namespace VVVV.Nodes.Finder
             // panel3
             // 
             this.panel3.Controls.Add(this.FSearchTextBox);
+            this.panel3.Controls.Add(this.ModuleCheckBox);
             this.panel3.Controls.Add(this.panel2);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
@@ -123,11 +125,23 @@ namespace VVVV.Nodes.Finder
             this.FSearchTextBox.Location = new System.Drawing.Point(2, 0);
             this.FSearchTextBox.MinimumSize = new System.Drawing.Size(0, 17);
             this.FSearchTextBox.Name = "FSearchTextBox";
-            this.FSearchTextBox.Size = new System.Drawing.Size(248, 17);
+            this.FSearchTextBox.Size = new System.Drawing.Size(213, 17);
             this.FSearchTextBox.TabIndex = 13;
             this.FSearchTextBox.TextChanged += new System.EventHandler(this.FSearchTextBoxTextChanged);
-            this.FSearchTextBox.MouseLeave += new System.EventHandler(this.FSearchTextBoxMouseLeave);
             this.FSearchTextBox.MouseEnter += new System.EventHandler(this.FSearchTextBoxMouseEnter);
+            this.FSearchTextBox.MouseLeave += new System.EventHandler(this.FSearchTextBoxMouseLeave);
+            // 
+            // ModuleCheckBox
+            // 
+            this.ModuleCheckBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ModuleCheckBox.Location = new System.Drawing.Point(215, 0);
+            this.ModuleCheckBox.Name = "ModuleCheckBox";
+            this.ModuleCheckBox.Size = new System.Drawing.Size(35, 15);
+            this.ModuleCheckBox.TabIndex = 14;
+            this.ModuleCheckBox.Text = "M";
+            this.FTooltip.SetToolTip(this.ModuleCheckBox, "Search in Modules");
+            this.ModuleCheckBox.UseVisualStyleBackColor = true;
+            this.ModuleCheckBox.CheckedChanged += new System.EventHandler(this.ModuleCheckBoxCheckedChanged);
             // 
             // panel2
             // 
@@ -159,8 +173,8 @@ namespace VVVV.Nodes.Finder
             this.FHierarchyViewer.ShowRoot = false;
             this.FHierarchyViewer.Size = new System.Drawing.Size(252, 239);
             this.FHierarchyViewer.TabIndex = 9;
-            this.FHierarchyViewer.MouseDoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
             this.FHierarchyViewer.MouseClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerClick);
+            this.FHierarchyViewer.MouseDoubleClick += new VVVV.HDE.Viewer.WinFormsViewer.ClickHandler(this.FHierarchyViewerDoubleClick);
             this.FHierarchyViewer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FHierarchyViewerKeyPress);
             // 
             // FTooltip
@@ -181,7 +195,9 @@ namespace VVVV.Nodes.Finder
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
+
         }
+        private System.Windows.Forms.CheckBox ModuleCheckBox;
         private System.ComponentModel.IContainer components;
         private System.Windows.Forms.ToolTip FTooltip;
         private System.Windows.Forms.Panel panel2;
@@ -303,12 +319,12 @@ namespace VVVV.Nodes.Finder
                 
                 if (NodeFilter.IsGlobalSearchScope(query))
                 {
-                    FNodeView = FNodeFilter.UpdateFilter(query, FHDEHost.RootNode);
+                    FNodeView = FNodeFilter.UpdateFilter(query, FHDEHost.RootNode, ModuleCheckBox.Checked);
                     FHierarchyViewer.ShowRoot = false;
                 }
                 else
                 {
-                    FNodeView = FNodeFilter.UpdateFilter(query, FActivePatchNode);
+                    FNodeView = FNodeFilter.UpdateFilter(query, FActivePatchNode, false);
                     FHierarchyViewer.ShowRoot = true;
                 }
                 
@@ -468,5 +484,9 @@ namespace VVVV.Nodes.Finder
                 FHDEHost.SelectNodes(new INode2[1]{node});
             }
         }
+		void ModuleCheckBoxCheckedChanged(object sender, EventArgs e)
+		{
+			UpdateView();
+		}
     }
 }

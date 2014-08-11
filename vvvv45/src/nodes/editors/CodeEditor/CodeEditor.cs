@@ -694,9 +694,6 @@ namespace VVVV.HDE.CodeEditor
         List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
         internal void ShowCompilerErrors(IEnumerable<CompilerError> compilerErrors)
         {
-            // Clear all previous error markers.
-            ClearErrorMarkers(FRuntimeErrorMarkers);
-            
             foreach (var compilerError in compilerErrors)
             {
                 var color = compilerError.IsWarning
@@ -720,36 +717,6 @@ namespace VVVV.HDE.CodeEditor
         internal void ClearCompilerErrors()
         {
             ClearErrorMarkers(FCompilerErrorMarkers);
-            Document.CommitUpdate();
-        }
-
-           
-        List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
-        internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErrors)
-        {
-            // Clear all previous error markers.
-            ClearErrorMarkers(FRuntimeErrorMarkers);
-            
-            foreach (var runtimeError in runtimeErrors)
-            {
-                if (!string.IsNullOrEmpty(runtimeError.FileName))
-                {
-                    if (string.Compare(runtimeError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
-                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1, this.GetForeColor("Error"));
-                }
-                else
-                {
-                    // Showing the error in wrong editor is better than not to.
-                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0, this.GetForeColor("Error"));
-                }
-            }
-
-            Document.CommitUpdate();
-        }
-        
-        internal void ClearRuntimeErrors()
-        {
-            ClearErrorMarkers(FRuntimeErrorMarkers);
             Document.CommitUpdate();
         }
 

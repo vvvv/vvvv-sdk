@@ -35,16 +35,18 @@ namespace VVVV.Nodes.Finder
         
         protected readonly INode2 FNode;
         protected readonly NodeFilter FFilter;
-        private readonly EditableList<NodeView> FChildNodes = new EditableList<NodeView>();
-        private readonly int FDepth;
-        private readonly NodeView FParentNodeView;
+        readonly EditableList<NodeView> FChildNodes = new EditableList<NodeView>();
+        readonly int FDepth;
+        readonly NodeView FParentNodeView;
+        readonly bool FOpenModules;
         
-        public NodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
+        public NodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth, bool openModules)
         {
             FParentNodeView = parentNodeView;
             FNode = node;
             FFilter = filter;
             FDepth = depth;
+            FOpenModules = openModules;
             
             FNode.Added += HandleNodeAdded;
             FNode.Removed += HandleNodeRemoved;
@@ -185,7 +187,7 @@ namespace VVVV.Nodes.Finder
             NodeView nodeView = null;
             
             var nodeInfo = node.NodeInfo;
-            switch (nodeInfo.Name) 
+            switch (nodeInfo.Name)
             {
                 case "IOBox":
                     nodeView = new IONodeView(this, node, FFilter, FDepth + 1);
@@ -197,16 +199,22 @@ namespace VVVV.Nodes.Finder
                     nodeView = new RNodeView(this, node, FFilter, FDepth + 1);
                     break;
                 default:
-                    switch (nodeInfo.Type)
+                    if (FOpenModules)
+                        nodeView = new NodeView(this, node, FFilter, FDepth + 1, true);
+                    else
                     {
-                        case NodeType.Module:
-                            nodeView = new ModuleNodeView(this, node, FFilter, FDepth + 1);
-                            break;
-                        default:
-                            nodeView = new NodeView(this, node, FFilter, FDepth + 1);
-                            break;
+                        switch (nodeInfo.Type)
+                        {
+                            case NodeType.Module:
+                                nodeView = new ModuleNodeView(this, node, FFilter, FDepth + 1);
+                                break;
+                            default:
+                                nodeView = new NodeView(this, node, FFilter, FDepth + 1, false);
+                                break;
+                        }
                     }
-                	break;
+
+                    break;
             }
             
             if (FLastActiveWindow != null)

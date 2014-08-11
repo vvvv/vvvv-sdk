@@ -27,7 +27,7 @@ namespace VVVV.Nodes.Finder
             return tags;
         }
         
-        public NodeView UpdateFilter(string query, INode2 startNode)
+        public NodeView UpdateFilter(string query, INode2 startNode, bool openModules)
         {
             // Parse query
             Tags = ParseQuery(query);
@@ -162,7 +162,7 @@ namespace VVVV.Nodes.Finder
             for (int i = 0; i < Tags.Count; i++)
                 Tags[i] = Tags[i].Trim((char) 160);
             
-            return new NodeView(null, startNode, this, 0);
+            return new NodeView(null, startNode, this, 0, openModules);
         }
         
         public int MinLevel

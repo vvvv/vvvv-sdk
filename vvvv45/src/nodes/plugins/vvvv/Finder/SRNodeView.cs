@@ -11,7 +11,7 @@ namespace VVVV.Nodes.Finder
         protected string FSRChannel;
         
         public SRNodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
-            : base(parentNodeView, node, filter, depth)
+            : base(parentNodeView, node, filter, depth, false)
         {
             FChannelPin = FNode.FindPin(ChannelPinName);
             FChannelPin.Changed += HandleChannelPinChanged;
