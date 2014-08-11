@@ -111,62 +111,83 @@ namespace VVVV.Nodes.Devices
                 dataIn.Seek(0, SeekOrigin.Begin);
                 dataOut.Seek(0, SeekOrigin.Begin);
 
-                if (EnabledIn[i])
+                try
                 {
-                    // Try to configure the port
-                    TryConfigurePort(port, i);
+                    if (EnabledIn[i])
+                    {
+                        // Try to configure the port
+                        TryConfigurePort(port, i);
 
-                    // Open the port
-                    if (!port.IsOpen)
-                    {
-                        port.Open();
-                        SetStates(i);
-                    }
-
-                    // Can only be set if port is open
-                    try
-                    {
-                        TrySetBreakState(port, BreakStateIn[i]);
-                    }
-                    catch (Exception e)
-                    {
-                        FLogger.Log(e);
-                    }
-
-                    // Write data to the port
-                    var totalBytesToWrite = dataIn.Length;
-                    if (totalBytesToWrite > 0 && DoSendIn[i])
-                    {
-                        var buffer = new byte[1024];
-                        while (totalBytesToWrite > 0)
+                        // Open the port
+                        if (!port.IsOpen)
                         {
-                            var bytesToWrite = (int)Math.Min(buffer.Length, totalBytesToWrite);
-                            var bytesRead = dataIn.Read(buffer, 0, bytesToWrite);
-                            port.Write(buffer, 0, bytesRead);
-                            totalBytesToWrite -= bytesRead;
+                            port.Open();
+                            SetStates(i);
                         }
-                    }
 
-                    // Read data from the port
-                    var totalBytesToRead = port.BytesToRead;
-                    if (totalBytesToRead > 0)
-                    {
-                        dataOut.SetLength(totalBytesToRead);
-                        var buffer = new byte[1024];
-                        while (totalBytesToRead > 0)
+                        // Can only be set if port is open
+                        try
                         {
-                            var bytesToRead = Math.Min(buffer.Length, totalBytesToRead);
-                            var bytesRead = port.Read(buffer, 0, bytesToRead);
-                            dataOut.Write(buffer, 0, bytesRead);
-                            totalBytesToRead -= bytesRead;
+                            TrySetBreakState(port, BreakStateIn[i]);
                         }
-                        // Marks the pin as changed
-                        DataOut[i] = dataOut;
-                        // Set the OnData flag
-                        OnDataOut[i] = true;
+                        catch (Exception e)
+                        {
+                            FLogger.Log(e);
+                        }
+
+                        // Write data to the port
+                        var totalBytesToWrite = dataIn.Length;
+                        if (totalBytesToWrite > 0 && DoSendIn[i])
+                        {
+                            var buffer = new byte[1024];
+                            while (totalBytesToWrite > 0)
+                            {
+                                var bytesToWrite = (int)Math.Min(buffer.Length, totalBytesToWrite);
+                                var bytesRead = dataIn.Read(buffer, 0, bytesToWrite);
+                                port.Write(buffer, 0, bytesRead);
+                                totalBytesToWrite -= bytesRead;
+                            }
+                        }
+
+                        // Read data from the port
+                        var totalBytesToRead = port.BytesToRead;
+                        if (totalBytesToRead > 0)
+                        {
+                            dataOut.SetLength(totalBytesToRead);
+                            var buffer = new byte[1024];
+                            while (totalBytesToRead > 0)
+                            {
+                                var bytesToRead = Math.Min(buffer.Length, totalBytesToRead);
+                                var bytesRead = port.Read(buffer, 0, bytesToRead);
+                                dataOut.Write(buffer, 0, bytesRead);
+                                totalBytesToRead -= bytesRead;
+                            }
+                            // Marks the pin as changed
+                            DataOut[i] = dataOut;
+                            // Set the OnData flag
+                            OnDataOut[i] = true;
+                        }
+                        else
+                        {
+                            // Clear output
+                            if (dataOut.Length > 0)
+                            {
+                                dataOut.SetLength(0);
+                                // Marks the pin as changed
+                                DataOut[i] = dataOut;
+                                // Reset the OnData flag
+                                OnDataOut[i] = false;
+                            }
+                        }
                     }
                     else
                     {
+                        // Close the port
+                        if (port.IsOpen)
+                        {
+                            port.Close();
+                            UnsetStates(i);
+                        }
                         // Clear output
                         if (dataOut.Length > 0)
                         {
@@ -177,28 +198,19 @@ namespace VVVV.Nodes.Devices
                             OnDataOut[i] = false;
                         }
                     }
-                }
-                else
-                {
-                    // Close the port
-                    if (port.IsOpen)
-                    {
-                        port.Close();
-                        UnsetStates(i);
-                    }
-                    // Clear output
-                    if (dataOut.Length > 0)
-                    {
-                        dataOut.SetLength(0);
-                        // Marks the pin as changed
-                        DataOut[i] = dataOut;
-                        // Reset the OnData flag
-                        OnDataOut[i] = false;
-                    }
-                }
 
-                // Read connection state
-                ConnectedOut[i] = port.IsOpen;
+                    // Read connection state
+                    ConnectedOut[i] = port.IsOpen;
+                }
+                catch (IOException e)
+                {
+                    // Reset outputs
+                    DataOut[i].SetLength(0);
+                    UnsetStates(i);
+                    ConnectedOut[i] = false;
+                    // Log the exception
+                    FLogger.Log(e);
+                }
             }
         }
 

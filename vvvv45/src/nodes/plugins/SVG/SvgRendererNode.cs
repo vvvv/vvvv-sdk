@@ -82,17 +82,17 @@ namespace VVVV.Nodes
 		
 		#endregion fields & pins
 		
+		[ImportingConstructor]
 		public SvgRendererNode()
 		{
 			//clear controls in case init is called multiple times
 			Controls.Clear();
 			FPicBox.Dock = DockStyle.Fill;
-			
 			FPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
-			
+			FPicBox.BackColor = Color.Black;
 			Controls.Add(FPicBox);
 			
-			this.Resize	+= new EventHandler(SvgRendererNode_Resize);
+			Resize += SvgRendererNode_Resize;
 		}
 		
 		void SvgRendererNode_Resize(object sender, EventArgs e)
