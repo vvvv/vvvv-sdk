@@ -1,0 +1,195 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\RoundRect (GDI) help.v4p">
+   <BOUNDS height="8340" left="7665" top="3420" type="Window" width="4635">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="450" top="4350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="14625" top="6405" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="3105" left="450" top="4350" type="Box" width="3300">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="675" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1950" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Pause" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="WaveShaper (Value)">
+   <BOUNDS height="0" left="1950" top="3015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape" slicecount="1" values="Sine">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="990" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4965" top="1920" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1545" left="990" top="1200" type="Box" width="810">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="54.16667">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="6">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Spread Count" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="6" nodename="RoundRect (GDI)">
+   <BOUNDS height="0" left="915" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="R" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.8">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0.8">
+   </PIN>
+   <PIN pinname="Pen Style" slicecount="1" values="Solid">
+   </PIN>
+   <PIN pinname="Pen Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Radius" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="10" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="10" srcpinname="Output X">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1950" top="1245" type="Node" width="3135">
+   </BOUNDS>
+   <BOUNDS height="735" left="1950" top="1245" type="Box" width="1845">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|in crease spread count to create cool patterns|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Spectrum (Color)">
+   <BOUNDS height="0" left="3135" top="3045" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Wavelength (nm)" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Pen Color" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="3135" top="2295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Map (Value)">
+   <BOUNDS height="0" left="3135" top="2685" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Source Minimum" slicecount="1" values="-0.5">
+   </PIN>
+   <PIN pinname="Source Maximum" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="360">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="800">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Spread Count" srcnodeid="7" srcpinname="Y Output Value">
+   <LINKPOINT x="1875" y="2715">
+   </LINKPOINT>
+   <LINKPOINT x="1875" y="1155">
+   </LINKPOINT>
+   <LINKPOINT x="4110" y="1155">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Wavelength (nm)" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="4080">
+   </BOUNDS>
+   <BOUNDS height="160" left="9030" top="38580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Draws a rectangle in the gdi window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9030" top="38580" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RoundRect - GDI|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="11" dstpinname="Layers">
+   </LINK>
+   </PATCH>
