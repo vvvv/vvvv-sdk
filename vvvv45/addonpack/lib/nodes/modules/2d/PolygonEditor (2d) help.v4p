@@ -63,7 +63,7 @@
    <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="399">
    <BOUNDS type="Node" left="7425" top="3210" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Simulate" visible="1" slicecount="1" values="0">
+   <PIN pinname="Simulate" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Bang" visible="1">
    </PIN>
@@ -953,9 +953,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="505" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Insert">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="506" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10590" top="1920" width="480" height="480">
    </BOUNDS>
@@ -971,9 +973,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="506" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="507" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10590" top="1320" width="795" height="240">
    </BOUNDS>
@@ -1005,9 +1009,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="508" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="509" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7425" top="1920" width="795" height="240">
    </BOUNDS>
@@ -1079,5 +1085,27 @@
    </LINKPOINT>
    <LINKPOINT x="6105" y="4770">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="508" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
+   </LINK>
+   <LINK srcnodeid="505" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Insert">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="518">
+   <BOUNDS type="Node" left="9795" top="2340" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9795" top="2340" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="518" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove">
    </LINK>
    </PATCH>

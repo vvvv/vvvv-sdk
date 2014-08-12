@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -159,7 +159,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="1">
    </PIN>
@@ -263,11 +263,15 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="6" values="|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|,|Keyboard Stepsize|">
+   <PIN pinname="Descriptive Name" slicecount="6" values="|Keyboard StepsizeXY|,|Keyboard StepsizeXY|,|Keyboard StepsizeXY|,|Keyboard StepsizeXY|,|Keyboard StepsizeXY|,|Keyboard StepsizeXY|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.01">
+   <PIN pinname="Y Input Value" slicecount="2" values="0.01,0.01">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0.01, 0.01|">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0.01,0.01">
    </PIN>
    </NODE>
    <NODE systemname="Remove (PolygonEditor)" filename="..\PolygonEditor/sub\Remove (PolygonEditor).v4p" componentmode="Hidden" id="34" nodename="Remove (PolygonEditor)" stayontop="1">
@@ -412,6 +416,8 @@
    <PIN pinname="Shape Rotation" visible="1">
    </PIN>
    <PIN pinname="Is Active" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="31" dstpinname="Mouse" linkstyle="VHV">
@@ -691,9 +697,9 @@
    <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="8" dstpinname="VerticesXY">
    </LINK>
    <NODE id="33" systemname="PolygonEditor (2d Split)" filename="..\PolygonEditor/sub\PolygonEditor (2d Split).v4p" componentmode="Hidden" nodename="PolygonEditor (2d Split)" stayontop="1" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="4800" top="2685" width="100" height="100">
+   <BOUNDS type="Node" left="5040" top="3060" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4800" top="2685" width="4800" height="3600">
+   <BOUNDS type="Box" left="5040" top="3060" width="4800" height="3600">
    </BOUNDS>
    <BOUNDS type="Window" left="11085" top="3360" width="13755" height="10785">
    </BOUNDS>
@@ -727,9 +733,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Input" linkstyle="Bezier">
-   <LINKPOINT x="725" y="12595">
+   <LINKPOINT x="805" y="12720">
    </LINKPOINT>
-   <LINKPOINT x="1405" y="1910">
+   <LINKPOINT x="1565" y="2160">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="33" srcpinname="Rotation" dstnodeid="34" dstpinname="Rotation" hiddenwhenlocked="1">
@@ -747,7 +753,7 @@
    <NODE systemname="PolygonEditor (2d Join)" filename="..\PolygonEditor/sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="Hidden" id="32" stayontop="0">
    <BOUNDS type="Node" left="5055" top="11925" width="3360" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="3030" top="1605" width="16725" height="8025">
+   <BOUNDS type="Window" left="7965" top="2475" width="16725" height="8025">
    </BOUNDS>
    <PIN pinname="pointsXY" visible="1">
    </PIN>
@@ -794,6 +800,8 @@
    <PIN pinname="Cursor Type" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="PolygonEditor (2d Split)" filename="..\PolygonEditor/sub\PolygonEditor (2d Split).v4p" nodename="PolygonEditor (2d Split)" componentmode="Hidden" id="10">
@@ -1282,6 +1290,12 @@
    <LINKPOINT x="8510" y="8730">
    </LINKPOINT>
    <LINKPOINT x="12325" y="13860">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Vertex Mouseover" dstnodeid="32" dstpinname="Vertex Mouseover" linkstyle="Bezier">
+   <LINKPOINT x="10710" y="13095">
+   </LINKPOINT>
+   <LINKPOINT x="8640" y="11025">
    </LINKPOINT>
    </LINK>
    </PATCH>
