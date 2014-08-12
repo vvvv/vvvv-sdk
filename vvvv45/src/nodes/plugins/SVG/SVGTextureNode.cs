@@ -28,17 +28,25 @@ using Svg.Transforms;
 
 namespace VVVV.Nodes
 {
-	//struct to store a doc and its background color
-	public struct SvgDoc
+
+	//helper to read/write the custom "VVVVBackgroundColor" attribute
+	public static class SvgDocumentExtentions
 	{
-		public SvgDocument Document;
-		public Color BackgroundColor;
-		
-		public SvgDoc(SvgDocument doc, Color col)
-		{
-			Document = doc;
-			BackgroundColor = col;
-		}
+	    public static void SetVVVVBackgroundColor(this SvgDocument doc, RGBAColor col)
+	    {
+	        doc.CustomAttributes["VVVVBackgroundColor"] = VColor.Serialze(col);
+	    }
+	    
+	    public static RGBAColor GetVVVVBackgroundColor(this SvgDocument doc)
+	    {
+	        var col = VColor.Black;
+	        var attributeString = "";
+	        
+	        if(doc.CustomAttributes.TryGetValue("VVVVBackgroundColor", out attributeString))
+	            col = VColor.Deserialze(attributeString);
+	           
+	        return col;
+	    }
 	}
 	
 	#region PluginInfo
@@ -61,10 +69,13 @@ namespace VVVV.Nodes
 			{
 				var s = new MemoryStream(UTF8Encoding.Default.GetBytes(FXMLIn[slice]));
 				doc = SvgDocument.Open<SvgDocument>(s);
+				FSuccess[slice] = true;
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
-				FLogger.Log(e);
+			    FSuccess[slice] = false;
+			    FErrorMessage[slice] = e.Message;
+			    FError[slice] = true;
 			}
 			
 			return doc;
@@ -87,21 +98,25 @@ namespace VVVV.Nodes
 	    #pragma warning disable 649
 		[Input("Filename", StringType = StringType.Filename, DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg")]
 		IDiffSpread<string> FFilenameIn;
+		
 		#pragma warning restore
 		
 		protected override SvgDocument ReadDocument(int slice)
 		{
-			SvgDocument doc = null;
-			try
-			{
-				doc = SvgDocument.Open(FFilenameIn[slice]);
-			}
-			catch (Exception e)
-			{
-				FLogger.Log(e);
-			}
-			
-			return doc;
+		    SvgDocument doc = null;
+		    try
+		    {
+		        doc = SvgDocument.Open(FFilenameIn[slice]);
+		        FSuccess[slice] = true;
+		    }
+		    catch(Exception e)
+		    {
+		        FSuccess[slice] = false;
+		        FErrorMessage[slice] = e.Message;
+		        FError[slice] = true;
+		    }
+		    
+		    return doc;
 		}
 		
 		protected override bool InputChanged()
@@ -121,7 +136,7 @@ namespace VVVV.Nodes
 		ISpread<bool> FReloadIn;
 		
 		[Output("Document")]
-		ISpread<SvgDoc> FDocOut;
+		ISpread<SvgDocument> FDocOut;
 
 		[Output("Layer")]
 		ISpread<ISpread<SvgElement>> FLayerOut;
@@ -137,15 +152,40 @@ namespace VVVV.Nodes
 		
 		[Output("Has Size", Visibility = PinVisibility.Hidden)]
 		ISpread<bool> FHasSizeOut;
+		
+		[Output("Success")]
+	    protected ISpread<bool> FSuccess;
+	    
+	    [Output("Error Message")]
+	    protected ISpread<string> FErrorMessage;
+	    
+	    [Output("Error")]
+	    protected ISpread<bool> FError;
 
 		[Import()]
 		protected ILogger FLogger;
 		#pragma warning restore
 		#endregion fields & pins
+		
+		protected virtual void Reset()
+	    {
+	        for (int slice = 0; slice < FSuccess.SliceCount; slice++)
+	        {
+	            FSuccess[slice] = false;
+	            FErrorMessage[slice] = "";
+	            FError[slice] = false;
+	        }
+	    }
  
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
+		    FSuccess.SliceCount = SpreadMax;
+		    FErrorMessage.SliceCount = SpreadMax;
+		    FError.SliceCount = SpreadMax;
+		    
+		    Reset();
+		    
 			if(InputChanged() || FBackgroundIn.IsChanged || FReloadIn[0])
 			{
 				FDocOut.SliceCount = SpreadMax;				
@@ -161,7 +201,8 @@ namespace VVVV.Nodes
 					
 					if(doc != null)
 					{
-						FDocOut[i] = new SvgDoc(doc, FBackgroundIn[i].Color);
+					    doc.SetVVVVBackgroundColor(FBackgroundIn[i]);
+						FDocOut[i] = doc;
 						
 						var spread = FLayerOut[i];
 						spread.SliceCount = doc.Children.Count;
@@ -208,7 +249,7 @@ namespace VVVV.Nodes
 					}
 					else
 					{
-						FDocOut[i] = new SvgDoc();
+						FDocOut[i] = null;
 						FLayerOut[i].SliceCount = 0;
 						
 						FViewOut[i] = new SvgViewBox();
@@ -230,13 +271,23 @@ namespace VVVV.Nodes
 	{
 	    #pragma warning disable 649
 		[Input("Document")]
-		ISpread<SvgDoc> FDocIn;
+		ISpread<SvgDocument> FDocIn;
 		
 		[Input("Size", StepSize = 1, Order = 10)]
 		ISpread<Vector2> FSizeIn;
 		
 		[Input("Write", IsBang = true, Order = 20)]
 		ISpread<bool> FDoWriteIn;
+		
+		[Output("Success", Order = 20)]
+		protected ISpread<bool> FSuccess;
+		
+		[Output("Error Message", Order = 30)]
+		protected ISpread<string> FErrorMessage;
+		
+		[Output("Error", Order = 40)]
+		protected ISpread<bool> FError;
+		
 		#pragma warning restore
 		
 		//called when data for any output pin is requested
@@ -244,12 +295,14 @@ namespace VVVV.Nodes
 		{
 			SetSlicecount(SpreadMax);
 			
+			Reset();
+			
 			for(int i=0; i<SpreadMax; i++)
 			{
 				//save to disc
 				if(FDoWriteIn[i])
 				{
-					var doc = FDocIn[i].Document;
+					var doc = FDocIn[i];
 					var oldW = doc.Width;
 					var oldH = doc.Height;
 					
@@ -267,7 +320,23 @@ namespace VVVV.Nodes
 			}
 		}
 		
-		protected abstract void SetSlicecount(int spreadMax);
+		protected virtual void Reset()
+		{
+		    for (int slice = 0; slice < FSuccess.SliceCount; slice++)
+		    {
+		        FSuccess[slice] = false;
+		        FErrorMessage[slice] = "";
+		        FError[slice] = false;
+		    }
+		}
+		
+		protected virtual void SetSlicecount(int spreadMax)
+		{
+		    FSuccess.SliceCount = spreadMax;
+		    FErrorMessage.SliceCount = spreadMax;
+		    FError.SliceCount = spreadMax;
+		}
+		
 		protected abstract void WriteDoc(SvgDocument doc, int slice);
 	}
 	
@@ -279,21 +348,27 @@ namespace VVVV.Nodes
 	            AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class DocumentSvgFileWriterNode : DocumentSvgWriterNode
-	{	
+	{
 	    #pragma warning disable 649
-		[Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
-		ISpread<string> FFilenameIn;
-		#pragma warning restore
-		
-		protected override void SetSlicecount(int spreadMax)
-		{
-			//nothing to do
-		}
-		
-		protected override void WriteDoc(SvgDocument doc, int slice)
-		{
-			doc.Write(FFilenameIn[slice]);
-		}
+	    [Input("Filename", DefaultString = "file.svg", FileMask = "SVG Files (*.svg)|*.svg", StringType = StringType.Filename, Order = 1)]
+	    ISpread<string> FFilenameIn;
+
+	    #pragma warning restore
+	    
+	    protected override void WriteDoc(SvgDocument doc, int slice)
+	    {
+	        try
+	        {
+	            doc.Write(FFilenameIn[slice]);
+	            FSuccess[slice] = true;
+	        }
+	        catch(Exception e)
+	        {
+	            FSuccess[slice] = false;
+	            FErrorMessage[slice] = e.Message;
+	            FError[slice] = true;
+	        }
+	    }
 	}
 	
 	#region PluginInfo
@@ -312,185 +387,33 @@ namespace VVVV.Nodes
 		
 		protected override void SetSlicecount(int spreadMax)
 		{
+		    base.SetSlicecount(spreadMax);
 			FStringOut.SliceCount = spreadMax;
 		}
 		 
 		protected override void WriteDoc(SvgDocument doc, int slice)
 		{
-			using(var ms = new MemoryStream())
-            {
-                doc.Write(ms);
-                ms.Position = 0;
-                var sr = new StreamReader(ms);
-                FStringOut[slice] = sr.ReadToEnd();
-                sr.Close();
-            }
+		    using(var ms = new MemoryStream())
+		    {
+		        try
+		        {
+		            doc.Write(ms);
+		            ms.Position = 0;
+		            var sr = new StreamReader(ms);
+		            FStringOut[slice] = sr.ReadToEnd();
+		            sr.Close();
+		            FSuccess[slice] = true;
+		        }
+		        catch(Exception e)
+		        {
+		            FSuccess[slice] = false;
+		            FErrorMessage[slice] = e.Message;
+		            FError[slice] = true;
+		        }
+		    }
 		}
 	}
-	
-	#region PluginInfo
-	[PluginInfo(Name = "Renderer",
-	            Category = "SVG",
-	            Help = "Renders SVG layers into a window and returns the document",
-	            Tags = "xml",
-	            AutoEvaluate = true,
-	            InitialBoxWidth = 160,
-                InitialBoxHeight = 120,
-                InitialWindowWidth = 400,
-                InitialWindowHeight = 300,
-	            InitialComponentMode = TComponentMode.InAWindow)]
-	#endregion PluginInfo
-    public class SvgRendererNode : TopControl, IPluginEvaluate, IUserInputWindow, IBackgroundColor
-	{
-		#region fields & pins
-		#pragma warning disable 649,169
-		[Input("Layers")]
-		IDiffSpread<SvgElement> FSVGIn;
-		
-		[Input("View Box", IsSingle = true)]
-		IDiffSpread<SvgViewBox> FViewIn;
-		
-		[Input("Ignore View", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
-		IDiffSpread<bool> FIgnoreView;
-		
-		[Input("Background Color", DefaultColor = new double[] { 0, 0, 0, 1 }, IsSingle = true)]
-		IDiffSpread<RGBAColor> FBackgroundIn;
 
-		[Input("Size", StepSize = 1)]
-		IDiffSpread<Vector2> FSizeIn;
-		
-		[Output("Document")]
-		ISpread<SvgDoc> FOutput;
-		
-		[Output("Size")]
-		ISpread<Vector2> FSizeOutput;
-		
-		SvgDocument FSVGDoc = new SvgDocument();
-		
-		SizeF FSize = new SizeF();
-		bool FResized = false;
-		
-		Bitmap FBitMap;
-		PictureBox FPicBox = new PictureBox();
-		
-		[Import]
-		INode FThisNode;
-		
-		[Import]
-		ILogger FLogger;
-		#pragma warning restore
-		
-		#endregion fields & pins
-		
-		public SvgRendererNode()
-		{
-			//clear controls in case init is called multiple times
-			Controls.Clear();
-			FPicBox.Dock = DockStyle.Fill;
-			
-			FPicBox.SizeMode = PictureBoxSizeMode.StretchImage;
-			
-			Controls.Add(FPicBox);
-			
-			this.Resize	+= new EventHandler(SvgRendererNode_Resize);
-		}
-
-		void SvgRendererNode_Resize(object sender, EventArgs e)
-		{
-			FResized = true;
-		}
-		
-		void LogIDFix(SvgElement elem, string oldID, string newID)
-		{
-			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
-			FLogger.Log(LogType.Warning, msg);
-		}
- 
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			//update
-			if (FSVGIn.IsChanged || FSizeIn.IsChanged || FBackgroundIn.IsChanged ||
-			   FIgnoreView.IsChanged || FViewIn.IsChanged || FResized)
-			{
-				FResized = false;
-				
-				FSVGDoc = new SvgDocument();
-				foreach(var elem in FSVGIn)
-				{
-					if(elem != null) FSVGDoc.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
-				}
-				
-				FSVGDoc.Transforms = new SvgTransformCollection();
-				
-				//set view
-				if(!FIgnoreView[0])
-				{
-					var view = FViewIn[0];
-					
-					if(view.Equals(SvgViewBox.Empty))
-					{
-						view =  new SvgViewBox(-1, -1, 2, 2);
-					}
-					
-					FSVGDoc.ViewBox = view;
-				}
-				
-				//calc size
-				FSize.Width = FSizeIn[0].X;
-				FSize.Height = FSizeIn[0].Y;
-				
-				if(FSize == SizeF.Empty)
-				{
-					FSize = new SizeF(this.Width, this.Height);
-				}
-				
-				//set size and output doc
-				FSVGDoc.Width = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Width, 1));
-				FSVGDoc.Height = new SvgUnit(SvgUnitType.User, Math.Max(FSize.Height, 1));
-				 
-				FOutput[0] = new SvgDoc(FSVGDoc, FBackgroundIn[0].Color);
-				FSizeOutput[0] = new Vector2(FSize.Width, FSize.Height);
-			}
-
-			
-			//render to window
-			if(FThisNode.Window != null)
-			{
-				if(FBitMap == null)
-				{
-					FBitMap = new Bitmap((int)Math.Ceiling(FSVGDoc.Width), (int)Math.Ceiling(FSVGDoc.Height));
-				}
-				else if(FBitMap.Height != FSVGDoc.Height || FBitMap.Width != FSVGDoc.Width)
-				{
-					FBitMap.Dispose();
-					FBitMap = new Bitmap((int)Math.Ceiling(FSVGDoc.Width), (int)Math.Ceiling(FSVGDoc.Height));
-				}
-				
-				//clear bitmap
-				var g = Graphics.FromImage(FBitMap);
-				g.Clear(FBackgroundIn[0].Color);
-				g.Dispose();
-				
-				//also set controls backcolor so it does not flash when going fullscreen
-				if (FBackgroundIn.IsChanged)
-					this.BackColor = FBackgroundIn[0].Color;
-				
-				FSVGDoc.Draw(FBitMap);
-				FPicBox.Image = FBitMap;
-			}
-		}
-
-        public IntPtr InputWindowHandle
-        {
-            get { return FPicBox.Handle; }
-        }
-        
-        public RGBAColor BackgroundColor
-		{
-			get { return FBackgroundIn[0]; }
-		}
-    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SVGTexture", 
@@ -503,7 +426,7 @@ namespace VVVV.Nodes
 		#region fields & pins
         #pragma warning disable 649,169
 		[Input("Document")]
-		IDiffSpread<SvgDoc> FSVGIn;
+		IDiffSpread<SvgDocument> FSVGIn;
 		
 		[Input("Transform")]
 		IDiffSpread<Matrix> FTransformIn;
@@ -517,7 +440,7 @@ namespace VVVV.Nodes
 		
 		List<Bitmap> FBitmaps = new List<Bitmap>();
 		List<Size> FSizes = new List<Size>();
-		List<SvgDoc> FDocs = new List<SvgDoc>();
+		List<SvgDocument> FDocs = new List<SvgDocument>();
 
 		//track the current texture slice
 		int FCurrentSlice;
@@ -536,7 +459,7 @@ namespace VVVV.Nodes
 			FDocs.Clear();
 			foreach (var element in FSVGIn) 
 			{
-				if(element.Document != null) FDocs.Add(element);
+				if(element != null) FDocs.Add(element);
 			}
 			
 			SpreadMax = FDocs.Count;
@@ -560,7 +483,7 @@ namespace VVVV.Nodes
 				
 				for(int i=0; i<SpreadMax; i++)
 				{
-					var doc = FDocs[i].Document;
+					var doc = FDocs[i];
 					
 					//calc size
 					var size = new Size((int)FSizeIn[0].X, (int)FSizeIn[0].Y);
@@ -597,7 +520,7 @@ namespace VVVV.Nodes
 						
 						//clear bitmap
 						var g = Graphics.FromImage(bm);
-						g.Clear(FDocs[i].BackgroundColor);
+						g.Clear(FDocs[i].GetVVVVBackgroundColor().Color);
 						g.Dispose();
 						
 						//save old values

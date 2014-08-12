@@ -10,7 +10,6 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DocumentationFile>$(OutputPath)\VVVV.Utils.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\vvvv45\src\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <ItemGroup>
@@ -41,6 +40,7 @@
     <Compile Include="Animation\IIRFilter.cs" />
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
+    <Compile Include="IO\StreamEqualityComparer.cs" />
     <Compile Include="IO\TakeStream.cs" />
     <Compile Include="IO\Keyboard.cs" />
     <Compile Include="IO\LeaveOpenStreamReader.cs" />
@@ -150,5 +150,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

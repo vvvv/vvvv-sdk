@@ -141,7 +141,7 @@ namespace VVVV.Nodes.WindowSwitcher
             if (FNodeView != null)
                 FNodeView.Dispose();
             
-            FNodeView = FNodeFilter.UpdateFilter("< w t ", FHDEHost.RootNode);
+            FNodeView = FNodeFilter.UpdateFilter("< w t ", FHDEHost.RootNode, false);
             FNodeView.SetActiveWindow(FActiveWindow);
             
             //mark the incoming window as selected

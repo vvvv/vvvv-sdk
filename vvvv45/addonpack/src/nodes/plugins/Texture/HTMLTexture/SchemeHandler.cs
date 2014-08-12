@@ -1,12 +1,30 @@
 ﻿using System;
 using System.Text;
-using CefGlue;
+using Xilium.CefGlue;
 using System.IO;
+using System.Collections.Specialized;
+using System.Collections.Generic;
 
 namespace VVVV.Nodes.Texture.HTML
 {
-    internal sealed class SchemeHandler : CefSchemeHandler
+    internal sealed class SchemeHandler : CefResourceHandler
     {
+        class WebPluginVisitor : CefWebPluginInfoVisitor
+        {
+            public List<CefWebPluginInfo> Plugins { get; private set; }
+
+            public WebPluginVisitor()
+            {
+                Plugins = new List<CefWebPluginInfo>();
+            }
+
+            protected override bool Visit(CefWebPluginInfo info, int count, int total)
+            {
+                Plugins.Add(info);
+                return true;
+            }
+        }
+
         private Stream stream;
 
         private long responseLength;
@@ -34,9 +52,9 @@ namespace VVVV.Nodes.Texture.HTML
             base.Dispose(disposing);
         }
 
-        protected override bool ProcessRequest(CefRequest request, CefSchemeHandlerCallback callback)
+        protected override bool ProcessRequest(CefRequest request, CefCallback callback)
         {
-            var urlString = request.GetURL();
+            var urlString = request.Url;
 
             string errorMessage = null;
             int errorStatus = 0;
@@ -47,26 +65,21 @@ namespace VVVV.Nodes.Texture.HTML
                 var uri = new Uri(urlString);
                 var path = uri.Host + uri.AbsolutePath; // ignore host
 
-                switch (uri.Host)
+                switch (uri.AbsolutePath)
                 {
                     case "plugins":
-                        CefGlue.Threading.CefThread.UI.Send(_ =>
-                            {
-                            var pluginCount = Cef.GetWebPluginCount();
-                            var s = new StringBuilder();
-                            for (int i = 0; i < pluginCount; i++)
-                            {
-                                var plugin = Cef.GetWebPluginInfo(i);
-                                s.AppendLine(string.Format("Name: {0}", plugin.Name));
-                                s.AppendLine(string.Format("Description: {0}", plugin.Description));
-                                s.AppendLine(string.Format("Version: {0}", plugin.Version));
-                                s.AppendLine(string.Format("Path: {0}", plugin.Path));
-                                s.AppendLine();
-                            }
-                            this.stream = new MemoryStream(Encoding.UTF8.GetBytes(s.ToString()), false);
-                            },
-                            null
-                        );
+                        var visitor = new WebPluginVisitor();
+                        CefRuntime.VisitWebPluginInfo(visitor);
+                        var s = new StringBuilder();
+                        foreach (var plugin in visitor.Plugins)
+                        {
+                            s.AppendLine(string.Format("Name: {0}", plugin.Name));
+                            s.AppendLine(string.Format("Description: {0}", plugin.Description));
+                            s.AppendLine(string.Format("Version: {0}", plugin.Version));
+                            s.AppendLine(string.Format("Path: {0}", plugin.Path));
+                            s.AppendLine();
+                        }
+                        this.stream = new MemoryStream(Encoding.UTF8.GetBytes(s.ToString()), false);
                         break;
                     default:
                         throw new Exception();
@@ -79,7 +92,7 @@ namespace VVVV.Nodes.Texture.HTML
                     this.status = 200;
                     this.statusText = "OK";
                     this.mimeType = "text/plain";
-                    callback.HeadersAvailable();
+                    callback.Continue();
                     return true;
                 }
             }
@@ -99,7 +112,7 @@ namespace VVVV.Nodes.Texture.HTML
             this.status = errorStatus != 0 ? errorStatus : 404;
             this.statusText = errorStatusText ?? "Not Found";
             this.mimeType = "text/html";
-            callback.HeadersAvailable();
+            callback.Continue();
             return true;
         }
 
@@ -108,23 +121,24 @@ namespace VVVV.Nodes.Texture.HTML
             this.Close();
         }
 
-        protected override void GetResponseHeaders(CefResponse response, out long responseLength, ref string redirectUrl)
+        protected override void GetResponseHeaders(CefResponse response, out long responseLength, out string redirectUrl)
         {
             responseLength = this.responseLength;
+            redirectUrl = null;
 
             if (responseLength != -1)
             {
-                var headers = new CefStringMultiMap();
-                headers.Append("Content-Length", responseLength.ToString());
+                var headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
+                headers.Add("Content-Length", responseLength.ToString());
                 response.SetHeaderMap(headers);
             }
 
-            response.SetStatus(this.status);
-            response.SetStatusText(this.statusText);
-            response.SetMimeType(this.mimeType);
+            response.Status = this.status;
+            response.StatusText = this.statusText;
+            response.MimeType = this.mimeType;
         }
 
-        protected override bool ReadResponse(Stream stream, int bytesToRead, out int bytesRead, CefSchemeHandlerCallback callback)
+        protected override bool ReadResponse(Stream stream, int bytesToRead, out int bytesRead, CefCallback callback)
         {
             byte[] buffer = new byte[bytesToRead];
             var readed = this.stream.Read(buffer, 0, buffer.Length);
@@ -140,6 +154,16 @@ namespace VVVV.Nodes.Texture.HTML
                 bytesRead = 0;
                 return false;
             }
+        }
+
+        protected override bool CanGetCookie(CefCookie cookie)
+        {
+            return false;
+        }
+
+        protected override bool CanSetCookie(CefCookie cookie)
+        {
+            return false;
         }
     }
 }

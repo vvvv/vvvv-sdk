@@ -49,6 +49,21 @@ namespace VVVV.Hosting.IO
                               var stream = new UIntInStream(pLength, ppDoubleData, validateFunc);
                               return IOContainer.Create(context, stream, container);
                           });
+
+
+            RegisterInput(typeof(IInStream<long>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new LongInStream(pLength, ppDoubleData, validateFunc);
+                return IOContainer.Create(context, stream, container);
+            });
+
+            RegisterInput(typeof(IInStream<ulong>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new ULongInStream(pLength, ppDoubleData, validateFunc);
+                return IOContainer.Create(context, stream, container);
+            });
             
             RegisterInput(typeof(IInStream<bool>), (factory, context) => {
                               var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
@@ -210,13 +225,13 @@ namespace VVVV.Hosting.IO
                                   {
                                       context = context.ReplaceDataType(typeof(Mouse));
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                      stream = Activator.CreateInstance(typeof(MouseToMouseStateInStream), container.RawIOObject) as IInStream;
+                                      stream = new MouseToMouseStateInStream(factory, container.GetPluginIO() as INodeIn);
                                   }
                                   else if (context.DataType == typeof(KeyboardState))
                                   {
                                       context = context.ReplaceDataType(typeof(Keyboard));
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                      stream = Activator.CreateInstance(typeof(KeyboardToKeyboardStateInStream), container.RawIOObject) as IInStream;
+                                      stream = new KeyboardToKeyboardStateInStream(factory, container.GetPluginIO() as INodeIn);
                                   }
                                   else
                                   {
@@ -258,6 +273,22 @@ namespace VVVV.Hosting.IO
                                valueOut.GetValuePointer(out ppDoubleData);
                                return IOContainer.Create(context, new UIntOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
                            });
+
+            RegisterOutput(typeof(IOutStream<long>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
+                var valueOut = container.RawIOObject as IValueOut;
+                valueOut.GetValuePointer(out ppDoubleData);
+                return IOContainer.Create(context, new LongOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
+            });
+
+            RegisterOutput(typeof(IOutStream<ulong>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
+                var valueOut = container.RawIOObject as IValueOut;
+                valueOut.GetValuePointer(out ppDoubleData);
+                return IOContainer.Create(context, new ULongOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
+            });
             
             RegisterOutput(typeof(IOutStream<bool>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));

@@ -4,16 +4,14 @@
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PackageOutputDir Condition="'$(PackageOutputDir)' == ''">$(MSBuildThisFileDirectory)..\..\build\packages</PackageOutputDir>
   </PropertyGroup>
   <!-- Override vvvvv45.props -->
   <!-- Zip -->
   <PropertyGroup>
     <ZipFileNamePrefix>vvvv</ZipFileNamePrefix>
     <ZipInclude>..\**\*.*</ZipInclude>
-    <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</ZipExclude>
+    <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*;..\packs\**\*.*</ZipExclude>
     <!-- Files to exclude for platform specific builds -->
     <ZipExclude Condition=" '$(Platform)' == 'x86' ">$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
     <ZipExclude Condition=" '$(Platform)' == 'x64' ">$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
@@ -90,27 +88,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <Target Name="CleanPackages">
-    <ItemGroup>
-      <PackagesToRemove Include="$(PackageOutputDir)\*.nupkg" />
-    </ItemGroup>
-    <Delete Files="@(PackagesToRemove)" />
-  </Target>
-  <Target Name="RestoreAllPackages">
-    <ItemGroup>
-      <ProjectsToRestore Include="..\..\common\src\core\*\*.csproj" />
-      <ProjectsToRestore Include="core\*\*.csproj" />
-    </ItemGroup>
-    <MSBuild Projects="@(ProjectsToRestore)" Targets="RestorePackages" />
-  </Target>
-  <Target Name="BuildPackages" DependsOnTargets="CleanPackages;RestoreAllPackages">
-    <MakeDir Directories="$(PackageOutputDir)" />
-    <ItemGroup>
-      <ProjectsToPack Include="..\..\common\src\core\*\*.csproj" />
-      <ProjectsToPack Include="core\*\*.csproj" />
-    </ItemGroup>
-    <MSBuild Projects="@(ProjectsToPack)" Targets="BuildPackage" Properties="PackageOutputDir=$(PackageOutputDir)" />
-  </Target>
   <Import Project="vvvv45.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

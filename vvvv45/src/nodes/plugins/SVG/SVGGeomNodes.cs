@@ -76,7 +76,7 @@ namespace VVVV.Nodes
 				}
 			}
 			
-			//out pin changed hack
+			//HACK: out pin changed
 			if(FIDIn.IsChanged || FClassIn.IsChanged)
 				FOutput[0] = FOutput[0];
 		}
@@ -761,6 +761,9 @@ namespace VVVV.Nodes
 		[Input("Layer")]
 		ISpread<SvgElement> FInput;
 		
+		[Input("Transform Path", DefaultValue = 1)]
+		ISpread<bool> FTransformPathInput;
+		
 		[Input("Flatten", DefaultValue = 1)]
 		ISpread<bool> FFlattenInput;
 		
@@ -797,6 +800,9 @@ namespace VVVV.Nodes
 						if(elem is SvgGroup) p = ((SvgGroup)elem).Path;
 						else if(elem is SvgVisualElement) p = (GraphicsPath)((SvgVisualElement)elem).Path.Clone();
 						else p = ((SvgFragment)elem).Path;
+						
+						if(FTransformPathInput[i])
+							p.Transform(elem.Transforms.GetMatrix());
 						
 						if(FFlattenInput[i])
 						{
@@ -1020,97 +1026,6 @@ namespace VVVV.Nodes
 				//write groups to output
 				FOutput.AssignFrom(FGroups);
 			}
-		}
-	}
-	
-	//GROUP---------------------------------------------------------------------
-	#region PluginInfo
-	[PluginInfo(Name = "Group", 
-	            Category = "SVG", 
-	            Help = "Groups multiple SVG layers to be rendered one after the other", 
-	            Tags = "")]
-	#endregion PluginInfo
-	public class SVGGroupNode : SVGVisualElementNode<SvgElement>
-	{
-		#region fields & pins
-		#pragma warning disable 649,169
-		
-		[Input("Layer", IsPinGroup=true)]
-		IDiffSpread<ISpread<SvgElement>> FInput;
-
-		#pragma warning restore
-		
-		List<SvgElement> FGroups = new List<SvgElement>();
-		#endregion fields & pins
-		
-		public SVGGroupNode()
-		{
-			var g = new SvgGroup();
-			FGroups.Add(g);
-		}
-		
-		void LogIDFix(SvgElement elem, string oldID, string newID)
-		{
-			var msg = "ID of " + elem + " was changed from " + oldID + " to " + newID;
-			FLogger.Log(LogType.Warning, msg);
-		}
-
-		//called when data for any output pin is requested
-		public override void Evaluate(int SpreadMax)
-		{
-			//check transforms
-			if(FTransformIn.IsChanged)
-			{
-				//assign size and clear group list
-				FOutput.SliceCount = FTransformIn.SliceCount;
-				FGroups.Clear();
-				
-				//create groups and add matrix to it
-				for(int i=0; i<FTransformIn.SliceCount; i++)
-				{
-					var g = new SvgGroup();
-					g.Transforms = new SvgTransformCollection();
-					
-					var m = FTransformIn[i];
-					var mat = new SvgMatrix(new List<float>(){m.M11, m.M12, m.M21, m.M22, m.M41, m.M42});
-					
-					g.Transforms.Add(mat);	
-					
-					FGroups.Add(g);
-				}
-			}
-			
-			//add all elements to each group
-			var pinsChanged = FInput.IsChanged || FTransformIn.IsChanged || FEnabledIn.IsChanged;
-			if(pinsChanged)
-			{
-				foreach (var g in FGroups)
-				{
-					g.Children.Clear();
-					
-					if(FEnabledIn[0])
-					{
-						for(int i=0; i<FInput.SliceCount; i++)
-						{
-							var pin = FInput[i];
-							for(int j=0; j<pin.SliceCount; j++)
-							{
-								var elem = pin[j];
-								if(elem != null)
-									g.Children.AddAndForceUniqueID(elem, true, true, LogIDFix);
-							}
-						}
-					}
-					
-				}
-				//write groups to output
-				FOutput.AssignFrom(FGroups);
-			}
-			
-			//set id and class to elements
-			if(pinsChanged || FIDIn.IsChanged || FClassIn.IsChanged)
-				base.SetIDs();
-
 		}
 	}
 }

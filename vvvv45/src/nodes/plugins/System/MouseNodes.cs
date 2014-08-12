@@ -6,9 +6,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Forms;
+using VVVV.Core.Logging;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using VVVV.Hosting.Pins.Input;
@@ -186,7 +188,9 @@ namespace VVVV.Nodes.Input
                 DeviceOut.SliceCount = 1;
                 DeviceDescriptionOut.SliceCount = 1;
                 DeviceOut[0] = CreateCursorMouse();
+                DeviceNameOut[0] = string.Empty;
                 DeviceDescriptionOut[0] = "Cursor";
+                DeviceCountOut[0] = 0;
             }
             else
             {
@@ -205,6 +209,23 @@ namespace VVVV.Nodes.Input
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
             return new Mouse(notifications);
+        }
+
+        protected override Mouse CreateMergedDevice(int slice)
+        {
+            // Ignore cycleMode
+            var initialPosition = Control.MousePosition;
+            var mouseData = new MouseData() { Position = initialPosition };
+            var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
+                    .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
+            var notifications = mouseInput
+                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+            return new Mouse(notifications);
+        }
+
+        protected override Mouse CreateDummy()
+        {
+            return Mouse.Empty;
         }
 
         private Mouse CreateCursorMouse()
@@ -714,8 +735,7 @@ namespace VVVV.Nodes.Input
         [Output("X2 Button")]
         public ISpread<bool> X2ButtonOut;
 
-        private Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse,MouseNotification>>();
-        private Spread<FrameBasedScheduler> FSchedulers = new Spread<FrameBasedScheduler>();
+        private Spread<Subscription2<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription2<Mouse, MouseNotification>>();
         private Spread<int> FRawMouseWheel = new Spread<int>(1);
 
         public void Dispose()
@@ -736,57 +756,61 @@ namespace VVVV.Nodes.Input
             X1ButtonOut.SliceCount = spreadMax;
             X2ButtonOut.SliceCount = spreadMax;
 
-            FSchedulers.ResizeAndDismiss(spreadMax, () => new FrameBasedScheduler());
             FSubscriptions.ResizeAndDispose(
                 spreadMax,
                 slice =>
                 {
-                    return new Subscription<Mouse, MouseNotification>(
-                        mouse => mouse.MouseNotifications,
-                        (mouse, n) =>
-                        {
-                            switch (n.Kind)
-                            {
-                                case MouseNotificationKind.MouseDown:
-                                case MouseNotificationKind.MouseUp:
-                                    var mouseButton = n as MouseButtonNotification;
-                                    var isDown = n.Kind == MouseNotificationKind.MouseDown;
-                                    if ((mouseButton.Buttons & MouseButtons.Left) > 0)
-                                        LeftButtonOut[slice] = isDown;
-                                    if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
-                                        MiddleButtonOut[slice] = isDown;
-                                    if ((mouseButton.Buttons & MouseButtons.Right) > 0)
-                                        RightButtonOut[slice] = isDown;
-                                    if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
-                                        X1ButtonOut[slice] = isDown;
-                                    if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
-                                        X2ButtonOut[slice] = isDown;
-                                    break;
-                                case MouseNotificationKind.MouseMove:
-                                    var position = new Vector2D(n.Position.X, n.Position.Y);
-                                    var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
-                                    PositionOut[slice] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                                    break;
-                                case MouseNotificationKind.MouseWheel:
-                                    var mouseWheel = n as MouseWheelNotification;
-                                    FRawMouseWheel[slice] += mouseWheel.WheelDelta;
-                                    MouseWheelOut[slice] = (int)Math.Round((float)FRawMouseWheel[slice] / Const.WHEEL_DELTA);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        },
-                        FSchedulers[slice]
-                    );
+                    // Reset states
+                    PositionOut[slice] = Vector2D.Zero;
+                    MouseWheelOut[slice] = 0;
+                    FRawMouseWheel[slice] = 0;
+                    LeftButtonOut[slice] = false;
+                    MiddleButtonOut[slice] = false;
+                    RightButtonOut[slice] = false;
+                    X1ButtonOut[slice] = false;
+                    X2ButtonOut[slice] = false;
+                    return new Subscription2<Mouse, MouseNotification>(m => m.MouseNotifications);
                 }
             );
 
             for (int i = 0; i < spreadMax; i++)
             {
-                //resubsribe if necessary
-                FSubscriptions[i].Update(MouseIn[i]);
-                //process events
-                FSchedulers[i].Run(QueueModeIn[i]);
+                var notifications = QueueModeIn[i] == QueueMode.Discard
+                    ? FSubscriptions[i].ConsumeAll(MouseIn[i])
+                    : FSubscriptions[i].ConsumeNext(MouseIn[i]);
+                foreach (var n in notifications)
+                {
+                    switch (n.Kind)
+                    {
+                        case MouseNotificationKind.MouseDown:
+                        case MouseNotificationKind.MouseUp:
+                            var mouseButton = n as MouseButtonNotification;
+                            var isDown = n.Kind == MouseNotificationKind.MouseDown;
+                            if ((mouseButton.Buttons & MouseButtons.Left) > 0)
+                                LeftButtonOut[i] = isDown;
+                            if ((mouseButton.Buttons & MouseButtons.Middle) > 0)
+                                MiddleButtonOut[i] = isDown;
+                            if ((mouseButton.Buttons & MouseButtons.Right) > 0)
+                                RightButtonOut[i] = isDown;
+                            if ((mouseButton.Buttons & MouseButtons.XButton1) > 0)
+                                X1ButtonOut[i] = isDown;
+                            if ((mouseButton.Buttons & MouseButtons.XButton2) > 0)
+                                X2ButtonOut[i] = isDown;
+                            break;
+                        case MouseNotificationKind.MouseMove:
+                            var position = new Vector2D(n.Position.X, n.Position.Y);
+                            var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
+                            PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                            break;
+                        case MouseNotificationKind.MouseWheel:
+                            var mouseWheel = n as MouseWheelNotification;
+                            FRawMouseWheel[i] += mouseWheel.WheelDelta;
+                            MouseWheelOut[i] = (int)Math.Round((float)FRawMouseWheel[i] / Const.WHEEL_DELTA);
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
         }
     }
@@ -798,6 +822,24 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class MouseStatesJoinNode : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
+        static MouseButtons[] Buttons = new MouseButtons[]
+        {
+            MouseButtons.Left,
+            MouseButtons.Middle,
+            MouseButtons.Right,
+            MouseButtons.XButton1,
+            MouseButtons.XButton2
+        };
+
+        class MouseState
+        {
+            public static readonly MouseState Empty = new MouseState();
+            public Point Position;
+            public int MouseWheel;
+            public MouseButtons IsButtonPressed;
+            public List<IObserver<MouseNotification>> Observers;
+        }
+
         [Input("Position")]
         public IDiffSpread<Vector2D> PositionIn;
         [Input("Mouse Wheel")]
@@ -816,46 +858,87 @@ namespace VVVV.Nodes.Input
         [Output("Mouse")]
         public ISpread<Mouse> MouseOut;
 
+        private readonly Spread<MouseState> MouseStates = new Spread<MouseState>();
+
         public void OnImportsSatisfied()
         {
             MouseOut.SliceCount = 0;
         }
 
+        private static IEnumerable<MouseNotification> GetNotifications(MouseState oldState, MouseState newState)
+        {
+            var wheelDelta = newState.MouseWheel - oldState.MouseWheel;
+            if (wheelDelta != 0)
+                yield return new MouseWheelNotification(newState.Position, FClientArea, wheelDelta * Const.WHEEL_DELTA);
+            if (newState.IsButtonPressed != oldState.IsButtonPressed)
+            {
+                var newButton = newState.IsButtonPressed;
+                var oldButton = oldState.IsButtonPressed;
+                foreach (var button in Buttons)
+                {
+                    if (newButton.HasFlag(button) && !oldButton.HasFlag(button))
+                        yield return new MouseDownNotification(newState.Position, FClientArea, button);
+                    if (!newButton.HasFlag(button) && oldButton.HasFlag(button))
+                        yield return new MouseUpNotification(newState.Position, FClientArea, button);
+                }
+            }
+            // Send the move last should anyone downstream use a mouse state join with queue mode = discard
+            if (newState.Position != oldState.Position)
+                yield return new MouseMoveNotification(newState.Position, FClientArea);
+        }
+
         public void Evaluate(int spreadMax)
         {
-            MouseOut.ResizeAndDismiss(
-                spreadMax,
-                slice =>
+            // Save the previous slice count
+            var oldSliceCount = MouseStates.SliceCount;
+            // Set the new slice count
+            MouseStates.SliceCount = spreadMax;
+            MouseOut.SliceCount = spreadMax;
+            for (int i = 0; i < spreadMax; i++)
+            {
+                // Get the old mouse state
+                var oldState = i < oldSliceCount
+                    ? MouseStates[i]
+                    : MouseState.Empty;
+                // Create the new mouse state
+                var newState = new MouseState()
                 {
-                    var mouseMoves = PositionIn.ToObservable(slice)
-                        .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
-                    var mouseButtons = Observable.Merge(
-                        LeftButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Left)),
-                        MiddleButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Middle)),
-                        RightButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Right)),
-                        X1ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton1)),
-                        X2ButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.XButton2))
-                    );
-                    var mouseDowns = mouseButtons.Where(x => x.Item1)
-                        .Select(x => x.Item2)
-                        .Select(x => new MouseDownNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
-                    var mouseUps = mouseButtons.Where(x => !x.Item1)
-                        .Select(x => x.Item2)
-                        .Select(x => new MouseUpNotification(ToMousePoint(PositionIn[slice]), FClientArea, x));
-                    var mouseWheelDeltas = MouseWheelIn.ToObservable(slice)
-                        .StartWith(0)
-                        .Buffer(2, 1)
-                        .Select(b => b[1] - b[0])
-                        .Select(d => new MouseWheelNotification(ToMousePoint(PositionIn[slice]), FClientArea, d * Const.WHEEL_DELTA))
-                        .Cast<MouseNotification>();
-                    var notifications = Observable.Merge<MouseNotification>(
-                        mouseMoves,
-                        mouseDowns,
-                        mouseUps,
-                        mouseWheelDeltas);
-                    return new Mouse(notifications);
+                    Position = ToMousePoint(PositionIn[i]),
+                    MouseWheel = MouseWheelIn[i],
+                    IsButtonPressed =
+                        (LeftButtonIn[i] ? MouseButtons.Left : MouseButtons.None) |
+                        (MiddleButtonIn[i] ? MouseButtons.Middle : MouseButtons.None) |
+                        (RightButtonIn[i] ? MouseButtons.Right : MouseButtons.None) |
+                        (X1ButtonIn[i] ? MouseButtons.XButton1 : MouseButtons.None) |
+                        (X2ButtonIn[i] ? MouseButtons.XButton2 : MouseButtons.None),
+                    Observers = oldState.Observers ?? new List<IObserver<MouseNotification>>()
+                };
+                // Notify our observers
+                foreach (var observer in newState.Observers)
+                    NotifyObserver(oldState, newState, observer);
+                // Save the new mouse state
+                MouseStates[i] = newState;
+                // Create a new mouse for this slice
+                if (i >= oldSliceCount)
+                {
+                    var notifications = Observable.Create<MouseNotification>(observer =>
+                    {
+                        // Add the new observer to our internal list
+                        newState.Observers.Add(observer);
+                        // Notify a new observer immediately about the observed state change
+                        NotifyObserver(oldState, newState, observer);
+                        // And remove it from our internal list once it unsubscribes
+                        return () => newState.Observers.Remove(observer);
+                    });
+                    MouseOut[i] = new Mouse(notifications);
                 }
-            );
+            }
+        }
+
+        private static void NotifyObserver(MouseState oldState, MouseState newState, IObserver<MouseNotification> observer)
+        {
+            foreach (var n in GetNotifications(oldState, newState))
+                observer.OnNext(n);
         }
 
         static Point ToMousePoint(Vector2D normV)
@@ -866,5 +949,100 @@ namespace VVVV.Nodes.Input
         }
 
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
+    }
+
+    [PluginInfo(
+        Name = "MouseMatch", 
+        Category = "Mouse",
+        Help = "Detects certain mouse events like down/up/click",
+        AutoEvaluate = true, 
+        Tags = "doubleclick")]
+    public class DetectMouseNode : IPluginEvaluate
+    {
+        [Input("Mouse")]
+        public ISpread<Mouse> MouseIn;
+
+        [Input("Event Type", DefaultEnumEntry = "MouseClick")]
+        public ISpread<MouseNotificationKind> EventTypeIn;
+
+        [Input("Button", DefaultEnumEntry = "Left")]
+        public ISpread<MouseButtons> ButtonIn;
+
+        [Input("Wheel Delta")]
+        public ISpread<int> WheelDeltaIn;
+
+        [Input("Click Count", DefaultValue = 1)]
+        public ISpread<int> ClickCountIn;
+
+        [Output("Detected", IsBang = true)]
+        public ISpread<bool> DetectedOut;
+
+        [Output("Position")]
+        public ISpread<Vector2D> PositionOut;
+
+        [Import]
+        public ILogger FLogger;
+
+        private readonly Spread<Subscription2<Mouse, MouseNotification>> Subscriptions = new Spread<Subscription2<Mouse, MouseNotification>>();
+
+        public void Evaluate(int spreadMax)
+        {
+            Subscriptions.ResizeAndDispose(
+                spreadMax,
+                () => new Subscription2<Mouse, MouseNotification>(
+                    mouse => mouse.MouseNotifications.InjectMouseClicks())
+                );
+
+            DetectedOut.SliceCount = spreadMax;
+            PositionOut.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var detectedNotification = Subscriptions[i].ConsumeAll(MouseIn[i])
+                    .Where(n => n.Kind == EventTypeIn[i])
+                    .FirstOrDefault(n =>
+                        {
+                            switch (EventTypeIn[i])
+                            {
+                                case MouseNotificationKind.MouseClick:
+                                    var mouseClick = n as MouseClickNotification;
+                                    return mouseClick.Buttons == ButtonIn[i] && mouseClick.ClickCount == ClickCountIn[i];
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButton = n as MouseButtonNotification;
+                                    return mouseButton.Buttons == ButtonIn[i];
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    return mouseWheel.WheelDelta == WheelDeltaIn[i];
+                            }
+                            // Mouse move
+                            return true;
+                        });
+                if (detectedNotification != null)
+                {
+                    DetectedOut[i] = true;
+                    var position = new Vector2D(detectedNotification.Position.X, detectedNotification.Position.Y);
+                    var clientArea = new Vector2D(detectedNotification.ClientArea.Width - 1, detectedNotification.ClientArea.Height - 1);
+                    PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                }
+                else
+                {
+                    DetectedOut[i] = false;
+                    PositionOut[i] = Vector2D.Zero;
+                }
+                //For debugging only
+                //foreach (var n in Subscriptions[i].ConsumeAll(MouseIn[i]).OfType<MouseClickNotification>())
+                //{
+                //    var s = string.Empty;
+                //    if (n.ClickCount == 2)
+                //        s = " double";
+                //    else if (n.ClickCount == 3)
+                //        s = " triple";
+                //    else if (n.ClickCount == 4)
+                //        s = " quadtruple";
+                //    FLogger.Log(LogType.Message, "{0}{1} click at position {2}.", n.Buttons, s, n.Position);
+                //}
+            }
+        }
     }
 }

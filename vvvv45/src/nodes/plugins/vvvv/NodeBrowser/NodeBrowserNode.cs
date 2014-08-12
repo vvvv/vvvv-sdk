@@ -131,19 +131,13 @@ namespace VVVV.Nodes.NodeBrowser
         #endregion field declaration
         
         #region constructor/destructor
-        //alternative constructor for standalone use
-        public NodeBrowserPluginNode()
-        {
-            DefaultConstructor();
-        }
-        
         [ImportingConstructor]
-        public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory, NodeCollection nodeCollection)
+        public NodeBrowserPluginNode(IHDEHost host, INodeInfoFactory nodeInfoFactory, NodeCollection nodeCollection, IPluginHost2 pluginHost)
         {
             HDEHost = host;            
             NodeInfoFactory = nodeInfoFactory;
             FNodeCollection = nodeCollection;
-            IsStandalone = true;
+            IsStandalone = pluginHost != null;
             
             DefaultConstructor();
         }

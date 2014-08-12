@@ -240,7 +240,7 @@ namespace VVVV.HDE.GraphicalEditing
         public override bool DoesAcceptEvent(PInputEventArgs e)
         {
             if (e.IsMouseEvent)
-                return base.DoesAcceptEvent(e) && (e.Button == MouseButtons.Left);
+                return base.DoesAcceptEvent(e) && (e.Button == MouseButtons.Left) && !(e.Path.PickedNode is PCamera);
             else
                 return base.DoesAcceptEvent(e);
         }
@@ -250,6 +250,11 @@ namespace VVVV.HDE.GraphicalEditing
         {
             FGraphEditor = graphEditor;
         }
+        
+        public override bool IsOptionSelection(PInputEventArgs e)
+		{
+			return false;
+		}
 
         public override void DecorateSelectedNode(PNode node)
         {

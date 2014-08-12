@@ -17,7 +17,7 @@ namespace VVVV.Utils.VMath
 	/// </summary>
 	[DataContract]
     [StructLayout(LayoutKind.Sequential)]
-	public struct Vector4D
+    public struct Vector4D : IEquatable<Vector4D>, IComparable<Vector4D>
 	{
 		#region data fields
 		
@@ -166,6 +166,17 @@ namespace VVVV.Utils.VMath
             set
             {
                 this = ~this * value;
+            }
+        }
+        
+        /// <summary>
+        /// Gets the squared length of this vector, much faster than Length
+        /// </summary>
+        public double LengthSquared
+        {
+            get
+            {
+                return this | this;
             }
         }
 		
@@ -576,8 +587,14 @@ namespace VVVV.Utils.VMath
             }
             return hashCode;
         }
-		#endregion
+        #endregion
 
+        #region IComparable implementation
+        public int CompareTo(Vector4D other)
+        {
+            return this.LengthSquared.CompareTo(other.LengthSquared);
+        }
+        #endregion
 	}
 }
 

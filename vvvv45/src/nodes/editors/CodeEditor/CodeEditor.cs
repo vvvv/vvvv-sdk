@@ -694,9 +694,6 @@ namespace VVVV.HDE.CodeEditor
         List<SD.TextMarker> FCompilerErrorMarkers = new List<SD.TextMarker>();
         internal void ShowCompilerErrors(IEnumerable<CompilerError> compilerErrors)
         {
-            // Clear all previous error markers.
-            ClearErrorMarkers(FRuntimeErrorMarkers);
-            
             foreach (var compilerError in compilerErrors)
             {
                 var color = compilerError.IsWarning
@@ -720,36 +717,6 @@ namespace VVVV.HDE.CodeEditor
         internal void ClearCompilerErrors()
         {
             ClearErrorMarkers(FCompilerErrorMarkers);
-            Document.CommitUpdate();
-        }
-
-           
-        List<SD.TextMarker> FRuntimeErrorMarkers = new List<SD.TextMarker>();
-        internal void ShowRuntimeErrors(IEnumerable<RuntimeError> runtimeErrors)
-        {
-            // Clear all previous error markers.
-            ClearErrorMarkers(FRuntimeErrorMarkers);
-            
-            foreach (var runtimeError in runtimeErrors)
-            {
-                if (!string.IsNullOrEmpty(runtimeError.FileName))
-                {
-                    if (string.Compare(runtimeError.FileName, TextDocument.LocalPath, StringComparison.InvariantCultureIgnoreCase) == 0)
-                       AddErrorMarker(FRuntimeErrorMarkers, 0, runtimeError.Line - 1, this.GetForeColor("Error"));
-                }
-                else
-                {
-                    // Showing the error in wrong editor is better than not to.
-                    AddErrorMarker(FRuntimeErrorMarkers, 0, 0, this.GetForeColor("Error"));
-                }
-            }
-
-            Document.CommitUpdate();
-        }
-        
-        internal void ClearRuntimeErrors()
-        {
-            ClearErrorMarkers(FRuntimeErrorMarkers);
             Document.CommitUpdate();
         }
 
@@ -819,6 +786,7 @@ namespace VVVV.HDE.CodeEditor
                 {
                     // ShowCompletionWindow can return null when the provider returns an empty list
                     FCompletionWindow.Closed += CloseCodeCompletionWindow;
+                    ActiveTextAreaControl.DoHandleMousewheel = false;
                 }
             }
             catch (Exception e)
@@ -834,7 +802,16 @@ namespace VVVV.HDE.CodeEditor
                 FCompletionWindow.Close();
             }
         }
-        
+
+        protected override void OnMouseWheel(System.Windows.Forms.MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            if (FCompletionWindow != null && !FCompletionWindow.IsDisposed)
+            {
+                FCompletionWindow.HandleMouseWheel(e);
+            }
+        }
+   
         public void ShowInsightWindow(IInsightDataProvider insightDataProvider)
         {
             try
@@ -886,14 +863,12 @@ namespace VVVV.HDE.CodeEditor
                     }
                 }
                 
-                FCompletionBinding.HandleKeyPress(this, key);
+                return FCompletionBinding.HandleKeyPress(this, key);
             }
             finally
             {
                 inHandleKeyPress = false;
             }
-            
-            return false;
         }
         
         void CloseCodeCompletionWindow(object sender, EventArgs e)
@@ -904,6 +879,7 @@ namespace VVVV.HDE.CodeEditor
                 FCompletionWindow.Dispose();
                 FCompletionWindow = null;
             }
+            ActiveTextAreaControl.DoHandleMousewheel = true;
         }
         
         void CloseInsightWindow(object sender, EventArgs e)

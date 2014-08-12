@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
+using System.Reactive;
 
 namespace VVVV.Utils.IO
 {
@@ -63,6 +64,71 @@ namespace VVVV.Utils.IO
                 FSubscription.Dispose();
                 FSubscription = null;
             }
+        }
+    }
+
+    public class Subscription2<TSource, TNotification> : IDisposable
+        where TSource : class
+    {
+        private readonly Queue<TNotification> FNotifications = new Queue<TNotification>();
+        private readonly Func<TSource, IObservable<TNotification>> FSelector;
+        private TSource FSource;
+        private IEnumerator<IList<TNotification>> FEnumerator;
+
+        public Subscription2(Func<TSource, IObservable<TNotification>> selector)
+        {
+            FSelector = selector;
+        }
+
+        public IEnumerable<TNotification> ConsumeNext(TSource source)
+        {
+            UpdateSource(source);
+            if (FNotifications.Count > 0)
+                yield return FNotifications.Dequeue();
+        }
+
+        public IEnumerable<TNotification> ConsumeAll(TSource source)
+        {
+            UpdateSource(source);
+            try
+            {
+                while (FNotifications.Count > 0)
+                    yield return FNotifications.Dequeue();
+            }
+            finally
+            {
+                FNotifications.Clear();
+            }
+        }
+
+        private void UpdateSource(TSource source)
+        {
+            if (source != FSource)
+            {
+                Unsubscribe();
+                FSource = source;
+                if (FSource != null)
+                    FEnumerator = FSelector(FSource).Chunkify()
+                        .GetEnumerator();
+            }
+            if (FEnumerator != null && FEnumerator.MoveNext())
+                foreach (var item in FEnumerator.Current)
+                    FNotifications.Enqueue(item);
+        }
+
+        public void Dispose()
+        {
+            Unsubscribe();
+        }
+
+        private void Unsubscribe()
+        {
+            if (FEnumerator != null)
+            {
+                FEnumerator.Dispose();
+                FEnumerator = null;
+            }
+            FNotifications.Clear();
         }
     }
 }

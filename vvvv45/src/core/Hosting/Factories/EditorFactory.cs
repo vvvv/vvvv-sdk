@@ -43,7 +43,6 @@ namespace VVVV.Hosting.Factories
         private Dictionary<IInternalPluginHost, ExportLifetimeContext<IEditor>> FExportLifetimeContexts;
         private int FMoveToLine;
         private int FMoveToColumn;
-        private INode2 FNodeToAttach;
         private bool FInOpen;
         
         [ImportingConstructor]
@@ -167,31 +166,13 @@ namespace VVVV.Hosting.Factories
             
             if (editorHost != null && FNodeInfos.ContainsKey(nodeInfo))
             {
-                IEnumerable<KeyValuePair<IInternalPluginHost, ExportLifetimeContext<IEditor>>> entries = null;
-                if (FNodeToAttach != null)
-                {
-                    // Try to find an existing editor which is already attached to this node
-                    // and has this file openend.
-                    entries =
-                        from entry in FExportLifetimeContexts
-                        let e = entry.Value.Value
-                        where !(string.IsNullOrEmpty(e.OpenedFile) || string.IsNullOrEmpty(nodeInfo.Filename))
-                        where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
-                        where e.AttachedNode == FNodeToAttach
-                        select entry;
-                }
-                else
-                {
-                    // Try to find an existing editor which has opened this file and is not
-                    // attached to any node.
-                    entries =
-                        from entry in FExportLifetimeContexts
-                        let e = entry.Value.Value
-                        where !(string.IsNullOrEmpty(e.OpenedFile) || string.IsNullOrEmpty(nodeInfo.Filename))
-                        where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
-                        where e.AttachedNode == null
-                        select entry;
-                }
+                // Try to find an existing editor which has opened this file
+                var entries =
+                    from entry in FExportLifetimeContexts
+                    let e = entry.Value.Value
+                    where !(string.IsNullOrEmpty(e.OpenedFile) || string.IsNullOrEmpty(nodeInfo.Filename))
+                    where new Uri(e.OpenedFile) == new Uri(nodeInfo.Filename)
+                    select entry;
                 
                 if (entries.Any())
                 {
@@ -209,16 +190,11 @@ namespace VVVV.Hosting.Factories
                 editorHost.Plugin = editor;
                 editorHost.Win32Window = editor as System.Windows.Forms.IWin32Window;
                 editor.Open(nodeInfo.Filename);
-                
-                if (FNodeToAttach != null)
-                    editor.AttachedNode = FNodeToAttach;
-                
                 editor.MoveTo(FMoveToLine, FMoveToColumn);
                 
                 result = true;
                 
                 FMoveToLine = -1;
-                FNodeToAttach = null;
             }
             
             return result;
@@ -228,10 +204,6 @@ namespace VVVV.Hosting.Factories
         {
             var editor = entry.Value.Value;
             var editorNode = entry.Key as INode;
-            
-            if (FNodeToAttach != null)
-                editor.AttachedNode = FNodeToAttach;
-            
             editor.MoveTo(FMoveToLine, FMoveToColumn);
             
             FHDEHost.ShowGUI(FindNodeFromInternal(editorNode));
@@ -315,7 +287,7 @@ namespace VVVV.Hosting.Factories
             var button = args.Button;
             var keys = args.ModifierKey;
             
-            if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Control))
+            if ((button == Mouse_Buttons.Left) && (keys == Modifier_Keys.Shift))
             {
                 // Let the user choose which file to open.
                 
@@ -326,7 +298,7 @@ namespace VVVV.Hosting.Factories
                     case NodeType.Text:
                     case NodeType.Dynamic:
                     case NodeType.Effect:
-                        Open(nodeInfo.Filename, -1, -1, node);
+                        Open(nodeInfo.Filename, -1, -1);
                         break;
                 }
             }
@@ -392,7 +364,7 @@ namespace VVVV.Hosting.Factories
                         if (!editorFindQuery.Any()) return;
                     }
                     
-                    Open(filename, line, 0, node);
+                    Open(filename, line, 0);
                     break;
             }
         }
@@ -412,12 +384,7 @@ namespace VVVV.Hosting.Factories
             Open(filename, line, column, null);
         }
         
-        public void Open(string filename, int line, int column, INode2 nodeToAttach)
-        {
-            Open(filename, line, column, nodeToAttach, null);
-        }
-        
-        public void Open(string filename, int line, int column, INode2 nodeToAttach, IWindow window)
+        public void Open(string filename, int line, int column, IWindow window)
         {
             if (!File.Exists(filename))
             {
@@ -425,36 +392,16 @@ namespace VVVV.Hosting.Factories
                 return;
             }
             
-            // See if we can find an editor already attached to this node.
-            if (nodeToAttach != null)
+            foreach (var entry in FExportLifetimeContexts)
             {
-                var entries =
-                    from entry in FExportLifetimeContexts
-                    let e = entry.Value.Value
-                    where e.AttachedNode == nodeToAttach
-                    select entry;
-                
-                if (entries.Any())
-                {
-                    foreach (var entry in entries)
-                    {
-                        var editorNode = entry.Key as INode;
-                        var editor = entry.Value.Value;
+                var editorNode = entry.Key as INode;
+                var editor = entry.Value.Value;
                         
-                        if (new Uri(editor.OpenedFile) == new Uri(filename))
-                        {
-                            editor.MoveTo(line, column);
-                            FHDEHost.ShowGUI(FindNodeFromInternal(editorNode));
-                            return;
-                        }
-                    }
-                    
-                    if (window == null)
-                    {
-                        // Take the Window of any attached editor and open it there.
-                        var editorNode = entries.First().Key as INode;
-                        window = editorNode.Window;
-                    }
+                if (new Uri(editor.OpenedFile) == new Uri(filename))
+                {
+                    editor.MoveTo(line, column);
+                    FHDEHost.ShowGUI(FindNodeFromInternal(editorNode));
+                    return;
                 }
             }
             
@@ -494,11 +441,6 @@ namespace VVVV.Hosting.Factories
             {
                 FMoveToLine = line;
                 FMoveToColumn = column;
-                // Very important! Dummy nodes might get replaced during ExtractNodeInfo calls.
-                if (nodeToAttach != null && !nodeToAttach.IsMissing())
-                    FNodeToAttach = nodeToAttach;
-                else
-                    FNodeToAttach = null;
                 FInOpen = true;
                 
                 FHDEHost.AddonFactories.Clear();

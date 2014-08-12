@@ -100,11 +100,14 @@ namespace VVVV.Hosting
                 var handle = inputWindow.InputWindowHandle;
                 if (handle != IntPtr.Zero)
                 {
-                    var subclass = Subclass.Create(handle);
-                    FSubclasses.Add(subclass);
-                    SubclassCreated(window);
-                    subclass.WindowMessage += HandleSubclassWindowMessage;
-                    subclass.Disposed += HandleSubclassDisposed;
+                    if (!FSubclasses.Any(s => s.HWnd == handle))
+                    {
+                        var subclass = Subclass.Create(handle);
+                        FSubclasses.Add(subclass);
+                        SubclassCreated(window);
+                        subclass.WindowMessage += HandleSubclassWindowMessage;
+                        subclass.Disposed += HandleSubclassDisposed;
+                    }
                 }
             }
         }

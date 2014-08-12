@@ -20,7 +20,7 @@ namespace VVVV.Nodes.Finder
         private string FLabel;
         
         public IONodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
-            : base(parentNodeView, node, filter, depth)
+            : base(parentNodeView, node, filter, depth, false)
         {
             FNode.LabelPin.Changed += HandleLabelPinChanged;
             FLabel = FNode.LabelPin[0];

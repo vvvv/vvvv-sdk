@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using CefGlue;
+using Xilium.CefGlue;
 using System.IO;
+using System.Linq;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -97,12 +98,10 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 throw new ArgumentOutOfRangeException(I_IS_OUT_OF_RANGE);
             }
-            string value;
-            if (!attributeMap.TryGetValue(i, out value))
-            {
-                return null;
-            }
-            return value;
+            var values = attributeMap.Values.ToArray();
+            if (i < values.Length)
+                return values[i];
+            return null;
         }
 
         public override string GetAttribute(string name, string namespaceURI)
@@ -159,11 +158,11 @@ namespace VVVV.Nodes.Texture.HTML
                 switch (NodeType)
                 {
                     case XmlNodeType.Attribute:
-                        string key;
-                        attributeMap.TryGetKey(currentAttributeIndex, out key);
+                        var keys = attributeMap.Keys.ToArray();
+                        var key = keys[currentAttributeIndex];
                         return GetLocalName(key);
                     default:
-                        return GetLocalName(currentNode.GetName());
+                        return GetLocalName(currentNode.Name);
                 }
             }
         }
@@ -229,7 +228,7 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 return false;
             }
-            if (!currentNode.HasElementAttributes())
+            if (!currentNode.HasAttributes)
             {
                 return false;
             }
@@ -268,7 +267,7 @@ namespace VVVV.Nodes.Texture.HTML
                 {
                     return XmlNodeType.Attribute;
                 }
-                switch (currentNode.Type)
+                switch (currentNode.NodeType)
                 {
                     case CefDomNodeType.Attribute:
                         return XmlNodeType.Attribute;
@@ -290,15 +289,13 @@ namespace VVVV.Nodes.Texture.HTML
                         return traverseDirection == TraverseDirection.Down
                             ? XmlNodeType.Entity
                             : XmlNodeType.EndEntity;
-                    case CefDomNodeType.EntityReference:
-                        return XmlNodeType.EntityReference;
                     case CefDomNodeType.Notation:
                         return XmlNodeType.Notation;
                     case CefDomNodeType.ProcessingInstruction:
                         return XmlNodeType.ProcessingInstruction;
                     case CefDomNodeType.Text:
                         // Try to parse the text as it is valid xml in some cases (CDATA)
-                        var value = "<span>" + currentNode.GetValue() + "</span>";
+                        var value = "<span>" + currentNode.Value + "</span>";
                         if (IsXml(value))
                         {
                             textReader = new StringReader(value);
@@ -351,11 +348,11 @@ namespace VVVV.Nodes.Texture.HTML
                 }
                 if (currentAttributeIndex >= 0)
                 {
-                    string key;
-                    attributeMap.TryGetKey(currentAttributeIndex, out key);
+                    var keys = attributeMap.Keys.ToArray();
+                    var key = keys[currentAttributeIndex];
                     return GetPrefix(key);
                 }
-                return GetPrefix(currentNode.GetName());
+                return GetPrefix(currentNode.Name);
             }
         }
 
@@ -365,17 +362,6 @@ namespace VVVV.Nodes.Texture.HTML
             if (n.Length > 1)
             {
                 return n[0];
-            }
-            return string.Empty;
-        }
-
-        private static string GetNamespacePrefix(string name)
-        {
-            // Example: xmlns:m="http://www.w3.org/1998/Math/MathML"
-            var n = name.Split(':');
-            if (n.Length > 1)
-            {
-                return n[n.Length - 1];
             }
             return string.Empty;
         }
@@ -394,15 +380,15 @@ namespace VVVV.Nodes.Texture.HTML
 
         private Stack<CefDomNode> nodeStack = new Stack<CefDomNode>();
         private TraverseDirection traverseDirection;
-        private CefStringMap attributeMap;
+        private IDictionary<string, string> attributeMap;
         public override bool Read()
         {
             // First call to Read
             if (ReadState == System.Xml.ReadState.Initial)
             {
-                var rootNode = this.document.GetDocument();
+                var rootNode = this.document.Root;
                 this.nodeStack.Push(rootNode);
-                currentNode = rootNode.GetFirstChild();
+                currentNode = rootNode.FirstChild;
                 return CheckReadStateAndReturn();
             }
 
@@ -429,28 +415,28 @@ namespace VVVV.Nodes.Texture.HTML
                     if (currentNode.HasChildren)
                     {
                         nodeStack.Push(currentNode);
-                        currentNode = currentNode.GetFirstChild();
+                        currentNode = currentNode.FirstChild;
                     }
                     else
                     {
                         var parent = nodeStack.Peek();
-                        using (var lastChild = parent.GetLastChild())
+                        using (var lastChild = parent.LastChild)
                         {
-                            if (currentNode.IsSame(lastChild))
-                            {
-                                // Time to move back up
-                                nodeStack.Pop();
-                                traverseDirection = TraverseDirection.Up;
-                                currentNode.Dispose();
-                                currentNode = parent;
-                            }
-                            else
-                            {
-                                // There're still siblings left to visit
-                                var nextSibling = currentNode.GetNextSibling();
-                                currentNode.Dispose();
-                                currentNode = nextSibling;
-                            }
+                        if (currentNode.IsSame(lastChild))
+                        {
+                            // Time to move back up
+                            nodeStack.Pop();
+                            traverseDirection = TraverseDirection.Up;
+                            currentNode.Dispose();
+                            currentNode = parent;
+                        }
+                        else
+                        {
+                            // There're still siblings left to visit
+                            var nextSibling = currentNode.NextSibling;
+                            currentNode.Dispose();
+                            currentNode = nextSibling;
+                        }
                         }
                     }
                     break;
@@ -459,23 +445,23 @@ namespace VVVV.Nodes.Texture.HTML
                     if (nodeStack.Count > 1)
                     {
                         var parent = nodeStack.Peek();
-                        using (var lastChild = parent.GetLastChild())
+                        using (var lastChild = parent.LastChild)
                         {
-                            if (currentNode.IsSame(lastChild))
-                            {
-                                // No sibling left, go further up
-                                nodeStack.Pop();
-                                currentNode.Dispose();
-                                currentNode = parent;
-                            }
-                            else
-                            {
-                                // There's a sibling, try to traverse down again (depth first)
-                                traverseDirection = TraverseDirection.Down;
-                                var nextSibling = currentNode.GetNextSibling();
-                                currentNode.Dispose();
-                                currentNode = nextSibling;
-                            }
+                        if (currentNode.IsSame(lastChild))
+                        {
+                            // No sibling left, go further up
+                            nodeStack.Pop();
+                            currentNode.Dispose();
+                            currentNode = parent;
+                        }
+                        else
+                        {
+                            // There's a sibling, try to traverse down again (depth first)
+                            traverseDirection = TraverseDirection.Down;
+                            var nextSibling = currentNode.NextSibling;
+                            currentNode.Dispose();
+                            currentNode = nextSibling;
+                        }
                         }
                     }
                     else
@@ -492,22 +478,21 @@ namespace VVVV.Nodes.Texture.HTML
             if (currentNode != null)
             {
                 // See if this node defines a new namespace
-                if (currentNode.IsElement && currentNode.HasElementAttributes())
+                if (currentNode.IsElement && currentNode.HasAttributes)
                 {
-                    attributeMap = currentNode.GetElementAttributes();
+                    attributeMap = currentNode.GetAttributes();
                     switch (traverseDirection)
                     {
                         case TraverseDirection.Down:
-                            for (int i = 0; i < attributeMap.Count; i++)
+                            foreach (var entry in attributeMap)
                             {
-                                string key, value;
-                                if (attributeMap.TryGetKey(i, out key) && attributeMap.TryGetValue(i, out value))
+                                var key = entry.Key;
+                                var value = entry.Value;
+                                if (key.StartsWith("xmlns"))
                                 {
-                                    if (key.StartsWith("xmlns"))
-                                    {
-                                        var prefix = GetNamespacePrefix(key);
-                                        namespaceManager.AddNamespace(prefix, value);
-                                    }
+                                    var prefix = GetLocalName(key);
+                                    namespaceManager.AddNamespace(prefix, value);
+                                    break;
                                 }
                             }
                             namespaceManager.PushScope();
@@ -563,7 +548,8 @@ namespace VVVV.Nodes.Texture.HTML
                 switch (NodeType)
                 {
                     case XmlNodeType.Attribute:
-                        attributeMap.TryGetValue(currentAttributeIndex, out value);
+                        var values = attributeMap.Values.ToArray();
+                        value = values[currentAttributeIndex];
                         break;
                     case XmlNodeType.CDATA:
                     case XmlNodeType.Comment:
@@ -573,7 +559,7 @@ namespace VVVV.Nodes.Texture.HTML
                     case XmlNodeType.Text:
                     case XmlNodeType.Whitespace:
                     case XmlNodeType.XmlDeclaration:
-                        value = currentNode.GetValue();
+                        value = currentNode.Value;
                         break;
                     default:
                         value = string.Empty;

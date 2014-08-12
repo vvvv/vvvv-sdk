@@ -12,8 +12,8 @@ using VVVV.PluginInterfaces.V2;
 namespace VVVV.Nodes.File
 {
     [PluginInfo(
-        Name = "Copier", 
-        Category = "File", 
+        Name = "Copier",
+        Category = "File",
         Version = "Async",
         Tags = "copy",
         Help = "Copies a spread of files to a location without causing vvvv to halt during the copy process. Outputs the progress of the copy process.")]
@@ -40,22 +40,25 @@ namespace VVVV.Nodes.File
                     async () =>
                     {
                         using (var source = new FileStream(From, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        using (var destination = new FileStream(To, FileMode.Create, FileAccess.Write))
                         {
-                            var streamLength = (float)source.Length;
-                            var buffer = new byte[0x1000];
-                            int numCopied = 0;
-                            int numRead;
-                            while ((numRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
+                            Directory.CreateDirectory(Path.GetDirectoryName(To));
+                            using (var destination = new FileStream(To, FileMode.Create, FileAccess.Write))
                             {
-                                await destination.WriteAsync(buffer, 0, numRead, cancellationToken);
-                                numCopied += numRead;
-                                progress.Report(numCopied / streamLength);
+                                var streamLength = (float)source.Length;
+                                var buffer = new byte[0x1000];
+                                int numCopied = 0;
+                                int numRead;
+                                while ((numRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) != 0)
+                                {
+                                    await destination.WriteAsync(buffer, 0, numRead, cancellationToken);
+                                    numCopied += numRead;
+                                    progress.Report(numCopied / streamLength);
+                                }
                             }
                         }
                     },
                     CancellationTokenSource.Token
-                );
+                   );
             }
 
             public bool IsRunning { get { return CopyTask != null; } }
@@ -107,7 +110,7 @@ namespace VVVV.Nodes.File
             FCopyOperations.Resize(spreadMax, i => new CopyOperation(FromFilenameIn[i], ToFilenameIn[i]), DisposeAndLogExceptions);
             ProgressOut.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
-			{
+            {
                 var copyOperation = FCopyOperations[i];
                 var from = FromFilenameIn[i];
                 var to = ToFilenameIn[i];
@@ -123,7 +126,7 @@ namespace VVVV.Nodes.File
                     copyOperation.Run(new Progress<float>(p => ProgressOut[i] = p));
                 }
                 FCopyOperations[i] = copyOperation;
-			}
+            }
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -277,28 +278,29 @@ namespace VVVV.Hosting.IO.Streams
             {
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
+                FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
                 // Check fastest way first: TUpstream == T 
                 FUpstreamStream = usI as MemoryIOStream<T>;
-                if (FUpstreamStream != null)
-                    FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
-                else
+                if (FUpstreamStream == null)
                 {
-                    FLength = FNodeIn.SliceCount;
                     // TUpstream is a subtype of T
+                    // Copy the upstream stream through the covariant IEnumerable interface
                     var enumerable = usI as IEnumerable<T>;
                     if (enumerable != null)
+                        FUpstreamStream = enumerable.ToStream();
+                    if (FUpstreamStream == null)
                     {
-                        FUpstreamStream = new MemoryIOStream<T>(FLength);
-                        FUpstreamStream.Length = FLength;
-                        using (var writer = FUpstreamStream.GetWriter())
-                            foreach (var item in enumerable)
-                                writer.Write(item);
-                    }
-                    else
-                    {
-                        // Not connected
-                        FUpstreamStream = FNullStream;
-                        FUpstreamStream.Length = FLength;
+                        // TUpstream to T needs explicit cast
+                        // For example TUpstream is a value type and T is a reference type
+                        var objects = usI as IEnumerable;
+                        if (objects != null)
+                            FUpstreamStream = objects.Cast<T>().ToStream();
+                        else
+                        {
+                            // Not connected
+                            FUpstreamStream = FNullStream;
+                            FUpstreamStream.Length = FLength;
+                        }
                     }
                 }
             }
@@ -324,20 +326,30 @@ namespace VVVV.Hosting.IO.Streams
 
     class KeyboardToKeyboardStateInStream : MemoryIOStream<KeyboardState>, IDisposable
     {
+        private readonly IIOFactory FFactory;
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly Spread<Subscription<Keyboard, KeyNotification>> FSubscriptions = new Spread<Subscription<Keyboard, KeyNotification>>();
 
-        public KeyboardToKeyboardStateInStream(INodeIn nodeIn)
+        public KeyboardToKeyboardStateInStream(IIOFactory factory, INodeIn nodeIn)
         {
+            FFactory = factory;
             FNodeIn = nodeIn;
             FAutoValidate = nodeIn.AutoValidate;
+            FFactory.Flushing += FFactory_Flushing;
         }
 
         public void Dispose()
         {
+            FFactory.Flushing -= FFactory_Flushing;
             foreach (var subscription in FSubscriptions)
                 subscription.Dispose();
+        }
+
+        void FFactory_Flushing(object sender, EventArgs e)
+        {
+            // Reset IsChanged flag
+            Flush();
         }
 
         public override bool Sync()
@@ -406,21 +418,31 @@ namespace VVVV.Hosting.IO.Streams
 
     class MouseToMouseStateInStream : MemoryIOStream<MouseState>, IDisposable
     {
+        private readonly IIOFactory FFactory;
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse, MouseNotification>>();
         private readonly Spread<int> FRawMouseWheels = new Spread<int>();
         
-        public MouseToMouseStateInStream(INodeIn nodeIn)
+        public MouseToMouseStateInStream(IIOFactory factory, INodeIn nodeIn)
         {
+            FFactory = factory;
             FNodeIn = nodeIn;
             FAutoValidate = nodeIn.AutoValidate;
+            FFactory.Flushing += FFactory_Flushing;
         }
 
         public void Dispose()
         {
+            FFactory.Flushing -= FFactory_Flushing;
             foreach (var subscription in FSubscriptions)
                 subscription.Dispose();
+        }
+
+        void FFactory_Flushing(object sender, EventArgs e)
+        {
+            // Reset IsChanged flag
+            Flush();
         }
         
         public override bool Sync()
