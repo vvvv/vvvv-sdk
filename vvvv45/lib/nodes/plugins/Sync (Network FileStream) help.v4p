@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" systemname="Sync (Network FileStream) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" locked="0">
-   <BOUNDS type="Window" left="5010" top="1770" width="6900" height="8505">
+   <BOUNDS type="Window" left="5010" top="1770" width="8205" height="9390">
    </BOUNDS>
    <NODE systemname="Sync (Network FileStream)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Sync (Network FileStream)" componentmode="Hidden" id="0" managers="boygroup">
    <BOUNDS type="Node" left="2055" top="3645" width="750" height="270">
@@ -18,6 +18,8 @@
    <PIN pinname="Port">
    </PIN>
    <PIN pinname="Fine Offset (ms)">
+   </PIN>
+   <PIN pinname="Seek Threshold" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="FILESTREAM (DSHOW9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="1" managers="boygroup">
@@ -49,9 +51,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3165" top="1995" width="0" height="0">
+   <BOUNDS type="Node" left="2835" top="1965" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3165" top="1995" width="795" height="240">
+   <BOUNDS type="Box" left="2835" top="1965" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" encoded="0" values="file.avi">
    </PIN>
@@ -329,11 +331,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4380" top="2580" width="3405" height="270">
+   <BOUNDS type="Node" left="4620" top="2490" width="3405" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4380" top="2580" width="2220" height="525">
+   <BOUNDS type="Box" left="4620" top="2490" width="2220" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|fine adjustment of the boygroup client stream|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|constant offset for the boygroup client stream|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -344,4 +346,34 @@
    </NODE>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3825" top="1755" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3825" top="1755" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Seek Threshold|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Seek Threshold">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5085" top="1470" width="5715" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5085" top="1470" width="2190" height="870">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|if the steams are further apart than this value, the node will make a DoSeek jump|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

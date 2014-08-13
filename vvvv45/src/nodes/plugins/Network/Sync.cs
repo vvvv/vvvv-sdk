@@ -36,6 +36,9 @@ namespace VVVV.Nodes
 
         [Input("Position", IsSingle = true)]
         ISpread<double> FTime;
+        
+        [Input("Seek Threshold", DefaultValue = 1, IsSingle = true)]
+        ISpread<double> FSeekThreshold;
 
         [Input("Fine Offset (ms)", IsSingle = true)]
         ISpread<int> FFineOffset;
@@ -199,7 +202,7 @@ namespace VVVV.Nodes
                 var offset = FIsLocalClient[0] ? FHalfRoundTripDelay : FTimeStamp - FReceivedTimeStamp;
                 var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
                 streamDiff = Math.Abs(streamDiff) > FLength[0] * 0.5 ? streamDiff - FLength[0] * Math.Sign(streamDiff) : streamDiff;
-                var doSeek = Math.Abs(streamDiff) > 1;
+                var doSeek = Math.Abs(streamDiff) > FSeekThreshold[0];
 
                 FStreamDiffFilter.Update(streamDiff);
 
