@@ -1,0 +1,123 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
+   <PATCH nodename="C:\kimchiandchips\Workshops\VVVV.Tutorials.Mapping2-3D\Subpatches\SwitchViewProjection.v4p" systemname="DefaultViewProjection" filename="C:\kimchiandchips\Workshops\VVVV.Tutorials.Mapping2-3D\Subpatches\DefaultViewProjection.v4p">
+   <BOUNDS type="Window" left="9345" top="5370" width="7950" height="4440">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="100" left="1110" top="105" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="1110" top="105" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Camera ViewProjection|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="6" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="5055" top="105" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5055" top="105" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Projection">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="3270" top="105" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3270" top="105" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="World">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Switch (Node Input)" nodename="Switch (Node Input)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2070" top="2370" width="1245" height="270">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output Node" dstnodeid="1" dstpinname="Input 1" linkstyle="Bezier">
+   <LINKPOINT x="1170" y="1230">
+   </LINKPOINT>
+   <LINKPOINT x="2655" y="1230">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="3270" top="750" width="1845" height="270">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="0" dstpinname="Transform In 1" linkstyle="VHV">
+   <LINKPOINT x="2940" y="363">
+   </LINKPOINT>
+   <LINKPOINT x="3660" y="463">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output Node" dstnodeid="0" dstpinname="Transform In 2" linkstyle="VHV">
+   <LINKPOINT x="4645" y="370">
+   </LINKPOINT>
+   <LINKPOINT x="3980" y="470">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="1" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="8" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="2070" top="3045" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2070" top="3045" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="ViewProjection">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="8" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4710" top="1320" width="5580" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4710" top="1320" width="2505" height="1395">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|//select which ViewProjection to use for default projection position of points.&cr;&lf;If we&apos;ve begun calibrating succesfully, use that, else use camera ViewProjection from world preview.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2070" top="105" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2070" top="105" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Switch" encoded="0">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Switch">
+   </LINK>
+   </PATCH>
