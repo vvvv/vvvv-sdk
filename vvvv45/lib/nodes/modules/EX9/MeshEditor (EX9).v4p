@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p" componentmode="InAWindow" systemname="MeshEditor (EX9)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p" componentmode="InAWindow" systemname="MeshEditor (EX9)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9\MeshEditor (EX9).v4p">
    <BOUNDS height="8130" left="2415" top="7800" type="Window" width="11340">
    </BOUNDS>
    <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -64,7 +64,7 @@
    <PIN pinname="Texture Coordinate 0 XY" visible="1">
    </PIN>
    </NODE>
-   <NODE id="16" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VertexBuffer (EX9.Geometry Join)">
+   <NODE id="16" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="0" left="1725" top="5100" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="PositionXYZ" visible="1">
@@ -91,8 +91,10 @@
    </PIN>
    <PIN pinname="Apply" visible="1">
    </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="15" nodename="Mesh (EX9.Geometry Join)" systemname="Mesh (EX9.Geometry Join)">
+   <NODE id="15" nodename="Mesh (EX9.Geometry Join)" systemname="MESH (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="1725" top="5640" type="Node" width="1080">
    </BOUNDS>
    <PIN pinname="VertexBuffer" visible="1">
@@ -106,6 +108,8 @@
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
    <PIN pinname="Apply" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="7" nodename="Mesh (EX9.Geometry Split)" systemname="Mesh (EX9.Geometry Split)">
@@ -127,11 +131,11 @@
    <LINK dstnodeid="15" dstpinname="Vertex Buffer" srcnodeid="16" srcpinname="Vertex Buffer">
    </LINK>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3225" top="4800" type="Node" width="0">
+   <BOUNDS height="0" left="3270" top="4635" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5765" top="3973" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="345" left="3225" top="4800" type="Box" width="450">
+   <BOUNDS height="345" left="3270" top="4635" type="Box" width="450">
    </BOUNDS>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
@@ -139,9 +143,9 @@
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
@@ -154,10 +158,6 @@
    <PIN pinname="Aspect Ratio">
    </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Apply" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Apply" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="15" dstpinname="Indices" srcnodeid="7" srcpinname="Indices">
    <LINKPOINT x="2625" y="2757">
    </LINKPOINT>
@@ -216,7 +216,7 @@
    </LINK>
    <LINK dstnodeid="26" dstpinname="Input" srcnodeid="18" srcpinname="Position XYZ">
    </LINK>
-   <NODE componentmode="Hidden" id="30" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE componentmode="Hidden" id="30" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="100" left="4710" top="4065" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="0" left="4710" top="4065" type="Box" width="0">
@@ -525,5 +525,61 @@
    <LINK srcnodeid="62" srcpinname="Output Node" dstnodeid="26" dstpinname="Mouse State">
    </LINK>
    <LINK srcnodeid="62" srcpinname="Output Node" dstnodeid="26" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="3480" top="5295" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="63" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="4590" top="4635" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="64" srcpinname="Output 1" dstnodeid="63" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="AvoidNIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\AvoidNIL (Spreads).v4p" nodename="AvoidNIL (Spreads)" componentmode="Hidden" id="65">
+   <BOUNDS type="Node" left="5685" top="4215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Changing" dstnodeid="65" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="65" srcpinname="Output" dstnodeid="64" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="63" srcpinname="Output" dstnodeid="16" dstpinname="Apply">
+   </LINK>
+   <LINK srcnodeid="63" srcpinname="Output" dstnodeid="15" dstpinname="Apply">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="66" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3510" top="6345" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3510" top="6345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Output" dstnodeid="66" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

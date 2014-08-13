@@ -27,23 +27,30 @@ namespace System.IO
                 using (var buffer1 = MemoryPool<byte>.GetBuffer())
                 using (var buffer2 = MemoryPool<byte>.GetBuffer())
                 {
-                    var b1 = buffer1.Array;
-                    var b2 = buffer2.Array;
-                    var bufferSize = b1.Length;
+                    var bufferSize = buffer1.Length;
                     while (true)
                     {
-                        var count1 = stream1.Read(b1, 0, bufferSize);
+                        var count1 = stream1.Read(buffer1, 0, bufferSize);
                         // Check the case where stream1 and stream2 use the same
                         // underlying stream.
                         if (stream1.Position == stream2.Position)
 	                        return true;
-                        var count2 = stream2.Read(b2, 0, bufferSize);
+                        var count2 = stream2.Read(buffer2, 0, bufferSize);
                         if (count1 != count2)
                             return false;
                         if (count1 == 0)
                             return true;
-                        if (!b1.ContentEquals(b2))
-                            return false;
+                        if (count1 != bufferSize)
+                        {
+                            for (int i = 0; i < count1; i++)
+                                if (buffer1[i] != buffer2[i])
+                                    return false;
+                        }
+                        else
+                        {
+                            if (!ArrayExtensions.ContentEquals(buffer1, buffer2))
+                                return false;
+                        }
                     }
                 }
             }

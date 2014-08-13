@@ -542,20 +542,19 @@ namespace VVVV.Utils.Streams
             using (var buffer = MemoryPool<int>.GetBuffer())
             using (var reader = stream.GetReader())
             {
-                var array = buffer.Array;
                 while (!reader.Eos)
                 {
-                    var itemsRead = reader.Read(array, 0, array.Length);
-                    if (itemsRead != array.Length)
+                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
+                    if (itemsRead != buffer.Length)
                     {
                         for (int i = 0; i < itemsRead; i++)
-                            result += array[i];
+                            result += buffer[i];
                     }
                     else
                     {
                         // No index out of bounds check
-                        for (int i = 0; i < array.Length; i++)
-                            result += array[i];
+                        for (int i = 0; i < buffer.Length; i++)
+                            result += buffer[i];
                     }
                 }
             }

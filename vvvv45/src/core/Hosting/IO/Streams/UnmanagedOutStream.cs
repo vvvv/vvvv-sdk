@@ -320,6 +320,104 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
+    unsafe class LongOutStream : UnmanagedOutStream<long>
+    {
+        class LongOutWriter : UnmanagedOutWriter
+        {
+            private readonly double* FPDst;
+
+            public LongOutWriter(LongOutStream stream, double* pDst)
+                : base(stream)
+            {
+                FPDst = pDst;
+            }
+
+            public override void Write(long value, int stride)
+            {
+                Debug.Assert(!Eos);
+                FPDst[Position] = (double)value;
+                Position += stride;
+            }
+
+            protected override void Copy(long[] source, int sourceIndex, int length, int stride)
+            {
+                fixed (long* sourcePtr = source)
+                {
+                    long* src = sourcePtr + sourceIndex;
+                    double* dst = FPDst + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *dst = (double)*(src++);
+                        dst += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPDst;
+
+        public LongOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
+        {
+            FPPDst = ppDst;
+        }
+
+        public override IStreamWriter<long> GetWriter()
+        {
+            return new LongOutWriter(this, *FPPDst);
+        }
+    }
+
+    unsafe class ULongOutStream : UnmanagedOutStream<ulong>
+    {
+        class ULongOutWriter : UnmanagedOutWriter
+        {
+            private readonly double* FPDst;
+
+            public ULongOutWriter(ULongOutStream stream, double* pDst)
+                : base(stream)
+            {
+                FPDst = pDst;
+            }
+
+            public override void Write(ulong value, int stride)
+            {
+                Debug.Assert(!Eos);
+                FPDst[Position] = (double)value;
+                Position += stride;
+            }
+
+            protected override void Copy(ulong[] source, int sourceIndex, int length, int stride)
+            {
+                fixed (ulong* sourcePtr = source)
+                {
+                    ulong* src = sourcePtr + sourceIndex;
+                    double* dst = FPDst + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *dst = (double)*(src++);
+                        dst += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPDst;
+
+        public ULongOutStream(double** ppDst, Action<int> setDstLengthAction)
+            : base(setDstLengthAction)
+        {
+            FPPDst = ppDst;
+        }
+
+        public override IStreamWriter<ulong> GetWriter()
+        {
+            return new ULongOutWriter(this, *FPPDst);
+        }
+    }
+
     unsafe class BoolOutStream : UnmanagedOutStream<bool>
     {
         class BoolOutWriter : UnmanagedOutWriter

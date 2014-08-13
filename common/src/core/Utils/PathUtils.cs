@@ -14,7 +14,7 @@ namespace VVVV.Utils
         /// </summary>
         public static string MakeRelativePath(string basePath, string absolutePath)
         {
-            Debug.Assert(!Path.HasExtension(basePath));
+            //Debug.Assert(!Path.HasExtension(basePath));
             var fromPath = basePath;
             if (basePath[basePath.Length - 1] != Path.DirectorySeparatorChar)
                 fromPath = fromPath + Path.DirectorySeparatorChar;
