@@ -29,6 +29,7 @@ namespace VVVV.Nodes.Texture.HTML
         public const string DEFAULT_CONTENT = @"<html><head></head><body bgcolor=""#ffffff""></body></html>";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
+        public readonly IntPtr Hwnd;
 
         private volatile bool FEnabled;
         private readonly WebClient FWebClient;
@@ -45,9 +46,10 @@ namespace VVVV.Nodes.Texture.HTML
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
 
-        public HTMLTextureRenderer(ILogger logger)
+        public HTMLTextureRenderer(ILogger logger, IntPtr hwnd)
         {
             Logger = logger;
+            Hwnd = hwnd;
 
             var settings = new CefBrowserSettings();
             settings.AcceleratedCompositing = CefState.Enabled;
@@ -56,7 +58,7 @@ namespace VVVV.Nodes.Texture.HTML
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.TransparentPainting = true;
-            windowInfo.SetAsOffScreen(IntPtr.Zero);
+            windowInfo.SetAsOffScreen(hwnd);
 
             FWebClient = new WebClient(this);
             // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
@@ -112,7 +114,7 @@ namespace VVVV.Nodes.Texture.HTML
                 // Set new values
                 FUrl = url;
                 FHtml = null;
-                FSize = size;
+                Size = size;
                 // Reset all computed values
                 Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
@@ -134,7 +136,7 @@ namespace VVVV.Nodes.Texture.HTML
                 // Set new values
                 FUrl = baseUrl;
                 FHtml = html;
-                FSize = size;
+                Size = size;
                 // Reset all computed values
                 Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
@@ -263,6 +265,15 @@ namespace VVVV.Nodes.Texture.HTML
                 if (IsAutoHeight)
                     size.Height = FDocumentSizeIsValid ? FDocumentSize.Height : 0;
                 return size;
+            }
+            set
+            {
+                if (value != FSize)
+                {
+                    FSize = value;
+                    if (!IsAutoSize)
+                        FBrowserHost.WasResized();
+                }
             }
         }
 
