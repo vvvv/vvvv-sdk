@@ -40,8 +40,17 @@ namespace System.IO
                             return false;
                         if (count1 == 0)
                             return true;
-                        if (!ArrayExtensions.ContentEquals(buffer1, buffer2))
-                            return false;
+                        if (count1 != bufferSize)
+                        {
+                            for (int i = 0; i < count1; i++)
+                                if (buffer1[i] != buffer2[i])
+                                    return false;
+                        }
+                        else
+                        {
+                            if (!ArrayExtensions.ContentEquals(buffer1, buffer2))
+                                return false;
+                        }
                     }
                 }
             }
