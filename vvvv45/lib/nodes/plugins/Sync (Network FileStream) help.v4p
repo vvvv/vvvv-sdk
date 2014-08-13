@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" systemname="Sync (Network FileStream) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Sync (Network FileStream) help.v4p" locked="0">
    <BOUNDS type="Window" left="5010" top="1770" width="6900" height="8505">
    </BOUNDS>
@@ -20,7 +20,7 @@
    <PIN pinname="Fine Offset (ms)">
    </PIN>
    </NODE>
-   <NODE systemname="FileStream (DShow9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="1" managers="boygroup">
+   <NODE systemname="FILESTREAM (DSHOW9)" nodename="FileStream (DShow9)" componentmode="Hidden" id="1" managers="boygroup">
    <BOUNDS type="Node" left="1290" top="3015" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Filename">
@@ -33,7 +33,7 @@
    </PIN>
    <PIN pinname="Do Seek" visible="1">
    </PIN>
-   <PIN pinname="Seek Position" visible="1">
+   <PIN pinname="Seek Time" visible="1">
    </PIN>
    <PIN pinname="Reference Clock" slicecount="1" values="System">
    </PIN>
@@ -43,7 +43,7 @@
    </PIN>
    <PIN pinname="Audio" visible="1">
    </PIN>
-   <PIN pinname="End Time" slicecount="1" values="99999">
+   <PIN pinname="Loop End Time" slicecount="1" values="99999">
    </PIN>
    <PIN pinname="Loop" slicecount="1" values="1">
    </PIN>
@@ -138,7 +138,7 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Adjust System Time" dstnodeid="10" dstpinname="Z">
    </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="11" managers="boygroup">
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="11" managers="boygroup">
    <BOUNDS type="Node" left="2055" top="4485" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -148,22 +148,26 @@
    </NODE>
    <LINK srcnodeid="10" srcpinname="XYZ" dstnodeid="11" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="12" managers="boygroup">
+   <NODE systemname="S (VALUE)" nodename="S (Value)" componentmode="Hidden" id="12" managers="boygroup">
    <BOUNDS type="Node" left="2055" top="4860" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="fs_sync_values">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Output 1" dstnodeid="12" dstpinname="Input Value">
    </LINK>
-   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="13" managers="boygroup">
+   <NODE systemname="R (VALUE)" nodename="R (Value)" componentmode="Hidden" id="13" managers="boygroup">
    <BOUNDS type="Node" left="1950" top="1950" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="fs_sync_values">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="Vector (3d Split)" nodename="Vector (3d Split)" componentmode="Hidden" id="14" managers="boygroup">
@@ -182,7 +186,7 @@
    </LINK>
    <LINK srcnodeid="14" srcpinname="X" dstnodeid="1" dstpinname="Do Seek">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="1" dstpinname="Seek Position">
+   <LINK srcnodeid="14" srcpinname="Y" dstnodeid="1" dstpinname="Seek Time">
    </LINK>
    <LINK srcnodeid="14" srcpinname="Z" dstnodeid="1" dstpinname="Adjust System Time">
    </LINK>
@@ -240,7 +244,7 @@
    </NODE>
    <LINK srcnodeid="19" srcpinname="Transform Out" dstnodeid="17" dstpinname="Transform">
    </LINK>
-   <NODE systemname="FileStream2 (DShow9 Boygroup)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream2 (DShow9 Boygroup).v4p" componentmode="Hidden" id="20" nodename="FileStream2 (DShow9 Boygroup)">
+   <NODE systemname="FILESTREAM2 (DSHOW9 BOYGROUP)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream2 (DShow9 Boygroup).v4p" componentmode="Hidden" id="20" nodename="FileStream2 (DShow9 Boygroup)">
    <BOUNDS type="Node" left="2625" top="7335" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="2625" top="7335" width="4800" height="3600">
@@ -255,7 +259,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="165" top="6900" width="2985" height="300">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|these modules do all the magic for you:|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|these modules do all the magic for you:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -264,7 +268,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="FileStream (DShow9 Boygroup)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" nodename="FileStream (DShow9 Boygroup)" componentmode="Hidden" id="23">
+   <NODE systemname="FILESTREAM (DSHOW9 BOYGROUP)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" nodename="FileStream (DShow9 Boygroup)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="645" top="7335" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Port" slicecount="1" values="3338">
@@ -279,13 +283,13 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="3337">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Port" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Port">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="100000">
    </PIN>
@@ -299,23 +303,23 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Fine Offset (ms)|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Fine Offset (ms)|">
    </PIN>
    </NODE>
    <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Fine Offset (ms)">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3690" top="3915" width="3750" height="270">
+   <BOUNDS type="Node" left="3225" top="3930" width="3750" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3690" top="3915" width="2070" height="525">
+   <BOUNDS type="Box" left="3225" top="3930" width="3120" height="2265">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|each sync module in your setup needs its own port|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|each sync module in your setup needs its own port.&cr;&lf;&cr;&lf;The port number will be +1 for the server node, so you have to keep in mind that the next port you can use for another instance is portnumber+2.&cr;&lf;the port for the server in a non-boygroup scenario is spreadable to serve multiple clients.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -329,7 +333,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4380" top="2580" width="2220" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|fine adjustment of the boygroup client stream|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|fine adjustment of the boygroup client stream|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -338,4 +342,6 @@
    <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>
