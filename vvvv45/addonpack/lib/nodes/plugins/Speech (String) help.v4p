@@ -1,0 +1,177 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\String\Speech\trunk\Speech (String) help.v4p">
+   <BOUNDS height="10605" left="4305" top="2085" type="Window" width="14130">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6855" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11550" top="6225" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5430" left="6855" top="1335" type="Box" width="3705">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Speech Node (String)&cr;&lf;This node recognizes words you say using Speech recognition.&cr;&lf;&cr;&lf;The &quot;Word output&quot; only outputs the recognized word on the next frame it has been recognized, the Last word keeps memory of the last recognized word.&cr;&lf;&cr;&lf;This node works with a string spread.&cr;&lf;&cr;&lf;If the node doesn&apos;t work, please make sure you installed Microsoft SAPI 5.1 (url in the readme file).&cr;&lf;&cr;&lf;Also training the speech engine provides much better accuracy&cr;&lf;&cr;&lf;Any comment, question, please send me a message on the tiki (user name: vux) or at this email address:&cr;&lf;julien@mrvux.com|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="480" top="6855" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="6975" top="8340" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="2865" left="480" top="6855" type="Box" width="5985">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="1065" top="6135" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <NODE id="7" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1485" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.05,0.05,0.05">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="6" nodename="TypoSpread (Spreads)">
+   <BOUNDS height="0" left="1725" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="500">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1455" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="4" nodename="Damper (Animation)">
+   <BOUNDS height="0" left="1440" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Damper (Animation)">
+   <BOUNDS height="0" left="2670" top="4635" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Go To Position" srcnodeid="6" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="X" srcnodeid="4" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Go To Position" srcnodeid="6" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" srcnodeid="3" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="2" nodename=":PLUGINS:\Speech.dll|vvvv.Nodes.SpreadSpeechNode">
+   <BOUNDS height="0" left="1110" top="2895" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5865" top="5145" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1110" top="2895" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Word" visible="1">
+   </PIN>
+   <PIN pinname="Last Word" visible="1">
+   </PIN>
+   <PIN pinname="Words" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1005" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6030" top="4635" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1080" left="1005" top="1335" type="Box" width="1215">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input String" slicecount="4" values="hello,replay,mistake,testing">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Words" srcnodeid="1" srcpinname="Output String">
+   </LINK>
+   <NODE id="0" nodename="S+H (String)">
+   <BOUNDS height="0" left="1095" top="3435" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="2" srcpinname="Word">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Set" srcnodeid="2" srcpinname="Bang">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Text" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="330" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="705" left="330" top="510" type="Box" width="2835">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="37335" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Speech recognition - Recognize words from a predefined list|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="330" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="330" top="135" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="37335" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Speech - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
