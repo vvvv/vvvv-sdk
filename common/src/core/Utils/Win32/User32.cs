@@ -59,8 +59,5 @@ namespace VVVV.Utils.Win32
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool CloseTouchInputHandle(System.IntPtr lParam);
-
-        [DllImport("user32.dll")]
-        public static extern bool ClientToScreen(IntPtr hWnd, ref Point lpPoint);
     }
 }

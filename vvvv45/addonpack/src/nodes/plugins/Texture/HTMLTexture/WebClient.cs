@@ -6,8 +6,6 @@ using System.Xml.Linq;
 using System.IO;
 using System.Text;
 using System.Collections.Specialized;
-using System.Windows.Forms;
-using System.Drawing;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -40,15 +38,6 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override bool GetScreenPoint(CefBrowser browser, int viewX, int viewY, ref int screenX, ref int screenY)
             {
-                if (FRenderer.Hwnd != IntPtr.Zero)
-                {
-                    // Convert the point from view coordinates to actual screen coordinates.
-                    var screen_pt = new Point(viewX, viewY);
-                    VVVV.Utils.Win32.User32.ClientToScreen(FRenderer.Hwnd, ref screen_pt);
-                    screenX = screen_pt.X;
-                    screenY = screen_pt.Y;
-                    return true;
-                }
                 return base.GetScreenPoint(browser, viewX, viewY, ref screenX, ref screenY);
             }
 

@@ -62,8 +62,6 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
         public ISpread<Mouse> FMouseIn;
-        [Input("Parent Window Handle", Visibility = PinVisibility.Hidden)]
-        public ISpread<long> FHandleIn;
         [Input("Key Event")]
         public ISpread<Keyboard> FKeyboardIn;
         [Input("Scroll To")]
@@ -106,7 +104,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void Evaluate(int spreadMax)
         {
-            FWebRenderers.ResizeAndDispose(spreadMax, (i) => new HTMLTextureRenderer(FLogger, new IntPtr(FHandleIn[i])));
+            FWebRenderers.ResizeAndDispose(spreadMax, () => new HTMLTextureRenderer(FLogger));
 
             FTextureOut.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
@@ -120,14 +118,6 @@ namespace VVVV.Nodes.Texture.HTML
             for (int i = 0; i < spreadMax; i++)
             {
                 var webRenderer = FWebRenderers[i];
-
-                var hwnd = new IntPtr(FHandleIn[i]);
-                if (webRenderer.Hwnd != hwnd)
-                {
-                    webRenderer.Dispose();
-                    webRenderer = new HTMLTextureRenderer(FLogger, hwnd);
-                    FWebRenderers[i] = webRenderer;
-                }
 
                 // Check enabled state
                 webRenderer.Enabled = FEnabledIn[i];
