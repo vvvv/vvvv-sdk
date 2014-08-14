@@ -17,6 +17,7 @@ namespace VVVV.Nodes.Texture.HTML
 	[PluginInfo(Name = "HTMLTexture", 
                 Category = "EX9.Texture", 
                 Version = "String", 
+                Credits = "Development sponsored by http://meso.net",
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
     public class HTMLTextureStringNode : HTMLTextureNode
     {
@@ -38,6 +39,7 @@ namespace VVVV.Nodes.Texture.HTML
     [PluginInfo(Name = "HTMLTexture", 
                 Category = "EX9.Texture", 
                 Version = "URL", 
+                Credits = "Development sponsored by http://meso.net",
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
     public class HTMLTextureUrlNode : HTMLTextureNode
     {
