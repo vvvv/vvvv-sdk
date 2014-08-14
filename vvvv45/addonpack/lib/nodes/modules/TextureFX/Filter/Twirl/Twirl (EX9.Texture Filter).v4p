@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Twirl\Twirl (EX9.Texture Filter).v4p">
-   <BOUNDS height="8550" left="11610" top="270" type="Window" width="8925">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta31.2.dtd" >
+   <PATCH nodename="W:\projects\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Twirl\Twirl (EX9.Texture Filter).v4p">
+   <BOUNDS height="8550" left="18090" top="1410" type="Window" width="8925">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="Twirl.fx" id="22" nodename="Twirl.fx" systemname="Twirl (EX9.Effect)">
    <BOUNDS height="270" left="2025" top="3915" type="Node" width="5055">
@@ -51,13 +51,13 @@
    </PIN>
    <PIN pinname="PixelSize XY" visible="1">
    </PIN>
-   <PIN pinname="X" visible="1">
+   <PIN pinname="X" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Y" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Rotate" visible="1">
+   <PIN pinname="Rotate" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Radius" visible="1">
+   <PIN pinname="Radius" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Aspect" visible="1">
    </PIN>
@@ -73,12 +73,12 @@
    </BOUNDS>
    <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Input">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="20" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="20" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="2040" top="4830" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2040" top="4830" type="Box" width="2400">
@@ -98,6 +98,16 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="20" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="22" srcpinname="Layer">
@@ -195,7 +205,7 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Enabled">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -233,7 +243,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Output">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -269,7 +279,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="21090" top="4140" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="X" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="X">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -283,7 +293,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="21090" top="4140" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Y" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Y">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -297,11 +307,11 @@
    </BOUNDS>
    <BOUNDS height="160" left="20355" top="3735" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Radius" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Radius">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.31">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.23">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -311,21 +321,13 @@
    </BOUNDS>
    <BOUNDS height="160" left="20355" top="3735" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Rotate" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Rotate">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="-1.04">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="X" srcnodeid="8" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Y" srcnodeid="7" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Rotate" srcnodeid="5" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Radius" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="Hidden" id="4" nodename="RGB (Color Join)" systemname="RGB (Color Join)">
    <BOUNDS height="0" left="7770" top="1890" type="Node" width="0">
    </BOUNDS>
@@ -383,11 +385,11 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Keep Aspect Ratio|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Keep Aspect Ratio|">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
