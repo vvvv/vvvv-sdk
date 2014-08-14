@@ -152,6 +152,13 @@ namespace VVVV.Nodes
                 Tags = "generic, spreadop"
                 )]
     public class NODECATEGORYPairwiseNode : Pairwise<REPLACEME_CLASS> {}
+
+    [PluginInfo(Name = "SplitAt",
+                Category = "NODECATEGORY",
+                Help = "Splits a spread at the given index.",
+                Tags = "generic, spreadop"
+                )]
+    public class NODECATEGORYSplitAtNode : SplitAtNode<REPLACEME_CLASS> { }
     
    	#endregion SpreadOps
 

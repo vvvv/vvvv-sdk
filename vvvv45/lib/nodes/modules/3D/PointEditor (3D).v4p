@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\3D\PointEditor (3D).v4p" locked="0">
-   <BOUNDS height="12990" left="10710" top="1125" type="Window" width="18090">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditor (3D).v4p" locked="0">
+   <BOUNDS height="12990" left="210" top="585" type="Window" width="18090">
    </BOUNDS>
    <NODE hiddenwhenlocked="1" id="90" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="0" left="270" top="7350" type="Node" width="0">
@@ -12,7 +12,7 @@
    <PIN pinname="Transform In" visible="1">
    </PIN>
    </NODE>
-   <NODE id="89" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE id="89" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="4665" top="10950" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" slicecount="3534" visible="1" values="0.67887,0.33068,0.00000">
@@ -1482,15 +1482,7 @@
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="56" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="View Projection" srcnodeid="48" srcpinname="Output Node">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Selection" hiddenwhenlocked="1" srcnodeid="42" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Point Size" hiddenwhenlocked="1" srcnodeid="81" srcpinname="Y Output Value">
-   <LINKPOINT x="6615" y="1560">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="91" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="16740" top="4650" type="Node" width="100">
@@ -1532,14 +1524,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Mesh">
    </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="93" srcpinname="Output Node">
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="World Points" srcnodeid="86" srcpinname="Output">
-   <LINKPOINT x="12339" y="4350">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="1" dstpinname="View Projection" srcnodeid="48" srcpinname="Output Node">
-   </LINK>
    <NODE componentmode="Hidden" hiddenwhenlocked="1" id="99" nodename="AND (Boolean)" systemname="AND (Boolean)">
    <BOUNDS height="100" left="3825" top="4515" type="Node" width="100">
    </BOUNDS>
@@ -1782,10 +1766,6 @@
    </LINK>
    <LINK dstnodeid="62" dstpinname="Index" hiddenwhenlocked="1" srcnodeid="121" srcpinname="Over">
    </LINK>
-   <LINK dstnodeid="121" dstpinname="Mouse Down" hiddenwhenlocked="1" srcnodeid="56" srcpinname="Output">
-   <LINKPOINT x="7890" y="2685">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="121" dstpinname="Point Size" hiddenwhenlocked="1" srcnodeid="81" srcpinname="Y Output Value">
    <LINKPOINT x="6660" y="1575">
    </LINKPOINT>
@@ -1829,12 +1809,6 @@
    <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="56" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="125" srcpinname="XYZ" dstnodeid="35" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="1" dstpinname="Mouse State">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="121" dstpinname="Mouse State">
    </LINK>
    <LINK srcnodeid="123" srcpinname="Output Node" dstnodeid="121" dstpinname="Mouse">
    </LINK>
@@ -1950,4 +1924,6 @@
    </LINK>
    <LINK srcnodeid="60" srcpinname="Device" dstnodeid="126" dstpinname="Keyboard">
    </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>

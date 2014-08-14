@@ -310,7 +310,7 @@ namespace VVVV.Nodes.XML
         }
     }
 
-    [PluginInfo(Name = "AsXElement", Category = "XML", Tags = "xml")]
+    [PluginInfo(Name = "AsXElement", Category = "XML")]
     public class XMLAsElementNode : IPluginEvaluate
     {
         [Input("XML")]
@@ -380,7 +380,7 @@ namespace VVVV.Nodes.XML
     { }
 
 
-    [PluginInfo(Name = "NamespaceResolver", Category = "XML", Tags = "xml")]
+    [PluginInfo(Name = "NamespaceResolver", Category = "XML")]
     public class NamespaceResolverNode : IPluginEvaluate
     {
         [Input("Node", IsSingle = true)]
@@ -465,7 +465,7 @@ namespace VVVV.Nodes.XML
     }
 
 
-    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG", Tags = "xml")]
+    [PluginInfo(Name = "IsValid", Category = "XML", Version = "RelaxNG")]
     public class RelaxNGValidateNode : IPluginEvaluate
     {
         [Input("Xml String")]
