@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor).v4p" systemname="CircumRectangleResize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\CircumRectangleResize.v4p">
+   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\CircumRectangleResize (PolygonEditor).v4p" systemname="CircumRectangleResize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\CircumRectangleResize.v4p">
    <BOUNDS type="Window" left="1110" top="735" width="26205" height="13725">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
@@ -1093,9 +1093,9 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="274">
-   <BOUNDS type="Node" left="15735" top="720" width="100" height="100">
+   <BOUNDS type="Node" left="15735" top="465" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="15735" top="720" width="795" height="240">
+   <BOUNDS type="Box" left="15735" top="465" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
    </PIN>
@@ -1381,7 +1381,7 @@
    </PIN>
    <PIN pinname="Inverse Output" visible="1">
    </PIN>
-   <PIN pinname="Epsilon" visible="1" slicecount="2" values="0.0001,0.0001">
+   <PIN pinname="Epsilon" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="399" srcpinname="Output" dstnodeid="400" dstpinname="Input 1">
@@ -1403,7 +1403,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="409">
-   <BOUNDS type="Node" left="14760" top="13155" width="100" height="100">
+   <BOUNDS type="Node" left="14670" top="13950" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1413,9 +1413,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="408">
-   <BOUNDS type="Node" left="14625" top="12795" width="100" height="100">
+   <BOUNDS type="Node" left="14535" top="13590" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="14625" top="12795" width="285" height="240">
+   <BOUNDS type="Box" left="14535" top="13590" width="285" height="240">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
@@ -1427,9 +1427,9 @@
    <LINK srcnodeid="408" srcpinname="Y Output Value" dstnodeid="409" dstpinname="Input">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="407">
-   <BOUNDS type="Node" left="14985" top="12795" width="100" height="100">
+   <BOUNDS type="Node" left="14895" top="13590" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="14985" top="12795" width="795" height="240">
+   <BOUNDS type="Box" left="14895" top="13590" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
@@ -1440,12 +1440,14 @@
    </NODE>
    <LINK srcnodeid="407" srcpinname="Y Output Value" dstnodeid="409" dstpinname="Input 2">
    </LINK>
+   <LINK srcnodeid="409" srcpinname="Output" dstnodeid="400" dstpinname="Epsilon">
+   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="410" systemname="IOBox (String)">
    <BOUNDS type="Node" left="13440" top="14340" width="12510" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="13440" top="14340" width="3255" height="1500">
+   <BOUNDS type="Box" left="13440" top="14340" width="2955" height="1230">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;emergency switch&apos;, do not resize if it resizes to 0 (or near enough that either quantization [stepsize] or rounding differences [1/10000] could eventually set all points to the same X or Y value -&gt; X or Y bounds size is 0)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&apos;emergency switch&apos;, do not resize if it resizes to 0 (or near enough that rounding differences could eventually set all points to the same X or Y value -&gt; X or Y bounds size is 0)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1552,38 +1554,6 @@
    <LINKPOINT x="19395" y="13245">
    </LINKPOINT>
    <LINKPOINT x="11595" y="13245">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="417">
-   <BOUNDS type="Node" left="22695" top="720" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="22695" top="720" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Stepsize">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <PACK Name="VVVV.Packs" Version="0.1.0">
-   </PACK>
-   <NODE systemname="Max (Value)" nodename="Max (Value)" componentmode="Hidden" id="416">
-   <BOUNDS type="Node" left="14040" top="13365" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="409" srcpinname="Output" dstnodeid="416" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="416" srcpinname="Output" dstnodeid="400" dstpinname="Epsilon">
-   </LINK>
-   <LINK srcnodeid="417" srcpinname="Y Output Value" dstnodeid="416" dstpinname="Input 1" linkstyle="VHV">
-   <LINKPOINT x="22725" y="12735">
-   </LINKPOINT>
-   <LINKPOINT x="14070" y="12735">
    </LINKPOINT>
    </LINK>
    </PATCH>
