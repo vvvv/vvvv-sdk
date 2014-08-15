@@ -1065,4 +1065,31 @@ namespace VVVV.Nodes.Input
             }
         }
     }
+
+    [PluginInfo(
+        Name = "Merge",
+        Category = "Mouse",
+        Help = "Merges different mouse devices into one.",
+        AutoEvaluate = true)]
+    public class MergeMouseNode : IPluginEvaluate
+    {
+        [Input("Mouse", IsPinGroup = true)]
+        public IDiffSpread<ISpread<Mouse>> MiceIn;
+
+        [Output("Mouse")]
+        public ISpread<Mouse> MouseOut;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!MiceIn.IsChanged)
+                return;
+
+            MouseOut.SliceCount = MiceIn.GetMaxSliceCount();
+            for (int i = 0; i < MouseOut.SliceCount; i++)
+            {
+                var mice = MiceIn.Select((ms, j) => ms.SliceCount > 0 ? ms[j] ?? Mouse.Empty : Mouse.Empty);
+                MouseOut[i] = new Mouse(Observable.Merge(mice.Select(m => m.MouseNotifications)), false);
+            }
+        }
+    }
 }
