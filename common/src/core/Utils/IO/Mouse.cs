@@ -48,6 +48,8 @@ namespace VVVV.Utils.IO
 
         private static IObservable<MouseNotification> InjectMouseClicks(IObservable<MouseNotification> notifications)
         {
+            // Keep only a single subscription
+            notifications = notifications.Publish().RefCount();
             // A mouse down followed by a mouse up in the same area with the same button is considered a single click.
             // Each subsequnt mouse down in the same area in a specific time interval with the same button produces
             // another click with an increased click count.
