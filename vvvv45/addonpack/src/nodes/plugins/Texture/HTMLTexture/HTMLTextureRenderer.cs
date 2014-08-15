@@ -112,7 +112,7 @@ namespace VVVV.Nodes.Texture.HTML
                 // Set new values
                 FUrl = url;
                 FHtml = null;
-                FSize = size;
+                Size = size;
                 // Reset all computed values
                 Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
@@ -134,7 +134,7 @@ namespace VVVV.Nodes.Texture.HTML
                 // Set new values
                 FUrl = baseUrl;
                 FHtml = html;
-                FSize = size;
+                Size = size;
                 // Reset all computed values
                 Reset();
                 using (var mainFrame = FBrowser.GetMainFrame())
@@ -263,6 +263,15 @@ namespace VVVV.Nodes.Texture.HTML
                 if (IsAutoHeight)
                     size.Height = FDocumentSizeIsValid ? FDocumentSize.Height : 0;
                 return size;
+            }
+            set
+            {
+                if (value != FSize)
+                {
+                    FSize = value;
+                    if (!IsAutoSize)
+                        FBrowserHost.WasResized();
+                }
             }
         }
 

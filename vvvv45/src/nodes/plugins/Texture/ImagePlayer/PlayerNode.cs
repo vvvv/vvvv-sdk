@@ -15,7 +15,9 @@ using Frame = VVVV.PluginInterfaces.V2.EX9.TextureResource<VVVV.Nodes.ImagePlaye
 
 namespace VVVV.Nodes.ImagePlayer
 {
-    [PluginInfo(Name = "Player", Category = "EX9.Texture")]
+    [PluginInfo(Name = "Player", 
+                Category = "EX9.Texture",
+                Credits = "Development sponsored by http://nsynk.de")]
     public class PlayerNode : IPluginEvaluate, IDisposable
     {
         [Input("Directory", StringType = StringType.Directory)]
