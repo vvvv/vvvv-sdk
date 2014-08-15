@@ -2,20 +2,6 @@
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\ApplyTransform (Mouse) help.v4p">
    <BOUNDS type="Window" left="5175" top="3165" width="9645" height="7230">
    </BOUNDS>
-   <NODE systemname="ApplyTransform (Mouse)" filename="%VVVV%\lib\nodes\modules\Mouse\ApplyTransform (Mouse).v4p" nodename="ApplyTransform (Mouse)" componentmode="InAWindow" id="18">
-   <BOUNDS type="Node" left="2415" top="4260" width="1350" height="270">
-   </BOUNDS>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Mouse UnTransformed" visible="1">
-   </PIN>
-   <PIN pinname="Mouse Transformed" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="2415" top="4260">
-   </BOUNDS>
-   <BOUNDS type="Window" left="15030" top="6495" width="4575" height="4275">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="17">
    <BOUNDS type="Node" left="4425" top="1290" width="100" height="100">
    </BOUNDS>
@@ -41,7 +27,7 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Color" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
    </PIN>
@@ -108,14 +94,6 @@
    <BOUNDS type="Box" left="2415" top="3645">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Device" dstnodeid="18" dstpinname="Mouse UnTransformed" linkstyle="VHV">
-   <LINKPOINT x="2475" y="4073">
-   </LINKPOINT>
-   <LINKPOINT x="3705" y="4073">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Mouse Transformed" dstnodeid="15" dstpinname="Mouse">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1575" top="1260" width="675" height="525">
    </BOUNDS>
@@ -210,8 +188,6 @@
    </NODE>
    <LINK srcnodeid="12" srcpinname="Transform Out" dstnodeid="16" dstpinname="Transform">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="18" dstpinname="Transform" linkstyle="PolyLine">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Node" left="180" top="270" width="1905" height="270">
    </BOUNDS>
@@ -274,4 +250,28 @@
    </PACK>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
+   <NODE systemname="ApplyTransform (Mouse)" filename="%VVVV%\lib\nodes\modules\Mouse\ApplyTransform (Mouse).v4p" nodename="ApplyTransform (Mouse)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="2415" top="4260" width="1350" height="270">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mouse UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Transformed" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2415" top="4260">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15030" top="6495" width="4575" height="4275">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Device" dstnodeid="18" dstpinname="Mouse UnTransformed" linkstyle="VHV">
+   <LINKPOINT x="2475" y="4073">
+   </LINKPOINT>
+   <LINKPOINT x="3705" y="4073">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Mouse Transformed" dstnodeid="15" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="18" dstpinname="Transform" linkstyle="PolyLine">
+   </LINK>
    </PATCH>
