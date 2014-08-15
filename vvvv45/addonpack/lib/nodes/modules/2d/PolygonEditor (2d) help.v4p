@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="1515" top="1785" width="22545" height="7080">
+   <BOUNDS type="Window" left="-24945" top="1170" width="22545" height="7080">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -605,7 +605,7 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="5445" top="3540" width="10965" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
+   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
    </BOUNDS>
    <BOUNDS type="Box" left="12810" top="7725" width="4800" height="3600">
    </BOUNDS>
@@ -743,6 +743,10 @@
    </PIN>
    <PIN pinname="Cursor Type" visible="1">
    </PIN>
+   <PIN pinname="Color ShapeMode Rectangle" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
    </LINK>
@@ -831,27 +835,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="493" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="13845" top="1920" width="810" height="270">
+   <BOUNDS type="Node" left="13800" top="2580" width="810" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="13845" top="1920" width="1050" height="510">
+   <BOUNDS type="Box" left="13800" top="2580" width="1050" height="510">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Force Shape Mode|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="7">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="494" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="13845" top="2610" width="1725" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="13845" top="2610" width="1095" height="480">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Bring To Front On Click|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -867,7 +855,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5445" top="5355" width="10320" height="6210">
    </BOUNDS>
-   <BOUNDS type="Window" left="-23730" top="4245" width="16920" height="11580">
+   <BOUNDS type="Window" left="-24705" top="8265" width="7965" height="7425">
    </BOUNDS>
    <PIN pinname="Clip Device" slicecount="1" values="0">
    </PIN>
@@ -903,9 +891,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="503" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13140" top="1920" width="480" height="480">
+   <BOUNDS type="Box" left="13095" top="2580" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="13140" top="1920" width="0" height="0">
+   <BOUNDS type="Node" left="13095" top="2580" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -919,24 +907,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="503" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Force Shape Mode">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="504" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13140" top="2610" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="13140" top="2610" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="504" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Bring To Front On Click">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="505" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10590" top="2610" width="480" height="480">
@@ -1090,24 +1060,6 @@
    </LINK>
    <LINK srcnodeid="505" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Insert">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="518">
-   <BOUNDS type="Node" left="9795" top="2340" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9795" top="2340" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="518" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="519" systemname="IOBox (String)">
    <BOUNDS type="Node" left="420" top="5925" width="3375" height="270">
    </BOUNDS>
@@ -1136,6 +1088,26 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="506" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remove">
+   </LINK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="521">
+   <BOUNDS type="Node" left="13920" top="765" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13920" top="765" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    </PATCH>
