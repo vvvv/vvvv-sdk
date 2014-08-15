@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="-24945" top="1170" width="22545" height="7080">
+   <BOUNDS type="Window" left="-24945" top="1170" width="22545" height="12105">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -1110,4 +1110,22 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="522">
+   <BOUNDS type="Node" left="12420" top="1995" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12420" top="1995" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="522" srcpinname="Y Output Value" dstnodeid="505" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
