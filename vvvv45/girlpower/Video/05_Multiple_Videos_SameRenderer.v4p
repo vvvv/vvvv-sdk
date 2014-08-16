@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Video\05_Multiple_Videos_SameRenderer.v4p" systemname="05_Multiple_Videos" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\05_Multiple_Videos.v4p">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\05_Multiple_Videos_SameRenderer.v4p" systemname="05_Multiple_Videos" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\05_Multiple_Videos.v4p">
    <BOUNDS type="Window" left="390" top="1485" width="12570" height="11595">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
@@ -53,7 +53,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="825" top="1485" width="3690" height="6225">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The first video is played by the FileStream (DShow9) and converted to a texture by the VideoTexture (EX9.Texture VMR9).&cr;&lf;&cr;&lf;The second video is played by the FileStream (EX9.Texture VLC) which returns the texture right away.&cr;&lf;&cr;&lf;The third video is just the texture from the first one processed by a TextureFX node.&cr;&lf;&cr;&lf;This 3 textures are placed into one spread. Down the line they will be applied to a spread of 3 Quads and rendered.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) generates 3 &apos;X&apos; coordinates for the quads. The Transform (Transform 2d) sets additional value for the scale.&cr;&lf;&cr;&lf;The AspectRatio (Transform) keeps the proportions of the Quads according to proportions of the videos. It receives &apos;Width&apos; and &apos;Height&apos; values returned for every texture in a spread by the Info (EX9.Texture).&cr;&lf;&cr;&lf;Finally the Quad (DX9) is spreaded by the 3 transformations and every Quad gets his very own texture (from a spread of 3 textures). These 3 Quads are then rendered to a window.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The first video is played by the FileStream (DShow9) and converted to a texture by the VideoTexture (EX9.Texture VMR9).&cr;&lf;&cr;&lf;The second video is played by the FileStream (EX9.Texture VLC) which returns the texture right away.&cr;&lf;&cr;&lf;The third video is just the texture from the first one processed by a TextureFX node.&cr;&lf;&cr;&lf;These 3 textures are placed into one spread. Down the line they will be applied to a spread of 3 Quads and rendered.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) generates three &apos;X&apos; coordinates for the Quads. The Transform (Transform 2d) sets additional value for the scale.&cr;&lf;&cr;&lf;The AspectRatio (Transform) keeps the proportions of the Quads according to proportions of the videos. It receives &apos;Width&apos; and &apos;Height&apos; values returned for every texture in a spread by the Info (EX9.Texture).&cr;&lf;&cr;&lf;Finally the Quad (DX9) is spreaded by the 3 transformations and every Quad gets his very own texture (from a spread of 3 textures). These 3 Quads are then rendered to a window.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -155,9 +155,9 @@
    </PIN>
    <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
    </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="...">
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="09_Sync_Same_Machine.v4p">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Directory">
+   <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
@@ -895,9 +895,9 @@
    </PIN>
    <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
    </PIN>
-   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="...">
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="10_Sync_Many_Machines.v4p">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="Directory">
+   <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="128" systemname="IOBox (String)">
