@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\11_UDP_Streaming.v4p" systemname="UDP_Streaming" filename="C:\Work\Anton-work\Video\UDP_Streaming.v4p">
-   <BOUNDS type="Window" left="9795" top="2025" width="17880" height="13410">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Video\11_UDP_Streaming.v4p" systemname="UDP_Streaming" filename="C:\Work\Anton-work\Video\UDP_Streaming.v4p">
+   <BOUNDS type="Window" left="1800" top="615" width="17880" height="13410">
    </BOUNDS>
    <PACK Name="imagepack" Version="0.1.0">
    </PACK>
@@ -185,7 +185,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="13905" top="2070" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="30000">
+   <PIN pinname="Y Input Value" slicecount="1" values="9984">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="B">
    </PIN>
@@ -195,7 +195,7 @@
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
+   <PIN pinname="Maximum" slicecount="1" values="99999">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="8192">
    </PIN>
@@ -887,6 +887,8 @@
    <NODE systemname="DynamicTexture (EX9.Texture Raw)" nodename="DynamicTexture (EX9.Texture Raw)" componentmode="Hidden" id="112">
    <BOUNDS type="Node" left="13365" top="3570" width="100" height="100">
    </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="112" srcpinname="Texture Out" dstnodeid="27" dstpinname="Texture">
    </LINK>
@@ -897,7 +899,7 @@
    </BOUNDS>
    <BOUNDS height="7410" left="585" top="2895" type="Box" width="3990">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example the Collada mesh is loaded and rendered with its textures.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the rendered image as a texture. Note, the &apos;Width&apos; and &apos;Height&apos; pins are hidden by default, to access them open the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After converting the texture into raw bytes of &apos;JPEG&apos; file format by the AsRaw (EX9.Texture), these bytes are send over the network as UDP datagrams. &cr;&lf;&cr;&lf;The &apos;Remote Host&apos; and the &apos;Remote Port&apos; number of the UDP (Network Client) define the destination of the data packets.&cr;&lf;&cr;&lf;This is just a helper showing the length of the texture in bytes and the maximum length so far.&cr;&lf;&cr;&lf;The receiver patch (aka remote host) can be located somewhere in the network. Its UDP (Network Server) must have the &apos;Local Port&apos; pin set to the same value as the &apos;Remote Port&apos; of the sender.&cr;&lf;&cr;&lf;The &apos;Buffer Size&apos; pin must be set to some value bigger than the length of the texture in bytes (see Step 4).&cr;&lf;&cr;&lf;The DynamicTexture (EX9.Texture Raw) converts the raw bytes from the UDP packets into the texture. It automatically recognize the file format. Note, this node has the &apos;Width&apos; and &apos;Height&apos; hidden pins as well.&cr;&lf;&cr;&lf;The texture is the drawn to a FullscreenQuad and rendered.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example a Collada mesh is loaded and rendered with its textures.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the rendered image as a texture. Note, the &apos;Width&apos; and &apos;Height&apos; pins are hidden by default, to access them open the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After converting the texture into raw bytes of &apos;JPEG&apos; file format by the AsRaw (EX9.Texture), these bytes are sent over the network as UDP datagrams. &cr;&lf;&cr;&lf;The &apos;Remote Host&apos; and the &apos;Remote Port&apos; number of the UDP (Network Client) define the destination of the data packets.&cr;&lf;&cr;&lf;This is just a helper showing the length of the texture in bytes and the maximum length so far.&cr;&lf;&cr;&lf;The receiver patch (aka remote host) can be located somewhere in the network. Its UDP (Network Server) must have the &apos;Local Port&apos; pin set to the same value as the &apos;Remote Port&apos; of the sender.&cr;&lf;&cr;&lf;The &apos;Buffer Size&apos; pin must be set to some value bigger than the length of the texture in bytes (see Step 4).&cr;&lf;&cr;&lf;The DynamicTexture (EX9.Texture Raw) converts the raw bytes from the UDP packets into the texture. It automatically recognize the file format. Note, this node has the &apos;Width&apos; and &apos;Height&apos; hidden pins as well.&cr;&lf;&cr;&lf;The texture is the drawn to a FullscreenQuad and rendered.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

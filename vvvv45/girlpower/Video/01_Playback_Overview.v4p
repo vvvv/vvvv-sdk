@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\01_Playback_Overview.v4p" systemname="01_Playback_Overview" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\01_Playback_Overview.v4p">
-   <BOUNDS type="Window" left="2775" top="255" width="18420" height="16500">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Video\01_Playback_Overview.v4p" systemname="01_Playback_Overview" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\01_Playback_Overview.v4p">
+   <BOUNDS type="Window" left="2160" top="0" width="18420" height="15195">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -65,7 +65,7 @@
    <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="585" top="630" type="Node" width="840">
    </BOUNDS>
-   <BOUNDS height="600" left="585" top="630" type="Box" width="3585">
+   <BOUNDS height="570" left="585" top="630" type="Box" width="2370">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Let&apos;s say you want to playback your favourite videos.|">
    </PIN>
@@ -119,7 +119,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="585" top="2235" type="Box" width="3990">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|There are three options for playing back videos.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Here are three options for playing back videos.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -439,9 +439,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="3660" top="10590" type="Node" width="315">
+   <BOUNDS height="270" left="4110" top="10590" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="300" left="3660" top="10590" type="Box" width="345">
+   <BOUNDS height="300" left="4110" top="10590" type="Box" width="345">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
    </PIN>
@@ -629,7 +629,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4350" top="6135" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="..\..\lib\assets\videos\Stallone_MPEG2.mpg">
+   <PIN pinname="Input String" slicecount="1" values="..\..\lib\assets\videos\Birds_H264.mp4">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="|C:\video.avi || deinterlace=1 || video-filter=gradient{type=1}|">
    </PIN>
@@ -641,9 +641,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="68">
-   <BOUNDS type="Node" left="1590" top="9900" width="100" height="100">
+   <BOUNDS type="Node" left="2040" top="9900" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1590" top="9900" width="1995" height="1560">
+   <BOUNDS type="Box" left="2040" top="9900" width="1995" height="1560">
    </BOUNDS>
    <BOUNDS type="Window" left="21945" top="3345" width="6315" height="5010">
    </BOUNDS>
@@ -661,7 +661,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX9)" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="67" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p">
-   <BOUNDS type="Node" left="1590" top="9315" width="100" height="100">
+   <BOUNDS type="Node" left="2040" top="9315" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -689,11 +689,13 @@
    </PIN>
    <PIN pinname="Loop Start Time" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="69" srcpinname="Output String" dstnodeid="66" dstpinname="Filename">
    </LINK>
    <NODE systemname="VideoTexture (EX9.Texture VMR9)" nodename="VideoTexture (EX9.Texture VMR9)" componentmode="Hidden" id="65">
-   <BOUNDS type="Node" left="1605" top="8250" width="100" height="100">
+   <BOUNDS type="Node" left="2055" top="8250" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
@@ -795,7 +797,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="11955" width="4350" height="4320">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (DShow9) utilizes Windows DirectShow system and plays back all different kinds of videos Windows Media Player plays as well, as long as a DirectShow codec is installed on the system.&cr;&lf;&cr;&lf;To loop the video, turn on the &apos;Loop&apos; pin and set a value for the &apos;Loop End Time&apos; pin. The &apos;Duration&apos; output pin (connected via FrameDelay (Value)) can be used for the &apos;Loop End Time&apos; to loop the video in full.&cr;&lf;&cr;&lf;The VideoTexture (EX9.Texture VMR9) converts DirectShow stream into a texture, which is then applied to a FullscreenQuad (DX9).&cr;&lf;&cr;&lf;The renderer (shown here in the boxed mode (ALT+2), switch to windowed mode by ALT+1) renders the FullscreenQuad.&cr;&lf;&cr;&lf;If the video has sound, connect the &apos;Audio&apos; output pin of the FileStream (DShow9) to the AudioOut (DShow9).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (DShow9) utilizes DirectShow and plays back all different kinds of videos Windows Media Player plays as well, as long as a DirectShow codec is installed on the system.&cr;&lf;&cr;&lf;To loop the video, turn on the &apos;Loop&apos; pin and set a value for the &apos;Loop End Time&apos; pin. The &apos;Duration&apos; output pin (connected via FrameDelay (Value)) can be used for the &apos;Loop End Time&apos; to loop the video in full.&cr;&lf;&cr;&lf;The VideoTexture (EX9.Texture VMR9) converts a DirectShow stream into a texture, which is then applied to a FullscreenQuad (DX9).&cr;&lf;&cr;&lf;The renderer (shown here in the boxed mode (ALT+2)) renders the FullscreenQuad.&cr;&lf;&cr;&lf;If the video has sound, connect the &apos;Audio&apos; output pin of the FileStream (DShow9) to the AudioOut (DShow9).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -863,9 +865,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="75" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1695" top="8835" width="930" height="270">
+   <BOUNDS type="Node" left="2145" top="8835" width="930" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1695" top="8835" width="930" height="270">
+   <BOUNDS type="Box" left="2145" top="8835" width="930" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- Texture|">
    </PIN>
@@ -949,9 +951,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="82" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1125" top="8205" type="Node" width="315">
+   <BOUNDS height="270" left="1575" top="8205" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="1125" top="8205" type="Box" width="420">
+   <BOUNDS height="435" left="1575" top="8205" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -965,9 +967,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="83" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1125" top="10470" type="Node" width="315">
+   <BOUNDS height="270" left="1575" top="10470" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="1125" top="10470" type="Box" width="420">
+   <BOUNDS height="435" left="1575" top="10470" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -997,13 +999,15 @@
    </PIN>
    </NODE>
    <NODE systemname="AudioOut (DShow9)" nodename="AudioOut (DShow9)" componentmode="Hidden" id="86">
-   <BOUNDS type="Node" left="4125" top="8400" width="100" height="100">
+   <BOUNDS type="Node" left="675" top="8235" width="100" height="100">
    </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="87" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="3645" top="8295" type="Node" width="315">
+   <BOUNDS height="270" left="60" top="8160" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="3645" top="8295" type="Box" width="420">
+   <BOUNDS height="435" left="60" top="8160" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1049,9 +1053,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="91" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="15720" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="15495" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="15720" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="15495" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1170,10 +1174,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="FileStream2 (DShow9)" nodename="FileStream2 (DShow9)" componentmode="Hidden" id="128">
-   <BOUNDS type="Node" left="3210" top="16650" width="1545" height="270">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="127" systemname="IOBox (String)">
    <BOUNDS type="Node" left="3165" top="16950" width="1665" height="270">
    </BOUNDS>
@@ -1207,7 +1207,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1290" top="17190" width="1650" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Tries hickupfree video switching.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|attempts hickupfree video switching.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1487,7 +1487,7 @@
    <LINK srcnodeid="145" srcpinname="Texture Out" dstnodeid="150" dstpinname="Texture">
    </LINK>
    <NODE id="109" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" slicecount="1" visible="0" pintype="Input" values="|For the best video quality save the video as uncompressed image sequence. The Player (EX9.Texture) accesses individual frames stored in a directory by frameindices. It has been optimized for high bandwith texture throughput.&cr;&lf;&cr;&lf;It accepts a variety of formats, also some that are not supported by FileTexture (EX9.Texture) such as TIFFs.&cr;&lf;&cr;&lf;The AspectRatio (Transform) receives the &apos;Width&apos; and &apos;Height&apos; of the images and keeps the proportions of the FullscreenQuad (DX9) independent of the Renderer&apos;s size.&cr;&lf;&cr;&lf;This is the timebased version of the Player. It has almost the same pins as the FileStream, but plays high quality image sequences. Its &apos;Speed&apos; pin can be set to negative values.&cr;&lf;&cr;&lf;Check the corresponding helppatches for the detailed info.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" pintype="Input" values="|For the best video quality save the video as an uncompressed image sequence. The Player (EX9.Texture) accesses individual frames stored in a directory by frameindices. It has been optimized for high bandwith texture throughput.&cr;&lf;&cr;&lf;It accepts a variety of formats, also some that are not supported by FileTexture (EX9.Texture) such as TIFFs.&cr;&lf;&cr;&lf;The AspectRatio (Transform) receives the &apos;Width&apos; and &apos;Height&apos; of the images and keeps the proportions of the FullscreenQuad (DX9) independent of the Renderer&apos;s size.&cr;&lf;&cr;&lf;This is the timebased version of the Player. It has almost the same pins as the FileStream, but plays high quality image sequences.&cr;&lf;&cr;&lf;Check the corresponding helppatches for the detailed info.|">
    </PIN>
    <BOUNDS type="Node" left="6975" top="11955" width="16155" height="270">
    </BOUNDS>
@@ -1565,11 +1565,11 @@
    </PIN>
    </NODE>
    <NODE id="155" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Input String" slicecount="1" visible="0" pintype="Input" values="|The FileStream (EX9.Texture VLC) plays back all the codecs the VLC Media Player does.&cr;&lf;&cr;&lf;Its &apos;Filename&apos; pin is spreadable, so the node can read several videos at the same time and return their frames as a spread of textures. Its &apos;Speed&apos; pin can be set to negative values.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" pintype="Input" values="|The FileStream (EX9.Texture VLC) plays back all the codecs the VLC Media Player does.&cr;&lf;&cr;&lf;Its &apos;Filename&apos; pin is spreadable, so the node can read several videos at the same time and return their frames as a spread of textures.|">
    </PIN>
    <BOUNDS type="Node" left="13755" top="14715" width="16155" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="13755" top="14715" width="3450" height="1665">
+   <BOUNDS type="Box" left="13755" top="14715" width="3465" height="1455">
    </BOUNDS>
    <PIN pinname="Output String" visible="0" pintype="Output">
    </PIN>
@@ -1795,7 +1795,7 @@
    </BOUNDS>
    <BOUNDS height="1200" left="585" top="3705" type="Box" width="4755">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|- Uses DirectShow codecs installed on the system.&cr;&lf;- Not spreadable, so multiple instances of the node is required to play several videos in parallel.&cr;&lf;- &apos;Speed&apos; cannot be negative.&cr;&lf;- Returns Video Stream which has to be converted to a texture.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|- Uses DirectShow codecs installed on the system.&cr;&lf;- Not spreadable, so multiple instances of the node are required to play several videos in parallel.&cr;&lf;- &apos;Speed&apos; cannot be negative.&cr;&lf;- Returns Video Stream which has to be converted to a texture.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1924,68 +1924,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="181" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="6975" top="15975" width="390" height="270">
+   <LINK srcnodeid="66" srcpinname="Audio" dstnodeid="86" dstpinname="Audio">
+   </LINK>
+   <NODE systemname="FileStream (DShow9 Boygroup)" nodename="FileStream (DShow9 Boygroup)" componentmode="Hidden" id="128" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p">
+   <BOUNDS type="Node" left="3210" top="16650" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6975" top="15975" width="4395" height="1335">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Better do not try to perfectly synchronize audio files to the current position of the Player (EX9.Texture). The FileStream (DShow9) or WavePlayer (DShow9) are playing files in sperate threads. Although they have &apos;Adjust System Time&apos; pin to fine-tune the internally used timer, but unfortunately DirectShow doesn&quot;t always alow this fine-tuning for the audio.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="7">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="180" nodename="IOBox (String)" systemname="IOBox (String)" exposed="0">
-   <BOUNDS height="270" left="6975" top="15720" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="240" left="6975" top="15720" type="Box" width="4530">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-----------------------------------------------------------">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="184" nodename="IOBox (String)" systemname="IOBox (String)" exposed="0">
-   <BOUNDS height="270" left="6975" top="17340" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="240" left="6975" top="17340" type="Box" width="4560">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-----------------------------------------------------------">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="185" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6615" top="15915" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="525" left="6615" top="15915" type="Box" width="285">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="20">
-   </PIN>
    </NODE>
    </PATCH>

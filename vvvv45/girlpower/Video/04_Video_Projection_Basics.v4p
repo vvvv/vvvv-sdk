@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\04_Video_Projection.v4p" systemname="04_Video_Projection" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\04_Video_Projection.v4p">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Video\04_Video_Projection_Basics.v4p" systemname="04_Video_Projection" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\04_Video_Projection.v4p">
    <BOUNDS type="Window" left="0" top="1410" width="12150" height="9165">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="600" left="555" top="750" type="Box" width="3585">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a very basic setup for mapping videos (or any your vvvv content) to objects in real world.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a very basic setup for mapping videos (or any your vvvv content) to objects in the real world.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -371,9 +371,9 @@
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="0.353799314134275,0.602198474585382,-0.91304347826087,-0.273106120387761">
+   <PIN pinname="Y Input Value" slicecount="4" values="0.237857285148767,0.283357894875237,-0.333333333333334,-0.157164091402253">
    </PIN>
-   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.171622760564151,0.686610276853027,0.503496431810466,-0.482345842874607">
+   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.13108222002361,0.283783783783784,0.273766702080736,-0.306670167198932">
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
@@ -387,9 +387,9 @@
    </PIN>
    <PIN pinname="Show Connections" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1">
+   <PIN pinname="Minimum" slicecount="1" values="-0.5">
    </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1">
+   <PIN pinname="Maximum" slicecount="1" values="0.5">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -434,8 +434,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="80" dstpinname="Original Points XY">
-   </LINK>
    <LINK srcnodeid="82" srcpinname="XY" dstnodeid="80" dstpinname="Screen Space Points XY">
    </LINK>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="78">
@@ -495,8 +493,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="89" srcpinname="Y Output Value" dstnodeid="88" dstpinname="XYZ">
-   </LINK>
-   <LINK srcnodeid="88" srcpinname="Transform Out" dstnodeid="80" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="80" srcpinname="Transform Out" dstnodeid="78" dstpinname="Transform">
    </LINK>
@@ -661,7 +657,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="555" top="3240" width="3675" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Check the badMapper: the real vvvv mapping tool.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Check badMapper: the real vvvv mapping tool.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -699,7 +695,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="825" top="4515" width="3660" height="3105">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|A video texture is applied to the plain Quad (DX9).&cr;&lf;&cr;&lf;The Homography (Transform 2d) returns transformation matrix distorting the Quad. &cr;&lf;&cr;&lf;Its &apos;Original Points XY&apos; pin receives coordinates of a simple square.&cr;&lf;&cr;&lf;The IOBox connected to the &apos;Screen Space Points XY&apos; is used to define the distortion. Right click and drag the points to fit the Quad to the object you are projecting at.&cr;&lf;&cr;&lf;The UniformScale (Transform) scales the Quad.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A video texture is applied to a plain Quad (DX9).&cr;&lf;&cr;&lf;The Homography (Transform 2d) returns a transformation matrix distorting the Quad. &cr;&lf;&cr;&lf;Its &apos;Original Points XY&apos; pin receives coordinates of a simple square.&cr;&lf;&cr;&lf;The IOBox connected to the &apos;Screen Space Points XY&apos; is used to define the distortion. Right click and drag the points to fit the Quad to the object you are projecting at.&cr;&lf;&cr;&lf;The UniformScale (Transform) scales the Quad.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -754,4 +750,34 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="6255" top="5295" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="101" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Output" dstnodeid="80" dstpinname="Original Points XY">
+   </LINK>
+   <LINK srcnodeid="88" srcpinname="Transform Out" dstnodeid="80" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="102" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6675" top="5280" width="315" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6675" top="5280" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="102" srcpinname="Y Output Value" dstnodeid="101" dstpinname="Input 2">
+   </LINK>
    </PATCH>
