@@ -374,30 +374,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="13800" top="2505" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   <PIN pinname="Queue Mode" slicecount="1" values="Enqueue">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Output Node" dstnodeid="25" dstpinname="Mouse">
-   </LINK>
-   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="14115" top="2925" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Up Edge" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="25" srcpinname="Left Button" dstnodeid="26" dstpinname="Input">
-   </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="27">
    <BOUNDS type="Node" left="12285" top="1665" width="100" height="100">
    </BOUNDS>
@@ -536,10 +512,6 @@
    <LINKPOINT x="17685" y="12075">
    </LINKPOINT>
    <LINKPOINT x="12600" y="12075">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Up Edge" dstnodeid="13" dstpinname="Input 2" linkstyle="PolyLine">
-   <LINKPOINT x="12645" y="4620">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
@@ -755,5 +727,57 @@
    <LINK srcnodeid="50" srcpinname="Detected" dstnodeid="20" dstpinname="Input 1">
    </LINK>
    <PACK Name="imagepack" Version="0.1.0">
+   </PACK>
+   <NODE systemname="Counter (Animation)" nodename="Counter (Animation)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="18765" top="7950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Up" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="52" dstpinname="Up">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="53" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="18735" top="8790" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="18735" top="8790" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="53" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="MouseMatch (Mouse)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseMatch (Mouse)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="13905" top="2775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Event Type" slicecount="1" visible="1" values="MouseDown">
+   </PIN>
+   <PIN pinname="Detected" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output Node" dstnodeid="55" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="55" srcpinname="Detected" dstnodeid="13" dstpinname="Input 2">
+   <LINKPOINT x="12728" y="4327">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="56" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="14145" top="2325" width="1080" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14145" top="2325" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="MouseDown">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output Enum" dstnodeid="55" dstpinname="Event Type">
+   </LINK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
    </PATCH>
