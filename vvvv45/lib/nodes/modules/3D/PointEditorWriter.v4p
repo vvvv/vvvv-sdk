@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditorWriter.v4p">
-   <BOUNDS height="10425" left="2370" top="1890" type="Window" width="14655">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\PointEditorWriter.v4p">
+   <BOUNDS height="10425" left="5865" top="2310" type="Window" width="14655">
    </BOUNDS>
    <NODE id="44" nodename="XSLT (XML)" systemname="XSLT (XML)">
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;|">
    </PIN>
    <PIN pinname="XSLT Stylesheet" visible="1">
    </PIN>
@@ -298,16 +298,6 @@
    </NODE>
    <LINK dstnodeid="30" dstpinname="Bin Size" srcnodeid="25" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="24" nodename="Writer (File)" systemname="Writer (File)">
-   <BOUNDS height="0" left="2295" top="6450" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Content" visible="1">
-   </PIN>
-   <PIN pinname="Write" visible="1">
-   </PIN>
-   <PIN pinname="Filename" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="555" top="3885" type="Node" width="0">
    </BOUNDS>
@@ -319,21 +309,13 @@
    </PIN>
    <BOUNDS height="240" left="555" top="3885" type="Box" width="4590">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|small cloud.vpe|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="|small cloud.vpe|">
    </PIN>
    <PIN pinname="Content Type" slicecount="1" values="Filename">
    </PIN>
    <PIN encoded="0" pinname="File Mask" slicecount="1" values="|VVVV Point Editor Files||*.vpe|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="24" dstpinname="Content" srcnodeid="35" srcpinname="Output">
-   <LINKPOINT x="3945" y="4425">
-   </LINKPOINT>
-   <LINKPOINT x="3060" y="4590">
-   </LINKPOINT>
-   <LINKPOINT x="2850" y="4905">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1755" top="5130" type="Node" width="0">
    </BOUNDS>
@@ -360,20 +342,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="24" dstpinname="Write" srcnodeid="22" srcpinname="Y Output Value">
-   </LINK>
-   <NODE id="20" nodename="Reader (File)" systemname="Reader (File)">
-   <BOUNDS height="0" left="3480" top="6450" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Content" visible="1">
-   </PIN>
-   <PIN pinname="Read" visible="1">
-   </PIN>
-   <PIN pinname="Filename" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="44" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
-   </LINK>
    <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3390" top="5130" type="Node" width="0">
    </BOUNDS>
@@ -400,8 +368,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="Read" srcnodeid="19" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="18" nodename="Add (String)" systemname="Add (String)">
    <BOUNDS height="0" left="5385" top="5790" type="Node" width="0">
    </BOUNDS>
@@ -437,7 +403,7 @@
    <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="43" srcpinname="Output String">
    </LINK>
    <NODE id="16" nodename="XSLT (XML)" systemname="XSLT (XML)">
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;|">
    </PIN>
    <PIN pinname="XSLT Stylesheet" visible="1">
    </PIN>
@@ -544,10 +510,8 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="15" srcpinname="Output String">
    </LINK>
-   <LINK dstnodeid="16" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
-   </LINK>
    <NODE id="9" nodename="XSLT (XML)" systemname="XSLT (XML)">
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;|">
    </PIN>
    <PIN pinname="XSLT Stylesheet" visible="1">
    </PIN>
@@ -652,8 +616,6 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="8" srcpinname="Output String">
    </LINK>
-   <LINK dstnodeid="9" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
-   </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5565" top="630" type="Node" width="0">
    </BOUNDS>
@@ -704,8 +666,52 @@
    </LINK>
    <LINK dstnodeid="12" dstpinname="Input" srcnodeid="45" srcpinname="Output">
    </LINK>
+   <NODE id="24" nodename="Writer (String)" systemname="Writer (String)" filename="%VVVV%\lib\nodes\modules\String\Writer (String).v4p">
+   <BOUNDS height="0" left="2295" top="6450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Write" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Content" srcnodeid="35" srcpinname="Output">
+   <LINKPOINT x="3945" y="4425">
+   </LINKPOINT>
+   <LINKPOINT x="3060" y="4590">
+   </LINKPOINT>
+   <LINKPOINT x="2850" y="4905">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="Write" srcnodeid="22" srcpinname="Y Output Value">
+   </LINK>
    <LINK dstnodeid="24" dstpinname="Filename" srcnodeid="23" srcpinname="Output String">
+   </LINK>
+   <NODE id="20" nodename="Reader (String)" systemname="Reader (String)" filename="%VVVV%\lib\nodes\modules\String\Reader (String).v4p">
+   <BOUNDS height="0" left="3480" top="6450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Read" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Read" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="XML Input" srcnodeid="20" srcpinname="Content">
    </LINK>
    <LINK dstnodeid="20" dstpinname="Filename" srcnodeid="23" srcpinname="Output String">
    </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>

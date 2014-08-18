@@ -3,7 +3,7 @@ float X;
 float Y;
 float Rotate;
 float Radius;
-float Count;
+int Count;
 bool Aspect=true;
 texture tex0,tData;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
@@ -13,7 +13,7 @@ float mx(float2 p){return max(p.x,p.y);}
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;float2 asp=lerp(1,R.x/R,Aspect);
     float2 dx=(x);
     float maxlod=log2(max(R.x,R.y));
-    for (float i=0;i<min(Count,64);i++){
+    for (int i=0;i<min(Count,64);i++){
         float4 data=tex2Dlod(sD,float4((i+.5)/64,0.5,0,1));
         data.xy=data.xy*.5+.5;
         data.w=max(.0001,data.w);

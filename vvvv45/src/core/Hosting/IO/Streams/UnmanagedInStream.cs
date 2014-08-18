@@ -345,6 +345,116 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
+    unsafe class LongInStream : UnmanagedInStream<long>
+    {
+        class LongInStreamReader : UnmanagedInStreamReader
+        {
+            private readonly double* FPData;
+
+            public LongInStreamReader(LongInStream stream, double* pData)
+                : base(stream)
+            {
+                FPData = pData;
+            }
+
+            public override long Read(int stride)
+            {
+                Debug.Assert(Position < Length);
+                var result = (long)Math.Round(FPData[Position]);
+                Position += stride;
+                return result;
+            }
+
+            protected override void Copy(long[] destination, int destinationIndex, int length, int stride)
+            {
+                fixed (long* destinationPtr = destination)
+                {
+                    long* dst = destinationPtr + destinationIndex;
+                    double* src = FPData + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *(dst++) = (long)Math.Round(*src);
+                        src += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPData;
+
+        public LongInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(pLength, validateFunc)
+        {
+            FPPData = ppData;
+        }
+
+        public override IStreamReader<long> GetReader()
+        {
+            return new LongInStreamReader(this, *FPPData);
+        }
+
+        public override object Clone()
+        {
+            return new LongInStream(FPLength, FPPData, FValidateFunc);
+        }
+    }
+
+    unsafe class ULongInStream : UnmanagedInStream<ulong>
+    {
+        class ULongInStreamReader : UnmanagedInStreamReader
+        {
+            private readonly double* FPData;
+
+            public ULongInStreamReader(ULongInStream stream, double* pData)
+                : base(stream)
+            {
+                FPData = pData;
+            }
+
+            public override ulong Read(int stride)
+            {
+                Debug.Assert(Position < Length);
+                var result = (ulong)Math.Round(FPData[Position]);
+                Position += stride;
+                return result;
+            }
+
+            protected override void Copy(ulong[] destination, int destinationIndex, int length, int stride)
+            {
+                fixed (ulong* destinationPtr = destination)
+                {
+                    ulong* dst = destinationPtr + destinationIndex;
+                    double* src = FPData + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *(dst++) = (ulong)Math.Round(*src);
+                        src += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPData;
+
+        public ULongInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(pLength, validateFunc)
+        {
+            FPPData = ppData;
+        }
+
+        public override IStreamReader<ulong> GetReader()
+        {
+            return new ULongInStreamReader(this, *FPPData);
+        }
+
+        public override object Clone()
+        {
+            return new ULongInStream(FPLength, FPPData, FValidateFunc);
+        }
+    }
+
     unsafe class UIntInStream : UnmanagedInStream<uint>
     {
         class UIntInStreamReader : UnmanagedInStreamReader

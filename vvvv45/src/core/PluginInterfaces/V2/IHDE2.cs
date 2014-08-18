@@ -712,6 +712,8 @@ namespace VVVV.PluginInterfaces.V2
     /// <see cref="EditorInfoAttribute">EditorInfoAttribute</see> 
     /// to define with which file extensions this editor works with.
     /// </summary>
+    [Guid("26E07785-59FC-30F9-BBA1-5A3161B75D8B"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IEditor : IPluginBase
     {
     	/// <summary>
@@ -743,16 +745,6 @@ namespace VVVV.PluginInterfaces.V2
     	/// </summary>
     	/// <param name="filename">The new path to save the currently opened file to.</param>
     	void SaveAs(string filename);
-    	
-    	/// <summary>
-    	/// The node this editor is attached to. Shows runtime errors of this node.
-    	/// </summary>
-    	[ComVisible(false)]
-    	INode2 AttachedNode
-    	{
-    		get;
-    		set;
-    	}
     	
     	/// <summary>
     	/// The absolute path to file currently opened.

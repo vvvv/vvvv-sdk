@@ -315,9 +315,9 @@ namespace VVVV.Nodes.Input
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var notifications = FSubscriptions[i].Update(KeyboardIn[i]);
-                if (QueueModeIn[i] == QueueMode.Discard)
-                    notifications.TakeLast(1);
+                var notifications = QueueModeIn[i] == QueueMode.Discard
+                    ? FSubscriptions[i].ConsumeAll(KeyboardIn[i])
+                    : FSubscriptions[i].ConsumeNext(KeyboardIn[i]);
                 foreach (var n in notifications)
                 {
                     var keyCodeOut = KeyCodeOut[i];

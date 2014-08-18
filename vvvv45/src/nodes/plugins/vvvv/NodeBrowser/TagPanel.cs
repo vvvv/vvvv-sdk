@@ -210,6 +210,10 @@ namespace VVVV.Nodes.NodeBrowser
             try
             {
                 var selNode = FSelectionList[FHoverLine + ScrolledLine];
+                
+                //now that we create a text make sure not to create a comment as well
+                TagsTextBox.Text = "";
+                
                 if ((Control.ModifierKeys == Keys.Control) && ((selNode.Type == NodeType.Dynamic) || (selNode.Type == NodeType.Effect)))
                     OnPanelChange(NodeBrowserPage.Clone, selNode);
                 else

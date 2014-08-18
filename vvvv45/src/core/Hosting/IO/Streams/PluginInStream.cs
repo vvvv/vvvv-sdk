@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -287,11 +288,19 @@ namespace VVVV.Hosting.IO.Streams
                     var enumerable = usI as IEnumerable<T>;
                     if (enumerable != null)
                         FUpstreamStream = enumerable.ToStream();
-                    else
+                    if (FUpstreamStream == null)
                     {
-                        // Not connected
-                        FUpstreamStream = FNullStream;
-                        FUpstreamStream.Length = FLength;
+                        // TUpstream to T needs explicit cast
+                        // For example TUpstream is a value type and T is a reference type
+                        var objects = usI as IEnumerable;
+                        if (objects != null)
+                            FUpstreamStream = objects.Cast<T>().ToStream();
+                        else
+                        {
+                            // Not connected
+                            FUpstreamStream = FNullStream;
+                            FUpstreamStream.Length = FLength;
+                        }
                     }
                 }
             }

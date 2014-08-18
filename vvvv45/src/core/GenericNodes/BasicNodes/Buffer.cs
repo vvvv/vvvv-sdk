@@ -60,7 +60,7 @@ namespace VVVV.Nodes.Generic
             //get buffer size
             var frameCount = FFrameCount[0];
 
-            if (FReset[0]) //set all slices to default
+            if (FReset[0] || FFirstFrame) //set all slices to default
             {
                 FOutput.SliceCount = frameCount;
                 for (int i = 0; i < frameCount; i++)
@@ -75,7 +75,7 @@ namespace VVVV.Nodes.Generic
             else if (FOutput.SliceCount < frameCount)
             {
                 for (int i = FOutput.SliceCount; i < frameCount; i++)
-                    FOutput.Add(new Spread<T>(1));
+                    FOutput.Add(FDefault[i].Clone() as ISpread<T>);
             }
 
             SpreadMax = Math.Max(Math.Max(FInput.SliceCount, FIndex.SliceCount), FDoInsert.SliceCount);

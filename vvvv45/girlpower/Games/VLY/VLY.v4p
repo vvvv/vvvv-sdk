@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\( VLY )\VLY.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\Games\VLY\VLY.v4p" componentmode="InAWindow">
    <BOUNDS height="4800" left="900" top="7875" type="Window" width="9720">
    </BOUNDS>
    <NODE hiddenwhenlocked="0" id="69" managers="" nodename="Counter (Animation)" systemname="Counter (Animation)">
@@ -130,20 +130,24 @@
    <LINKPOINT x="10785" y="6585">
    </LINKPOINT>
    </LINK>
-   <NODE id="62" nodename="S (NODE)" systemname="S (Node)">
+   <NODE id="62" nodename="S (NODE)" systemname="S (NODE)">
    <BOUNDS height="0" left="14265" top="11685" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="view">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="61" nodename="S (NODE)" systemname="S (Node)">
+   <NODE id="61" nodename="S (NODE)" systemname="S (NODE)">
    <BOUNDS height="0" left="13620" top="8835" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="proj">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="60" nodename="Multiply (Value)" systemname="Multiply (Value)">
@@ -334,22 +338,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|fog color|">
    </PIN>
    </NODE>
-   <NODE id="49" nodename="Intersect (3d Mesh Ray Legacy)" systemname="Intersect (3d Mesh Ray Legacy)">
-   <BOUNDS height="0" left="7065" top="13005" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Transform Line" visible="1">
-   </PIN>
-   <PIN pinname="Transform Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Intersect" visible="1">
-   </PIN>
-   <PIN pinname="Intersection Point XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Position on Ray" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="48" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
    <BOUNDS height="0" left="7725" top="12300" type="Node" width="0">
    </BOUNDS>
@@ -378,26 +366,14 @@
    <LINKPOINT x="7755" y="12225">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="49" dstpinname="Transform Line" linkstyle="VHV" srcnodeid="48" srcpinname="Transform Out">
-   <LINKPOINT x="7755" y="12780">
-   </LINKPOINT>
-   <LINKPOINT x="7785" y="12780">
-   </LINKPOINT>
-   </LINK>
    <NODE id="46" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="7065" top="13545" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="46" dstpinname="XYZ" linkstyle="VHV" srcnodeid="49" srcpinname="Intersection Point XYZ">
-   <LINKPOINT x="7095" y="13410">
-   </LINKPOINT>
-   <LINKPOINT x="7095" y="13410">
-   </LINKPOINT>
-   </LINK>
    <NODE id="45" nodename="Vector (3d Split)" systemname="Vector (3d Split)">
    <BOUNDS height="0" left="7995" top="13410" type="Node" width="0">
    </BOUNDS>
@@ -486,12 +462,14 @@
    <LINKPOINT x="14280" y="9585">
    </LINKPOINT>
    </LINK>
-   <NODE id="40" nodename="S (COLOR)" systemname="S (Color)">
+   <NODE id="40" nodename="S (COLOR)" systemname="S (COLOR)">
    <BOUNDS height="0" left="4395" top="5055" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="|color fog|">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="40" dstpinname="Input Value" linkstyle="VHV" srcnodeid="50" srcpinname="Color Output">
@@ -500,12 +478,14 @@
    <LINKPOINT x="4425" y="4920">
    </LINKPOINT>
    </LINK>
-   <NODE id="39" nodename="S (VALUE)" systemname="S (Value)">
+   <NODE id="39" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="10755" top="9270" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="position">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="39" dstpinname="Input Value" linkstyle="VHV" srcnodeid="52" srcpinname="XYZ">
@@ -514,20 +494,24 @@
    <LINKPOINT x="10785" y="9180">
    </LINKPOINT>
    </LINK>
-   <NODE id="38" nodename="R (VALUE)" systemname="R (Value)">
+   <NODE id="38" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="14985" top="9225" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Receive String" slicecount="1" values="position">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="37" nodename="R (VALUE)" systemname="R (Value)">
+   <NODE id="37" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="8100" top="13050" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Receive String" slicecount="1" values="position">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="45" dstpinname="XYZ" linkstyle="Bezier" srcnodeid="37" srcpinname="Input Value">
@@ -564,15 +548,17 @@
    <LINKPOINT x="13275" y="2625">
    </LINKPOINT>
    </LINK>
-   <NODE id="35" nodename="R (VALUE)" systemname="R (Value)">
+   <NODE id="35" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="9840" top="255" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="finish">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="34" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE id="34" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="9825" top="750" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -670,12 +656,14 @@
    <LINKPOINT x="15135" y="2265">
    </LINKPOINT>
    </LINK>
-   <NODE id="30" nodename="S (VALUE)" systemname="S (Value)">
+   <NODE id="30" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="13275" top="2220" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="reset">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="30" dstpinname="Input Value" linkstyle="PolyLine" srcnodeid="31" srcpinname="Y Output Value">
@@ -948,10 +936,6 @@
    <LINKPOINT x="7410" y="10455">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="49" dstpinname="Mesh" srcnodeid="24" srcpinname="mesh out">
-   </LINK>
-   <LINK dstnodeid="49" dstpinname="Transform Mesh" srcnodeid="24" srcpinname="transform outout">
-   </LINK>
    <LINK dstnodeid="47" dstpinname="XYZ" srcnodeid="24" srcpinname="pos out">
    </LINK>
    <LINK dstnodeid="62" dstpinname="Input Value" srcnodeid="41" srcpinname="Transform Out">
@@ -1092,22 +1076,26 @@
    </NODE>
    <LINK dstnodeid="15" dstpinname="Random Seed" srcnodeid="14" srcpinname="Cycles">
    </LINK>
-   <NODE id="13" nodename="S (VALUE)" systemname="S (Value)">
+   <NODE id="13" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="7005" top="17010" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Send String" slicecount="1" encoded="0" values="colision">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Input Value" srcnodeid="44" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="12" nodename="R (VALUE)" systemname="R (Value)">
+   <NODE id="12" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="15465" top="8895" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="colision">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="11" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
@@ -1148,40 +1136,6 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="9" srcpinname="Position Out">
    </LINK>
-   <NODE id="8" nodename="Intersect (3d Mesh Ray Legacy)" systemname="Intersect (3d Mesh Ray Legacy)">
-   <BOUNDS height="0" left="8835" top="13050" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Transform Line" visible="1">
-   </PIN>
-   <PIN pinname="Transform Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Intersect" visible="1">
-   </PIN>
-   <PIN pinname="Intersection Point XYZ" visible="1">
-   </PIN>
-   <PIN pinname="Position on Ray" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Transform Line" linkstyle="Bezier" srcnodeid="48" srcpinname="Transform Out">
-   <LINKPOINT x="7755" y="12810">
-   </LINKPOINT>
-   <LINKPOINT x="9555" y="12810">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Transform Mesh" linkstyle="Bezier" srcnodeid="24" srcpinname="transform torus">
-   <LINKPOINT x="7830" y="12345">
-   </LINKPOINT>
-   <LINKPOINT x="9210" y="12345">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Mesh" linkstyle="Bezier" srcnodeid="24" srcpinname="torus">
-   <LINKPOINT x="8085" y="12345">
-   </LINKPOINT>
-   <LINKPOINT x="8865" y="12345">
-   </LINKPOINT>
-   </LINK>
    <NODE id="7" nodename="Map (Value)" systemname="Map (Value)">
    <BOUNDS height="0" left="13890" top="3930" type="Node" width="0">
    </BOUNDS>
@@ -1214,12 +1168,14 @@
    <LINKPOINT x="15180" y="6120">
    </LINKPOINT>
    </LINK>
-   <NODE id="6" nodename="R (VALUE)" systemname="R (Value)">
+   <NODE id="6" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="6615" top="14355" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="reset">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="5" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
@@ -1253,7 +1209,7 @@
    <NODE componentmode="InAWindow" id="3" nodename="renderer.v4p" systemname="renderer" filename="%VVVV%\girlpower\( VLY )\renderer.v4p">
    <PIN pinname="colision detec" visible="1">
    </PIN>
-   <PIN pinname="health pack" visible="1">
+   <PIN pinname="health pack" visible="1" slicecount="1" values="0">
    </PIN>
    <BOUNDS height="100" left="7530" top="17100" type="Node" width="100">
    </BOUNDS>
@@ -1262,12 +1218,6 @@
    <BOUNDS height="4800" left="900" top="7875" type="Window" width="9720">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="health pack" linkstyle="Bezier" srcnodeid="8" srcpinname="Intersect">
-   <LINKPOINT x="9555" y="15210">
-   </LINKPOINT>
-   <LINKPOINT x="8400" y="15210">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="3" dstpinname="colision detec" srcnodeid="44" srcpinname="Y Output Value">
    </LINK>
    <NODE id="2" nodename="LinearFilter (Animation Advanced)" systemname="LinearFilter (Animation Advanced)">
@@ -1374,4 +1324,82 @@
    </NODE>
    <LINK srcnodeid="72" srcpinname="Device" dstnodeid="73" dstpinname="Keyboard">
    </LINK>
+   <NODE id="8" nodename="Intersect (EX9.Geometry Mesh)" systemname="Intersect (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="8835" top="13050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform Line" visible="1">
+   </PIN>
+   <PIN pinname="Transform Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Intersect" visible="1">
+   </PIN>
+   <PIN pinname="Intersection Point XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Position on Ray" visible="1">
+   </PIN>
+   <PIN pinname="Ray Base Direction" slicecount="1" values="X">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Transform Line" linkstyle="Bezier" srcnodeid="48" srcpinname="Transform Out">
+   <LINKPOINT x="7755" y="12810">
+   </LINKPOINT>
+   <LINKPOINT x="9555" y="12810">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Transform Mesh" linkstyle="Bezier" srcnodeid="24" srcpinname="transform torus">
+   <LINKPOINT x="7830" y="12345">
+   </LINKPOINT>
+   <LINKPOINT x="9210" y="12345">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Mesh" linkstyle="Bezier" srcnodeid="24" srcpinname="torus">
+   <LINKPOINT x="8085" y="12345">
+   </LINKPOINT>
+   <LINKPOINT x="8865" y="12345">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="health pack" linkstyle="Bezier" srcnodeid="8" srcpinname="Intersect">
+   <LINKPOINT x="9555" y="15210">
+   </LINKPOINT>
+   <LINKPOINT x="8400" y="15210">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="49" nodename="Intersect (EX9.Geometry Mesh)" systemname="Intersect (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="7065" top="13005" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform Line" visible="1">
+   </PIN>
+   <PIN pinname="Transform Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Intersect" visible="1">
+   </PIN>
+   <PIN pinname="Intersection Point XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Position on Ray" visible="1">
+   </PIN>
+   <PIN pinname="Ray Base Direction" slicecount="1" values="X">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="Transform Line" linkstyle="VHV" srcnodeid="48" srcpinname="Transform Out">
+   <LINKPOINT x="7755" y="12780">
+   </LINKPOINT>
+   <LINKPOINT x="7785" y="12780">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="XYZ" linkstyle="VHV" srcnodeid="49" srcpinname="Intersection Point XYZ">
+   <LINKPOINT x="7095" y="13410">
+   </LINKPOINT>
+   <LINKPOINT x="7095" y="13410">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="49" dstpinname="Mesh" srcnodeid="24" srcpinname="mesh out">
+   </LINK>
+   <LINK dstnodeid="49" dstpinname="Transform Mesh" srcnodeid="24" srcpinname="transform outout">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
+using System.Reactive;
 
 namespace VVVV.Utils.IO
 {
@@ -69,6 +70,7 @@ namespace VVVV.Utils.IO
     public class Subscription2<TSource, TNotification> : IDisposable
         where TSource : class
     {
+        private readonly Queue<TNotification> FNotifications = new Queue<TNotification>();
         private readonly Func<TSource, IObservable<TNotification>> FSelector;
         private TSource FSource;
         private IEnumerator<IList<TNotification>> FEnumerator;
@@ -78,7 +80,28 @@ namespace VVVV.Utils.IO
             FSelector = selector;
         }
 
-        public IEnumerable<TNotification> Update(TSource source)
+        public IEnumerable<TNotification> ConsumeNext(TSource source)
+        {
+            UpdateSource(source);
+            if (FNotifications.Count > 0)
+                yield return FNotifications.Dequeue();
+        }
+
+        public IEnumerable<TNotification> ConsumeAll(TSource source)
+        {
+            UpdateSource(source);
+            try
+            {
+                while (FNotifications.Count > 0)
+                    yield return FNotifications.Dequeue();
+            }
+            finally
+            {
+                FNotifications.Clear();
+            }
+        }
+
+        private void UpdateSource(TSource source)
         {
             if (source != FSource)
             {
@@ -89,8 +112,8 @@ namespace VVVV.Utils.IO
                         .GetEnumerator();
             }
             if (FEnumerator != null && FEnumerator.MoveNext())
-                return FEnumerator.Current;
-            return Enumerable.Empty<TNotification>();
+                foreach (var item in FEnumerator.Current)
+                    FNotifications.Enqueue(item);
         }
 
         public void Dispose()
@@ -105,6 +128,7 @@ namespace VVVV.Utils.IO
                 FEnumerator.Dispose();
                 FEnumerator = null;
             }
+            FNotifications.Clear();
         }
     }
 }

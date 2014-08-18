@@ -10,6 +10,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Forms;
+using VVVV.Core.Logging;
 using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using VVVV.Hosting.Pins.Input;
@@ -468,6 +469,7 @@ namespace VVVV.Nodes.Input
         public ISpread<ISpread<MouseNotificationKind>> EventTypeIn;
         public ISpread<ISpread<Vector2D>> PositionIn;
         public ISpread<ISpread<int>> MouseWheelIn;
+        public ISpread<ISpread<int>> ClickCountIn;
         public ISpread<ISpread<bool>> LeftButtonIn;
         public ISpread<ISpread<bool>> MiddleButtonIn;
         public ISpread<ISpread<bool>> RightButtonIn;
@@ -485,6 +487,7 @@ namespace VVVV.Nodes.Input
             EventTypeIn = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new InputAttribute("Event Type"));
             PositionIn = BinSizePin.CreateBinSizeSpread<Vector2D>(new InputAttribute("Position"));
             MouseWheelIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Mouse Wheel Delta"));
+            ClickCountIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Click Count") { DefaultValue = 1, MinValue = 1 });
             LeftButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Left Button"));
             MiddleButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Middle Button"));
             RightButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Right Button"));
@@ -528,6 +531,9 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseWheel:
                             notification = new MouseWheelNotification(position, FClientArea, MouseWheelIn[bin][i]);
                             break;
+                        case MouseNotificationKind.MouseClick:
+                            notification = new MouseClickNotification(position, FClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1));
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -569,6 +575,7 @@ namespace VVVV.Nodes.Input
         public ISpread<ISpread<MouseNotificationKind>> EventTypeOut;
         public ISpread<ISpread<Vector2D>> PositionOut;
         public ISpread<ISpread<int>> MouseWheelDeltaOut;
+        public ISpread<ISpread<int>> ClickCountOut;
         public ISpread<ISpread<bool>> LeftButtonOut;
         public ISpread<ISpread<bool>> MiddleButtonOut;
         public ISpread<ISpread<bool>> RightButtonOut;
@@ -587,6 +594,7 @@ namespace VVVV.Nodes.Input
             EventTypeOut = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new OutputAttribute("Event Type"));
             PositionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position"));
             MouseWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Mouse Wheel Delta"));
+            ClickCountOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Click Count"));
             LeftButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Left Button"));
             MiddleButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Middle Button"));
             RightButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Right Button"));
@@ -631,6 +639,7 @@ namespace VVVV.Nodes.Input
             EventTypeOut.SliceCount = spreadMax;
             PositionOut.SliceCount = spreadMax;
             MouseWheelDeltaOut.SliceCount = spreadMax;
+            ClickCountOut.SliceCount = spreadMax;
             LeftButtonOut.SliceCount = spreadMax;
             MiddleButtonOut.SliceCount = spreadMax;
             RightButtonOut.SliceCount = spreadMax;
@@ -655,6 +664,7 @@ namespace VVVV.Nodes.Input
                 EventTypeOut[bin].SliceCount = notifications.Count;
                 PositionOut[bin].SliceCount = notifications.Count;
                 MouseWheelDeltaOut[bin].SliceCount = notifications.Count;
+                ClickCountOut[bin].SliceCount = notifications.Count;
                 LeftButtonOut[bin].SliceCount = notifications.Count;
                 MiddleButtonOut[bin].SliceCount = notifications.Count;
                 RightButtonOut[bin].SliceCount = notifications.Count;
@@ -674,6 +684,7 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseUp:
                             var mouseButton = n as MouseButtonNotification;
                             MouseWheelDeltaOut[bin][i] = 0;
+                            ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Left) > 0;
                             MiddleButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Middle) > 0;
                             RightButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Right) > 0;
@@ -682,6 +693,7 @@ namespace VVVV.Nodes.Input
                             break;
                         case MouseNotificationKind.MouseMove:
                             MouseWheelDeltaOut[bin][i] = 0;
+                            ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = false;
                             MiddleButtonOut[bin][i] = false;
                             RightButtonOut[bin][i] = false;
@@ -691,11 +703,22 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseWheel:
                             var mouseWheel = n as MouseWheelNotification;
                             MouseWheelDeltaOut[bin][i] = mouseWheel.WheelDelta;
+                            ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = false;
                             MiddleButtonOut[bin][i] = false;
                             RightButtonOut[bin][i] = false;
                             X1ButtonOut[bin][i] = false;
                             X2ButtonOut[bin][i] = false;
+                            break;
+                        case MouseNotificationKind.MouseClick:
+                            var mouseClick = n as MouseClickNotification;
+                            MouseWheelDeltaOut[bin][i] = 0;
+                            ClickCountOut[bin][i] = mouseClick.ClickCount;
+                            LeftButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.Left) > 0;
+                            MiddleButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.Middle) > 0;
+                            RightButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.Right) > 0;
+                            X1ButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.XButton1) > 0;
+                            X2ButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.XButton2) > 0;
                             break;
                         default:
                             throw new NotImplementedException();
@@ -774,9 +797,9 @@ namespace VVVV.Nodes.Input
 
             for (int i = 0; i < spreadMax; i++)
             {
-                var notifications = FSubscriptions[i].Update(MouseIn[i]);
-                if (QueueModeIn[i] == QueueMode.Discard)
-                    notifications = notifications.TakeLast(1);
+                var notifications = QueueModeIn[i] == QueueMode.Discard
+                    ? FSubscriptions[i].ConsumeAll(MouseIn[i])
+                    : FSubscriptions[i].ConsumeNext(MouseIn[i]);
                 foreach (var n in notifications)
                 {
                     switch (n.Kind)
@@ -948,5 +971,125 @@ namespace VVVV.Nodes.Input
         }
 
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
+    }
+
+    [PluginInfo(
+        Name = "MouseMatch", 
+        Category = "Mouse",
+        Help = "Detects certain mouse events like down/up/click",
+        AutoEvaluate = true, 
+        Tags = "doubleclick")]
+    public class DetectMouseNode : IPluginEvaluate
+    {
+        [Input("Mouse")]
+        public ISpread<Mouse> MouseIn;
+
+        [Input("Event Type", DefaultEnumEntry = "MouseClick")]
+        public ISpread<MouseNotificationKind> EventTypeIn;
+
+        [Input("Button", DefaultEnumEntry = "Left")]
+        public ISpread<MouseButtons> ButtonIn;
+
+        [Input("Wheel Delta")]
+        public ISpread<int> WheelDeltaIn;
+
+        [Input("Click Count", DefaultValue = 1)]
+        public ISpread<int> ClickCountIn;
+
+        [Output("Detected", IsBang = true)]
+        public ISpread<bool> DetectedOut;
+
+        [Output("Position")]
+        public ISpread<Vector2D> PositionOut;
+
+        [Import]
+        public ILogger FLogger;
+
+        private readonly Spread<Subscription2<Mouse, MouseNotification>> Subscriptions = new Spread<Subscription2<Mouse, MouseNotification>>();
+
+        public void Evaluate(int spreadMax)
+        {
+            Subscriptions.ResizeAndDispose(
+                spreadMax,
+                () => new Subscription2<Mouse, MouseNotification>(mouse => mouse.MouseNotifications));
+
+            DetectedOut.SliceCount = spreadMax;
+            PositionOut.SliceCount = spreadMax;
+
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var detectedNotification = Subscriptions[i].ConsumeAll(MouseIn[i])
+                    .Where(n => n.Kind == EventTypeIn[i])
+                    .FirstOrDefault(n =>
+                        {
+                            switch (EventTypeIn[i])
+                            {
+                                case MouseNotificationKind.MouseClick:
+                                    var mouseClick = n as MouseClickNotification;
+                                    return mouseClick.Buttons == ButtonIn[i] && mouseClick.ClickCount == ClickCountIn[i];
+                                case MouseNotificationKind.MouseDown:
+                                case MouseNotificationKind.MouseUp:
+                                    var mouseButton = n as MouseButtonNotification;
+                                    return mouseButton.Buttons == ButtonIn[i];
+                                case MouseNotificationKind.MouseWheel:
+                                    var mouseWheel = n as MouseWheelNotification;
+                                    return mouseWheel.WheelDelta == WheelDeltaIn[i];
+                            }
+                            // Mouse move
+                            return true;
+                        });
+                if (detectedNotification != null)
+                {
+                    DetectedOut[i] = true;
+                    var position = new Vector2D(detectedNotification.Position.X, detectedNotification.Position.Y);
+                    var clientArea = new Vector2D(detectedNotification.ClientArea.Width - 1, detectedNotification.ClientArea.Height - 1);
+                    PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                }
+                else
+                {
+                    DetectedOut[i] = false;
+                    PositionOut[i] = Vector2D.Zero;
+                }
+                //For debugging only
+                //foreach (var n in Subscriptions[i].ConsumeAll(MouseIn[i]).OfType<MouseClickNotification>())
+                //{
+                //    var s = string.Empty;
+                //    if (n.ClickCount == 2)
+                //        s = " double";
+                //    else if (n.ClickCount == 3)
+                //        s = " triple";
+                //    else if (n.ClickCount == 4)
+                //        s = " quadtruple";
+                //    FLogger.Log(LogType.Message, "{0}{1} click at position {2}.", n.Buttons, s, n.Position);
+                //}
+            }
+        }
+    }
+
+    [PluginInfo(
+        Name = "Merge",
+        Category = "Mouse",
+        Help = "Merges different mouse devices into one.",
+        AutoEvaluate = true)]
+    public class MergeMouseNode : IPluginEvaluate
+    {
+        [Input("Mouse", IsPinGroup = true)]
+        public IDiffSpread<ISpread<Mouse>> MiceIn;
+
+        [Output("Mouse")]
+        public ISpread<Mouse> MouseOut;
+
+        public void Evaluate(int spreadMax)
+        {
+            if (!MiceIn.IsChanged)
+                return;
+
+            MouseOut.SliceCount = MiceIn.GetMaxSliceCount();
+            for (int i = 0; i < MouseOut.SliceCount; i++)
+            {
+                var mice = MiceIn.Select((ms, j) => ms.SliceCount > 0 ? ms[j] ?? Mouse.Empty : Mouse.Empty);
+                MouseOut[i] = new Mouse(Observable.Merge(mice.Select(m => m.MouseNotifications)), false);
+            }
+        }
     }
 }

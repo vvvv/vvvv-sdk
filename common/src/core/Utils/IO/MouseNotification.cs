@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -12,7 +14,8 @@ namespace VVVV.Utils.IO
         MouseDown,
         MouseUp,
         MouseMove,
-        MouseWheel
+        MouseWheel,
+        MouseClick
     }
 
     public abstract class MouseNotification
@@ -25,6 +28,23 @@ namespace VVVV.Utils.IO
             Kind = kind;
             Position = position;
             ClientArea = clientArea;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, this))
+                return true;
+            var n = obj as MouseNotification;
+            if (n != null)
+                return n.Kind == Kind && 
+                       n.Position == Position && 
+                       n.ClientArea == ClientArea;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Kind.GetHashCode() ^ Position.GetHashCode() ^ ClientArea.GetHashCode();
         }
     }
 
@@ -44,6 +64,22 @@ namespace VVVV.Utils.IO
         {
             Buttons = buttons;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                var n = obj as MouseButtonNotification;
+                if (n != null)
+                    return n.Buttons == Buttons;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ Buttons.GetHashCode();
+        }
     }
 
     public class MouseDownNotification : MouseButtonNotification
@@ -62,6 +98,32 @@ namespace VVVV.Utils.IO
         }
     }
 
+    public class MouseClickNotification : MouseButtonNotification
+    {
+        public readonly int ClickCount;
+        public MouseClickNotification(Point position, Size clientArea, MouseButtons buttons, int clickCount)
+            : base(MouseNotificationKind.MouseClick, position, clientArea, buttons)
+        {
+            ClickCount = clickCount;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                var n = obj as MouseClickNotification;
+                if (n != null)
+                    return n.ClickCount == ClickCount;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ ClickCount.GetHashCode();
+        }
+    }
+
     public class MouseWheelNotification : MouseNotification
     {
         public readonly int WheelDelta;
@@ -70,6 +132,22 @@ namespace VVVV.Utils.IO
             : base(MouseNotificationKind.MouseWheel, position, clientArea)
         {
             WheelDelta = wheelDelta;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                var n = obj as MouseWheelNotification;
+                if (n != null)
+                    return n.WheelDelta == WheelDelta;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ WheelDelta.GetHashCode();
         }
     }
 }

@@ -36,17 +36,20 @@ namespace VVVV.Nodes
 
         [Input("Position", IsSingle = true)]
         ISpread<double> FTime;
+        
+        [Input("Seek Threshold", DefaultValue = 1, IsSingle = true)]
+        ISpread<double> FSeekThreshold;
 
         [Input("Fine Offset (ms)", IsSingle = true)]
         ISpread<int> FFineOffset;
 
         [Input("Is Client", IsSingle = true, Visibility = PinVisibility.OnlyInspector)]
-        ISpread<bool> FIsClient;
+        ISpread<bool> FIsLocalClient;
 
         [Input("Server IP", DefaultString = "127.0.0.1", IsSingle = true, StringType = StringType.IP, Visibility = PinVisibility.OnlyInspector)]
         ISpread<string> FServerIP;
 
-        [Input("Port", DefaultValue = 3336, IsSingle = true)]
+        [Input("Port", DefaultValue = 3336)]
         IDiffSpread<int> FPort;
 
         [Output("Do Seek")]
@@ -77,7 +80,7 @@ namespace VVVV.Nodes
         double FHalfRoundTripDelay;
         int FFrameCounter;
         IIRFilter FStreamDiffFilter;
-        UDPServer FServer;
+        Spread<UDPServer> FServer;
         IPEndPoint FRemoteServer;
         Timer FTimer;
         #endregion fields & pins
@@ -87,38 +90,55 @@ namespace VVVV.Nodes
             FStreamDiffFilter.Value = 0;
             FStreamDiffFilter.Thresh = 1;
             FStreamDiffFilter.Alpha = 0.95;
+            FServer = new Spread<UDPServer>(0);
+            FTimer = new Timer(500);
+            FTimer.Elapsed += FTimer_Elapsed;
+            FTimer.Start();
         }
 
+        //request video time
         void FTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            //request sync data
-            FServer.Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
-            FRequestSentTimeStamp = FHost.RealTime;
+            if(FIsLocalClient[0] || FHost.IsBoygroupClient)
+            {
+                //request sync data
+                FRequestSentTimeStamp = FHost.RealTime;
+                FServer[0].Send(Encoding.ASCII.GetBytes("videosync"), FRemoteServer);
+            }
+        }
+        
+        UDPServer CreateServer(int slice)
+        {
+            var server = (FIsLocalClient[0] || FHost.IsBoygroupClient) ? new UDPServer(FPort[slice] + 1) : new UDPServer(FPort[slice]);
+            server.MessageReceived += FServer_MessageReceived;
+            server.Start();
+            return server;
         }
 
+        void DeleteServer(UDPServer server)
+        {
+            server.MessageReceived -= FServer_MessageReceived;
+            server.Close();
+            server = null;
+        }
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
+            var isClient = FIsLocalClient[0] || FHost.IsBoygroupClient;
+            
             //set server and port
             if (FPort.IsChanged)
             {
-                if (FServer == null)
+                FServer.Resize(FPort.SliceCount, CreateServer, DeleteServer);
+                 
+                for (int i = 0; i < FServer.SliceCount; i++) 
                 {
-                    FServer = (FIsClient[0] || FHost.IsBoygroupClient) ? new UDPServer(FPort[0] + 1) : new UDPServer(FPort[0]);
-                    FServer.MessageReceived += FServer_MessageReceived;
-                    FServer.Start();
-                    FTimer = new Timer(50);
-                    FTimer.Elapsed += FTimer_Elapsed;
-                    FTimer.Start();
-                }
-                else
-                {
-                    FServer.Port = (FIsClient[0] || FHost.IsBoygroupClient) ? FPort[0] + 1 : FPort[0];
-                }
+                    FServer[i].Port = isClient ? FPort[i] + 1 : FPort[i];
+                }                
 
-                if (FIsClient[0] || FHost.IsBoygroupClient)
-                    FRemoteServer = new IPEndPoint(IPAddress.Parse(FIsClient[0] ? FServerIP[0] : FHost.BoygroupServerIP), FPort[0]);
+                if (isClient) // store the time server
+                    FRemoteServer = new IPEndPoint(IPAddress.Parse(FIsLocalClient[0] ? FServerIP[0] : FHost.BoygroupServerIP), FPort[0]);
             }
 
             //read stream time
@@ -129,7 +149,7 @@ namespace VVVV.Nodes
             }
 
             //do the evaluation for client or server
-            if (FIsClient[0] || FHost.IsBoygroupClient)
+            if (isClient)
             {
                 ClientEvaluate();
             }
@@ -142,7 +162,8 @@ namespace VVVV.Nodes
         //respond to udp message
         void FServer_MessageReceived(object sender, UDPReceivedEventArgs e)
         {
-            if (FIsClient[0] || FHost.IsBoygroupClient)
+            var server = (UDPServer)sender;
+            if (FIsLocalClient[0] || FHost.IsBoygroupClient)
             {
                 ReceiveServerAnswer(e.Data);
             }
@@ -154,7 +175,7 @@ namespace VVVV.Nodes
                     {
                         stream.Write(BitConverter.GetBytes(FStreamTime), 0, 8);
                         stream.Write(BitConverter.GetBytes(FTimeStamp), 0, 8);
-                        FServer.Send(stream.ToArray(), e.RemoteSender);
+                        server.Send(stream.ToArray(), e.RemoteSender);
                     }
 
                     //FLogger.Log(LogType.Debug, FStreamTime.ToString() + ";" + FHost.RealTime.ToString());
@@ -178,10 +199,10 @@ namespace VVVV.Nodes
             var fCount = 5;
             lock (FLock)
             {
-                var offset = FIsClient[0] ? FHalfRoundTripDelay : FTimeStamp - FReceivedTimeStamp;
+                var offset = FIsLocalClient[0] ? FHalfRoundTripDelay : FTimeStamp - FReceivedTimeStamp;
                 var streamDiff = FReceivedStreamTime - FStreamTime + offset + FFineOffset[0] * 0.001;
                 streamDiff = Math.Abs(streamDiff) > FLength[0] * 0.5 ? streamDiff - FLength[0] * Math.Sign(streamDiff) : streamDiff;
-                var doSeek = Math.Abs(streamDiff) > 1;
+                var doSeek = Math.Abs(streamDiff) > FSeekThreshold[0];
 
                 FStreamDiffFilter.Update(streamDiff);
 
@@ -214,9 +235,9 @@ namespace VVVV.Nodes
         {
             if (FServer != null)
             {
-                FServer.MessageReceived -= FServer_MessageReceived;
-                FServer.Close();
-                FServer = null;
+                foreach (var server in FServer) {
+                    DeleteServer(server);
+                }
             }
 
             if (FTimer != null)

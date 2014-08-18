@@ -6,7 +6,7 @@ namespace VVVV.Nodes.Finder
     class ModuleNodeView : NodeView
     {
         public ModuleNodeView(NodeView parentNodeView, INode2 node, NodeFilter filter, int depth)
-            : base(parentNodeView, node, filter, depth)
+            : base(parentNodeView, node, filter, depth, false)
         {
         }
         

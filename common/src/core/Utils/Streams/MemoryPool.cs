@@ -7,13 +7,25 @@ namespace VVVV.Utils.Streams
     [ComVisible(false)]
 	public static class MemoryPool<T>
 	{
-        public class Buffer : IDisposable
+        public struct Buffer : IDisposable
         {
-            public readonly T[] Array;
+            private readonly T[] Array;
 
             public Buffer(T[] array)
             {
                 this.Array = array;
+            }
+
+            public int Length { get { return Array.Length; } }
+
+            public T this[int i]
+            {
+                get { return Array[i]; }
+            }
+
+            public static implicit operator T[](Buffer buffer)
+            {
+                return buffer.Array;
             }
             
             public void Dispose()
