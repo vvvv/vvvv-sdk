@@ -192,7 +192,12 @@ namespace VVVV.Nodes.ImagePlayer
                 int maxCount = 1;
                 for (int i = 0; i < files.Length; i++)
                 {
-                    files[i] = System.IO.Directory.GetFiles(directories[i], filemasks[i]).OrderBy(f => f).ToSpread();
+                    var directoryInfo = new DirectoryInfo(directories[i]);
+                    files[i] = directoryInfo.EnumerateFiles(filemasks[i])
+                        .Where(f => !f.Attributes.HasFlag(FileAttributes.Hidden))
+                        .OrderBy(f => f.Name)
+                        .Select(f => f.FullName)
+                        .ToSpread();
                     maxCount = maxCount.CombineWith(files[i]);
                 }
                 var result = new string[files.Length * maxCount];

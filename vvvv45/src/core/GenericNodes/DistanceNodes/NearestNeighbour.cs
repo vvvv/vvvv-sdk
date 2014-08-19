@@ -17,11 +17,15 @@ namespace VVVV.Nodes.Generic
         [Output("Nearest Index")]
         protected ISpread<int> FOutput;
 
+        [Output("Distance")]
+        protected ISpread<double> FOutDistance;
+
         public void Evaluate(int SpreadMax)
         {
-            if (SpreadMax > 1)
+            if (SpreadMax >= 1)
             {
                 this.FOutput.SliceCount = this.FInput.SliceCount;
+                this.FOutDistance.SliceCount = this.FInput.SliceCount;
 
                 for (int i = 0; i < this.FInput.SliceCount; i++)
                 {
@@ -45,11 +49,13 @@ namespace VVVV.Nodes.Generic
                         }
                     }
                     this.FOutput[i] = minidx;
+                    this.FOutDistance[i] = dblmin;
                 }
             }
             else
             {
                 this.FOutput.SliceCount = 0;
+                this.FOutDistance.SliceCount = 0;
             }
         }
 
