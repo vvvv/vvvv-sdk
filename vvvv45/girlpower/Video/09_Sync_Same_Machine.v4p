@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\09_Sync_Same_Machine.v4p" systemname="09_Sync_MultipleVideos_SameMachine" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\09_Sync_MultipleVideos_SameMachine.v4p">
-   <BOUNDS type="Window" left="750" top="900" width="19380" height="10740">
+   <BOUNDS type="Window" left="750" top="900" width="19380" height="11340">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -185,9 +185,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="80" systemname="IOBox (String)">
    <BOUNDS type="Node" left="855" top="3105" width="16155" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="855" top="3105" width="3945" height="6840">
+   <BOUNDS type="Box" left="855" top="3105" width="3975" height="6960">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (DShow9 Local Master) is a drop-in replacement for the usual FileStream (DShow9) node. Its special power is to inform all slaves about its position of the playhead.&cr;&lf;&cr;&lf;It has an additional pin &apos;Master Port&apos; (which must be set for all slaves). &cr;&lf;&cr;&lf;There can be only one master sitting on a particular port. This can be the reason for the node to turn red.&cr;&lf;&cr;&lf;The FileStream (Dhow9 Local Slave) plays its video, listens to a master (defined via the &apos;Master Port&apos; pin) and tries to play in sync with it. There can be as many slaves for the particular master as you wish.&cr;&lf;&cr;&lf;Try to stop one of the slaves and then start it again to see the sync in action.&cr;&lf;&cr;&lf;The &apos;Fine Offset&apos; pin defines a constant offset (in ms) for the stream. This value should be adjusted manually for every particular setup. Try to set this back to 0 to see what&apos;s happening.&cr;&lf;&cr;&lf;&cr;&lf;Behind the scenes every slave sends its port number to the master (it happens automagically via a TCP connection). The port number of the slave is the &apos;Port Offset&apos; pin plus the unique id of the slave. Normally you don&apos;t have to care about this at all. Only if you have a very special port configuration on your system, set the &apos;Port Offset&apos; pin to some known free range of ports on your system.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The FileStream (DShow9 Local Master) is a drop-in replacement for the usual FileStream (DShow9) node. Its special power is to inform all slaves about its position of the playhead.&cr;&lf;&cr;&lf;It has an additional pin &apos;Master Port&apos; (which must be set for all slaves). &cr;&lf;&cr;&lf;There can be only one master sitting on a particular port. This can be the reason for the node to turn red.&cr;&lf;&cr;&lf;The FileStream (Dhow9 Local Slave) plays its video, listens to a master (defined via the &apos;Master Port&apos; pin) and tries to play in sync with it. There can be as many slaves for the particular master as you wish.&cr;&lf;&cr;&lf;Try to stop one of the slaves and then start it again to see the sync in action.&cr;&lf;&cr;&lf;If you observe a lag between the master and the slaves use the &apos;Fine Offset&apos; pins on the slaves to compensate this with a constant offset. &cr;&lf;&cr;&lf;&cr;&lf;Port Offset: Normally you don&apos;t have to care about this at all. Only if you have a very special port configuration on your system, set the &apos;Port Offset&apos; pin to some known free range of ports.&cr;&lf;Explanation: Behind the scenes every slave sends its port number to the master (it happens automagically via a TCP connection). The port number of the slave is the &apos;Port Offset&apos; pin plus the unique id of the slave. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -234,20 +234,6 @@
    <BOUNDS type="Box" left="7875" top="2505" width="555" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="7875" top="2505" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4440">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="123" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="16890" top="2505" width="510" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="16890" top="2505" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4440">
    </PIN>
@@ -359,9 +345,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="134" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11850" top="2505" width="510" height="240">
+   <BOUNDS type="Box" left="14685" top="1245" width="510" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="11850" top="2505" width="0" height="0">
+   <BOUNDS type="Node" left="14685" top="1245" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4440">
    </PIN>
@@ -370,6 +356,8 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="133">
@@ -543,9 +531,13 @@
    </PIN>
    <PIN pinname="Port Offset" visible="1" slicecount="1" values="3000">
    </PIN>
+   <PIN pinname="Do Seek" visible="1" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS type="Window" left="11385" top="10425" width="15870" height="8040">
+   </BOUNDS>
+   <PIN pinname="Master Port" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="123" srcpinname="Y Output Value" dstnodeid="143" dstpinname="Master Port">
-   </LINK>
    <LINK srcnodeid="122" srcpinname="Output String" dstnodeid="143" dstpinname="Filename">
    </LINK>
    <LINK srcnodeid="143" srcpinname="Video" dstnodeid="114" dstpinname="Video">
@@ -647,41 +639,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="151" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11115" top="2505" width="450" height="240">
+   <BOUNDS type="Box" left="13635" top="1230" width="450" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="11115" top="2505" width="0" height="0">
+   <BOUNDS type="Node" left="13635" top="1230" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="280">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="151" srcpinname="Y Output Value" dstnodeid="142" dstpinname="Fine Offset (ms)">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="152" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10905" top="2235" width="885" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10905" top="2235" width="825" height="255">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Fine Offset|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="154" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="16125" top="2505" width="450" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="16125" top="2505" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="250">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -692,10 +654,12 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="153" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="15945" top="2235" width="885" height="270">
+   <LINK srcnodeid="151" srcpinname="Y Output Value" dstnodeid="142" dstpinname="Fine Offset (ms)">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="152" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13425" top="960" width="885" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="15945" top="2235" width="825" height="255">
+   <BOUNDS type="Box" left="13425" top="960" width="825" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Fine Offset|">
    </PIN>
@@ -706,12 +670,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="154" srcpinname="Y Output Value" dstnodeid="143" dstpinname="Fine Offset (ms)">
-   </LINK>
    <NODE componentmode="InABox" id="155" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="10650" top="2415" type="Node" width="315">
+   <BOUNDS height="270" left="13125" top="1095" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="10650" top="2415" type="Box" width="420">
+   <BOUNDS height="435" left="13125" top="1095" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -757,9 +719,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="159" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13005" top="2505" width="795" height="240">
+   <BOUNDS type="Box" left="16095" top="1200" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13005" top="2505" width="0" height="0">
+   <BOUNDS type="Node" left="16095" top="1200" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3000">
    </PIN>
@@ -775,9 +737,9 @@
    <LINK srcnodeid="159" srcpinname="Y Output Value" dstnodeid="142" dstpinname="Port Offset">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="160" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11745" top="2235" width="975" height="270">
+   <BOUNDS type="Node" left="14580" top="975" width="975" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11745" top="2235" width="930" height="255">
+   <BOUNDS type="Box" left="14580" top="975" width="930" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Master Port|">
    </PIN>
@@ -789,9 +751,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="161" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12975" top="2250" width="975" height="270">
+   <BOUNDS type="Node" left="16065" top="945" width="975" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="12975" top="2250" width="855" height="255">
+   <BOUNDS type="Box" left="16065" top="945" width="855" height="255">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Port Offset|">
    </PIN>
@@ -803,9 +765,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="163" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="435" top="8355" type="Node" width="315">
+   <BOUNDS height="270" left="435" top="8145" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="285" left="435" top="8355" type="Box" width="285">
+   <BOUNDS height="285" left="435" top="8145" type="Box" width="285">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="*">
    </PIN>
@@ -819,9 +781,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="164" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="12630" top="2385" type="Node" width="315">
+   <BOUNDS height="270" left="15720" top="1080" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="360" left="12630" top="2385" type="Box" width="300">
+   <BOUNDS height="360" left="15720" top="1080" type="Box" width="300">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="*">
    </PIN>
@@ -874,4 +836,8 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="151" srcpinname="Y Output Value" dstnodeid="143" dstpinname="Fine Offset (ms)">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Y Output Value" dstnodeid="143" dstpinname="Master Port">
+   </LINK>
    </PATCH>
