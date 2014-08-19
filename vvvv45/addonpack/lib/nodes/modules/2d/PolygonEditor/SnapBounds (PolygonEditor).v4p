@@ -1427,9 +1427,9 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="174">
-   <BOUNDS type="Node" left="26415" top="795" width="100" height="100">
+   <BOUNDS type="Node" left="26340" top="750" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="26415" top="795" width="480" height="480">
+   <BOUNDS type="Box" left="26340" top="750" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -1444,12 +1444,58 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
    </PIN>
    </NODE>
-   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="173" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="26445" y="18015">
-   </LINKPOINT>
-   <LINKPOINT x="8475" y="18015">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="84" srcpinname="Hits" dstnodeid="19" dstpinname="Select">
+   </LINK>
+   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="176">
+   <BOUNDS type="Node" left="27360" top="825" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="27360" top="825" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Keyboard">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="177">
+   <BOUNDS type="Node" left="27345" top="1935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="S" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="176" srcpinname="Output Node" dstnodeid="177" dstpinname="Keyboard">
+   </LINK>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="178">
+   <BOUNDS type="Node" left="27360" top="2310" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="177" srcpinname="S" dstnodeid="178" dstpinname="Input">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="179">
+   <BOUNDS type="Node" left="26325" top="3210" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="179" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="178" srcpinname="Output" dstnodeid="179" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="179" srcpinname="Output" dstnodeid="173" dstpinname="Switch" linkstyle="VHV">
+   <LINKPOINT x="26475" y="18050">
+   </LINKPOINT>
+   <LINKPOINT x="8355" y="18055">
+   </LINKPOINT>
    </LINK>
    </PATCH>

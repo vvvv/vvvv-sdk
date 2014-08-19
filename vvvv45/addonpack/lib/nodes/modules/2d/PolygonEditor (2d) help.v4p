@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
+   <BOUNDS type="Window" left="2085" top="1455" width="22935" height="9960">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -371,7 +371,7 @@
    <NODE id="457" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" height="270" left="420" top="2085" width="2580">
    </BOUNDS>
-   <BOUNDS type="Box" height="885" left="420" top="2085" width="5310">
+   <BOUNDS type="Box" height="885" left="420" top="2085" width="4590">
    </BOUNDS>
    <BOUNDS type="Window" height="160" left="1200" top="1200" width="215">
    </BOUNDS>
@@ -602,10 +602,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
+   <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="5445" top="3540" width="10965" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18180">
+   <BOUNDS type="Window" left="6480" top="930" width="21435" height="13185">
    </BOUNDS>
    <BOUNDS type="Box" left="12810" top="7725" width="4800" height="3600">
    </BOUNDS>
@@ -702,6 +702,8 @@
    <PIN pinname="Quantization" slicecount="1" values="0">
    </PIN>
    <PIN pinname="StepsizeXY" slicecount="2" values="0.02,0.02">
+   </PIN>
+   <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="399" srcpinname="Bang" dstnodeid="0" dstpinname="Initialize">
@@ -827,9 +829,9 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InABox" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Node" left="8850" top="4530" width="1620" height="270">
+   <BOUNDS type="Node" left="8850" top="4350" width="1620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8850" top="4530" width="12015" height="8190">
+   <BOUNDS type="Box" left="8850" top="4350" width="7200" height="4830">
    </BOUNDS>
    <BOUNDS type="Window" left="20415" top="630" width="7965" height="7425">
    </BOUNDS>
@@ -969,6 +971,8 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="509" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Vertex Bin Size">
    </LINK>
@@ -1019,11 +1023,11 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="513" srcpinname="Layer" dstnodeid="8" dstpinname="Layers" linkstyle="PolyLine">
-   <LINKPOINT x="5790" y="5700">
+   <LINKPOINT x="5790" y="5656">
    </LINKPOINT>
-   <LINKPOINT x="6975" y="5985">
+   <LINKPOINT x="6975" y="5896">
    </LINKPOINT>
-   <LINKPOINT x="8100" y="5415">
+   <LINKPOINT x="8100" y="5279">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="VHV">
@@ -1041,7 +1045,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="420" top="5925" width="3375" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Press and hold        to disable vertex snapping|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Press and hold        to disable snapping|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1089,7 +1093,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5445" top="4335" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="9465" top="3135" width="19170" height="10680">
+   <BOUNDS type="Window" left="4860" top="2775" width="15990" height="9330">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1107,5 +1111,29 @@
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 1">
+   </LINK>
+   <NODE systemname="Polygon (PolygonEditor Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Join).v4p" nodename="Polygon (PolygonEditor Join)" componentmode="Hidden" id="523">
+   <BOUNDS type="Node" left="5460" top="2715" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Tagged" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="VerticesXY" slicecount="2" visible="1" values="0,0">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Z-Index" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS type="Window" left="7635" top="1545" width="17700" height="10935">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="523" srcpinname="Output" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="XY" dstnodeid="523" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="509" srcpinname="Y Output Value" dstnodeid="523" dstpinname="Vertex Bin Size">
    </LINK>
    </PATCH>
