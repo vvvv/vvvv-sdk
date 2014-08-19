@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor).v4p" systemname="CircumRectangleResize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\CircumRectangleResize.v4p">
-   <BOUNDS type="Window" left="1605" top="975" width="24510" height="14085">
+   <BOUNDS type="Window" left="-29100" top="45" width="26205" height="13725">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -624,16 +624,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="213">
-   <BOUNDS type="Node" left="16935" top="24330" width="810" height="270">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Cursor Type|">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="217" systemname="IOBox (Enumerations)">
@@ -1272,8 +1262,6 @@
    </NODE>
    <LINK srcnodeid="350" srcpinname="Y Output Value" dstnodeid="349" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="213" srcpinname="Enum" dstnodeid="217" dstpinname="Input Enum">
-   </LINK>
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="353">
    <BOUNDS type="Node" left="10050" top="15345" width="100" height="100">
    </BOUNDS>
@@ -1528,8 +1516,6 @@
    </NODE>
    <LINK srcnodeid="400" srcpinname="Inverse Output" dstnodeid="356" dstpinname="Input 3">
    </LINK>
-   <LINK srcnodeid="205" srcpinname="Output" dstnodeid="213" dstpinname="Ord Value">
-   </LINK>
    <LINK srcnodeid="333" srcpinname="Output 1" dstnodeid="69" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="333" srcpinname="Output 2" dstnodeid="70" dstpinname="Input">
@@ -1606,4 +1592,36 @@
    <LINKPOINT x="14070" y="12735">
    </LINKPOINT>
    </LINK>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="424">
+   <BOUNDS type="Node" left="16155" top="24960" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="425">
+   <BOUNDS type="Node" left="16935" top="24330" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="425" srcpinname="Enum" dstnodeid="217" dstpinname="Input Enum">
+   </LINK>
+   <LINK srcnodeid="205" srcpinname="Output" dstnodeid="425" dstpinname="Ord Value">
+   </LINK>
+   <LINK srcnodeid="425" srcpinname="Enum" dstnodeid="424" dstpinname="Receive">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="426" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14940" top="24600" width="1695" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14940" top="24600" width="1695" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Put cursor enum here|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
