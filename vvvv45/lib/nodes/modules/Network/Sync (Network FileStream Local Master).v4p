@@ -1,10 +1,10 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha32.2_x86\lib\nodes\modules\Network\Sync (Local FileStream Master).v4p" systemname="Sync (Local FileStream Master)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Network\Sync (Local FileStream Master).v4p">
-   <BOUNDS type="Window" left="1500" top="6375" width="8925" height="7020">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Network\Sync (Network FileStream Local Master).v4p" systemname="Sync (Network FileStream Local Master)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Network\Sync (Network FileStream Local Master).v4p">
+   <BOUNDS type="Window" left="630" top="2865" width="8925" height="7020">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5145" top="405" width="495" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="5145" top="405" width="0" height="0">
@@ -31,11 +31,13 @@
    </BOUNDS>
    <PIN pinname="Port" visible="1">
    </PIN>
+   <PIN pinname="Seek Threshold" visible="1">
+   </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="55" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="1845" top="405" width="660" height="240">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="55" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="810" top="405" width="660" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1845" top="405" width="0" height="0">
+   <BOUNDS type="Node" left="810" top="405" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -52,10 +54,10 @@
    </NODE>
    <LINK srcnodeid="55" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Duration">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="56" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="2715" top="405" width="660" height="240">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="56" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1680" top="405" width="660" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2715" top="405" width="0" height="0">
+   <BOUNDS type="Node" left="1680" top="405" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -72,7 +74,7 @@
    </NODE>
    <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Position">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="57" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="57" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3675" top="405" width="660" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="3675" top="405" width="0" height="0">
@@ -94,7 +96,7 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Fine Offset (ms)">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="58" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="58" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="795" top="4665" width="480" height="480">
    </BOUNDS>
    <BOUNDS type="Node" left="795" top="4665" width="0" height="0">
@@ -116,7 +118,7 @@
    </NODE>
    <LINK srcnodeid="53" srcpinname="Do Seek" dstnodeid="58" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1560" top="4665" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="1560" top="4665" width="0" height="0">
@@ -134,7 +136,7 @@
    </NODE>
    <LINK srcnodeid="53" srcpinname="Seek Position" dstnodeid="59" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="60" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="60" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2700" top="4665" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="2700" top="4665" width="0" height="0">
@@ -152,7 +154,7 @@
    </NODE>
    <LINK srcnodeid="53" srcpinname="Adjust System Time" dstnodeid="60" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4245" top="4665" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="4245" top="4665" width="0" height="0">
@@ -170,7 +172,7 @@
    </NODE>
    <LINK srcnodeid="53" srcpinname="Offset" dstnodeid="61" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBOX (VALUE ADVANCED)">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5250" top="4665" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="5250" top="4665" width="0" height="0">
@@ -245,5 +247,21 @@
    <INFO author="" description="Syncronizes a FileStream node locally. Master." tags="">
    </INFO>
    <LINK srcnodeid="81" srcpinname="Output" dstnodeid="53" dstpinname="Port">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="92" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2490" top="405" width="615" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2490" top="405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Seek Threshold|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="92" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Seek Threshold">
    </LINK>
    </PATCH>

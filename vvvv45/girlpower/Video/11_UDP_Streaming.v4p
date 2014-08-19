@@ -143,9 +143,9 @@
    <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Remote Port">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="13530" top="1725" width="795" height="240">
+   <BOUNDS type="Box" left="13530" top="1260" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13530" top="1725" width="0" height="0">
+   <BOUNDS type="Node" left="13530" top="1260" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="4441">
    </PIN>
@@ -161,7 +161,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="13350" top="4275" width="100" height="100">
+   <BOUNDS type="Node" left="13350" top="3360" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
@@ -169,9 +169,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="28">
-   <BOUNDS type="Node" left="13350" top="4890" width="100" height="100">
+   <BOUNDS type="Node" left="13350" top="3975" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="13350" top="4890" width="3510" height="2940">
+   <BOUNDS type="Box" left="13350" top="3975" width="3510" height="2940">
    </BOUNDS>
    <BOUNDS type="Window" left="16245" top="9600" width="6240" height="5010">
    </BOUNDS>
@@ -181,9 +181,9 @@
    <LINK srcnodeid="27" srcpinname="Layer" dstnodeid="28" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="13905" top="2070" width="795" height="240">
+   <BOUNDS type="Box" left="13905" top="1605" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13905" top="2070" width="0" height="0">
+   <BOUNDS type="Node" left="13905" top="1605" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="9984">
    </PIN>
@@ -208,7 +208,7 @@
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="31" dstpinname="Input">
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="31" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="Max (Value)" nodename="Max (Value)" componentmode="Hidden" id="32" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="7815" top="10455" width="100" height="100">
@@ -220,7 +220,7 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Count" dstnodeid="32" dstpinname="Input 1">
+   <LINK srcnodeid="31" srcpinname="Count" dstnodeid="32" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="33" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="7830" top="11115" width="100" height="100">
@@ -232,9 +232,9 @@
    <PIN pinname="Initialize" slicecount="1" visible="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="33" dstpinname="Input 1">
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="33" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Output 1" dstnodeid="32" dstpinname="Input 2" linkstyle="Bezier">
+   <LINK srcnodeid="33" srcpinname="Output 1" dstnodeid="32" dstpinname="Input 2" linkstyle="Bezier" hiddenwhenlocked="1">
    <LINKPOINT x="9465" y="12215">
    </LINKPOINT>
    <LINKPOINT x="9135" y="9820">
@@ -256,14 +256,14 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value">
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
    <NODE id="24" systemname="UDP (Network Server)" nodename="UDP (Network Server)" componentmode="Hidden">
-   <PIN pinname="Queue Mode" slicecount="1" values="Concatenate">
+   <PIN pinname="Queue Mode" slicecount="1" values="Discard">
    </PIN>
    <PIN pinname="Enable" slicecount="1" values="1">
    </PIN>
-   <BOUNDS type="Node" left="13365" top="2940" width="100" height="100">
+   <BOUNDS type="Node" left="13365" top="2025" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -293,16 +293,6 @@
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Width">
    </LINK>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Height">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="41" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="14055" top="2400" width="1005" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="14055" top="2400" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="Concatenate">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="41" srcpinname="Output Enum" dstnodeid="24" dstpinname="Queue Mode">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="42" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="9810" top="8580" width="570" height="240">
@@ -532,7 +522,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="79" systemname="IOBox (Value Advanced)" hiddenwhenlocked="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="79" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
    <BOUNDS type="Box" left="8670" top="10545" width="480" height="480">
    </BOUNDS>
    <BOUNDS type="Node" left="8670" top="10545" width="0" height="0">
@@ -550,7 +540,7 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Initialize">
+   <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Initialize" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="80" systemname="IOBox (String)" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="6315" top="11430" width="2280" height="270">
@@ -581,9 +571,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="82" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6555" top="255" width="480" height="270">
+   <BOUNDS type="Node" left="8505" top="555" width="480" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6555" top="255" width="960" height="390">
+   <BOUNDS type="Box" left="8505" top="555" width="960" height="390">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Send">
    </PIN>
@@ -597,9 +587,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="83" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="13410" top="315" width="480" height="270">
+   <BOUNDS type="Node" left="14010" top="615" width="480" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="13410" top="315" width="1260" height="405">
+   <BOUNDS type="Box" left="14010" top="615" width="1260" height="405">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Receive">
    </PIN>
@@ -613,9 +603,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="84" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="14775" top="2040" width="1020" height="270">
+   <BOUNDS type="Node" left="14775" top="1575" width="1020" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="14775" top="2040" width="1020" height="270">
+   <BOUNDS type="Box" left="14775" top="1575" width="1020" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Buffer Size|">
    </PIN>
@@ -853,9 +843,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="109" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="12885" top="2865" type="Node" width="315">
+   <BOUNDS height="270" left="12885" top="1950" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="12885" top="2865" type="Box" width="420">
+   <BOUNDS height="435" left="12885" top="1950" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -869,9 +859,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="110" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="12885" top="3510" type="Node" width="315">
+   <BOUNDS height="270" left="12885" top="2595" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="12885" top="3510" type="Box" width="420">
+   <BOUNDS height="435" left="12885" top="2595" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -885,7 +875,7 @@
    </PIN>
    </NODE>
    <NODE systemname="DynamicTexture (EX9.Texture Raw)" nodename="DynamicTexture (EX9.Texture Raw)" componentmode="Hidden" id="112">
-   <BOUNDS type="Node" left="13365" top="3570" width="100" height="100">
+   <BOUNDS type="Node" left="13365" top="2655" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
@@ -899,7 +889,7 @@
    </BOUNDS>
    <BOUNDS height="7410" left="585" top="2895" type="Box" width="3990">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example a Collada mesh is loaded and rendered with its textures.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the rendered image as a texture. Note, the &apos;Width&apos; and &apos;Height&apos; pins are hidden by default, to access them open the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After converting the texture into raw bytes of &apos;JPEG&apos; file format by the AsRaw (EX9.Texture), these bytes are sent over the network as UDP datagrams. &cr;&lf;&cr;&lf;The &apos;Remote Host&apos; and the &apos;Remote Port&apos; number of the UDP (Network Client) define the destination of the data packets.&cr;&lf;&cr;&lf;This is just a helper showing the length of the texture in bytes and the maximum length so far.&cr;&lf;&cr;&lf;The receiver patch (aka remote host) can be located somewhere in the network. Its UDP (Network Server) must have the &apos;Local Port&apos; pin set to the same value as the &apos;Remote Port&apos; of the sender.&cr;&lf;&cr;&lf;The &apos;Buffer Size&apos; pin must be set to some value bigger than the length of the texture in bytes (see Step 4).&cr;&lf;&cr;&lf;The DynamicTexture (EX9.Texture Raw) converts the raw bytes from the UDP packets into the texture. It automatically recognize the file format. Note, this node has the &apos;Width&apos; and &apos;Height&apos; hidden pins as well.&cr;&lf;&cr;&lf;The texture is the drawn to a FullscreenQuad and rendered.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example a Collada mesh is loaded and rendered with its textures.&cr;&lf;&cr;&lf;The DX9Texture (EX9.Texture) returns the rendered image as a texture. Note, the &apos;Width&apos; and &apos;Height&apos; pins are hidden by default, to access them open the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After converting the texture into raw bytes of &apos;JPEG&apos; file format by the AsRaw (EX9.Texture), these bytes are sent over the network as UDP datagrams. &cr;&lf;&cr;&lf;The &apos;Remote Host&apos; and the &apos;Remote Port&apos; number of the UDP (Network Client) define the destination of the data packets.&cr;&lf;&cr;&lf;This is just a helper showing the length of the texture in bytes and the maximum length so far.&cr;&lf;&cr;&lf;The receiver patch (aka remote host) can be located somewhere in the network. Its UDP (Network Server) must have the &apos;Local Port&apos; pin set to the same value as the &apos;Remote Port&apos; of the sender.&cr;&lf;&cr;&lf;The &apos;Buffer Size&apos; pin must be set to some value bigger than the length of the texture in bytes (see Step 4).&cr;&lf;&cr;&lf;The DynamicTexture (EX9.Texture Raw) converts the raw bytes from the UDP packets into the texture. It automatically recognize the file format. Note, this node has the &apos;Width&apos; and &apos;Height&apos; hidden pins as well.&cr;&lf;&cr;&lf;Finally the texture is drawn to a FullscreenQuad and rendered.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1014,7 +1004,7 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Count" dstnodeid="120" dstpinname="Y Input Value">
+   <LINK srcnodeid="31" srcpinname="Count" dstnodeid="120" dstpinname="Y Input Value" hiddenwhenlocked="1">
    </LINK>
    <NODE componentmode="InABox" id="121" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="135" top="6870" type="Node" width="315">
