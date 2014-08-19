@@ -1,15 +1,15 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\MoveVertex (PolygonEditor Keyboard).v4p" systemname="movePointKeyboard" filename="C:\Users\Domi\Documents\GitHub\dragCornersGitLocal\sub\movePointKeyboard.v4p">
-   <BOUNDS type="Window" left="3330" top="165" width="19140" height="15105">
+   <BOUNDS type="Window" left="3330" top="210" width="24015" height="15060">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="13755" top="3285" width="100" height="100">
+   <BOUNDS type="Node" left="13830" top="3210" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Key Match" slicecount="1" values="|UP, DOWN, RIGHT, LEFT|">
+   <PIN pinname="Key Match" slicecount="1" values="|UP, DOWN, RIGHT, LEFT, ShiftKey|">
    </PIN>
    <PIN pinname="Up" visible="1">
    </PIN>
@@ -20,6 +20,10 @@
    <PIN pinname="Left" visible="1">
    </PIN>
    <PIN pinname="Key Mode" slicecount="1" values="Press">
+   </PIN>
+   <PIN pinname="Shift" visible="1">
+   </PIN>
+   <PIN pinname="ShiftKey" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="5">
@@ -217,6 +221,8 @@
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="25" srcpinname="Output Node" dstnodeid="4" dstpinname="Keyboard" hiddenwhenlocked="1">
    </LINK>
@@ -391,7 +397,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="VerticesXY">
    </PIN>
@@ -417,7 +423,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
    </PIN>
@@ -491,9 +497,9 @@
    <LINK srcnodeid="49" srcpinname="Output" dstnodeid="47" dstpinname="Switch">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="15030" top="3210" width="5325" height="480">
+   <BOUNDS type="Node" left="18480" top="3375" width="5325" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="15030" top="3210" width="2145" height="1545">
+   <BOUNDS type="Box" left="18480" top="3375" width="2145" height="1545">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|RepeatedEvent option in KeyMatch node doesn&apos;t work for me, it always goes from 0 to 1 to 0 to .... &cr;&lf;also, it doesn&apos;t turn off when the key is released. have to patch it myself.|">
    </PIN>
@@ -640,8 +646,6 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="66" dstpinname="XY">
-   </LINK>
    <LINK srcnodeid="66" srcpinname="X" dstnodeid="8" dstpinname="Input 2" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="66" srcpinname="X" dstnodeid="13" dstpinname="Input 2" hiddenwhenlocked="1">
@@ -652,4 +656,54 @@
    </LINK>
    <PACK Name="imagepack" Version="0.1.0">
    </PACK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="15255" top="4665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="73" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="74">
+   <BOUNDS type="Node" left="16035" top="4440" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="75" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="16320" top="4125" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="16320" top="4125" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="74" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="74" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="74" srcpinname="Output" dstnodeid="73" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="ShiftKey" dstnodeid="73" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="73" srcpinname="Output" dstnodeid="66" dstpinname="XY">
+   </LINK>
    </PATCH>

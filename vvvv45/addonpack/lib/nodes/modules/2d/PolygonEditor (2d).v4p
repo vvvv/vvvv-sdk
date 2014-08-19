@@ -41,6 +41,10 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="47">
    <BOUNDS type="Node" left="2625" top="14970" width="1530" height="270">
@@ -85,6 +89,10 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="36">
    <BOUNDS type="Node" left="11595" top="930" width="100" height="100">
@@ -103,6 +111,10 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
    <BOUNDS type="Node" left="9855" top="930" width="100" height="100">
@@ -118,6 +130,10 @@
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="24">
@@ -136,6 +152,10 @@
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="19">
@@ -581,7 +601,7 @@
    </PIN>
    <PIN pinname="isSelected (vertex)" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="1875" top="615" width="24255" height="14505">
+   <BOUNDS type="Window" left="3045" top="1545" width="24255" height="14505">
    </BOUNDS>
    <PIN pinname="Enabled" visible="1">
    </PIN>
@@ -708,20 +728,6 @@
    <LINKPOINT x="7425" y="16440">
    </LINKPOINT>
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="14925" top="18870" width="15015" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="14925" top="18870" width="3450" height="1110">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is where &apos;Vertex Mouseover&apos; and &apos;Mouseover get added to the output, they are not in the FrameDelay Loop (as they have to be calculated every frame anyway). &apos;Sort&apos; also creates the Polygon ID for the output.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="37" srcpinname="VerticesXY" dstnodeid="20" dstpinname="VerticesXY">
    </LINK>
    <LINK srcnodeid="37" srcpinname="Vertex Tagged" dstnodeid="20" dstpinname="Vertex Tagged" hiddenwhenlocked="1">
@@ -866,6 +872,8 @@
    <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,1">
    </PIN>
    </NODE>
    <NODE systemname="Quantize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p" componentmode="Hidden" id="100" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p">
@@ -1044,10 +1052,10 @@
    </LINK>
    <LINK srcnodeid="91" srcpinname="Rotation" dstnodeid="109" dstpinname="Rotation">
    </LINK>
-   <LINK srcnodeid="109" srcpinname="Cursor Type" dstnodeid="93" dstpinname="Input Enum" linkstyle="Bezier">
-   <LINKPOINT x="15060" y="10585">
+   <LINK srcnodeid="109" srcpinname="Cursor Type" dstnodeid="93" dstpinname="Input Enum" linkstyle="PolyLine">
+   <LINKPOINT x="9375" y="7650">
    </LINKPOINT>
-   <LINKPOINT x="12330" y="14945">
+   <LINKPOINT x="12690" y="11745">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="109" dstpinname="Stepsize" linkstyle="VHV" hiddenwhenlocked="1">
@@ -1133,7 +1141,7 @@
    </PIN>
    <PIN pinname="Epsilon" visible="1">
    </PIN>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="VerticesXY" dstnodeid="111" dstpinname="VerticesXY">
@@ -1185,7 +1193,7 @@
    </PIN>
    <PIN pinname="Epsilon" visible="1">
    </PIN>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="20" srcpinname="VerticesXY" dstnodeid="112" dstpinname="VerticesXY">
@@ -1395,9 +1403,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="47" srcpinname="Output 1" dstnodeid="33" dstpinname="Input" linkstyle="Bezier">
-   <LINKPOINT x="795" y="14270">
+   <LINKPOINT x="15" y="16980">
    </LINKPOINT>
-   <LINKPOINT x="1560" y="2935">
+   <LINKPOINT x="1560" y="2940">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="33" srcpinname="VerticesXY" dstnodeid="31" dstpinname="VerticesXY">
@@ -1485,13 +1493,17 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="114">
-   <BOUNDS type="Node" left="1410" top="1065" width="100" height="100">
+   <BOUNDS type="Node" left="1485" top="1050" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1410" top="1065" width="795" height="240">
+   <BOUNDS type="Box" left="1485" top="1050" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="108" dstpinname="Input">

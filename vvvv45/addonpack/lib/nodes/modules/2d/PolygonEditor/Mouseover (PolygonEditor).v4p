@@ -339,7 +339,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="VerticesXY">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -365,7 +365,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="5" values="|Polygon Vertex Count|,|Polygon Vertex Count|,|Polygon Vertex Count|,|Polygon Vertex Count|,|Polygon Vertex Count|">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -391,7 +391,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="5" values="Z-Index,Z-Index,Z-Index,Z-Index,Z-Index">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -417,7 +417,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="5" values="|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|">
    </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
+   <PIN pinname="Pin Visibility" slicecount="1" values="False">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -449,28 +449,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="119" srcpinname="Output Node" dstnodeid="121" dstpinname="Mouse">
-   </LINK>
-   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="122">
-   <BOUNDS type="Node" left="16830" top="2295" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="16830" top="2295" width="795" height="480">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0,0">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="|0, 0|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="121" srcpinname="PositionXY" dstnodeid="122" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="123">
    <BOUNDS type="Node" left="7620" top="1350" width="100" height="100">
@@ -534,9 +512,7 @@
    <LINKPOINT x="12645" y="3780">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="116" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Shape Vertex Count" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="13" dstpinname="MouseXY" hiddenwhenlocked="1">
+   <LINK srcnodeid="116" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Vertex Bin Size" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="Bounds (Spectral)" nodename="Bounds (Spectral)" componentmode="Hidden" id="145">
    <BOUNDS type="Node" left="13665" top="4875" width="100" height="100">
@@ -756,8 +732,6 @@
    <LINKPOINT x="10170" y="4020">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="14" dstpinname="MouseXY" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="162" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="193" systemname="IOBox (Value Advanced)">
@@ -777,5 +751,15 @@
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="6" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="102" srcpinname="Output" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <LINK srcnodeid="121" srcpinname="PositionXY" dstnodeid="13" dstpinname="MouseXY" hiddenwhenlocked="1">
+   <LINKPOINT x="16845" y="2940">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="PositionXY" dstnodeid="14" dstpinname="MouseXY" hiddenwhenlocked="1">
+   <LINKPOINT x="16650" y="2865">
+   </LINKPOINT>
    </LINK>
    </PATCH>

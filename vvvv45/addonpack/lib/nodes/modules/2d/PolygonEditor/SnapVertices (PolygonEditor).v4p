@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor).v4p" systemname="snapVertices" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\snapVertices.v4p">
-   <BOUNDS type="Window" left="1875" top="615" width="24255" height="14505">
+   <BOUNDS type="Window" left="3045" top="990" width="24255" height="15060">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -689,12 +689,12 @@
    </PIN>
    <PIN pinname="Shape Index" visible="1">
    </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="119" srcpinname="Output" dstnodeid="138" dstpinname="Point Index" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="138" srcpinname="Shape Index" dstnodeid="140" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Shapes Vertex Count">
    </LINK>
    <NODE systemname="GetShapeIndex (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\GetShapeIndex (PolygonEditor).v4p" nodename="GetShapeIndex (PolygonEditor)" componentmode="Hidden" id="139">
    <BOUNDS type="Node" left="19410" top="7710" width="100" height="100">
@@ -707,12 +707,12 @@
    </PIN>
    <PIN pinname="Shape Index" visible="1">
    </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="139" dstpinname="Point Index" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="139" srcpinname="Shape Index" dstnodeid="140" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Shapes Vertex Count">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="177">
    <BOUNDS type="Node" left="18765" top="1770" width="100" height="100">
@@ -778,4 +778,8 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
+   <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Vertex Bin Size">
+   </LINK>
+   <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Vertex Bin Size">
+   </LINK>
    </PATCH>
