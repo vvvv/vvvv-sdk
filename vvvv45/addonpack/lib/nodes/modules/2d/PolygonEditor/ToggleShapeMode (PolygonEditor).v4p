@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\ToggleShapeMode (PolygonEditor).v4p" systemname="SelectShapes" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\SelectShapes.v4p">
-   <BOUNDS type="Window" left="3120" top="405" width="21615" height="15555">
+   <BOUNDS type="Window" left="6540" top="945" width="21615" height="15555">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -303,7 +303,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
+   <PIN pinname="Input Count" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Input 3" visible="1">
    </PIN>
@@ -344,32 +344,12 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="17" dstpinname="Switch">
    </LINK>
-   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="12420" top="9450" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="13" dstpinname="Input 3">
-   </LINK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="22">
    <BOUNDS type="Node" left="13800" top="1650" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="13800" top="1650" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
-   </PIN>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="24">
-   <BOUNDS type="Node" left="15825" top="1635" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="15825" top="1635" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Keyboard">
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -434,28 +414,10 @@
    </LINK>
    <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="15840" top="2250" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Key Match" slicecount="1" values="ControlKey">
-   </PIN>
-   <PIN pinname="ControlKey" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="24" srcpinname="Output Node" dstnodeid="29" dstpinname="Keyboard">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="ControlKey" dstnodeid="10" dstpinname="Input" linkstyle="VHV">
-   <LINKPOINT x="15870" y="9300">
-   </LINKPOINT>
-   <LINKPOINT x="12450" y="9300">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="30">
-   <BOUNDS type="Node" left="17655" top="1590" width="100" height="100">
+   <BOUNDS type="Node" left="16500" top="1605" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="17655" top="1590" width="480" height="480">
+   <BOUNDS type="Box" left="16500" top="1605" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -509,9 +471,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="17685" y="12075">
+   <LINKPOINT x="16915" y="12085">
    </LINKPOINT>
-   <LINKPOINT x="12600" y="12075">
+   <LINKPOINT x="12215" y="12080">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
@@ -780,4 +742,18 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="57" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18045" top="1395" width="4290" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18045" top="1395" width="4380" height="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Multiple Polygons in Shape Mode are not enabled. Reasons:&cr;&lf;&cr;&lf;1) Why?&cr;&lf;2) SnapBounds can behave weirdly with multiple selections and Shape Mode. (will have to try and fix that)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
