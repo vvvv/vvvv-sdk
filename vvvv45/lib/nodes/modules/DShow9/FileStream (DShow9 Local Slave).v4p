@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Local Slave).v4p" systemname="FileStream (DShow9 Local Slave)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Local Slave).v4p">
-   <BOUNDS type="Window" left="0" top="0" width="15870" height="8040">
+   <BOUNDS type="Window" left="11385" top="10425" width="15870" height="8040">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -76,6 +76,8 @@
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="47" dstpinname="Play">
@@ -273,8 +275,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="34" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="X" dstnodeid="34" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="43" srcpinname="Output 1" dstnodeid="42" dstpinname="XYZ" linkstyle="Bezier">
    <LINKPOINT x="10395" y="6105">
@@ -515,5 +515,21 @@
    <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Port Offset">
    </LINK>
    <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Seek Threshold">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="4935" top="2115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="42" srcpinname="X" dstnodeid="51" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="51" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Output" dstnodeid="34" dstpinname="Input 1">
    </LINK>
    </PATCH>
