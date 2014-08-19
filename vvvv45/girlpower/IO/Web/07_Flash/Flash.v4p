@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\07_Flash\Flash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
-   <BOUNDS type="Window" left="960" top="1185" width="11355" height="8370">
+   <BOUNDS type="Window" left="960" top="1185" width="11355" height="8385">
    </BOUNDS>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="6465" top="4005" width="100" height="100">
@@ -63,6 +63,10 @@
    </PIN>
    <PIN pinname="Root Element" visible="1">
    </PIN>
+   <PIN pinname="Document Width" visible="1">
+   </PIN>
+   <PIN pinname="Document Height" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Reload">
    </LINK>
@@ -99,11 +103,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="45" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="750" top="3885" type="Node" width="7425">
+   <BOUNDS height="270" left="750" top="5085" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2505" left="750" top="3885" type="Box" width="4110">
+   <BOUNDS height="2205" left="750" top="5085" type="Box" width="3990">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a HTML document with the embedded flash movie. Just open it in your default webbrowser or check its code.&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) uses the chromium engine to render html documents and returns them as textures.&cr;&lf;&cr;&lf;The texture is then applied to a simple Quad (DX9).&cr;&lf;The AspectRatio (Transform) attached to it sets the proportions of the Quad to the texture ones.&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a HTML document with the embedded flash movie. Just open it in your default webbrowser or check its code.&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) uses the chromium engine to render html documents and returns them as textures.&cr;&lf;&cr;&lf;The texture is then applied to a simple Quad (DX9) uniformly scaled to fill the whole renderer.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -115,9 +119,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="44" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="3870" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="5070" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="3870" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="5070" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -177,9 +181,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="5565" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="6765" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="5565" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="6765" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -193,11 +197,11 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="52">
-   <BOUNDS type="Node" left="6465" top="6060" width="100" height="100">
+   <BOUNDS type="Node" left="6465" top="5310" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="6465" top="6060" width="2400" height="1800">
+   <BOUNDS type="Box" left="6465" top="5310" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="12375" top="1215" width="6195" height="4830">
+   <BOUNDS type="Window" left="12375" top="1215" width="6045" height="4965">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -207,7 +211,7 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   <PIN pinname="Background Color" slicecount="1" values="|0.99816,0.90399,0.00000,1.00000|">
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="7" dstpinname="Texture">
@@ -223,7 +227,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="57">
-   <BOUNDS type="Node" left="6450" top="4950" width="540" height="270">
+   <BOUNDS type="Node" left="6450" top="4650" width="540" height="270">
    </BOUNDS>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -238,32 +242,6 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Layer" dstnodeid="52" dstpinname="Layers">
    </LINK>
-   <NODE id="58" systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden">
-   <BOUNDS type="Node" left="7320" top="6585" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Aspect Width" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Height" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="52" srcpinname="Actual Backbuffer Height" dstnodeid="58" dstpinname="Aspect Height">
-   </LINK>
-   <LINK srcnodeid="52" srcpinname="Actual Backbuffer Width" dstnodeid="58" dstpinname="Aspect Width">
-   </LINK>
-   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="62">
-   <BOUNDS type="Node" left="6630" top="3345" width="1335" height="270">
-   </BOUNDS>
-   <PIN pinname="Aspect Width" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Height" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Uniform Scale" slicecount="1" values="1.82">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 3">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="67" systemname="IOBox (Value Advanced)">
@@ -284,8 +262,6 @@
    </NODE>
    <LINK srcnodeid="67" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Width">
    </LINK>
-   <LINK srcnodeid="67" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Aspect Width">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="68" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7920" top="1905" width="465" height="240">
    </BOUNDS>
@@ -303,34 +279,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
-   </LINK>
-   <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Aspect Height">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="69" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7590" top="2985" width="495" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7590" top="2985" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="69" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Uniform Scale">
-   </LINK>
-   <NODE id="3" systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox">
-   <BOUNDS type="Node" left="6765" top="5610" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6765" top="5610" width="435" height="315">
-   </BOUNDS>
-   <PIN pinname="Color Output" visible="1">
-   </PIN>
-   <PIN pinname="Color Input" slicecount="1" values="|0.99816,0.90399,0.00000,1.00000|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="3" srcpinname="Color Output" dstnodeid="52" dstpinname="Background Color">
    </LINK>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="55">
    <BOUNDS type="Node" left="9135" top="435" width="100" height="100">
@@ -381,9 +329,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="84" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="750" top="3300" width="390" height="270">
+   <BOUNDS type="Node" left="750" top="4575" width="390" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="750" top="3300" width="4050" height="285">
+   <BOUNDS type="Box" left="750" top="4575" width="4050" height="285">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------------">
    </PIN>
@@ -397,9 +345,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="85" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1095" top="1785" width="15225" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1095" top="1785" width="3555" height="1110">
+   <BOUNDS type="Box" left="1095" top="1785" width="3555" height="2415">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note, if you want to use semi-transparent Flash movies as textures with alpha-channel stick to the old beta32.1 version for now. &cr;&lf;Check the &apos;IO\Web\07_Transparent Flash&apos; example from its &apos;girlpower&apos; directory.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Known problems:&cr;&lf;&cr;&lf;1. Mouse interaction is not always working right.&cr;&lf;&cr;&lf;2. Use of semi-transparent Flash movies as textures with alpha-channel is broken.&cr;&lf;&cr;&lf;If you encounter these problems, stick to the old beta32.1 version for now and check the &apos;IO\Web\07_Transparent Flash&apos; example from its &apos;girlpower&apos; directory.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -425,9 +373,9 @@
    </PIN>
    </NODE>
    <NODE id="87" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="1095" top="3015" width="100" height="100">
+   <BOUNDS type="Node" left="1095" top="4290" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1095" top="3015" width="3000" height="240">
+   <BOUNDS type="Box" left="1095" top="4290" width="3000" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="Filename">
    </PIN>
@@ -473,9 +421,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="88" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="4710" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="5910" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="4710" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="5910" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -507,19 +455,17 @@
    <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 1">
    </LINK>
    <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="90">
-   <BOUNDS type="Node" left="8160" top="3330" width="100" height="100">
+   <BOUNDS type="Node" left="6615" top="3510" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="XYZ" slicecount="1" visible="1" values="2">
    </PIN>
    </NODE>
-   <LINK srcnodeid="90" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="91" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9090" top="2910" width="465" height="240">
+   <BOUNDS type="Box" left="7545" top="3090" width="465" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9090" top="2910" width="0" height="0">
+   <BOUNDS type="Node" left="7545" top="3090" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
    </PIN>
@@ -529,5 +475,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="91" srcpinname="Y Output Value" dstnodeid="90" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="90" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
    </LINK>
    </PATCH>
