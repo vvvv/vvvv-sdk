@@ -211,7 +211,7 @@
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="32">
    <BOUNDS type="Node" left="1290" top="4785" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -247,7 +247,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <BOUNDS type="Box" left="7065" top="4800">
    </BOUNDS>
@@ -476,42 +476,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="PolygonEditor (2d Split)" filename="PolygonEditor (2d Split).v4p" nodename="PolygonEditor (2d Split)" componentmode="Hidden" id="62">
-   <BOUNDS type="Node" left="2235" top="4125" width="13620" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="VerticesXY" visible="1">
-   </PIN>
-   <PIN pinname="Vertex Tagged" visible="1">
-   </PIN>
-   <PIN pinname="Vertex Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="Selected" visible="1">
-   </PIN>
-   <PIN pinname="Rotation" visible="1">
-   </PIN>
-   <PIN pinname="Mouseover" visible="1">
-   </PIN>
-   <PIN pinname="Vertex Mouseover" visible="1">
-   </PIN>
-   <PIN pinname="Shape Mode" visible="1">
-   </PIN>
-   <PIN pinname="Sort After Z-Index" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="62" srcpinname="VerticesXY" dstnodeid="32" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="62" srcpinname="Vertex Tagged" dstnodeid="33" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="62" srcpinname="Vertex Bin Size" dstnodeid="37" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="62" srcpinname="Rotation" dstnodeid="57" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="Bounds (Spectral)" nodename="Bounds (Spectral)" componentmode="Hidden" id="64">
    <BOUNDS type="Node" left="9255" top="4680" width="100" height="100">
    </BOUNDS>
@@ -525,13 +489,11 @@
    <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="65">
    <BOUNDS type="Node" left="10365" top="4710" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="62" srcpinname="Z-Index" dstnodeid="65" dstpinname="Input">
-   </LINK>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="66">
    <BOUNDS type="Node" left="9615" top="5145" width="100" height="100">
    </BOUNDS>
@@ -599,15 +561,13 @@
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="70">
    <BOUNDS type="Node" left="15300" top="4770" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="62" srcpinname="Mouseover" dstnodeid="70" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="70" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="71">
@@ -647,15 +607,13 @@
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="73">
    <BOUNDS type="Node" left="5415" top="4650" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="62" srcpinname="Vertex Mouseover" dstnodeid="73" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="72" srcpinname="Y Output Value" dstnodeid="73" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="74">
@@ -706,8 +664,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="62" srcpinname="Shape Mode" dstnodeid="53" dstpinname="Input 2">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="78" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="15810" top="3450" width="480" height="480">
    </BOUNDS>
@@ -724,8 +680,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    </NODE>
-   <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Sort After Z-Index">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="79" systemname="IOBox (String)">
    <BOUNDS type="Node" left="16380" top="3495" width="2235" height="270">
    </BOUNDS>
@@ -755,5 +709,51 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="74" dstpinname="Switch" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Polygon (PolygonEditor Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Split).v4p" nodename="Polygon (PolygonEditor Split)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="2235" top="4125" width="15030" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Tagged" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Selected" visible="1">
+   </PIN>
+   <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Mouseover" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" visible="1">
+   </PIN>
+   <PIN pinname="Shape Mode" visible="1">
+   </PIN>
+   <PIN pinname="Sort After Z-Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="VerticesXY" dstnodeid="32" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Vertex Tagged" dstnodeid="33" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Vertex Bin Size" dstnodeid="37" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Rotation" dstnodeid="57" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Z-Index" dstnodeid="65" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Mouseover" dstnodeid="70" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Vertex Mouseover" dstnodeid="73" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Shape Mode" dstnodeid="53" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Sort After Z-Index">
    </LINK>
    </PATCH>

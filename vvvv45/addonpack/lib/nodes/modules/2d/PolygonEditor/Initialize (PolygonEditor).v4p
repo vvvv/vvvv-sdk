@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor).v4p" systemname="Initialize" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\Initialize.v4p">
-   <BOUNDS type="Window" left="8625" top="2700" width="14475" height="8265">
+   <BOUNDS type="Window" left="8625" top="2700" width="14475" height="10170">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
-   <BOUNDS type="Node" left="600" top="720" width="100" height="100">
+   <BOUNDS type="Node" left="795" top="1770" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="600" top="720" width="795" height="480">
+   <BOUNDS type="Box" left="795" top="1770" width="795" height="480">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -23,9 +23,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="2">
-   <BOUNDS type="Node" left="3690" top="720" width="100" height="100">
+   <BOUNDS type="Node" left="3885" top="1770" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="3690" top="720" width="795" height="240">
+   <BOUNDS type="Box" left="3885" top="1770" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
@@ -35,7 +35,7 @@
    </PIN>
    </NODE>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="1635" top="3870" width="100" height="100">
+   <BOUNDS type="Node" left="1830" top="4920" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Count" visible="1">
    </PIN>
@@ -43,7 +43,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Count (2d)" filename="%VVVV%\lib\nodes\modules\2D\Count (2D).v4p" nodename="Count (2d)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="1650" top="3465" width="100" height="100">
+   <BOUNDS type="Node" left="1845" top="4515" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
@@ -53,7 +53,7 @@
    <LINK srcnodeid="6" srcpinname="Count" dstnodeid="7" dstpinname="Count">
    </LINK>
    <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="3780" top="3060" width="100" height="100">
+   <BOUNDS type="Node" left="3975" top="4110" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -61,7 +61,7 @@
    </PIN>
    </NODE>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="3780" top="3495" width="100" height="100">
+   <BOUNDS type="Node" left="3975" top="4545" width="100" height="100">
    </BOUNDS>
    <PIN pinname=".. To [" visible="1">
    </PIN>
@@ -71,7 +71,7 @@
    <LINK srcnodeid="5" srcpinname="Count" dstnodeid="4" dstpinname=".. To [">
    </LINK>
    <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="4845" top="3840" width="100" height="100">
+   <BOUNDS type="Node" left="5040" top="4890" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Count" visible="1">
    </PIN>
@@ -83,9 +83,9 @@
    <LINK srcnodeid="5" srcpinname="Count" dstnodeid="3" dstpinname="Count">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="585" top="6390" width="795" height="240">
+   <BOUNDS type="Box" left="780" top="7440" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="585" top="6390" width="0" height="0">
+   <BOUNDS type="Node" left="780" top="7440" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -93,11 +93,195 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Data|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="30" visible="1" values="8,4,0,0,0,3,1,0,0,-0.3,0.3,0,-0.7,0.3,0,-0.7,0.7,0,-0.3,0.7,0,0.211627906976744,-0.489473684210527,0,0.695348837209302,0.142105263157894,0,0.462790697674419,0.647368421052631,0">
+   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="PolygonEditor (2d Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\sub\PolygonEditor (2d Join).v4p" nodename="PolygonEditor (2d Join)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="585" top="5730" width="7515" height="270">
+   <NODE systemname="Unzip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (2d Bin)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2085" top="2745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1 Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="14" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input Bin Size">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4800" top="2310" width="5850" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4800" top="2310" width="3510" height="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|! Mouseover Vertex, Mouseover, ID and Cursur Type are not used in the FrameDelay Loop, it&apos;s set at the very end just before output.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="270" top="2670" width="5685" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="270" top="2670" width="1665" height="1125">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Unzip:&cr;&lf;Like NormalizeBinSize, but outputs both of the inputs with Normalized Bin Size|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="imagepack" Version="0.1.0">
+   </PACK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="6120" top="4755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Count" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Count" dstnodeid="27" dstpinname="Count">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
+   <BOUNDS type="Node" left="8835" top="1770" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8835" top="1770" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Force Shape Mode|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Input">
+   <LINKPOINT x="8880" y="3805">
+   </LINKPOINT>
+   <LINKPOINT x="5325" y="4265">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Quantize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p" nodename="Quantize (PolygonEditor)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="765" top="6090" width="7560" height="270">
+   </BOUNDS>
+   <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Vertex Tagged" visible="1" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="ShapeMode" visible="1">
+   </PIN>
+   <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Enable" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Stepsize" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="2835" top="1800" width="13485" height="8325">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="29" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="29" dstpinname="Vertex Tagged">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="29" dstpinname="Vertex Bin Size">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="29" dstpinname="Z-Index">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="29" dstpinname="ShapeMode">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Output" dstnodeid="29" dstpinname="Rotation">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10395" top="1770" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10395" top="1770" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.01,0.01">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Stepsize">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Stepsize">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10845" top="3570" width="12810" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10845" top="3570" width="2880" height="1125">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Force Shape Mode needs to be considered here. Otherwise, when a polygon is added, it will always output shape mode false on the first frame, and then consider Force Shape Mode.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10845" top="4905" width="10200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10845" top="4905" width="2835" height="990">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Quantize needs to be done here. Otherwise, when a polygon is added, it&apos;s vertices are not quantized until the polygon is dragged at least once.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
+   <BOUNDS type="Node" left="11730" top="1770" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11730" top="1770" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Quantization">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Enable">
+   </LINK>
+   <NODE systemname="Polygon (PolygonEditor Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Join).v4p" nodename="Polygon (PolygonEditor Join)" componentmode="InAWindow" id="9">
+   <BOUNDS type="Node" left="780" top="6780" width="7560" height="270">
    </BOUNDS>
    <PIN pinname="pointsXY" visible="1">
    </PIN>
@@ -144,224 +328,40 @@
    </NODE>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Unzip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (2d Bin)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="1890" top="1695" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output Count" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input Bin Size" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="InputXY" visible="1">
-   </PIN>
-   <PIN pinname="Output 1XY" visible="1">
-   </PIN>
-   <PIN pinname="Output 1 Bin Size" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="14" dstpinname="InputXY">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input Bin Size">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="6" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="5" dstpinname="Input">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4605" top="1260" width="5850" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4605" top="1260" width="3540" height="1140">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|! Mouseover Vertex, Mouseover, ID and Cursur Type are not used in the FrameDelay Loop, it&apos;s set at the very end just before output.&cr;&lf;&cr;&lf;ID might also be used internally in the future.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="75" top="1620" width="5685" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="75" top="1620" width="1665" height="1125">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Unzip:&cr;&lf;Like NormalizeBinSize, but outputs both of the inputs with Normalized Bin Size|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <PACK Name="imagepack" Version="0.1.0">
-   </PACK>
-   <PACK Name="VVVV.Packs" Version="0.1.0">
-   </PACK>
-   <NODE systemname="GetSpread (Spreads)" nodename="GetSpread (Spreads)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="5925" top="3705" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Count" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Count" dstnodeid="27" dstpinname="Count">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
-   <BOUNDS type="Node" left="8640" top="720" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8640" top="720" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Force Shape Mode|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Input">
-   <LINKPOINT x="8685" y="2755">
+   <LINK srcnodeid="29" srcpinname="VerticesXY" dstnodeid="9" dstpinname="VerticesXY" linkstyle="VHV">
+   <LINKPOINT x="795" y="6570">
    </LINKPOINT>
-   <LINKPOINT x="5130" y="3215">
+   <LINKPOINT x="795" y="6570">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Quantize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p" nodename="Quantize (PolygonEditor)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="570" top="5040" width="7560" height="270">
-   </BOUNDS>
-   <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
-   </PIN>
-   <PIN pinname="Vertex Tagged" visible="1" slicecount="4" values="0,0,0,0">
-   </PIN>
-   <PIN pinname="Vertex Bin Size" visible="1">
-   </PIN>
-   <PIN pinname="Z-Index" visible="1">
-   </PIN>
-   <PIN pinname="ShapeMode" visible="1">
-   </PIN>
-   <PIN pinname="Rotation" visible="1">
-   </PIN>
-   <PIN pinname="Enable" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Stepsize" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="2835" top="1800" width="13485" height="8325">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="29" dstpinname="VerticesXY">
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="29" dstpinname="Vertex Tagged">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="29" dstpinname="Vertex Bin Size">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="29" dstpinname="Z-Index">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="29" dstpinname="ShapeMode">
-   </LINK>
-   <LINK srcnodeid="27" srcpinname="Output" dstnodeid="29" dstpinname="Rotation">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="VerticesXY" dstnodeid="9" dstpinname="VerticesXY" linkstyle="Bezier">
-   <LINKPOINT x="595" y="5520">
+   <LINK srcnodeid="29" srcpinname="Vertex Tagged" dstnodeid="9" dstpinname="Vertex Tagged" linkstyle="VHV">
+   <LINKPOINT x="2250" y="6563">
    </LINKPOINT>
-   <LINKPOINT x="605" y="5520">
+   <LINKPOINT x="1905" y="6563">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="29" srcpinname="Vertex Tagged" dstnodeid="9" dstpinname="Vertex Tagged" linkstyle="Bezier">
-   <LINKPOINT x="2050" y="5513">
+   <LINK srcnodeid="29" srcpinname="Vertex Bin Size" dstnodeid="9" dstpinname="Vertex Bin Size" linkstyle="VHV">
+   <LINKPOINT x="3810" y="6570">
    </LINKPOINT>
-   <LINKPOINT x="1715" y="5513">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="Vertex Bin Size" dstnodeid="9" dstpinname="Vertex Bin Size" linkstyle="Bezier">
-   <LINKPOINT x="3610" y="5520">
-   </LINKPOINT>
-   <LINKPOINT x="3800" y="5520">
+   <LINKPOINT x="4005" y="6570">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="29" srcpinname="Z-Index" dstnodeid="9" dstpinname="Z-Index" linkstyle="Bezier">
-   <LINKPOINT x="5065" y="5520">
+   <LINK srcnodeid="29" srcpinname="Z-Index" dstnodeid="9" dstpinname="Z-Index" linkstyle="VHV">
+   <LINKPOINT x="5265" y="6570">
    </LINKPOINT>
-   <LINKPOINT x="4880" y="5520">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="ShapeMode" dstnodeid="9" dstpinname="ShapeMode" linkstyle="Bezier">
-   <LINKPOINT x="6565" y="5505">
-   </LINKPOINT>
-   <LINKPOINT x="5975" y="5505">
+   <LINKPOINT x="5100" y="6570">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="29" srcpinname="Rotation" dstnodeid="9" dstpinname="Rotation" linkstyle="Bezier">
-   <LINKPOINT x="8065" y="5505">
+   <LINK srcnodeid="29" srcpinname="ShapeMode" dstnodeid="9" dstpinname="ShapeMode" linkstyle="VHV">
+   <LINKPOINT x="6765" y="6555">
    </LINKPOINT>
-   <LINKPOINT x="7040" y="5505">
+   <LINKPOINT x="6195" y="6555">
    </LINKPOINT>
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10200" top="720" width="795" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10200" top="720" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.01,0.01">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Stepsize">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Stepsize">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10650" top="2520" width="12810" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10650" top="2520" width="2880" height="1125">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Force Shape Mode needs to be considered here. Otherwise, when a polygon is added, it will always output shape mode false on the first frame, and then consider Force Shape Mode.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10650" top="3855" width="10200" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10650" top="3855" width="2835" height="990">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Quantize needs to be done here. Otherwise, when a polygon is added, it&apos;s vertices are not quantized until the polygon is dragged at least once.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="11535" top="720" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11535" top="720" width="480" height="480">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Quantization">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Enable">
+   <LINK srcnodeid="29" srcpinname="Rotation" dstnodeid="9" dstpinname="Rotation" linkstyle="VHV">
+   <LINKPOINT x="8265" y="6555">
+   </LINKPOINT>
+   <LINKPOINT x="7275" y="6555">
+   </LINKPOINT>
    </LINK>
    </PATCH>

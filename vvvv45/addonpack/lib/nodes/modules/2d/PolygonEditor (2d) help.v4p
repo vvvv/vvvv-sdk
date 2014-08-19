@@ -605,7 +605,7 @@
    <NODE id="0" systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="InAWindow" hiddenwhenlocked="0" managers="" stayontop="0">
    <BOUNDS type="Node" left="5445" top="3540" width="10965" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18180">
    </BOUNDS>
    <BOUNDS type="Box" left="12810" top="7725" width="4800" height="3600">
    </BOUNDS>
@@ -732,34 +732,6 @@
    <LINKPOINT x="14205" y="3390">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="PolygonEditorView (EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (EX9).v4p" componentmode="InAWindow" id="482" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (EX9).v4p">
-   <BOUNDS type="Node" left="5445" top="4335" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5445" top="4335" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="9465" top="3135" width="19170" height="10680">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Cursor Type" visible="1">
-   </PIN>
-   <PIN pinname="Color ShapeMode Rectangle" slicecount="1" values="|0.00000,0.56685,0.73492,0.73121|">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="482" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="15135" y="4035">
-   </LINKPOINT>
-   <LINKPOINT x="6210" y="4035">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="483" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8460" top="1320" width="1170" height="270">
    </BOUNDS>
@@ -855,9 +827,9 @@
    </PIN>
    </NODE>
    <NODE id="8" componentmode="InABox" stayontop="1" systemname="Renderer (EX9)" nodename="Renderer (EX9)">
-   <BOUNDS type="Node" left="9885" top="4875" width="1620" height="270">
+   <BOUNDS type="Node" left="8850" top="4530" width="1620" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9885" top="4875" width="12015" height="8190">
+   <BOUNDS type="Box" left="8850" top="4530" width="12015" height="8190">
    </BOUNDS>
    <BOUNDS type="Window" left="20415" top="630" width="7965" height="7425">
    </BOUNDS>
@@ -872,12 +844,6 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="482" dstpinname="Cursor Type" linkstyle="VHV">
-   <LINKPOINT x="19855" y="4110">
-   </LINKPOINT>
-   <LINKPOINT x="6950" y="4185">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="15" srcpinname="XY" dstnodeid="0" dstpinname="VerticesXY">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="501" systemname="IOBox (String)">
@@ -1045,21 +1011,19 @@
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="513">
    <BOUNDS type="Node" left="5445" top="4965" width="1230" height="270">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 1">
-   </LINK>
    <LINK srcnodeid="513" srcpinname="Layer" dstnodeid="8" dstpinname="Layers" linkstyle="PolyLine">
-   <LINKPOINT x="6056" y="5779">
+   <LINKPOINT x="5790" y="5700">
    </LINKPOINT>
-   <LINKPOINT x="7208" y="5978">
+   <LINKPOINT x="6975" y="5985">
    </LINKPOINT>
-   <LINKPOINT x="8869" y="5681">
+   <LINKPOINT x="8100" y="5415">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="VHV">
@@ -1120,4 +1084,28 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" componentmode="Hidden" id="482" nodename="PolygonEditorView (PolygonEditor EX9)">
+   <BOUNDS type="Node" left="5445" top="4335" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5445" top="4335" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9465" top="3135" width="19170" height="10680">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
+   </PIN>
+   <PIN pinname="Color ShapeMode Rectangle" slicecount="1" values="|0.00000,0.56685,0.73492,0.73121|">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 1">
+   </LINK>
    </PATCH>
