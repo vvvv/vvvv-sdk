@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundingBox (PolygonEditor DX9).v4p" systemname="CircumRectangle render" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\CircumRectangle render.v4p">
-   <BOUNDS type="Window" left="7290" top="12975" width="21945" height="15840">
+   <BOUNDS type="Window" left="-22485" top="90" width="21945" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -886,8 +886,6 @@
    </LINK>
    <LINK srcnodeid="134" srcpinname="Output 2" dstnodeid="135" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="132" srcpinname="Y Output Value" dstnodeid="135" dstpinname="Switch">
-   </LINK>
    <NODE systemname="Switch (Color Input)" nodename="Switch (Color Input)" componentmode="Hidden" id="136">
    <BOUNDS type="Node" left="8205" top="2805" width="100" height="100">
    </BOUNDS>
@@ -907,7 +905,7 @@
    <LINK srcnodeid="131" srcpinname="Output" dstnodeid="136" dstpinname="Switch">
    </LINK>
    <NODE systemname="Select (Color)" nodename="Select (Color)" componentmode="Hidden" id="138">
-   <BOUNDS type="Node" left="8190" top="3570" width="100" height="100">
+   <BOUNDS type="Node" left="8190" top="3900" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -923,9 +921,9 @@
    <LINK srcnodeid="138" srcpinname="Output" dstnodeid="60" dstpinname="Color">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="139" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8670" top="3240" width="285" height="240">
+   <BOUNDS type="Box" left="9015" top="3165" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8670" top="3240" width="0" height="0">
+   <BOUNDS type="Node" left="9015" top="3165" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4">
    </PIN>
@@ -935,7 +933,35 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Select">
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="140">
+   <BOUNDS type="Node" left="8745" top="3555" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="140" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="140" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="140" srcpinname="Output" dstnodeid="138" dstpinname="Select">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="141">
+   <BOUNDS type="Node" left="8430" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="132" srcpinname="Y Output Value" dstnodeid="141" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="141" srcpinname="Output" dstnodeid="135" dstpinname="Switch">
    </LINK>
    </PATCH>
