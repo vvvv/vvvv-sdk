@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" systemname="SelectionRectangle (PolygonEditor)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="16440">
+   <BOUNDS type="Window" left="11280" top="3030" width="29040" height="16440">
    </BOUNDS>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
@@ -243,9 +243,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="15045" top="11625" width="480" height="480">
+   <BOUNDS type="Box" left="13305" top="11100" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="15045" top="11625" width="0" height="0">
+   <BOUNDS type="Node" left="13305" top="11100" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -504,28 +504,10 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Y Output Value" dstnodeid="56" dstpinname="Bin Size">
    </LINK>
-   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="59">
-   <BOUNDS type="Node" left="10410" top="9375" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Switch" visible="1">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="55" dstpinname="Input 1" linkstyle="Bezier">
    <LINKPOINT x="970" y="4730">
    </LINKPOINT>
    <LINKPOINT x="10670" y="4615">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="59" dstpinname="Input 1" linkstyle="Bezier">
-   <LINKPOINT x="2025" y="5733">
-   </LINKPOINT>
-   <LINKPOINT x="10245" y="5563">
    </LINKPOINT>
    </LINK>
    <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="60">
@@ -576,42 +558,6 @@
    </NODE>
    <LINK srcnodeid="63" srcpinname="Output" dstnodeid="65" dstpinname="Input">
    </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="13770" top="7635" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="41" srcpinname="Detected" dstnodeid="66" dstpinname="Input 1" linkstyle="VHV">
-   <LINKPOINT x="14660" y="5405">
-   </LINKPOINT>
-   <LINKPOINT x="13795" y="5590">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="69">
-   <BOUNDS type="Node" left="14040" top="6795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Down Edge" visible="1">
-   </PIN>
-   <PIN pinname="Up Edge" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="60" srcpinname="Output" dstnodeid="69" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="69" srcpinname="Down Edge" dstnodeid="66" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="59" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="13800" y="9255">
-   </LINKPOINT>
-   <LINKPOINT x="10440" y="9255">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="72" systemname="IOBox (String)">
    <BOUNDS type="Node" left="14880" top="6765" width="1845" height="270">
    </BOUNDS>
@@ -627,29 +573,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="60" srcpinname="Output" dstnodeid="33" dstpinname="Y Input Value" linkstyle="VHV">
-   <LINKPOINT x="14070" y="6720">
+   <LINKPOINT x="14070" y="6795">
    </LINKPOINT>
-   <LINKPOINT x="15075" y="6720">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="75">
-   <BOUNDS type="Node" left="10920" top="8790" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="56" srcpinname="Output" dstnodeid="75" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="75" srcpinname="Output" dstnodeid="59" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="75" dstpinname="Input 1" linkstyle="Bezier">
-   <LINKPOINT x="2115" y="5443">
-   </LINKPOINT>
-   <LINKPOINT x="10395" y="5253">
+   <LINKPOINT x="13335" y="6795">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="43" srcpinname="Output" dstnodeid="44" dstpinname="Input 1">
@@ -769,9 +695,9 @@
    <LINK srcnodeid="83" srcpinname="PositionXY" dstnodeid="49" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="84" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13050" top="11535" width="480" height="480">
+   <BOUNDS type="Box" left="11190" top="11040" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="13050" top="11535" width="0" height="0">
+   <BOUNDS type="Node" left="11190" top="11040" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
