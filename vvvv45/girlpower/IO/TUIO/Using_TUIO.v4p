@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p">
    <BOUNDS type="Window" left="0" top="0" width="17340" height="13365">
    </BOUNDS>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -403,7 +403,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 4" visible="1">
    </PIN>
@@ -572,22 +572,6 @@
    </LINK>
    <LINK srcnodeid="172" srcpinname="Transform Out" dstnodeid="138" dstpinname="Transform">
    </LINK>
-   <NODE systemname="Text (EX9)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Text (EX9)" componentmode="Hidden" id="177">
-   <BOUNDS type="Node" left="13035" top="8385" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Text" visible="1" slicecount="1" values="vvvv">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Vertical Align" slicecount="1" values="Top">
-   </PIN>
-   <BOUNDS type="Box" left="13035" top="8385">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="176" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="15855" top="7740" width="720" height="240">
    </BOUNDS>
@@ -596,8 +580,6 @@
    <PIN pinname="Input Enum" slicecount="1" values="Right">
    </PIN>
    </NODE>
-   <LINK srcnodeid="176" srcpinname="Output Enum" dstnodeid="177" dstpinname="Horizontal Align">
-   </LINK>
    <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="175">
    <BOUNDS type="Node" left="15315" top="7740" width="100" height="100">
    </BOUNDS>
@@ -608,8 +590,6 @@
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="175" srcpinname="Color Output" dstnodeid="177" dstpinname="Color">
-   </LINK>
    <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="178">
    <BOUNDS type="Node" left="13185" top="7740" width="1920" height="270">
    </BOUNDS>
@@ -624,8 +604,6 @@
    </NODE>
    <LINK srcnodeid="172" srcpinname="Transform Out" dstnodeid="178" dstpinname="Transform In">
    </LINK>
-   <LINK srcnodeid="178" srcpinname="Transform Out" dstnodeid="177" dstpinname="Transform">
-   </LINK>
    <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="179">
    <BOUNDS type="Node" left="13350" top="6975" width="100" height="100">
    </BOUNDS>
@@ -638,10 +616,6 @@
    <PIN pinname="Characters before Comma" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="179" srcpinname="Output" dstnodeid="177" dstpinname="Text">
-   </LINK>
-   <LINK srcnodeid="177" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 4">
-   </LINK>
    <NODE systemname="Zip (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (Value)" componentmode="Hidden" id="156">
    <BOUNDS type="Node" left="7620" top="3195" width="2160" height="270">
    </BOUNDS>
@@ -719,8 +693,6 @@
    <LINK srcnodeid="73" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 1">
    </LINK>
    <LINK srcnodeid="138" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="177" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 3">
    </LINK>
    <LINK srcnodeid="140" srcpinname="Layer" dstnodeid="115" dstpinname="Layers">
    </LINK>
@@ -1224,4 +1196,22 @@
    </NODE>
    <LINK srcnodeid="212" srcpinname="Output String" dstnodeid="208" dstpinname="Input 2">
    </LINK>
+   <NODE systemname="Text (EX9)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Text (EX9)" componentmode="Hidden" id="213">
+   <BOUNDS type="Node" left="13035" top="8385" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13035" top="8385">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="176" srcpinname="Output Enum" dstnodeid="213" dstpinname="Horizontal Align">
+   </LINK>
+   <LINK srcnodeid="175" srcpinname="Color Output" dstnodeid="213" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="178" srcpinname="Transform Out" dstnodeid="213" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="179" srcpinname="Output" dstnodeid="213" dstpinname="Text">
+   </LINK>
+   <LINK srcnodeid="213" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 3">
+   </LINK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
    </PATCH>
