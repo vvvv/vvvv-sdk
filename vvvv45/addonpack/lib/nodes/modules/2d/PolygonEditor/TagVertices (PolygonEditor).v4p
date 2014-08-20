@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\TagVertices (PolygonEditor).v4p" systemname="SelectVertices" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\SelectVertices.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="15840">
+   <BOUNDS type="Window" left="540" top="0" width="28500" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -181,7 +181,7 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="29" values="Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged,Tagged">
+   <PIN pinname="Descriptive Name" slicecount="29" values="|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|,|Shape Mode|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -1243,7 +1243,7 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="199">
-   <BOUNDS type="Node" left="12810" top="13995" width="100" height="100">
+   <BOUNDS type="Node" left="12585" top="15975" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1253,7 +1253,7 @@
    <LINK srcnodeid="40" srcpinname="Output" dstnodeid="199" dstpinname="Input">
    </LINK>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="200">
-   <BOUNDS type="Node" left="12840" top="14535" width="100" height="100">
+   <BOUNDS type="Node" left="12585" top="16380" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1263,13 +1263,17 @@
    <LINK srcnodeid="199" srcpinname="Output" dstnodeid="200" dstpinname="Input">
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="201">
-   <BOUNDS type="Node" left="12825" top="14925" width="100" height="100">
+   <BOUNDS type="Node" left="12570" top="16770" width="900" height="270">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="200" srcpinname="Output" dstnodeid="201" dstpinname="Input 1">
@@ -1328,22 +1332,6 @@
    </LINK>
    <LINK srcnodeid="205" srcpinname="Y Output Value" dstnodeid="206" dstpinname="Input">
    </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="208" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="22575" top="13575" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="70" srcpinname="ControlKey" dstnodeid="208" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="208" srcpinname="Output" dstnodeid="69" dstpinname="Input 3">
-   </LINK>
-   <LINK srcnodeid="208" srcpinname="Output" dstnodeid="197" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="209" systemname="IOBox (String)">
    <BOUNDS type="Node" left="23340" top="13500" width="11355" height="270">
    </BOUNDS>
@@ -1369,5 +1357,37 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="206" srcpinname="Output" dstnodeid="210" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="212" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="23820" top="15300" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="23820" top="15300" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="ControlKey" dstnodeid="212" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="ControlKey" dstnodeid="69" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="ControlKey" dstnodeid="197" dstpinname="Input">
+   </LINK>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="213">
+   <BOUNDS type="Node" left="13410" top="16410" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="213" srcpinname="Output" dstnodeid="201" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="ControlKey" dstnodeid="213" dstpinname="Input">
    </LINK>
    </PATCH>
