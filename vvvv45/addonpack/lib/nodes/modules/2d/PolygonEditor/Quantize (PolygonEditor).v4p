@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p" systemname="Quantize (PolygonEditor)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p">
-   <BOUNDS type="Window" left="2835" top="1800" width="13485" height="8325">
+   <BOUNDS type="Window" left="7440" top="2925" width="16035" height="10035">
    </BOUNDS>
    <PACK Name="imagepack" Version="0.1.0">
    </PACK>
@@ -237,7 +237,7 @@
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 2">
    </LINK>
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="11835" top="1560" width="100" height="100">
+   <BOUNDS type="Node" left="12285" top="1650" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -249,7 +249,7 @@
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Input 1">
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="11715" top="2100" width="100" height="100">
+   <BOUNDS type="Node" left="12180" top="2505" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -259,8 +259,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Inverse Output" dstnodeid="16" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Frac (Value)" nodename="Frac (Value)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="10725" top="3930" width="100" height="100">
@@ -289,7 +287,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Switch" visible="1" slicecount="1" values="1">
+   <PIN pinname="Switch" visible="1" slicecount="8" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -304,16 +302,10 @@
    <LINKPOINT x="915" y="5343">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="19" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="11285" y="6030">
-   </LINKPOINT>
-   <LINKPOINT x="835" y="6030">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12015" top="1125" width="285" height="240">
+   <BOUNDS type="Box" left="12465" top="1215" width="285" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12015" top="1125" width="0" height="0">
+   <BOUNDS type="Node" left="12465" top="1215" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -372,4 +364,36 @@
    </NODE>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
+   <INFO author="dominikKoller" description="" tags="">
+   </INFO>
+   <NODE systemname="AND (Boolean Spectral)" nodename="AND (Boolean Spectral)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="12675" top="2055" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Inverse Output" dstnodeid="24" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="16" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="12165" top="2985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="25" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="19" dstpinname="Switch" linkstyle="VHV">
+   <LINKPOINT x="12195" y="6045">
+   </LINKPOINT>
+   <LINKPOINT x="375" y="6045">
+   </LINKPOINT>
+   </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapBounds (PolygonEditor).v4p" systemname="SnapBounds (PolygonEditor)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapBounds (PolygonEditor).v4p">
-   <BOUNDS type="Window" left="150" top="1020" width="29040" height="13260">
+   <BOUNDS type="Window" left="285" top="1230" width="26385" height="16440">
    </BOUNDS>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
@@ -332,7 +332,11 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Y Input Value">
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="6300" y="1658">
+   </LINKPOINT>
+   <LINKPOINT x="15555" y="1658">
+   </LINKPOINT>
    </LINK>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Bin Size" hiddenwhenlocked="1">
    </LINK>
@@ -379,9 +383,9 @@
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="28" dstpinname="Bin Size">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="42" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="17895" top="1770" width="33165" height="270">
+   <BOUNDS type="Node" left="18570" top="3780" width="33165" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="17895" top="1770" width="4470" height="1575">
+   <BOUNDS type="Box" left="18570" top="3780" width="4470" height="1575">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|When in Shape Mode, the Vertices themselves still become selected when clicking on a Polygon (individual vertex selection is turned off). We need to know which polygon to snap to which polygon, so we simply take the one that has all its vertices selected, and then snap it to any polygon that has not. So, a polygon with all vertices tagged [and in Shape Mode, for this case], is handled as tagged.|">
    </PIN>
@@ -392,32 +396,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="10980" top="2475" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10980" top="2475" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Pin Visibility" slicecount="1" values="False">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertex Tagged|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="1855" y="1770">
-   </LINKPOINT>
-   <LINKPOINT x="10985" y="1815">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="AND (Boolean Spectral)" nodename="AND (Boolean Spectral)" componentmode="Hidden" id="44">
    <BOUNDS type="Node" left="10995" top="3495" width="100" height="100">
    </BOUNDS>
@@ -428,8 +406,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Bin Size" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="45" systemname="IOBox (String)">
@@ -1375,9 +1351,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="172" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="17850" top="3510" width="7485" height="270">
+   <BOUNDS type="Node" left="18525" top="5520" width="7485" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="17850" top="3510" width="4185" height="510">
+   <BOUNDS type="Box" left="18525" top="5520" width="4185" height="510">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|This module has become quite big and unclear. Any contribution to make it better is appreciated ;)|">
    </PIN>
@@ -1411,9 +1387,9 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="174">
-   <BOUNDS type="Node" left="26340" top="750" width="100" height="100">
+   <BOUNDS type="Node" left="22245" top="435" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="26340" top="750" width="480" height="480">
+   <BOUNDS type="Box" left="22245" top="435" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -1429,58 +1405,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="84" srcpinname="Hits" dstnodeid="19" dstpinname="Select">
-   </LINK>
-   <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="176">
-   <BOUNDS type="Node" left="27360" top="825" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="27360" top="825" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Keyboard">
-   </PIN>
-   <PIN pinname="Output Node" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="177">
-   <BOUNDS type="Node" left="27345" top="1935" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Key Match" slicecount="1" values="s">
-   </PIN>
-   <PIN pinname="S" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="176" srcpinname="Output Node" dstnodeid="177" dstpinname="Keyboard">
-   </LINK>
-   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="178">
-   <BOUNDS type="Node" left="27360" top="2310" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="177" srcpinname="S" dstnodeid="178" dstpinname="Input">
-   </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="179">
-   <BOUNDS type="Node" left="26325" top="3210" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="179" srcpinname="Output" dstnodeid="173" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="26475" y="18050">
-   </LINKPOINT>
-   <LINKPOINT x="8355" y="18055">
-   </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="180" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10005" top="15150" width="795" height="480">
@@ -1538,48 +1462,12 @@
    </LINK>
    <LINK srcnodeid="182" srcpinname="Output" dstnodeid="75" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="185">
-   <BOUNDS type="Node" left="24900" top="810" width="100" height="100">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="188" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="22890" top="600" width="1035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="24900" top="810" width="795" height="240">
+   <BOUNDS type="Box" left="22890" top="600" width="1035" height="270">
    </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Resizing">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="184">
-   <BOUNDS type="Node" left="24885" top="1350" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="185" srcpinname="Y Output Value" dstnodeid="184" dstpinname="Input">
-   </LINK>
-   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="183">
-   <BOUNDS type="Node" left="24870" top="1740" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="184" srcpinname="Output" dstnodeid="183" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="178" srcpinname="Output" dstnodeid="179" dstpinname="Input 3">
-   </LINK>
-   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="179" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="183" srcpinname="Output" dstnodeid="179" dstpinname="Input 1">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="186" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="23025" top="1230" width="15030" height="480">
-   </BOUNDS>
-   <BOUNDS type="Box" left="23025" top="1230" width="1755" height="2445">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&gt;&cr;&lf;This could also be handeled directly over the Enable Pin. However, snapping when resizing would also be a nice feature (needs to be handeled differently, though), so I&apos;ll leave it like this for modular expandability.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Per Vertex|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1588,4 +1476,82 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Input" linkstyle="VHV">
+   <LINKPOINT x="22275" y="3165">
+   </LINKPOINT>
+   <LINKPOINT x="11025" y="3165">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="196" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="23265" top="2460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="195" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="23280" top="2040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="195" srcpinname="Output" dstnodeid="196" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="194" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="22875" top="2970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="193" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="22500" top="2400" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="192" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="22680" top="1995" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="22680" top="1995" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="192" srcpinname="Y Output Value" dstnodeid="193" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="196" srcpinname="Output" dstnodeid="194" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="193" srcpinname="Inverse Output" dstnodeid="194" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="195" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="194" srcpinname="Output" dstnodeid="173" dstpinname="Switch" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="22905" y="18075">
+   </LINKPOINT>
+   <LINKPOINT x="8475" y="18075">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="143" srcpinname="Y Output Value" dstnodeid="193" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <INFO author="dominikKoller" description="" tags="">
+   </INFO>
    </PATCH>
