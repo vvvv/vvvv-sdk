@@ -698,8 +698,8 @@
    </LINK>
    <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Vertex Bin Size">
    </LINK>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="181">
-   <BOUNDS type="Node" left="23610" top="2250" width="100" height="100">
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="181" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="24405" top="2565" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Select" slicecount="1" values="1">
    </PIN>
@@ -708,29 +708,23 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="181" srcpinname="Output" dstnodeid="174" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="23640" y="12900">
-   </LINKPOINT>
-   <LINKPOINT x="11025" y="12900">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="180" dstpinname="Input 1" linkstyle="VHV">
    <LINKPOINT x="23325" y="3960">
    </LINKPOINT>
    <LINKPOINT x="14730" y="3885">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="182">
-   <BOUNDS type="Node" left="23625" top="1830" width="100" height="100">
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="182" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="24420" top="2145" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="182" srcpinname="Output" dstnodeid="181" dstpinname="Input">
+   <LINK srcnodeid="182" srcpinname="Output" dstnodeid="181" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="182" dstpinname="Input">
+   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="182" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="183" systemname="IOBox (String)">
    <BOUNDS type="Node" left="23925" top="1155" width="2130" height="270">
@@ -746,4 +740,52 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="185" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="24015" top="3075" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="186" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="23640" top="2505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="186" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="187" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="23820" top="2100" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="23820" top="2100" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="187" srcpinname="Y Output Value" dstnodeid="186" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="181" srcpinname="Output" dstnodeid="185" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="186" srcpinname="Inverse Output" dstnodeid="185" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="185" srcpinname="Output" dstnodeid="174" dstpinname="Switch" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="24045" y="12945">
+   </LINKPOINT>
+   <LINKPOINT x="11025" y="12945">
+   </LINKPOINT>
+   </LINK>
    </PATCH>

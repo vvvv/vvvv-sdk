@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapBounds (PolygonEditor).v4p" systemname="SnapBounds (PolygonEditor)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapBounds (PolygonEditor).v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="16440">
+   <BOUNDS type="Window" left="2700" top="10005" width="29040" height="16440">
    </BOUNDS>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
@@ -383,9 +383,9 @@
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="28" dstpinname="Bin Size">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="42" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="24000" top="585" width="33165" height="270">
+   <BOUNDS type="Node" left="18570" top="3780" width="33165" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="24000" top="585" width="4470" height="1575">
+   <BOUNDS type="Box" left="18570" top="3780" width="4470" height="1575">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|When in Shape Mode, the Vertices themselves still become selected when clicking on a Polygon (individual vertex selection is turned off). We need to know which polygon to snap to which polygon, so we simply take the one that has all its vertices selected, and then snap it to any polygon that has not. So, a polygon with all vertices tagged [and in Shape Mode, for this case], is handled as tagged.|">
    </PIN>
@@ -1351,9 +1351,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="172" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="23955" top="2325" width="7485" height="270">
+   <BOUNDS type="Node" left="18525" top="5520" width="7485" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="23955" top="2325" width="4185" height="510">
+   <BOUNDS type="Box" left="18525" top="5520" width="4185" height="510">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|This module has become quite big and unclear. Any contribution to make it better is appreciated ;)|">
    </PIN>
@@ -1462,20 +1462,10 @@
    </LINK>
    <LINK srcnodeid="182" srcpinname="Output" dstnodeid="75" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="187">
-   <BOUNDS type="Node" left="22455" top="2655" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="187" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="188" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="26550" top="1215" width="1035" height="270">
+   <BOUNDS type="Node" left="22890" top="600" width="1035" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="26550" top="1215" width="1035" height="270">
+   <BOUNDS type="Box" left="22890" top="600" width="1035" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Per Vertex|">
    </PIN>
@@ -1492,10 +1482,74 @@
    <LINKPOINT x="11025" y="3165">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="187" srcpinname="Output" dstnodeid="173" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="23985" y="18205">
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="196" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="23265" top="2460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="195" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="23280" top="2040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="195" srcpinname="Output" dstnodeid="196" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="194" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="22875" top="2970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="193" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="22500" top="2400" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="192" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="22680" top="1995" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="22680" top="1995" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="192" srcpinname="Y Output Value" dstnodeid="193" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="196" srcpinname="Output" dstnodeid="194" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="193" srcpinname="Inverse Output" dstnodeid="194" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="174" srcpinname="Y Output Value" dstnodeid="195" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="194" srcpinname="Output" dstnodeid="173" dstpinname="Switch" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="22905" y="18075">
    </LINKPOINT>
-   <LINKPOINT x="6975" y="18125">
+   <LINKPOINT x="8475" y="18075">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="143" srcpinname="Y Output Value" dstnodeid="193" dstpinname="Input 1" hiddenwhenlocked="1">
    </LINK>
    </PATCH>

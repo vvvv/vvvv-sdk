@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="29040" height="16440">
+   <BOUNDS type="Window" left="1275" top="-150" width="25410" height="16440">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -159,25 +159,11 @@
    </PIN>
    </NODE>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="8460" top="9300" width="780" height="270">
+   <BOUNDS type="Node" left="8145" top="9600" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Down Edge" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="18">
-   <BOUNDS type="Node" left="7545" top="9615" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7545" top="9615" width="600" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.03">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="-1000">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="9">
@@ -572,8 +558,6 @@
    <PIN pinname="ShapeMode" visible="1" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="PolyLine">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="12" dstpinname="Keyboard" hiddenwhenlocked="1" linkstyle="VHV">
    <LINKPOINT x="17315" y="16805">
    </LINKPOINT>
@@ -620,8 +604,6 @@
    <PIN pinname="ShapeMode" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Epsilon">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="20" dstpinname="Keyboard" hiddenwhenlocked="1" linkstyle="VHV">
    <LINKPOINT x="17315" y="9620">
    </LINKPOINT>
@@ -1119,7 +1101,7 @@
    </PIN>
    <PIN pinname="Rotation" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="16440">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="16440">
    </BOUNDS>
    <PIN pinname="Enable" visible="1">
    </PIN>
@@ -1203,20 +1185,6 @@
    <LINK srcnodeid="112" srcpinname="ShapeMode" dstnodeid="101" dstpinname="ShapeMode">
    </LINK>
    <LINK srcnodeid="112" srcpinname="Rotation" dstnodeid="101" dstpinname="Rotation">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="113">
-   <BOUNDS type="Node" left="8010" top="10800" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8010" top="10800" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.02">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="113" srcpinname="Y Output Value" dstnodeid="112" dstpinname="Epsilon">
-   </LINK>
-   <LINK srcnodeid="113" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Epsilon" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="Polygon (PolygonEditor Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Join).v4p" nodename="Polygon (PolygonEditor Join)" componentmode="Hidden" id="32" stayontop="1">
    <BOUNDS type="Node" left="5055" top="14940" width="1200" height="270">
@@ -1657,75 +1625,71 @@
    <LINK srcnodeid="117" srcpinname="Rotation" dstnodeid="6" dstpinname="Rotation">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="122">
-   <BOUNDS type="Node" left="14280" top="990" width="100" height="100">
+   <BOUNDS type="Node" left="14235" top="1065" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="14280" top="990" width="480" height="480">
+   <BOUNDS type="Box" left="14235" top="1065" width="900" height="240">
    </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   <PIN pinname="Value Type" slicecount="1" values="Real">
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Snapping">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Snap Threshold|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="1">
    </PIN>
-   </NODE>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="123">
-   <BOUNDS type="Node" left="8550" top="9810" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.25">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="123" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Output" dstnodeid="20" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Output" dstnodeid="112" dstpinname="Enable">
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="123" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="14310" y="9705">
-   </LINKPOINT>
-   <LINKPOINT x="8985" y="9705">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="124">
-   <BOUNDS type="Node" left="7905" top="17220" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="4" values="0,0,0,0">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="124" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="14310" y="17070">
-   </LINKPOINT>
-   <LINKPOINT x="8340" y="17070">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="12" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="111" dstpinname="Enable">
-   </LINK>
    <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="19" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="124" dstpinname="Input 1">
-   <LINKPOINT x="7860" y="8880">
-   </LINKPOINT>
-   <LINKPOINT x="9720" y="9195">
-   </LINKPOINT>
-   <LINKPOINT x="11910" y="12015">
-   </LINKPOINT>
-   <LINKPOINT x="12045" y="13710">
-   </LINKPOINT>
    </LINK>
    <INFO author="dominikKoller" description="Edit Polygons with Mouse and Keyboard" tags="">
    </INFO>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
+   <LINKPOINT x="14265" y="10050">
+   </LINKPOINT>
+   <LINKPOINT x="7935" y="10050">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="112" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
+   <LINKPOINT x="14265" y="11115">
+   </LINKPOINT>
+   <LINKPOINT x="7920" y="11115">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
+   <LINKPOINT x="14265" y="18330">
+   </LINKPOINT>
+   <LINKPOINT x="7410" y="18330">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
+   <LINKPOINT x="14265" y="17385">
+   </LINKPOINT>
+   <LINKPOINT x="7395" y="17385">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="20" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="112" dstpinname="Enable">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="12" dstpinname="Enabled">
+   <LINKPOINT x="8175" y="9195">
+   </LINKPOINT>
+   <LINKPOINT x="9405" y="9690">
+   </LINKPOINT>
+   <LINKPOINT x="12120" y="12240">
+   </LINKPOINT>
+   <LINKPOINT x="12075" y="14250">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="111" dstpinname="Enable">
+   <LINKPOINT x="9420" y="9555">
+   </LINKPOINT>
+   <LINKPOINT x="12195" y="12225">
+   </LINKPOINT>
+   <LINKPOINT x="12150" y="14250">
+   </LINKPOINT>
+   </LINK>
    </PATCH>
