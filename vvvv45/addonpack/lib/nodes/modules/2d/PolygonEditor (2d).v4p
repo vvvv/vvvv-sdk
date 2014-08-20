@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="16440">
+   <BOUNDS type="Window" left="0" top="0" width="29040" height="16440">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -153,7 +153,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -173,7 +173,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.08">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.03">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -197,9 +197,9 @@
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="57" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="15225" top="2730" width="6840" height="1320">
+   <BOUNDS type="Node" left="19860" top="2475" width="6840" height="1320">
    </BOUNDS>
-   <BOUNDS type="Box" left="15225" top="2730" width="4260" height="2430">
+   <BOUNDS type="Box" left="19860" top="2475" width="4260" height="2430">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|I/O pins:&cr;&lf;&cr;&lf;when dealing with Vertices, state this in the I/O pin Name. When dealing with Polygons, do not.&cr;&lf;&cr;&lf;e.g. Vertex Tagged&cr;&lf;e.g. Z-Index, not Polygon Z-Index&cr;&lf;&cr;&lf;Vertex Bin Size is the number of Vertices per Polygon (input spreadable)|">
    </PIN>
@@ -677,9 +677,9 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Stepsize" linkstyle="VHV" hiddenwhenlocked="1">
-   <LINKPOINT x="18515" y="8540">
+   <LINKPOINT x="18510" y="9120">
    </LINKPOINT>
-   <LINKPOINT x="7165" y="8770">
+   <LINKPOINT x="7170" y="9120">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="45" srcpinname="VerticesXY" dstnodeid="37" dstpinname="VerticesXY" hiddenwhenlocked="0" linkstyle="Bezier">
@@ -745,9 +745,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Enumerations)" nodename="IOBox (Enumerations)" componentmode="InABox" id="93">
-   <BOUNDS type="Node" left="12945" top="21915" width="100" height="100">
+   <BOUNDS type="Node" left="12795" top="21915" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="12945" top="21915" width="1200" height="240">
+   <BOUNDS type="Box" left="12795" top="21915" width="1200" height="240">
    </BOUNDS>
    <PIN pinname="Input Enum" visible="1" slicecount="1" values="Cross">
    </PIN>
@@ -906,20 +906,20 @@
    <BOUNDS type="Window" left="2835" top="1800" width="16035" height="10035">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="101" dstpinname="Stepsize" linkstyle="VHV">
-   <LINKPOINT x="18510" y="10630">
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="101" dstpinname="Stepsize" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="18510" y="11850">
    </LINKPOINT>
-   <LINKPOINT x="9735" y="11210">
+   <LINKPOINT x="9735" y="11850">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Stepsize" linkstyle="VHV">
-   <LINKPOINT x="18510" y="17875">
+   <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Stepsize" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="18510" y="19050">
    </LINKPOINT>
-   <LINKPOINT x="8880" y="18455">
+   <LINKPOINT x="8880" y="19050">
    </LINKPOINT>
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="102">
-   <BOUNDS type="Node" left="9015" top="11550" width="100" height="100">
+   <BOUNDS type="Node" left="9045" top="11565" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -933,9 +933,9 @@
    <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="102" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="96" srcpinname="Y Output Value" dstnodeid="102" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="19770" y="10180">
+   <LINKPOINT x="19780" y="11405">
    </LINKPOINT>
-   <LINKPOINT x="9450" y="10760">
+   <LINKPOINT x="9470" y="11410">
    </LINKPOINT>
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="103">
@@ -951,15 +951,15 @@
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="100" dstpinname="Enable">
    </LINK>
    <LINK srcnodeid="51" srcpinname="Left Button" dstnodeid="103" dstpinname="Input 1" linkstyle="VHV">
-   <LINKPOINT x="15300" y="17335">
+   <LINKPOINT x="15300" y="18495">
    </LINKPOINT>
-   <LINKPOINT x="8355" y="17915">
+   <LINKPOINT x="8355" y="18495">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="96" srcpinname="Y Output Value" dstnodeid="103" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="19770" y="17395">
+   <LINKPOINT x="19770" y="18645">
    </LINKPOINT>
-   <LINKPOINT x="8760" y="17975">
+   <LINKPOINT x="8760" y="18645">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="48" srcpinname="Y Output Value" dstnodeid="47" dstpinname="Initialize">
@@ -1009,9 +1009,7 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="109" dstpinname="Mouseover" linkstyle="PolyLine">
-   <LINKPOINT x="9330" y="4935">
-   </LINKPOINT>
-   <LINKPOINT x="7050" y="6555">
+   <LINKPOINT x="7425" y="5670">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="109" srcpinname="VerticesXY" dstnodeid="45" dstpinname="VerticesXY">
@@ -1039,9 +1037,9 @@
    <LINK srcnodeid="91" srcpinname="Rotation" dstnodeid="109" dstpinname="Rotation">
    </LINK>
    <LINK srcnodeid="109" srcpinname="Cursor Type" dstnodeid="93" dstpinname="Input Enum" linkstyle="PolyLine">
-   <LINKPOINT x="9630" y="7935">
+   <LINKPOINT x="9580" y="7935">
    </LINKPOINT>
-   <LINKPOINT x="12870" y="12330">
+   <LINKPOINT x="12770" y="12330">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="75" srcpinname="Y Output Value" dstnodeid="109" dstpinname="Stepsize" linkstyle="VHV" hiddenwhenlocked="1">
@@ -1621,7 +1619,7 @@
    <LINK srcnodeid="117" srcpinname="Vertex Tagged" dstnodeid="6" dstpinname="Vertex Tagged">
    </LINK>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="120">
-   <BOUNDS type="Node" left="7500" top="7875" width="100" height="100">
+   <BOUNDS type="Node" left="7500" top="7845" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1645,7 +1643,7 @@
    <LINK srcnodeid="121" srcpinname="Output" dstnodeid="45" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="117" srcpinname="Selection Rect" dstnodeid="120" dstpinname="Input">
-   <LINKPOINT x="8130" y="4995">
+   <LINKPOINT x="8100" y="5970">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="117" srcpinname="VerticesXY" dstnodeid="6" dstpinname="VerticesXY">
@@ -1728,4 +1726,6 @@
    <LINKPOINT x="12045" y="13710">
    </LINKPOINT>
    </LINK>
+   <INFO author="dominikKoller" description="Edit Polygons with Mouse and Keyboard" tags="">
+   </INFO>
    </PATCH>
