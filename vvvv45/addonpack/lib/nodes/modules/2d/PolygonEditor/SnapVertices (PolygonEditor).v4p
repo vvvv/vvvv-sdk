@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor).v4p" systemname="snapVertices" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\sub\snapVertices.v4p">
-   <BOUNDS type="Window" left="3045" top="990" width="24255" height="15060">
+   <BOUNDS type="Window" left="3045" top="1545" width="24255" height="14505">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -35,9 +35,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="98">
-   <BOUNDS type="Node" left="21780" top="615" width="100" height="100">
+   <BOUNDS type="Node" left="23760" top="525" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="21780" top="615" width="480" height="480">
+   <BOUNDS type="Box" left="23760" top="525" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -213,9 +213,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="142">
-   <BOUNDS type="Node" left="22950" top="615" width="100" height="100">
+   <BOUNDS type="Node" left="25125" top="570" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="22950" top="615" width="795" height="240">
+   <BOUNDS type="Box" left="25125" top="570" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="Keyboard">
    </PIN>
@@ -223,7 +223,7 @@
    </PIN>
    </NODE>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="143">
-   <BOUNDS type="Node" left="22935" top="1140" width="100" height="100">
+   <BOUNDS type="Node" left="25110" top="1095" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
@@ -237,7 +237,7 @@
    <LINK srcnodeid="142" srcpinname="Output Node" dstnodeid="143" dstpinname="Keyboard">
    </LINK>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="144">
-   <BOUNDS type="Node" left="22920" top="1770" width="100" height="100">
+   <BOUNDS type="Node" left="25095" top="1725" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -639,23 +639,23 @@
    </LINKPOINT>
    </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="175">
-   <BOUNDS type="Node" left="21795" top="2955" width="100" height="100">
+   <BOUNDS type="Node" left="23745" top="2895" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="175" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="175" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="175" srcpinname="Output" dstnodeid="174" dstpinname="Switch" linkstyle="VHV">
-   <LINKPOINT x="21825" y="12990">
+   <LINKPOINT x="23125" y="12950">
    </LINKPOINT>
-   <LINKPOINT x="11025" y="12990">
+   <LINKPOINT x="11675" y="12970">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="140" srcpinname="Inverse Output" dstnodeid="121" dstpinname="Input 2">
@@ -781,5 +781,11 @@
    <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Vertex Bin Size">
    </LINK>
    <LINK srcnodeid="171" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Vertex Bin Size">
+   </LINK>
+   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="175" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="175" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="175" dstpinname="Input 2">
    </LINK>
    </PATCH>

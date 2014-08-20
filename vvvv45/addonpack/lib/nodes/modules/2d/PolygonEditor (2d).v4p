@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="6480" top="930" width="21435" height="13185">
+   <BOUNDS type="Window" left="4725" top="915" width="21435" height="13185">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -481,9 +481,9 @@
    <LINK srcnodeid="31" srcpinname="Rotation" dstnodeid="6" dstpinname="Rotation" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="DragVertex (PolygonEditor)" filename="..\PolygonEditor/sub\DragVertex (PolygonEditor).v4p" nodename="DragVertex (PolygonEditor)" componentmode="Hidden" id="45" stayontop="1">
-   <BOUNDS type="Node" left="5070" top="7590" width="2175" height="270">
+   <BOUNDS type="Node" left="5070" top="8025" width="2340" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="2505" top="1350" width="19545" height="12615">
+   <BOUNDS type="Window" left="8220" top="780" width="19545" height="12615">
    </BOUNDS>
    <PIN pinname="isHit" visible="1">
    </PIN>
@@ -519,7 +519,7 @@
    </PIN>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
-   <BOUNDS type="Box" left="5070" top="7590">
+   <BOUNDS type="Box" left="5070" top="8025">
    </BOUNDS>
    <PIN pinname="Shape Mouseover" visible="1">
    </PIN>
@@ -535,11 +535,13 @@
    </PIN>
    <PIN pinname="Vertex Bin Size">
    </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="45" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="16050" y="7410">
+   <LINKPOINT x="16050" y="7555">
    </LINKPOINT>
-   <LINKPOINT x="7215" y="7410">
+   <LINKPOINT x="7215" y="7700">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="45" dstpinname="Mouseover" linkstyle="PolyLine">
@@ -695,9 +697,9 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="45" srcpinname="VerticesXY" dstnodeid="37" dstpinname="VerticesXY" hiddenwhenlocked="0" linkstyle="Bezier">
-   <LINKPOINT x="5100" y="8125">
+   <LINKPOINT x="5100" y="8415">
    </LINKPOINT>
-   <LINKPOINT x="5100" y="8165">
+   <LINKPOINT x="5100" y="8310">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="45" srcpinname="Vertex Tagged" dstnodeid="37" dstpinname="Vertex Tagged" hiddenwhenlocked="1" linkstyle="PolyLine">
@@ -1011,9 +1013,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5085" top="6840" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="-29100" top="45" width="26205" height="13725">
+   <BOUNDS type="Window" left="4545" top="945" width="21540" height="13725">
    </BOUNDS>
    <PIN pinname="Stepsize" visible="1">
+   </PIN>
+   <PIN pinname="Resizing" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="109" dstpinname="Mouse" linkstyle="VHV">
@@ -1143,6 +1147,8 @@
    </PIN>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Resizing" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="VerticesXY" dstnodeid="111" dstpinname="VerticesXY">
    </LINK>
@@ -1195,6 +1201,10 @@
    </PIN>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Resizing" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="150" top="1020" width="29040" height="13260">
+   </BOUNDS>
    </NODE>
    <LINK srcnodeid="20" srcpinname="VerticesXY" dstnodeid="112" dstpinname="VerticesXY">
    </LINK>
@@ -1227,7 +1237,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8280" top="9975" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.02">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.05">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -1518,6 +1528,46 @@
    <LINKPOINT x="17310" y="17670">
    </LINKPOINT>
    <LINKPOINT x="7785" y="17670">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="115">
+   <BOUNDS type="Node" left="6885" top="7560" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="115" srcpinname="Output" dstnodeid="45" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="116">
+   <BOUNDS type="Node" left="6870" top="7185" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="109" srcpinname="Resizing" dstnodeid="116" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Output" dstnodeid="115" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="109" srcpinname="Resizing" dstnodeid="112" dstpinname="Resizing">
+   <LINKPOINT x="8730" y="7890">
+   </LINKPOINT>
+   <LINKPOINT x="9435" y="9105">
+   </LINKPOINT>
+   <LINKPOINT x="9555" y="9960">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="109" srcpinname="Resizing" dstnodeid="111" dstpinname="Resizing">
+   <LINKPOINT x="9270" y="7875">
+   </LINKPOINT>
+   <LINKPOINT x="11115" y="10125">
+   </LINKPOINT>
+   <LINKPOINT x="12450" y="12405">
+   </LINKPOINT>
+   <LINKPOINT x="11970" y="14580">
    </LINKPOINT>
    </LINK>
    </PATCH>
