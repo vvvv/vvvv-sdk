@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" systemname="SelectionRectangle (PolygonEditor)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p">
-   <BOUNDS type="Window" left="9540" top="5205" width="19995" height="15600">
+   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="16440">
    </BOUNDS>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
@@ -151,7 +151,7 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="4" values="0,0,0,0,0,0,0">
+   <PIN pinname="Y Input Value" visible="1" slicecount="4" values="1,1,1,1">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1000">
    </PIN>
@@ -382,12 +382,6 @@
    </LINK>
    <LINK srcnodeid="45" srcpinname="Output" dstnodeid="46" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="41" srcpinname="PositionXY" dstnodeid="46" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="15605" y="5180">
-   </LINKPOINT>
-   <LINKPOINT x="11695" y="5365">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="49">
    <BOUNDS type="Node" left="12300" top="5730" width="100" height="100">
    </BOUNDS>
@@ -399,12 +393,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="45" srcpinname="Output" dstnodeid="49" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="PositionXY" dstnodeid="49" dstpinname="Input 2" linkstyle="VHV">
-   <LINKPOINT x="15605" y="5180">
-   </LINKPOINT>
-   <LINKPOINT x="12565" y="5365">
-   </LINKPOINT>
    </LINK>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="50">
    <BOUNDS type="Node" left="11400" top="6480" width="100" height="100">
@@ -538,12 +526,6 @@
    <LINKPOINT x="2025" y="5733">
    </LINKPOINT>
    <LINKPOINT x="10245" y="5563">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="59" srcpinname="Output" dstnodeid="4" dstpinname="Y Input Value" linkstyle="Bezier">
-   <LINKPOINT x="10000" y="10263">
-   </LINKPOINT>
-   <LINKPOINT x="1970" y="10303">
    </LINKPOINT>
    </LINK>
    <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="60">
@@ -771,5 +753,39 @@
    <LINK srcnodeid="82" srcpinname="Output" dstnodeid="79" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="79" srcpinname="Output" dstnodeid="63" dstpinname="Input">
+   </LINK>
+   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="83">
+   <BOUNDS type="Node" left="16350" top="1860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Output Node" dstnodeid="83" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="83" srcpinname="PositionXY" dstnodeid="46" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="83" srcpinname="PositionXY" dstnodeid="49" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="84" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13050" top="11535" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13050" top="11535" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="6" values="|Vertex In Selection Rect|,|Vertex In Selection Rect|,|Vertex In Selection Rect|,|Vertex In Selection Rect|,|Vertex In Selection Rect|,|Vertex In Selection Rect|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output" dstnodeid="84" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

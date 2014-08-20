@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="4995" top="4695" width="24495" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -153,7 +153,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -398,7 +398,7 @@
    <LINKPOINT x="6570" y="3650">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="TagVertices (PolygonEditor)" filename="..\PolygonEditor/sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="Hidden" id="6">
+   <NODE systemname="TagVertices (PolygonEditor)" filename="..\PolygonEditor/sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="InAWindow" id="6">
    <BOUNDS type="Node" left="5055" top="4785" width="1920" height="270">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
@@ -419,7 +419,7 @@
    </PIN>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
-   <BOUNDS type="Window" left="540" top="0" width="28500" height="15840">
+   <BOUNDS type="Window" left="-28920" top="-1920" width="29040" height="18240">
    </BOUNDS>
    <PIN pinname="Shape Rotation" visible="1">
    </PIN>
@@ -434,6 +434,10 @@
    <PIN pinname="Shape Mode" visible="1">
    </PIN>
    <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Vertex In Selection Rect" visible="1">
+   </PIN>
+   <PIN pinname="Selection Rect" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="6" dstpinname="Mouse" linkstyle="VHV">
@@ -825,7 +829,7 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="1">
    </PIN>
@@ -839,7 +843,7 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="Quantize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p" componentmode="Hidden" id="100" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor).v4p">
@@ -931,12 +935,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="100" dstpinname="Enable">
-   </LINK>
-   <LINK srcnodeid="51" srcpinname="Left Button" dstnodeid="103" dstpinname="Input 1" linkstyle="VHV">
-   <LINKPOINT x="15160" y="18495">
-   </LINKPOINT>
-   <LINKPOINT x="8285" y="18495">
-   </LINKPOINT>
    </LINK>
    <LINK srcnodeid="96" srcpinname="Y Output Value" dstnodeid="103" dstpinname="Input 2" linkstyle="VHV">
    <LINKPOINT x="19770" y="18645">
@@ -1513,7 +1511,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="4230" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="9540" top="5205" width="19995" height="15600">
+   <BOUNDS type="Window" left="11280" top="3030" width="29040" height="16440">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
    </PIN>
@@ -1534,6 +1532,8 @@
    <PIN pinname="Mouseover" visible="1">
    </PIN>
    <PIN pinname="Selection Rect" visible="1">
+   </PIN>
+   <PIN pinname="Vertex In Selection Rect" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="VerticesXY" dstnodeid="117" dstpinname="VerticesXY">
@@ -1692,6 +1692,18 @@
    <LINKPOINT x="12195" y="12225">
    </LINKPOINT>
    <LINKPOINT x="12150" y="14250">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="117" srcpinname="Vertex In Selection Rect" dstnodeid="6" dstpinname="Vertex In Selection Rect">
+   </LINK>
+   <LINK srcnodeid="117" srcpinname="Selection Rect" dstnodeid="6" dstpinname="Selection Rect">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="103" dstpinname="Input 1">
+   <LINKPOINT x="9495" y="9450">
+   </LINKPOINT>
+   <LINKPOINT x="12270" y="12165">
+   </LINKPOINT>
+   <LINKPOINT x="12240" y="14325">
    </LINKPOINT>
    </LINK>
    </PATCH>
