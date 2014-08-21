@@ -694,18 +694,10 @@
    <LINKPOINT x="9755" y="13885">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="12885" top="17250" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="21">
    <BOUNDS type="Node" left="12885" top="17700" width="1155" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -1122,10 +1114,18 @@
    </LINK>
    <LINK srcnodeid="66" srcpinname="Y Output Value" dstnodeid="115" dstpinname="Input 2">
    </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <NODE systemname="AND (Boolean Spectral)" nodename="AND (Boolean Spectral)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="12885" top="17250" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
    <LINK srcnodeid="115" srcpinname="Output" dstnodeid="23" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="21" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Input">
    </LINK>
    </PATCH>
