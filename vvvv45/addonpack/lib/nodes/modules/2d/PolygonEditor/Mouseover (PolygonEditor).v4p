@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Mouseover (PolygonEditor).v4p" systemname="hitTestPointsShapes" filename="D:\gitHub\DragCornersSwitch\sub\hitTestPointsShapes.v4p" locked="0">
-   <BOUNDS type="Window" left="2565" top="705" width="24450" height="14025">
+   <BOUNDS type="Window" left="-1965" top="480" width="24450" height="14025">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -503,8 +503,10 @@
    </PIN>
    <PIN pinname="MouseXY" visible="1">
    </PIN>
+   <PIN pinname="Shape Mode" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Shape Mouseover" dstnodeid="102" dstpinname="Input 2">
+   <LINK srcnodeid="13" srcpinname="Polygon Mouseover" dstnodeid="102" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="13" dstpinname="VerticesXY" linkstyle="VHV">
    <LINKPOINT x="9645" y="3780">
@@ -532,11 +534,11 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Shape Mouseover" dstnodeid="145" dstpinname="Input">
+   <LINK srcnodeid="13" srcpinname="Polygon Mouseover" dstnodeid="145" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="145" srcpinname="Maximum" dstnodeid="146" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="13" srcpinname="Shape Mouseover" dstnodeid="146" dstpinname="Input 2">
+   <LINK srcnodeid="13" srcpinname="Polygon Mouseover" dstnodeid="146" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="147">
    <BOUNDS type="Node" left="12330" top="6705" width="465" height="270">
@@ -548,63 +550,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Shape Mouseover" dstnodeid="147" dstpinname="Input 1">
-   </LINK>
-   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="154">
-   <BOUNDS type="Node" left="15585" top="5145" width="645" height="270">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="155">
-   <BOUNDS type="Node" left="15210" top="4740" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="156" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="15420" top="4380" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="15420" top="4380" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="156" srcpinname="Y Output Value" dstnodeid="155" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Shape Mouseover" dstnodeid="155" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Y Output Value" dstnodeid="154" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="157">
-   <BOUNDS type="Node" left="13800" top="5670" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="146" srcpinname="Output" dstnodeid="157" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="154" srcpinname="Output" dstnodeid="157" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="155" srcpinname="Inverse Output" dstnodeid="154" dstpinname="Input 1">
+   <LINK srcnodeid="13" srcpinname="Polygon Mouseover" dstnodeid="147" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="147" srcpinname="Output" dstnodeid="102" dstpinname="Input 1">
    </LINK>
@@ -627,7 +573,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="12930" top="6690" width="4035" height="585">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; don&apos;t loose values from 0 - 3&cr;&lf;(OnlyOneTrue obviously only gives out True of False)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; don&apos;t loose values from 0 - 2&cr;&lf;(OnlyOneTrue obviously only gives out True of False)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -637,11 +583,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="175" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="16470" top="5250" width="8670" height="270">
+   <BOUNDS type="Node" left="15270" top="4920" width="8670" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="16470" top="5250" width="3975" height="1185">
+   <BOUNDS type="Box" left="15270" top="4920" width="3960" height="510">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; whether the polygon has the highest mouseover of all polygon (directly over the polygon = 3, over it&apos;s bounds = 2, a bit outside its bounds = 1) or the shape has any mouseover and is selected (is being resized with a CircumRectangle)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; whether the polygon has the highest mouseover of all polygons (1 = mouseover, 2 = +Espilon Mouseover)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -651,11 +597,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="176" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="20550" top="5235" width="1545" height="270">
+   <BOUNDS type="Node" left="19350" top="4905" width="1545" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="20550" top="5235" width="3465" height="1200">
+   <BOUNDS type="Box" left="19350" top="4905" width="3465" height="1200">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; this is because mouseovers directly over the body of a polygon should be favoured over a mouseover over a polygon&apos;s bounds, despite the Z-Index. When there is a CircumRectangle (the polygon is selected), this does not apply.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; this is because mouseovers directly over the body of a polygon should be favoured over a +epsilon Mouseover ( - the shape is scaled up a bit before the hittest)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -699,8 +645,6 @@
    <LINK srcnodeid="117" srcpinname="Y Output Value" dstnodeid="134" dstpinname="Z-Index" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="134" srcpinname="Output" dstnodeid="147" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="157" srcpinname="Output" dstnodeid="134" dstpinname="Input">
    </LINK>
    <NODE systemname="HitPoint (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\HitPoint (PolygonEditor).v4p" nodename="HitPoint (PolygonEditor)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="10140" top="4185" width="100" height="100">
@@ -791,5 +735,9 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="194" srcpinname="Y Output Value" dstnodeid="195" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Y Output Value" dstnodeid="13" dstpinname="Shape Mode">
+   </LINK>
+   <LINK srcnodeid="146" srcpinname="Output" dstnodeid="134" dstpinname="Input">
    </LINK>
    </PATCH>
