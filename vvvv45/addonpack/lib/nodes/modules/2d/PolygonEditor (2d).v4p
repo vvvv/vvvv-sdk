@@ -318,7 +318,7 @@
    </LINK>
    <LINK srcnodeid="34" srcpinname="Rotation" dstnodeid="25" dstpinname="Rotation" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Mouseover (PolygonEditor)" filename="..\PolygonEditor/sub\Mouseover (PolygonEditor).v4p" nodename="Mouseover (PolygonEditor)" componentmode="Hidden" id="31" stayontop="0">
+   <NODE systemname="Mouseover (PolygonEditor)" filename="..\PolygonEditor/sub\Mouseover (PolygonEditor).v4p" nodename="Mouseover (PolygonEditor)" componentmode="InAWindow" id="31" stayontop="0">
    <BOUNDS type="Node" left="5055" top="3780" width="1875" height="270">
    </BOUNDS>
    <PIN pinname="pointsXY" visible="1">
@@ -386,7 +386,7 @@
    <LINKPOINT x="6570" y="3650">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="TagVertices (PolygonEditor)" filename="..\PolygonEditor/sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="InAWindow" id="6">
+   <NODE systemname="TagVertices (PolygonEditor)" filename="..\PolygonEditor/sub\TagVertices (PolygonEditor).v4p" nodename="TagVertices (PolygonEditor)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="5055" top="4890" width="1920" height="270">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
@@ -451,7 +451,7 @@
    <NODE systemname="DragVertex (PolygonEditor)" filename="..\PolygonEditor/sub\DragVertex (PolygonEditor).v4p" nodename="DragVertex (PolygonEditor)" componentmode="Hidden" id="45" stayontop="1">
    <BOUNDS type="Node" left="5055" top="8715" width="2340" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="8220" top="780" width="19545" height="12615">
+   <BOUNDS type="Window" left="930" top="1050" width="19545" height="12615">
    </BOUNDS>
    <PIN pinname="isHit" visible="1">
    </PIN>
@@ -779,15 +779,17 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output Node" dstnodeid="5" dstpinname="Mouse" linkstyle="VHV">
-   <LINKPOINT x="15910" y="5420">
+   <LINKPOINT x="15825" y="5895">
    </LINKPOINT>
-   <LINKPOINT x="6185" y="5665">
+   <LINKPOINT x="7185" y="5895">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Force Shape Mode" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="5" dstpinname="Mouseover">
    <LINKPOINT x="8715" y="4845">
+   </LINKPOINT>
+   <LINKPOINT x="7590" y="5880">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="5" srcpinname="VerticesXY" dstnodeid="91" dstpinname="VerticesXY">
@@ -946,7 +948,7 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <NODE systemname="BoundsResize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor).v4p" componentmode="InAWindow" id="109" nodename="BoundsResize (PolygonEditor)" stayontop="0">
+   <NODE systemname="BoundsResize (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor).v4p" componentmode="Hidden" id="109" nodename="BoundsResize (PolygonEditor)" stayontop="0">
    <BOUNDS type="Node" left="5055" top="7050" width="2340" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="7050" width="4800" height="3600">
@@ -1472,7 +1474,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="109" srcpinname="Resizing" dstnodeid="116" dstpinname="Input">
+   <LINK srcnodeid="109" srcpinname="Resizing" dstnodeid="116" dstpinname="Input" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="116" srcpinname="Output" dstnodeid="115" dstpinname="Input">
    </LINK>
@@ -1494,7 +1496,7 @@
    <LINKPOINT x="11982" y="15132">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="SelectionRectangle (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" componentmode="InAWindow" id="117" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" stayontop="1">
+   <NODE systemname="SelectionRectangle (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" componentmode="Hidden" id="117" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\SelectionRectangle (PolygonEditor).v4p" stayontop="1">
    <BOUNDS type="Node" left="5055" top="4230" width="1605" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="4230" width="4800" height="3600">
@@ -1822,7 +1824,7 @@
    </LINK>
    <LINK srcnodeid="100" srcpinname="Tagged" dstnodeid="79" dstpinname="Tagged">
    </LINK>
-   <NODE systemname="TagPolygons (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p" componentmode="InAWindow" id="128" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p">
+   <NODE systemname="TagPolygons (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p" componentmode="Hidden" id="128" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p">
    <BOUNDS type="Node" left="5055" top="5475" width="2625" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="5055" top="5475" width="4800" height="3600">
