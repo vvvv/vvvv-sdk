@@ -343,6 +343,8 @@
    </PIN>
    <PIN pinname="Sort After Z-Index" slicecount="1" visible="1" values="0">
    </PIN>
+   <PIN pinname="Sort By Z-Index" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="VerticesXY" dstnodeid="13" dstpinname="Input">
    </LINK>
@@ -386,6 +388,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Sort After Z-Index">
@@ -479,7 +483,7 @@
    <LINK srcnodeid="0" srcpinname="Shape Mode" dstnodeid="12" dstpinname="Input">
    </LINK>
    <NODE systemname="Polygon (EX9.Geometry 2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\2dMeshNodes.dll" nodename="Polygon (EX9.Geometry 2d)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="9450" top="4500" width="100" height="100">
+   <BOUNDS type="Node" left="9660" top="4740" width="100" height="100">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
    </PIN>
@@ -516,8 +520,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="39" srcpinname="Output 2" dstnodeid="43" dstpinname="Color">
-   </LINK>
    <LINK srcnodeid="0" srcpinname="VerticesXY" dstnodeid="44" dstpinname="VerticesXY">
    </LINK>
    <LINK srcnodeid="43" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 4">
@@ -525,5 +527,27 @@
    <LINK srcnodeid="0" srcpinname="Vertex Bin Size" dstnodeid="44" dstpinname="Vertex Count">
    </LINK>
    <LINK srcnodeid="35" srcpinname="Output" dstnodeid="1" dstpinname="Colors">
+   </LINK>
+   <NODE systemname="Switch (Color Input)" nodename="Switch (Color Input)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="10545" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Output 2" dstnodeid="45" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Output 3" dstnodeid="45" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="43" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Tagged" dstnodeid="45" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Sort By Z-Index">
    </LINK>
    </PATCH>
