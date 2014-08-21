@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="3105" top="0" width="25155" height="15600">
+   <BOUNDS type="Window" left="690" top="-240" width="24495" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -143,7 +143,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -813,7 +813,7 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="1">
    </PIN>
@@ -1603,17 +1603,17 @@
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="122">
    <BOUNDS type="Node" left="14235" top="930" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="14235" top="930" width="900" height="240">
+   <BOUNDS type="Box" left="14235" top="930" width="510" height="480">
    </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Real">
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Snap Threshold|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Snap">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="0.06">
+   <PIN pinname="Default" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Y Input Value" slicecount="1" values="0.06">
    </PIN>
@@ -1624,30 +1624,6 @@
    </LINK>
    <INFO author="dominikKoller" description="Edit Polygons with Mouse and Keyboard" tags="">
    </INFO>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
-   <LINKPOINT x="14265" y="10050">
-   </LINKPOINT>
-   <LINKPOINT x="7935" y="10050">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="112" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
-   <LINKPOINT x="14265" y="11115">
-   </LINKPOINT>
-   <LINKPOINT x="7920" y="11115">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
-   <LINKPOINT x="14265" y="18330">
-   </LINKPOINT>
-   <LINKPOINT x="7410" y="18330">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Epsilon" hiddenwhenlocked="1" linkstyle="VHV">
-   <LINKPOINT x="14265" y="17385">
-   </LINKPOINT>
-   <LINKPOINT x="7395" y="17385">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="20" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Down Edge" dstnodeid="112" dstpinname="Enable">
@@ -1675,11 +1651,11 @@
    <LINK srcnodeid="117" srcpinname="Selection Rect" dstnodeid="6" dstpinname="Selection Rect">
    </LINK>
    <LINK srcnodeid="45" srcpinname="Dragging" dstnodeid="103" dstpinname="Input 1">
-   <LINKPOINT x="9487" y="9326">
+   <LINKPOINT x="9480" y="9330">
    </LINKPOINT>
-   <LINKPOINT x="12255" y="11918">
+   <LINKPOINT x="12285" y="12180">
    </LINKPOINT>
-   <LINKPOINT x="12218" y="13954">
+   <LINKPOINT x="12225" y="14325">
    </LINKPOINT>
    </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="123">
@@ -1719,5 +1695,77 @@
    <LINK srcnodeid="102" srcpinname="Output" dstnodeid="124" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="124" srcpinname="Output" dstnodeid="101" dstpinname="Enable">
+   </LINK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="125">
+   <BOUNDS type="Node" left="14205" top="2175" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="125" dstpinname="Switch">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="126" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14895" top="1785" width="510" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14895" top="1785" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.06">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="126" srcpinname="Y Output Value" dstnodeid="125" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="127" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14535" top="1785" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14535" top="1785" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="127" srcpinname="Y Output Value" dstnodeid="125" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="20" dstpinname="Epsilon" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="14235" y="10095">
+   </LINKPOINT>
+   <LINKPOINT x="7935" y="10095">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="112" dstpinname="Epsilon" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="14235" y="11130">
+   </LINKPOINT>
+   <LINKPOINT x="7920" y="11130">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="12" dstpinname="Epsilon" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="14235" y="17460">
+   </LINKPOINT>
+   <LINKPOINT x="7395" y="17460">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="111" dstpinname="Epsilon" linkstyle="VHV" hiddenwhenlocked="1">
+   <LINKPOINT x="14235" y="18315">
+   </LINKPOINT>
+   <LINKPOINT x="7410" y="18315">
+   </LINKPOINT>
    </LINK>
    </PATCH>
