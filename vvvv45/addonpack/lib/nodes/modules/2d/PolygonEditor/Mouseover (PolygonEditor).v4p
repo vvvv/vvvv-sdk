@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Mouseover (PolygonEditor).v4p" systemname="hitTestPointsShapes" filename="D:\gitHub\DragCornersSwitch\sub\hitTestPointsShapes.v4p" locked="0">
-   <BOUNDS type="Window" left="750" top="420" width="24450" height="14025">
+   <BOUNDS type="Window" left="1110" top="2265" width="24450" height="14025">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -507,6 +507,10 @@
    </PIN>
    <PIN pinname="Polygon Mouseover" visible="1">
    </PIN>
+   <PIN pinname="Grow Factor" visible="1">
+   </PIN>
+   <PIN pinname="Bounds Epsilon" visible="1" slicecount="1" values="0.13">
+   </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Polygon Mouseover" dstnodeid="102" dstpinname="Input 2">
    </LINK>
@@ -667,6 +671,8 @@
    </PIN>
    <PIN pinname="VertexXY" visible="1">
    </PIN>
+   <PIN pinname="EpsilonXY" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Is Hit" dstnodeid="103" dstpinname="Input 2">
    </LINK>
@@ -688,8 +694,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="193" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Epsilon">
-   </LINK>
    <LINK srcnodeid="103" srcpinname="Output" dstnodeid="6" dstpinname="Y Input Value">
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
@@ -877,5 +881,93 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="206" srcpinname="Y Output Value" dstnodeid="200" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="207" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="21435" top="1845" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="21435" top="1845" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.12">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="208" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="19290" top="1830" width="855" height="405">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19290" top="1830" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="209">
+   <BOUNDS type="Node" left="20595" top="705" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="20595" top="705" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="ScaleXY">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="211">
+   <BOUNDS type="Node" left="20400" top="2295" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="212" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="20220" top="1695" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="20220" top="1695" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.15">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="212" srcpinname="Y Output Value" dstnodeid="211" dstpinname="Input 1">
+   <LINKPOINT x="20295" y="1905">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="209" srcpinname="Y Output Value" dstnodeid="211" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="211" srcpinname="Output" dstnodeid="14" dstpinname="EpsilonXY">
+   </LINK>
+   <LINK srcnodeid="211" srcpinname="Output" dstnodeid="13" dstpinname="Bounds Epsilon">
+   </LINK>
+   <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="213">
+   <BOUNDS type="Node" left="21390" top="2280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="207" srcpinname="Y Output Value" dstnodeid="213" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="209" srcpinname="Y Output Value" dstnodeid="213" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="213" srcpinname="Output" dstnodeid="13" dstpinname="Grow Factor">
    </LINK>
    </PATCH>

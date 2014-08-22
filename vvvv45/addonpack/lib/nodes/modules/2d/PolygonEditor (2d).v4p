@@ -318,12 +318,12 @@
    </LINK>
    <LINK srcnodeid="34" srcpinname="Rotation" dstnodeid="25" dstpinname="Rotation" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Mouseover (PolygonEditor)" filename="..\PolygonEditor/sub\Mouseover (PolygonEditor).v4p" nodename="Mouseover (PolygonEditor)" componentmode="Hidden" id="31" stayontop="0">
+   <NODE systemname="Mouseover (PolygonEditor)" filename="..\PolygonEditor/sub\Mouseover (PolygonEditor).v4p" nodename="Mouseover (PolygonEditor)" componentmode="Hidden" id="31" stayontop="1">
    <BOUNDS type="Node" left="5055" top="3780" width="1875" height="270">
    </BOUNDS>
    <PIN pinname="pointsXY" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="750" top="420" width="24450" height="14025">
+   <BOUNDS type="Window" left="1110" top="2265" width="24450" height="14025">
    </BOUNDS>
    <PIN pinname="#pointsInShape" visible="1">
    </PIN>
@@ -378,6 +378,8 @@
    <PIN pinname="Rotation" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Tagged" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="DragVertex (PolygonEditor)" filename="..\PolygonEditor/sub\DragVertex (PolygonEditor).v4p" nodename="DragVertex (PolygonEditor)" componentmode="Hidden" id="45" stayontop="1">
@@ -868,6 +870,8 @@
    <PIN pinname="Quantization" visible="1">
    </PIN>
    <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="109" dstpinname="Mouseover" linkstyle="PolyLine">
@@ -1972,6 +1976,38 @@
    <LINKPOINT x="15825" y="8655">
    </LINKPOINT>
    <LINKPOINT x="7365" y="8655">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Decompose (Transform Vector)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Decompose (Transform Vector)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="18315" top="2085" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="135" srcpinname="Transform Out" dstnodeid="136" dstpinname="Transform In">
+   </LINK>
+   <NODE systemname="xy (2d)" nodename="xy (2d)" componentmode="Hidden" id="139">
+   <BOUNDS type="Node" left="18585" top="2700" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="ScaleXYZ" dstnodeid="139" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="139" srcpinname="XY" dstnodeid="31" dstpinname="ScaleXY" linkstyle="VHV">
+   <LINKPOINT x="18615" y="3465">
+   </LINKPOINT>
+   <LINKPOINT x="6900" y="3465">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="139" srcpinname="XY" dstnodeid="109" dstpinname="ScaleXY" linkstyle="VHV">
+   <LINKPOINT x="18615" y="6705">
+   </LINKPOINT>
+   <LINKPOINT x="6945" y="6705">
    </LINKPOINT>
    </LINK>
    </PATCH>
