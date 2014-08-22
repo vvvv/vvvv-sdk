@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" systemname="dragCorners" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\dragCorners.v4p">
-   <BOUNDS type="Window" left="-120" top="-120" width="29040" height="15840">
+   <BOUNDS type="Window" left="690" top="-240" width="24495" height="15840">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -45,7 +45,7 @@
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="36" values="6,4,0,0,0,0,0,12,2,1,1,2,1,1,2,1,1,2,1,1,-0.4,0.78,0,0,0.01,-0.29,0,0,-0.69,-0.39,0,0,-0.85,0.42,0,0">
+   <PIN pinname="Input 1" visible="1" slicecount="70" values="12,4,1,0,1,0,0,4,1,1,1,0,0,24,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,0.17578125,-0.265625,1,0,-0.33984375,-0.265625,0,0,-0.33984375,0.25,0,0,0.17578125,0.25,0,0,0.82421875,-0.2421875,0,0,0.23046875,-0.2421875,1,0,0.23046875,0.2578125,0,0,0.82421875,0.2578125,0,0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
@@ -143,7 +143,7 @@
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -593,9 +593,9 @@
    <LINK srcnodeid="45" srcpinname="Z-Index" dstnodeid="37" dstpinname="Z-Index" hiddenwhenlocked="1">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="82">
-   <BOUNDS type="Node" left="5070" top="21495" width="100" height="100">
+   <BOUNDS type="Node" left="5070" top="22095" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5070" top="21495" width="1230" height="390">
+   <BOUNDS type="Box" left="5070" top="22095" width="1230" height="390">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -719,7 +719,7 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="1">
    </PIN>
@@ -1153,11 +1153,11 @@
    <LINK srcnodeid="25" srcpinname="Mouseover" dstnodeid="32" dstpinname="Mouseover">
    </LINK>
    <NODE systemname="Polygon (PolygonEditor Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Join).v4p" nodename="Polygon (PolygonEditor Join)" componentmode="Hidden" id="79">
-   <BOUNDS type="Node" left="5085" top="20400" width="5415" height="270">
+   <BOUNDS type="Node" left="5085" top="21000" width="5415" height="270">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1">
    </PIN>
-   <PIN pinname="Vertex Tagged" visible="1">
+   <PIN pinname="Vertex Tagged" visible="1" slicecount="8" values="1,1,0,0,0,1,0,0">
    </PIN>
    <PIN pinname="Vertex Mouseover" visible="1" slicecount="4" values="0,0,0,0">
    </PIN>
@@ -1165,7 +1165,7 @@
    </PIN>
    <PIN pinname="Z-Index" visible="1">
    </PIN>
-   <PIN pinname="Tagged" visible="1" slicecount="1" values="0">
+   <PIN pinname="Tagged" visible="1" slicecount="2" values="1,1">
    </PIN>
    <PIN pinname="Mouseover" visible="1" slicecount="1" values="3">
    </PIN>
@@ -1185,8 +1185,6 @@
    <LINK srcnodeid="79" srcpinname="Output" dstnodeid="82" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="100" srcpinname="VerticesXY" dstnodeid="79" dstpinname="VerticesXY">
-   </LINK>
-   <LINK srcnodeid="100" srcpinname="Vertex Tagged" dstnodeid="79" dstpinname="Vertex Tagged">
    </LINK>
    <LINK srcnodeid="100" srcpinname="Vertex Bin Size" dstnodeid="79" dstpinname="Vertex Bin Size">
    </LINK>
@@ -1313,27 +1311,27 @@
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="10" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Vertex Mouseover" dstnodeid="79" dstpinname="Vertex Mouseover">
-   <LINKPOINT x="5400" y="17310">
+   <LINKPOINT x="5400" y="17410">
    </LINKPOINT>
-   <LINKPOINT x="5625" y="17295">
+   <LINKPOINT x="5625" y="17495">
    </LINKPOINT>
-   <LINKPOINT x="6540" y="19905">
+   <LINKPOINT x="6405" y="20220">
    </LINKPOINT>
-   <LINKPOINT x="6240" y="20115">
+   <LINKPOINT x="6060" y="20485">
    </LINKPOINT>
-   <LINKPOINT x="6555" y="20115">
+   <LINKPOINT x="6390" y="20585">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="10" srcpinname="Mouseover" dstnodeid="79" dstpinname="Mouseover">
-   <LINKPOINT x="7095" y="17295">
+   <LINKPOINT x="7095" y="17395">
    </LINKPOINT>
-   <LINKPOINT x="7365" y="17160">
+   <LINKPOINT x="7365" y="17360">
    </LINKPOINT>
-   <LINKPOINT x="7305" y="17475">
+   <LINKPOINT x="7305" y="17775">
    </LINKPOINT>
-   <LINKPOINT x="10155" y="20190">
+   <LINKPOINT x="10155" y="20590">
    </LINKPOINT>
-   <LINKPOINT x="10530" y="20010">
+   <LINKPOINT x="10530" y="20510">
    </LINKPOINT>
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="114">
@@ -1405,6 +1403,8 @@
    </PIN>
    <PIN pinname="Polygon In Selectino Rect" visible="1">
    </PIN>
+   <PIN pinname="Polygon In Selection Rect" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="VerticesXY" dstnodeid="117" dstpinname="VerticesXY">
    </LINK>
@@ -1423,9 +1423,9 @@
    <LINK srcnodeid="31" srcpinname="Mouseover" dstnodeid="117" dstpinname="Mouseover">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="118" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="14505" top="21795" width="480" height="480">
+   <BOUNDS type="Box" left="14760" top="21825" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="14505" top="21795" width="0" height="0">
+   <BOUNDS type="Node" left="14760" top="21825" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1437,13 +1437,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Selection Rect|">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="117" srcpinname="Selection Rect" dstnodeid="118" dstpinname="Y Input Value">
-   <LINKPOINT x="13005" y="7155">
-   </LINKPOINT>
-   <LINKPOINT x="14775" y="12375">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output Node" dstnodeid="31" dstpinname="Keyboard" linkstyle="VHV" hiddenwhenlocked="1">
    <LINKPOINT x="17310" y="3815">
    </LINKPOINT>
@@ -1634,8 +1630,6 @@
    <LINKPOINT x="7410" y="18315">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="33" srcpinname="Tagged" dstnodeid="31" dstpinname="Tagged">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Tagged" dstnodeid="117" dstpinname="Tagged">
@@ -1665,8 +1659,6 @@
    <LINK srcnodeid="12" srcpinname="Tagged" dstnodeid="111" dstpinname="Tagged">
    </LINK>
    <LINK srcnodeid="111" srcpinname="Tagged" dstnodeid="100" dstpinname="Tagged">
-   </LINK>
-   <LINK srcnodeid="100" srcpinname="Tagged" dstnodeid="79" dstpinname="Tagged">
    </LINK>
    <NODE systemname="TagPolygons (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p" componentmode="Hidden" id="128" nodename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\TagPolygons (PolygonEditor).v4p">
    <BOUNDS type="Node" left="5055" top="5475" width="2625" height="270">
@@ -1933,7 +1925,7 @@
    <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="135">
    <BOUNDS type="Node" left="18315" top="1560" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Source" visible="1">
+   <PIN pinname="Source" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -2008,6 +2000,124 @@
    <LINKPOINT x="18615" y="6705">
    </LINKPOINT>
    <LINKPOINT x="6945" y="6705">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="142" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10605" top="20490" width="8970" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10605" top="20490" width="4275" height="780">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; the two OR&apos;s mean that vertices and polygons are going to be visualized as tagged when inside the selection rectangle|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="141">
+   <BOUNDS type="Node" left="7755" top="20070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="140">
+   <BOUNDS type="Node" left="6015" top="20040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="144">
+   <BOUNDS type="Node" left="5700" top="20520" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="140" srcpinname="Output" dstnodeid="144" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Vertex Tagged" dstnodeid="144" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="144" srcpinname="Output" dstnodeid="79" dstpinname="Vertex Tagged">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="145">
+   <BOUNDS type="Node" left="7455" top="20505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="141" srcpinname="Output" dstnodeid="145" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Tagged" dstnodeid="145" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="145" srcpinname="Output" dstnodeid="79" dstpinname="Tagged">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="146" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14835" top="18810" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14835" top="18810" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="117" srcpinname="Selection Rect" dstnodeid="146" dstpinname="Y Input Value">
+   <LINKPOINT x="13115" y="7760">
+   </LINKPOINT>
+   <LINKPOINT x="14950" y="13465">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="146" srcpinname="Y Output Value" dstnodeid="118" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="146" srcpinname="Y Output Value" dstnodeid="141" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="146" srcpinname="Y Output Value" dstnodeid="140" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="117" srcpinname="Vertex In Selection Rect" dstnodeid="140" dstpinname="Input 1">
+   <LINKPOINT x="9135" y="5535">
+   </LINKPOINT>
+   <LINKPOINT x="12825" y="8460">
+   </LINKPOINT>
+   <LINKPOINT x="13950" y="13935">
+   </LINKPOINT>
+   <LINKPOINT x="10335" y="18900">
+   </LINKPOINT>
+   <LINKPOINT x="8955" y="19545">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="117" srcpinname="Polygon In Selection Rect" dstnodeid="141" dstpinname="Input 1">
+   <LINKPOINT x="9300" y="5490">
+   </LINKPOINT>
+   <LINKPOINT x="12915" y="8340">
+   </LINKPOINT>
+   <LINKPOINT x="14010" y="13905">
+   </LINKPOINT>
+   <LINKPOINT x="10470" y="19005">
    </LINKPOINT>
    </LINK>
    </PATCH>
