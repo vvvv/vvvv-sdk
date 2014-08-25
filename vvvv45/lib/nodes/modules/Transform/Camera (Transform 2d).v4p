@@ -11,7 +11,7 @@
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="8">
    <BOUNDS type="Node" left="1935" top="5475" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0.0434419381787801,0.0267558528428094">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -52,7 +52,7 @@
    <PIN pinname="Input Node" visible="1">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="8475" top="5985" width="14565" height="8400">
+   <BOUNDS type="Window" left="1230" top="2340" width="11970" height="7440">
    </BOUNDS>
    <NODE systemname="Keyboard (System Global Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Global)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="6855" top="270" width="100" height="100">
@@ -221,7 +221,7 @@
    </PIN>
    <BOUNDS type="Window" left="6165" top="8685" width="7035" height="4920">
    </BOUNDS>
-   <PIN pinname="Mapping" slicecount="1" values="Clamp">
+   <PIN pinname="Mapping" slicecount="1" values="Float">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="1">
    </PIN>
@@ -235,24 +235,6 @@
    <LINK srcnodeid="29" srcpinname="Output" dstnodeid="26" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="31" dstpinname="XYZ">
-   </LINK>
-   <NODE systemname="SumUp (Value)" filename="%VVVV%\lib\nodes\modules\Value\SumUp (Value).v4p" nodename="SumUp (Value)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="1980" top="4845" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Initialize" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="1980" top="4845">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="8" dstpinname="TranslateXY">
-   </LINK>
-   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="24" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Initialize">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="35" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3315" top="375" width="795" height="240">
@@ -338,4 +320,142 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="60" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8670" top="2835" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8670" top="2835" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Keyboard (System Global Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (System Global)" componentmode="Hidden" id="59">
+   <BOUNDS type="Node" left="8670" top="405" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="8670" top="405">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="58">
+   <BOUNDS type="Node" left="8670" top="780" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" values="r">
+   </PIN>
+   <BOUNDS type="Box" left="8670" top="780">
+   </BOUNDS>
+   <PIN pinname="Key Mode" slicecount="1" values="Press">
+   </PIN>
+   <PIN pinname="R" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="59" srcpinname="Keyboard" dstnodeid="58" dstpinname="Keyboard">
+   </LINK>
+   <NODE systemname="Stopwatch (Animation)" nodename="Stopwatch (Animation)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="8670" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Run" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="58" srcpinname="R" dstnodeid="57" dstpinname="Run">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="8670" top="2055" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="9420" top="1230" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="55" srcpinname="Output" dstnodeid="57" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="R" dstnodeid="55" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="54" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9240" top="2055" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9240" top="2055" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="54" srcpinname="Y Output Value" dstnodeid="56" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="8670" top="2430" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output" dstnodeid="53" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Up Edge" dstnodeid="60" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="56" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1395" top="5565" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1395" top="5565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0.0434419381787801,0.0267558528428094">
+   </PIN>
+   </NODE>
+   <NODE systemname="SumUp (Value)" filename="%VVVV%\lib\nodes\modules\Value\SumUp (Value).v4p" nodename="SumUp (Value)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="1980" top="4845" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1980" top="4845">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3030" top="2625" width="8130" height="4920">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="8" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="62" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="62" dstpinname="Initialize">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="61" dstpinname="Y Input Value">
+   </LINK>
    </PATCH>
