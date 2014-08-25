@@ -43,7 +43,13 @@ namespace VVVV.Nodes.Generic
                     // Set reader to its initial position
                     reader.Position = 0;
                     // Write everything up to the given index to the left output
-                    var numSlicesToRead = VMath.Zmod(index, InputStream.Length);
+                    int numSlicesToRead;
+                    // split at 0 could mean all to the left or all to the right
+                    // for now let's put all to the right
+                    if (index >= 0)
+                        numSlicesToRead = Math.Min(index, InputStream.Length);
+                    else
+                        numSlicesToRead = Math.Max(InputStream.Length - index, 0);
                     while (numSlicesToRead > 0)
                     {
                         var numSlicesRead = reader.Read(buffer, 0, Math.Min(numSlicesToRead, buffer.Length));
