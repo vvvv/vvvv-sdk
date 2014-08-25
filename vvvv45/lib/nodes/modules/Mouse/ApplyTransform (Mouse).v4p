@@ -1,15 +1,15 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\ApplyTransform (Mouse).v4p" systemname="ApplyTransform (Mouse)" filename="D:\gitHub\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\ApplyTransform (Mouse).v4p">
-   <BOUNDS type="Window" left="15150" top="720" width="12525" height="7110">
+   <BOUNDS type="Window" left="-23490" top="405" width="10230" height="7110">
    </BOUNDS>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="2">
-   <BOUNDS type="Node" left="5205" top="765" width="100" height="100">
+   <BOUNDS type="Node" left="4035" top="660" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5205" top="765" width="795" height="240">
+   <BOUNDS type="Box" left="4035" top="660" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse UnTransformed|">
    </PIN>
@@ -17,9 +17,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Node)" nodename="IOBox (Node)" componentmode="InABox" id="10">
-   <BOUNDS type="Node" left="1185" top="5730" width="100" height="100">
+   <BOUNDS type="Node" left="1290" top="5790" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1185" top="5730" width="795" height="240">
+   <BOUNDS type="Box" left="1290" top="5790" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Transformed|">
    </PIN>
@@ -27,7 +27,7 @@
    </PIN>
    </NODE>
    <NODE systemname="MouseEvents (Mouse Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseEvents (Mouse Join)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="5190" top="4605" width="100" height="100">
+   <BOUNDS type="Node" left="4020" top="4500" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
@@ -51,11 +51,11 @@
    </PIN>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="5190" top="4605">
+   <BOUNDS type="Box" left="4020" top="4500">
    </BOUNDS>
    </NODE>
    <NODE systemname="MouseEvents (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseEvents (Mouse Split)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="5205" top="1485" width="100" height="100">
+   <BOUNDS type="Node" left="4035" top="1380" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
@@ -79,7 +79,7 @@
    </PIN>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="5205" top="1485">
+   <BOUNDS type="Box" left="4035" top="1380">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Output Node" dstnodeid="12" dstpinname="Mouse">
@@ -105,11 +105,11 @@
    <NODE id="13" componentmode="Hidden" systemname="Multiply (2d Vector)" filename="%VVVV%\lib\nodes\modules\2D\Multiply (2d Vector).v4p" nodename="Multiply (2d Vector)" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Window" left="17805" top="4410" width="4620" height="5505">
    </BOUNDS>
-   <BOUNDS type="Node" left="1980" top="2760" width="100" height="100">
+   <BOUNDS type="Node" left="2085" top="2820" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XY" visible="1" pintype="Output">
    </PIN>
-   <BOUNDS type="Box" left="1215" top="885" width="4800" height="3600">
+   <BOUNDS type="Box" left="1320" top="945" width="4800" height="3600">
    </BOUNDS>
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
    </PIN>
@@ -125,15 +125,15 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="XY" dstnodeid="11" dstpinname="PositionXY" linkstyle="Bezier">
-   <LINKPOINT x="2440" y="3683">
+   <LINKPOINT x="2120" y="3688">
    </LINKPOINT>
-   <LINKPOINT x="4955" y="3818">
+   <LINKPOINT x="4210" y="3768">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="14" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="1995" top="750" width="795" height="240">
+   <BOUNDS type="Box" left="2100" top="810" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1995" top="750" width="0" height="0">
+   <BOUNDS type="Node" left="2100" top="810" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
@@ -143,7 +143,7 @@
    <LINK srcnodeid="14" srcpinname="Output Node" dstnodeid="13" dstpinname="Transform">
    </LINK>
    <NODE systemname="MouseEvents (Mouse Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseEvents (Mouse Join)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="1200" top="4500" width="100" height="100">
+   <BOUNDS type="Node" left="1305" top="4560" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Event Type" slicecount="1" visible="1" values="MouseMove">
    </PIN>
@@ -153,13 +153,13 @@
    </PIN>
    <PIN pinname="Bin Size" slicecount="1" visible="1" values="0">
    </PIN>
-   <BOUNDS type="Box" left="1200" top="4500">
+   <BOUNDS type="Box" left="1305" top="4560">
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="19" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="360" top="3945" width="1125" height="255">
+   <BOUNDS type="Box" left="465" top="4005" width="1125" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="360" top="3945" width="0" height="0">
+   <BOUNDS type="Node" left="465" top="4005" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" visible="1" values="MouseMove">
    </PIN>
@@ -169,7 +169,7 @@
    <LINK srcnodeid="13" srcpinname="XY" dstnodeid="18" dstpinname="PositionXY">
    </LINK>
    <NODE systemname="Merge (Mouse)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Merge (Mouse)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="1200" top="5100" width="100" height="100">
+   <BOUNDS type="Node" left="1305" top="5160" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse 1" visible="1">
    </PIN>
@@ -180,10 +180,14 @@
    </NODE>
    <LINK srcnodeid="18" srcpinname="Mouse" dstnodeid="21" dstpinname="Mouse 1">
    </LINK>
-   <LINK srcnodeid="11" srcpinname="Mouse" dstnodeid="21" dstpinname="Mouse 2">
+   <LINK srcnodeid="11" srcpinname="Mouse" dstnodeid="21" dstpinname="Mouse 2" linkstyle="VHV">
+   <LINKPOINT x="4050" y="5040">
+   </LINKPOINT>
+   <LINKPOINT x="1830" y="5040">
+   </LINKPOINT>
    </LINK>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="1980" top="3600" width="100" height="100">
+   <BOUNDS type="Node" left="2085" top="3660" width="100" height="100">
    </BOUNDS>
    <PIN pinname="OnChange" visible="1">
    </PIN>
@@ -191,7 +195,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="1995" top="3990" width="100" height="100">
+   <BOUNDS type="Node" left="2100" top="4050" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -207,9 +211,9 @@
    <LINK srcnodeid="21" srcpinname="Mouse" dstnodeid="10" dstpinname="Input Node">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7380" top="930" width="11280" height="270">
+   <BOUNDS type="Node" left="6210" top="825" width="11280" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7380" top="930" width="3810" height="540">
+   <BOUNDS type="Box" left="6210" top="825" width="3810" height="540">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Needs to create a new Mousemove event whenever the transform is changed, and merge this event. |">
    </PIN>
@@ -221,7 +225,7 @@
    </PIN>
    </NODE>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="2730" top="2220" width="100" height="100">
+   <BOUNDS type="Node" left="2835" top="2280" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -231,7 +235,7 @@
    </PIN>
    </NODE>
    <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="6780" top="1905" width="100" height="100">
+   <BOUNDS type="Node" left="5610" top="1800" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -242,7 +246,11 @@
    </LINK>
    <LINK srcnodeid="27" srcpinname="Output" dstnodeid="13" dstpinname="XY">
    </LINK>
-   <LINK srcnodeid="12" srcpinname="PositionXY" dstnodeid="27" dstpinname="Input">
+   <LINK srcnodeid="12" srcpinname="PositionXY" dstnodeid="27" dstpinname="Input" linkstyle="Bezier">
+   <LINKPOINT x="4200" y="1950">
+   </LINKPOINT>
+   <LINKPOINT x="2895" y="1950">
+   </LINKPOINT>
    </LINK>
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="27" dstpinname="Set">
    </LINK>
