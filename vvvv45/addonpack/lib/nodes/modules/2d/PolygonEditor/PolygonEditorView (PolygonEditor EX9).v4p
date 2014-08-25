@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
    <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" systemname="PolygonEditorView (EX9)" filename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (EX9).v4p">
-   <BOUNDS type="Window" left="1755" top="900" width="15990" height="9330">
+   <BOUNDS type="Window" left="1755" top="900" width="16635" height="9405">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -283,7 +283,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7305" top="3060" width="4800" height="3600">
    </BOUNDS>
-   <BOUNDS type="Window" left="-22485" top="90" width="21945" height="15840">
+   <BOUNDS type="Window" left="-25335" top="-840" width="14715" height="15840">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
    </PIN>
@@ -343,6 +343,8 @@
    </PIN>
    <PIN pinname="Sort After Z-Index" slicecount="1" visible="1" values="0">
    </PIN>
+   <PIN pinname="Sort By Z-Index" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="VerticesXY" dstnodeid="13" dstpinname="Input">
    </LINK>
@@ -387,37 +389,21 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Sort After Z-Index">
    </LINK>
-   <NODE systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox" id="32">
-   <BOUNDS type="Node" left="11610" top="795" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11610" top="795" width="660" height="795">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
-   </PIN>
-   <PIN pinname="Color Input" visible="1" slicecount="3" values="|0.73754,0.73754,0.73754,0.77941|,|1.00000,1.00000,1.00000,0.61074|,|0.00000,0.56685,0.73492,0.73121|">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Colors">
-   </PIN>
-   <PIN pinname="Color Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="GetSpread (Color)" nodename="GetSpread (Color)" componentmode="Hidden" id="35">
    <BOUNDS type="Node" left="11610" top="1875" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Count" slicecount="1" visible="1" values="3">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="3" values="|0.73754,0.73754,0.73754,0.77941|,|1.00000,1.00000,1.00000,0.61074|,|0.00000,0.56685,0.73492,0.73121|">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Color Output" dstnodeid="35" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="12345" top="1395" width="285" height="240">
    </BOUNDS>
@@ -479,7 +465,7 @@
    <LINK srcnodeid="0" srcpinname="Shape Mode" dstnodeid="12" dstpinname="Input">
    </LINK>
    <NODE systemname="Polygon (EX9.Geometry 2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\2dMeshNodes.dll" nodename="Polygon (EX9.Geometry 2d)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="9450" top="4500" width="100" height="100">
+   <BOUNDS type="Node" left="9660" top="4740" width="100" height="100">
    </BOUNDS>
    <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
    </PIN>
@@ -500,24 +486,6 @@
    <PIN pinname="Alpha" slicecount="1" values="0.35">
    </PIN>
    </NODE>
-   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="43" dstpinname="Mesh">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="11205" top="5550" width="11610" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="11205" top="5550" width="4125" height="735">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; always using the mouseover colour for the polygon, with 0.3 alpha level. (Default for mouseover colour is white, which is what we want with a black background)|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="39" srcpinname="Output 2" dstnodeid="43" dstpinname="Color">
-   </LINK>
    <LINK srcnodeid="0" srcpinname="VerticesXY" dstnodeid="44" dstpinname="VerticesXY">
    </LINK>
    <LINK srcnodeid="43" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 4">
@@ -526,4 +494,92 @@
    </LINK>
    <LINK srcnodeid="35" srcpinname="Output" dstnodeid="1" dstpinname="Colors">
    </LINK>
+   <NODE systemname="Switch (Color Input)" nodename="Switch (Color Input)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="10545" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Output 3" dstnodeid="45" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="43" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Tagged" dstnodeid="45" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Sort By Z-Index">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="43" dstpinname="Mesh">
+   </LINK>
+   <NODE id="32" systemname="IOBox (Color)" nodename="IOBox (Color)" componentmode="InABox">
+   <BOUNDS type="Node" left="11610" top="795" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11610" top="795" width="660" height="795">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Colors">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Color Output" dstnodeid="35" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Switch (Color Input)" nodename="Switch (Color Input)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="10575" top="4230" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Output 1" dstnodeid="46" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Output 2" dstnodeid="46" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Output" dstnodeid="45" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="10470" top="3735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="46" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Mouseover" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <INFO author="dominikKoller" description="creates a ex9 Layer, visualizing a PolygonEditor&apos;s output" tags="">
+   </INFO>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="0" top="0" width="1155" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="0" top="0" width="1155" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="polygoneditor">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
