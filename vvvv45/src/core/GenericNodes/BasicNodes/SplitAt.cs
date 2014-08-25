@@ -49,13 +49,15 @@ namespace VVVV.Nodes.Generic
                     if (index >= 0)
                         numSlicesToRead = Math.Min(index, InputStream.Length);
                     else
-                        numSlicesToRead = Math.Max(InputStream.Length - index, 0);
+                        numSlicesToRead = Math.Max(InputStream.Length + index, 0);
+
                     while (numSlicesToRead > 0)
                     {
-                        var numSlicesRead = reader.Read(buffer, 0, Math.Min(numSlicesToRead, buffer.Length));
-                        leftWriter.Write(buffer, 0, numSlicesRead);
-                        numSlicesToRead -= numSlicesRead;
+                        var numSlicesREAD = reader.Read(buffer, 0, Math.Min(numSlicesToRead, buffer.Length));
+                        leftWriter.Write(buffer, 0, numSlicesREAD);
+                        numSlicesToRead -= numSlicesREAD;
                     }
+
                     // Write whatever remains to the right output
                     while (!reader.Eos)
                     {
