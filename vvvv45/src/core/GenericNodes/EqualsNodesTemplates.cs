@@ -17,7 +17,7 @@ namespace VVVV.Nodes
 	            Help = "returns true if the values at the inputs are equal",
 	            Tags = "compare, same"
 	           )]
-	public class NODECATEGORYEqualsNode: Equals<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSEqualsNode: Equals<REPLACEME_CLASS> {}
 	
 	#endregion SingleValue
 	
@@ -29,7 +29,7 @@ namespace VVVV.Nodes
 	            Tags = "count, spectral, generic",
 	           	Author = "woei"
 	           )]
-	public class NODECATEGORYOccurrenceNode: Occurrence<REPLACEME_CLASS> 
+	public class REPLACEME_CLASSOccurrenceNode: Occurrence<REPLACEME_CLASS> 
 	{
 		//uncomment this method to override the equals directly if you can't or dont want to override it for the class
 //		public override bool Equals(REPLACEME_CLASS a, REPLACEME_CLASS b)

@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 	            Tags = "generic",
 	            Author = "vux"
 	           )]
-    public class NODECATEGORYNearestNeighbourNode : NearestNeighbour<REPLACEME_CLASS>
+    public class REPLACEME_CLASSNearestNeighbourNode : NearestNeighbour<REPLACEME_CLASS>
     {
 		protected override double Distance(REPLACEME_CLASS a, REPLACEME_CLASS b)
 		{
