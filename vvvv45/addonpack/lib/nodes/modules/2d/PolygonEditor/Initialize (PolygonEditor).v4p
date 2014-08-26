@@ -19,7 +19,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Unzip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (2d Bin)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="660" top="2145" width="2730" height="270">
+   <BOUNDS type="Node" left="660" top="2145" width="2505" height="270">
    </BOUNDS>
    <PIN pinname="Output Count" slicecount="1" values="1">
    </PIN>
@@ -85,6 +85,8 @@
    </PIN>
    <BOUNDS type="Window" left="7560" top="1050" width="13485" height="8325">
    </BOUNDS>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="29" dstpinname="VerticesXY">
    </LINK>
@@ -199,6 +201,8 @@
    </PIN>
    <PIN pinname="ShapeMode" visible="1">
    </PIN>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
    </LINK>
@@ -263,6 +267,8 @@
    </PIN>
    <PIN pinname="Sort By Z-Index" visible="1">
    </PIN>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="37" srcpinname="VerticesXY" dstnodeid="14" dstpinname="InputXY">
    </LINK>
@@ -311,7 +317,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="43">
-   <BOUNDS type="Node" left="5130" top="6075" width="100" height="100">
+   <BOUNDS type="Node" left="5520" top="6090" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -330,4 +336,8 @@
    </LINK>
    <INFO author="dominikKoller" description="" tags="">
    </INFO>
+   <LINK srcnodeid="37" srcpinname="Tagged" dstnodeid="29" dstpinname="Tagged">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Tagged" dstnodeid="9" dstpinname="Tagged">
+   </LINK>
    </PATCH>
