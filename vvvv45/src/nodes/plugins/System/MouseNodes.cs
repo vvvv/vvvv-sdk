@@ -515,24 +515,24 @@ namespace VVVV.Nodes.Input
                 var notificationCount = EventTypeIn[bin].SliceCount;
                 for (int i = 0; i < notificationCount; i++)
                 {
-                    var position = ToMousePoint(PositionIn[bin][i]);
+                    var position = PositionIn[bin][i].ToMousePoint();
                     MouseNotification notification;
                     switch (EventTypeIn[bin][i])
                     {
                         case MouseNotificationKind.MouseDown:
-                            notification = new MouseDownNotification(position, FClientArea, GetMouseButtons(bin, i));
+                            notification = new MouseDownNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i));
                             break;
                         case MouseNotificationKind.MouseUp:
-                            notification = new MouseUpNotification(position, FClientArea, GetMouseButtons(bin, i));
+                            notification = new MouseUpNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i));
                             break;
                         case MouseNotificationKind.MouseMove:
-                            notification = new MouseMoveNotification(position, FClientArea);
+                            notification = new MouseMoveNotification(position, MouseExtensions.ClientArea);
                             break;
                         case MouseNotificationKind.MouseWheel:
-                            notification = new MouseWheelNotification(position, FClientArea, MouseWheelIn[bin][i]);
+                            notification = new MouseWheelNotification(position, MouseExtensions.ClientArea, MouseWheelIn[bin][i]);
                             break;
                         case MouseNotificationKind.MouseClick:
-                            notification = new MouseClickNotification(position, FClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1));
+                            notification = new MouseClickNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1));
                             break;
                         default:
                             throw new NotImplementedException();
@@ -553,15 +553,6 @@ namespace VVVV.Nodes.Input
             if (X2ButtonIn[bin][slice]) result |= MouseButtons.XButton2;
             return result;
         }
-
-        static Point ToMousePoint(Vector2D normV)
-        {
-            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
-            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
-            return new Point((int)v.x, (int)v.y);
-        }
-
-        static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 
     [PluginInfo(Name = "MouseEvents", 
@@ -675,9 +666,7 @@ namespace VVVV.Nodes.Input
                 {
                     var n = notifications[i];
                     EventTypeOut[bin][i] = n.Kind;
-                    var position = new Vector2D(n.Position.X, n.Position.Y);
-                    var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
-                    PositionOut[bin][i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                    PositionOut[bin][i] = n.Position.FromMousePoint(n.ClientArea);
                     switch (n.Kind)
                     {
                         case MouseNotificationKind.MouseDown:
@@ -820,9 +809,7 @@ namespace VVVV.Nodes.Input
                                 X2ButtonOut[i] = isDown;
                             break;
                         case MouseNotificationKind.MouseMove:
-                            var position = new Vector2D(n.Position.X, n.Position.Y);
-                            var clientArea = new Vector2D(n.ClientArea.Width - 1, n.ClientArea.Height - 1);
-                            PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                            PositionOut[i] = n.Position.FromMousePoint(n.ClientArea);
                             break;
                         case MouseNotificationKind.MouseWheel:
                             var mouseWheel = n as MouseWheelNotification;
@@ -891,7 +878,7 @@ namespace VVVV.Nodes.Input
         {
             var wheelDelta = newState.MouseWheel - oldState.MouseWheel;
             if (wheelDelta != 0)
-                yield return new MouseWheelNotification(newState.Position, FClientArea, wheelDelta * Const.WHEEL_DELTA);
+                yield return new MouseWheelNotification(newState.Position, MouseExtensions.ClientArea, wheelDelta * Const.WHEEL_DELTA);
             if (newState.IsButtonPressed != oldState.IsButtonPressed)
             {
                 var newButton = newState.IsButtonPressed;
@@ -899,14 +886,14 @@ namespace VVVV.Nodes.Input
                 foreach (var button in Buttons)
                 {
                     if (newButton.HasFlag(button) && !oldButton.HasFlag(button))
-                        yield return new MouseDownNotification(newState.Position, FClientArea, button);
+                        yield return new MouseDownNotification(newState.Position, MouseExtensions.ClientArea, button);
                     if (!newButton.HasFlag(button) && oldButton.HasFlag(button))
-                        yield return new MouseUpNotification(newState.Position, FClientArea, button);
+                        yield return new MouseUpNotification(newState.Position, MouseExtensions.ClientArea, button);
                 }
             }
             // Send the move last should anyone downstream use a mouse state join with queue mode = discard
             if (newState.Position != oldState.Position)
-                yield return new MouseMoveNotification(newState.Position, FClientArea);
+                yield return new MouseMoveNotification(newState.Position, MouseExtensions.ClientArea);
         }
 
         public void Evaluate(int spreadMax)
@@ -925,7 +912,7 @@ namespace VVVV.Nodes.Input
                 // Create the new mouse state
                 var newState = new MouseState()
                 {
-                    Position = ToMousePoint(PositionIn[i]),
+                    Position = PositionIn[i].ToMousePoint(),
                     MouseWheel = MouseWheelIn[i],
                     IsButtonPressed =
                         (LeftButtonIn[i] ? MouseButtons.Left : MouseButtons.None) |
@@ -962,15 +949,6 @@ namespace VVVV.Nodes.Input
             foreach (var n in GetNotifications(oldState, newState))
                 observer.OnNext(n);
         }
-
-        static Point ToMousePoint(Vector2D normV)
-        {
-            var clientArea = new Vector2D(FClientArea.Width - 1, FClientArea.Height - 1);
-            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Clamp);
-            return new Point((int)v.x, (int)v.y);
-        }
-
-        static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 
     [PluginInfo(
@@ -1041,9 +1019,7 @@ namespace VVVV.Nodes.Input
                 if (detectedNotification != null)
                 {
                     DetectedOut[i] = true;
-                    var position = new Vector2D(detectedNotification.Position.X, detectedNotification.Position.Y);
-                    var clientArea = new Vector2D(detectedNotification.ClientArea.Width - 1, detectedNotification.ClientArea.Height - 1);
-                    PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                    PositionOut[i] = detectedNotification.Position.FromMousePoint(detectedNotification.ClientArea);
                 }
                 else
                 {
@@ -1090,6 +1066,25 @@ namespace VVVV.Nodes.Input
                 var mice = MiceIn.Select((ms, j) => ms.SliceCount > 0 ? ms[j] ?? Mouse.Empty : Mouse.Empty);
                 MouseOut[i] = new Mouse(Observable.Merge(mice.Select(m => m.MouseNotifications)), false);
             }
+        }
+    }
+
+    static class MouseExtensions
+    {
+        public static readonly Size ClientArea = new Size(short.MaxValue, short.MaxValue);
+
+        public static Point ToMousePoint(this Vector2D normV)
+        {
+            var clientArea = new Vector2D(ClientArea.Width - 1, ClientArea.Height - 1);
+            var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Float);
+            return new Point((int)v.x, (int)v.y);
+        }
+
+        public static Vector2D FromMousePoint(this Point point, Size clientArea)
+        {
+            var position = new Vector2D(point.X, point.Y);
+            var ca = new Vector2D(clientArea.Width - 1, clientArea.Height - 1);
+            return VMath.Map(position, Vector2D.Zero, ca, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
         }
     }
 }
