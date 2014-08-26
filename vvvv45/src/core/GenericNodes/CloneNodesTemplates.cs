@@ -15,7 +15,7 @@ namespace VVVV.Nodes
                 Help = "Delays the input value one calculation frame.",
 	            Tags = "generic"
 	           )]
-    public class NODECATEGORYFrameDelayNode : FrameDelayNode<REPLACEME_CLASS>
+    public class REPLACEME_CLASSFrameDelayNode : FrameDelayNode<REPLACEME_CLASS>
     {
         protected override REPLACEME_CLASS CloneSlice(REPLACEME_CLASS slice)
         {
