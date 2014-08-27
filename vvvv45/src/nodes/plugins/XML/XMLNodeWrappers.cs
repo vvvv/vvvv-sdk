@@ -325,6 +325,12 @@ namespace VVVV.Nodes.XML
         [Output("Document")]
         public ISpread<XDocument> Document;
 
+        [Output("Success")]
+        public ISpread<bool> Success;
+
+        [Output("Error Message")]
+        public ISpread<string> ErrorMessage;
+
         [Import]
         public ILogger FLogger;
 
@@ -334,6 +340,8 @@ namespace VVVV.Nodes.XML
 
             RootElement.SliceCount = spreadMax;
             Document.SliceCount = spreadMax;
+            Success.SliceCount = spreadMax;
+            ErrorMessage.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
@@ -342,12 +350,17 @@ namespace VVVV.Nodes.XML
                     var document = XMLNodes.AsDocument(XML[i], Validation[i]);
                     Document[i] = document;
                     RootElement[i] = document.Root;
+                    Success[i] = true;
+                    ErrorMessage[i] = null;
                 }
                 catch (Exception e)
                 {
                     Document[i] = null;
                     RootElement[i] = null;
-                    FLogger.Log(e);
+                    Success[i] = false;
+                    ErrorMessage[i] = e.Message;
+
+                    FLogger.Log(LogType.Warning, e.Message);
                 }
             }
         }

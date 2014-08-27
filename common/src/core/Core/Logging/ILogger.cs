@@ -18,19 +18,27 @@ namespace VVVV.Core.Logging
 		/// <summary>
 		/// Overload function to easier log exceptions.
 		/// </summary>
-		public static void Log(this ILogger logger, Exception e)
+		public static void Log(this ILogger logger, Exception e, LogType severity)
 		{
 			if (!string.IsNullOrEmpty(e.StackTrace) && e.InnerException != null)
-			    logger.Log(LogType.Error, string.Format("{0} in {1}: {2}\n\nStacktrace:\n{3}\n\nInnerException:\n{4}\n", e.GetType(), e.Source, e.Message, e.StackTrace, e.InnerException));
+			    logger.Log(severity, string.Format("{0} in {1}: {2}\n\nStacktrace:\n{3}\n\nInnerException:\n{4}\n", e.GetType(), e.Source, e.Message, e.StackTrace, e.InnerException));
 			else if (!string.IsNullOrEmpty(e.StackTrace))
-				logger.Log(LogType.Error, string.Format("{0} in {1}: {2}\n\nStacktrace:\n{3}\n", e.GetType(), e.Source, e.Message, e.StackTrace));
+				logger.Log(severity, string.Format("{0} in {1}: {2}\n\nStacktrace:\n{3}\n", e.GetType(), e.Source, e.Message, e.StackTrace));
 			else if (e.InnerException != null)
-				logger.Log(LogType.Error, string.Format("{0} in {1}: {2}\n\nInnerException:\n{3}\n", e.GetType(), e.Source, e.Message, e.InnerException));
+				logger.Log(severity, string.Format("{0} in {1}: {2}\n\nInnerException:\n{3}\n", e.GetType(), e.Source, e.Message, e.InnerException));
 			else
-				logger.Log(LogType.Error, string.Format("{0} in {1}: {2}\n", e.GetType(), e.Source, e.Message));
+				logger.Log(severity, string.Format("{0} in {1}: {2}\n", e.GetType(), e.Source, e.Message));
 		}
-		
-		public static void Log(this ILogger logger, LogType logType, string msg, object arg0)
+
+        /// <summary>
+        /// Overload function to easier log exceptions.
+        /// </summary>
+        public static void Log(this ILogger logger, Exception e)
+        {
+            Log(logger, e, LogType.Error);
+        }
+
+        public static void Log(this ILogger logger, LogType logType, string msg, object arg0)
 		{
 			logger.Log(logType, string.Format(msg, arg0));
 		}
