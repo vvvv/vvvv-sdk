@@ -33,23 +33,7 @@ namespace VVVV.Nodes.Input
 
         private PluginContainer FKeyboardStatesSplitNode;
 
-        private IObservable<KeyNotification> FDeviceLostNotifications;
-
-        public override void OnImportsSatisfied()
-        {
-            FDeviceLostNotifications =
-                Observable.FromEventPattern<WindowEventArgs>(FHost, "WindowSelectionChanged")
-                .Select(p => p.EventArgs.Window)
-                .OfType<Window>()
-                .Select(w => w.UserInputWindow != null)
-                .DistinctUntilChanged()
-                .Where(assigned => !assigned)
-                .Select(_ => new KeyboardLostNotification());
-
-            base.OnImportsSatisfied();
-        }
-
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages)
+        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
         {
             var keyNotifications = windowMessages
                 .Select<WMEventArgs, KeyNotification>(e =>
@@ -70,7 +54,15 @@ namespace VVVV.Nodes.Input
                 }
                 )
                 .OfType<KeyNotification>();
-            KeyboardOut[0] = new Keyboard(keyNotifications.Merge(FDeviceLostNotifications));
+            var deviceLostNotifications = Observable.FromEventPattern<WindowEventArgs>(FHost, "WindowSelectionChanged")
+                .Select(p => p.EventArgs.Window)
+                .OfType<Window>()
+                .Select(w => w.UserInputWindow != null)
+                .DistinctUntilChanged()
+                .Where(assigned => !assigned)
+                .Select(_ => new KeyboardLostNotification());
+            var disabledNotifications = disabled.Select(_ => new KeyboardLostNotification());
+            KeyboardOut[0] = new Keyboard(keyNotifications.Merge(deviceLostNotifications).Merge(disabledNotifications));
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyStates" && n.Category == "Keyboard" && n.Version == "Split");

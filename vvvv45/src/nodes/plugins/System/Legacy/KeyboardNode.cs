@@ -203,7 +203,7 @@ namespace VVVV.Nodes.Input
             base.Dispose();
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages)
+        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
         {
             var keyNotifications = windowMessages
                 .Select<WMEventArgs, KeyNotification>(e =>

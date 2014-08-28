@@ -41,7 +41,7 @@ namespace VVVV.Nodes.Input
 
         private PluginContainer FMouseStatesSplitNode;
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages)
+        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
         {
             var mouseNotifications = windowMessages
                 .Where(e => e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
