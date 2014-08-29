@@ -145,7 +145,7 @@ namespace VVVV.Nodes
 	        		FSelectedInstanceMeshes.Clear();
 	        		FMeshNameOutput.SliceCount = 0;
 	        		FMeshPathOutput.SliceCount = 0;
-	        		FColladaModel = FColladaModelIn[0];
+	        		FColladaModel = FColladaModelIn.SliceCount > 0 ? FColladaModelIn[0] : null;
 	        		
 	        		if (FColladaModel == null)
 	        		{
