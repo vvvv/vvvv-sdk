@@ -1,6 +1,6 @@
 //@author: vvvv group
-//@help: draws a mesh with a constant color
-//@tags: simple, template, basic
+//@help: draws a mesh with a constant color and spherical mapping
+//@tags: sphere
 //@credits:
 
 // --------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ technique TConstant
 {
     pass P0
     {
-        //Wrap0 = U;  // useful when mesh is round like a sphere
+        Wrap0 = U;  // useful when mesh is round like a sphere
         VertexShader = compile vs_1_1 VS();
         PixelShader = compile ps_2_0 PS();
     }

@@ -53,7 +53,7 @@ namespace VVVV.Nodes.Input
                 FLogger.Log(LogType.Error, "Failed to enabled touch messages for window {0}.", subclass.HWnd);
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages)
+        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
         {
             var notifications = windowMessages
                 .Where(e => e.Message == WM.TOUCH)
