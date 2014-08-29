@@ -102,7 +102,8 @@ namespace VVVV.Nodes.Input
                 .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
                 .Where(args => args != null)
                 .SelectMany(args => GenerateKeyNotifications(args, slice));
-            return new Keyboard(notifications, true);
+            var deviceLostNotifications = GetKeyboardLostNotifications(slice);
+            return new Keyboard(notifications.Merge(deviceLostNotifications), true);
         }
 
         protected override Keyboard CreateMergedDevice(int slice)
@@ -112,12 +113,21 @@ namespace VVVV.Nodes.Input
                 .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
                 .Where(args => args != null)
                 .SelectMany(args => GenerateKeyNotifications(args, slice));
-            return new Keyboard(notifications, true);
+            var deviceLostNotifications = GetKeyboardLostNotifications(slice);
+            return new Keyboard(notifications.Merge(deviceLostNotifications), true);
         }
 
         protected override Keyboard CreateDummy()
         {
             return Keyboard.Empty;
+        }
+
+        private IObservable<KeyboardLostNotification> GetKeyboardLostNotifications(int slice)
+        {
+            return EnabledIn.ToObservable(slice)
+                .DistinctUntilChanged()
+                .Where(enabled => !enabled)
+                .Select(_ => new KeyboardLostNotification());
         }
 
         private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)

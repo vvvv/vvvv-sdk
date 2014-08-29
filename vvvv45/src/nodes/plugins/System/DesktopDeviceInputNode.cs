@@ -15,7 +15,7 @@ namespace VVVV.Nodes.Input
     public abstract class DesktopDeviceInputNode<TDevice> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
-        public ISpread<bool> EnabledIn;
+        public IDiffSpread<bool> EnabledIn;
 
         [Input("Index", Order = int.MinValue + 1, Visibility = PinVisibility.OnlyInspector, MinValue = -1, DefaultValue = -1)]
         public IDiffSpread<int> IndexIn;
