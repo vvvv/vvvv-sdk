@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="AddonpackBuild">
+    <!-- Delete all files which are already in lib/core from addonpack/lib/plugins -->
+    <Delete Files="@(CoreOutputFiles->'$(AddonPluginsOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <!-- Delete all files which are already in lib/core from addonpack/lib/core -->
+    <Delete Files="@(CoreOutputFiles->'$(AddonCoreOutputDir)%(RecursiveDir)%(Filename)%(Extension)')" />
+    <ItemGroup>
+      <PluginLicenses Include="$(MSBuildThisFileDirectory)nodes\plugins\**\license*.txt" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginLicenses)" DestinationFiles="@(PluginLicenses->'$(AddonPluginsOutputDir)..\..\..\licenses\%(Filename)%(Extension)')" SkipUnchangedFiles="true" Condition="!Exists('%(PluginLicenses.RootDir)%(PluginLicenses.Directory)ignore')" />
+    <!-- Copy all files inside of _Binaries folder to output dir -->
+    <ItemGroup>
+      <_Binaries Include="$(MSBuildThisFileDirectory)nodes\plugins\_Binaries\$(Platform)\vuxbins\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_Binaries)" DestinationFiles="@(_Binaries->'$(AddonPluginsOutputDir)vuxbins\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Import Project="..\..\src\vvvv45.targets" />
+</Project>
