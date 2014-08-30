@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
    <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p" locked="0" scrollx="0" scrolly="15" systemname="SecondLook (VVVV Softimage)" filename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p">
-   <BOUNDS height="6735" left="975" top="7605" type="Window" width="12990">
+   <BOUNDS height="6735" left="225" top="7845" type="Window" width="12990">
    </BOUNDS>
    <NODE hiddenwhenlocked="0" id="24" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
    <BOUNDS height="0" left="2790" top="2115" type="Node" width="0">
@@ -185,9 +185,9 @@
    <LINK srcnodeid="2" srcpinname="XYZ" dstnodeid="1" dstpinname="XYZ UnTransformed">
    </LINK>
    <NODE id="3" componentmode="InABox" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" height="0" left="4590" top="600" width="0">
+   <BOUNDS type="Node" height="0" left="4275" top="435" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" height="510" left="4590" top="600" width="735">
+   <BOUNDS type="Box" height="510" left="4275" top="435" width="735">
    </BOUNDS>
    <BOUNDS type="Window" height="160" left="15360" top="8340" width="215">
    </BOUNDS>
@@ -201,7 +201,7 @@
    </PIN>
    </NODE>
    <NODE id="4" componentmode="Hidden" nodename="Cross (3d)" systemname="Cross (3d)">
-   <BOUNDS type="Node" height="0" left="4380" top="1305" width="0">
+   <BOUNDS type="Node" height="0" left="4095" top="1305" width="0">
    </BOUNDS>
    <PIN pinname="X In" visible="1">
    </PIN>
@@ -221,8 +221,6 @@
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Z In">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Y In">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="X In">
    </LINK>
    <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="5640" top="5370" width="100" height="100">
@@ -453,7 +451,7 @@
    </PIN>
    <PIN pinname="X" slicecount="5" visible="1" values="-1,1,1,-1,-1">
    </PIN>
-   <PIN pinname="Z" slicecount="1" visible="1" values="-1">
+   <PIN pinname="Z" slicecount="1" visible="1" values="0">
    </PIN>
    <BOUNDS type="Node" height="270" left="5820" top="2775" width="570">
    </BOUNDS>
@@ -579,7 +577,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7605" top="1590" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,-1">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -645,5 +643,23 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="68" srcpinname="Transform Out" dstnodeid="9" dstpinname="Aspect Ratio">
+   </LINK>
+   <NODE id="69" componentmode="InABox" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" height="0" left="3345" top="375" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" height="510" left="3345" top="375" width="735">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="15360" top="8340" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Y Output Value" dstnodeid="4" dstpinname="X In">
    </LINK>
    </PATCH>
