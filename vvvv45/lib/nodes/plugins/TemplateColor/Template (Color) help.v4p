@@ -1,0 +1,127 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.3.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\TemplateColor\Template (Color) help.v4p" filename="C:\dev\vvvv\vvvv45\plugins\Template\Template (Value) help.v4p" systemname="Template (Value) help">
+   <BOUNDS height="6420" left="9480" top="1890" type="Window" width="8790">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="2535" type="Node" width="3600">
+   </BOUNDS>
+   <BOUNDS height="1440" left="285" top="2535" type="Box" width="3990">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; the code to the left gets the complementary color of an input color...&cr;&lf;&cr;&lf;&cr;&lf;                 ... as can be seen over here &gt;&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="330" top="480" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1020" left="330" top="480" type="Box" width="4860">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A short template to start from when writing a dynamic c# plugin node.&cr;&lf;&cr;&lf;clone it like described here:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="330" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="330" top="120" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Template (Color)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6450" top="3195" type="Node" width="1965">
+   </BOUNDS>
+   <BOUNDS height="1185" left="6450" top="3195" type="Box" width="1500">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; right click opens text editor|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3045" top="5205" type="Node" width="3105">
+   </BOUNDS>
+   <BOUNDS height="315" left="3045" top="5205" type="Box" width="3795">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; an text editor view onto the main c# source file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\TemplateColor\TemplateColor.csproj" id="3" nodename="Template (Color)" systemname="Template (Color)">
+   <BOUNDS height="100" left="5355" top="3210" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="bool" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="100" left="5340" top="2475" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="5340" top="2475" type="Box" width="2250">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.10000,0.20000,0.30000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="23" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="100" left="3165" top="4140" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="3165" top="4140" type="Box" width="2250">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Color Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\plugins\TemplateColor\TemplateColor.cs" id="25" nodename="TemplateColor.cs (Editor)" systemname="TemplateColor.cs (Editor)">
+   <BOUNDS height="100" left="1395" top="5220" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="4500" left="1395" top="5220" type="Box" width="6000">
+   </BOUNDS>
+   <BOUNDS height="6375" left="465" top="1890" type="Window" width="9000">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="29">
+   <BOUNDS type="Node" left="780" top="1545" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="780" top="1545" width="3825" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="-1" pintype="Input" values="http://vvvv.org/documentation/dynamic-plugins">
+   </PIN>
+   <PIN pinname="Output String" visible="-1" pintype="Output">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   </PATCH>

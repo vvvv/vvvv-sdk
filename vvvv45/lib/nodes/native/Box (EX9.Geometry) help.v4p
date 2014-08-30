@@ -1,0 +1,197 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Box (EX9.Geometry) help.v4p">
+   <BOUNDS height="6240" left="2835" top="2985" type="Window" width="5355">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2655" top="120" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2430" left="2655" top="120" type="Box" width="2385">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="270" top="4650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="Solid">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="930" top="4665" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width " visible="1">
+   </PIN>
+   <PIN pinname="Heigth " visible="1">
+   </PIN>
+   <PIN pinname="Depth " visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="600" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3990" top="8670" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="600" top="3795" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="12" visible="1" values="0.18,-0.375,-0.29167,-0.20833,-0.125,-0.04167,0.04167,0.125,0.20833,0.29167,0.375,0.45833">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="285" top="4230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="Blend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Render State In" srcnodeid="8" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="7" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1530" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-0.59">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="4275" top="2745" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="4305" y="3315">
+   </LINKPOINT>
+   <LINKPOINT x="1950" y="3315">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="5" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="1530" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Transform In" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="4" nodename="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="2310" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="X" linkstyle="PolyLine" srcnodeid="4" srcpinname="Output X">
+   <LINKPOINT x="2340" y="3990">
+   </LINKPOINT>
+   <LINKPOINT x="1800" y="3990">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" linkstyle="PolyLine" srcnodeid="4" srcpinname="Output Y">
+   <LINKPOINT x="3405" y="4065">
+   </LINKPOINT>
+   <LINKPOINT x="2055" y="4065">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="X" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="4305" y="3150">
+   </LINKPOINT>
+   <LINKPOINT x="1755" y="3150">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="3" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="1515" top="4650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Z" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="4305" y="4605">
+   </LINKPOINT>
+   <LINKPOINT x="2130" y="4605">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y" linkstyle="PolyLine" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="4305" y="4500">
+   </LINKPOINT>
+   <LINKPOINT x="1935" y="4500">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename=":EFFECTS:\GouraudDirectional.fx" id="13">
+   <BOUNDS type="Node" left="585" top="5340" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4455" top="8835" width="9000" height="6000">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="5340" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Technique" slicecount="1" values="| TGouraudDirectionalFF|">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Render State Out" dstnodeid="13" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Mesh" dstnodeid="13" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Transform Out" dstnodeid="13" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Layer" dstnodeid="12" dstpinname="Layers">
+   <LINKPOINT x="615" y="5760">
+   </LINKPOINT>
+   <LINKPOINT x="120" y="5760">
+   </LINKPOINT>
+   <LINKPOINT x="90" y="150">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
