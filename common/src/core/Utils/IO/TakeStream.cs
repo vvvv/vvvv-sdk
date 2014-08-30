@@ -48,7 +48,7 @@ namespace System.IO
         public override long Position
         {
             get { return this.position; }
-            set { Seek(value, SeekOrigin.Current); }
+            set { Seek(value, SeekOrigin.Begin); }
         }
 
         public override int Read(byte[] buffer, int offset, int count)
