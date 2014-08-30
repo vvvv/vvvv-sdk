@@ -111,7 +111,7 @@
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="-2.94,1.03,-4.51">
+   <PIN pinname="Y Input Value" slicecount="3" values="-1.55,0.61,-2.17">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="3">
    </PIN>
@@ -163,7 +163,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.71">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.82">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
@@ -177,7 +177,7 @@
    </PIN>
    <PIN pinname="Rotate Rect" slicecount="3" values="0,0,0">
    </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="20">
+   <PIN pinname="Far Plane" slicecount="1" values="7.65">
    </PIN>
    <PIN pinname="Show Helpers" slicecount="1" values="1">
    </PIN>
@@ -240,7 +240,21 @@
    </LINK>
    <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
    </LINK>
-   <NODE id="5" componentmode="Hidden" systemname="SecondLook (VVVV Softimage)" filename="%VVVV%\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p" nodename="SecondLook (VVVV Softimage)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7650" top="6015" width="1920" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7650" top="6015" width="1920" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;&lt; see cam from outside|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="5" componentmode="Hidden" systemname="SecondLook (EX9 Softimage)" filename="%VVVV%\lib\nodes\modules\EX9\SecondLook (EX9 Softimage).v4p" nodename="SecondLook (EX9 Softimage)">
    <BOUNDS type="Window" left="975" top="7605" width="11100" height="6735">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
@@ -265,7 +279,15 @@
    </PIN>
    <PIN pinname="Name" slicecount="1" values="Cam">
    </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="25">
+   <PIN pinname="Inital Distance" slicecount="1" values="12.75">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.11306,0.11306,0.11306,1.00000|">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.18">
+   </PIN>
+   <PIN pinname="Slide into Depth" slicecount="1" values="0.33">
    </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
@@ -274,18 +296,4 @@
    </LINK>
    <LINK srcnodeid="9" srcpinname="Projection Out" dstnodeid="5" dstpinname="Projection">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7650" top="6015" width="1920" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7650" top="6015" width="1920" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;&lt; see cam from outside|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    </PATCH>

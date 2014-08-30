@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage) help.v4p" scrollx="15" scrolly="0">
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\EX9\SecondLook (EX9 Softimage) help.v4p" scrollx="15" scrolly="0">
    <BOUNDS type="Window" left="2310" top="1860" width="9000" height="6000">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -24,30 +24,6 @@
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
    </NODE>
-   <NODE nodename="SecondLook (VVVV Softimage)" componentmode="Hidden" id="0" systemname="SecondLook (VVVV Softimage)" filename="%VVVV%\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p">
-   <BOUNDS type="Node" left="3435" top="5130" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3435" top="5130" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Z" slicecount="1" values="0.34">
-   </PIN>
-   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Slide into Depth" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" visible="1" slicecount="1" values="39.98">
-   </PIN>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
-   </PIN>
-   <BOUNDS type="Window" left="975" top="7605" width="12990" height="6735">
-   </BOUNDS>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0.07">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="-0.09">
-   </PIN>
-   </NODE>
    <NODE systemname="Vertigo (Transform)" nodename="Vertigo (Transform)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="4920" top="3375" width="100" height="100">
    </BOUNDS>
@@ -60,8 +36,6 @@
    <PIN pinname="Depth" slicecount="1" values="63">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="0" dstpinname="Projection">
-   </LINK>
    <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="5" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="2670" top="3735" width="100" height="100">
    </BOUNDS>
@@ -77,15 +51,13 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4215" top="4740" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.12">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.17">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Slide into Depth">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5085" top="2820" width="795" height="240">
    </BOUNDS>
@@ -111,11 +83,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5310" top="780" width="810" height="1395">
+   <BOUNDS type="Box" left="5340" top="870" width="810" height="1395">
    </BOUNDS>
-   <BOUNDS type="Node" left="5310" top="780" width="0" height="0">
+   <BOUNDS type="Node" left="5340" top="870" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="18.2022471910112">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="20.4494382022472">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -176,8 +148,6 @@
    </LINK>
    <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="13" dstpinname="Layers">
    </LINK>
-   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
-   </LINK>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="18" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="2730" top="2295" width="100" height="100">
    </BOUNDS>
@@ -224,8 +194,6 @@
    <PIN pinname="X" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Transform Out" dstnodeid="0" dstpinname="View">
-   </LINK>
    <LINK srcnodeid="22" srcpinname="Transform Out" dstnodeid="13" dstpinname="View">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
@@ -369,5 +337,37 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="39" srcpinname="Mesh" dstnodeid="36" dstpinname="Mesh">
+   </LINK>
+   <NODE nodename="SecondLook (EX9 Softimage)" componentmode="Hidden" id="0" systemname="SecondLook (EX9 Softimage)" filename="%VVVV%\lib\nodes\modules\EX9\SecondLook (EX9 Softimage).v4p">
+   <BOUNDS type="Node" left="3435" top="5130" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3435" top="5130" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.34">
+   </PIN>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Slide into Depth" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" visible="1" slicecount="1" values="39.98">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Window" left="975" top="7605" width="12990" height="6735">
+   </BOUNDS>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.07">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="-0.09">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Transform Out" dstnodeid="0" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Slide into Depth">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Transform Out" dstnodeid="0" dstpinname="View">
    </LINK>
    </PATCH>
