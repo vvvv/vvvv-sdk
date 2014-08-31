@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p" locked="0" scrollx="0" scrolly="15" systemname="SecondLook (VVVV Softimage)" filename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p">
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\EX9\SecondLook (EX9 Softimage).v4p" locked="0" scrollx="285" scrolly="0" systemname="SecondLook (VVVV Softimage)" filename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\VVVV\SecondLook (VVVV Softimage).v4p">
    <BOUNDS height="6735" left="975" top="7605" type="Window" width="12990">
    </BOUNDS>
    <NODE hiddenwhenlocked="0" id="24" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
@@ -185,9 +185,9 @@
    <LINK srcnodeid="2" srcpinname="XYZ" dstnodeid="1" dstpinname="XYZ UnTransformed">
    </LINK>
    <NODE id="3" componentmode="InABox" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Node" height="0" left="4590" top="600" width="0">
+   <BOUNDS type="Node" height="0" left="4275" top="435" width="0">
    </BOUNDS>
-   <BOUNDS type="Box" height="510" left="4590" top="600" width="735">
+   <BOUNDS type="Box" height="510" left="4275" top="435" width="735">
    </BOUNDS>
    <BOUNDS type="Window" height="160" left="15360" top="8340" width="215">
    </BOUNDS>
@@ -201,7 +201,7 @@
    </PIN>
    </NODE>
    <NODE id="4" componentmode="Hidden" nodename="Cross (3d)" systemname="Cross (3d)">
-   <BOUNDS type="Node" height="0" left="4380" top="1305" width="0">
+   <BOUNDS type="Node" height="0" left="4095" top="1305" width="0">
    </BOUNDS>
    <PIN pinname="X In" visible="1">
    </PIN>
@@ -221,28 +221,6 @@
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Z In">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Y In">
-   </LINK>
-   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="4" dstpinname="X In">
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="5640" top="5370" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Initial Yaw" visible="1">
-   </PIN>
-   <PIN pinname="Initial Pitch" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" visible="1">
-   </PIN>
-   <PIN pinname="Initial Interest" visible="1" slicecount="3" values="0,0,-3.41701650619507">
-   </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="1000">
-   </PIN>
-   <PIN pinname="Near Plane" slicecount="1" values="0.5">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="View" dstnodeid="9" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Projection" dstnodeid="9" dstpinname="Projection">
    </LINK>
    <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="27">
    <BOUNDS type="Node" left="1725" top="1005" width="100" height="100">
@@ -285,7 +263,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="9255" top="4665" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-0.02">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-0.01">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -296,14 +274,12 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Yaw|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Yaw">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9525" top="5085" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="9525" top="5085" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.08">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.12">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -312,14 +288,12 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Pitch|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Pitch">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10650" top="4575" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="10650" top="4575" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="40">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="25">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -328,8 +302,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Inital Distance|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Inital Distance">
-   </LINK>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="2595" top="4140" width="100" height="100">
    </BOUNDS>
@@ -453,7 +425,7 @@
    </PIN>
    <PIN pinname="X" slicecount="5" visible="1" values="-1,1,1,-1,-1">
    </PIN>
-   <PIN pinname="Z" slicecount="1" visible="1" values="-1">
+   <PIN pinname="Z" slicecount="1" visible="1" values="0">
    </PIN>
    <BOUNDS type="Node" height="270" left="5820" top="2775" width="570">
    </BOUNDS>
@@ -521,7 +493,7 @@
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="Cam1">
+   <PIN pinname="Input String" slicecount="1" values="Cam">
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output String" dstnodeid="51" dstpinname="Text">
@@ -533,7 +505,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8460" top="2700" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.3">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.71">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -579,7 +551,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7605" top="1590" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,-1">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -620,14 +592,12 @@
    </LINK>
    <LINK srcnodeid="64" srcpinname="XYZ Transformed" dstnodeid="62" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="26" dstpinname="Initial Interest">
-   </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="67" systemname="IOBox (Color)">
    <BOUNDS type="Box" left="10965" top="5145" width="450" height="465">
    </BOUNDS>
    <BOUNDS type="Node" left="10965" top="5145" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.40407,0.40407,0.40407,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.11306,0.11306,0.11306,1.00000|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Background Color|">
    </PIN>
@@ -645,5 +615,51 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="68" srcpinname="Transform Out" dstnodeid="9" dstpinname="Aspect Ratio">
+   </LINK>
+   <NODE id="69" componentmode="InABox" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" height="0" left="3345" top="375" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" height="510" left="3345" top="375" width="735">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="15360" top="8340" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Y Output Value" dstnodeid="4" dstpinname="X In">
+   </LINK>
+   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="5640" top="5370" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Initial Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" visible="1">
+   </PIN>
+   <PIN pinname="Initial Interest" visible="1" slicecount="3" values="0,0,-3.41701650619507">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="1000">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="View" dstnodeid="9" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Projection" dstnodeid="9" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Yaw">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Inital Distance">
+   </LINK>
+   <LINK srcnodeid="62" srcpinname="Output" dstnodeid="26" dstpinname="Initial Interest">
    </LINK>
    </PATCH>
