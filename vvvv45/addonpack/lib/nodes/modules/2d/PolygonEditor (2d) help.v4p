@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="5790" top="600" width="17730" height="8580">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
+   <BOUNDS type="Window" left="5790" top="600" width="17730" height="9255">
    </BOUNDS>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
@@ -465,9 +465,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="464" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10725" top="4920" width="7140" height="270">
+   <BOUNDS type="Node" left="10980" top="5400" width="7140" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10725" top="4920" width="4215" height="2805">
+   <BOUNDS type="Box" left="10980" top="5400" width="4215" height="2805">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Vertex Bin Size tells the Editor how many Vertices there are in one polygon.&cr;&lf;&cr;&lf;Use the Insert + VerticesXY + Vertex Bin Size pins to dynamically add polygons.&cr;&lf;&cr;&lf;Use the Remove + Remove Polygon Index pins to dynamically remove polygons.&cr;&lf;&cr;&lf;When Force Shape Mode is enabled, only operations on whole polygons can be made, like resizing, dragging or rotating (still to come).|">
    </PIN>
@@ -865,7 +865,7 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="1.5">
    </PIN>
-   <PIN pinname="Selection" slicecount="1" values="0" visible="1">
+   <PIN pinname="Selection" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
@@ -1014,4 +1014,58 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
    </LINK>
+   <NODE systemname="AsPolygonEditor (XElement)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\AsPolygonEditor (XElement).v4p" nodename="AsPolygonEditor (XElement)" componentmode="Hidden" id="530">
+   <BOUNDS type="Node" left="645" top="7335" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="7335">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="AsXElement (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\AsXElement (PolygonEditor).v4p" nodename="AsXElement (PolygonEditor)" componentmode="Hidden" id="531">
+   <BOUNDS type="Node" left="645" top="6960" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="6960">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="532" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="6570" width="2400" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="6570" width="2400" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Need to save/load settings? Use:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="533" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="7950" width="3780" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="7950" width="3780" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|For an advanced use-case (including save/load) see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="534" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="8265" width="3090" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="8265" width="3090" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://vvvv.org/contribution/badmapper">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
    </PATCH>
