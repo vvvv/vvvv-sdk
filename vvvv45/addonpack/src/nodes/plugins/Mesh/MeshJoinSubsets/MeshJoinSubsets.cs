@@ -78,16 +78,20 @@ namespace VVVV.Nodes
 			
 			int faceCount = 0;
 			foreach (ISpread<Vector3> s in FInd)
-				faceCount+=s.SliceCount;
+				faceCount += s.SliceCount;
 
             Mesh mesh;
+            MeshFlags flags = 0;
+            if (faceCount > ushort.MaxValue)
+                flags = MeshFlags.Use32Bit;
+            
             if (device is DeviceEx)
             {
-                mesh = new Mesh(device, faceCount, FPos.SliceCount, MeshFlags.Dynamic, VertexFormat.PositionNormal | VertexFormat.Texture1);
+                mesh = new Mesh(device, faceCount, FPos.SliceCount, flags | MeshFlags.Dynamic, VertexFormat.PositionNormal | VertexFormat.Texture1);
             }
             else
             {
-                mesh = new Mesh(device, faceCount , FPos.SliceCount, MeshFlags.Managed, VertexFormat.PositionNormal | VertexFormat.Texture1);
+                mesh = new Mesh(device, faceCount , FPos.SliceCount, flags | MeshFlags.Managed, VertexFormat.PositionNormal | VertexFormat.Texture1);
             }
 
 			
@@ -109,9 +113,18 @@ namespace VVVV.Nodes
 				for(int i=0; i<FInd[a].SliceCount; i++)
 				{
 					attributes.Write(a);
-					indices.Write((short)(FInd[a][i].X));
-					indices.Write((short)(FInd[a][i].Y));
-					indices.Write((short)(FInd[a][i].Z));
+					if (flags == MeshFlags.Use32Bit)
+					{
+    					indices.Write((uint)(FInd[a][i].X));
+    					indices.Write((uint)(FInd[a][i].Y));
+    					indices.Write((uint)(FInd[a][i].Z));
+					}
+					else
+					{
+    					indices.Write((ushort)(FInd[a][i].X));
+    					indices.Write((ushort)(FInd[a][i].Y));
+    					indices.Write((ushort)(FInd[a][i].Z));
+					}
 					
 					Vector3 pos = FPos[(int)FInd[a][i].X];
 					if (i==0)

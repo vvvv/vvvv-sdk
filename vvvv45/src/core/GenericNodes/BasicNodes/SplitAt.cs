@@ -13,7 +13,7 @@ namespace VVVV.Nodes.Generic
         [Input("Input")]
         public IInStream<T> InputStream;
 
-        [Input("Index")]
+        [Input("Index", CheckIfChanged = true)]
         public IInStream<int> IndexStream;
 
         [Output("Left")]
@@ -32,6 +32,10 @@ namespace VVVV.Nodes.Generic
                 return;
             }
 
+            // In case nothing changed also do an early exit - important if T is a string or a reference type
+            if (!InputStream.IsChanged && !IndexStream.IsChanged)
+                return;
+
             // Grab buffers and reader/writer
             using (var buffer = MemoryPool<T>.GetBuffer())
             using (var reader = InputStream.GetReader())
@@ -43,13 +47,21 @@ namespace VVVV.Nodes.Generic
                     // Set reader to its initial position
                     reader.Position = 0;
                     // Write everything up to the given index to the left output
-                    var numSlicesToRead = VMath.Zmod(index, InputStream.Length);
+                    int numSlicesToRead;
+                    // split at 0 could mean all to the left or all to the right
+                    // for now let's put all to the right
+                    if (index >= 0)
+                        numSlicesToRead = Math.Min(index, InputStream.Length);
+                    else
+                        numSlicesToRead = Math.Max(InputStream.Length + index, 0);
+
                     while (numSlicesToRead > 0)
                     {
-                        var numSlicesRead = reader.Read(buffer, 0, Math.Min(numSlicesToRead, buffer.Length));
-                        leftWriter.Write(buffer, 0, numSlicesRead);
-                        numSlicesToRead -= numSlicesRead;
+                        var numSlicesREAD = reader.Read(buffer, 0, Math.Min(numSlicesToRead, buffer.Length));
+                        leftWriter.Write(buffer, 0, numSlicesREAD);
+                        numSlicesToRead -= numSlicesREAD;
                     }
+
                     // Write whatever remains to the right output
                     while (!reader.Eos)
                     {

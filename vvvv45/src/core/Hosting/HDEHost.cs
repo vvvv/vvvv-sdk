@@ -201,7 +201,13 @@ namespace VVVV.Hosting
                     var packDir = packDirInfo.FullName;
                     var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
                     if (coreDirInfo.Exists)
+                    {
                         FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                        var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
+                        var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
+                        if (platformDependentCorDirInfo.Exists)
+                            FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
+                    }
                     var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
                     if (factoriesDirInfo.Exists)
                         catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));

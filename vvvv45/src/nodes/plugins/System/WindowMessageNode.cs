@@ -51,7 +51,10 @@ namespace VVVV.Nodes.Input
                 .SelectMany(s => Observable.FromEventPattern<WMEventArgs>(s, "WindowMessage"))
                 .Select(p => p.EventArgs)
                 .Where(_ => FEnabledIn.SliceCount > 0 && FEnabledIn[0]);
-            Initialize(windowMessages);
+            var disabled = FEnabledIn.ToObservable(1)
+                .DistinctUntilChanged()
+                .Where(enabled => !enabled);
+            Initialize(windowMessages, disabled);
         }
 
         void HandleSubclassDisposed(object sender, EventArgs e)
@@ -64,7 +67,7 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        protected abstract void Initialize(IObservable<WMEventArgs> windowMessages);
+        protected abstract void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled);
 
         protected virtual void SubclassCreated(Subclass subclass)
         {

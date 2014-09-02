@@ -325,6 +325,12 @@ namespace VVVV.Nodes.XML
         [Output("Document")]
         public ISpread<XDocument> Document;
 
+        [Output("Success")]
+        public ISpread<bool> Success;
+
+        [Output("Error Message")]
+        public ISpread<string> ErrorMessage;
+
         [Import]
         public ILogger FLogger;
 
@@ -334,6 +340,8 @@ namespace VVVV.Nodes.XML
 
             RootElement.SliceCount = spreadMax;
             Document.SliceCount = spreadMax;
+            Success.SliceCount = spreadMax;
+            ErrorMessage.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
@@ -342,42 +350,21 @@ namespace VVVV.Nodes.XML
                     var document = XMLNodes.AsDocument(XML[i], Validation[i]);
                     Document[i] = document;
                     RootElement[i] = document.Root;
+                    Success[i] = true;
+                    ErrorMessage[i] = null;
                 }
                 catch (Exception e)
                 {
                     Document[i] = null;
                     RootElement[i] = null;
-                    FLogger.Log(e);
+                    Success[i] = false;
+                    ErrorMessage[i] = e.Message;
+
+                    FLogger.Log(LogType.Warning, e.Message);
                 }
             }
         }
     }
-
-    [PluginInfo(Name = "Cons",
-                Category = "XElement",
-                Help = "Concatenates all input spreads to one output spread",
-                Tags = ""
-                )]
-    public class XElementCons : Cons<XElement>
-    { }
-
-    [PluginInfo(Name = "Cons",
-                Category = "XElement",
-                Help = "Concatenates all input spreads to one output spread",
-                Version = "Attribute",
-                Tags = ""
-                )]
-    public class XAttributeCons : Cons<XAttribute>
-    { }
-
-    [PluginInfo(Name = "Cons",
-                Category = "XElement",
-                Help = "Concatenates all input spreads to one output spread",
-                Version = "Document",
-                Tags = ""
-                )]
-    public class XDocumentCons : Cons<XDocument>
-    { }
 
 
     [PluginInfo(Name = "NamespaceResolver", Category = "XML")]

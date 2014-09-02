@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.8.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\Homography (Transform 2d) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\lib\nodes\native\Homography (Transform 2d) help.v4p" componentmode="InAWindow">
    <BOUNDS height="14910" left="0" top="195" type="Window" width="11250">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="13" nodename="RENDERER (EX9)">
@@ -43,9 +43,9 @@
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="0.371770328627028,0.721601459660009,-0.692307692307691,-0.42614959864863">
+   <PIN pinname="Y Input Value" slicecount="4" values="0.491428448285148,0.721601459660009,-0.692307692307691,-0.42614959864863">
    </PIN>
-   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.418447898955553,0.706218119990282,0.62351226621326,-0.639297975730354">
+   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.329062424095218,0.706218119990282,0.62351226621326,-0.639297975730354">
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
@@ -301,9 +301,9 @@
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="0.371770328627028,0.721601459660009,-0.692307692307691,-0.06614959864863">
+   <PIN pinname="Y Input Value" slicecount="4" values="0.371770328627028,0.481601459660009,-0.452307692307691,-0.50614959864863">
    </PIN>
-   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.418447898955553,0.706218119990282,0.62351226621326,-0.205563035971318">
+   <PIN pinname="X Input Value" pintype="Input" slicecount="4" visible="0" values="-0.46664067003989,0.176097638062571,0.262066483080729,-0.374237734766499">
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
@@ -335,7 +335,7 @@
    </BOUNDS>
    <PIN pinname="Screen Space Points XY" visible="1">
    </PIN>
-   <PIN pinname="Original Points XY" slicecount="1" visible="1" values="0">
+   <PIN pinname="Original Points XY" slicecount="8" visible="1" values="0">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -343,11 +343,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="28" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3300" top="11370" type="Node" width="0">
+   <BOUNDS height="0" left="3015" top="10845" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6705" top="5490" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="750" left="3300" top="11370" type="Box" width="480">
+   <BOUNDS height="750" left="3015" top="10845" type="Box" width="480">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
@@ -360,8 +360,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Original Points XY">
-   </LINK>
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="29">
    <BOUNDS type="Node" left="1710" top="12810" width="100" height="100">
    </BOUNDS>
@@ -375,7 +373,7 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" slicecount="3" values="2,2,2">
+   <PIN pinname="XYZ" slicecount="3" values="1,1,1">
    </PIN>
    </NODE>
    <LINK srcnodeid="30" srcpinname="Transform Out" dstnodeid="20" dstpinname="Projection">
@@ -413,7 +411,7 @@
    </PIN>
    <PIN pinname="Input" pintype="Input" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Width" pintype="Input" visible="1" slicecount="1" values="1">
+   <PIN pinname="Width" pintype="Input" visible="1" slicecount="1" values="1.92">
    </PIN>
    <PIN pinname="Alignment" pintype="Input" visible="1" slicecount="1" values="Centered">
    </PIN>
@@ -524,4 +522,20 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="2865" top="11820" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="27" dstpinname="Original Points XY">
+   </LINK>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
    </PATCH>

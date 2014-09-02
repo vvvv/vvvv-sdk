@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Reader (Raw SharedMemory) help.v4p">
-   <BOUNDS type="Window" left="1560" top="2565" width="10185" height="6750">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\Reader (Raw SharedMemory) help.v4p">
+   <BOUNDS type="Window" left="12180" top="1875" width="10185" height="6720">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -149,9 +149,9 @@
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="21" dstpinname="Phase">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4605" top="2685" width="14895" height="270">
+   <BOUNDS type="Node" left="4620" top="2880" width="14895" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4605" top="2685" width="4725" height="1035">
+   <BOUNDS type="Box" left="4620" top="2880" width="4725" height="1035">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|When &apos;Use Sync&apos; is active the node is using a mutex internally to sync read/write on a shared memory location. if you need to sync with a thirdparty application prefix the memorylocation name with an &apos;m&apos; for the mutex location name.|">
    </PIN>
@@ -200,6 +200,30 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4575" top="1590" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4575" top="1590" width="525" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="NOTE">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4620" top="1935" width="14895" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4620" top="1935" width="4815" height="765">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|When changing the Size of Reader/Writer make sure to disable Read/Write on all Reader/Writers that share the same handle while making the change! Otherwise the change will not be accepted.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
    </PATCH>

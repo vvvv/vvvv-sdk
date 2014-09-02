@@ -12,7 +12,7 @@ namespace VVVV.Nodes.Generic
     {
         [Input("Input")]
         protected IInStream<T> FDataIn;
-        [Input("Select")]
+        [Input("Select", CheckIfChanged = true)]
         protected IInStream<int> FSelectIn;
         [Output("Output")]
         protected IOutStream<T> FDataOut;
@@ -32,6 +32,10 @@ namespace VVVV.Nodes.Generic
                 FFormerSliceOut.Length = 0;
                 return;
             }
+
+            // In case nothing changed also do an early exit - important if T is a string or a reference type
+            if (!FDataIn.IsChanged && !FSelectIn.IsChanged)
+                return;
 
             // Fetch readers and writers
             using (var dataReader = FDataIn.GetCyclicReader())

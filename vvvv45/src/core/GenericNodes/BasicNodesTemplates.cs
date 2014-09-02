@@ -17,7 +17,7 @@ namespace VVVV.Nodes
                 Help = "Casts any type to a type of this category, so be sure the input is of the required type",
                 Tags = "convert, as, generic"
                 )]
-    public class NODECATEGORYCastNode : Cons<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSCastNode : Cons<REPLACEME_CLASS> {}
     
     #endregion SingleValue
     
@@ -28,7 +28,7 @@ namespace VVVV.Nodes
                 Help = "Concatenates all input spreads to one output spread.",
                 Tags = "generic, spreadop"
                 )]
-    public class NODECATEGORYConsNode : Cons<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSConsNode : Cons<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "CAR", 
 	            Category = "NODECATEGORY",
@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	            Tags = "split, generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYCARBinNode : CARBin<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSCARBinNode : CARBin<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "CDR", 
 	            Category = "NODECATEGORY", 
@@ -46,7 +46,7 @@ namespace VVVV.Nodes
 	            Tags = "split, generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYCDRBinNode : CDRBin<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSCDRBinNode : CDRBin<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Reverse", 
 	            Category = "NODECATEGORY", 
@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 	            Tags = "invert, generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYReverseBinNode : ReverseBin<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSReverseBinNode : ReverseBin<REPLACEME_CLASS> {}
 
 	[PluginInfo(Name = "Shift", 
 	            Category = "NODECATEGORY", 
@@ -64,7 +64,7 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYShiftBinNode : ShiftBin<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSShiftBinNode : ShiftBin<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "SetSlice",
 	            Category = "NODECATEGORY",
@@ -73,7 +73,7 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYSetSliceNode : SetSlice<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSSetSliceNode : SetSlice<REPLACEME_CLASS> {}
     
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "NODECATEGORY",
@@ -81,14 +81,14 @@ namespace VVVV.Nodes
 	            Tags = "remove, generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYDeleteSliceNode : DeleteSlice<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSDeleteSliceNode : DeleteSlice<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Select",
                 Category = "NODECATEGORY",
                 Help = "Select which slices and how many form the output spread.",
 	            Tags = "resample, generic, spreadop"
 	           )]
-    public class NODECATEGORYSelectNode : Select<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSSelectNode : Select<REPLACEME_CLASS> {}
     
     [PluginInfo(Name = "Select", 
 				Category = "NODECATEGORY",
@@ -97,14 +97,14 @@ namespace VVVV.Nodes
 				Tags = "repeat, generic, spreadop",
 				Author = "woei"
 			)]
-    public class NODECATEGORYSelectBinNode : SelectBin<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSSelectBinNode : SelectBin<REPLACEME_CLASS> {}
     
 	[PluginInfo(Name = "Unzip", 
 	            Category = "NODECATEGORY",
 	            Help = "Unzips a spread into multiple spreads.", 
 	            Tags = "split, generic, spreadop"
 	           )]
-	public class NODECATEGORYUnzipNode : Unzip<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSUnzipNode : Unzip<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Unzip", 
 	            Category = "NODECATEGORY",
@@ -112,14 +112,14 @@ namespace VVVV.Nodes
 	            Help = "Unzips a spread into multiple spreads.", 
 	            Tags = "split, generic, spreadop"
 	           )]
-	public class NODECATEGORYUnzipBinNode : Unzip<IInStream<REPLACEME_CLASS>> {}
+	public class REPLACEME_CLASSUnzipBinNode : Unzip<IInStream<REPLACEME_CLASS>> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "NODECATEGORY",
 	            Help = "Zips spreads together.", 
 	            Tags = "join, generic, spreadop"
 	           )]
-	public class NODECATEGORYZipNode : Zip<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSZipNode : Zip<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "NODECATEGORY",
@@ -127,7 +127,7 @@ namespace VVVV.Nodes
 	            Help = "Zips spreads together.", 
 	            Tags = "join, generic, spreadop"
 	           )]
-	public class NODECATEGORYZipBinNode : Zip<IInStream<REPLACEME_CLASS>> {}
+	public class REPLACEME_CLASSZipBinNode : Zip<IInStream<REPLACEME_CLASS>> {}
 	
     [PluginInfo(Name = "GetSpread",
                 Category = "NODECATEGORY",
@@ -135,7 +135,7 @@ namespace VVVV.Nodes
                 Help = "Returns sub-spreads from the input specified via offset and count",
                 Tags = "generic, spreadop",
                 Author = "woei")]
-    public class NODECATEGORYGetSpreadNode : GetSpreadAdvanced<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSGetSpreadNode : GetSpreadAdvanced<REPLACEME_CLASS> {}
     
 	[PluginInfo(Name = "SetSpread",
 	            Category = "NODECATEGORY",
@@ -144,21 +144,21 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
-	public class NODECATEGORYSetSpreadNode : SetSpread<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSSetSpreadNode : SetSpread<REPLACEME_CLASS> {}
     
     [PluginInfo(Name = "Pairwise",
                 Category = "NODECATEGORY",
                 Help = "Returns all pairs of successive slices. From an input ABCD returns AB, BC, CD.",
                 Tags = "generic, spreadop"
                 )]
-    public class NODECATEGORYPairwiseNode : Pairwise<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSPairwiseNode : Pairwise<REPLACEME_CLASS> {}
 
     [PluginInfo(Name = "SplitAt",
                 Category = "NODECATEGORY",
                 Help = "Splits a spread at the given index.",
                 Tags = "generic, spreadop"
                 )]
-    public class NODECATEGORYSplitAtNode : SplitAtNode<REPLACEME_CLASS> { }
+    public class REPLACEME_CLASSSplitAtNode : SplitAtNode<REPLACEME_CLASS> { }
     
    	#endregion SpreadOps
 
@@ -170,7 +170,7 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class NODECATEGORYBufferNode : BufferNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSBufferNode : BufferNode<REPLACEME_CLASS> {}
     
     [PluginInfo(Name = "Queue",
 	            Category = "NODECATEGORY",
@@ -178,7 +178,7 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class NODECATEGORYQueueNode : QueueNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSQueueNode : QueueNode<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "NODECATEGORY",
@@ -186,7 +186,7 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class NODECATEGORYRingBufferNode : RingBufferNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSRingBufferNode : RingBufferNode<REPLACEME_CLASS> {}
     
 	[PluginInfo(Name = "Store", 
 	            Category = "NODECATEGORY", 
@@ -195,7 +195,7 @@ namespace VVVV.Nodes
 	            Author = "woei", 
 	            AutoEvaluate = true
 	           )]
-	public class NODECATEGORYStoreNode: Store<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSStoreNode: Store<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Stack",
 				Category = "NODECATEGORY",
@@ -203,7 +203,7 @@ namespace VVVV.Nodes
 				Tags = "generic, spreadop, collection",
 				Author="vux"
 				)]
-	public class NODECATEGORYStackNode : StackNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSStackNode : StackNode<REPLACEME_CLASS> {}
 	
 	#endregion Collections
 	

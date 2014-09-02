@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" systemname="FileStream (DShow9 Boygroup)" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p">
-   <BOUNDS type="Window" left="11400" top="8595" width="13590" height="8775">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" systemname="FileStream (DShow9 Boygroup)" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p">
+   <BOUNDS type="Window" left="11235" top="1905" width="13590" height="8775">
    </BOUNDS>
    <NODE systemname="Sync (Network FileStream)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Sync (Network FileStream)" componentmode="Hidden" id="9" managers="">
    <BOUNDS type="Node" left="3960" top="3750" width="6780" height="270">
@@ -94,6 +94,8 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Play">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Play">
@@ -275,8 +277,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="X" dstnodeid="17" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="4" srcpinname="Output 1" dstnodeid="1" dstpinname="XYZ">
    <LINKPOINT x="5445" y="5541">
@@ -494,4 +494,20 @@
    </LINK>
    <PACK Name="addonpack" Version="32.2.0">
    </PACK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="3945" top="2115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="X" dstnodeid="30" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="17" dstpinname="Input 1">
+   </LINK>
    </PATCH>
