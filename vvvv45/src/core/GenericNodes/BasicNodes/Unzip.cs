@@ -20,35 +20,38 @@ namespace VVVV.Nodes.Generic
 		public void Evaluate(int SpreadMax)
 		{
 			FOutputStreams.SetLengthBy(FInputStream);
-	
-			var buffer = MemoryPool<T>.GetArray();			
-			try
-			{
-				var outputStreamsLength = FOutputStreams.Length;
-				
-				using (var reader = FInputStream.GetCyclicReader())
-				{
-					int i = 0;
-					foreach (var outputStream in FOutputStreams)
-					{
-						int numSlicesToWrite = Math.Min(outputStream.Length, buffer.Length);
-						
-						reader.Position = i++;
-						using (var writer = outputStream.GetWriter())
-						{
-							while (!writer.Eos)
-							{
-								reader.Read(buffer, 0, numSlicesToWrite, outputStreamsLength);
-								writer.Write(buffer, 0, numSlicesToWrite);
-							}
-						}
-					}
-				}
-			}
-			finally
-			{
-				MemoryPool<T>.PutArray(buffer);
-			}
+
+            if (FInputStream.IsChanged)
+            {
+                var buffer = MemoryPool<T>.GetArray();
+                try
+                {
+                    var outputStreamsLength = FOutputStreams.Length;
+
+                    using (var reader = FInputStream.GetCyclicReader())
+                    {
+                        int i = 0;
+                        foreach (var outputStream in FOutputStreams)
+                        {
+                            int numSlicesToWrite = Math.Min(outputStream.Length, buffer.Length);
+
+                            reader.Position = i++;
+                            using (var writer = outputStream.GetWriter())
+                            {
+                                while (!writer.Eos)
+                                {
+                                    reader.Read(buffer, 0, numSlicesToWrite, outputStreamsLength);
+                                    writer.Write(buffer, 0, numSlicesToWrite);
+                                }
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    MemoryPool<T>.PutArray(buffer);
+                }
+            }
 		}
 	}
 }

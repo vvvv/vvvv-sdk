@@ -13,7 +13,7 @@ namespace VVVV.Nodes.Generic
         [Input("Input")]
         public IInStream<T> InputStream;
 
-        [Input("Index")]
+        [Input("Index", CheckIfChanged = true)]
         public IInStream<int> IndexStream;
 
         [Output("Left")]
@@ -31,6 +31,10 @@ namespace VVVV.Nodes.Generic
                 RightOutStream.Length = 0;
                 return;
             }
+
+            // In case nothing changed also do an early exit - important if T is a string or a reference type
+            if (!InputStream.IsChanged && !IndexStream.IsChanged)
+                return;
 
             // Grab buffers and reader/writer
             using (var buffer = MemoryPool<T>.GetBuffer())
