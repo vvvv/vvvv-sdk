@@ -223,6 +223,7 @@ namespace VVVV.Hosting.IO.Streams
             FPLength = pLength;
             FPPSrc = ppSrc;
             FValidateFunc = validateFunc;
+            IsChanged = true;
         }
         
         public object Clone()
