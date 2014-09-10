@@ -13,13 +13,17 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="1" nodename="Group (EX9)" systemname="Group (EX9)">
-   <BOUNDS height="100" left="315" top="3405" type="Node" width="100">
+   <BOUNDS height="270" left="315" top="3405" type="Node" width="810">
    </BOUNDS>
    <PIN pinname="Layer 2" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Layer 2" srcnodeid="0" srcpinname="Output Node">
@@ -355,5 +359,45 @@
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="12" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="30" srcpinname="Transform Out" dstnodeid="4" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="1560" top="2580" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2595" top="1770" width="19785" height="13830">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Layer" dstnodeid="1" dstpinname="Layer 3" linkstyle="Bezier">
+   <LINKPOINT x="1560" y="3113">
+   </LINKPOINT>
+   <LINKPOINT x="870" y="3113">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="46" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6585" top="270" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6585" top="270" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Show Crosshair|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Enabled" linkstyle="Bezier">
+   <LINKPOINT x="6585" y="1650">
+   </LINKPOINT>
+   <LINKPOINT x="2460" y="1650">
+   </LINKPOINT>
    </LINK>
    </PATCH>
