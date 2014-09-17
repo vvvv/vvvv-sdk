@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\03_Deform_Grid.v4p" systemname="Deform_Grid" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Deform_Grid.v4p">
    <BOUNDS type="Window" left="0" top="420" width="13740" height="14655">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="33.0.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="9045" top="1050" width="100" height="100">
@@ -595,7 +595,7 @@
    </BOUNDS>
    <BOUNDS height="11670" left="675" top="1560" type="Box" width="4125">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is splitted into the &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split).&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the Vertex Buffer into different properties of every vertex, like the &apos;Position XYZ&apos; and so on.&cr;&lf;&cr;&lf;See the steps 8 and 9 where the modified Vertex Buffer and the Indices are joined back into the mesh.&cr;&lf;&cr;&lf;Position of every vertex is splitted into XYZ values. X and Y are left unchanged, but used to generate new Z value for every vertex (thus pulling every vertex up and down as seen in the renderer).&cr;&lf;&cr;&lf;Values are scaled up. Change this setting to modify the frequency of the waves.&cr;&lf;&cr;&lf;A value that increments every frame by the Integrate (Differential) is added to the X coordinate of every vertex.&cr;&lf;&cr;&lf;These modified X and Y coordinates are used as X and Y for the Perlin (2d). Imagine 2d perlin noise as a 2d landscape, given X and Y you get a height (this is called &apos;sampling&apos;). If you&apos;re moving X you&apos;re moving on this langscape sampling it in different points.&cr;&lf;&cr;&lf;Now, if you have many X and Y in a spread (like in this example) the noise is sampled in many moving locations at the same time.&cr;&lf;&cr;&lf;The &apos;height&apos; is adjusted and used for the Z coordinate of every vertex.&cr;&lf;&cr;&lf;Vertices are joined back together with the unchanged texture coordinates into the Vertex Buffer. Note that the normals will be calculated afterwards, so there is no need to supply them now into the Vertex Buffer.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) joins the Vertex Buffer and the unchanged indices into a Mesh.&cr;&lf;&cr;&lf;The normals of the mesh should be recalculated because the vertices got their new positions. The &apos;Smoothing Angle&apos; pin defines how the normals at every vertex behave. Check the helppatch for more info. Try to change the angle to see the smooth mesh.&cr;&lf;&cr;&lf;The mesh is drawn 2 times (solid and wireframe modes) using the PhongDirectional (EX9.Effect). The node receives the transformation for the mesh, the light direction and the colors.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf; &cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is splitted into the &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split).&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the Vertex Buffer into different properties of every vertex, like the &apos;Position XYZ&apos; and so on.&cr;&lf;&cr;&lf;See the steps 8 and 9 where the modified Vertex Buffer and the Indices are joined back into the mesh.&cr;&lf;&cr;&lf;Position of every vertex is splitted into XYZ values. X and Y are left unchanged, but used to generate the new Z value for every vertex (thus pulling every vertex up and down as seen in the renderer).&cr;&lf;&cr;&lf;Values are scaled up. Change this setting to modify the frequency of the waves.&cr;&lf;&cr;&lf;A value that increments every frame by the Integrate (Differential) is added to the X coordinate of every vertex, and...&cr;&lf;&cr;&lf;...these modified X and Y coordinates are used as X and Y for the Perlin (2d). Imagine 2d perlin noise as a 2d landscape, given X and Y you get a height at this point (this is called &apos;sampling&apos;). If you&apos;re moving X you&apos;re moving on this langscape sampling it in different points.&cr;&lf;&cr;&lf;Now, if you have many X and Y in a spread (like in this example) the noise is sampled in many moving locations at the same time.&cr;&lf;&cr;&lf;The &apos;height&apos; is adjusted and used for the Z coordinate of every vertex.&cr;&lf;&cr;&lf;Vertices are joined back together with the unchanged texture coordinates into the &apos;Vertex Buffer&apos;. Note that the normals will be calculated afterwards, so there is no need to supply them now into the &apos;Vertex Buffer&apos;.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) joins the Vertex Buffer and the unchanged indices into a Mesh.&cr;&lf;&cr;&lf;The normals of the mesh should be recalculated because the vertices got their new positions. The &apos;Smoothing Angle&apos; pin defines how the normals at every vertex behave, try to change its value to see what happens. Check the helppatch for more info. &cr;&lf;&cr;&lf;The mesh is drawn 2 times (solid and wireframe modes) using the PhongDirectional (EX9.Effect). The node receives the transformation for the mesh, the light direction and the colors.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf; &cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -897,9 +897,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="125" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="5940" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6180" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="5940" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6180" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -913,9 +913,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="126" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="8055" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="8295" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="8055" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="8295" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -945,9 +945,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="128" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="8670" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="8910" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="8670" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="8910" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -961,9 +961,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="129" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="9705" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="9945" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="9705" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="9945" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -977,9 +977,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="130" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="105" top="10350" type="Node" width="315">
+   <BOUNDS height="270" left="105" top="10590" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="105" top="10350" type="Box" width="600">
+   <BOUNDS height="390" left="105" top="10590" type="Box" width="600">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -993,9 +993,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="131" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="105" top="11610" type="Node" width="315">
+   <BOUNDS height="270" left="105" top="11850" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="105" top="11610" type="Box" width="600">
+   <BOUNDS height="390" left="105" top="11850" type="Box" width="600">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
