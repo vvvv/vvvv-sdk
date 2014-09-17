@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\VideoOut (DShow9 SharedMemory) help.v4p">
-   <BOUNDS height="4710" left="1305" top="5610" type="Window" width="6105">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\VideoOut (DShow9 SharedMemory) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="5880" left="1305" top="5610" type="Window" width="6105">
    </BOUNDS>
    <NODE id="6" nodename="SharedMemory (EX9.Texture)">
    <BOUNDS height="270" left="375" top="3465" type="Node" width="1170">
@@ -27,21 +27,23 @@
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
-   <PIN pinname="Video Format" slicecount="1" values="YUY2">
+   <PIN pinname="Video Format" slicecount="1" values="RGB32" visible="1">
    </PIN>
    <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="640">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" visible="1" values="480">
    </PIN>
    </NODE>
    <NODE id="4" nodename="VideoOut (DShow9 SharedMemory)">
    <BOUNDS height="0" left="840" top="1965" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Video" visible="1">
+   <PIN pinname="Video" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Shared Name" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Video" srcnodeid="5" srcpinname="Video">
-   </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
    <BOUNDS height="0" left="2490" top="1245" type="Node" width="0">
    </BOUNDS>
@@ -114,6 +116,66 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
+   <LINK srcnodeid="5" srcpinname="Video" dstnodeid="4" dstpinname="Video">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="8" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1620" top="825" width="810" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1620" top="825" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="RGB24">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output Enum" dstnodeid="5" dstpinname="Video Format">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="540" top="825" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="540" top="825" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="640">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Width">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1035" top="825" width="405" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1035" top="825" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="480">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Height">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2445" top="3465" width="10830" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2445" top="3465" width="3060" height="1275">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note:&cr;&lf;When changing any of the video settings (width, height, format) you also need to change the &apos;Shared Name&apos; on both ends in order to reinitialize the memory location.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <PACK Name="VVVV.Packs" Version="0.2.0">
    </PACK>
    </PATCH>
