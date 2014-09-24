@@ -4,6 +4,7 @@ float4 BorderCol:COLOR ={0.0,0.0,0.0,1.0};
 texture tex0,tex1;
 sampler s0=sampler_state{Texture=(tex0);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
 sampler s1=sampler_state{Texture=(tex1);MipFilter=LINEAR;MinFilter=LINEAR;MagFilter=LINEAR;};
+float Epsilon=.001;
 float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     float4 map=tex2D(s1,x);map=max(map.x,max(map.y,map.z))*map.a;
     float lod=1+map.x*(Width)*log2(max(R.x,R.y));
@@ -20,6 +21,7 @@ float4 p0(float2 vp:vpos):color{float2 x=(vp+.5)/R;
     c+=tex2Dlod(s0,float4(x+float2(-1,0)*off,0,lod));
     c+=tex2Dlod(s0,float4(x+float2(1,0)*off,0,lod));
     c/=9;
+	c.rgb/=c.a+Epsilon;
     return c;
 }
 
