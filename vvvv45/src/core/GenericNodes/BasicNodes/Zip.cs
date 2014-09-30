@@ -59,12 +59,15 @@ namespace VVVV.Nodes.Generic
                         foreach (var inputStream in inputStreams)
                         {
                             writer.Position = i++;
-                            using (var reader = inputStream.GetCyclicReader())
+                            if (inputStream.IsChanged)
                             {
-                                while (!writer.Eos)
+                                using (var reader = inputStream.GetCyclicReader())
                                 {
-                                    reader.Read(buffer, 0, numSlicesToRead);
-                                    writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
+                                    while (!writer.Eos)
+                                    {
+                                        reader.Read(buffer, 0, numSlicesToRead);
+                                        writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
+                                    }
                                 }
                             }
                         }

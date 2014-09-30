@@ -107,7 +107,7 @@ namespace VVVV.PluginInterfaces.V2
 //                AutoValidate = false,
                 Order = BinOrder,
                 Visibility = BinVisibility,
-                CheckIfChanged = CheckIfChanged
+                CheckIfChanged = true
             };
         }
     }

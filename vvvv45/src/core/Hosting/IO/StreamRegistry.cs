@@ -26,120 +26,208 @@ namespace VVVV.Hosting.IO
 
             
             
-            RegisterInput(typeof(IInStream<double>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new DoubleInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<double>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new DoubleInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<float>), (factory, context) => {
-                                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                                var stream = new FloatInStream(pLength, ppDoubleData, validateFunc);
-                                return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<float>), (factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new FloatInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<int>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new IntInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<int>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new IntInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<uint>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new UIntInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<uint>), (factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new UIntInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
 
 
             RegisterInput(typeof(IInStream<long>), (factory, context) =>
             {
                 var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
                 var stream = new LongInStream(pLength, ppDoubleData, validateFunc);
-                return IOContainer.Create(context, stream, container);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
             });
 
             RegisterInput(typeof(IInStream<ulong>), (factory, context) =>
             {
                 var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
                 var stream = new ULongInStream(pLength, ppDoubleData, validateFunc);
-                return IOContainer.Create(context, stream, container);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
             });
             
-            RegisterInput(typeof(IInStream<bool>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new BoolInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<bool>), (factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new BoolInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
 
-            RegisterInput(typeof(IInStream<Matrix4x4>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
-                              var transformIn = container.RawIOObject as ITransformIn;
-                              transformIn.GetMatrixPointer(out pLength, out ppFloatData);
-                              var stream = new Matrix4x4InStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Matrix4x4>), (factory, context) => 
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
+                var transformIn = container.RawIOObject as ITransformIn;
+                transformIn.GetMatrixPointer(out pLength, out ppFloatData);
+                var stream = new Matrix4x4InStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn, context.IOAttribute.AutoValidate));
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<Matrix>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
-                              var transformIn = container.RawIOObject as ITransformIn;
-                              transformIn.GetMatrixPointer(out pLength, out ppFloatData);
-                              var stream = new MatrixInStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Matrix>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
+                var transformIn = container.RawIOObject as ITransformIn;
+                transformIn.GetMatrixPointer(out pLength, out ppFloatData);
+                var stream = new MatrixInStream(pLength, (Matrix**) ppFloatData, GetValidateFunc(transformIn, context.IOAttribute.AutoValidate));
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
 
-            RegisterInput(typeof(IInStream<Vector2D>), (factory, context) => {
-                            var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                            var stream = new Vector2DInStream(pLength, ppDoubleData, validateFunc);
-                            return IOContainer.Create(context, stream, container);
-                          });
-            RegisterInput(typeof(IInStream<Vector3D>),(factory, context) => {
-                            var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                            var stream = new Vector3DInStream(pLength, ppDoubleData, validateFunc);
-                            return IOContainer.Create(context, stream, container);
-                          });
-            RegisterInput(typeof(IInStream<Vector4D>),(factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new Vector4DInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Vector2D>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector2DInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+            RegisterInput(typeof(IInStream<Vector3D>),(factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector3DInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+            RegisterInput(typeof(IInStream<Vector4D>),(factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector4DInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
 
-            RegisterInput(typeof(IInStream<Vector2>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new Vector2InStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
-            RegisterInput(typeof(IInStream<Vector3>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new Vector3InStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
-            RegisterInput(typeof(IInStream<Vector4>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new Vector4InStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Vector2>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector2InStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+            RegisterInput(typeof(IInStream<Vector3>), (factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector3InStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+            RegisterInput(typeof(IInStream<Vector4>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new Vector4InStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<Quaternion>), (factory, context) => {
-                              var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
-                              var stream = new QuaternionInStream(pLength, ppDoubleData, validateFunc);
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Quaternion>), (factory, context) => 
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new QuaternionInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<RGBAColor>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
-                              var colorIn = container.RawIOObject as IColorIn;
-                              colorIn.GetColorPointer(out pLength, out ppDoubleData);
-                              var stream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<RGBAColor>), (factory, context) =>
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
+                var colorIn = container.RawIOObject as IColorIn;
+                colorIn.GetColorPointer(out pLength, out ppDoubleData);
+                var stream = new ColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn, context.IOAttribute.AutoValidate));
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
-            RegisterInput(typeof(IInStream<Color4>), (factory, context) => {
-                              var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
-                              var colorIn = container.RawIOObject as IColorIn;
-                              colorIn.GetColorPointer(out pLength, out ppDoubleData);
-                              var stream = new SlimDXColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn, context.IOAttribute.AutoValidate));
-                              return IOContainer.Create(context, stream, container);
-                          });
+            RegisterInput(typeof(IInStream<Color4>), (factory, context) => 
+            {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IColorIn)));
+                var colorIn = container.RawIOObject as IColorIn;
+                colorIn.GetColorPointer(out pLength, out ppDoubleData);
+                var stream = new SlimDXColorInStream(pLength, (RGBAColor**) ppDoubleData, GetValidateFunc(colorIn, context.IOAttribute.AutoValidate));
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
             
             RegisterInput<MemoryIOStream<string>>(
                 (factory, context) =>

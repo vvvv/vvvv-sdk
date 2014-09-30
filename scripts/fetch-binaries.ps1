@@ -12,7 +12,7 @@ $nugetExe = Join-Path $scriptPath  "..\tools\nuget.exe"
 $packageName = "VVVV.Binaries.$platform"
 $packageVersion = ""
 
-$tcHost = "http://vvvv.org:8111"
+$tcHost = "http://teamcity.vvvv.org"
 $tagsUri = "$tcHost/guestAuth/app/rest/builds/id:$buildId/tags/"
 
 $localCommits = git log --format=%H --max-count=$maxCount
@@ -37,7 +37,7 @@ foreach ($c in $localCommits)
         $p = "VVVV\.[^\.]*\.([0-9]+)\.([0-9]+)\.([0-9]+)([^\.]*)\.nupkg"
         $major, $minor, $patch, $preRelease = ([regex]$p).Match($file.name).Groups | select -skip 1 | %{$_.Value}
         $packageVersion = "$major.$minor.$patch$preRelease"
-        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath" -Source "http://vvvv.org:8111/guestAuth/app/nuget/v1/FeedService.svc/"
+        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath" -Source "http://teamcity.vvvv.org/guestAuth/app/nuget/v1/FeedService.svc/"
         $contentFolder = Join-Path $packagesPath (Join-Path "VVVV.Binaries.$platform.$packageVersion" "content")
         Copy-Item (Join-Path $contentFolder "\*") -Destination $vvvvRootPath -Recurse -Force
         break
@@ -46,5 +46,5 @@ foreach ($c in $localCommits)
 
 if ($found -eq $false)
 {
-    Write-Error "Couldn't find any matching binaries. Either increase the maxCount parameter or look manually at http://vvvv.org:8111"
+    Write-Error "Couldn't find any matching binaries. Either increase the maxCount parameter or look manually at http://teamcity.vvvv.org"
 }
