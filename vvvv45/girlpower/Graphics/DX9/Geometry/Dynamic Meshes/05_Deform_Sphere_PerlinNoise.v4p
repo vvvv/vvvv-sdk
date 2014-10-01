@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\04_Deform_Sphere.v4p" systemname="Mesh_And_Perlin2" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Mesh_And_Perlin2.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\05_Deform_Sphere_PerlinNoise.v4p" systemname="Mesh_And_Perlin2" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Mesh_And_Perlin2.v4p">
    <BOUNDS type="Window" left="0" top="0" width="13275" height="15195">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="33.0.0">
    </PACK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="10">
    <BOUNDS type="Node" left="8595" top="13815" width="100" height="100">
@@ -33,9 +33,9 @@
    </PIN>
    <PIN pinname="View Projection" visible="1">
    </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0.13">
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.11" visible="1">
    </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   <PIN pinname="Initial Yaw" slicecount="1" values="-0.08" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="View" dstnodeid="10" dstpinname="View">
@@ -231,8 +231,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Position In">
-   </LINK>
-   <LINK srcnodeid="36" srcpinname="Mesh" dstnodeid="54" dstpinname="Mesh">
    </LINK>
    <NODE systemname="Polar (3d Vector)" nodename="Polar (3d Vector)" componentmode="Hidden" id="55">
    <BOUNDS type="Node" left="6225" top="2475" width="780" height="270">
@@ -433,11 +431,11 @@
    <LINK srcnodeid="67" srcpinname="Layer" dstnodeid="10" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="102" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS type="Box" left="10155" top="12855" width="420" height="240">
+   <BOUNDS type="Box" left="10485" top="12870" width="420" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="10155" top="12855" width="0" height="0">
+   <BOUNDS type="Node" left="10485" top="12870" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1.74">
+   <PIN pinname="Y Input Value" slicecount="1" values="1.79">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -1129,9 +1127,9 @@
    <NODE componentmode="InABox" id="193" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="5685" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="7095" left="675" top="5685" type="Box" width="3705">
+   <BOUNDS height="8595" left="675" top="5685" type="Box" width="3705">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Cartesian (3d Vector) converts the Polar coordinates of the vertex back to the Cartesian representation.&cr;&lf;&cr;&lf;The newly constructed Vertex Buffer is joined back with the unchanged Indices into a Mesh.&cr;&lf;&cr;&lf;Normals are recalculated. Note the &apos;Smoothing Angle&apos; pin.&cr;&lf;&cr;&lf;The mesh is drawn twice by the PhongDirectional (EX9.Effect) as a solid and wireframe objects. It receives spreads of two transformations, two colros and two toggles for the &apos;Enabled&apos; pin (in order to enable/disable solid/wireframe separately).&cr;&lf;&cr;&lf;Positions of the vertices from the step 4 is used again to position small flat circles drawn by the GridSegment (DX9). The Translate (Transform Vector) returns transformations for every supplied vertex.&cr;&lf;&cr;&lf;The Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; always rotates these flat circles so that they are facing into the camera.&cr;&lf;&cr;&lf;The mesh drawn by the effect and the circles drawn by the primitive are grouped together and sent to the Renderer.&cr;&lf;&cr;&lf;This toggle turns on/off the wireframe and the small circles.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Cartesian (3d Vector) converts the Polar coordinates of the vertex back to the Cartesian representation.&cr;&lf;&cr;&lf;The newly constructed Vertex Buffer is joined back with the unchanged Indices into a Mesh.&cr;&lf;&cr;&lf;Normals are recalculated. Note the &apos;Smoothing Angle&apos; pin.&cr;&lf;&cr;&lf;The mesh is drawn twice by the PhongDirectional (EX9.Effect) as a solid and wireframe objects. It receives spreads of two transformations, two colros and two toggles for the &apos;Enabled&apos; pin (in order to enable/disable solid/wireframe separately).&cr;&lf;&cr;&lf;Positions of the vertices from the step 4 is used again to position small flat circles drawn by the GridSegment (DX9). The Translate (Transform Vector) returns transformations for every supplied vertex.&cr;&lf;&cr;&lf;The Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; always rotates these flat circles so that they are facing into the camera.&cr;&lf;&cr;&lf;The mesh drawn by the effect and the circles drawn by the primitive are grouped together and sent to the Renderer.&cr;&lf;&cr;&lf;This toggle turns on/off the wireframe and the small circles.&cr;&lf;&cr;&lf;P.S. Any mesh can be deformed in this scenario, try to plug the Teapot (EX9.Geometry) instead of the Sphere (EX9.Geometry) (see Step 1) or load your own mesh as Xfile using the XFile (EX9.Geometry Load).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1212,4 +1210,40 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Teapot (EX9.Geometry)" nodename="Teapot (EX9.Geometry)" componentmode="Hidden" id="199">
+   <BOUNDS type="Node" left="8985" top="675" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="199" srcpinname="Mesh" dstnodeid="54" dstpinname="Mesh">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="200" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9930" top="12885" width="390" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9930" top="12885" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.08">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="200" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Initial Pitch">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="201" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9345" top="12885" width="525" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9345" top="12885" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="201" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Initial Yaw">
+   </LINK>
    </PATCH>
