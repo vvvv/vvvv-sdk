@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p">
-   <BOUNDS type="Window" left="195" top="195" width="16215" height="14160">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-432">
+   <BOUNDS type="Window" left="195" top="195" width="16215" height="14235">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
    </PACK>
@@ -633,7 +633,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="2505" width="3825" height="10830">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Box and other nodes from the &apos;EX9.Geometry&apos; category return meshes which can be directly drawn/manipulated by an effect (see &apos;EX9.Effect&apos; category) or manipulated at first and then sent to an effect.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Split) splits the meshes into the &apos;Vertex Buffer&apos; and &apos;Indices&apos;. &cr;&lf;&cr;&lf;Meshes are constructed from vertices, every vertex has not only a position in 3d, but can also contain a lot of other information (like &apos;Texture Coordinate&apos;, &apos;Diffuse Color&apos;, &apos;Blend Weight&apos;). A &apos;Vertex Buffer&apos; contains all of this information for every vertex.&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the information stored for every vertex. Select the node and open the Inspektor (Ctrl+I) to see all possible output pins, only the &apos;Position XYZ&apos; and the &apos;Normal XYZ&apos; are visible by default.&cr;&lf;&cr;&lf;Usually meshes are constructed from triangles and almost every vertex is used for more than one triangle, the &apos;Indices&apos; are helping against duplication of vertex information. Every vertex is numbered and the indices say something like &quot;the first triangle is build on vertices number 0,1,2 the second one uses 3,1,0&apos;.&cr;&lf;&cr;&lf;There is also a way to construct a vertex buffer for a mesh from scratch (and on the fly). The VertexBuffer (EX9.Geometry Join) receives vertex data (like &apos;Position XYZ&apos;... see Inspektor for more pins) and returns it as &apos;Vertex Buffer&apos;.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) combines the &apos;Vertex Buffer&apos; with the &apos;Indices&apos; and returns a &apos;Mesh&apos; which is ready to be drawn.&cr;&lf;&cr;&lf;This is a simple effect. It receives the geometry and draws it with a constant color. In this example there are two render states attached to it:&cr;&lf;&cr;&lf;- The Fog (EX9.RenderState) says that the vertices further away from the viewer shoud be drawn with a &apos;Fog color&apos;. &cr;&lf;&cr;&lf;- The Fill (EX9.RenderState) defines how the geometry is drawn.&cr;&lf;&cr;&lf;Finally, the geometry is rendered.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Box and other nodes from the &apos;EX9.Geometry&apos; category return meshes which can be directly drawn/manipulated by an effect (see &apos;EX9.Effect&apos; category) or manipulated at first and then sent to an effect.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Split) splits the meshes into the &apos;Vertex Buffer&apos; and &apos;Indices&apos;. &cr;&lf;&cr;&lf;Meshes are constructed from vertices, every vertex has not only a position in 3d, but can also contain a lot of other information (like &apos;Texture Coordinate&apos;, &apos;Diffuse Color&apos;, &apos;Blend Weight&apos;). A &apos;Vertex Buffer&apos; contains all of this information for every vertex.&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the information stored for every vertex. Select the node and open the Inspektor (Ctrl+I) to see all possible output pins, only the &apos;Position XYZ&apos; and the &apos;Normal XYZ&apos; are visible by default.&cr;&lf;&cr;&lf;Usually meshes are constructed from triangles and almost every vertex is used for more than one triangle, the &apos;Indices&apos; are helping against duplication of vertex information. Every vertex is numbered and the indices say something like &quot;the first triangle is build on vertices number 0,1,2 the second one uses 3,1,0&apos;.&cr;&lf;&cr;&lf;There is also a way to construct a vertex buffer for a mesh from scratch (and on the fly). The VertexBuffer (EX9.Geometry Join) receives vertex data (like &apos;Position XYZ&apos;... see Inspektor for more pins) and returns it as &apos;Vertex Buffer&apos;.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) combines the &apos;Vertex Buffer&apos; with the &apos;Indices&apos; and returns a &apos;Mesh&apos; which is ready to be drawn.&cr;&lf;&cr;&lf;This is a simple effect. It receives the geometry and draws it with a constant color. In this example there are two render states attached to it:&cr;&lf;&cr;&lf;- The Fog (EX9.RenderState) says that the vertices further away from the viewer shoud be drawn with a &apos;Fog color&apos;. &cr;&lf;&cr;&lf;- The Fill (EX9.RenderState) defines how the geometry is drawn (Point, WireFrame or Solid).&cr;&lf;&cr;&lf;Finally, the geometry is rendered.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -945,9 +945,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="69" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7410" top="9135" width="1020" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7410" top="9135" width="1020" height="270">
+   <BOUNDS type="Box" left="7410" top="9135" width="1110" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|to the effect|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|to the effect&cr;&lf;(see Step 8)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -962,6 +962,72 @@
    <BOUNDS type="Box" left="7275" top="4425" width="1050" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Vertex count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="71" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11700" top="7920" width="1035" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11700" top="7920" width="2325" height="990">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^&cr;&lf;Press &apos;O&apos; and leftclick and drag in the renderer to orbit the camera.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="72" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6045" top="10425" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6045" top="10425" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="73">
+   <BOUNDS type="Node" left="6045" top="10740" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6045" top="10740" width="2835" height="285">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="02_Know_Your_Meshes_Visual.v4p">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="74" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6045" top="10140" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6045" top="10140" width="3735" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="------------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="75" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6045" top="11130" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6045" top="11130" width="3735" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="------------------------------------------------">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
