@@ -11,11 +11,33 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Devices
 {
+	[Startable]
+	public class Rs232PortManager : IStartable
+	{
+		public const string COM_PORT_ENUM_NAME = "Rs232Node.ComPort";
+		
+        public static void UpdatePortList()
+        {
+            var portNames = SerialPort.GetPortNames()
+                .Where(n => n.StartsWith("com", StringComparison.InvariantCultureIgnoreCase))
+                .ToArray();
+            EnumManager.UpdateEnum(COM_PORT_ENUM_NAME, portNames.Length > 0 ? portNames[0] : string.Empty, portNames);
+        }
+		
+		#region IStartable implementation
+		public void Start()
+		{
+			UpdatePortList();
+		}
+		public void Shutdown()
+		{
+		}
+		#endregion
+	}
+	
     [PluginInfo(Name = "RS232", Category = "Devices", AutoEvaluate = true)]
     public class Rs232Node : IDisposable, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
-        const string COM_PORT_ENUM_NAME = "Rs232Node.ComPort";
-
         [Input("Input")]
         public ISpread<Stream> DataIn;
         [Input("Do Send", IsBang = true)]
@@ -38,7 +60,7 @@ namespace VVVV.Nodes.Devices
         public ISpread<bool> BreakStateIn;
         [Input("Update Port List", IsSingle=true, IsBang=true, Visibility = PinVisibility.Hidden)]
         public IDiffSpread<bool> UpdatePortListIn;
-        [Input("Port Name", EnumName = COM_PORT_ENUM_NAME)]
+        [Input("Port Name", EnumName = Rs232PortManager.COM_PORT_ENUM_NAME)]
         public ISpread<EnumEntry> ComPortIn;
         [Input("Enabled")]
         public ISpread<bool> EnabledIn;
@@ -65,19 +87,6 @@ namespace VVVV.Nodes.Devices
 
         private readonly Spread<SerialPort> FPorts = new Spread<SerialPort>();
 
-        static Rs232Node()
-        {
-            UpdatePortList();
-        }
-
-        static void UpdatePortList()
-        {
-            var portNames = SerialPort.GetPortNames()
-                .Where(n => n.StartsWith("com", StringComparison.InvariantCultureIgnoreCase))
-                .ToArray();
-            EnumManager.UpdateEnum(COM_PORT_ENUM_NAME, portNames.Length > 0 ? portNames[0] : string.Empty, portNames);
-        }
-
         public void OnImportsSatisfied()
         {
             DataOut.SliceCount = 0;
@@ -96,7 +105,7 @@ namespace VVVV.Nodes.Devices
             RiStateOut.SliceCount = spreadMax;
             BreakStateOut.SliceCount = spreadMax;
 
-            if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) UpdatePortList();
+            if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) Rs232PortManager.UpdatePortList();
 
             FPorts.Resize(spreadMax, CreatePort, DestroyPort);
             DataOut.ResizeAndDispose(spreadMax, () => new MemoryStream());

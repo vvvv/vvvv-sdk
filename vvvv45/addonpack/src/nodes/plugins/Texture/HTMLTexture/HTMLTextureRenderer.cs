@@ -399,6 +399,9 @@ namespace VVVV.Nodes.Texture.HTML
                                     FLastClickPosition = mouseButtonNotification.Position;
                                     FLastClickButton = mouseButtonNotification.Buttons;
                                     break;
+                                case MouseNotificationKind.MouseClick:
+                                    // TODO: Use this event directly and remove above code.
+                                    break;
                                 case MouseNotificationKind.MouseMove:
                                     FBrowserHost.SendMouseMoveEvent(mouseEvent, false);
                                     break;

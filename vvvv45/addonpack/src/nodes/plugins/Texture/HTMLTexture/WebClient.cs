@@ -157,7 +157,10 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override CefResourceHandler GetResourceHandler(CefBrowser browser, CefFrame frame, CefRequest request)
             {
-                if (frame.IsMain && request.Method == "GET" && request.ResourceType == CefResourceType.MainFrame)
+                if (frame.IsMain && 
+                    request.Method == "GET" && 
+                    request.ResourceType == CefResourceType.MainFrame &&
+                    (request.TransitionType == CefTransitionType.Explicit || request.TransitionType == CefTransitionType.Reload))
                 {
                     var html = FRenderer.CurrentHTML;
                     if (html != null)

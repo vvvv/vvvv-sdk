@@ -21,7 +21,7 @@ namespace VVVV.Nodes.Generic
 		{
 			FOutputStreams.SetLengthBy(FInputStream);
 
-            if (FInputStream.IsChanged)
+            if (FInputStream.IsChanged || FOutputStreams.IsChanged)
             {
                 var buffer = MemoryPool<T>.GetArray();
                 try
