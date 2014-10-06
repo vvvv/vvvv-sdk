@@ -121,7 +121,7 @@ namespace VVVV.Nodes
                 if (found)
                 {
                     this.FPinOutValue.SliceCount = dbl.Count;
-                    for (int i = 0; i < this.FPinInDefault.SliceCount; i++)
+                    for (int i = 0; i < dbl.Count; i++)
                     {
                         this.FPinOutValue.SetColor(i, dbl[i]);
                     }
@@ -129,7 +129,7 @@ namespace VVVV.Nodes
                 else
                 {
                     this.FPinOutValue.SliceCount = this.FPinInDefault.SliceCount;
-                    for (int i = 0; i < dbl.Count; i++)
+                    for (int i = 0; i < this.FPinInDefault.SliceCount; i++)
                     {
                         RGBAColor col;
                         this.FPinInDefault.GetColor(i, out col);
