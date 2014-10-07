@@ -1,8 +1,8 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p">
-   <BOUNDS type="Window" left="300" top="615" width="18015" height="12750">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-720">
+   <BOUNDS type="Window" left="300" top="615" width="18015" height="13110">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="32.2.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="10815" top="825" width="100" height="100">
@@ -123,7 +123,7 @@
    <LINK srcnodeid="8" srcpinname="Position XYZ" dstnodeid="9" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7140" top="4245" width="360" height="240">
+   <BOUNDS type="Box" left="7140" top="4245" width="375" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="7140" top="4245" width="0" height="0">
    </BOUNDS>
@@ -143,7 +143,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7530" top="3780" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -825,7 +825,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="15225" top="4620" width="1050" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Vertex IDs used for this triangle.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Vertex IDs used for this face.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -839,7 +839,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="15465" top="1875" width="1245" height="900">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick and drag to pick one triangle&cr;&lf;v|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick and drag to pick one face&cr;&lf;v|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -983,7 +983,7 @@
    </BOUNDS>
    <BOUNDS height="10755" left="675" top="1560" type="Box" width="3135">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own by the XFile (EX9.Geometry Load). Let&apos;s start with the simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;The whole mesh is drawn here 2 times: one as a &apos;Solid&apos; mesh and once again as a &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of this mesh are rendered as well, note these tiny yellow lines facing backwards in this scene.&cr;&lf;&cr;&lf;The mesh is split into the &apos;Vertex Buffer&apos; and the &apos;Indices&apos;, the &apos;Vertex Buffer&apos; is split further into the &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). This circle is Translated to this position, then the Billboard (Transform) makes it always facing into the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked triangle is drawn. Here the node creates text for all vertices, but all of them has a transparent white color and only selected ones has an Alpha channel set to 1. (See the I (Spreads), Select (Value), SetSlice (Value) nodes).&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed on 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own by the XFile (EX9.Geometry Load). Let&apos;s start with the simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;The whole mesh is drawn here 2 times: one as a &apos;Solid&apos; mesh and once again as a &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of this mesh are rendered as well, note these tiny yellow lines facing backwards in this scene.&cr;&lf;&cr;&lf;The mesh is split into the &apos;Vertex Buffer&apos; and the &apos;Indices&apos;, the &apos;Vertex Buffer&apos; is split further into the &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). This circle is Translated to this position, then the Billboard (Transform) makes it always facing into the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked face is drawn. Here the node creates text for all vertices, but all of them has a transparent white color and only selected ones has an Alpha channel set to 1. (See the I (Spreads), Select (Value), SetSlice (Value) nodes).&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed on 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1232,8 +1232,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Mesh" dstnodeid="79" dstpinname="Input Node">
-   </LINK>
    <NODE componentmode="InABox" id="112" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="225" top="6375" type="Node" width="315">
    </BOUNDS>
@@ -1314,4 +1312,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="28" srcpinname="Mesh" dstnodeid="79" dstpinname="Input Node">
+   </LINK>
    </PATCH>
