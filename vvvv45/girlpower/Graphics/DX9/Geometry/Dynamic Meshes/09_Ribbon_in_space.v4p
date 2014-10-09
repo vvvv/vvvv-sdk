@@ -273,7 +273,7 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="Count" visible="1" slicecount="1" values="2043.16438356164">
+   <PIN pinname="Count" visible="1" slicecount="3" values="0,1920.08219178082,3840.16438356165">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -347,16 +347,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
-   </LINK>
-   <NODE systemname="Count (Value)" filename="" nodename="Count (Value)" componentmode="Hidden" id="103">
-   <BOUNDS type="Node" left="11325" top="4380" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="1" srcpinname="Indices" dstnodeid="103" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="82" srcpinname="Output" dstnodeid="7" dstpinname="Indices">
    </LINK>
@@ -541,9 +531,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="0.081081081081081">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.534246575342466">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.513698630136987">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -554,20 +544,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="140">
-   <BOUNDS type="Node" left="11625" top="4935" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="140" srcpinname="Output" dstnodeid="82" dstpinname="Count">
-   </LINK>
-   <LINK srcnodeid="103" srcpinname="Count" dstnodeid="140" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="140" dstpinname="Input 2">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="141" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10320" top="8520" width="510" height="240">
    </BOUNDS>
@@ -1269,5 +1245,29 @@
    <LINK srcnodeid="66" srcpinname="Output" dstnodeid="52" dstpinname="Color">
    </LINK>
    <LINK srcnodeid="94" srcpinname="Position XYZ" dstnodeid="21" dstpinname="Go To Position">
+   </LINK>
+   <NODE id="103" systemname="Count (Value)" filename="" nodename="Count (Value)" componentmode="Hidden">
+   <BOUNDS type="Node" left="11325" top="4380" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Indices" dstnodeid="103" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="188">
+   <BOUNDS type="Node" left="11625" top="4935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="6">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="188" srcpinname="Output" dstnodeid="82" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="103" srcpinname="Count" dstnodeid="188" dstpinname="Input 1">
    </LINK>
    </PATCH>

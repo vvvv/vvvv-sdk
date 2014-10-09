@@ -2,7 +2,7 @@
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-720">
    <BOUNDS type="Window" left="300" top="615" width="18015" height="13110">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="33.0.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="10815" top="825" width="100" height="100">
@@ -143,7 +143,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7530" top="3780" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -357,7 +357,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="9435" top="10605" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.06">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.08">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -371,7 +371,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8880" top="10605" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.13">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.17">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -760,10 +760,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="7" dstpinname="Mesh">
-   </LINK>
-   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="78" dstpinname="Mesh">
-   </LINK>
    <NODE systemname="PhongDirectional (EX9.Effect)" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden" id="3" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx">
    <BOUNDS type="Node" left="4380" top="8640" width="100" height="100">
    </BOUNDS>
@@ -782,8 +778,6 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Render State Out" dstnodeid="3" dstpinname="Render State">
    </LINK>
-   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="3" dstpinname="Mesh">
-   </LINK>
    <NODE systemname="Teapot (EX9.Geometry)" nodename="Teapot (EX9.Geometry)" componentmode="Hidden" id="80">
    <BOUNDS type="Node" left="13380" top="825" width="100" height="100">
    </BOUNDS>
@@ -795,7 +789,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5025" top="7785" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Color Input" slicecount="2" visible="1" values="|0.31181,0.31181,0.31181,1.00000|,|0.60302,0.60302,0.60302,1.00000|">
+   <PIN pinname="Color Input" slicecount="2" visible="1" values="|0.20338,0.20338,0.20338,1.00000|,|0.60302,0.60302,0.60302,1.00000|">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
@@ -835,9 +829,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="86" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="15465" top="1875" width="1260" height="270">
+   <BOUNDS type="Node" left="15465" top="1740" width="1260" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="15465" top="1875" width="1245" height="900">
+   <BOUNDS type="Box" left="15465" top="1740" width="1320" height="1020">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick and drag to pick one face&cr;&lf;v|">
    </PIN>
@@ -846,6 +840,8 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="87" systemname="IOBox (Value Advanced)">
@@ -1055,17 +1051,19 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="100" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7560" top="2640" width="1260" height="270">
+   <BOUNDS type="Node" left="7530" top="2475" width="1260" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7560" top="2640" width="1185" height="1095">
+   <BOUNDS type="Box" left="7530" top="2475" width="1275" height="1275">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick and drag to change the value and pick one vertex&cr;&lf;v|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Rightclick and drag the value to pick one vertex&cr;&lf;v|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="101" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1313,5 +1311,11 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="28" srcpinname="Mesh" dstnodeid="79" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="3" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="78" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="7" dstpinname="Mesh">
    </LINK>
    </PATCH>
