@@ -42,7 +42,7 @@ namespace VVVV.Nodes
 
             //Outputs    	
             this.FHost.CreateNodeOutput("Connection", TSliceMode.Single, TPinVisibility.True, out this.FPinOutConnection);
-            this.FPinOutConnection.SetSubType(new Guid[1] { this.FConnectionObject.GUID }, this.FConnectionObject.FriendlyName);
+            this.FPinOutConnection.SetSubType2(typeof(D), new Guid[1] { this.FConnectionObject.GUID }, this.FConnectionObject.FriendlyName);
             this.FPinOutConnection.SetInterface(this.FConnectionObject);
             
             this.FHost.CreateStringOutput("Status", TSliceMode.Single, TPinVisibility.True, out this.FPinOutStatus);

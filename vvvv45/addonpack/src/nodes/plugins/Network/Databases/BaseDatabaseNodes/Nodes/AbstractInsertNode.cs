@@ -58,7 +58,7 @@ namespace VVVV.Nodes
 
             //Inputs
             this.FHost.CreateNodeInput("Connection", TSliceMode.Single, TPinVisibility.True, out this.FPinInConnection);
-            this.FPinInConnection.SetSubType(new Guid[1] { dtype.GUID } , dtype.FriendlyName);
+            this.FPinInConnection.SetSubType2(typeof(T), new Guid[1] { dtype.GUID }, dtype.FriendlyName);
 
             this.FHost.CreateStringInput("Table", TSliceMode.Single, TPinVisibility.True, out this.FPinInTable);
             this.FPinInTable.SetSubType("", false);

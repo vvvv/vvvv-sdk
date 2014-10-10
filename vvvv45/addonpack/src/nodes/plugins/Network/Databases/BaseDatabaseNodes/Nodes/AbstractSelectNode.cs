@@ -74,8 +74,7 @@ namespace VVVV.Nodes
 
             //Inputs
             this.FHost.CreateNodeInput("Connection", TSliceMode.Single, TPinVisibility.True, out this.FPinInConnection);
-            this.FPinInConnection.SetSubType(new Guid[1] { dtype.GUID } , dtype.FriendlyName);
-
+            this.FPinInConnection.SetSubType2(typeof(T), new Guid[1] { dtype.GUID }, dtype.FriendlyName);
             
             this.FHost.CreateStringInput("Fields", TSliceMode.Single, TPinVisibility.True, out this.FPinInFields);
             this.FPinInFields.SetSubType("*", false);
