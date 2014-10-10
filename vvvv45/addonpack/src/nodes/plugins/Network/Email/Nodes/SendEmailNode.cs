@@ -11,7 +11,6 @@ using System.Threading;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
-using System.Text;
 
 namespace VVVV.Nodes
 {

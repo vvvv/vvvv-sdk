@@ -94,7 +94,7 @@ namespace VVVV.Hosting.Factories
                         var s = sr.ReadLine();
 
                         var settings = new XmlReaderSettings();
-                        settings.ProhibitDtd = false;
+                        settings.DtdProcessing = DtdProcessing.Parse;
 
                         using (StringReader stringReader = new StringReader(FDTD + sr.ReadToEnd()))
                         {

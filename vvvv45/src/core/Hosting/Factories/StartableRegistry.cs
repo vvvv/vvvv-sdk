@@ -231,7 +231,7 @@ namespace VVVV.Hosting.Factories
             using (var streamReader = new StreamReader(startablelist))
             {
                 var settings = new XmlReaderSettings();
-                settings.ProhibitDtd = false;
+                settings.DtdProcessing = DtdProcessing.Parse;
 
                 using (var xmlReader = XmlReader.Create(streamReader, settings))
                 {
