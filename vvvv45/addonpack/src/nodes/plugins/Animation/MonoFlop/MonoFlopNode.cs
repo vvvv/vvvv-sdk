@@ -1,12 +1,13 @@
 #region usings
 using System;
+using System.ComponentModel.Composition;
 
 using VVVV.PluginInterfaces.V2;
 #endregion usings
 
 namespace VVVV.Nodes
 {
-	public abstract class MonoFlop : IPluginEvaluate
+	public abstract class MonoFlop : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		#region fields & pins
 		#pragma warning disable 169, 649
@@ -28,6 +29,12 @@ namespace VVVV.Nodes
 		private Spread<double> FBuffer = new Spread<double>(0);
 		#pragma warning restore
 		#endregion fields & pins
+		
+		public void OnImportsSatisfied()
+		{
+			FOut.SliceCount = 0;
+			FInvOut.SliceCount = 0;
+		}
 
 		protected abstract double Increment();
 		protected abstract double Duration(int slice);
@@ -35,7 +42,7 @@ namespace VVVV.Nodes
 		public virtual void Evaluate(int spreadMax)
 		{
 			FOut.SliceCount = spreadMax;
-			FInvOut.SliceCount = spreadMax;
+			FInvOut.ResizeAndDismiss(spreadMax, () => {return true; } );
 			
 			FBuffer.SliceCount = spreadMax;
 			for (int i = 0; i < spreadMax; i++)
