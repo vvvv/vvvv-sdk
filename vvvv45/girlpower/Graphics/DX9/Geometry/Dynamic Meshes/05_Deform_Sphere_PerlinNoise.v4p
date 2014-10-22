@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\05_Deform_Sphere_PerlinNoise.v4p" systemname="Mesh_And_Perlin2" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Mesh_And_Perlin2.v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\05_Deform_Sphere_PerlinNoise.v4p" systemname="Mesh_And_Perlin2" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Mesh_And_Perlin2.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="0" top="0" width="14160" height="15390">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
@@ -283,7 +283,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8775" top="8280" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.4">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -691,7 +691,7 @@
    </BOUNDS>
    <BOUNDS height="12540" left="675" top="1560" type="Box" width="4020">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The sphere mesh is split into the Vertex Buffer and the Indices. The Vertex Buffer is split further into vertex&apos;s &apos;Position XYZ&apos;, &apos;Texture Coordinate&apos; and so on.&cr;&lf;&cr;&lf;The moving (because of the Integrate (Differential)) XYZ values of every vertex are used to sample 3d perlin noise which returns a &apos;height&apos; for every vertex. &cr;&lf;&cr;&lf;The normal vector at every vertex is multiplied by the the &apos;height&apos;, thus making it shorter or smaller.&cr;&lf;&cr;&lf;Note:&cr;&lf;&cr;&lf;1) All normals are made 1 unit long by the Normalize (3d Vector) beforehand.&cr;&lf;&cr;&lf;2) The height is duplicated 3 times by the Select (Value), so that every axis of the normal is multiplied by the same value.&cr;&lf;&cr;&lf;These vectors are added to the original positions of the vertices, thus moving them to and away from the center (along the normal).&cr;&lf;&cr;&lf;The newly constructed Vertex Buffer is joined with the unchanged Indices back into the Mesh.&cr;&lf;&cr;&lf;Normals are recalculated for every vertex, because the vertices were moved. Note the &apos;Smoothing Angle&apos; pin and change its value to 0. See the helppatch for more explanations. Turn off the wireframe (Step 11) to see the normals better.&cr;&lf;&cr;&lf;The mesh is drawn twice by the PhongDirectional (EX9.Effect) as a solid and wireframe objects. It receives spreads of two transformations, two colors and two toggles for the &apos;Enabled&apos; pin (in order to enable/disable solid/wireframe separately).&cr;&lf;&cr;&lf;Positions of the vertices (from the step 4) are used to position small flat circles drawn by the GridSegment (DX9). The Translate (Transform Vector) returns transformation for every supplied vertex.&cr;&lf;&cr;&lf;The Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; rotates these flat circles so that they are always facing into the camera.&cr;&lf;&cr;&lf;The mesh, the circles and the small yellow lines representing the normals (these are just helpers) are grouped together and sent to the Renderer.&cr;&lf;&cr;&lf;This toggle turns on/off the wireframe and the small circles.&cr;&lf;&cr;&lf;P.S. Any mesh can be deformed in this scenario, try to plug the Teapot (EX9.Geometry) instead of the Sphere (EX9.Geometry) (see Step 1) or load your own mesh as Xfile using the XFile (EX9.Geometry Load).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The sphere mesh is split into &apos;Vertex Buffer&apos; and Indices. The Vertex Buffer is split further into its components (Position, Normal,..)&cr;&lf;&cr;&lf;The moving (because of the Integrate (Differential)) XYZ values of every vertex are used to sample 3d perlin noise which returns a &apos;height&apos; for every vertex. &cr;&lf;&cr;&lf;The normal vector at every vertex is multiplied by the the &apos;height&apos;, thus making it longer or shorter.&cr;&lf;&cr;&lf;Note:&cr;&lf;&cr;&lf;1) All normals are made 1 unit long by the Normalize (3d Vector) beforehand.&cr;&lf;&cr;&lf;2) The height is duplicated 3 times by the Select (Value), so that every axis of the normal is multiplied by the same value.&cr;&lf;&cr;&lf;These vectors are added to the original positions of the vertices, thus moving them to and away from the center (along the normal).&cr;&lf;&cr;&lf;The newly constructed Vertex Buffer is joined with the unchanged Indices back into the Mesh.&cr;&lf;&cr;&lf;Normals are recalculated for every vertex, because the vertices were moved. Note the &apos;Smoothing Angle&apos; pin and change its value to 0. See the helppatch for more explanations. Turn off the wireframe (Step 11) to see the normals better.&cr;&lf;&cr;&lf;The mesh is drawn twice by the PhongDirectional (EX9.Effect) as a solid and wireframe objects. It receives spreads of two transformations, two colors and two toggles for the &apos;Enabled&apos; pin (in order to enable/disable solid/wireframe separately).&cr;&lf;&cr;&lf;Positions of the vertices (from step 4) are used to position small flat circles drawn by the GridSegment (DX9). The Translate (Transform Vector) returns a transformation for every supplied vertex.&cr;&lf;&cr;&lf;The Billboard (Transform) with its &apos;Object Space&apos; pin set to &apos;Projection&apos; rotates these flat circles so that they are always facing the camera.&cr;&lf;&cr;&lf;The mesh, the circles and the small yellow lines representing the normals are grouped together and sent to the Renderer.&cr;&lf;&cr;&lf;This toggle turns on/off the wireframe and the small circles.&cr;&lf;&cr;&lf;P.S. Any mesh can be deformed in this scenario, try to plug the Teapot (EX9.Geometry) instead of the Sphere (EX9.Geometry) (see Step 1) or load your own mesh as Xfile using the XFile (EX9.Geometry Load).&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -717,7 +717,7 @@
    </PIN>
    </NODE>
    <NODE id="144" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" exposed="0">
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to deform a spherical mesh by the perlin noise.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to deform a spherical mesh using perlin noise.|">
    </PIN>
    <BOUNDS type="Node" left="675" top="720" width="390" height="270">
    </BOUNDS>
@@ -1216,8 +1216,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="36" srcpinname="Mesh" dstnodeid="54" dstpinname="Mesh">
-   </LINK>
    <NODE componentmode="InABox" id="214" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="8955" top="8640" type="Node" width="315">
    </BOUNDS>
@@ -1250,4 +1248,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="36" srcpinname="Mesh" dstnodeid="54" dstpinname="Mesh">
+   </LINK>
    </PATCH>

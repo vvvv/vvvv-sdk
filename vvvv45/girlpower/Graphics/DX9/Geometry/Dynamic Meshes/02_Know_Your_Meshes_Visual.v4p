@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-720">
-   <BOUNDS type="Window" left="300" top="615" width="18015" height="13110">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-720">
+   <BOUNDS type="Window" left="435" top="825" width="18045" height="12855">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
    </PACK>
@@ -235,13 +235,13 @@
    </BOUNDS>
    <PIN pinname="Text" visible="1">
    </PIN>
-   <PIN pinname="Transform" visible="1">
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <BOUNDS type="Box" left="9750" top="8640">
    </BOUNDS>
-   <PIN pinname="Color" slicecount="1" visible="1" values="|0.68474,0.68474,0.68474,1.00000|">
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    </NODE>
    <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="20">
@@ -252,8 +252,6 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="19" dstpinname="Text">
-   </LINK>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="21">
    <BOUNDS type="Node" left="11475" top="5835" width="100" height="100">
    </BOUNDS>
@@ -341,7 +339,7 @@
    <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Inital Distance">
    </LINK>
    <NODE systemname="Count (3d)" nodename="Count (3d)" componentmode="Hidden" id="22" filename="%VVVV%\lib\nodes\modules\3D\Count (3D).v4p">
-   <BOUNDS type="Node" left="12150" top="5475" width="100" height="100">
+   <BOUNDS type="Node" left="11670" top="5430" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -508,16 +506,6 @@
    </NODE>
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="42" dstpinname="XYZ">
    </LINK>
-   <NODE nodename="IOBox (Color)" componentmode="InABox" id="43" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="10995" top="7740" width="330" height="300">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10995" top="7740" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Color Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="13920" top="7545" width="100" height="100">
    </BOUNDS>
@@ -646,18 +634,6 @@
    </NODE>
    <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="58" dstpinname="Bin Size">
    </LINK>
-   <NODE systemname="SetAlpha (Color)" nodename="SetAlpha (Color)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="10995" top="8190" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Alpha" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="43" srcpinname="Color Output" dstnodeid="71" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="72" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="14760" top="4530" width="330" height="930">
    </BOUNDS>
@@ -679,66 +655,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="58" srcpinname="Output" dstnodeid="72" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="73">
-   <BOUNDS type="Node" left="11685" top="7260" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Count" dstnodeid="73" dstpinname="Select">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="74" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11670" top="6885" width="465" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="11670" top="6885" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="74" srcpinname="Y Output Value" dstnodeid="73" dstpinname="Input">
-   </LINK>
-   <NODE systemname="SetSlice (Spreads)" nodename="SetSlice (Spreads)" componentmode="Hidden" id="75">
-   <BOUNDS type="Node" left="11670" top="7695" width="1035" height="270">
-   </BOUNDS>
-   <PIN pinname="Spread" visible="1">
-   </PIN>
-   <PIN pinname="Index" visible="1">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="73" srcpinname="Output" dstnodeid="75" dstpinname="Spread">
-   </LINK>
-   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="75" dstpinname="Index">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="76" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12435" top="7245" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="12435" top="7245" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="76" srcpinname="Y Output Value" dstnodeid="75" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="75" srcpinname="Output" dstnodeid="71" dstpinname="Alpha">
-   </LINK>
-   <LINK srcnodeid="71" srcpinname="Output" dstnodeid="19" dstpinname="Color">
    </LINK>
    <NODE systemname="Normals (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\Normals (EX9).v4p" nodename="Normals (EX9)" componentmode="Hidden" id="78">
    <BOUNDS type="Node" left="16410" top="8610" width="100" height="100">
@@ -979,7 +895,7 @@
    </BOUNDS>
    <BOUNDS height="10755" left="675" top="1560" type="Box" width="3135">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own by the XFile (EX9.Geometry Load). Let&apos;s start with the simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;The whole mesh is drawn here 2 times: one as a &apos;Solid&apos; mesh and once again as a &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of this mesh are rendered as well, note these tiny yellow lines facing backwards in this scene.&cr;&lf;&cr;&lf;The mesh is split into the &apos;Vertex Buffer&apos; and the &apos;Indices&apos;, the &apos;Vertex Buffer&apos; is split further into the &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). This circle is Translated to this position, then the Billboard (Transform) makes it always facing into the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked face is drawn. Here the node creates text for all vertices, but all of them has a transparent white color and only selected ones has an Alpha channel set to 1. (See the I (Spreads), Select (Value), SetSlice (Value) nodes).&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed on 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own using XFile (EX9.Geometry Load). Let&apos;s start with a simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;Here the whole mesh is drawn 2 times: first as a &apos;Solid&apos; mesh and once again as &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of each vertex are drawn as well, note the tiny yellow lines.&cr;&lf;&cr;&lf;The mesh is split into a &apos;Vertex Buffer&apos; and &apos;Indices&apos;. The &apos;Vertex Buffer&apos; is split further into &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; (not used here) for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). The circle is translated to this position, then the Billboard (Transform) makes it always facing to the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked face is drawn. First a transform and a text is created for each of the 24 vertices but then only the selected 3 vertices are being &quot;getsliced&quot;.&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed of 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1005,7 +921,7 @@
    </PIN>
    </NODE>
    <NODE id="94" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" exposed="0">
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to go through the vertices and triangles of the mesh to learn its structure.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is how to go through the vertices and triangles of a mesh to understand its structure.|">
    </PIN>
    <BOUNDS type="Node" left="675" top="720" width="390" height="270">
    </BOUNDS>
@@ -1196,8 +1112,6 @@
    </NODE>
    <LINK srcnodeid="35" srcpinname="Transform Out" dstnodeid="42" dstpinname="Transform In">
    </LINK>
-   <LINK srcnodeid="42" srcpinname="Transform Out" dstnodeid="19" dstpinname="Transform">
-   </LINK>
    <NODE componentmode="InABox" id="110" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="12450" top="8565" type="Node" width="315">
    </BOUNDS>
@@ -1231,9 +1145,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="112" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="6375" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="6180" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="6375" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="6180" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1247,9 +1161,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="113" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="7410" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="7215" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="7410" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="7215" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1263,9 +1177,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="114" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="9090" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="8895" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="9090" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="8895" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1279,9 +1193,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="115" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="10800" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="9960" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="10800" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="9960" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|9&cr;&lf;.|">
    </PIN>
@@ -1295,9 +1209,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="116" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="45" top="11625" type="Node" width="315">
+   <BOUNDS height="270" left="45" top="10785" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="45" top="11625" type="Box" width="600">
+   <BOUNDS height="405" left="45" top="10785" type="Box" width="600">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1310,12 +1224,44 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="28" srcpinname="Mesh" dstnodeid="79" dstpinname="Input Node">
-   </LINK>
    <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="3" dstpinname="Mesh">
    </LINK>
    <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="78" dstpinname="Mesh">
    </LINK>
    <LINK srcnodeid="79" srcpinname="Output Node" dstnodeid="7" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Mesh" dstnodeid="79" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="GetSlice (Node)" nodename="GetSlice (Node)" componentmode="Hidden" id="118">
+   <BOUNDS type="Node" left="9915" top="8070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="42" srcpinname="Transform Out" dstnodeid="118" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Output Node" dstnodeid="19" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="118" dstpinname="Index">
+   </LINK>
+   <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="11475" top="8055" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="119" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Output" dstnodeid="19" dstpinname="Text">
+   </LINK>
+   <LINK srcnodeid="58" srcpinname="Output" dstnodeid="119" dstpinname="Index">
    </LINK>
    </PATCH>
