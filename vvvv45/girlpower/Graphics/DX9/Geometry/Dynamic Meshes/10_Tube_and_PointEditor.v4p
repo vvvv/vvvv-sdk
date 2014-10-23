@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\10_Tube_and_PointEditor.v4p" systemname="DeformByCurve_Example" filename="C:\Work\Anton-work\DeformByCurve_Example.v4p" scrollx="15" scrolly="-360">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\10_Tube_and_PointEditor.v4p" systemname="DeformByCurve_Example" filename="C:\Work\Anton-work\DeformByCurve_Example.v4p" scrollx="15" scrolly="-360">
    <BOUNDS type="Window" left="0" top="0" width="15045" height="12930">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Mesh (EX9.Geometry Split)" nodename="Mesh (EX9.Geometry Split)" componentmode="Hidden" id="51">
    <BOUNDS type="Node" left="9795" top="1215" width="1155" height="270">
@@ -509,9 +509,9 @@
    <LINK srcnodeid="121" srcpinname="Y Output Value" dstnodeid="120" dstpinname="Smoothing Angle">
    </LINK>
    <NODE componentmode="InABox" id="172" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="585" top="75" type="Node" width="945">
+   <BOUNDS height="270" left="585" top="225" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="420" left="585" top="75" type="Box" width="3765">
+   <BOUNDS height="420" left="585" top="225" type="Box" width="3765">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Deform a tube by a curve|">
    </PIN>
@@ -523,11 +523,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="171" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="585" top="540" type="Node" width="840">
+   <BOUNDS height="270" left="585" top="690" type="Node" width="840">
    </BOUNDS>
-   <BOUNDS height="540" left="585" top="540" type="Box" width="3690">
+   <BOUNDS height="540" left="585" top="690" type="Box" width="3690">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how deform a cylinder by a curve which is modified by the PointEditor.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Here is how to deform a cylinder by a curve which is modified by the PointEditor.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -539,9 +539,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="166" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="1425" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="1575" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="1425" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="1575" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -555,11 +555,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="165" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="855" top="1455" width="16155" height="270">
+   <BOUNDS type="Node" left="855" top="1605" width="16155" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="855" top="1455" width="3735" height="10365">
+   <BOUNDS type="Box" left="855" top="1605" width="3735" height="10365">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Cylinder mesh (which is a long thin tube with 200 divisions in its Y direction) is split into positions of its vertices, texture coordinates and indices.&cr;&lf;&cr;&lf;All vertex positions are rotated so that the tube goes in the X direction (instead of Y), this is how the DeformByCurve (3d B-Spline) awaits the points.&cr;&lf;&cr;&lf;The PointEditor (3d) is initialized with a random spread of 3d points. These points are used as a control points of the curve in the DeformByCurve module.&cr;&lf;&cr;&lf;The points can be moved in real-time by pressing &apos;M&apos; and dragging them. Check the PointEditor&apos;s helppatch for more shortcuts.&cr;&lf;&cr;&lf;The DeformByCurve (3d B-Spline) builds a curve according to the control points and uses it to deform the points from its &apos;Input XYZ&apos;.&cr;&lf;&cr;&lf;New vertex positions, and unchanged texture coordinates are joined back into the mesh.&cr;&lf;&cr;&lf;The normals of the mesh should be reconstructed, because the vertices were transformed.&cr;&lf;&cr;&lf;The mesh is drawn by the GouraudDirectional (EX9.Effect) effect. Try to adjust the &apos;Alpha&apos; to see the helpers of the curve. The texture with only two pixels in it is generated on the fly.&cr;&lf;&cr;&lf;The Line (EX9) draws the helper lines which connect the control points of the curve.&cr;&lf;&cr;&lf;Everything is rendered to a window. Please note, how the &apos;View Projection&apos; pin of the Camera (Transform Softimage) is connected to the PointEditor (3d). That is because the PointEditor have to operate in the same space as the scene viewed by the camera.&cr;&lf;&cr;&lf;Try to orbit and pan the Camera by pressing &apos;O&apos; and &apos;P&apos; and leftdragging mouse in the renderer.&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Cylinder mesh (which is a long thin tube with 200 divisions in its Y direction) is split into positions of its vertices, texture coordinates and indices.&cr;&lf;&cr;&lf;All vertex positions are rotated by 90° so that the tube goes in the X direction (instead of Y), this is how the DeformByCurve (3d B-Spline) awaits the points.&cr;&lf;&cr;&lf;The PointEditor (3d) is initialized with a random spread of 3d points. These points are used as control points of the curve in the DeformByCurve module.&cr;&lf;&cr;&lf;The points can be moved in real-time by pressing &apos;M&apos; and dragging them. Check the PointEditor&apos;s helppatch for more shortcuts.&cr;&lf;&cr;&lf;The DeformByCurve (3d B-Spline) builds a curve according to the control points and uses it to deform the points from its &apos;Input XYZ&apos;.&cr;&lf;&cr;&lf;New vertex positions, and unchanged texture coordinates are joined back into the mesh.&cr;&lf;&cr;&lf;The normals of the mesh need to be reconstructed because the vertices were transformed.&cr;&lf;&cr;&lf;The mesh is drawn by the GouraudDirectional (EX9.Effect) effect. Try to adjust the &apos;Alpha&apos; to see the helpers of the curve. The texture with only two pixels (to create a gradient from beginning to end of the tube) is generated on the fly.&cr;&lf;&cr;&lf;The Line (EX9) draws the helper lines which connect the control points of the curve.&cr;&lf;&cr;&lf;Everything is rendered to a window. Please note, how the &apos;View Projection&apos; pin of the Camera (Transform Softimage) is connected to the PointEditor (3d). That is because the PointEditor has to operate in the same space as the scene viewed by the camera.&cr;&lf;&cr;&lf;Try to orbit and pan the Camera by pressing &apos;O&apos; and &apos;P&apos; and leftdragging the mouse in the renderer.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -569,9 +569,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="164" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="2475" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="2625" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="2475" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="2625" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -585,9 +585,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="163" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="3330" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="3720" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="3330" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="3720" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -601,9 +601,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="162" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="4365" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="4755" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="4365" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="4755" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -617,9 +617,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="161" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="6060" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="6450" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="6060" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="6450" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -633,9 +633,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="160" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="7320" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="7710" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="7320" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="7710" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -649,9 +649,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="159" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="8355" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="8940" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="8355" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="8940" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -665,9 +665,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="158" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="420" top="9000" type="Node" width="315">
+   <BOUNDS height="270" left="420" top="9585" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="420" top="9000" type="Box" width="420">
+   <BOUNDS height="435" left="420" top="9585" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>

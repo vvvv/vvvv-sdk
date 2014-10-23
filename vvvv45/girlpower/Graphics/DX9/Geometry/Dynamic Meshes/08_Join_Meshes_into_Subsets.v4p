@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\08_Join_Meshes_into_Subsets.v4p" scrollx="75" scrolly="0" systemname="Meshes_Subsets" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Meshes_Subsets.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\08_Join_Meshes_into_Subsets.v4p" scrollx="75" scrolly="0" systemname="Meshes_Subsets" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Meshes_Subsets.v4p">
    <BOUNDS type="Window" left="0" top="660" width="15540" height="15495">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="6900" top="1035" width="100" height="100">
@@ -717,7 +717,7 @@
    </BOUNDS>
    <BOUNDS height="810" left="585" top="540" type="Box" width="4830">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to join different meshes into the subsets of one mesh. After that every subset can be colored, textured, transformed etc. separately in one step with spreads.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to join different meshes into subsets of one mesh. After that every subset can be colored, textured, transformed etc. separately.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -749,7 +749,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="1605" width="3915" height="8160">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The meshes as split into the Indices and &apos;Vertex Buffers&apos;.&cr;&lf;&cr;&lf;The Positions, Normals and Texture Coordinates of these meshes are joined into separate spreads.&cr;&lf;&cr;&lf;The Indices of these meshes are also joined into one spread. Note, that the indices of the second mesh are shifted to the number of vertices of the first mesh, and so on.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join Subsets) joins these separate spreads (which contains all the positions, all the normals, all the indices...) into the subsets of one mesh.&cr;&lf;&cr;&lf;Note, the &apos;Indices Bin Size&apos; of the Mesh (Geometry Join Subsets) awaits not the total number of indices for each subset, but the number of triangles (=faces), that&apos;s why the number of indices (the &apos;Output Bin Size&apos; of the Cons (Spreads)) is divided by 3.&cr;&lf;&cr;&lf;Each subset of the mesh is transformed (translated and rotated in this case).&cr;&lf;&cr;&lf;The &apos;Color&apos; and the &apos;Texture&apos; is defined for every subset.&cr;&lf;&cr;&lf;The effect which draws a particular subset can be Enabled/Disabled.&cr;&lf;&cr;&lf;Each subset is drawn with its own &apos;Render State&apos;.&cr;&lf;&cr;&lf;The BoundingBox (EX9.Geometry Mesh) returns bounding box information for the whole mesh and for each of its subsets. In this example the &apos;Center&apos; and the &apos;Scale&apos; of each subset are used to transform a simple box which is then drawn as WireFrame.&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The meshes as split into the Indices and &apos;Vertex Buffers&apos;.&cr;&lf;&cr;&lf;The Positions, Normals and Texture Coordinates of these meshes are joined into individual spreads.&cr;&lf;&cr;&lf;The Indices of these meshes are also joined into one spread. Note, that the indices of the second mesh are shifted to the number of vertices of the first mesh, and so on.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join Subsets) joins these separate spreads (which contains all the positions, all the normals, all the indices...) into the subsets of one mesh.&cr;&lf;&cr;&lf;Note, the &apos;Indices Bin Size&apos; of the Mesh (Geometry Join Subsets) does not take the total number of indices for each subset, but the number of triangles (=faces), that&apos;s why the number of indices (the &apos;Output Bin Size&apos; of the Cons (Spreads)) is divided by 3.&cr;&lf;&cr;&lf;Each subset of the mesh is transformed (translated and rotated in this case).&cr;&lf;&cr;&lf;The &apos;Color&apos; and the &apos;Texture&apos; is defined for every subset.&cr;&lf;&cr;&lf;The effect which draws a particular subset can be Enabled/Disabled.&cr;&lf;&cr;&lf;Each subset is drawn with its own &apos;Render State&apos;.&cr;&lf;&cr;&lf;The BoundingBox (EX9.Geometry Mesh) returns bounding box information for the whole mesh and for each of its subsets. In this example the &apos;Center&apos; and the &apos;Scale&apos; of each subset are used to transform a simple box which is then drawn as WireFrame.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

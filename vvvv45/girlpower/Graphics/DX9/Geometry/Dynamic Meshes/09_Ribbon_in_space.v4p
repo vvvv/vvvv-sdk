@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\09_Ribbon_in_space.v4p" systemname="Mesh-Ribbon-in-space" filename="C:\Work\Anton-work\Mesh-Ribbon-in-space.v4p" scrollx="60" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\09_Ribbon_in_space.v4p" systemname="Mesh-Ribbon-in-space" filename="C:\Work\Anton-work\Mesh-Ribbon-in-space.v4p" scrollx="60" scrolly="-360">
    <BOUNDS type="Window" left="1395" top="1455" width="15690" height="14715">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="8865" top="675" width="100" height="100">
@@ -531,9 +531,9 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0.081081081081081">
+   <PIN pinname="X Input Value" slicecount="1" values="0.648648648648649">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.513698630136987">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.595890410958905">
    </PIN>
    <PIN pinname="Slider Alignment" slicecount="1" values="Grid">
    </PIN>
@@ -735,7 +735,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="3405" width="3795" height="10035">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Grid mesh (just a long single strip of trianlges, only 2 vertices high) is split into the indices and the position, normal and texture coordinate of every vertex.&cr;&lf;&cr;&lf;The Scale (Transform) is applied to the position of all these vertices in order to sqeeze them on the Y axis.&cr;&lf;&cr;&lf;The Sphere mesh is split up and its vertex positions are used as control points of the curve.&cr;&lf;&cr;&lf;The DeformByCurve (3d B-Spline) builds a curve according to the control points and then uses it to deform the points from its &apos;Input XYZ&apos;.&cr;&lf;&cr;&lf;Note, the Input points will be deformed along their X direction.&cr;&lf;&cr;&lf;New vertex positions, and unchanged texture coordinates are joined back into the mesh.&cr;&lf;&cr;&lf;But not all old indices are used for this new mesh. Only the part of them defined by the slider.&cr;&lf;&cr;&lf;The normals of the mesh should be reconstructed, because the vertices were transformed.&cr;&lf;&cr;&lf;The mesh is drawn by the GouraudDirectional (EX9.Effect) effect which uses the defined position of the light and on the fly generated texture with only two pixels in it, but stretched along the mesh.&cr;&lf;&cr;&lf;The camera for the scene is created by 3 transformations - the Translate (Transform) and the Rotate (Transform) used for the &apos;View&apos; and the Perspective (Transform) used for &apos;Projection&apos;. &cr;&lf;&cr;&lf;The LFO (Animation) makes the camera to orbit around.&cr;&lf;&cr;&lf;The mesh is rendered to a texture by the DX9Texture (EX9.Texture). &cr;&lf;&cr;&lf;After applying the Glow (EX9.Texture Filter) to this texture, it is rendered to a FullscreenQuad in a new renderer window.&cr;&lf;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Grid mesh (just a long single strip of trianlges, only 2 vertices high) is split into the indices and the position, normal and texture coordinate of every vertex.&cr;&lf;&cr;&lf;The Scale (Transform) is applied to the position of all these vertices in order to squeeze them on the Y axis.&cr;&lf;&cr;&lf;The Sphere mesh is split up and its vertex positions are used as control points for the curve.&cr;&lf;&cr;&lf;The DeformByCurve (3d B-Spline) builds a curve according to the control points and then uses it to deform the points from its &apos;Input XYZ&apos;.&cr;&lf;&cr;&lf;Note, the Input points will be deformed along their X direction.&cr;&lf;&cr;&lf;New vertex positions, and unchanged texture coordinates are joined back into the mesh.&cr;&lf;&cr;&lf;But not all old indices are used for this new mesh. Only a part of them as defined by the slider.&cr;&lf;&cr;&lf;The normals of the mesh need to be reconstructed, because the vertices were transformed.&cr;&lf;&cr;&lf;The mesh is drawn by the GouraudDirectional (EX9.Effect) effect which uses the defined position of the light and an on the fly generated texture with only two pixels in it, but stretched along the mesh.&cr;&lf;&cr;&lf;The camera for the scene is created by 3 transformations - the Translate (Transform) and the Rotate (Transform) used for the &apos;View&apos; and the Perspective (Transform) used for &apos;Projection&apos;. &cr;&lf;&cr;&lf;The LFO (Animation) lets the camera orbit around.&cr;&lf;&cr;&lf;The mesh is rendered to a texture by the DX9Texture (EX9.Texture). &cr;&lf;&cr;&lf;After applying the Glow (EX9.Texture Filter) to this texture, it is rendered to a FullscreenQuad in a new renderer window.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -855,11 +855,11 @@
    </PIN>
    </NODE>
    <NODE id="160" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" exposed="0">
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Two meshes are used in this example. The Grid, which will be deformed by a curve and the Sphere, which points are used as control points of this curve.&cr;&lf;&cr;&lf;So the grid is going along a curve which has a shape of a sphere.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Two meshes are used in this example:&cr;&lf;- a Grid, which will be deformed by a curve &cr;&lf;- a Sphere, whose points are used as control points of this curve.&cr;&lf;&cr;&lf;So the grid is going along a curve which has the shape of a sphere.|">
    </PIN>
    <BOUNDS type="Node" left="585" top="1560" width="390" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="585" top="1560" width="3900" height="1290">
+   <BOUNDS type="Box" left="585" top="1560" width="3900" height="1590">
    </BOUNDS>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1195,9 +1195,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="182" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="270" top="12015" type="Node" width="315">
+   <BOUNDS height="270" left="270" top="11820" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="450" left="270" top="12015" type="Box" width="585">
+   <BOUNDS height="450" left="270" top="11820" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1211,9 +1211,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="183" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="270" top="12630" type="Node" width="315">
+   <BOUNDS height="270" left="270" top="12435" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="450" left="270" top="12630" type="Box" width="585">
+   <BOUNDS height="450" left="270" top="12435" type="Box" width="585">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
@@ -1246,8 +1246,22 @@
    </LINK>
    <LINK srcnodeid="94" srcpinname="Position XYZ" dstnodeid="21" dstpinname="Go To Position">
    </LINK>
-   <NODE id="103" systemname="Count (Value)" filename="" nodename="Count (Value)" componentmode="Hidden">
-   <BOUNDS type="Node" left="11325" top="4380" width="100" height="100">
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="188">
+   <BOUNDS type="Node" left="11625" top="4935" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="1" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="3594">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="188" srcpinname="Output" dstnodeid="82" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Input 2">
+   </LINK>
+   <NODE id="103" systemname="Count (3d)" filename="%VVVV%\lib\nodes\modules\3D\Count (3D).v4p" nodename="Count (3d)" componentmode="Hidden">
+   <BOUNDS type="Node" left="11190" top="4365" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -1256,18 +1270,22 @@
    </NODE>
    <LINK srcnodeid="1" srcpinname="Indices" dstnodeid="103" dstpinname="Input">
    </LINK>
-   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="188">
-   <BOUNDS type="Node" left="11625" top="4935" width="100" height="100">
+   <LINK srcnodeid="103" srcpinname="Count" dstnodeid="188" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="189" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12795" top="4425" width="360" height="240">
    </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="2">
+   <BOUNDS type="Node" left="12795" top="4425" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3">
    </PIN>
-   <PIN pinname="Input 3" slicecount="1" values="6">
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="188" srcpinname="Output" dstnodeid="82" dstpinname="Count">
-   </LINK>
-   <LINK srcnodeid="139" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="103" srcpinname="Count" dstnodeid="188" dstpinname="Input 1">
+   <LINK srcnodeid="189" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Input 3">
    </LINK>
    </PATCH>
