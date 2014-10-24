@@ -22,7 +22,7 @@ namespace VVVV.Nodes
     };
 
     #region PluginInfo
-    [PluginInfo(Name = "MathRound", Category = "Value", Help = ".net Rounding functions", Tags = "", Author = "sebl", Credits = "bjo:rn")]
+    [PluginInfo(Name = "Round", Category = "Value", Help = "Rounds Values to given digits in various ways.", Tags = "", Author = "sebl", Credits = "bjo:rn")]
     #endregion PluginInfo
     public class ValueRoundNode : IPluginEvaluate
     {
