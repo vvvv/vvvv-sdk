@@ -17,8 +17,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Select", 
 				Category = "String",
 				Version = "Bin",				
-				Help = "select the slices which form the new spread", 
-				Tags = "select, repeat, binsize",
+				Help = "Select the slices which form the new spread", 
+				Tags = "repeat, resample, duplicate",
 				Author = "woei")]
 	public class SelectString : SelectBin<string>
 	{	
@@ -29,8 +29,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Select", 
 				Category = "Color",
 				Version = "Bin",				
-				Help = "select the slices which form the new spread", 
-				Tags = "select, repeat, binsize",
+				Help = "Select the slices which form the new spread", 
+				Tags = "repeat, resample, duplicate",
 				Author = "woei")]
 	public class SelectColor : SelectBin<RGBAColor>
 	{	
@@ -41,8 +41,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Select", 
 				Category = "Transform",
 				Version = "Bin",				
-				Help = "select the slices which form the new spread", 
-				Tags = "select, repeat",
+				Help = "Select the slices which form the new spread", 
+				Tags = "repeat, resample, duplicate",
 				Author = "woei")]
 	public class SelectTransform : SelectBin<Matrix4x4>
 	{	
@@ -53,8 +53,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Select", 
 				Category = "Enumerations",
 				Version = "Bin",				
-				Help = "select the slices which form the new spread", 
-				Tags = "select, repeat",
+				Help = "Select the slices which form the new spread", 
+				Tags = "repeat, resample, duplicate",
 				Author = "woei")]
 	
 	public class SelectEnum : SelectBin<EnumEntry>
@@ -66,8 +66,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Select", 
 				Category = "Raw",
 				Version = "Bin",				
-				Help = "select the slices which form the new spread", 
-				Tags = "select, repeat",
+				Help = "Select the slices which form the new spread", 
+				Tags = "repeat, resample, duplicate",
 				Author = "woei")]
 	
 	public class SelectRaw : SelectBin<System.IO.Stream>
