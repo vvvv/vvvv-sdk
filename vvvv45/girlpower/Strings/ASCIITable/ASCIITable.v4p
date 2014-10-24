@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p" scrollx="30" scrolly="0" systemname="asciiTable" filename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p">
-   <BOUNDS type="Window" left="2595" top="1515" width="9705" height="8400">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\ASCIITable.v4p" scrollx="30" scrolly="0" systemname="asciiTable" filename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p">
+   <BOUNDS type="Window" left="2355" top="540" width="9705" height="9465">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="13">
    <BOUNDS type="Node" left="495" top="6825" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="495" top="6825" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="19770" top="1230" width="7080" height="11310">
+   <BOUNDS type="Window" left="19425" top="1305" width="7080" height="11310">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
-   <PIN pinname="Aspect Ratio" visible="1">
+   <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Background Color" visible="1">
    </PIN>
@@ -25,7 +25,7 @@
    </PIN>
    </NODE>
    <NODE systemname="HitTest (2d Quad)" filename="%VVVV%\addonpack\lib\nodes\plugins\HitTest2dNodes.dll" nodename="HitTest (2d Quad)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="4485" top="3045" width="100" height="100">
+   <BOUNDS type="Node" left="4320" top="3075" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -83,7 +83,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 4" visible="1">
    </PIN>
@@ -91,23 +91,17 @@
    </PIN>
    </NODE>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="88">
-   <BOUNDS type="Node" left="2145" top="6810" width="100" height="100">
+   <BOUNDS type="Node" left="2490" top="6795" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Aspect Width" visible="1">
+   <PIN pinname="Aspect Width" visible="1" slicecount="1" values="456">
    </PIN>
-   <PIN pinname="Aspect Height" visible="1">
+   <PIN pinname="Aspect Height" visible="1" slicecount="1" values="720">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="Alignment" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Actual Backbuffer Width" dstnodeid="88" dstpinname="Aspect Width">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Actual Backbuffer Height" dstnodeid="88" dstpinname="Aspect Height">
-   </LINK>
-   <LINK srcnodeid="88" srcpinname="Transform Out" dstnodeid="13" dstpinname="Aspect Ratio">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="89" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="3015" top="6270" width="1050" height="240">
    </BOUNDS>
@@ -288,18 +282,6 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="191">
-   <BOUNDS type="Node" left="4680" top="3585" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4680" top="3585" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="64">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE systemname="Clean (String)" nodename="Clean (String)" componentmode="Hidden" id="205">
    <BOUNDS type="Node" left="3750" top="900" width="100" height="100">
    </BOUNDS>
@@ -360,47 +342,23 @@
    </LINK>
    <LINK srcnodeid="263" srcpinname="Output" dstnodeid="328" dstpinname="Ascii Data">
    </LINK>
-   <LINK srcnodeid="191" srcpinname="Y Output Value" dstnodeid="328" dstpinname="Selected ID">
-   </LINK>
-   <NODE systemname="SelectedCharacter" filename="SelectedCharacter.v4p" nodename="SelectedCharacter.v4p" componentmode="Hidden" id="334">
-   <BOUNDS type="Node" left="3045" top="4380" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   <PIN pinname="Ascii Data" visible="1">
-   </PIN>
-   <PIN pinname="Index" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="1395" top="1770" width="17925" height="15045">
-   </BOUNDS>
-   <PIN pinname="Quad Transform" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="3045" top="4380">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="263" srcpinname="Output" dstnodeid="334" dstpinname="Ascii Data">
-   </LINK>
-   <LINK srcnodeid="191" srcpinname="Y Output Value" dstnodeid="334" dstpinname="Index">
-   </LINK>
    <LINK srcnodeid="76" srcpinname="Layer" dstnodeid="13" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 5">
    </LINK>
-   <NODE systemname="Table" filename="Table.v4p" nodename="Table.v4p" componentmode="Hidden" id="335">
-   <BOUNDS type="Node" left="1765" top="2117" width="1335" height="270">
+   <NODE systemname="Table" filename="Table.v4p" nodename="Table.v4p" componentmode="InAWindow" id="335">
+   <BOUNDS type="Node" left="1780" top="2477" width="1335" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="0" top="0" width="7875" height="10990">
+   <BOUNDS type="Box" left="15" top="360" width="7875" height="10990">
    </BOUNDS>
-   <BOUNDS type="Window" left="7035" top="3975" width="7875" height="12555">
+   <BOUNDS type="Window" left="6840" top="2745" width="10425" height="12555">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="263" srcpinname="Output" dstnodeid="335" dstpinname="ASCII Data">
-   </LINK>
-   <LINK srcnodeid="335" srcpinname="Transform Out" dstnodeid="334" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="335" srcpinname="Transform Out" dstnodeid="17" dstpinname="Transform In">
    </LINK>
@@ -410,8 +368,42 @@
    </LINK>
    <LINK srcnodeid="335" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 2">
    </LINK>
+   <NODE id="334" componentmode="Hidden" systemname="SelectedCharacter" filename="SelectedCharacter.v4p" nodename="SelectedCharacter.v4p">
+   <PIN pinname="Index" slicecount="1" visible="1" values="22">
+   </PIN>
+   <BOUNDS type="Node" left="3045" top="4380" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Ascii Data" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="1020" top="2505" width="17925" height="15045">
+   </BOUNDS>
+   <PIN pinname="Quad Transform" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="3045" top="4380">
+   </BOUNDS>
+   </NODE>
    <LINK srcnodeid="334" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 3">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Object Id" dstnodeid="191" dstpinname="Y Input Value">
+   <LINK srcnodeid="335" srcpinname="Transform Out" dstnodeid="334" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="263" srcpinname="Output" dstnodeid="334" dstpinname="Ascii Data">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Object Id" dstnodeid="335" dstpinname="Index" linkstyle="Bezier">
+   <LINKPOINT x="6240" y="4295">
+   </LINKPOINT>
+   <LINKPOINT x="4140" y="880">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Object Id" dstnodeid="328" dstpinname="Selected ID">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Actual Backbuffer Width" dstnodeid="88" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Actual Backbuffer Height" dstnodeid="88" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="88" srcpinname="Transform Out" dstnodeid="13" dstpinname="Aspect Ratio">
    </LINK>
    </PATCH>
