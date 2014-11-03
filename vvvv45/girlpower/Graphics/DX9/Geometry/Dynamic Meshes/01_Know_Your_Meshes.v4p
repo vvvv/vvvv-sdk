@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-360">
-   <BOUNDS type="Window" left="675" top="885" width="19860" height="15570">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-1299">
+   <BOUNDS type="Window" left="0" top="0" width="19860" height="15570">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
    </PACK>
@@ -244,6 +244,8 @@
    <PIN pinname="Enable Diffuse Color" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Apply" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="15" srcpinname="Position XYZ" dstnodeid="17" dstpinname="Y Input Value">
@@ -559,9 +561,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="43" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="525" top="12315" type="Node" width="315">
+   <BOUNDS height="270" left="525" top="12330" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="525" top="12315" type="Box" width="420">
+   <BOUNDS height="435" left="525" top="12330" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1058,7 +1060,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="101" systemname="IOBox (String)">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="101" systemname="IOBox (String)" exposed="0">
    <BOUNDS type="Node" left="9630" top="5745" width="720" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="9630" top="5745" width="1260" height="450">
@@ -1257,9 +1259,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="123" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="525" top="10875" type="Node" width="315">
+   <BOUNDS height="270" left="525" top="11085" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="525" top="10875" type="Box" width="375">
+   <BOUNDS height="405" left="525" top="11085" type="Box" width="375">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1274,4 +1276,38 @@
    </NODE>
    <LINK srcnodeid="9" srcpinname="View" dstnodeid="4" dstpinname="View">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="124" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11070" top="6510" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11070" top="6510" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Apply">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="126" systemname="IOBox (String)" exposed="0">
+   <BOUNDS type="Node" left="11025" top="5745" width="540" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11025" top="5745" width="540" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Apply">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

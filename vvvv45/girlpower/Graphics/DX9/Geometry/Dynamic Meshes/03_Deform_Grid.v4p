@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\03_Deform_Grid.v4p" systemname="Deform_Grid" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Deform_Grid.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="0" top="420" width="13665" height="14280">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\03_Deform_Grid.v4p" systemname="Deform_Grid" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\Deform_Grid.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="0" top="420" width="13665" height="14430">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
    </PACK>
@@ -319,7 +319,7 @@
    </BOUNDS>
    <BOUNDS height="11775" left="675" top="1560" type="Box" width="4320">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is split into a &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split).&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the Vertex Buffer into the different components of every vertex, like the &apos;Position XYZ&apos; and so on.&cr;&lf;&cr;&lf;See steps 8 and 10 where the modified Vertex Buffer and Indices are joined back into the mesh.&cr;&lf;&cr;&lf;The position of every vertex is split into XYZ values. X and Y values are used to generate new Z (thus displacing every vertex up and down as seen in the renderer).&cr;&lf;&cr;&lf;Values are added up. Change this setting to modify the frequency of the waves.&cr;&lf;&cr;&lf;A value that increments every frame by the Integrate (Differential) is added to the X coordinate of every vertex, and...&cr;&lf;&cr;&lf;...these modified X and Y coordinates are used as X and Y for the Perlin (2d). Imagine 2d perlin noise as a 2d landscape. Given X and Y you get a height at this point (the process is called &apos;sampling&apos;). If you&apos;re moving X you&apos;re moving on this landscape sampling it in different points.&cr;&lf;&cr;&lf;Now, if there are many X and Y in a spread (like in this example) the noise is sampled in many moving locations at the same time.&cr;&lf;&cr;&lf;The &apos;height&apos; is scaled and used for the Z coordinate of  newly constructed vectors with 0 for X, Y and the height value for the Z.&cr;&lf;&cr;&lf;These vectors are added to the original vertices, thus modifying them.&cr;&lf;&cr;&lf;Vertices are joined back together with the unchanged texture coordinates into the &apos;Vertex Buffer&apos;. Note, that the normals are not needed here since there is no lighting in this scene.&cr;&lf;&cr;&lf;The &apos;height&apos;, which is added to every vertex defines also its color.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) joins the &apos;Vertex Buffer&apos; and the unchanged &apos;Indices&apos; back into the Mesh.&cr;&lf;&cr;&lf;The DrawFixed (EX9.Effect) uses the fixed (old) rendering pipeline to draw the mesh. Note the &apos;Shade&apos; (EX9.RenderState) which can be changed to &apos;Flat&apos; or &apos;Gouraud&apos; shading techniques (Phong is not implemented).&cr;&lf;&cr;&lf;Plug the texture into the DrawFixed to see it on the mesh.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is split into a &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split).&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Split) separates the Vertex Buffer into the different components of every vertex, like the &apos;Position XYZ&apos; and so on.&cr;&lf;&cr;&lf;See steps 8 and 10 where the modified Vertex Buffer and Indices are joined back into the mesh.&cr;&lf;&cr;&lf;The position of every vertex is split into XYZ values. X and Y values are used to generate new Z (thus displacing every vertex up and down as seen in the renderer).&cr;&lf;&cr;&lf;Values scaled up. Change this setting to modify the frequency of the waves.&cr;&lf;&cr;&lf;A value that increments every frame by the Integrate (Differential) is added to the X coordinate of every vertex, and...&cr;&lf;&cr;&lf;...these modified X and Y coordinates are used as X and Y for the Perlin (2d). Imagine 2d perlin noise as a 2d landscape. Given X and Y you get a height at this point (the process is called &apos;sampling&apos;). If you&apos;re moving X you&apos;re moving on this landscape sampling it in different points.&cr;&lf;&cr;&lf;Now, if there are many X and Y in a spread (like in this example) the noise is sampled in many moving locations at the same time.&cr;&lf;&cr;&lf;The &apos;height&apos; is scaled and used for the Z coordinate of  newly constructed vectors with 0 for X, Y and the height value for the Z.&cr;&lf;&cr;&lf;These vectors are added to the original vertices, thus modifying them.&cr;&lf;&cr;&lf;Vertices are joined back together with the unchanged texture coordinates into the &apos;Vertex Buffer&apos;. Note, that the normals are not needed here since there is no lighting in this scene.&cr;&lf;&cr;&lf;The &apos;height&apos;, which is added to every vertex defines also its color.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) joins the &apos;Vertex Buffer&apos; and the unchanged &apos;Indices&apos; back into the Mesh.&cr;&lf;&cr;&lf;The DrawFixed (EX9.Effect) uses the fixed (old) rendering pipeline to draw the mesh. Note the &apos;Shade&apos; (EX9.RenderState) which can be changed to &apos;Flat&apos; or &apos;Gouraud&apos; shading techniques (Phong is not implemented).&cr;&lf;&cr;&lf;Plug the texture into the DrawFixed to see it on the mesh.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1080,8 +1080,6 @@
    </LINK>
    <LINK srcnodeid="157" srcpinname="Y Output Value" dstnodeid="138" dstpinname="Y">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Mesh" dstnodeid="142" dstpinname="Mesh">
-   </LINK>
    <LINK srcnodeid="23" srcpinname="Transform Out" dstnodeid="142" dstpinname="Transform">
    </LINK>
    <NODE componentmode="InABox" id="159" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1100,4 +1098,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="8" srcpinname="Mesh" dstnodeid="142" dstpinname="Mesh">
+   </LINK>
    </PATCH>
