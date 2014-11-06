@@ -4,28 +4,6 @@
    </BOUNDS>
    <PACK Name="addonpack" Version="33.0.0">
    </PACK>
-   <NODE systemname="CameraCone (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\CameraCone (EX9).v4p" nodename="CameraCone (EX9)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="4200" top="3390" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Name" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Inverse ViewProjection" visible="1">
-   </PIN>
-   <PIN pinname="Fill" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="1665" top="7500" width="19020" height="9060">
-   </BOUNDS>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="795" top="660" type="Node" width="0">
    </BOUNDS>
@@ -64,10 +42,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Output Node" dstnodeid="0" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Output Node" dstnodeid="0" dstpinname="Projection">
-   </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="4" systemname="IOBox (Color)">
    <BOUNDS type="Box" left="4650" top="660" width="450" height="390">
    </BOUNDS>
@@ -78,8 +52,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Color">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Color Output" dstnodeid="0" dstpinname="Color">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Box" left="7095" top="660" width="795" height="240">
    </BOUNDS>
@@ -96,26 +68,22 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Name">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="0" dstpinname="Name">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="3960" top="4140" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 2">
-   </LINK>
    <LINK srcnodeid="1" srcpinname="Output Node" dstnodeid="6" dstpinname="Layer 1">
    </LINK>
    <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="3960" top="7845" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="3630" left="11520" top="4860" type="Window" width="6480">
+   <BOUNDS height="3630" left="11520" top="4860" type="Window" width="6135">
    </BOUNDS>
    <BOUNDS height="4335" left="3960" top="7845" type="Box" width="4890">
    </BOUNDS>
@@ -159,7 +127,7 @@
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
@@ -167,7 +135,7 @@
    </PIN>
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Projection" visible="1">
    </PIN>
@@ -442,6 +410,38 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Fill">
    </PIN>
    </NODE>
+   <NODE systemname="CameraCone (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\CameraCone (EX9).v4p" nodename="CameraCone (EX9)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="4200" top="3390" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Inverse ViewProjection" visible="1">
+   </PIN>
+   <PIN pinname="Fill" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="1665" top="7500" width="19020" height="9060">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output Node" dstnodeid="0" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output Node" dstnodeid="0" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Color Output" dstnodeid="0" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="0" dstpinname="Name">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 2">
+   </LINK>
    <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Fill">
    </LINK>
    </PATCH>
