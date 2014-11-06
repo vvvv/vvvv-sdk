@@ -89,7 +89,7 @@ namespace VVVV.Nodes.Generic
                         // Write the result
                         outputWriter.Write(outputBuffer, 0, maxCount);
                         // Store the input values for the next frame
-                        CopySlices(inputBuffer);
+                        CopySlices(inputBuffer, inputReadCount);
                         lastInputWriter.Write(inputBuffer, 0, inputReadCount);
                         // Decrease the number of slices we still need to look at
                         slicesToWrite -= maxCount;
@@ -118,7 +118,7 @@ namespace VVVV.Nodes.Generic
         }
 
         // Overwrite this method in case T is not a value type
-        protected virtual void CopySlices(T[] slices)
+        protected virtual void CopySlices(T[] slices, int count)
         {
         }
 	}

@@ -41,6 +41,7 @@
     <Compile Include="Animation\Particle.cs" />
     <Compile Include="Application\AppInfo.cs" />
     <Compile Include="IO\StreamEqualityComparer.cs" />
+    <Compile Include="IO\SystemIOExtensions.cs" />
     <Compile Include="IO\TakeStream.cs" />
     <Compile Include="IO\Keyboard.cs" />
     <Compile Include="IO\LeaveOpenStreamReader.cs" />
@@ -63,10 +64,10 @@
     <Compile Include="Disposable.cs" />
     <Compile Include="GACWrap.cs" />
     <Compile Include="IO\AggregatedStream.cs" />
-    <Compile Include="IO\SystemIOExtensions.cs">
+    <Compile Include="IO\SystemIOExtensions.Gen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SystemIOExtensions.tt</DependentUpon>
+      <DependentUpon>SystemIOExtensions.Gen.tt</DependentUpon>
     </Compile>
     <Compile Include="IO\ByteOrder.cs" />
     <Compile Include="IO\KeyboardState.cs" />
@@ -137,9 +138,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="IO\SystemIOExtensions.tt">
+    <None Include="IO\SystemIOExtensions.Gen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SystemIOExtensions.cs</LastGenOutput>
+      <LastGenOutput>SystemIOExtensions.Gen.cs</LastGenOutput>
     </None>
     <None Include="VVVV.Utils.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
