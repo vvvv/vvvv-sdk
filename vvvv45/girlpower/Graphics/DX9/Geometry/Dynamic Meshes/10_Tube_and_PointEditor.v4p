@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\10_Tube_and_PointEditor.v4p" systemname="DeformByCurve_Example" filename="C:\Work\Anton-work\DeformByCurve_Example.v4p" scrollx="15" scrolly="-360">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.4.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\10_Tube_and_PointEditor.v4p" systemname="DeformByCurve_Example" filename="C:\Work\Anton-work\DeformByCurve_Example.v4p" scrollx="15" scrolly="0">
    <BOUNDS type="Window" left="0" top="0" width="15045" height="12930">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
@@ -397,9 +397,9 @@
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="114" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="14175" top="1275" width="480" height="480">
+   <BOUNDS type="Box" left="14175" top="1875" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="14175" top="1275" width="0" height="0">
+   <BOUNDS type="Node" left="14175" top="1875" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
@@ -451,13 +451,15 @@
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="104">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="118" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5955" top="2625" width="285" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="5955" top="2625" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="60">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="21">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -685,7 +687,7 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
-   <PIN pinname="Init" slicecount="1" values="0">
+   <PIN pinname="Init" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -859,9 +861,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="189" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12825" top="1260" width="2250" height="270">
+   <BOUNDS type="Node" left="12825" top="1860" width="2250" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="12825" top="1260" width="1275" height="495">
+   <BOUNDS type="Box" left="12825" top="1860" width="1275" height="495">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Turn ON/OFF points and lines|">
    </PIN>
@@ -924,4 +926,20 @@
    </LINK>
    <LINK srcnodeid="176" srcpinname="Layer" dstnodeid="80" dstpinname="Layer 4">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="193" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13590" top="480" width="2955" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13590" top="480" width="1140" height="1185">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Press &apos;M&apos; and drag the points &gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="9">
+   </PIN>
+   </NODE>
    </PATCH>
