@@ -17,20 +17,26 @@ namespace VVVV.Bullet.Nodes.Vehicle
 
         [Output("Transform")]
         ISpread<Matrix4x4> FOutTransform;
-
+		float skidinfos = 0.1f;//1.0f;
+		
+		[Output("skidinfo")]
+        protected ISpread<float> Fskidinfo;
+		
         public void Evaluate(int SpreadMax)
         {
 
             if (FInVehicle.PluginIO.IsConnected)
             {
                 FOutTransform.SliceCount = this.FInVehicle[0].NumWheels;
-
+				Fskidinfo.SliceCount = this.FInVehicle[0].NumWheels;
                 RaycastVehicle v = this.FInVehicle[0];
 
                 for (int i = 0; i < v.NumWheels; i++)
                 {
                     WheelInfo wi = v.GetWheelInfo(i);
-
+                    skidinfos = wi.SkidInfo;
+                    Fskidinfo[i] = skidinfos;
+                    
                     Matrix m = wi.WorldTransform;
 
                     Matrix4x4 mn = new Matrix4x4(m.M11, m.M12, m.M13, m.M14,
