@@ -1,5 +1,6 @@
 #region usings
 using System;
+using System.IO;
 using System.Linq;
 using System.ComponentModel.Composition;
 using System.Collections;
@@ -73,6 +74,8 @@ namespace VVVV.Nodes
 	           )]
 	public class RawQueueNode : QueueNode<System.IO.Stream>
 	{
+        private static readonly byte[] buffer = new byte[4096];
+
         protected override ISpread<System.IO.Stream> CloneInputSpread(ISpread<System.IO.Stream> spread)
         {
             var clone = new Spread<System.IO.Stream>(spread.SliceCount);
@@ -80,7 +83,7 @@ namespace VVVV.Nodes
             {
                 var stream = spread[i];
                 var clonedStream = new System.IO.MemoryStream((int)stream.Length);
-                stream.CopyTo(clonedStream);
+                stream.CopyTo(clonedStream, buffer);
                 clone[i] = clonedStream;
             }
             return clone;
