@@ -1,0 +1,119 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Exists (File) help.v4p">
+   <BOUNDS height="3630" left="210" top="3225" type="Window" width="5445">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="930" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6090" top="5445" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="930" top="810" type="Box" width="2085">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|Exists (File) help.v4p|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3120" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6390" top="5745" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="3120" top="810" type="Box" width="1950">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|NotExists (File) help.v4p|">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Exists (File)">
+   <BOUNDS height="0" left="915" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="doRead" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Exists" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="180" top="2355" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6945" top="5940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="690" left="180" top="2355" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Exists">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Filename" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <NODE id="1" nodename="Exists (File)">
+   <BOUNDS height="0" left="3135" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="doRead" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Exists" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2430" top="2355" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7245" top="6240" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="690" left="2430" top="2355" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Exists">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Filename" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="3180">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|returns TRUE if the given file exists.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Exists - File|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
