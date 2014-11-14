@@ -77,6 +77,7 @@ namespace VVVV.VL.Factories
 
         protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost nodeHost)
         {
+            var type = nodeInfo.UserData as VLType;
             throw new NotImplementedException();
         }
 
