@@ -56,6 +56,7 @@ namespace VVVV.Hosting
         public DefaultLogger Logger { get; private set; }
 
         [Export(typeof(IORegistry))]
+        [Export(typeof(IIORegistry))]
         public IORegistry IORegistry { get; private set; }
         
         [Export]

@@ -25,7 +25,7 @@ namespace VVVV.VL.Factories
         private VLProject FProject;
 
         [Import]
-        protected INodeInfoFactory FNodeInfoFactory;
+        protected IIORegistry FIORegistry;
 
         public NodeFactory()
             : base(".vl")
@@ -52,6 +52,10 @@ namespace VVVV.VL.Factories
                 FSolution.Projects.Add(FProject);
                 // Add standard lib
                 FProject.Documents.Add(VLDocument.FromFile(Path.Combine(projectDir, "StdLib2.vl"), FSerializer, FProject.SymbolHost));
+                // Add the new nodes lib
+                FProject.References.BeginUpdate();
+                FProject.References.Add(new AssemblyReference(Path.Combine(projectDir, "NewNodes.dll")));
+                FProject.References.EndUpdate();
             }
             // See if a VL document with that filename is already loaded
             var document = FProject.Documents.OfType<VLDocument>()
@@ -70,6 +74,8 @@ namespace VVVV.VL.Factories
                 // TODO: Add more info to node info
                 var nodeInfo = FNodeInfoFactory.CreateNodeInfo(type.Name, type.Namespace.Name, string.Empty, filename, true);
                 nodeInfo.UserData = type;
+                nodeInfo.Factory = this;
+                nodeInfo.Type = NodeType.Dynamic;
                 nodeInfo.CommitUpdate();
                 yield return nodeInfo;
             }
@@ -78,12 +84,17 @@ namespace VVVV.VL.Factories
         protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost nodeHost)
         {
             var type = nodeInfo.UserData as VLType;
-            throw new NotImplementedException();
+            var node = new Node(type, FProject.RuntimeHost, nodeHost, FIORegistry);
+            nodeHost.Plugin = node;
+            FProject.Compile();
+            return true;
         }
 
         protected override bool DeleteNode(INodeInfo nodeInfo, IInternalPluginHost nodeHost)
         {
-            throw new NotImplementedException();
+            var node = nodeHost.Plugin as Node;
+            node.Dispose();
+            return true;
         }
     }
 }
