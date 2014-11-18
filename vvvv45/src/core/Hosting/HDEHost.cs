@@ -270,10 +270,9 @@ namespace VVVV.Hosting
             var assemblyName = new AssemblyName(args.Name);
             foreach (var searchPath in FAssemblySearchPaths)
             {
-                var assemblyFileName = assemblyName.Name + ".dll";
-                var assemblyLocation = Path.Combine(searchPath, assemblyFileName);
-                if (File.Exists(assemblyLocation))
-                    return Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
+                foreach (var assemblyLocation in GetAssemblyLocations(searchPath, assemblyName))
+                    if (File.Exists(assemblyLocation))
+                        return Assembly.ReflectionOnlyLoadFrom(assemblyLocation);
             }
             return null;
         }
@@ -283,12 +282,17 @@ namespace VVVV.Hosting
             var assemblyName = new AssemblyName(args.Name);
             foreach (var searchPath in FAssemblySearchPaths)
             {
-                var assemblyFileName = assemblyName.Name + ".dll";
-                var assemblyLocation = Path.Combine(searchPath, assemblyFileName);
-                if (File.Exists(assemblyLocation))
-                    return Assembly.LoadFrom(assemblyLocation);
+                foreach (var assemblyLocation in GetAssemblyLocations(searchPath, assemblyName))
+                    if (File.Exists(assemblyLocation))
+                        return Assembly.LoadFrom(assemblyLocation);
             }
             return null;
+        }
+
+        IEnumerable<string> GetAssemblyLocations(string searchPath, AssemblyName assemblyName)
+        {
+            yield return Path.Combine(searchPath, assemblyName.Name + ".dll");
+            yield return Path.Combine(searchPath, assemblyName.Name + ".exe");
         }
         
         private INodeInfo GetNodeInfo(string systemName)

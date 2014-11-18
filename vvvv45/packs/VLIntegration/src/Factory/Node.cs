@@ -107,6 +107,9 @@ namespace VVVV.VL.Factories
 
         public void Evaluate(int spreadMax)
         {
+            if (FType == null)
+                return;
+
             if (Synchronizing != null)
                 Synchronizing(this, EventArgs.Empty);
 
@@ -148,7 +151,7 @@ namespace VVVV.VL.Factories
 
         public bool AutoEvaluate
         {
-            get { return false; }
+            get { return true; }
         }
 
         #region IIOFactory
