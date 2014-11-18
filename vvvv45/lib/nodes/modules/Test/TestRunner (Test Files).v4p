@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
    <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Files).v4p" systemname="TestRunner (Test Files)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Files).v4p" scrollx="15" scrolly="15">
    <BOUNDS type="Window" left="14595" top="0" width="14415" height="17550">
    </BOUNDS>
@@ -464,6 +464,42 @@
    </LINK>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="173">
+   <BOUNDS type="Node" left="4065" top="6510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="154" srcpinname="Y Output Value" dstnodeid="173" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="175" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7980" top="4110" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7980" top="4110" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="167" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="167" srcpinname="OnChange" dstnodeid="173" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="173" srcpinname="Output" dstnodeid="100" dstpinname="Run">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="101" dstpinname="Index">
+   </LINK>
    <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="113">
    <BOUNDS type="Node" left="5265" top="3105" width="5460" height="270">
    </BOUNDS>
@@ -504,42 +540,8 @@
    </LINK>
    <LINK srcnodeid="172" srcpinname="Output 1" dstnodeid="113" dstpinname="OnStop">
    </LINK>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="173">
-   <BOUNDS type="Node" left="4065" top="6510" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="154" srcpinname="Y Output Value" dstnodeid="173" dstpinname="Input 2">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="175" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7980" top="4110" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7980" top="4110" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="113" srcpinname="DoNext" dstnodeid="175" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="170" srcpinname="Output 1" dstnodeid="113" dstpinname="OnTestFinished">
-   </LINK>
-   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="167" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="167" srcpinname="OnChange" dstnodeid="173" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="173" srcpinname="Output" dstnodeid="100" dstpinname="Run">
-   </LINK>
-   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="101" dstpinname="Index">
    </LINK>
    </PATCH>

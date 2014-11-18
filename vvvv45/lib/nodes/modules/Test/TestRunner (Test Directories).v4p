@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
    <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" systemname="TestRunner (Test Directories)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="630" top="1335" width="14085" height="15225">
    </BOUNDS>
@@ -456,56 +456,6 @@
    </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="22" dstpinname="Input String">
    </LINK>
-   <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="8" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="7425" top="3195" width="5460" height="270">
-   </BOUNDS>
-   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" encoded="0" pintype="Configuration" values="|idle OnStartTestSuits testSuitRunning DoStart&cr;&lf;testSuitRunning OnTestSuitFinished testSuitRunning DoNext&cr;&lf;testSuitRunning OnStop idle DoStop|">
-   </PIN>
-   <PIN pinname="OnStart">
-   </PIN>
-   <PIN pinname="DoNext" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="OnFinished" visible="1">
-   </PIN>
-   <PIN pinname="DoWrite" visible="1">
-   </PIN>
-   <PIN pinname="DoStart" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="OnWritten" visible="1">
-   </PIN>
-   <PIN pinname="OnStop" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="OnStartTests" visible="1">
-   </PIN>
-   <PIN pinname="OnTestFinished" visible="1">
-   </PIN>
-   <PIN pinname="Current state" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="DoStop" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="OnTestSuitFinished" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="OnStartTestSuits" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="" pintype="Output">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Error messages" pintype="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="8" srcpinname="DoStop" dstnodeid="3" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="1" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="OnStartTestSuits">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="17" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="DoNext" dstnodeid="17" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="37" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="10110" top="2715" width="100" height="100">
    </BOUNDS>
@@ -527,8 +477,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Input Value" dstnodeid="37" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Output 1" dstnodeid="8" dstpinname="OnTestSuitFinished">
    </LINK>
    <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="38" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="12930" top="2415" width="100" height="100">
@@ -616,8 +564,60 @@
    </LINK>
    <LINK srcnodeid="38" srcpinname="Output 1" dstnodeid="39" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="39" srcpinname="Output" dstnodeid="8" dstpinname="OnStop">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="32" dstpinname="Index">
+   </LINK>
+   <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="8" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="7425" top="3195" width="5460" height="270">
+   </BOUNDS>
+   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" encoded="0" pintype="Configuration" values="|idle OnStartTestSuits testSuitRunning DoStart&cr;&lf;testSuitRunning OnTestSuitFinished testSuitRunning DoNext&cr;&lf;testSuitRunning OnStop idle DoStop|">
+   </PIN>
+   <PIN pinname="OnStart">
+   </PIN>
+   <PIN pinname="DoNext" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnFinished" visible="1">
+   </PIN>
+   <PIN pinname="DoWrite" visible="1">
+   </PIN>
+   <PIN pinname="DoStart" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnWritten" visible="1">
+   </PIN>
+   <PIN pinname="OnStop" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="OnStartTests" visible="1">
+   </PIN>
+   <PIN pinname="OnTestFinished" visible="1">
+   </PIN>
+   <PIN pinname="Current state" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="DoStop" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnTestSuitFinished" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="OnStartTestSuits" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="" pintype="Output">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Error messages" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="DoStop" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="1" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="OnStartTestSuits">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="17" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="DoNext" dstnodeid="17" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Output 1" dstnodeid="8" dstpinname="OnTestSuitFinished">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Output" dstnodeid="8" dstpinname="OnStop">
    </LINK>
    </PATCH>
