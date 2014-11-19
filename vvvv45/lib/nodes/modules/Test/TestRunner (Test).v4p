@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" systemname="TestRunner (Test)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p">
-   <BOUNDS type="Window" left="7965" top="1875" width="14685" height="14565">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" systemname="TestRunner (Test)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" scrollx="45" scrolly="180">
+   <BOUNDS type="Window" left="1050" top="1380" width="14685" height="14565">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="97" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9480" top="2640" width="0" height="0">
@@ -168,7 +168,7 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="136">
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="136">
    <BOUNDS type="Node" left="9480" top="3735" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -301,7 +301,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1" slicecount="2" values="1,1">
    </PIN>
    </NODE>
    <LINK srcnodeid="146" srcpinname="Output" dstnodeid="147" dstpinname="Switch">
@@ -335,9 +335,9 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="146" srcpinname="Output" dstnodeid="149" dstpinname="Switch">
@@ -378,7 +378,7 @@
    </LINK>
    <LINK srcnodeid="165" srcpinname="Patch Path" dstnodeid="101" dstpinname="Parent Patch">
    </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="172">
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="172">
    <BOUNDS type="Node" left="5670" top="3750" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -387,10 +387,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="101" srcpinname="Can Create" dstnodeid="172" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="149" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="149" dstpinname="Input 3">
    </LINK>
    <NODE systemname="PatchState (Test)" filename="%VVVV%\lib\nodes\modules\Test\PatchState (Test).v4p" nodename="PatchState (Test)" componentmode="Hidden" id="122">
    <BOUNDS type="Node" left="5325" top="3210" width="100" height="100">
@@ -408,7 +404,7 @@
    </LINK>
    <LINK srcnodeid="122" srcpinname="Message" dstnodeid="148" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="FrameDelay (String)" nodename="FrameDelay (String)" componentmode="Hidden" id="173">
+   <NODE systemname="FrameDelay (String Legacy)" nodename="FrameDelay (String)" componentmode="Hidden" id="173">
    <BOUNDS type="Node" left="5325" top="2445" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -540,30 +536,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="dummy-test" filename="%VVVV%\lib\nodes\modules\Test\dummy-test.v4p" componentmode="Hidden" id="104" nodename="%VVVV%\lib\nodes\modules\Test\dummy-test.v4p">
-   <BOUNDS type="Node" left="9480" top="6270" width="3615" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9480" top="6270" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="6255" top="8070" width="9000" height="6000">
-   </BOUNDS>
-   <PIN pinname="Run" visible="1">
-   </PIN>
-   <PIN pinname="Success" visible="1">
-   </PIN>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   <PIN pinname="Running" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="104" srcpinname="Success" dstnodeid="147" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="104" srcpinname="Running" dstnodeid="149" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="104" dstpinname="Run">
-   </LINK>
-   <LINK srcnodeid="104" srcpinname="Message" dstnodeid="148" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="184">
    <BOUNDS type="Node" left="3015" top="2190" width="100" height="100">
    </BOUNDS>
@@ -586,6 +558,52 @@
    </LINK>
    <LINK srcnodeid="185" srcpinname="Output" dstnodeid="101" dstpinname="Create Node">
    </LINK>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
    <LINK srcnodeid="185" srcpinname="Output" dstnodeid="129" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="149" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="149" dstpinname="Input 3">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="187" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="765" top="4005" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="765" top="4005" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="101" srcpinname="Can Create" dstnodeid="187" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="TransformInputDiff_IsChanged_test" filename="%VVVV%\tests\patches\Plugin Interfaces\TransformInputDiff_IsChanged_test.v4p" componentmode="Hidden" id="104" nodename="%VVVV%\tests\patches\Plugin Interfaces\TransformInputDiff_IsChanged_test.v4p">
+   <BOUNDS type="Node" left="9480" top="6270" width="3615" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9480" top="6270" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6255" top="8070" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Run" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   <PIN pinname="Running" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Success" dstnodeid="147" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="104" srcpinname="Running" dstnodeid="149" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="104" dstpinname="Run">
+   </LINK>
+   <LINK srcnodeid="104" srcpinname="Message" dstnodeid="148" dstpinname="Input 1">
    </LINK>
    </PATCH>
