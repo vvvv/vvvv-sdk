@@ -1,0 +1,163 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.3.dtd" >
+   <PATCH nodename="C:\Users\danielschwarz\Desktop\vvvv-sdk\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\GroupInfo (Facebook) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="8565" left="3075" top="450" type="Window" width="7485">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\FaceBookAPI.dll|vvvv.Nodes.FaceBookProfileNode">
+   <BOUNDS height="0" left="1950" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5055" top="1590" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1950" top="2115" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Application Key" visible="1">
+   </PIN>
+   <PIN pinname="Secret Key" visible="1">
+   </PIN>
+   <PIN pinname="Friends" visible="1">
+   </PIN>
+   <PIN pinname="Groups" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="6" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="945" top="6555" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="10560" top="495" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="945" top="6555" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Text (GDI)">
+   <BOUNDS height="0" left="945" top="5730" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="16" visible="1" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Layers" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename=":PLUGINS:\FaceBookAPI.dll|vvvv.Nodes.GroupInfoNode">
+   <BOUNDS height="0" left="2640" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="5925" top="5355" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2640" top="2625" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Groups" visible="1">
+   </PIN>
+   <PIN pinname="Names" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Groups" srcnodeid="7" srcpinname="Groups">
+   </LINK>
+   <NODE id="3" nodename="Count (String)">
+   <BOUNDS height="0" left="1845" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Names" linkstyle="VHV">
+   <LINKPOINT x="2585" y="3335">
+   </LINKPOINT>
+   <LINKPOINT x="1945" y="3385">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Text" srcnodeid="4" srcpinname="Names" linkstyle="VHV">
+   <LINKPOINT x="2850" y="5325">
+   </LINKPOINT>
+   <LINKPOINT x="1410" y="5325">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="2" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="945" top="4710" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Spread Count" srcnodeid="3" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" srcnodeid="2" srcpinname="Output" linkstyle="VHV">
+   <LINKPOINT x="975" y="5355">
+   </LINKPOINT>
+   <LINKPOINT x="1110" y="5355">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3675" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4155" top="1965" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="3675" top="1425" type="Box" width="2490">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Secret Key|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="90" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8070" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="90" top="1410" type="Box" width="3000">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Application Key|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Application Key" srcnodeid="0" srcpinname="Output String" linkstyle="VHV">
+   <LINKPOINT x="120" y="1965">
+   </LINKPOINT>
+   <LINKPOINT x="1980" y="1965">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Secret Key" srcnodeid="1" srcpinname="Output String" linkstyle="VHV">
+   <LINKPOINT x="3705" y="2025">
+   </LINKPOINT>
+   <LINKPOINT x="2685" y="2025">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="60" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="150" top="60" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="2040" top="945" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GroupInfo (Facebook)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="150" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="150" top="510" type="Box" width="4170">
+   </BOUNDS>
+   <BOUNDS height="160" left="1800" top="1140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns basic information about a Facebook group|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,197 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\BoundingBox (EX9.Geometry Mesh) help.v4p">
+   <BOUNDS height="7455" left="7020" top="2220" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" filename="%VVVV%\effects\GouraudDirectional.fx" id="10" nodename=":EFFECTS:\GouraudDirectional.fx" systemname="GouraudDirectional (EX9.Effect)">
+   <BOUNDS height="0" left="735" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="12285" top="9930" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="735" top="4575" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="735" top="6255" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="585" top="2115" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="735" top="6255" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="8" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)">
+   <BOUNDS height="0" left="1785" top="5700" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="13545" top="10695" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1785" top="5700" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="View" srcnodeid="8" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Projection" srcnodeid="8" srcpinname="Projection">
+   </LINK>
+   <NODE id="7" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="270" left="735" top="5175" type="Node" width="6060">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Layer 1" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <NODE id="6" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
+   <BOUNDS height="0" left="3735" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <NODE id="3" nodename="Box (EX9.Geometry)" systemname="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="3090" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="3" srcpinname="Mesh">
+   </LINK>
+   <NODE id="2" nodename="Fill (EX9.RenderState)" systemname="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="2640" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Render State" srcnodeid="2" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="3495">
+   </BOUNDS>
+   <BOUNDS height="160" left="12885" top="45060" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Outputs bounding box of a mesh|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="12885" top="45060" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|BoundingBox - EX9.Geometry Mesh|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
+   <BOUNDS height="0" left="4140" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Scale XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="XFile (EX9.Geometry Load)" systemname="XFile (EX9.Geometry Load)">
+   <BOUNDS height="0" left="885" top="2100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" id="19" nodename="GetSlice (Node)" systemname="GetSlice (Node)">
+   <BOUNDS height="100" left="4125" top="4215" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input Node" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="19" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="885" top="1560" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="330" left="885" top="1560" type="Box" width="5205">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="..\..\assets\geometries\v.x" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Filename" srcnodeid="20" srcpinname="Output String">
+   </LINK>
+   <NODE id="21" nodename="BoundingBox (EX9.Geometry Mesh)" systemname="BoundingBox (EX9.Geometry Mesh)">
+   <BOUNDS height="270" left="3465" top="3180" type="Node" width="1200">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Translate XYZ" srcnodeid="21" srcpinname="Center - SubsetsXYZ">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Scale XYZ" srcnodeid="21" srcpinname="Scale - SubsetsXYZ">
+   </LINK>
+   </PATCH>

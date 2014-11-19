@@ -1,0 +1,189 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta28.1.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Median\Median (EX9.Texture Filter) help.v4p" systemname="Median (EX9.Texture Filter) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Median\Median (EX9.Texture Filter) help.v4p">
+   <BOUNDS type="Window" left="10305" top="7470" width="6255" height="5430">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="1">
+   <BOUNDS type="Node" left="150" top="4590" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="4590" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10305" top="945" width="6240" height="6510">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="120" top="915" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1275" top="915" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="915" width="2880" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="lib\assets\images\earth_512x512.jpg">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="120" top="1605" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="120" top="1260" width="3555" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="31" dstpinname="Input 1" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="Filename" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="31" dstpinname="Input 2" linkstyle="PolyLine">
+   </LINK>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="30" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="30" top="390" type="Box" width="5820">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|HLSL port of http://graphics.cs.williams.edu/papers/MedianShaderX6|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="33" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Median - EX9.Texture Filter|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="57" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="135" top="2730" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="135" top="2730" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Texture Out" dstnodeid="57" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="..\..\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="58">
+   <BOUNDS type="Node" left="165" top="4260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="58" srcpinname="Layer" dstnodeid="1" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Median (EX9.Texture Filter)" filename="Median (EX9.Texture Filter).v4p" nodename="Median (EX9.Texture Filter)" componentmode="Hidden" id="59">
+   <BOUNDS type="Node" left="135" top="3390" width="5445" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| Median3x3|">
+   </PIN>
+   <PIN pinname="Position" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Output Node" dstnodeid="59" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="61" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="4170" top="2460" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4170" top="2460" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| Median5x5|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Technique" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Output Enum" dstnodeid="59" dstpinname="Technique">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2820" top="2460" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2820" top="2460" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Radius" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="59" dstpinname="Radius">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Output" dstnodeid="58" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="66" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1485" top="2460" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1485" top="2460" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Position" encoded="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="66" srcpinname="Y Output Value" dstnodeid="59" dstpinname="Position">
+   </LINK>
+   <NODE componentmode="InABox" id="67" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="2205" top="1785" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="2205" top="1785" type="Box" width="3480">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|works better if rendered in 2 or more passes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

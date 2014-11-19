@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\..\Default.Plugin.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{D50BD487-4FC3-4638-8D42-7AF0FD5FEA6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
+    <AssemblyName>VVVV.Nodes.RGBVector</AssemblyName>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+   <Reference Include="System.ComponentModel.Composition.Codeplex">
+      <HintPath>..\..\..\..\..\..\lib\core\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.UtilsIL">
+      <HintPath>..\..\..\..\..\..\lib\core\VVVV.UtilsIL.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RGBVectorNode.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
