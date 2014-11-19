@@ -194,27 +194,10 @@ namespace VVVV.Hosting
             //add nodes to nodes search path
             var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
             if (packsDirInfo.Exists)
-            {
-                AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-                foreach (var packDirInfo in packsDirInfo.GetDirectories())
-                {
-                    var packDir = packDirInfo.FullName;
-                    var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
-                    if (coreDirInfo.Exists)
-                    {
-                        FAssemblySearchPaths.Add(coreDirInfo.FullName);
-                        var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
-                        var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
-                        if (platformDependentCorDirInfo.Exists)
-                            FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
-                    }
-                    var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
-                    if (factoriesDirInfo.Exists)
-                        catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
-                    // We look for nodes later
-                }
-            }
+                LoadPackFactories(packsDirInfo, catalog);
+            var internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
+            if (internalPacksDirInfo.Exists)
+                LoadPackFactories(internalPacksDirInfo, catalog);
 
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
@@ -254,14 +237,42 @@ namespace VVVV.Hosting
             //now that all basics are set up, see if there are any node search paths to add
             //from the installed packs
             if (packsDirInfo.Exists)
+                LoadPackNodes(packsDirInfo);
+            if (internalPacksDirInfo.Exists)
+                LoadPackNodes(internalPacksDirInfo);
+        }
+
+        private void LoadPackNodes(DirectoryInfo packsDirInfo)
+        {
+            foreach (var packDirInfo in packsDirInfo.GetDirectories())
             {
-                foreach (var packDirInfo in packsDirInfo.GetDirectories())
+                var packDir = packDirInfo.FullName;
+                var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
+                if (nodesDirInfo.Exists)
+                    NodeCollection.AddJob(nodesDirInfo.FullName, true);
+            }
+        }
+
+        private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+            foreach (var packDirInfo in packsDirInfo.GetDirectories())
+            {
+                var packDir = packDirInfo.FullName;
+                var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
+                if (coreDirInfo.Exists)
                 {
-                    var packDir = packDirInfo.FullName;
-                    var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
-                    if (nodesDirInfo.Exists)
-                        NodeCollection.AddJob(nodesDirInfo.FullName, true);
+                    FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
+                    var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
+                    if (platformDependentCorDirInfo.Exists)
+                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
                 }
+                var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
+                if (factoriesDirInfo.Exists)
+                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
+                // We look for nodes later
             }
         }
 
