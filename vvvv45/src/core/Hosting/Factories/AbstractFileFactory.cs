@@ -383,7 +383,7 @@ namespace VVVV.Hosting.Factories
         
         #endregion file handling
         
-        public void Dispose()
+        public virtual void Dispose()
         {
 
         }
