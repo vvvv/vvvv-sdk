@@ -196,7 +196,7 @@ namespace VVVV.Utils.Streams
 
         public static int GetSpreadMax(params IInStream[] streams)
         {
-            var result = 0;
+            var result = 1;
             for (int i = 0; i < streams.Length; i++)
             {
                 if (streams[i].Length == 0)
