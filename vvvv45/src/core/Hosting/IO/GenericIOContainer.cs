@@ -7,7 +7,7 @@ using VVVV.Utils.Streams;
 namespace VVVV.Hosting.IO
 {
     [ComVisible(false)]
-    static class GenericIOContainer
+    public static class GenericIOContainer
     {
         public static IIOContainer Create<T>(
             IOBuildContext context,

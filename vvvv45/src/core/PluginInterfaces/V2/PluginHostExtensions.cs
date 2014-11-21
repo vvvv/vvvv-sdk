@@ -38,6 +38,11 @@ namespace VVVV.PluginInterfaces.V2
 			{ typeof(Vector4D), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 4) },
 			{ typeof(Matrix4x4), Tuple.Create(double.MinValue, double.MaxValue, 0.01, false, 1) },
 		};
+
+        public static void RegisterPinAttributeConfigForType(Type type, double minValue, double maxValue, double stepSize, bool isInteger, int dimensions)
+        {
+            FDefaultValues.Add(type, Tuple.Create(minValue, maxValue, stepSize, isInteger, dimensions));
+        }
 		
 		private static T NormalizePinAttribute<T>(T attribute, Type type) where T : IOAttribute
 		{

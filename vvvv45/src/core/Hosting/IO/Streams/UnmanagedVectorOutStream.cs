@@ -10,7 +10,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     public unsafe abstract class VectorOutStream<T> : IOutStream<T> where T : struct
     {
-        internal abstract class VectorOutStreamWriter : IStreamWriter<T>
+        public abstract class VectorOutStreamWriter : IStreamWriter<T>
         {
             private readonly VectorOutStream<T> FStream;
             private readonly int FDimension;

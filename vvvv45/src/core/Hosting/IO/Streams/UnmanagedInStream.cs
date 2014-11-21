@@ -15,7 +15,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     public unsafe abstract class UnmanagedInStream<T> : IInStream<T>
     {
-        internal abstract class UnmanagedInStreamReader : IStreamReader<T>
+        public abstract class UnmanagedInStreamReader : IStreamReader<T>
         {
             private UnmanagedInStream<T> FStream;
             

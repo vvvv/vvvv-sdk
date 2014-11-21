@@ -13,7 +13,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     public unsafe abstract class UnmanagedOutStream<T> : IOutStream<T>
     {
-        internal abstract class UnmanagedOutWriter : IStreamWriter<T>
+        public abstract class UnmanagedOutWriter : IStreamWriter<T>
         {
             private UnmanagedOutStream<T> FStream;
             

@@ -10,7 +10,7 @@ namespace VVVV.Hosting.IO.Streams
 {
     public unsafe abstract class VectorInStream<T> : IInStream<T> where T : struct
     {
-        internal abstract class VectorInStreamReader : IStreamReader<T>
+        public abstract class VectorInStreamReader : IStreamReader<T>
         {
             private readonly VectorInStream<T> FStream;
             protected readonly int FDimension;
