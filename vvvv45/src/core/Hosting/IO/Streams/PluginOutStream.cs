@@ -273,6 +273,7 @@ namespace VVVV.Hosting.IO.Streams
         public RawOutStream(IRawOut rawOut)
         {
             FRawOut = rawOut;
+            FRawOut.SliceCount = FLength;
         }
 
         public void Flush(bool force = false)
