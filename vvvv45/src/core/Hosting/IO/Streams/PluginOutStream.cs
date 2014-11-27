@@ -326,10 +326,8 @@ namespace VVVV.Hosting.IO.Streams
             public int Write(System.IO.Stream[] buffer, int index, int length, int stride = 1)
             {
                 var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
-                for (int i = index; i < numSlicesToWrite; i++)
-                {
+                for (int i = index; i < index + numSlicesToWrite; i++)
                     Write(buffer[i], stride);
-                }
                 return numSlicesToWrite;
             }
 
