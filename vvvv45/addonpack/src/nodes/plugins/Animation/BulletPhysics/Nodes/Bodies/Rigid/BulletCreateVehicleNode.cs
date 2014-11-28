@@ -17,44 +17,43 @@ namespace VVVV.Bullet.Nodes.Bodies.Rigid
     public class BulletCreateVehicleNode : AbstractRigidBodyCreator
     {
         
-    	[Input("suspensionRestLength",DefaultValue = 0.06, IsSingle = true)]
+    	[Input("Suspension Restlength",DefaultValue = 0.06, IsSingle = true)]
         protected ISpread<float> FsuspensionRestLength;
     	
-        [Input("wheelFriction",DefaultValue = 1.00, IsSingle = true)]
+        [Input("Wheel Friction",DefaultValue = 1.00, IsSingle = true)]
         protected ISpread<float> FwheelFriction;
         
-        [Input("suspensionStiffness",DefaultValue = 1.00, IsSingle = true)]
+        [Input("Suspension Stiffness",DefaultValue = 1.00, IsSingle = true)]
         protected ISpread<float> FsuspensionStiffness;
         
-        [Input("DampingRelaxation",DefaultValue = 1.00, IsSingle = true)]
+        [Input("Damping Relaxation",DefaultValue = 1.00, IsSingle = true)]
         protected ISpread<float> FDampingRelaxation;
         
-        [Input("DampingCompression",DefaultValue = 4.00, IsSingle = true)]
+        [Input("Damping Compression",DefaultValue = 4.00, IsSingle = true)]
         protected ISpread<float> FDampingCompression;
         
-        [Input("wheelRadius",DefaultValue = 0.70, IsSingle = true)]
+        [Input("Wheel Radius",DefaultValue = 0.70, IsSingle = true)]
         protected ISpread<float> FwheelRadius;
         
-        [Input("wheelWidth",DefaultValue = 0.40, IsSingle = true)]
+        [Input("Wheel Width",DefaultValue = 0.40, IsSingle = true)]
         protected ISpread<float> FwheelWidth;
         
-        [Input("wheelDistance",DefaultValue = 1.00, IsSingle = true)]
+        [Input("Wheel Distance",DefaultValue = 1.00, IsSingle = true)]
         protected ISpread<float> FwheelDistance;
         
-        [Input("rollInfluence",DefaultValue = 0.10, IsSingle = true)]
+        [Input("Roll Influence",DefaultValue = 0.10, IsSingle = true)]
         protected ISpread<float> FrollInfluence;
         
-        [Input("maxSuspensionTravelCm",DefaultValue = 500.00, IsSingle = true)]
+        [Input("Max Suspension Travel",DefaultValue = 500.00, IsSingle = true)]
         protected ISpread<float> FmaxSuspensionTravelCm;
         
-        [Input("maxSuspensionForce",DefaultValue = 6000.00, IsSingle = true)]
+        [Input("Max Suspension Force",DefaultValue = 6000.00, IsSingle = true)]
         protected ISpread<float> FmaxSuspensionForce;
         
-        [Input("connectionHeight",DefaultValue = 1.20, IsSingle = true)]
+        [Input("Connection Height",DefaultValue = 1.20, IsSingle = true)]
         protected ISpread<float> FconnectionHeight;
         
-       	[Input("isFrontWheel", IsSingle = true)]
-        protected ISpread<bool> isFrontWheel;
+       	
     	
     	
     	int rightIndex = 0;
@@ -75,7 +74,7 @@ namespace VVVV.Bullet.Nodes.Bodies.Rigid
         float steeringClamp = 0.3f;
         public float wheelRadius = 0.7f;
         public float wheelWidth = 0.4f;
-       
+        public bool isFrontWheel = true;
 
         
 
@@ -113,7 +112,7 @@ namespace VVVV.Bullet.Nodes.Bodies.Rigid
                     float mass = shapedef.Mass;
 
                     bool isDynamic = (mass != 0.0f);
-                    isFrontWheel[0] = true;
+                    isFrontWheel = true;
 
                     Vector3 localInertia = Vector3.Zero;
                     if (isDynamic)
@@ -153,17 +152,17 @@ namespace VVVV.Bullet.Nodes.Bodies.Rigid
                     vehicle.SetCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
                     Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), FconnectionHeight[0], 2 * CUBE_HALF_EXTENTS - wheelRadius);
-                    WheelInfo a = vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel[0]);
+                    WheelInfo a = vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel);
 
                     connectionPointCS0 = new Vector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth), FconnectionHeight[0], 2 * CUBE_HALF_EXTENTS - wheelRadius);
-                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel[0]);
+                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel);
 
-                    isFrontWheel[0] = false;
+                    isFrontWheel = false;
                     connectionPointCS0 = new Vector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth), FconnectionHeight[0], -2 * CUBE_HALF_EXTENTS + wheelRadius);
-                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel[0]);
+                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel);
 
                     connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), FconnectionHeight[0], -2 * CUBE_HALF_EXTENTS + wheelRadius);
-                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel[0]);
+                    vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, FsuspensionRestLength[0], wheelRadius, tuning, isFrontWheel);
 
 
                     for (i = 0; i < vehicle.NumWheels; i++)
