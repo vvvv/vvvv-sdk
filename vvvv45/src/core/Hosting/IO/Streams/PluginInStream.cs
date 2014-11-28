@@ -550,7 +550,7 @@ namespace VVVV.Hosting.IO.Streams
             public int Read(Stream[] buffer, int offset, int length, int stride = 1)
             {
                 var numSlicesToRead = StreamUtils.GetNumSlicesAhead(this, offset, length, stride);
-                for (int i = offset; i < numSlicesToRead; i++)
+                for (int i = offset; i < offset + numSlicesToRead; i++)
                     buffer[i] = Read(stride);
                 return numSlicesToRead;
             }
