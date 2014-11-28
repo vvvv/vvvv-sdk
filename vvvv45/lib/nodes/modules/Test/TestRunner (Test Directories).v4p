@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" systemname="TestRunner (Test Directories)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" systemname="TestRunner (Test Directories)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="630" top="1335" width="14085" height="15225">
    </BOUNDS>
    <NODE systemname="TestRunner (Test Files)" filename="%VVVV%\lib\nodes\modules\Test\TestRunner (Test Files).v4p" nodename="TestRunner (Test Files)" componentmode="Hidden" id="0">
@@ -19,6 +19,8 @@
    </PIN>
    <PIN pinname="Test Patches" visible="1">
    </PIN>
+   <BOUNDS type="Window" left="14595" top="0" width="14415" height="17550">
+   </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7425" top="675" width="2475" height="900">
@@ -34,66 +36,38 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="7425" top="3195" width="5460" height="270">
-   </BOUNDS>
-   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" encoded="0" values="|idle OnStartTestSuits testSuitRunning DoStart&cr;&lf;testSuitRunning OnTestSuitFinished testSuitRunning DoNext&cr;&lf;testSuitRunning OnStop idle DoStop|">
-   </PIN>
-   <PIN pinname="OnStart">
-   </PIN>
-   <PIN pinname="DoNext" visible="1">
-   </PIN>
-   <PIN pinname="OnFinished" visible="1">
-   </PIN>
-   <PIN pinname="DoWrite" visible="1">
-   </PIN>
-   <PIN pinname="DoStart" visible="1">
-   </PIN>
-   <PIN pinname="OnWritten" visible="1">
-   </PIN>
-   <PIN pinname="OnStop" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="OnStartTests" visible="1">
-   </PIN>
-   <PIN pinname="OnTestFinished" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Current state" visible="1">
-   </PIN>
-   <PIN pinname="DoStop" visible="1">
-   </PIN>
-   <PIN pinname="OnTestSuitFinished" visible="1">
-   </PIN>
-   <PIN pinname="OnStartTestSuits" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="10125" top="2625" width="100" height="100">
+   <NODE systemname="R (VALUE)" nodename="R (Value)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="10095" top="2310" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Receive String">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="6" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="10125" top="2100" width="1665" height="255">
+   <BOUNDS type="Box" left="10095" top="1785" width="1665" height="255">
    </BOUNDS>
-   <BOUNDS type="Node" left="10125" top="2100" width="0" height="0">
+   <BOUNDS type="Node" left="10095" top="1785" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="OnTestSuitFinished">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Output Enum" dstnodeid="7" dstpinname="Receive String">
    </LINK>
-   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="12825" top="2625" width="100" height="100">
+   <NODE systemname="R (VALUE)" nodename="R (Value)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="12930" top="1950" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="12825" top="2100" width="780" height="240">
+   <BOUNDS type="Box" left="12930" top="1425" width="780" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12825" top="2100" width="0" height="0">
+   <BOUNDS type="Node" left="12930" top="1425" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="OnStop">
    </PIN>
@@ -138,8 +112,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="OnStartTests">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8775" top="4140" width="480" height="480">
    </BOUNDS>
@@ -158,20 +130,14 @@
    <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="11745" top="8925" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="14">
+   <NODE systemname="S (VALUE)" nodename="S (Value)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="11745" top="9915" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Send String">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
@@ -190,20 +156,20 @@
    </NODE>
    <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="14" dstpinname="Send String">
    </LINK>
-   <LINK srcnodeid="15" srcpinname="Output 1" dstnodeid="14" dstpinname="Input Value">
-   </LINK>
-   <NODE systemname="S (Value)" nodename="S (Value)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="8820" top="9915" width="100" height="100">
+   <NODE systemname="S (VALUE)" nodename="S (Value)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="9435" top="9900" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Send String">
    </PIN>
-   <PIN pinname="Input Value" visible="1">
+   <PIN pinname="Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="9075" top="9405" width="1485" height="240">
+   <BOUNDS type="Box" left="9690" top="9390" width="1485" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9075" top="9405" width="0" height="0">
+   <BOUNDS type="Node" left="9690" top="9390" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="OnTestSuitFinished">
    </PIN>
@@ -215,16 +181,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="12" dstpinname="Send String">
-   </LINK>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="8820" top="8925" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Output 1" dstnodeid="12" dstpinname="Input Value">
    </LINK>
    <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="32">
    <BOUNDS type="Node" left="1215" top="6300" width="100" height="100">
@@ -249,7 +205,7 @@
    </PIN>
    <PIN pinname="Overflow" visible="1">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="-1">
+   <PIN pinname="Default" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="-1">
    </PIN>
@@ -399,15 +355,13 @@
    </PIN>
    </NODE>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="5010" top="6825" width="100" height="100">
+   <BOUNDS type="Node" left="5025" top="6195" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Input" linkstyle="PolyLine">
-   </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="1800" top="4650" width="100" height="100">
    </BOUNDS>
@@ -419,20 +373,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output" dstnodeid="31" dstpinname="Up">
-   </LINK>
-   <NODE systemname="Max (Value)" nodename="Max (Value)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="1350" top="5640" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="16" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="32" dstpinname="Index">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="OnChange" dstnodeid="0" dstpinname="Run Tests">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8010" top="9180" width="480" height="480">
@@ -469,26 +409,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Tests Started" dstnodeid="34" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="Overflow" dstnodeid="15" dstpinname="Input 1" linkstyle="Bezier">
-   <LINKPOINT x="4410" y="7068">
-   </LINKPOINT>
-   <LINKPOINT x="11745" y="7318">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Tests Finished" dstnodeid="10" dstpinname="Input 1" linkstyle="Bezier">
-   <LINKPOINT x="7275" y="8223">
-   </LINKPOINT>
-   <LINKPOINT x="8820" y="8473">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Input Value" dstnodeid="8" dstpinname="OnTestSuitFinished">
-   </LINK>
-   <LINK srcnodeid="5" srcpinname="Input Value" dstnodeid="8" dstpinname="OnStop">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="DoStop" dstnodeid="3" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="1" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
    <BOUNDS type="Box" left="1410" top="9180" width="795" height="240">
@@ -532,14 +452,172 @@
    </LINK>
    <LINK srcnodeid="36" srcpinname="Filenames" dstnodeid="0" dstpinname="Test Patches">
    </LINK>
-   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="OnStartTestSuits">
-   </LINK>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Reset">
    </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="22" dstpinname="Input String">
    </LINK>
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="37" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="10110" top="2715" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Output 1" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Count" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="" pintype="Output">
+   </PIN>
+   <PIN pinname="Default 1" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initialize" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Input Value" dstnodeid="37" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="38" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="12930" top="2415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Output 1" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Count" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="" pintype="Output">
+   </PIN>
+   <PIN pinname="Default 1" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initialize" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Tests Finished" dstnodeid="12" dstpinname="Input Value">
+   <LINKPOINT x="8640" y="8145">
+   </LINKPOINT>
+   <LINKPOINT x="9450" y="8430">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Overflow" dstnodeid="14" dstpinname="Input Value">
+   <LINKPOINT x="11235" y="7245">
+   </LINKPOINT>
+   <LINKPOINT x="11760" y="8115">
+   </LINKPOINT>
+   </LINK>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="39">
+   <BOUNDS type="Node" left="12615" top="2790" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12600" top="720" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12600" top="720" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Stop">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="5040" top="6885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="OnChange" dstnodeid="42" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="0" dstpinname="Run Tests">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Input Value" dstnodeid="38" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output 1" dstnodeid="39" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="32" dstpinname="Index">
+   </LINK>
+   <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="8" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="7425" top="3195" width="5460" height="270">
+   </BOUNDS>
+   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" encoded="0" pintype="Configuration" values="|idle OnStartTestSuits testSuitRunning DoStart&cr;&lf;testSuitRunning OnTestSuitFinished testSuitRunning DoNext&cr;&lf;testSuitRunning OnStop idle DoStop|">
+   </PIN>
+   <PIN pinname="OnStart">
+   </PIN>
+   <PIN pinname="DoNext" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnFinished" visible="1">
+   </PIN>
+   <PIN pinname="DoWrite" visible="1">
+   </PIN>
+   <PIN pinname="DoStart" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnWritten" visible="1">
+   </PIN>
+   <PIN pinname="OnStop" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="OnStartTests" visible="1">
+   </PIN>
+   <PIN pinname="OnTestFinished" visible="1">
+   </PIN>
+   <PIN pinname="Current state" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="DoStop" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="OnTestSuitFinished" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="OnStartTestSuits" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="" pintype="Output">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Error messages" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="DoStop" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="1" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="8" dstpinname="OnStartTestSuits">
+   </LINK>
    <LINK srcnodeid="8" srcpinname="DoStart" dstnodeid="17" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="8" srcpinname="DoNext" dstnodeid="17" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Output 1" dstnodeid="8" dstpinname="OnTestSuitFinished">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Output" dstnodeid="8" dstpinname="OnStop">
    </LINK>
    </PATCH>
