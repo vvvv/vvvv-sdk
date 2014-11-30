@@ -44,6 +44,10 @@ namespace VVVV.Nodes
 
 		[Input("Value Input")]
 		IDiffSpread<double> FValueIn;
+
+        //autosave
+        [Input("Autosave", IsSingle = true)]
+        ISpread<bool> FAutoSave;
 		
 		[Output("Value Output")]
 		ISpread<double> FValueOut;
@@ -51,6 +55,8 @@ namespace VVVV.Nodes
 		//this is to store the values with the patch
 		[Config("Internal Value")]
 		IDiffSpread<double> FInternalValueConfig;
+
+        
 		
 		#region mainloop
 		
@@ -168,7 +174,7 @@ namespace VVVV.Nodes
 					FActiveOut[slice] = s.Active;
 					
 					//update config pin
-					if (valueSet)
+                    if (valueSet && FAutoSave[0])
 					{
 						if (Math.Abs(s.Value - FInternalValueConfig[slice]) > 0.000000001)
 							FInternalValueConfig[slice] = s.Value;
