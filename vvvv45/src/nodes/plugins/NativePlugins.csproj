@@ -57,16 +57,16 @@
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\Rx-Core.2.2.5\lib\net40\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\..\..\..\packages\Rx-Interfaces.2.2.5\lib\net40\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\..\..\..\packages\Rx-Linq.2.2.5\lib\net40\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\..\..\..\common\src\thirdparty\Rx\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\..\..\..\packages\Rx-PlatformServices.2.2.5\lib\net40\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Dataflow">
       <HintPath>..\..\..\..\common\src\thirdparty\System.Threading.Tasks.Dataflow.dll</HintPath>
@@ -113,10 +113,10 @@
     <Compile Include="String\URLCoding.cs" />
     <Compile Include="SVG\SVGGeomNodes.cs" />
     <Compile Include="SVG\SVGGroupNode.cs" />
-    <Compile Include="SVG\SvgRendererNode.cs" />
-    <Compile Include="SVG\SVGTextureNode.cs">
+    <Compile Include="SVG\SvgRendererNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SVG\SVGTextureNode.cs" />
     <Compile Include="System\DeviceComparer.cs" />
     <Compile Include="System\DesktopDeviceInputNode.cs" />
     <Compile Include="System\SendMouseNode.cs" />
@@ -229,7 +229,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Windows\WindowsKill\WindowsKillNode.cs" />
-	<Compile Include="XML\BasicNodesXAttribute.cs" />
+    <Compile Include="XML\BasicNodesXAttribute.cs" />
     <Compile Include="XML\BasicNodesXDocument.cs" />
     <Compile Include="XML\BasicNodesXElement.cs" />
     <Compile Include="XML\CloneNodesXAttribute.cs" />
@@ -321,9 +321,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="vvvv\Architecture" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
 </Project>
