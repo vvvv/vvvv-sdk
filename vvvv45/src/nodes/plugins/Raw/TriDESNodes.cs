@@ -9,103 +9,9 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Raw
 {
-	class LeaveOpenStream : MemoryStream
-	{
-		protected override void Dispose(bool disposing)
-		{
-			// Do nothing!
-		}
-		
-		public override void Close()
-		{
-			// Do nothing!
-		}
-	}
-	
-	public class EncryptDecrypt
-	{
-		public readonly byte[] Key;
-		public readonly byte[] IV;
-		// TripleDES service provider
-		private TripleDESCryptoServiceProvider tdes;
-
-		// Encryptor/Decryptor Objects
-		private ICryptoTransform encryptor;
-		private ICryptoTransform decryptor;
-
-		public EncryptDecrypt(byte[] key, byte[] iv, CipherMode cm, PaddingMode pm)
-		{
-			Key = key;
-			IV = iv;
-			
-			// Set up tripple DES service provider
-			tdes = new TripleDESCryptoServiceProvider();
-			tdes.Mode = cm;
-			tdes.Padding = pm;
-			tdes.IV = iv;
-
-			// Create encryptor/decryptor Objects
-			encryptor = tdes.CreateEncryptor(key, iv);
-			decryptor = tdes.CreateDecryptor(key, iv);
-		}
-
-		private void Encrypt(Stream dataStream, Stream destinationStream, byte[] buffer)
-		{
-			destinationStream.SetLength(0);
-			using (var cryptoStream = new CryptoStream(destinationStream, encryptor, CryptoStreamMode.Write))
-				dataStream.CopyTo(cryptoStream, buffer);
-		}
-
-		private void Decrypt(Stream dataStream, Stream destinationStream, byte[] buffer)
-		{
-			destinationStream.SetLength(0);
-			using (var cryptoStream = new CryptoStream(dataStream, decryptor, CryptoStreamMode.Read))
-				cryptoStream.CopyTo(destinationStream, buffer);
-		}
-
-		public void EncryptOrDecrypt(Stream dataStream, Stream destinationStream, bool encrypt, byte[] buffer)
-		{
-			if (encrypt)
-				Encrypt(dataStream, destinationStream, buffer);
-			else
-				Decrypt(dataStream, destinationStream, buffer);
-		}
-	}
-	
-	public static class StreamHelpers
-	{
-		private static readonly byte[] DefaultKey = new byte[24];
-		private static readonly byte[] DefaultIv = new byte[8];
-		
-		static StreamHelpers()
-		{
-			for	(int i = 0; i < DefaultKey.Length; i++)
-				DefaultKey[i] = (byte)i;
-		}
-		
-		public static byte[] ToBytes(this Stream stream, byte[] defaultValue)
-		{
-			if (stream == null || stream.Length == 0)
-				return defaultValue;
-			stream.Position = 0;
-			var result = new byte[stream.Length];
-			stream.Read(result, 0, result.Length);
-			return result;
-		}
-		
-		public static byte[] ToKeyBytes(this Stream stream)
-		{
-			return stream.ToBytes(DefaultKey);
-		}
-		
-		public static byte[] ToIvBytes(this Stream stream)
-		{
-			return stream.ToBytes(DefaultIv);
-		}
-	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Encrypt", Category = "Raw", Version = "3DES", Help = "Encrypts raw stream using the Triple DES algorithm.", Tags = "cryptography, triDES, DESede, triple")]
+	[PluginInfo(Name = "Encrypt", Category = "Raw", Version = "3DES", Help = "Encrypts a raw stream using the Triple DES algorithm.", Tags = "cryptography, triDES, DESede, triple")]
 	#endregion PluginInfo
 	public class RawEncryptNode : RawEncryptDecryptNode
 	{
@@ -116,7 +22,7 @@ namespace VVVV.Nodes.Raw
 	
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Decrypt", Category = "Raw", Version = "3DES", Help = "Decrypts raw stream using the Triple DES algorithm.", Tags = "cryptography, triDES, DESede, triple")]
+	[PluginInfo(Name = "Decrypt", Category = "Raw", Version = "3DES", Help = "Decrypts a raw stream using the Triple DES algorithm.", Tags = "cryptography, triDES, DESede, triple")]
 	#endregion PluginInfo
 	public class RawDecryptNode : RawEncryptDecryptNode
 	{
@@ -228,4 +134,105 @@ namespace VVVV.Nodes.Raw
 			}
 		}
 	}
+
+    
+    #region helper classes
+    
+	class LeaveOpenStream : MemoryStream
+	{
+		protected override void Dispose(bool disposing)
+		{
+			// Do nothing!
+		}
+		
+		public override void Close()
+		{
+			// Do nothing!
+		}
+	}
+	
+	public static class StreamHelpers
+	{
+		private static readonly byte[] DefaultKey = new byte[24];
+		private static readonly byte[] DefaultIv = new byte[8];
+		
+		static StreamHelpers()
+		{
+			for	(int i = 0; i < DefaultKey.Length; i++)
+				DefaultKey[i] = (byte)i;
+		}
+		
+		public static byte[] ToBytes(this Stream stream, byte[] defaultValue)
+		{
+			if (stream == null || stream.Length == 0)
+				return defaultValue;
+			stream.Position = 0;
+			var result = new byte[stream.Length];
+			stream.Read(result, 0, result.Length);
+			return result;
+		}
+		
+		public static byte[] ToKeyBytes(this Stream stream)
+		{
+			return stream.ToBytes(DefaultKey);
+		}
+		
+		public static byte[] ToIvBytes(this Stream stream)
+		{
+			return stream.ToBytes(DefaultIv);
+		}
+	}
+	
+	public class EncryptDecrypt
+	{
+		public readonly byte[] Key;
+		public readonly byte[] IV;
+		// TripleDES service provider
+		private TripleDESCryptoServiceProvider tdes;
+
+		// Encryptor/Decryptor Objects
+		private ICryptoTransform encryptor;
+		private ICryptoTransform decryptor;
+
+		public EncryptDecrypt(byte[] key, byte[] iv, CipherMode cm, PaddingMode pm)
+		{
+			Key = key;
+			IV = iv;
+			
+			// Set up tripple DES service provider
+			tdes = new TripleDESCryptoServiceProvider();
+			tdes.Mode = cm;
+			tdes.Padding = pm;
+			tdes.IV = iv;
+
+			// Create encryptor/decryptor Objects
+			encryptor = tdes.CreateEncryptor(key, iv);
+			decryptor = tdes.CreateDecryptor(key, iv);
+		}
+
+		private void Encrypt(Stream dataStream, Stream destinationStream, byte[] buffer)
+		{
+			destinationStream.SetLength(0);
+			using (var cryptoStream = new CryptoStream(destinationStream, encryptor, CryptoStreamMode.Write))
+				dataStream.CopyTo(cryptoStream, buffer);
+		}
+
+		private void Decrypt(Stream dataStream, Stream destinationStream, byte[] buffer)
+		{
+			destinationStream.SetLength(0);
+			using (var cryptoStream = new CryptoStream(dataStream, decryptor, CryptoStreamMode.Read))
+				cryptoStream.CopyTo(destinationStream, buffer);
+		}
+
+		public void EncryptOrDecrypt(Stream dataStream, Stream destinationStream, bool encrypt, byte[] buffer)
+		{
+			if (encrypt)
+				Encrypt(dataStream, destinationStream, buffer);
+			else
+				Decrypt(dataStream, destinationStream, buffer);
+		}
+	}
+	
+	#endregion helper classes
+
 }
