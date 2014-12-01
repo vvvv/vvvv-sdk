@@ -1,0 +1,131 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\UnsubscribeEvent (Photoshop).v4p" systemname="UnsubscribeEvent (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\UnsubscribeEvent (Photoshop).v4p">
+   <BOUNDS type="Window" left="10305" top="6780" width="5715" height="5505">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="24" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1845" top="690" width="2220" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1845" top="690" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="documentChanged">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Event">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4425" top="525" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4425" top="525" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="22" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="735" top="3960" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="735" top="3960" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node">
+   </PIN>
+   </NODE>
+   <NODE id="21" systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden">
+   <BOUNDS type="Node" left="735" top="2970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" systemname="NIL (String)" filename="%VVVV%\lib\nodes\modules\String\NIL (String).v4p" nodename="NIL (String)" componentmode="Hidden">
+   <BOUNDS type="Node" left="990" top="2520" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" systemname="AsRaw (Photoshop Command)" filename="AsRaw (Photoshop Command).v4p" componentmode="Hidden" nodename="AsRaw (Photoshop Command)">
+   <BOUNDS type="Node" left="720" top="3465" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="720" top="3465" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="13005" top="1125" width="11130" height="7635">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Content Type" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Command" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="19" dstpinname="Command">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="22" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="21" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Switch">
+   </LINK>
+   <NODE systemname="Event" filename="Event.v4p" nodename="Event.v4p" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="1221" top="1804" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="75" top="420" width="11245" height="5530">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14625" top="9240" width="11235" height="5520">
+   </BOUNDS>
+   <PIN pinname="EventType" visible="1">
+   </PIN>
+   <PIN pinname="Receive - Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="21" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1230" top="1215" width="1785" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1230" top="1215" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="networkEventUnsubscribe">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="18" dstpinname="EventType">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output Enum" dstnodeid="18" dstpinname="Receive - Enum">
+   </LINK>
+   </PATCH>

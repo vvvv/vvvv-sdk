@@ -1,0 +1,883 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
+   <BOUNDS type="Window" left="1380" top="1035" width="9525" height="15120">
+   </BOUNDS>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="51" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6499" top="5370" width="615" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6499" top="5370" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="300">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="50" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8269" top="5295" width="495" height="450">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8269" top="5295" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="10489" top="3345" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="|..\..\..\vvvv-sdk\vvvv45\lib\assets\images\flower four.jpg|">
+   </PIN>
+   <PIN pinname="Use Preloaded Item" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="6214" top="7305" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="47">
+   <BOUNDS type="Node" left="6214" top="7845" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6214" top="7845" width="3180" height="3240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="18735" top="1335" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Layer" dstnodeid="47" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6439" top="5085" width="900" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6439" top="5085" width="855" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Resolution">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="SendImageToLayer" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\SendImageToLayer.v4p" nodename="SendImageToLayer" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="12454" top="2415" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10710" top="6240" width="11025" height="8025">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Group" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="13204" top="1515" width="1500" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13204" top="1515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|vvvv Group|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Output String" dstnodeid="45" dstpinname="Group">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14854" top="1515" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14854" top="1515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|Layer 1|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output String" dstnodeid="45" dstpinname="Layer">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="15739" top="1515" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15739" top="1515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Do Send">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="12304" top="1515" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12304" top="1515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv.psd">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="Output String" dstnodeid="45" dstpinname="Document">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="40" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="7294" top="5400" width="870" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7294" top="5400" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7264" top="5085" width="660" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7264" top="5085" width="660" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Format">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="StreamImage (Photoshop)" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" nodename="StreamImage (Photoshop)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="6105" top="5928" width="1665" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5644" top="2805" width="12735" height="13635">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4005" top="1800" width="17700" height="14385">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop String Response" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Photoshop Response" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Lock to Current Document">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Output Enum" dstnodeid="38" dstpinname="Format">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6214" top="6705" width="2985" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6214" top="6705" width="2355" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|From the resolution of  428px TCP works not always|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="36" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="11539" top="3345" width="780" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11539" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="12454" top="3345" width="855" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12454" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv.psd">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="13474" top="3345" width="885" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13474" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|vvvv Group|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14419" top="3345" width="1050" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14419" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="SmartObject">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="15784" top="3345" width="960" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15784" top="3345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|Logo Layer|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="16969" top="3285" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="16969" top="3285" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12454" top="5325" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12454" top="5325" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="500">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13204" top="5355" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13204" top="5355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="500">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="28" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="13924" top="5355" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13924" top="5355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14929" top="5115" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14929" top="5115" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="11254" top="1515" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" visible="1" values="|..\..\..\vvvv-sdk\vvvv45\lib\assets\images\flower four.jpg|">
+   </PIN>
+   <PIN pinname="Use Preloaded Item" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="18994" top="6390" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="19009" top="7590" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="19009" top="7590" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17055" top="9855" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" visible="1" slicecount="1" values="|1.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Layer" dstnodeid="24" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="19639" top="8235" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19639" top="8235" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="50">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="SendImageToSmartObject" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\SendImageToSmartObject.v4p" nodename="SendImageToSmartObject" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="12499" top="4185" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6690" top="3345" width="14715" height="13365">
+   </BOUNDS>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="Group" visible="1">
+   </PIN>
+   <PIN pinname="Smart Object" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Output Enum" dstnodeid="22" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output String" dstnodeid="22" dstpinname="Document">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Output String" dstnodeid="22" dstpinname="Group">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output String" dstnodeid="22" dstpinname="Smart Object">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Output String" dstnodeid="22" dstpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Texture Out" dstnodeid="22" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="AsRaw (Photoshop Image)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image).v4p" nodename="AsRaw (Photoshop Image)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="19609" top="9735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   <PIN pinname="Send" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="16380" top="2985" width="14250" height="13845">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="20974" top="8745" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="20974" top="8745" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Send">
+   </LINK>
+   <NODE systemname="RequestSelectedLayers" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\RequestSelectedLayers.v4p" componentmode="InAWindow" id="19" nodename="RequestSelectedLayers.v4p">
+   <BOUNDS type="Node" left="18964" top="5580" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18964" top="5580" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8430" top="7665" width="16065" height="8370">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="18979" top="5025" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="18979" top="5025" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="300">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Height">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="20704" top="4860" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="20704" top="4860" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Send">
+   </LINK>
+   <NODE systemname="CreateTextLayer" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\CreateTextLayer.v4p" componentmode="Hidden" id="16" nodename="CreateTextLayer.v4p">
+   <BOUNDS type="Node" left="13174" top="8580" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13174" top="8580" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5340" top="3615" width="13875" height="6870">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="Group" visible="1">
+   </PIN>
+   <PIN pinname="Size" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="16369" top="6615" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="16369" top="6615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Send">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="11554" top="6645" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11554" top="6645" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv.psd">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output String" dstnodeid="16" dstpinname="Document">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="12604" top="6645" width="1065" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12604" top="6645" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|vvvv Group2|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="16" dstpinname="Group">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13804" top="6645" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13804" top="6645" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="25">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Size">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14734" top="6630" width="1440" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14734" top="6630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|Hi Benni!|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="16" dstpinname="Text">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="10" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="19969" top="9345" width="825" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19969" top="9345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output Enum" dstnodeid="21" dstpinname="Format">
+   </LINK>
+   <NODE systemname="DX9Texture (EX9.Texture)" nodename="DX9Texture (EX9.Texture)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="19624" top="8775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="EX9 Out" dstnodeid="9" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="21" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14374" top="9870" width="1440" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14374" top="9870" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="VVVVSavedThis.psd">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="15979" top="9480" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15979" top="9480" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Texture Out" dstnodeid="48" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="6" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="19624" top="10350" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19624" top="10350" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="6" dstpinname="Input Node">
+   </LINK>
+   <NODE id="5" nodename="IOBox (Enumerations)" componentmode="InABox" systemname="IOBox (Enumerations)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" left="13024" top="9315" width="1185" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13024" top="9315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" pintype="Input" values="CurrentPatch">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Style" pintype="Configuration" slicecount="1" values="PullDown">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output Enum" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="4" systemname="SystemFolder (File)" nodename="SystemFolder (File)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="13039" top="9720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Folder" visible="1" pintype="Input" slicecount="1" values="Application">
+   </PIN>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Do Rescan" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Enum" dstnodeid="4" dstpinname="Folder">
+   </LINK>
+   <NODE systemname="RequestImage (Photoshop)" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\RequestImage (Photoshop).v4p" nodename="RequestImage (Photoshop).v4p" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="12454" top="5805" width="2250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12454" top="5805">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12930" top="5025" width="11745" height="8955">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output Enum" dstnodeid="3" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Height">
+   </LINK>
+   <NODE systemname="SetAlpha (Color)" nodename="SetAlpha (Color)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="19339" top="6990" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="24" dstpinname="Background Color">
+   </LINK>
+   <NODE systemname="SaveCurrentDocumentAsPSD" filename="..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\SaveCurrentDocumentAsPSD.v4p" nodename="SaveCurrentDocumentAsPSD.v4p" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="13234" top="10230" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6795" top="2685" width="9930" height="7605">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <PIN pinname="Directory" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="1" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="1" dstpinname="Directory">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="0" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9079" top="1110" width="195" height="12660">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9079" top="1110" width="285" height="9675">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;||&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="1080" top="1755" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8865" top="1935" width="10665" height="13170">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="AsRaw (Photoshop Image)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image).v4p" nodename="AsRaw (Photoshop Image)" componentmode="InAWindow" id="56">
+   <BOUNDS type="Node" left="4155" top="10095" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2940" top="1920" width="14250" height="13845">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="DynamicTexture (EX9.Texture Raw)" nodename="DynamicTexture (EX9.Texture Raw)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="3435" top="12090" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Pixmap (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\Pixmap (Photoshop).v4p" nodename="Pixmap (Photoshop)" componentmode="InAWindow" id="59">
+   <BOUNDS type="Node" left="5085" top="11745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Update" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Photoshop Image)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image).v4p" nodename="AsRaw (Photoshop Image)" componentmode="InAWindow" id="60">
+   <BOUNDS type="Node" left="6510" top="8835" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
