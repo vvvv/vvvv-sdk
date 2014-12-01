@@ -9,28 +9,11 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Raw
 {
-	public class KeyGenerator
-	{	
-		public byte[] generateKey(string pass, int keyLength, int keyIterations, string keySalt)
-		{
-			if (keyLength > 0)
-			{
-				// Salt for the Key
-				byte[] salt = new System.Text.UTF8Encoding(true).GetBytes(keySalt);
 	
-				//Generate Key
-				Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(pass, salt, keyIterations);
-	
-				//Take only 24 bytes
-				return key.GetBytes(keyLength);
-			}
-			return new byte[1];
-		}
-	}
-	
-	
-    [PluginInfo(Name = "PBKDF2", Category = "Raw", Help = "Generates a key using the PBKDF2.", Tags = "cryptography, key, password, RFC2898")]
-    public class RawPBKDF2Node : IPluginEvaluate, IPartImportsSatisfiedNotification
+	#region PluginInfo
+	[PluginInfo(Name = "PBKDF2", Category = "Raw", Help = "Generates a key using the PBKDF2 function.", Tags = "cryptography, key, password, RFC2898")]
+    #endregion PluginInfo
+   	public class RawPBKDF2Node : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		#region fields & pins
 		[Input("Password")]
@@ -39,7 +22,7 @@ namespace VVVV.Nodes.Raw
 		[Input("Salt", DefaultString="EveryhingYouKnowIsWrong")]
 		public IDiffSpread<string> FKeySalt;
 		
-		[Input("Number of Iterations", DefaultValue = 1000, MinValue=1)]
+		[Input("Iteration Count", DefaultValue = 1000, MinValue=1)]
 		public IDiffSpread<int> FKeyIterations;
 		
 		[Input("Key Length", DefaultValue = 24, MinValue=1)]
@@ -83,7 +66,7 @@ namespace VVVV.Nodes.Raw
 					try
 					{	
 						FKeyGens[i]=new KeyGenerator();
-						var key=FKeyGens[i].generateKey (FPass[i], FKeyLength[i], FKeyIterations[i], FKeySalt[i]);
+						var key=FKeyGens[i].GenerateKey (FPass[i], FKeyLength[i], FKeyIterations[i], FKeySalt[i]);
 						outputStream.SetLength(0);
 						outputStream.Write(key, 0, key.Length);
 					}
@@ -100,4 +83,26 @@ namespace VVVV.Nodes.Raw
 			}
 		}
 	}
+    
+    #region helper class
+    public class KeyGenerator
+	{	
+		public byte[] GenerateKey(string pass, int keyLength, int keyIterations, string keySalt)
+		{
+			if (keyLength > 0)
+			{
+				// Salt for the Key
+				byte[] salt = new System.Text.UTF8Encoding(true).GetBytes(keySalt);
+	
+				//Generate Key
+				Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(pass, salt, keyIterations);
+	
+				//Take only 24 bytes
+				return key.GetBytes(keyLength);
+			}
+			return new byte[1];
+		}
+	}
+    #endregion helper class
+    	
 }
