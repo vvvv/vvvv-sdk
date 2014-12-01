@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Receiver) help.v4p">
-   <BOUNDS type="Window" left="13635" top="2490" width="11685" height="7440">
+   <BOUNDS type="Window" left="7455" top="1680" width="11685" height="7830">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -57,7 +57,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6285" top="1500" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="locahost">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="localhost">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="192.168.1.1">
    </PIN>
@@ -110,26 +110,6 @@
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    </NODE>
-   <NODE nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="12" systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p">
-   <BOUNDS type="Node" left="7605" top="2370" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7605" top="2370" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
-   </BOUNDS>
-   <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Photoshop Response" visible="1">
-   </PIN>
-   <PIN pinname="Connected" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="12" dstpinname="Remote Host">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="12" dstpinname="Password">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9645" top="1500" width="480" height="480">
    </BOUNDS>
@@ -146,8 +126,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Reset">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9600" top="1185" width="810" height="270">
    </BOUNDS>
@@ -167,9 +145,9 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7605" top="3015" width="0" height="0">
    </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Response" dstnodeid="22" dstpinname="Input Node">
-   </LINK>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
@@ -233,7 +211,7 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="8010" top="4650" width="945" height="240">
+   <BOUNDS type="Box" left="8010" top="4650" width="960" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="8010" top="4650" width="0" height="0">
    </BOUNDS>
@@ -246,6 +224,8 @@
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="IP">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
@@ -261,17 +241,9 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
-   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="7680" top="5430" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7680" top="5430">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="31" dstpinname="Remote Host">
-   </LINK>
-   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="31" dstpinname="Password">
-   </LINK>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="7215" top="5430" type="Node" width="315">
    </BOUNDS>
@@ -307,7 +279,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2040" top="4950" width="2325" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsString (Photoshop Response)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsString (Photoshop)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -321,7 +293,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2040" top="5310" width="2355" height="255">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsImage (Photoshop Response)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsImage (Photoshop)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -368,13 +340,67 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="AsString (Photoshop Response)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsString (Photoshop Response).v4p" nodename="AsString (Photoshop Response)" componentmode="Hidden" id="36">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="675" top="6300" width="5445" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="6300" width="3000" height="465">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This node is developed according to the Adobe Photoshop Connection SDK:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="44">
+   <BOUNDS type="Node" left="735" top="6825" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="735" top="6825" width="3285" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://www.adobe.com/devnet/photoshop/sdk.html">
+   </PIN>
+   </NODE>
+   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="InAWindow" id="45">
+   <BOUNDS type="Node" left="7680" top="5430" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="18960" top="2655" width="10665" height="13140">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="45" dstpinname="Remote Host">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="45" dstpinname="Password">
+   </LINK>
+   <NODE nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="46" systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p">
+   <BOUNDS type="Node" left="7605" top="2370" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7605" top="2370" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="19065" top="2355" width="8190" height="10785">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="46" dstpinname="Remote Host">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="46" dstpinname="Password">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="46" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Response" dstnodeid="22" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="AsString (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsString (Photoshop).v4p" nodename="AsString (Photoshop)" componentmode="Hidden" id="36">
    <BOUNDS type="Node" left="750" top="4950" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="750" top="4950">
    </BOUNDS>
    </NODE>
-   <NODE systemname="AsImage (Photoshop Response)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsImage (Photoshop Response).v4p" nodename="AsImage (Photoshop Response)" componentmode="Hidden" id="33">
+   <NODE systemname="AsImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsImage (Photoshop).v4p" nodename="AsImage (Photoshop)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="750" top="5310" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="750" top="5310">

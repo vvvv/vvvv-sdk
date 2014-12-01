@@ -42,7 +42,7 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
+   <BOUNDS type="Window" left="16140" top="2580" width="8190" height="10785">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -97,7 +97,7 @@
    <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="35">
    <BOUNDS type="Node" left="1500" top="4815" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Receive String" visible="1">
+   <PIN pinname="Receive String" visible="1" slicecount="1" values="(nil)">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
@@ -109,7 +109,7 @@
    </BOUNDS>
    <PIN pinname="Enum" slicecount="1" visible="1" values="NodeSendChannels">
    </PIN>
-   <PIN pinname="Receive" visible="1" slicecount="1" values="PSData192.168.178.23vvvvvv">
+   <PIN pinname="Receive" visible="1" slicecount="1" values="(nil)">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="39" systemname="IOBox (Enumerations)">
@@ -121,20 +121,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="39" srcpinname="Output Enum" dstnodeid="38" dstpinname="Enum">
-   </LINK>
-   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="1500" top="3825" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="String Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="37" dstpinname="String Value">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Enum" dstnodeid="38" dstpinname="Receive">
    </LINK>
    <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="2" dstpinname="Password">
    </LINK>
@@ -160,90 +146,6 @@
    </NODE>
    <LINK srcnodeid="2" srcpinname="Output" dstnodeid="65" dstpinname="Input Node">
    </LINK>
-   <NODE systemname="UnsubscribeEvent (Photoshop)" filename="UnsubscribeEvent (Photoshop).v4p" componentmode="Hidden" id="68" nodename="UnsubscribeEvent (Photoshop)">
-   <BOUNDS type="Node" left="9435" top="2595" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="9435" top="2595" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="2115" top="7425" width="5715" height="5505">
-   </BOUNDS>
-   <PIN pinname="Event" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Send" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="67" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="10635" top="1470" width="2160" height="465">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10635" top="1470" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="2" visible="1" values="documentChanged,activeViewChanged">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="67" srcpinname="Output Enum" dstnodeid="68" dstpinname="Event">
-   </LINK>
-   <NODE systemname="SubscribeEvent (Photoshop)" filename="SubscribeEvent (Photoshop).v4p" nodename="SubscribeEvent (Photoshop)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="11190" top="2595" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="10725" top="6330" width="5550" height="5265">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Event" visible="1">
-   </PIN>
-   <PIN pinname="Send" visible="1" slicecount="1" values="0">
-   </PIN>
-   <BOUNDS type="Box" left="11190" top="2595">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="67" srcpinname="Output Enum" dstnodeid="66" dstpinname="Event">
-   </LINK>
-   <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="10215" top="3225" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="68" srcpinname="Output" dstnodeid="71" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="71" dstpinname="Input 2">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="72" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13170" top="1635" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="13170" top="1635" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Bang">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="72" srcpinname="Y Output Value" dstnodeid="68" dstpinname="Send">
-   </LINK>
-   <LINK srcnodeid="72" srcpinname="Y Output Value" dstnodeid="66" dstpinname="Send">
-   </LINK>
    <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="90">
    <BOUNDS type="Node" left="2850" top="7005" width="100" height="100">
    </BOUNDS>
@@ -264,62 +166,12 @@
    </LINK>
    <LINK srcnodeid="89" srcpinname="Output" dstnodeid="2" dstpinname="Decrypt">
    </LINK>
-   <NODE id="74" systemname="Add (String)" nodename="Add (String)" componentmode="Hidden">
-   <BOUNDS type="Node" left="10470" top="4290" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="PSData">
-   </PIN>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="70" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="10485" top="3765" width="1440" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10485" top="3765" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="PSSubscribeEvent">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="devnul">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="70" srcpinname="Output String" dstnodeid="74" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="74" dstpinname="Input 3">
-   </LINK>
-   <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="74" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="S (Node)" nodename="S (Node)" componentmode="Hidden" id="115">
-   <BOUNDS type="Node" left="10215" top="4965" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input Value" visible="1">
-   </PIN>
-   <PIN pinname="Send String" visible="1">
-   </PIN>
-   <PIN pinname="Display Channel" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="71" srcpinname="Output" dstnodeid="115" dstpinname="Input Value">
-   </LINK>
-   <LINK srcnodeid="74" srcpinname="Output" dstnodeid="115" dstpinname="Send String">
-   </LINK>
    <INFO author="vvvv group" description="Receives responses from Photoshop." tags="">
    </INFO>
    <NODE systemname="CollectChunks" filename="%VVVV%\lib\nodes\modules\Photoshop\CollectChunks.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\CollectChunks.v4p" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="1515" top="5895" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Window" left="10125" top="2565" width="16905" height="14655">
+   <BOUNDS type="Window" left="9960" top="3735" width="16905" height="14655">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
@@ -343,5 +195,15 @@
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="90" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="91">
+   <BOUNDS type="Node" left="1500" top="3825" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="91" dstpinname="String Value">
+   </LINK>
+   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="38" dstpinname="Receive">
    </LINK>
    </PATCH>

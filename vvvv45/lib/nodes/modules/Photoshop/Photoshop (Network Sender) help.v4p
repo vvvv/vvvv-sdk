@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Sender) help.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="1905" top="2490" width="11700" height="7485">
+   <BOUNDS type="Window" left="1905" top="2490" width="11700" height="9090">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -119,7 +119,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6765" top="2640" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="15495" top="2520" width="7095" height="13140">
+   <BOUNDS type="Window" left="2850" top="2520" width="23175" height="13560">
    </BOUNDS>
    <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
    </PIN>
@@ -238,16 +238,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="19" systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p">
-   <BOUNDS type="Node" left="6615" top="5565" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6615" top="5565" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
-   </BOUNDS>
-   <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7890" top="5580" width="2250" height="270">
    </BOUNDS>
@@ -336,18 +326,12 @@
    </NODE>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
-   <NODE systemname="AsRaw (Photoshop Command)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Command).v4p" nodename="AsRaw (Photoshop Command)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="6615" top="5925" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6615" top="5925">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7890" top="5925" width="2250" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="7890" top="5925" width="2175" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsRaw (Photoshop Command)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsRaw (Photoshop)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -369,12 +353,6 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   </NODE>
-   <NODE systemname="AsRaw (Photoshop Image)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image).v4p" nodename="AsRaw (Photoshop Image)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="6615" top="6270" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="6615" top="6270">
-   </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
    <BOUNDS type="Node" left="555" top="5760" width="5000" height="450">
@@ -400,20 +378,50 @@
    <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\IO\Photoshop">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6135" top="5925" type="Node" width="315">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="7200" width="5445" height="270">
    </BOUNDS>
-   <BOUNDS height="300" left="6135" top="5925" type="Box" width="345">
+   <BOUNDS type="Box" left="555" top="7200" width="3000" height="465">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This node is developed according to the Adobe Photoshop Connection SDK:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="1">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="10">
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="36">
+   <BOUNDS type="Node" left="555" top="7725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="7725" width="3285" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://www.adobe.com/devnet/photoshop/sdk.html">
+   </PIN>
+   </NODE>
+   <NODE nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="19" systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p">
+   <BOUNDS type="Node" left="6615" top="5565" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6615" top="5565" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
+   </BOUNDS>
+   <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop).v4p" nodename="AsRaw (Photoshop)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="6615" top="5925" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6615" top="5925">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="AsRaw (Photoshop Image)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image).v4p" nodename="AsRaw (Photoshop Image)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="6615" top="6270" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6615" top="6270">
+   </BOUNDS>
    </NODE>
    </PATCH>
