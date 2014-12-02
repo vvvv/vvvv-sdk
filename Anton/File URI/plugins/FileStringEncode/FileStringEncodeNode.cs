@@ -14,7 +14,7 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Encode", Category = "String", Version = "File", Help = "Encodes a File path using the file URI scheme.", Tags = "URI, path")]
+	[PluginInfo(Name = "Encode", Category = "String", Version = "File", Help = "Encodes a file path using the file URI scheme.", Tags = "URI, path")]
 	#endregion PluginInfo
 	public class EncodeStringFileNode : IPluginEvaluate
 	{
@@ -41,33 +41,29 @@ namespace VVVV.Nodes
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
-					var input = FInput[i];
-					var output = FOutput[i];
-									
-					if (input.Length > 0)
+					var input = FInput[i].Trim();
+					
+					if (!string.IsNullOrEmpty(input))
 					{
 						try
 						{
 							var Uri = new Uri(input, UriKind.RelativeOrAbsolute);
-							output=Uri.AbsoluteUri;
+							FOutput[i] = Uri.AbsoluteUri;
+							FError[i] = string.Empty;
 						}
-						catch
+						catch (Exception e)
 						{
-							output=String.Empty;
-							FError[i]=@"Incorrect Path";
+							FOutput[i] = string.Empty;
+							FError[i] = e.Message;
 						}
 					}
-					
-					FOutput[i] = output;
-					
 				}	
 			}
-			
 		}
 	}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Decode", Category = "String", Version = "File", Help = "Decodes a file URI scheme as Local Path.", Tags = "URI, path")]
+	[PluginInfo(Name = "Decode", Category = "String", Version = "File", Help = "Decodes a file URI scheme as local path.", Tags = "URI, path")]
 	#endregion PluginInfo
 	public class DecodeStringFileNode : IPluginEvaluate
 	{
@@ -94,28 +90,24 @@ namespace VVVV.Nodes
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{
-					var input = FInput[i];
-					var output = FOutput[i];
-									
-					if (input.Length > 0)
+					var input = FInput[i].Trim();
+					
+					if (!string.IsNullOrEmpty(input))
 					{
 						try
 						{
 							var Uri = new Uri(input, UriKind.RelativeOrAbsolute);
-							output=Uri.LocalPath;
+							FOutput[i]=Uri.LocalPath;
+							FError[i] = string.Empty;
 						}
-						catch
+						catch (Exception e)
 						{
-							output=String.Empty;
-							FError[i]=@"Incorrect file URI";
+							FOutput[i]=string.Empty;
+							FError[i]=e.Message;
 						}
 					}
-					
-					FOutput[i] = output;
-					
 				}	
 			}
-			
 		}
 	}
 }
