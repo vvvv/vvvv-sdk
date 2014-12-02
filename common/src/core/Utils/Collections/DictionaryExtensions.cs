@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VVVV.Utils.Collections
+namespace System.Collections.Generic
 {
     public static class DictionaryExtensions
     {

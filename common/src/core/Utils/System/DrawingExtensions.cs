@@ -1,0 +1,206 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Linq;
+using System.Text;
+
+namespace System.Drawing
+{
+    public static class DrawingExtensions
+    {
+        /// <summary>
+        /// Returns the bounds of the given point cloud.
+        /// </summary>
+        public static RectangleF GetBounds(this IEnumerable<PointF> points)
+        {
+            var cachedPoints = points.ToArray();
+            if (cachedPoints.Length > 0)
+            {
+                var top = cachedPoints.Min(p => p.Y);
+                var bottom = cachedPoints.Max(p => p.Y);
+                var left = cachedPoints.Min(p => p.X);
+                var right = cachedPoints.Max(p => p.X);
+                return RectangleF.FromLTRB(left, top, right, bottom);
+            }
+            else
+                return RectangleF.Empty;
+        }
+
+        /// <summary>
+        /// Returns the bounds of the given rectangle cloud.
+        /// </summary>
+        public static RectangleF GetBounds(this IEnumerable<RectangleF> bounds)
+        {
+            var cachedBounds = bounds.ToArray();
+            if (cachedBounds.Length > 0)
+            {
+                var top = cachedBounds.Min(b => b.Top);
+                var bottom = cachedBounds.Max(b => b.Bottom);
+                var left = cachedBounds.Min(b => b.Left);
+                var right = cachedBounds.Max(b => b.Right);
+                return RectangleF.FromLTRB(left, top, right, bottom);
+            }
+            else
+                return RectangleF.Empty;
+        }
+
+        /// <summary>
+        /// Returns the area.
+        /// </summary>
+        public static float Area(this SizeF size)
+        {
+            return size.Width * size.Height;
+        }
+
+        /// <summary>
+        /// Returns the center of this RectangleF.
+        /// </summary>
+        public static PointF GetCenter(this RectangleF rect)
+        {
+            return new PointF(rect.X + 0.5f * rect.Width, rect.Y + 0.5f * rect.Height);
+        }
+
+        /// <summary>
+        /// Returns a rectangle for given center position and size.
+        /// </summary>
+        public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
+        {
+            return new RectangleF(centerPosition.X - size.Width * 0.5f, centerPosition.Y - size.Height * 0.5f, size.Width, size.Height);
+        }
+
+        /// <summary>
+        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
+        /// </summary>
+        public static PointF Plus(this PointF p1, PointF p2)
+        {
+            return new PointF(p1.X + p2.X, p1.Y + p2.Y);
+        }
+
+        /// <summary>
+        /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
+        /// </summary>
+        public static PointF Minus(this PointF p1, PointF p2)
+        {
+            return new PointF(p1.X - p2.X, p1.Y - p2.Y);
+        }
+
+        public static PointF Multiply(this PointF point, float factor)
+        {
+            return new PointF(point.X * factor, point.Y * factor);
+        }
+
+        public static PointF Lerp(this PointF p1, PointF p2, float x)
+        {
+            return p1.Plus(p2.Minus(p1).Multiply(x));
+        }
+
+        /// <summary>
+        /// Returns the distance to another point.
+        /// </summary>
+        public static float GetDistanceTo(this PointF from, PointF to)
+        {
+            float x = from.X - to.X;
+            float y = from.Y - to.Y;
+            return (float)Math.Sqrt(x * x + y * y);
+        }
+
+        /// <summary>
+        /// Returns the distance to another point.
+        /// </summary>
+        public static float GetDistanceTo(this Point from, Point to)
+        {
+            float x = from.X - to.X;
+            float y = from.Y - to.Y;
+            return (float)Math.Sqrt(x * x + y * y);
+        }
+
+        public static IEnumerable<PointF> GetVertices(this RectangleF rectangle)
+        {
+            yield return new PointF(rectangle.Left, rectangle.Top);
+            yield return new PointF(rectangle.Right, rectangle.Top);
+            yield return new PointF(rectangle.Right, rectangle.Bottom);
+            yield return new PointF(rectangle.Left, rectangle.Bottom);
+        }
+
+        public static IEnumerable<PointF> GetVertices(this IEnumerable<RectangleF> rectangles)
+        {
+            foreach (var rectangle in rectangles)
+                foreach (var vertex in rectangle.GetVertices())
+                    yield return vertex;
+        }
+        
+        /// <summary>
+        /// Applies the transformation to a PointF
+        /// </summary>
+        /// <param name="t">A Matrix</param>
+        /// <param name="p">The point to transform by the matrix t</param>
+        /// <returns></returns>
+        public static PointF TransformPoint(this Matrix t, PointF p)
+        {
+            var pts = new PointF[] { p };
+            t.TransformPoints(pts);
+            return pts[0];
+        }
+        
+        /// <summary>
+        /// Applies the geometric transform represented by this Matrix to the
+        /// given rectangle.
+        /// </summary>
+        /// <param name="rect">The rectangle to transform.</param>
+        /// <returns>The transformed rectangle.</returns>
+        public static RectangleF TransformRectangle(this Matrix t, RectangleF rect)
+        {
+            float x = rect.X;
+            float y = rect.Y;
+            float width = rect.Width;
+            float height = rect.Height;
+            
+            var PTS4 = new PointF[4];
+            PTS4[0].X = x;
+            PTS4[0].Y = y;
+            PTS4[1].X = x + width;
+            PTS4[1].Y = y;
+            PTS4[2].X = x + width;
+            PTS4[2].Y = y + height;
+            PTS4[3].X = x;
+            PTS4[3].Y = y + height;
+            
+            t.TransformPoints(PTS4);
+            
+            float minX = PTS4[0].X;
+            float minY = PTS4[0].Y;
+            float maxX = PTS4[0].X;
+            float maxY = PTS4[0].Y;
+            
+            for (int i = 1; i < 4; i++)
+            {
+                x = PTS4[i].X;
+                y = PTS4[i].Y;
+                
+                if (x < minX)
+                {
+                    minX = x;
+                }
+                if (y < minY)
+                {
+                    minY = y;
+                }
+                if (x > maxX)
+                {
+                    maxX = x;
+                }
+                if (y > maxY)
+                {
+                    maxY = y;
+                }
+            }
+            
+            rect.X = minX;
+            rect.Y = minY;
+            rect.Width = maxX - minX;
+            rect.Height = maxY - minY;
+            return rect;
+        }
+    }
+}
