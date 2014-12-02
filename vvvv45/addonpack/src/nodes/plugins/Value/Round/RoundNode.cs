@@ -12,7 +12,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes
 {
-    public enum Round
+    public enum RoundMode
     {
         Ceiling,
         Floor,
@@ -33,8 +33,8 @@ namespace VVVV.Nodes
         [Input("Digits", DefaultValue = 1, MinValue = 0)]
         public IDiffSpread<int> FDigits;
 
-        [Input("Rounding")]
-        public IDiffSpread<Round> FRounding;
+        [Input("Rounding", DefaultEnumEntry="ToEven")]
+        public IDiffSpread<RoundMode> FRounding;
 
         [Output("Output")]
         public ISpread<double> FOutput;
@@ -52,26 +52,26 @@ namespace VVVV.Nodes
 
                     switch (FRounding[i])
                     {
-                        case Round.Ceiling:
+                        case RoundMode.Ceiling:
                             d = Math.Pow(10, FDigits[i]);
                             FOutput[i] = Math.Ceiling(FInput[i] * d) / d;
                             break;
 
-                        case Round.Floor:
+                        case RoundMode.Floor:
                             d = Math.Pow(10, FDigits[i]);
                             FOutput[i] = Math.Floor(FInput[i] * d) / d;
                             break;
 
-                        case Round.Truncate:
+                        case RoundMode.Truncate:
                             d = Math.Pow(10, FDigits[i]);
                             FOutput[i] = Math.Truncate(FInput[i] * d) / d;
                             break;
 
-                        case Round.ToEven:
+                        case RoundMode.ToEven:
                             FOutput[i] = Math.Round(FInput[i], Math.Max(0, Math.Min(15, FDigits[i])), MidpointRounding.ToEven);
                             break;
 
-                        case Round.AwayFromZero:
+                        case RoundMode.AwayFromZero:
                             FOutput[i] = Math.Round(FInput[i], Math.Max(0, Math.Min(15, FDigits[i])), MidpointRounding.AwayFromZero);
                             break;
                     }
