@@ -12,5 +12,12 @@ namespace System.Collections.Generic
             list[i] = list[j];
             list[j] = tmp;
         }
+
+        public static void AddRange<TEnumerable, TItem>(this HashSet<TItem> hashSet, TEnumerable values)
+            where TEnumerable : IEnumerable<TItem>
+        {
+            foreach (var value in values)
+                hashSet.Add(value);
+        }
     }
 }
