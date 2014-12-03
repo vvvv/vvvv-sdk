@@ -1,0 +1,69 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Circumference (2d).v4p" systemname="Circumference (2d)" filename="C:\Users\joreg\dev\repos\wippe\Circumference (2d).v4p">
+   <NODE systemname="Expr (Value)" nodename="Expr (Value)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="2310" top="2745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Term" slicecount="1" values="2*Radius*PI">
+   </PIN>
+   <PIN pinname="Variable Names" slicecount="1" values="Radius">
+   </PIN>
+   <PIN pinname="Radius" slicecount="1" values="0.19">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2040" top="1725" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2040" top="1725" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Radius">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="999999">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Radius">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2835" top="2235" width="960" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2835" top="2235" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="2*Radius*PI">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="0+0">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output String" dstnodeid="0" dstpinname="Term">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2295" top="3480" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2295" top="3480" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <BOUNDS type="Window" left="4695" top="1860" width="6300" height="5775">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <INFO author="vvvv group" description="Returns the circumference of the circle of the given radius." tags="radius, circle">
+   </INFO>
+   </PATCH>

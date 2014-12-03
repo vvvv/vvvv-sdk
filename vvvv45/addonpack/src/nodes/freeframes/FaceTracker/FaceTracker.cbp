@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FaceTracker" />
+		<Option execution_dir="C:\Users\joreg\dev\github\vvvv\public\vvvv45\src\nodes\freeframes\TemplateExtOpenCV2\" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\..\..\lib\nodes\freeframes\FaceTracker" prefix_auto="1" extension_auto="1" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="C:\Users\joreg\dev\github\vvvv\public\vvvv45\vvvv.exe" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\..\..\lib\nodes\freeframes\FaceTracker" prefix_auto="1" extension_auto="1" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="C:\Users\joreg\dev\github\vvvv\public\vvvv45\vvvv.exe" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-O2" />
+					<Add option="-O1" />
+					<Add option="-O" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add directory="$(OpenCV)\include" />
+			<Add directory="Tracker" />
+		</Compiler>
+		<Linker>
+			<Add option="--input-def FreeFrame.def" />
+			<Add library="$(OpenCV)\lib\libopencv_core241.dll.a" />
+			<Add library="$(OpenCV)\lib\libopencv_imgproc241.dll.a" />
+			<Add library="$(OpenCV)\lib\libopencv_objdetect241.dll.a" />
+			<Add library="$(OpenCV)\lib\libopencv_highgui241.dll.a" />
+		</Linker>
+		<Unit filename="FaceTracker.cpp" />
+		<Unit filename="FaceTracker.h" />
+		<Unit filename="FreeFrame.cpp" />
+		<Unit filename="FreeFrame.h" />
+		<Unit filename="Tracker\CLM.cc" />
+		<Unit filename="Tracker\CLM.h" />
+		<Unit filename="Tracker\FCheck.cc" />
+		<Unit filename="Tracker\FCheck.h" />
+		<Unit filename="Tracker\FDet.cc" />
+		<Unit filename="Tracker\FDet.h" />
+		<Unit filename="Tracker\IO.cc" />
+		<Unit filename="Tracker\IO.h" />
+		<Unit filename="Tracker\PAW.cc" />
+		<Unit filename="Tracker\PAW.h" />
+		<Unit filename="Tracker\PDM.cc" />
+		<Unit filename="Tracker\PDM.h" />
+		<Unit filename="Tracker\Patch.cc" />
+		<Unit filename="Tracker\Patch.h" />
+		<Unit filename="Tracker\Tracker.cc" />
+		<Unit filename="Tracker\Tracker.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

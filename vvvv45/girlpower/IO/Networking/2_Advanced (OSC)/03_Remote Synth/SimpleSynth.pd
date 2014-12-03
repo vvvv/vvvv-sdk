@@ -1,0 +1,103 @@
+#N canvas 641 129 1228 733 12;
+#X declare -lib mrpeach;
+#X obj 36 192 pddp/dsp;
+#X text 34 12 This patch is a part of vvvv-pd example on how to communicate.
+Check this: http://vvvv.org/documentation/pure-data;
+#X obj 644 652 dac~;
+#X obj 643 449 *~;
+#X text 687 651 < audio output;
+#X text 112 191 < First of all click to turn this toggle on.;
+#X obj 810 154 import mrpeach;
+#X obj 643 153 udpreceive 5556;
+#X obj 643 188 unpackOSC;
+#X obj 664 400 hsl 128 25 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-260097 -1 0 1;
+#X obj 643 264 unpack 0 0;
+#X obj 643 308 osc~ 400;
+#X obj 726 309 osc~ 500;
+#X obj 643 358 +~;
+#X floatatom 761 588 5 0 0 0 - - -;
+#X obj 643 228 route /frequencies;
+#X msg 863 578 send /amplitude \$1;
+#X obj 863 672 udpsend;
+#X msg 1034 612 connect 127.0.0.1 5557;
+#X obj 863 615 packOSC;
+#X obj 1034 578 loadbang;
+#X obj 594 162 bng 30 250 50 0 empty empty 1 10 15 0 20 -262144 -262144
+-1;
+#X text 925 154 < this library contains OSC objects.;
+#X obj 593 227 bng 30 250 50 0 empty empty 2 10 15 0 20 -262144 -262144
+-1;
+#X obj 594 301 bng 30 250 50 0 empty empty 3 10 15 0 20 -262144 -262144
+-1;
+#X obj 595 352 bng 30 250 50 0 empty empty 4 10 15 0 20 -262144 -262144
+-1;
+#X obj 594 444 bng 30 250 50 0 empty empty 5 10 15 0 20 -262144 -262144
+-1;
+#X text 805 401 < Adjust the volume.;
+#X obj 791 494 bng 30 250 50 0 empty empty 6 10 15 0 20 -262144 -262144
+-1;
+#X obj 822 589 bng 30 250 50 0 empty empty 7 10 15 0 20 -262144 -262144
+-1;
+#X obj 822 644 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
+-1;
+#X obj 36 242 bng 30 250 50 0 empty empty 1 10 15 0 20 -262144 -262144
+-1;
+#X obj 36 279 bng 30 250 50 0 empty empty 2 10 15 0 20 -262144 -262144
+-1;
+#X obj 36 348 bng 30 250 50 0 empty empty 3 10 15 0 20 -262144 -262144
+-1;
+#X obj 35 387 bng 30 250 50 0 empty empty 4 10 15 0 20 -262144 -262144
+-1;
+#X obj 34 427 bng 30 250 50 0 empty empty 5 10 15 0 20 -262144 -262144
+-1;
+#X obj 35 473 bng 30 250 50 0 empty empty 6 10 15 0 20 -262144 -262144
+-1;
+#X obj 35 517 bng 30 250 50 0 empty empty 7 10 15 0 20 -262144 -262144
+-1;
+#X obj 37 568 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
+-1;
+#X text 79 276 After unpacking OSC-message the [routeOSC] returns the
+data coming to the '/frequencies' address. There are two floats coming
+from vvvv \, [unpack] distributes the incoming list to its output pins.
+;
+#X text 78 345 There are two [osc~] (oscillator objects) which are
+generating cosine waves with defined frequencies.;
+#X text 78 390 These two waves are added together...;
+#X text 79 422 and multiplied with the value which controls the volume
+(its an amplitude).;
+#X obj 833 486 fiddle~;
+#X obj 863 544 -;
+#X msg 863 517 0 \$1;
+#X text 80 468 [fiddle~] returns the current amplitude of the signal
+on its third output pin.;
+#X text 80 515 The OSC-address is added before this amplitude value
+and [packOSC] constructs the message.;
+#X text 34 71 Bidirectional communication between Pd and vvvv. vvvv-patch
+sends two frequencies \, Pd-patch sends current amplitude level back.
+;
+#X text 78 241 [udpreceive] listens to the port defined the in vvvv
+patch.;
+#X text 81 565 [udpsend] sends the message to the defined IP-address/port.
+;
+#X text 34 141 Please open the vvvv-patch: Controller.v4p;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 3 0 43 0;
+#X connect 7 0 8 0;
+#X connect 8 0 15 0;
+#X connect 9 0 3 1;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 1;
+#X connect 13 0 3 0;
+#X connect 15 0 10 0;
+#X connect 16 0 19 0;
+#X connect 18 0 17 0;
+#X connect 19 0 17 0;
+#X connect 20 0 18 0;
+#X connect 43 2 45 0;
+#X connect 44 0 14 0;
+#X connect 44 0 16 0;
+#X connect 45 0 44 0;

@@ -1,0 +1,81 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Reverse (Spreads) help.v4p">
+   <BOUNDS height="5085" left="3225" top="5595" type="Window" width="3555">
+   </BOUNDS>
+   <NODE id="3" nodename="Reverse (Spreads)">
+   <BOUNDS height="0" left="1515" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="1170" left="585" top="930" type="Box" width="990">
+   </BOUNDS>
+   <BOUNDS height="160" left="3263" top="5649" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="0" left="585" top="930" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Columns" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="5" values="3.00000,30.00000,4.00000,5.00000,6.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Y Input Value" slicecount="5" visible="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1.00000">
+   </PIN>
+   <BOUNDS height="0" left="600" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3563" top="5949" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1170" left="600" top="2925" type="Box" width="990">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverses the order of the slices in the spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2970" top="41220" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Reverse - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,521 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH componentmode="InAWindow" nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\BézierLoop (GDI) help.v4p">
+   <BOUNDS height="11115" left="2100" top="735" type="Window" width="8490">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="25" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="270" top="5820" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4410" left="270" top="5820" type="Box" width="4545">
+   </BOUNDS>
+   <BOUNDS height="4905" left="0" top="0" type="Window" width="5265">
+   </BOUNDS>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.88179,0.88179,0.88179,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="CircularSpread (Spreads)">
+   <BOUNDS height="0" left="1710" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="23" nodename="Vector2Points (2d)">
+   <BOUNDS height="0" left="3015" top="3390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Length" slicecount="1" visible="1" values="-0.23000">
+   </PIN>
+   <PIN pinname="Angle" slicecount="1" visible="1" values="-0.48000">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="Point (GDI)">
+   <BOUNDS height="0" left="675" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="Circle">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="X" linkstyle="Bezier" srcnodeid="24" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Y" linkstyle="Bezier" srcnodeid="24" srcpinname="Output Y">
+   </LINK>
+   <NODE id="21" nodename="Point (GDI)">
+   <BOUNDS height="0" left="5775" top="5370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.98665,0.00000,0.33898,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Add (Value)">
+   <BOUNDS height="0" left="5190" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Add (Value)">
+   <BOUNDS height="0" left="5550" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="24" srcpinname="Output X">
+   <LINKPOINT x="1740" y="3105">
+   </LINKPOINT>
+   <LINKPOINT x="5550" y="3105">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="24" srcpinname="Output Y">
+   <LINKPOINT x="2805" y="3105">
+   </LINKPOINT>
+   <LINKPOINT x="5910" y="3105">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="23" srcpinname="X1">
+   <LINKPOINT x="3045" y="4095">
+   </LINKPOINT>
+   <LINKPOINT x="5790" y="4095">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="23" srcpinname="Y1">
+   <LINKPOINT x="3405" y="4095">
+   </LINKPOINT>
+   <LINKPOINT x="6150" y="4095">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="X" linkstyle="Bezier" srcnodeid="20" srcpinname="Output">
+   <LINKPOINT x="5220" y="5175">
+   </LINKPOINT>
+   <LINKPOINT x="5805" y="5175">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Y" linkstyle="Bezier" srcnodeid="19" srcpinname="Output">
+   <LINKPOINT x="5580" y="5175">
+   </LINKPOINT>
+   <LINKPOINT x="5970" y="5175">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="18" nodename="Point (GDI)">
+   <BOUNDS height="0" left="7020" top="5370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.96187,0.22231,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Add (Value)">
+   <BOUNDS height="0" left="6435" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Add (Value)">
+   <BOUNDS height="0" left="6795" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="X" linkstyle="Bezier" srcnodeid="17" srcpinname="Output">
+   <LINKPOINT x="6465" y="5160">
+   </LINKPOINT>
+   <LINKPOINT x="7050" y="5160">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Y" linkstyle="Bezier" srcnodeid="16" srcpinname="Output">
+   <LINKPOINT x="6825" y="5160">
+   </LINKPOINT>
+   <LINKPOINT x="7215" y="5160">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="23" srcpinname="X2">
+   <LINKPOINT x="3750" y="4080">
+   </LINKPOINT>
+   <LINKPOINT x="7035" y="4080">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="23" srcpinname="Y2">
+   <LINKPOINT x="4110" y="4080">
+   </LINKPOINT>
+   <LINKPOINT x="7395" y="4080">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="24" srcpinname="Output X">
+   <LINKPOINT x="1740" y="3090">
+   </LINKPOINT>
+   <LINKPOINT x="6795" y="3090">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 1" linkstyle="Bezier" srcnodeid="24" srcpinname="Output Y">
+   <LINKPOINT x="2805" y="3090">
+   </LINKPOINT>
+   <LINKPOINT x="7155" y="3090">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="15" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="4095" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" visible="1" values="0.78000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Angle" linkstyle="Bezier" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5190" top="6795" type="Node" width="1980">
+   </BOUNDS>
+   <BOUNDS height="240" left="5190" top="6795" type="Box" width="2445">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw the control points as +|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="225" top="5340" type="Node" width="1530">
+   </BOUNDS>
+   <BOUNDS height="315" left="225" top="5340" type="Box" width="2070">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|draw the bezier points as o|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2025" top="960" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7889" top="2928" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2025" top="960" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Spread Count" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3075" top="960" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7935" top="3109" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3075" top="960" type="Box" width="705">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.41">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Length" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3945" top="960" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8024" top="2925" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3945" top="960" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.67">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input" linkstyle="PolyLine" srcnodeid="10" srcpinname="Y Output Value">
+   <LINKPOINT x="4710" y="1365">
+   </LINKPOINT>
+   <LINKPOINT x="4125" y="1365">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4860" top="945" type="Node" width="3075">
+   </BOUNDS>
+   <BOUNDS height="285" left="4860" top="945" type="Box" width="3450">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|adjust distance and rotation of control points|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="BézierLoop (GDI)">
+   <BOUNDS height="0" left="2610" top="5190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Control 1 X" visible="1">
+   </PIN>
+   <PIN pinname="Control 1 Y" visible="1">
+   </PIN>
+   <PIN pinname="Control 2 X" visible="1">
+   </PIN>
+   <PIN pinname="Control 2 Y" visible="1">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" values="|0.92278,0.11038,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Pen Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="X" linkstyle="Bezier" srcnodeid="24" srcpinname="Output X">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y" linkstyle="Bezier" srcnodeid="24" srcpinname="Output Y">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Control 1 X" linkstyle="Bezier" srcnodeid="23" srcpinname="X1">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Control 1 Y" linkstyle="Bezier" srcnodeid="23" srcpinname="Y1">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Control 2 X" linkstyle="Bezier" srcnodeid="23" srcpinname="X2">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Control 2 Y" linkstyle="Bezier" srcnodeid="23" srcpinname="Y2">
+   </LINK>
+   <NODE id="7" nodename="LINE (GDI)">
+   <BOUNDS height="0" left="5205" top="6480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" values="|0.88562,0.89609,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X1" linkstyle="Bezier" srcnodeid="20" srcpinname="Output">
+   <LINKPOINT x="5220" y="5550">
+   </LINKPOINT>
+   <LINKPOINT x="5250" y="5550">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y1" linkstyle="Bezier" srcnodeid="19" srcpinname="Output">
+   <LINKPOINT x="5580" y="5550">
+   </LINKPOINT>
+   <LINKPOINT x="5415" y="5550">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="X2" linkstyle="Bezier" srcnodeid="17" srcpinname="Output">
+   <LINKPOINT x="6465" y="5550">
+   </LINKPOINT>
+   <LINKPOINT x="5565" y="5550">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y2" linkstyle="Bezier" srcnodeid="16" srcpinname="Output">
+   <LINKPOINT x="6825" y="5550">
+   </LINKPOINT>
+   <LINKPOINT x="5730" y="5550">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="10650" top="19140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GézierLoop - GDI|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="14370" top="24195" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="720" left="14370" top="24195" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="14355" top="23805" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Convert a 4x4 Matrix to 3x3 Matrix for modifying 2d Texture Coordinates with the fixed function pipeline which uses a 3x3 matrix if texture coordinates are 2 dimensional.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="14370" top="23820" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="14370" top="23820" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="15435" top="27075" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|4x4To3x3 (Transform)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="3" managers="" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="3510">
+   </BOUNDS>
+   <BOUNDS height="160" left="9570" top="15870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" values="|Draws closed bézier curves in the gdi window. the control points are relative to their point|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="4815" top="1515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Phase" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Spread Count" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="12" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="285" top="10320" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="285" top="10320" type="Box" width="750">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="BézierLine (GDI)">
+   <BOUNDS height="0" left="1035" top="10335" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="Group (GDI)" id="26">
+   <BOUNDS type="Node" left="6330" top="8595" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 3">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 4">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 5">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Layer" dstnodeid="25" dstpinname="Layers">
+   </LINK>
+   </PATCH>
