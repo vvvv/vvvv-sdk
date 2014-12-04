@@ -1,45 +1,15 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_LiveTextureStreaming.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
-   <BOUNDS type="Window" left="360" top="1110" width="10500" height="8085">
+   <BOUNDS type="Window" left="1440" top="480" width="11580" height="9810">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="80" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="495" top="2115" width="2160" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="495" top="2115" width="2340" height="675">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending images to Photoshop.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="11">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="81" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="495" top="2925" width="3360" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="495" top="2925" width="2850" height="1830">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending images to Photoshop is easy. AsRaw (Photoshop Image) prepares a texture and on banging &apos;Send&apos; IOBox the image will be opened in Photoshop as a separate Document. This is the only way the Photoshop accepts incoming images. Only RGB textures are supported, no alpha channels.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="135" systemname="IOBox (String)">
    <BOUNDS type="Node" left="420" top="345" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="420" top="345" width="3075" height="735">
+   <BOUNDS type="Box" left="420" top="345" width="4080" height="1080">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Examples on talking to Photoshop.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Almost real-time streaming from Photoshop.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -50,28 +20,156 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="138" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="9225" top="6150" type="Node" width="315">
+   <NODE systemname="PhotoshopIn (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" nodename="PhotoshopIn (Photoshop)" componentmode="Hidden" id="145">
+   <BOUNDS type="Node" left="6480" top="2175" width="3420" height="270">
    </BOUNDS>
-   <BOUNDS height="300" left="9225" top="6150" type="Box" width="345">
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   <PIN pinname="Lock to Current Document" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Host Connected" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="5715" top="1140" width="10920" height="8115">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="146" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="5595" top="1350" width="1215" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5595" top="1350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="localhost">
    </PIN>
-   <PIN pinname="Output String" visible="0">
+   <PIN pinname="Default" slicecount="1" values="192.168.1.1">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="1">
+   <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="10">
+   <PIN pinname="String Type" slicecount="1" values="IP">
    </PIN>
    </NODE>
-   <NODE id="136" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="480" top="1170" width="3360" height="270">
+   <LINK srcnodeid="146" srcpinname="Output String" dstnodeid="145" dstpinname="Remote Host">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="147" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6870" top="1350" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Box" left="480" top="1170" width="3675" height="570">
+   <BOUNDS type="Node" left="6870" top="1350" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Check the helppatch of the Photoshop (Network Sender) to learn how to configure Photoshop.|">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="147" srcpinname="Output String" dstnodeid="145" dstpinname="Password">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="148" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7770" top="1350" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7770" top="1350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1024">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="148" srcpinname="Y Output Value" dstnodeid="145" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="148" srcpinname="Y Output Value" dstnodeid="145" dstpinname="Height">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="149" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="8715" top="1350" width="645" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8715" top="1350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="149" srcpinname="Output Enum" dstnodeid="145" dstpinname="Format">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="150" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9585" top="1350" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9585" top="1350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="150" srcpinname="Y Output Value" dstnodeid="145" dstpinname="Lock to Current Document">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="152" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9825" top="2715" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9825" top="2715" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Host Connected" dstnodeid="152" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="154">
+   <BOUNDS type="Node" left="6480" top="3570" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="145" srcpinname="Texture Out" dstnodeid="154" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="155">
+   <BOUNDS type="Node" left="6480" top="4230" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6480" top="4230" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10515" top="10785" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="154" srcpinname="Layer" dstnodeid="155" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="159" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="660" top="1785" width="8745" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="660" top="1785" width="3660" height="930">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop&apos;s &quot;Remote Connections&quot; must be enabled. See this checkbox under the &quot;Edit &gt; Remote Connections...&quot; in your Adobe Photoshop. Define the password in the same dialog.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -80,92 +178,76 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="139">
-   <BOUNDS type="Node" left="6555" top="6180" width="2490" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="158" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="1725" width="195" height="270">
    </BOUNDS>
-   <PIN pinname="Remote Host" visible="1">
+   <BOUNDS type="Box" left="225" top="1725" width="285" height="555">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="!">
    </PIN>
-   <PIN pinname="Password" visible="1">
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="23">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="140" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="7215" top="5565" width="945" height="240">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="157" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="2790" width="4350" height="270">
    </BOUNDS>
-   <BOUNDS type="Node" left="7215" top="5565" width="0" height="0">
+   <BOUNDS type="Box" left="225" top="2790" width="4350" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="localhost">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="--------------------------------------------------------">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="192.168.1.1">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="IP">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="140" srcpinname="Output String" dstnodeid="139" dstpinname="Remote Host">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="141" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="8280" top="5565" width="630" height="240">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="156" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="1410" width="4350" height="270">
    </BOUNDS>
-   <BOUNDS type="Node" left="8280" top="5565" width="0" height="0">
+   <BOUNDS type="Box" left="225" top="1410" width="4350" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="--------------------------------------------------------">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="141" srcpinname="Output String" dstnodeid="139" dstpinname="Password">
-   </LINK>
-   <NODE systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p" nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="142">
-   <BOUNDS type="Node" left="6645" top="1470" width="2115" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="160" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="675" top="4260" width="8745" height="270">
    </BOUNDS>
-   <PIN pinname="Remote Host" visible="1">
+   <BOUNDS type="Box" left="675" top="4260" width="3765" height="4680">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If the resolution of the PSD is bigger than the requested one, Photoshop sends the scaled down version of its PSD. If the resolution of the PSD is smaller, the thumbnail will have the resolution of the PSD.&cr;&lf;&cr;&lf;By turning on the &quot;Lock to Current Document&quot; pin vvvv remembers the current active document opened in Photoshop and listens only to the changes of this document.&cr;&lf;&cr;&lf;If the &quot;Lock to Current Document&quot; pin is turned off, vvvv receives the images of any current active document.&cr;&lf;&cr;&lf;&apos;Host Connected&apos; output pin says only whether the Photoshop is present on the &apos;Remote Host&apos; IP address, it doesn&apos;t mean, that the password is correct.|">
    </PIN>
-   <PIN pinname="Password" visible="1">
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="144" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6645" top="975" width="945" height="240">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="161" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="675" top="3210" width="8745" height="270">
    </BOUNDS>
-   <BOUNDS type="Node" left="6645" top="975" width="0" height="0">
+   <BOUNDS type="Box" left="675" top="3210" width="3660" height="930">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="localhost">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop notifies vvvv about the changes made its documents only when the user releases a tool (be it a Brush or a Transform or the Levels). At this moment vvvv requests the new image.|">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="192.168.1.1">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="IP">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="143" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="7710" top="975" width="630" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7710" top="975" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="144" srcpinname="Output String" dstnodeid="142" dstpinname="Remote Host">
-   </LINK>
-   <LINK srcnodeid="143" srcpinname="Output String" dstnodeid="142" dstpinname="Password">
-   </LINK>
    </PATCH>
