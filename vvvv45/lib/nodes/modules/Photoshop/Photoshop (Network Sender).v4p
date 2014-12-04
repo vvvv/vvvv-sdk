@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="1410" top="1155" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Node" visible="1">
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
@@ -235,7 +235,7 @@
    <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="156">
    <BOUNDS type="Node" left="1410" top="7335" width="750" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -764,20 +764,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="UnsubscribeEvent (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\UnsubscribeEvent (Photoshop).v4p" nodename="UnsubscribeEvent (Photoshop)" componentmode="Hidden" id="268">
-   <BOUNDS type="Node" left="10410" top="5190" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1" slicecount="1" values="||">
-   </PIN>
-   <BOUNDS type="Box" left="10410" top="5190">
-   </BOUNDS>
-   <PIN pinname="Event" visible="1">
-   </PIN>
-   <PIN pinname="Send" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="268" srcpinname="Output" dstnodeid="267" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="299">
    <BOUNDS type="Node" left="8835" top="4365" width="100" height="100">
    </BOUNDS>
@@ -815,22 +801,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="301" srcpinname="Former Slice" dstnodeid="303" dstpinname="Ord Value">
-   </LINK>
-   <LINK srcnodeid="303" srcpinname="Enum" dstnodeid="268" dstpinname="Event">
-   </LINK>
-   <NODE systemname="SubscribeEvent (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\SubscribeEvent (Photoshop).v4p" nodename="SubscribeEvent (Photoshop)" componentmode="Hidden" id="306">
-   <BOUNDS type="Node" left="8835" top="5220" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="5790" top="2925" width="5550" height="6345">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8835" top="5220">
-   </BOUNDS>
-   <PIN pinname="Send" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="306" srcpinname="Output" dstnodeid="267" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="299" srcpinname="Enum" dstnodeid="306" dstpinname="Event">
    </LINK>
    <LINK srcnodeid="267" srcpinname="Output" dstnodeid="156" dstpinname="Input 2">
    </LINK>
@@ -878,10 +848,6 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="320" srcpinname="Output" dstnodeid="306" dstpinname="Send">
-   </LINK>
-   <LINK srcnodeid="320" srcpinname="Output" dstnodeid="268" dstpinname="Send">
-   </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="322">
    <BOUNDS type="Node" left="3240" top="13275" width="100" height="100">
    </BOUNDS>
@@ -937,5 +903,39 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="326" srcpinname="Y Output Value" dstnodeid="319" dstpinname="Initialize">
+   </LINK>
+   <NODE systemname="SubscribeEvent" filename="%VVVV%\lib\nodes\modules\Photoshop\SubscribeEvent.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\SubscribeEvent.v4p" componentmode="Hidden" id="306">
+   <BOUNDS type="Node" left="8835" top="5220" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5790" top="2925" width="5550" height="6345">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8835" top="5220">
+   </BOUNDS>
+   <PIN pinname="Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="306" srcpinname="Output" dstnodeid="267" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="299" srcpinname="Enum" dstnodeid="306" dstpinname="Event">
+   </LINK>
+   <LINK srcnodeid="320" srcpinname="Output" dstnodeid="306" dstpinname="Send">
+   </LINK>
+   <NODE systemname="UnsubscribeEvent" filename="%VVVV%\lib\nodes\modules\Photoshop\UnsubscribeEvent.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\UnsubscribeEvent.v4p" componentmode="Hidden" id="268">
+   <BOUNDS type="Node" left="10410" top="5190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="10410" top="5190">
+   </BOUNDS>
+   <PIN pinname="Event" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="268" srcpinname="Output" dstnodeid="267" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="303" srcpinname="Enum" dstnodeid="268" dstpinname="Event">
+   </LINK>
+   <LINK srcnodeid="320" srcpinname="Output" dstnodeid="268" dstpinname="Send">
    </LINK>
    </PATCH>

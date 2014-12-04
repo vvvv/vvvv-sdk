@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsRaw (Photoshop Image) help.v4p">
-   <BOUNDS type="Window" left="2685" top="2190" width="12300" height="7830">
+   <BOUNDS type="Window" left="2685" top="2190" width="12300" height="6735">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -143,9 +143,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
    <BOUNDS type="Node" left="300" top="1200" width="3510" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="300" top="1200" width="4290" height="2730">
+   <BOUNDS type="Box" left="300" top="1200" width="4260" height="2790">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Adobe Photoshop accepts incoming images as JPEG and uncompressed Pixmap.&cr;&lf;&cr;&lf;An image appears as a new document in Photoshop. Check the examples below on how to integrate live textures into existing PSDs.&cr;&lf;&cr;&lf;At the moment only RGB (without alpha) images are supported by Photoshop. The node takes care of the correct texture format.&cr;&lf;&cr;&lf;The &apos;Output&apos; pin goes to the Photoshop (Network Sender).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Adobe Photoshop accepts incoming images as JPEG and uncompressed Pixmap.&cr;&lf;&cr;&lf;An image appears as a new document in Photoshop. Check the examples below on how to integrate live textures into existing PSDs.&cr;&lf;&cr;&lf;At the moment transfer of only of RGB (without alpha) images is supported by Photoshop. Internally the node converts the textures to the XB8G8R8 format accepted by Photoshop.&cr;&lf;&cr;&lf;The &apos;Output&apos; pin goes to the Photoshop (Network Sender).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -252,30 +252,6 @@
    <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
    </BOUNDS>
    <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="765" top="5745" width="5445" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="765" top="5745" width="3000" height="465">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This node is developed according to the Adobe Photoshop Connection SDK:|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="27">
-   <BOUNDS type="Node" left="765" top="6270" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="765" top="6270" width="3285" height="240">
-   </BOUNDS>
-   <PIN pinname="String Type" slicecount="1" values="URL">
-   </PIN>
-   <PIN pinname="Input String" slicecount="1" values="http://www.adobe.com/devnet/photoshop/sdk.html">
    </PIN>
    </NODE>
    <PACK Name="addonpack" Version="33.3.0">
