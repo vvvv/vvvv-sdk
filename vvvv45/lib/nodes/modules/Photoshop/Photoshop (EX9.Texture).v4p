@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (EX9.Texture).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="5715" top="1140" width="10920" height="8115">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
@@ -15,7 +15,7 @@
    </PIN>
    <PIN pinname="Enable" visible="1">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <BOUNDS type="Window" left="1230" top="705" width="20670" height="11700">
    </BOUNDS>
@@ -116,30 +116,6 @@
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enable">
    </LINK>
-   <NODE systemname="StreamImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" nodename="StreamImage (Photoshop)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2880" top="2880" width="3060" height="270">
-   </BOUNDS>
-   <PIN pinname="Photoshop Response" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Photoshop Out" visible="1">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Format" visible="1">
-   </PIN>
-   <PIN pinname="Lock to Current Document" visible="1">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="1380" top="390" width="17700" height="11700">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Response" dstnodeid="8" dstpinname="Photoshop Response">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Photoshop Out" dstnodeid="5" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4290" top="435" width="795" height="240">
    </BOUNDS>
@@ -156,8 +132,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Width">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Width">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5355" top="435" width="795" height="240">
    </BOUNDS>
@@ -174,8 +148,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Height">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Height">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="11" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="6270" top="435" width="900" height="240">
    </BOUNDS>
@@ -185,9 +157,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Format">
    </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="8" dstpinname="Format">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7560" top="435" width="480" height="480">
    </BOUNDS>
@@ -206,8 +178,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Lock to Current Document|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Lock to Current Document">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="13" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="1545" top="6435" width="795" height="240">
    </BOUNDS>
@@ -215,7 +185,29 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
+   <NODE systemname="StreamImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" nodename="StreamImage (Photoshop)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2880" top="2880" width="3660" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12495" top="3420" width="17700" height="11700">
+   </BOUNDS>
+   <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Response" dstnodeid="14" dstpinname="Photoshop Response">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Photoshop Out" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Lock to Current Document">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="14" dstpinname="Format">
    </LINK>
    </PATCH>

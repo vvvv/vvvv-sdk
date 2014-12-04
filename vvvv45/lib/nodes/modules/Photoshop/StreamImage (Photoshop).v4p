@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="0" scrolly="1800">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="15" scrolly="0">
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7470" top="675" width="795" height="240">
    </BOUNDS>
@@ -64,7 +64,7 @@
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="1380" top="390" width="17700" height="11700">
+   <BOUNDS type="Window" left="12495" top="3420" width="17700" height="11700">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -147,15 +147,13 @@
    <LINK srcnodeid="70" srcpinname="OnChange" dstnodeid="68" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="9135" top="1275" width="100" height="100">
+   <BOUNDS type="Node" left="9120" top="1275" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Enum" visible="1" slicecount="1" values="(nil)">
    </PIN>
    <PIN pinname="Ord Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="71" dstpinname="Enum">
-   </LINK>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="72">
    <BOUNDS type="Node" left="9120" top="1680" width="100" height="100">
    </BOUNDS>
@@ -331,7 +329,7 @@
    <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="81">
    <BOUNDS type="Node" left="9795" top="11250" width="495" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -397,21 +395,9 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
-   </NODE>
-   <NODE systemname="AsImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsImage (Photoshop).v4p" nodename="AsImage (Photoshop)" componentmode="Hidden" id="126">
-   <BOUNDS type="Node" left="14820" top="11160" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="6480" top="510" width="10620" height="15105">
-   </BOUNDS>
    </NODE>
-   <LINK srcnodeid="125" srcpinname="Output Node" dstnodeid="126" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="126" srcpinname="Texture Out" dstnodeid="127" dstpinname="Input Node">
-   </LINK>
    <NODE systemname="RequestImage" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage.v4p" componentmode="Hidden" id="130">
    <BOUNDS type="Node" left="7470" top="10500" width="2250" height="270">
    </BOUNDS>
@@ -487,5 +473,41 @@
    <LINK srcnodeid="112" srcpinname="Up Edge" dstnodeid="76" dstpinname="Send">
    </LINK>
    <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden" id="126">
+   <BOUNDS type="Node" left="14820" top="11160" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="6480" top="510" width="10620" height="15105">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="125" srcpinname="Output Node" dstnodeid="126" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Texture Out" dstnodeid="127" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="10170" top="1680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
+   </PIN>
+   <PIN pinname="Receive" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="136" dstpinname="Receive">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="71" dstpinname="Enum">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="137" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="10170" top="1275" width="1935" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10170" top="1275" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="137" srcpinname="Output Enum" dstnodeid="136" dstpinname="Enum">
    </LINK>
    </PATCH>
