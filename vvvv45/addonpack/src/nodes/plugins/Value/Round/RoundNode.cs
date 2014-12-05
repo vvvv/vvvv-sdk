@@ -33,7 +33,7 @@ namespace VVVV.Nodes
         [Input("Digits", DefaultValue = 1, MinValue = 0)]
         public IDiffSpread<int> FDigits;
 
-        [Input("Rounding", DefaultEnumEntry="ToEven")]
+        [Input("Rounding", DefaultEnumEntry="AwayFromZero")]
         public IDiffSpread<RoundMode> FRounding;
 
         [Output("Output")]
