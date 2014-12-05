@@ -1,0 +1,123 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Value\= (Value Cyclic).v4p">
+   <BOUNDS height="6000" left="7110" top="3705" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="975" top="660" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9180" top="7080" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="975" top="660" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.05">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Input 1|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1965" top="660" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10155" top="6915" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1965" top="660" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.98">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Input 2|">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Subtract (Value)" systemname="Subtract (Value)">
+   <BOUNDS height="0" left="1725" top="1650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input 2" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="4" nodename="Frac (Value)" systemname="Frac (Value)">
+   <BOUNDS height="0" left="1725" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Real Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="EQ (Value)" systemname="EQ (Value)">
+   <BOUNDS height="0" left="2640" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="4" srcpinname="Real Part">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3060" top="1590" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11145" top="8010" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3060" top="1590" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Epsilon">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Epsilon" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1905" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10095" top="9495" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1905" top="3480" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2280" top="4080" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10395" top="9795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2280" top="4080" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Inverse Output|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Inverse Output">
+   </LINK>
+   <INFO author="vvvv group" description="Compares two angles. " tags="angle, 2d, modulo, delta">
+   </INFO>
+   </PATCH>
