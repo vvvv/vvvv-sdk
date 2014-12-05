@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="15" scrolly="0">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\StreamTexture.v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="3435" scrolly="-360">
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7470" top="675" width="795" height="240">
    </BOUNDS>
@@ -55,16 +55,16 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="19" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="9795" top="13020" width="645" height="240">
+   <BOUNDS type="Box" left="10395" top="12960" width="645" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9795" top="13020" width="0" height="0">
+   <BOUNDS type="Node" left="10395" top="12960" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Photoshop Out|">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="12495" top="3420" width="17700" height="11700">
+   <BOUNDS type="Window" left="3390" top="1530" width="13845" height="15390">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -327,9 +327,9 @@
    <LINK srcnodeid="68" srcpinname="Output" dstnodeid="111" dstpinname="Input 2">
    </LINK>
    <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="81">
-   <BOUNDS type="Node" left="9795" top="11250" width="495" height="270">
+   <BOUNDS type="Node" left="10395" top="11190" width="495" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -389,41 +389,15 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="127" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="14835" top="12855" width="795" height="240">
+   <BOUNDS type="Box" left="14835" top="12960" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="14835" top="12855" width="0" height="0">
+   <BOUNDS type="Node" left="14835" top="12960" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="RequestImage" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage.v4p" componentmode="Hidden" id="130">
-   <BOUNDS type="Node" left="7470" top="10500" width="2250" height="270">
-   </BOUNDS>
-   <BOUNDS type="Window" left="5820" top="2925" width="11835" height="7965">
-   </BOUNDS>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Format" visible="1">
-   </PIN>
-   <PIN pinname="Send" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="130" dstpinname="Width">
-   </LINK>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="130" dstpinname="Height">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="130" dstpinname="Format">
-   </LINK>
-   <LINK srcnodeid="111" srcpinname="Output" dstnodeid="130" dstpinname="Send">
-   </LINK>
-   <LINK srcnodeid="130" srcpinname="Output" dstnodeid="81" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="SelectActiveDocumentID" filename="%VVVV%\lib\nodes\modules\Photoshop\SelectActiveDocumentID.v4p" componentmode="Hidden" id="94" nodename="%VVVV%\lib\nodes\modules\Photoshop\SelectActiveDocumentID.v4p">
    <BOUNDS type="Node" left="10965" top="5430" width="100" height="100">
    </BOUNDS>
@@ -458,22 +432,6 @@
    </LINK>
    <LINK srcnodeid="88" srcpinname="Output Enum" dstnodeid="131" dstpinname="Event">
    </LINK>
-   <NODE systemname="RequestActiveDocumentID" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestActiveDocumentID.v4p" componentmode="Hidden" id="76" nodename="%VVVV%\lib\nodes\modules\Photoshop\RequestActiveDocumentID.v4p">
-   <BOUNDS type="Node" left="12450" top="10350" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="12450" top="10350" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="6585" top="1860" width="4155" height="4605">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Send" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="112" srcpinname="Up Edge" dstnodeid="76" dstpinname="Send">
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden" id="126">
    <BOUNDS type="Node" left="14820" top="11160" width="100" height="100">
    </BOUNDS>
@@ -481,7 +439,7 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="6480" top="510" width="10620" height="15105">
+   <BOUNDS type="Window" left="6480" top="510" width="8640" height="11790">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="125" srcpinname="Output Node" dstnodeid="126" dstpinname="Input">
@@ -509,5 +467,51 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="137" srcpinname="Output Enum" dstnodeid="136" dstpinname="Enum">
+   </LINK>
+   <NODE systemname="RequestImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage (Photoshop).v4p" nodename="RequestImage (Photoshop)" componentmode="Hidden" id="130">
+   <BOUNDS type="Node" left="7470" top="10500" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5820" top="2925" width="11835" height="7965">
+   </BOUNDS>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="7470" top="10500">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="130" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="130" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="130" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="111" srcpinname="Output" dstnodeid="130" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="130" srcpinname="Output" dstnodeid="81" dstpinname="Input 1">
+   </LINK>
+   <NODE id="76" componentmode="Hidden" systemname="RequestActiveDocumentID (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestActiveDocumentID (Photoshop).v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\RequestActiveDocumentID (Photoshop).v4p">
+   <BOUNDS type="Window" left="6585" top="1860" width="4830" height="4605">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12450" top="10500" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12450" top="10500" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="112" srcpinname="Up Edge" dstnodeid="76" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 2">
    </LINK>
    </PATCH>

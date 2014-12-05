@@ -188,10 +188,40 @@
    <PIN pinname="Input Node" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="StreamImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamImage (Photoshop).v4p" nodename="StreamImage (Photoshop)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="2880" top="2880" width="3660" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="1845" width="2250" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="12495" top="3420" width="17700" height="11700">
+   <BOUNDS type="Box" left="555" top="1845" width="2250" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop (Network Receiver)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="5865" width="2250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="5865" width="2250" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop (Network Sender)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Streams a texture from Photoshop." tags="ex9">
+   </INFO>
+   <NODE systemname="StreamTexture" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2880" top="4080" width="1605" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3390" top="1530" width="13845" height="15390">
    </BOUNDS>
    <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
    </PIN>
