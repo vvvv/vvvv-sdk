@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\plugins\PBKDF2 (Raw) help.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="14415" top="6195" width="11100" height="5055">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\plugins\PBKDF2 (Raw) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="4785" top="2820" width="11100" height="5055">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -40,6 +40,8 @@
    <PIN pinname="Salt" visible="1">
    </PIN>
    <PIN pinname="Number of Iterations" visible="1">
+   </PIN>
+   <PIN pinname="Iteration Count" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
@@ -161,6 +163,8 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Number of Iterations">
    </LINK>
@@ -251,7 +255,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="540" top="2850" width="3360" height="510">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Key can be used for the crypto algorithms, like the Triple DES and the likes:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The Key can be used for crypto algorithms like Triple DES and the likes:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -280,18 +284,8 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="540" top="3840" width="1485" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="540" top="3840" width="1485" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Encrypt (Raw 3DES)|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
+   <PACK Name="VVVV.Packs" Version="0.2.0">
+   </PACK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Iteration Count">
+   </LINK>
    </PATCH>
