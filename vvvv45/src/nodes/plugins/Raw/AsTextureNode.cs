@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.ComponentModel.Composition;
+using VVVV.PluginInterfaces.V2;
 
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -42,7 +43,7 @@ namespace VVVV.Nodes.Raw
 		[Input("Stride", MinValue=0)]
 		public ISpread<int> FStride;
 
-		[Input("Channel Count", MinValue=1, DefaultValue=3)]
+		[Input("Channel Count", MinValue=1, DefaultValue=4)]
 		public IDiffSpread<int> FChannelCount;
 		
 		//TODO: Bits per channel are important, but not implemented at the moment.
