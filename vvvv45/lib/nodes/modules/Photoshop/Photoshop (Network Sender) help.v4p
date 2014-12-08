@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Sender) help.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="1110" top="525" width="11700" height="11385">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Sender) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="5460" top="2715" width="11700" height="11385">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -121,7 +121,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="2850" top="2520" width="23175" height="13560">
    </BOUNDS>
-   <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Password" slicecount="1" visible="1" values="vvvv">
    </PIN>
    </NODE>
    <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="14" dstpinname="Remote Host">
@@ -137,17 +137,17 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8700" top="1635" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
    <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="14" dstpinname="Password">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
    <BOUNDS type="Node" left="10140" top="1320" width="600" height="270">
    </BOUNDS>
@@ -257,7 +257,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="660" top="1485" width="3660" height="930">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop&apos;s &quot;Remote Connections&quot; must be enabled. See this checkbox under the &quot;Edit &gt; Remote Connections...&quot; in your Adobe Photoshop. Define the password in the same dialog.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|For this to work you need to enable Photoshop&apos;s &quot;Remote Connections&quot;. &cr;&lf;See &quot;Edit &gt; Remote Connections...&quot; and define a password in the same dialog.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -315,7 +315,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="2880" width="4020" height="2430">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The strings of the &apos;Remote Host&apos; and the &apos;Password&apos; pins must match those set in Adobe Photoshop.&cr;&lf;&cr;&lf;The &apos;Input&apos; pin wants Raw data of the Commands or Images.&cr;&lf;&cr;&lf;&apos;Host Connected&apos; output pin says only whether the Photoshop is present on the &apos;Remote Host&apos; IP address, it doesn&apos;t mean, that the password is correct.&cr;&lf;&cr;&lf;Photoshop sits on the Port# 49494.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The strings of the &apos;Remote Host&apos; and the &apos;Password&apos; pins must match those set in Adobe Photoshop.&cr;&lf;&cr;&lf;The &apos;Input&apos; pin wants Raw data of the Commands or Images.&cr;&lf;&cr;&lf;The &apos;Host Connected&apos; output pin only telly you whether Photoshop is responding on the &apos;Remote Host&apos; IP address, it doesn&apos;t mean, that the password is correct.&cr;&lf;&cr;&lf;Photoshop sits on TCP Port 49494.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -409,7 +409,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="15495" top="2520" width="10665" height="13140">
    </BOUNDS>
-   <PIN pinname="Password" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Password" slicecount="1" visible="1" values="vvvv">
    </PIN>
    </NODE>
    <NODE systemname="AsRaw (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (Photoshop).v4p" nodename="AsRaw (Photoshop)" componentmode="Hidden" id="26">
@@ -429,7 +429,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="690" top="5760" width="3690" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|There can be only one sender-receiver paar connected to particular &apos;Remote Host&apos;.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There can be only one sender-receiver pair connected to particular &apos;Remote Host&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -546,4 +546,6 @@
    <PIN pinname="Size" slicecount="1" values="23">
    </PIN>
    </NODE>
+   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="14" dstpinname="Password">
+   </LINK>
    </PATCH>
