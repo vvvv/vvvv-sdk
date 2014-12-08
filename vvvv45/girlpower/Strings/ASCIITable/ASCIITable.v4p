@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\ASCIITable.v4p" scrollx="30" scrolly="0" systemname="asciiTable" filename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p">
-   <BOUNDS type="Window" left="2355" top="540" width="9705" height="9465">
+   <BOUNDS type="Window" left="2355" top="540" width="9705" height="9690">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="13">
-   <BOUNDS type="Node" left="495" top="6825" width="100" height="100">
+   <BOUNDS type="Node" left="495" top="7425" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="495" top="6825" width="2400" height="1800">
+   <BOUNDS type="Box" left="495" top="7425" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="19425" top="1305" width="7080" height="11310">
+   <BOUNDS type="Window" left="19425" top="1305" width="7080" height="11610">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -25,7 +25,7 @@
    </PIN>
    </NODE>
    <NODE systemname="HitTest (2d Quad)" filename="%VVVV%\addonpack\lib\nodes\plugins\HitTest2dNodes.dll" nodename="HitTest (2d Quad)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="4320" top="3075" width="100" height="100">
+   <BOUNDS type="Node" left="4080" top="3585" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -39,7 +39,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="20">
-   <BOUNDS type="Node" left="6300" top="1335" width="100" height="100">
+   <BOUNDS type="Node" left="5400" top="795" width="100" height="100">
    </BOUNDS>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
@@ -51,15 +51,15 @@
    </PIN>
    <PIN pinname="Right Button" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="6300" top="1335">
+   <BOUNDS type="Box" left="5400" top="795">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="20" srcpinname="PositionXY" dstnodeid="17" dstpinname="PointsXY">
    </LINK>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="6315" top="4380" width="100" height="100">
+   <BOUNDS type="Node" left="5415" top="4980" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
@@ -67,13 +67,13 @@
    </PIN>
    <PIN pinname="Color" slicecount="1" values="|0.50292,0.50292,0.50292,1.00000|">
    </PIN>
-   <BOUNDS type="Box" left="6315" top="4380">
+   <BOUNDS type="Box" left="5415" top="4980">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Device" dstnodeid="24" dstpinname="Mouse">
    </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="76">
-   <BOUNDS type="Node" left="495" top="5475" width="5190" height="270">
+   <BOUNDS type="Node" left="495" top="6075" width="5190" height="270">
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
@@ -91,7 +91,7 @@
    </PIN>
    </NODE>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="88">
-   <BOUNDS type="Node" left="2490" top="6795" width="100" height="100">
+   <BOUNDS type="Node" left="2490" top="7395" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Aspect Width" visible="1" slicecount="1" values="456">
    </PIN>
@@ -103,9 +103,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="89" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="3015" top="6270" width="1050" height="240">
+   <BOUNDS type="Box" left="3375" top="6885" width="1050" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="3015" top="6270" width="0" height="0">
+   <BOUNDS type="Node" left="3375" top="6885" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" visible="1" values="FitHeight">
    </PIN>
@@ -236,42 +236,10 @@
    </NODE>
    <LINK srcnodeid="180" srcpinname="Y Output Value" dstnodeid="179" dstpinname="Index">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="181" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="3750" top="225" width="495" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="3750" top="225" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Default" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Input String" visible="1" slicecount="645" values="| 0|,00,00000000,NUL,null,| 1|,01,00000001,SOH,|start of header|,| 2|,02,00000010,STX,|start of text|,| 3|,03,00000011,ETX,|end of text|,| 4|,04,00000100,EOT,|end of transmission|,| 5|,05,00000101,ENQ,enquiry,| 6|,06,00000110,ACK,acknowledge,| 7|,07,00000111,BEL,bell,| 8|,08,00001000,BS,backspace,| 9|,09,00001001,HT,|horizontal tab|,| 10|,0A,00001010,LF,|line feed|,| 11|,0B,00001011,VT,|vertical tab|,| 12|,0C,00001100,FF,|form feed|,| 13|,0D,00001101,CR,|enter / carriage return|,| 14|,0E,00001110,SO,|shift out|,| 15|,0F,00001111,SI,|shift in|,| 16|,10,00010000,DLE,|data link escape|,| 17|,11,00010001,DC1,|device control 1|,| 18|,12,00010010,DC2,|device control 2|,| 19|,13,00010011,DC3,|device control 3|,| 20|,14,00010100,DC4,|device control 4|,| 21|,15,00010101,NAK,|negative acknowledge|,| 22|,16,00010110,SYN,synchronize,| 23|,17,00010111,ETB,|end of trans. block|,| 24|,18,00011000,CAN,cancel,| 25|,19,00011001,EM,|end of medium|,| 26|,1A,00011010,SUB,substitute,| 27|,1B,00011011,ESC,escape,| 28|,1C,00011100,FS,|file separator|,| 29|,1D,00011101,GS,|group separator|,| 30|,1E,00011110,RS,|record separator|,| 31|,1F,00011111,US,|unit separator|,| 32|,20,00100000,Space,space,| 33|,21,00100001,!,|exclamation mark|,| 34|,22,00100010,&amp;quot;,|double quote|,| 35|,23,00100011,#,number,| 36|,24,00100100,$,dollar,| 37|,25,00100101,%,percent,| 38|,26,00100110,&amp;amp;,ampersand,| 39|,27,00100111,&apos;,|single quote|,| 40|,28,00101000,(,|left parenthesis|,| 41|,29,00101001,),|right parenthesis|,| 42|,2A,00101010,*,asterisk,| 43|,2B,00101011,+,plus,| 44|,2C,00101100,|,|,comma,| 45|,2D,00101101,-,minus,| 46|,2E,00101110,.,period,| 47|,2F,00101111,/,slash,| 48|,30,00110000,0,zero,| 49|,31,00110001,1,one,| 50|,32,00110010,2,two,| 51|,33,00110011,3,three,| 52|,34,00110100,4,four,| 53|,35,00110101,5,five,| 54|,36,00110110,6,six,| 55|,37,00110111,7,seven,| 56|,38,00111000,8,eight,| 57|,39,00111001,9,nine,| 58|,3A,00111010,:,colon,| 59|,3B,00111011,;,semicolon,| 60|,3C,00111100,&amp;lt;,|less than|,| 61|,3D,00111101,=,|equality sign|,| 62|,3E,00111110,&amp;gt;,|greater than|,| 63|,3F,00111111,?,|question mark|,| 64|,40,01000000,@,|at sign|,| &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;65|,41,01000001,A,,| 66|,42,01000010,B,,| 67|,43,01000011,C,,| 68|,44,01000100,D,,| 69|,45,01000101,E,,| 70|,46,01000110,F,,| 71|,47,01000111,G,,| 72|,48,01001000,H,,| 73|,49,01001001,I,,| 74|,4A,01001010,J,,| 75|,4B,01001011,K,,| 76|,4C,01001100,L,,| 77|,4D,01001101,M,,| 78|,4E,01001110,N,,| 79|,4F,01001111,O,,| 80|,50,01010000,P,,| 81|,51,01010001,Q,,| 82|,52,01010010,R,,| 83|,53,01010011,S,,| 84|,54,01010100,T,,| 85|,55,01010101,U,,| 86|,56,01010110,V,,| 87|,57,01010111,W,,| 88|,58,01011000,X,,| 89|,59,01011001,Y,,| 90|,5A,01011010,Z,,| 91|,5B,01011011,[,|left square bracket|,| 92|,5C,01011100,\,backslash,| 93|,5D,01011101,],|right square bracket|,| 94|,5E,01011110,^,|caret / circumflex|,| 95|,5F,01011111,_,underscore,| 96|,60,01100000,`,|grave / accent|,| 97|,61,01100001,a,,| 98|,62,01100010,b,,| 99|,63,01100011,c,,100,64,01100100,d,,101,65,01100101,e,,102,66,01100110,f,,103,67,01100111,g,,104,68,01101000,h,,105,69,01101001,i,,106,6A,01101010,j,,107,6B,01101011,k,,108,6C,01101100,l,,109,6D,01101101,m,,110,6E,01101110,n,,111,6F,01101111,o,,112,70,01110000,p,,113,71,01110001,q,,114,72,01110010,r,,115,73,01110011,s,,116,74,01110100,t,,117,75,01110101,u,,118,76,01110110,v,,119,77,01110111,w,,120,78,01111000,x,,121,79,01111001,y,,122,7A,01111010,z,,123,7B,01111011,{,|left curly bracket|,124,7C,01111100,||||,|vertical bar|,125,7D,01111101,},|right curly bracket|,126,7E,01111110,~,tilde,127,7F,01111111,DEL,delete,,,,,">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="182" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4350" top="210" width="2190" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4350" top="210" width="2190" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Spread of all the ascii data.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="183" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="465" top="7455" width="4050" height="270">
+   <BOUNDS type="Node" left="465" top="8055" width="4050" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="465" top="7455" width="4050" height="270">
+   <BOUNDS type="Box" left="465" top="8055" width="4050" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="http://www.rapidtables.com/code/text/ascii-table.htm">
    </PIN>
@@ -282,20 +250,10 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <NODE systemname="Clean (String)" nodename="Clean (String)" componentmode="Hidden" id="205">
-   <BOUNDS type="Node" left="3750" top="900" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="181" srcpinname="Output String" dstnodeid="205" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="232" systemname="IOBox (Color)" hiddenwhenlocked="1">
-   <BOUNDS type="Box" left="825" top="6270" width="495" height="345">
+   <BOUNDS type="Box" left="825" top="6870" width="495" height="345">
    </BOUNDS>
-   <BOUNDS type="Node" left="825" top="6270" width="0" height="0">
+   <BOUNDS type="Node" left="825" top="6870" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Color Input" visible="1" slicecount="1" values="|0.23529,0.32157,0.41176,1.00000|">
    </PIN>
@@ -304,52 +262,38 @@
    </NODE>
    <LINK srcnodeid="232" srcpinname="Color Output" dstnodeid="13" dstpinname="Background Color">
    </LINK>
-   <NODE systemname="Decode (String HTML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Decode (String HTML)" componentmode="Hidden" id="263">
-   <BOUNDS type="Node" left="3750" top="1335" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="3750" top="1335">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="205" srcpinname="Output" dstnodeid="263" dstpinname="Input">
-   </LINK>
    <NODE systemname="Header" filename="Header.v4p" nodename="Header.v4p" componentmode="Hidden" id="315">
-   <BOUNDS type="Node" left="480" top="4455" width="0" height="0">
+   <BOUNDS type="Node" left="480" top="5055" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="480" top="4455" width="11820" height="9700">
+   <BOUNDS type="Box" left="480" top="5055" width="11820" height="9700">
    </BOUNDS>
-   <BOUNDS type="Window" left="10785" top="5445" width="11820" height="12105">
+   <BOUNDS type="Window" left="7305" top="4770" width="12030" height="11085">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="CopyToClipboard" filename="CopyToClipboard.v4p" nodename="CopyToClipboard.v4p" componentmode="Hidden" id="328">
-   <BOUNDS type="Node" left="7860" top="4380" width="100" height="100">
+   <BOUNDS type="Node" left="6960" top="4980" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
-   <PIN pinname="Ascii Data" visible="1">
+   <PIN pinname="Ascii Data" visible="1" slicecount="645" values="0,00,00000000,NUL,null,1,01,00000001,SOH,|start of header|,2,02,00000010,STX,|start of text|,3,03,00000011,ETX,|end of text|,4,04,00000100,EOT,|end of transmission|,5,05,00000101,ENQ,enquiry,6,06,00000110,ACK,acknowledge,7,07,00000111,BEL,bell,8,08,00001000,BS,backspace,9,09,00001001,HT,|horizontal tab|,10,0A,00001010,LF,|line feed|,11,0B,00001011,VT,|vertical tab|,12,0C,00001100,FF,|form feed|,13,0D,00001101,CR,|carriage return|,14,0E,00001110,SO,|shift out|,15,0F,00001111,SI,|shift in|,16,10,00010000,DLE,|data link escape|,17,11,00010001,DC1,|device control 1|,18,12,00010010,DC2,|device control 2|,19,13,00010011,DC3,|device control 3|,20,14,00010100,DC4,|device control 4|,21,15,00010101,NAK,|negative acknowledge|,22,16,00010110,SYN,synchronize,23,17,00010111,ETB,|end of trans. block|,24,18,00011000,CAN,cancel,25,19,00011001,EM,|end of medium|,26,1A,00011010,SUB,substitute,27,1B,00011011,ESC,escape,28,1C,00011100,FS,|file separator|,29,1D,00011101,GS,|group separator|,30,1E,00011110,RS,|record separator|,31,1F,00011111,US,|unit separator|,32,20,00100000,Space,space,33,21,00100001,!,|exclamation mark|,34,22,00100010,&quot;,|double quote|,35,23,00100011,#,number,36,24,00100100,$,dollar,37,25,00100101,%,percent,38,26,00100110,&amp;,ampersand,39,27,00100111,&apos;,|single quote|,40,28,00101000,(,|left parenthesis|,41,29,00101001,),|right parenthesis|,42,2A,00101010,*,asterisk,43,2B,00101011,+,plus,44,2C,00101100,|,|,comma,45,2D,00101101,-,minus,46,2E,00101110,.,period,47,2F,00101111,/,slash,48,30,00110000,0,zero,49,31,00110001,1,one,50,32,00110010,2,two,51,33,00110011,3,three,52,34,00110100,4,four,53,35,00110101,5,five,54,36,00110110,6,six,55,37,00110111,7,seven,56,38,00111000,8,eight,57,39,00111001,9,nine,58,3A,00111010,:,colon,59,3B,00111011,;,semicolon,60,3C,00111100,&lt;,|less than|,61,3D,00111101,=,|equality sign|,62,3E,00111110,&gt;,|greater than|,63,3F,00111111,?,|question mark|,64,40,01000000,@,|at sign|,65,41,01000001,A,,66,42,01000010,B,,67,43,01000011,C,,68,44,01000100,D,,69,45,01000101,E,,70,46,01000110,F,,71,47,01000111,G,,72,48,01001000,H,,73,49,01001001,I,,74,4A,01001010,J,,75,4B,01001011,K,,76,4C,01001100,L,,77,4D,01001101,M,,78,4E,01001110,N,,79,4F,01001111,O,,80,50,01010000,P,,81,51,01010001,Q,,82,52,01010010,R,,83,53,01010011,S,,84,54,01010100,T,,85,55,01010101,U,,86,56,01010110,V,,87,57,01010111,W,,88,58,01011000,X,,89,59,01011001,Y,,90,5A,01011010,Z,,91,5B,01011011,[,|left square bracket|,92,5C,01011100,\,backslash,93,5D,01011101,],|right square bracket|,94,5E,01011110,^,|caret / circumflex|,95,5F,01011111,_,underscore,96,60,01100000,`,|grave / accent|,97,61,01100001,a,,98,62,01100010,b,,99,63,01100011,c,,100,64,01100100,d,,101,65,01100101,e,,102,66,01100110,f,,103,67,01100111,g,,104,68,01101000,h,,105,69,01101001,i,,106,6A,01101010,j,,107,6B,01101011,k,,108,6C,01101100,l,,109,6D,01101101,m,,110,6E,01101110,n,,111,6F,01101111,o,,112,70,01110000,p,,113,71,01110001,q,,114,72,01110010,r,,115,73,01110011,s,,116,74,01110100,t,,117,75,01110101,u,,118,76,01110110,v,,119,77,01110111,w,,120,78,01111000,x,,121,79,01111001,y,,122,7A,01111010,z,,123,7B,01111011,{,|left curly bracket|,124,7C,01111100,||||,|vertical bar|,125,7D,01111101,},|right curly bracket|,126,7E,01111110,~,tilde,127,7F,01111111,DEL,delete,,,,,">
    </PIN>
    <PIN pinname="Selected ID" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="7860" top="4380">
+   <BOUNDS type="Box" left="6960" top="4980">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Device" dstnodeid="328" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="263" srcpinname="Output" dstnodeid="328" dstpinname="Ascii Data">
    </LINK>
    <LINK srcnodeid="76" srcpinname="Layer" dstnodeid="13" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 5">
    </LINK>
-   <NODE systemname="Table" filename="Table.v4p" nodename="Table.v4p" componentmode="InAWindow" id="335">
-   <BOUNDS type="Node" left="1780" top="2477" width="1335" height="270">
+   <NODE systemname="Table" filename="Table.v4p" nodename="Table.v4p" componentmode="Hidden" id="335">
+   <BOUNDS type="Node" left="1780" top="3077" width="1335" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="15" top="360" width="7875" height="10990">
+   <BOUNDS type="Box" left="15" top="960" width="7875" height="10990">
    </BOUNDS>
    <BOUNDS type="Window" left="6840" top="2745" width="10425" height="12555">
    </BOUNDS>
@@ -357,9 +301,9 @@
    </PIN>
    <PIN pinname="Index" visible="1">
    </PIN>
+   <PIN pinname="ASCII Data" visible="1" slicecount="645" values="0,00,00000000,NUL,null,1,01,00000001,SOH,|start of header|,2,02,00000010,STX,|start of text|,3,03,00000011,ETX,|end of text|,4,04,00000100,EOT,|end of transmission|,5,05,00000101,ENQ,enquiry,6,06,00000110,ACK,acknowledge,7,07,00000111,BEL,bell,8,08,00001000,BS,backspace,9,09,00001001,HT,|horizontal tab|,10,0A,00001010,LF,|line feed|,11,0B,00001011,VT,|vertical tab|,12,0C,00001100,FF,|form feed|,13,0D,00001101,CR,|carriage return|,14,0E,00001110,SO,|shift out|,15,0F,00001111,SI,|shift in|,16,10,00010000,DLE,|data link escape|,17,11,00010001,DC1,|device control 1|,18,12,00010010,DC2,|device control 2|,19,13,00010011,DC3,|device control 3|,20,14,00010100,DC4,|device control 4|,21,15,00010101,NAK,|negative acknowledge|,22,16,00010110,SYN,synchronize,23,17,00010111,ETB,|end of trans. block|,24,18,00011000,CAN,cancel,25,19,00011001,EM,|end of medium|,26,1A,00011010,SUB,substitute,27,1B,00011011,ESC,escape,28,1C,00011100,FS,|file separator|,29,1D,00011101,GS,|group separator|,30,1E,00011110,RS,|record separator|,31,1F,00011111,US,|unit separator|,32,20,00100000,Space,space,33,21,00100001,!,|exclamation mark|,34,22,00100010,&quot;,|double quote|,35,23,00100011,#,number,36,24,00100100,$,dollar,37,25,00100101,%,percent,38,26,00100110,&amp;,ampersand,39,27,00100111,&apos;,|single quote|,40,28,00101000,(,|left parenthesis|,41,29,00101001,),|right parenthesis|,42,2A,00101010,*,asterisk,43,2B,00101011,+,plus,44,2C,00101100,|,|,comma,45,2D,00101101,-,minus,46,2E,00101110,.,period,47,2F,00101111,/,slash,48,30,00110000,0,zero,49,31,00110001,1,one,50,32,00110010,2,two,51,33,00110011,3,three,52,34,00110100,4,four,53,35,00110101,5,five,54,36,00110110,6,six,55,37,00110111,7,seven,56,38,00111000,8,eight,57,39,00111001,9,nine,58,3A,00111010,:,colon,59,3B,00111011,;,semicolon,60,3C,00111100,&lt;,|less than|,61,3D,00111101,=,|equality sign|,62,3E,00111110,&gt;,|greater than|,63,3F,00111111,?,|question mark|,64,40,01000000,@,|at sign|,65,41,01000001,A,,66,42,01000010,B,,67,43,01000011,C,,68,44,01000100,D,,69,45,01000101,E,,70,46,01000110,F,,71,47,01000111,G,,72,48,01001000,H,,73,49,01001001,I,,74,4A,01001010,J,,75,4B,01001011,K,,76,4C,01001100,L,,77,4D,01001101,M,,78,4E,01001110,N,,79,4F,01001111,O,,80,50,01010000,P,,81,51,01010001,Q,,82,52,01010010,R,,83,53,01010011,S,,84,54,01010100,T,,85,55,01010101,U,,86,56,01010110,V,,87,57,01010111,W,,88,58,01011000,X,,89,59,01011001,Y,,90,5A,01011010,Z,,91,5B,01011011,[,|left square bracket|,92,5C,01011100,\,backslash,93,5D,01011101,],|right square bracket|,94,5E,01011110,^,|caret / circumflex|,95,5F,01011111,_,underscore,96,60,01100000,`,|grave / accent|,97,61,01100001,a,,98,62,01100010,b,,99,63,01100011,c,,100,64,01100100,d,,101,65,01100101,e,,102,66,01100110,f,,103,67,01100111,g,,104,68,01101000,h,,105,69,01101001,i,,106,6A,01101010,j,,107,6B,01101011,k,,108,6C,01101100,l,,109,6D,01101101,m,,110,6E,01101110,n,,111,6F,01101111,o,,112,70,01110000,p,,113,71,01110001,q,,114,72,01110010,r,,115,73,01110011,s,,116,74,01110100,t,,117,75,01110101,u,,118,76,01110110,v,,119,77,01110111,w,,120,78,01111000,x,,121,79,01111001,y,,122,7A,01111010,z,,123,7B,01111011,{,|left curly bracket|,124,7C,01111100,||||,|vertical bar|,125,7D,01111101,},|right curly bracket|,126,7E,01111110,~,tilde,127,7F,01111111,DEL,delete,,,,,">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="263" srcpinname="Output" dstnodeid="335" dstpinname="ASCII Data">
-   </LINK>
    <LINK srcnodeid="335" srcpinname="Transform Out" dstnodeid="17" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 4">
@@ -368,34 +312,32 @@
    </LINK>
    <LINK srcnodeid="335" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 2">
    </LINK>
-   <NODE id="334" componentmode="Hidden" systemname="SelectedCharacter" filename="SelectedCharacter.v4p" nodename="SelectedCharacter.v4p">
-   <PIN pinname="Index" slicecount="1" visible="1" values="22">
+   <NODE id="334" componentmode="InAWindow" systemname="SelectedCharacter" filename="SelectedCharacter.v4p" nodename="SelectedCharacter.v4p">
+   <PIN pinname="Index" slicecount="1" visible="1" values="-237">
    </PIN>
-   <BOUNDS type="Node" left="3045" top="4380" width="100" height="100">
+   <BOUNDS type="Node" left="3045" top="4980" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="Ascii Data" visible="1">
+   <PIN pinname="Ascii Data" visible="1" slicecount="645" values="0,00,00000000,NUL,null,1,01,00000001,SOH,|start of header|,2,02,00000010,STX,|start of text|,3,03,00000011,ETX,|end of text|,4,04,00000100,EOT,|end of transmission|,5,05,00000101,ENQ,enquiry,6,06,00000110,ACK,acknowledge,7,07,00000111,BEL,bell,8,08,00001000,BS,backspace,9,09,00001001,HT,|horizontal tab|,10,0A,00001010,LF,|line feed|,11,0B,00001011,VT,|vertical tab|,12,0C,00001100,FF,|form feed|,13,0D,00001101,CR,|carriage return|,14,0E,00001110,SO,|shift out|,15,0F,00001111,SI,|shift in|,16,10,00010000,DLE,|data link escape|,17,11,00010001,DC1,|device control 1|,18,12,00010010,DC2,|device control 2|,19,13,00010011,DC3,|device control 3|,20,14,00010100,DC4,|device control 4|,21,15,00010101,NAK,|negative acknowledge|,22,16,00010110,SYN,synchronize,23,17,00010111,ETB,|end of trans. block|,24,18,00011000,CAN,cancel,25,19,00011001,EM,|end of medium|,26,1A,00011010,SUB,substitute,27,1B,00011011,ESC,escape,28,1C,00011100,FS,|file separator|,29,1D,00011101,GS,|group separator|,30,1E,00011110,RS,|record separator|,31,1F,00011111,US,|unit separator|,32,20,00100000,Space,space,33,21,00100001,!,|exclamation mark|,34,22,00100010,&quot;,|double quote|,35,23,00100011,#,number,36,24,00100100,$,dollar,37,25,00100101,%,percent,38,26,00100110,&amp;,ampersand,39,27,00100111,&apos;,|single quote|,40,28,00101000,(,|left parenthesis|,41,29,00101001,),|right parenthesis|,42,2A,00101010,*,asterisk,43,2B,00101011,+,plus,44,2C,00101100,|,|,comma,45,2D,00101101,-,minus,46,2E,00101110,.,period,47,2F,00101111,/,slash,48,30,00110000,0,zero,49,31,00110001,1,one,50,32,00110010,2,two,51,33,00110011,3,three,52,34,00110100,4,four,53,35,00110101,5,five,54,36,00110110,6,six,55,37,00110111,7,seven,56,38,00111000,8,eight,57,39,00111001,9,nine,58,3A,00111010,:,colon,59,3B,00111011,;,semicolon,60,3C,00111100,&lt;,|less than|,61,3D,00111101,=,|equality sign|,62,3E,00111110,&gt;,|greater than|,63,3F,00111111,?,|question mark|,64,40,01000000,@,|at sign|,65,41,01000001,A,,66,42,01000010,B,,67,43,01000011,C,,68,44,01000100,D,,69,45,01000101,E,,70,46,01000110,F,,71,47,01000111,G,,72,48,01001000,H,,73,49,01001001,I,,74,4A,01001010,J,,75,4B,01001011,K,,76,4C,01001100,L,,77,4D,01001101,M,,78,4E,01001110,N,,79,4F,01001111,O,,80,50,01010000,P,,81,51,01010001,Q,,82,52,01010010,R,,83,53,01010011,S,,84,54,01010100,T,,85,55,01010101,U,,86,56,01010110,V,,87,57,01010111,W,,88,58,01011000,X,,89,59,01011001,Y,,90,5A,01011010,Z,,91,5B,01011011,[,|left square bracket|,92,5C,01011100,\,backslash,93,5D,01011101,],|right square bracket|,94,5E,01011110,^,|caret / circumflex|,95,5F,01011111,_,underscore,96,60,01100000,`,|grave / accent|,97,61,01100001,a,,98,62,01100010,b,,99,63,01100011,c,,100,64,01100100,d,,101,65,01100101,e,,102,66,01100110,f,,103,67,01100111,g,,104,68,01101000,h,,105,69,01101001,i,,106,6A,01101010,j,,107,6B,01101011,k,,108,6C,01101100,l,,109,6D,01101101,m,,110,6E,01101110,n,,111,6F,01101111,o,,112,70,01110000,p,,113,71,01110001,q,,114,72,01110010,r,,115,73,01110011,s,,116,74,01110100,t,,117,75,01110101,u,,118,76,01110110,v,,119,77,01110111,w,,120,78,01111000,x,,121,79,01111001,y,,122,7A,01111010,z,,123,7B,01111011,{,|left curly bracket|,124,7C,01111100,||||,|vertical bar|,125,7D,01111101,},|right curly bracket|,126,7E,01111110,~,tilde,127,7F,01111111,DEL,delete,,,,,">
    </PIN>
    <BOUNDS type="Window" left="1020" top="2505" width="17925" height="15045">
    </BOUNDS>
    <PIN pinname="Quad Transform" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="3045" top="4380">
+   <BOUNDS type="Box" left="3045" top="4980">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="334" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 3">
    </LINK>
    <LINK srcnodeid="335" srcpinname="Transform Out" dstnodeid="334" dstpinname="Transform In">
    </LINK>
-   <LINK srcnodeid="263" srcpinname="Output" dstnodeid="334" dstpinname="Ascii Data">
-   </LINK>
    <LINK srcnodeid="17" srcpinname="Object Id" dstnodeid="335" dstpinname="Index" linkstyle="Bezier">
-   <LINKPOINT x="6240" y="4295">
+   <LINKPOINT x="6080" y="4835">
    </LINKPOINT>
-   <LINKPOINT x="4140" y="880">
+   <LINKPOINT x="4060" y="1450">
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="17" srcpinname="Object Id" dstnodeid="328" dstpinname="Selected ID">
@@ -404,6 +346,18 @@
    </LINK>
    <LINK srcnodeid="13" srcpinname="Actual Backbuffer Height" dstnodeid="88" dstpinname="Aspect Height">
    </LINK>
-   <LINK srcnodeid="88" srcpinname="Transform Out" dstnodeid="13" dstpinname="Aspect Ratio">
+   <NODE systemname="Data" filename="%VVVV%\girlpower\Strings\ASCIITable\Data.v4p" nodename="%VVVV%\girlpower\Strings\ASCIITable\Data.v4p" componentmode="Hidden" id="339">
+   <BOUNDS type="Node" left="3765" top="795" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3765" top="795" width="5985" height="4990">
+   </BOUNDS>
+   <BOUNDS type="Window" left="-1" top="-1" width="5985" height="4990">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="339" srcpinname="Output" dstnodeid="328" dstpinname="Ascii Data">
+   </LINK>
+   <LINK srcnodeid="339" srcpinname="Output" dstnodeid="334" dstpinname="Ascii Data">
+   </LINK>
+   <LINK srcnodeid="339" srcpinname="Output" dstnodeid="335" dstpinname="ASCII Data">
    </LINK>
    </PATCH>
