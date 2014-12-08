@@ -1,0 +1,161 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\SwizzleData.v4p" systemname="SwizzleData" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\SwizzleData.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="10290" top="2880" width="9000" height="6000">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="0">
+   <BOUNDS type="Node" left="1425" top="360" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1425" top="360" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Unzip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (String)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="1995" top="1020" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1995" top="1020">
+   </BOUNDS>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   <PIN pinname="Output 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Zip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (String)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="2025" top="2775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2025" top="2775">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 5" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1245" top="4500" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1245" top="4500" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="5" values=",,,,">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output 2" dstnodeid="2" dstpinname="Input 2" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 3" dstnodeid="2" dstpinname="Input 3" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 5" dstnodeid="2" dstpinname="Input 5" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 1" dstnodeid="2" dstpinname="Input 4" hiddenwhenlocked="0">
+   </LINK>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1245" top="3945" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Switch" slicecount="1" values="2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="4" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 4" dstnodeid="2" dstpinname="Input 1" hiddenwhenlocked="0">
+   </LINK>
+   <NODE systemname="Zip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (String)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="3165" top="2760" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="3165" top="2760">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output 3" dstnodeid="6" dstpinname="Input 3" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 5" dstnodeid="6" dstpinname="Input 5" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 1" dstnodeid="6" dstpinname="Input 1" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 2" dstnodeid="6" dstpinname="Input 4" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="4" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="3" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 4" dstnodeid="6" dstpinname="Input 2" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="4" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3465" top="300" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3465" top="300" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Switch">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Switch">
+   </LINK>
+   </PATCH>
