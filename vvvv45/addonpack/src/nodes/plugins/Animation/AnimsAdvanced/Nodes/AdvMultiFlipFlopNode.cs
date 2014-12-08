@@ -10,6 +10,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "MultiFlipFlop",
 	Category = "Animation",
 	Version = "Advanced",
+	AutoEvaluate = true,
 	Tags = "", Author = "vux",Help="Bin size version for MultiFlipFlop"
 	)]
 	public class AdvMultiFlipFlopNode : IPluginEvaluate

@@ -7,21 +7,29 @@ using SlimDX;
 using VVVV.MSKinect.Lib;
 using VVVV.PluginInterfaces.V1;
 using Microsoft.Kinect;
+using Vector4 = SlimDX.Vector4;
+using Quaternion = SlimDX.Quaternion;
 
 namespace VVVV.MSKinect.Nodes
 {
-    [PluginInfo(Name="Skeleton", 
-	            Category="Kinect", 
-	            Version="Microsoft", 
-	            Author="vux", 
-	            Tags = "EX9",
-	            Help = "Returns skeleton data for each tracked user")]
+    [PluginInfo(Name = "Skeleton",
+                Category = "Kinect",
+                Version = "Microsoft",
+                Author = "vux",
+                Tags = "EX9",
+                Help = "Returns skeleton data for each tracked user")]
     public class KinectSkeletonNode : IPluginEvaluate, IPluginConnections
     {
         [Input("Kinect Runtime")]
         private Pin<KinectRuntime> FInRuntime;
 
-        [Output("Skeleton Count",IsSingle = true)]
+        [Input("Manual Tracking", IsSingle = true, DefaultBoolean = false)]
+        private IDiffSpread<bool> FManualTracking;
+
+        [Input("Tracking ID")]
+        private ISpread<int> FTrackingId;
+
+        [Output("Skeleton Count", IsSingle = true)]
         private ISpread<int> FOutCount;
 
         [Output("User Index")]
@@ -39,12 +47,29 @@ namespace VVVV.MSKinect.Nodes
         [Output("Joint Position")]
         private ISpread<Vector3> FOutJointPosition;
 
+        [Output("Joint Depth Position")]
+        private ISpread<Vector4> FOutJointDepthPosition;
+
+        [Output("Joint Color Position")]
+        private ISpread<Vector2> FOutJointColorPosition;
+
+        [Output("Joint Orientation")]
+        private ISpread<Quaternion> FOutJointOrientation;
+
+        [Output("Joint World Orientation")]
+        private ISpread<Quaternion> FOutJointWOrientation;
+
+        [Output("Joint Orientation From")]
+        private ISpread<string> FOutJointFrom;
+
+        [Output("Joint Orientation To")]
+        private ISpread<string> FOutJointTo;
+
         [Output("Joint State")]
         private ISpread<string> FOutJointState;
 
         [Output("Frame Number", IsSingle = true)]
         private ISpread<int> FOutFrameNumber;
-
 
         private bool FInvalidateConnect = false;
 
@@ -55,8 +80,6 @@ namespace VVVV.MSKinect.Nodes
         private Skeleton[] lastframe = null;
         private object m_lock = new object();
         private int frameid = -1;
-
-       
 
         public void Evaluate(int SpreadMax)
         {
@@ -76,7 +99,7 @@ namespace VVVV.MSKinect.Nodes
                     {
                         this.FInRuntime[0].SkeletonFrameReady += SkeletonReady;
                     }
-                    
+
                 }
 
                 this.FInvalidateConnect = false;
@@ -86,6 +109,26 @@ namespace VVVV.MSKinect.Nodes
             {
                 if (this.lastframe != null)
                 {
+                    if (FManualTracking.IsChanged || this.FInvalidate)
+                    {
+                        if (FManualTracking[0])
+                            this.FInRuntime[0].Runtime.SkeletonStream.AppChoosesSkeletons = true;
+                        else
+                            this.FInRuntime[0].Runtime.SkeletonStream.AppChoosesSkeletons = false;
+                    }
+
+
+                    if (FManualTracking[0])
+                    {
+                        if (FTrackingId.SliceCount == 1)
+                            this.FInRuntime[0].Runtime.SkeletonStream.ChooseSkeletons(FTrackingId[0]);
+
+                        if (FTrackingId.SliceCount == 2)
+                        {
+                            this.FInRuntime[0].Runtime.SkeletonStream.ChooseSkeletons(FTrackingId[0], FTrackingId[1]);
+                        }
+                    }
+
                     List<Skeleton> skels = new List<Skeleton>();
                     float z = float.MaxValue;
                     int id = -1;
@@ -99,6 +142,11 @@ namespace VVVV.MSKinect.Nodes
                             {
                                 skels.Add(sk);
                             }
+
+                            if (sk.TrackingState == SkeletonTrackingState.PositionOnly)
+                            {
+                                skels.Add(sk);
+                            }
                         }
                     }
 
@@ -109,8 +157,14 @@ namespace VVVV.MSKinect.Nodes
                     this.FOutUserIndex.SliceCount = cnt;
                     this.FOutClipped.SliceCount = cnt;
                     this.FOutJointPosition.SliceCount = cnt * 20;
+                    this.FOutJointColorPosition.SliceCount = cnt * 20;
+                    this.FOutJointDepthPosition.SliceCount = cnt * 20;
                     this.FOutJointState.SliceCount = cnt * 20;
                     this.FOutJointID.SliceCount = cnt * 20;
+                    this.FOutJointOrientation.SliceCount = cnt * 20;
+                    this.FOutJointWOrientation.SliceCount = cnt * 20;
+                    this.FOutJointTo.SliceCount = cnt * 20;
+                    this.FOutJointFrom.SliceCount = cnt * 20;
                     this.FOutFrameNumber[0] = this.frameid;
 
 
@@ -120,8 +174,8 @@ namespace VVVV.MSKinect.Nodes
                         Skeleton sk = skels[i];
                         this.FOutPosition[i] = new Vector3(sk.Position.X, sk.Position.Y, sk.Position.Z);
                         this.FOutUserIndex[i] = sk.TrackingId;
-                        
-                        SlimDX.Vector4 clip = SlimDX.Vector4.Zero;
+
+                        Vector4 clip = Vector4.Zero;
                         clip.X = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Left));
                         clip.Y = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Right));
                         clip.Z = Convert.ToSingle(sk.ClippedEdges.HasFlag(FrameEdges.Top));
@@ -131,10 +185,21 @@ namespace VVVV.MSKinect.Nodes
 
                         foreach (Joint joint in sk.Joints)
                         {
+                            this.FOutJointFrom[jc] = sk.BoneOrientations[joint.JointType].StartJoint.ToString();
+                            this.FOutJointTo[jc] = sk.BoneOrientations[joint.JointType].EndJoint.ToString();
+                            BoneRotation bo = sk.BoneOrientations[joint.JointType].HierarchicalRotation;
+                            BoneRotation bow = sk.BoneOrientations[joint.JointType].AbsoluteRotation;
                             this.FOutJointID[jc] = joint.JointType.ToString();
                             this.FOutJointPosition[jc] = new Vector3(joint.Position.X, joint.Position.Y, joint.Position.Z);
-                            this.FOutJointState[jc] = joint.TrackingState.ToString();
 
+                            ColorImagePoint cp = this.runtime.Runtime.MapSkeletonPointToColor(joint.Position, ColorImageFormat.RgbResolution640x480Fps30);
+                            this.FOutJointColorPosition[jc] = new Vector2(cp.X, cp.Y);
+                            DepthImagePoint dp = this.runtime.Runtime.MapSkeletonPointToDepth(joint.Position, DepthImageFormat.Resolution320x240Fps30);
+                            this.FOutJointDepthPosition[jc] = new Vector4(dp.X, dp.Y, dp.Depth, dp.PlayerIndex);
+
+                            this.FOutJointOrientation[jc] = new Quaternion(bo.Quaternion.X, bo.Quaternion.Y, bo.Quaternion.Z, bo.Quaternion.W);
+                            this.FOutJointWOrientation[jc] = new Quaternion(bow.Quaternion.X, bow.Quaternion.Y, bow.Quaternion.Z, bow.Quaternion.W);
+                            this.FOutJointState[jc] = joint.TrackingState.ToString();
                             jc++;
                         }
                     }
@@ -148,6 +213,12 @@ namespace VVVV.MSKinect.Nodes
                     this.FOutJointPosition.SliceCount = 0;
                     this.FOutJointState.SliceCount = 0;
                     this.FOutFrameNumber[0] = 0;
+                    this.FOutJointOrientation.SliceCount = 0;
+                    this.FOutJointWOrientation.SliceCount = 0;
+                    this.FOutJointTo.SliceCount = 0;
+                    this.FOutJointFrom.SliceCount = 0;
+                    this.FOutJointColorPosition.SliceCount = 0;
+                    this.FOutJointDepthPosition.SliceCount = 0;
                 }
                 this.FInvalidate = false;
             }
@@ -184,7 +255,7 @@ namespace VVVV.MSKinect.Nodes
             if (pin == this.FInRuntime.PluginIO)
             {
                 this.FInvalidateConnect = true;
-            }           
+            }
         }
     }
 }

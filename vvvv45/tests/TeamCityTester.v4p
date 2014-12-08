@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\tests\TeamCityTester.v4p" systemname="TeamCityTester" filename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p">
-   <BOUNDS type="Window" left="2295" top="585" width="12645" height="12450">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\tests\TeamCityTester.v4p" systemname="TeamCityTester" filename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="1035" top="0" width="12645" height="12450">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5490" top="735" width="480" height="480">
@@ -217,11 +217,11 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1170" top="11130" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="14400" top="0" width="14400" height="17550">
+   <BOUNDS type="Window" left="14400" top="1275" width="14400" height="14025">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Clear" slicecount="1" values="1">
+   <PIN pinname="Clear" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Log Messages" slicecount="1" values="0">
    </PIN>
@@ -414,8 +414,6 @@
    </NODE>
    <LINK srcnodeid="51" srcpinname="Output" dstnodeid="52" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="46" dstpinname="Quit VVVV">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9480" top="3225" width="2655" height="270">
    </BOUNDS>
@@ -456,6 +454,8 @@
    <PIN pinname="Test Directories" visible="1">
    </PIN>
    <PIN pinname="Directory" visible="1">
+   </PIN>
+   <PIN pinname="Stop" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="54" srcpinname="TestSuit Started" dstnodeid="14" dstpinname="DoWrite">
@@ -580,4 +580,46 @@
    </LINK>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="73" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8250" top="900" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8250" top="900" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Stop">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Stop">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="74" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8310" top="4395" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8310" top="4395" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="74" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="46" dstpinname="Quit VVVV">
+   </LINK>
    </PATCH>

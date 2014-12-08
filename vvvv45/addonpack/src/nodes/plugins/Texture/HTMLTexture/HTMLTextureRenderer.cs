@@ -183,12 +183,14 @@ namespace VVVV.Nodes.Texture.HTML
         {
             FCurrentDom = dom;
             FDomIsValid = true;
+            FErrorText = null;
         }
 
         internal void OnUpdateDom(string error)
         {
             FCurrentDom = null;
             FDomIsValid = true;
+            FErrorText = error;
         }
 
         public void UpdateDocumentSize()
