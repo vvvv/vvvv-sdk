@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -9,6 +10,7 @@ using VVVV.Utils.VColor;
 using VVVV.Nodes.Generic;
 using VVVV.Utils.VMath;
 using SlimDX;
+using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes
 {
@@ -28,11 +30,13 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
     {
+        private static readonly byte[] buffer = new byte[4096];
+
         protected override System.IO.Stream CloneSlice(System.IO.Stream slice)
         {
             var clone = new System.IO.MemoryStream((int)slice.Length);
             slice.Position = 0;
-            slice.CopyTo(clone);
+            slice.CopyTo(clone, buffer);
             return clone;
         }
     }
