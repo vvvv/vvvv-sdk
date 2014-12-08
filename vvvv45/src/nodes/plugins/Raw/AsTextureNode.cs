@@ -46,10 +46,10 @@ namespace VVVV.Nodes.Raw
 		[Input("Channel Count", MinValue=1, DefaultValue=4)]
 		public IDiffSpread<int> FChannelCount;
 		
-		//TODO: Bits per channel are important, but not implemented at the moment.
-		//		[Input("Bits per Channel", MinValue=0, StepSize=8, DefaultValue=8)]
-		//		public ISpread<int> FBitsPerChannel;
-		
+		//TODO: There should be a pin "Format": Enum of all available formats.
+		//The FillTexture function should then take care about the format.
+		//The "Channel Count" pin can be then depricated.
+
 		[Input("Apply", IsBang = true)]
 		public IDiffSpread<bool> FApply;
 		
