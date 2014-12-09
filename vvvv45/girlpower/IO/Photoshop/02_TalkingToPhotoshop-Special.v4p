@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_TalkingToPhotoshop-Special.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_TalkingToPhotoshop-Special.v4p" scrollx="15" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
    <BOUNDS type="Window" left="3840" top="360" width="12690" height="12900">
    </BOUNDS>
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="49">
@@ -515,7 +515,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4350" top="2100" width="2910" height="645">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to a particular layer in a PSD.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to the particular layer in a PSD.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -573,11 +573,11 @@
    <LINK srcnodeid="119" srcpinname="Output String" dstnodeid="26" dstpinname="Filename">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="120" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8160" top="2100" width="2160" height="270">
+   <BOUNDS type="Node" left="8235" top="2100" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8160" top="2100" width="2910" height="645">
+   <BOUNDS type="Box" left="8235" top="2100" width="3765" height="645">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to a particular layer in a PSD.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to the particular Smart Object in a PSD.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -589,9 +589,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="121" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8160" top="2895" width="3360" height="270">
+   <BOUNDS type="Node" left="8235" top="2895" width="3360" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8160" top="2895" width="2910" height="3090">
+   <BOUNDS type="Box" left="8235" top="2895" width="2910" height="3090">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Here an image is placed instead of a layer placed inside of a Smart Object, which in turn is inside of a group in a PSD.&cr;&lf;&cr;&lf;PSD &gt; Group &gt; Smart Object &gt; Layer.&cr;&lf;&cr;&lf;Smart Objects must be treated in a special way by the script, as they must be opened in a separate document, changed, saved and closed again.&cr;&lf;&cr;&lf;Rightclick the subpatch to learn more.|">
    </PIN>
@@ -728,7 +728,19 @@
    </LINK>
    <LINK srcnodeid="49" srcpinname="Texture Out" dstnodeid="22" dstpinname="Texture">
    </LINK>
-   <NODE systemname="SendImageToLayer" filename="%VVVV%\girlpower\IO\Photoshop\SendImageToLayer.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\SendImageToLayer.v4p" componentmode="Hidden" id="45">
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="141" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="8640" top="6795" width="570" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8640" top="6795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="141" srcpinname="Output Enum" dstnodeid="22" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="61" dstpinname="Input">
+   </LINK>
+   <NODE systemname="SendImageToLayer" filename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" componentmode="Hidden" id="45">
    <BOUNDS type="Node" left="4650" top="8385" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Window" left="10155" top="4620" width="11025" height="8025">
@@ -759,17 +771,5 @@
    <LINK srcnodeid="41" srcpinname="Output String" dstnodeid="45" dstpinname="Document">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="141" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="8640" top="6795" width="570" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8640" top="6795" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="141" srcpinname="Output Enum" dstnodeid="22" dstpinname="Format">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="61" dstpinname="Input">
    </LINK>
    </PATCH>

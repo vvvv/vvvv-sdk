@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (EX9.Texture).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="5715" top="1140" width="10920" height="8115">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (EX9.Texture).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="5235" top="5355" width="10920" height="8115">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -189,7 +189,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
-   <PIN pinname="Input Node" slicecount="1" values="||">
+   <PIN pinname="Input Node" slicecount="1" values="||" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
@@ -225,9 +225,11 @@
    <NODE systemname="StreamTexture" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="2880" top="4080" width="1605" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="3390" top="1530" width="13845" height="15390">
+   <BOUNDS type="Window" left="1665" top="1455" width="16740" height="14715">
    </BOUNDS>
    <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Response" dstnodeid="14" dstpinname="Photoshop Response">
@@ -240,8 +242,20 @@
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Lock to Current Document">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
-   </LINK>
    <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="14" dstpinname="Format">
+   </LINK>
+   <NODE id="17" systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden">
+   <BOUNDS type="Node" left="4815" top="4065" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="5910" top="4065" width="9405" height="12060">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Response" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
    </LINK>
    </PATCH>
