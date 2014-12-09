@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\RequestImage (Photoshop) help.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\RequestImage (Photoshop) help.v4p">
    <BOUNDS type="Window" left="6885" top="3330" width="9000" height="4650">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -17,27 +17,11 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="600" width="3945" height="510">
+   <BOUNDS type="Box" left="225" top="600" width="3435" height="495">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates a command for Photoshop requesting a thumbnail of the current active document.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Creates a command for Photoshop requesting an image of the current active document.|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
-   </PIN>
-   </NODE>
-   <NODE nodename="RequestImage (Photoshop)" componentmode="Hidden" id="0" systemname="RequestImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage (Photoshop).v4p">
-   <BOUNDS type="Node" left="4410" top="2490" width="3030" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="4410" top="2490" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Send" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Width" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="5" systemname="IOBox (Enumerations)">
@@ -50,16 +34,14 @@
    <PIN pinname="Style" slicecount="1" values="List">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output Enum" dstnodeid="0" dstpinname="Format">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="6" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="4395" top="2985" width="795" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="4395" top="2985" width="0" height="0">
    </BOUNDS>
+   <PIN pinname="Input Node">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="6" dstpinname="Input Node">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7965" top="1815" width="480" height="480">
    </BOUNDS>
@@ -76,8 +58,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Send">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5385" top="1980" width="570" height="240">
    </BOUNDS>
@@ -92,8 +72,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Height">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5355" top="1695" width="615" height="270">
    </BOUNDS>
@@ -122,8 +100,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Width">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4380" top="1695" width="615" height="270">
    </BOUNDS>
@@ -216,4 +192,30 @@
    <BOUNDS type="Box" left="225" top="3090">
    </BOUNDS>
    </NODE>
+   <NODE id="0" componentmode="Hidden" nodename="RequestImage (Photoshop)" systemname="RequestImage (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImage (Photoshop).v4p">
+   <BOUNDS type="Node" left="4410" top="2490" width="3030" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4410" top="2490" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="6" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output Enum" dstnodeid="0" dstpinname="Format">
+   </LINK>
    </PATCH>

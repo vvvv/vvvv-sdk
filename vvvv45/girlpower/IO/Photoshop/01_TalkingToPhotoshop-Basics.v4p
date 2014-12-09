@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\01_TalkingToPhotoshop-Basics.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\01_TalkingToPhotoshop-Basics.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
    <BOUNDS type="Window" left="4680" top="1125" width="17175" height="15975">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
@@ -234,7 +234,7 @@
    </NODE>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
-   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="InAWindow" id="61">
+   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="61">
    <BOUNDS type="Node" left="10110" top="11700" width="3930" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -249,7 +249,7 @@
    </PIN>
    <BOUNDS type="Box" left="10110" top="11700">
    </BOUNDS>
-   <BOUNDS type="Window" left="13770" top="1635" width="10665" height="15045">
+   <BOUNDS type="Window" left="18960" top="2655" width="10665" height="13140">
    </BOUNDS>
    </NODE>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="75">
@@ -335,7 +335,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7770" top="3555" width="3030" height="1950">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending textures to Photoshop is easy. AsRaw (Photoshop Image) prepares a texture and when the &apos;Send&apos; IOBox is banged the image appears in Photoshop in a separate document. Only RGB textures are supported, no alpha channels - this is the only way Photoshop accepts incoming images. |">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending textures to Photoshop is easy. AsRaw (Photoshop Image) prepares a texture and when &apos;Send&apos; is pressed the image appears in Photoshop in a separate document. Only RGB textures are supported, no alpha channels - this is the only way Photoshop accepts incoming images. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -349,7 +349,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="12255" top="2745" width="3150" height="630">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Requesting a thumbnail of the whole PSD.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Requesting an image of the whole PSD.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -365,7 +365,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="12255" top="3555" width="2865" height="2730">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is easy as well. Connect the subpatch below to the Photoshop (Network Sender) and bang the &apos;Send&apos;.&cr;&lf;&cr;&lf;See the info about the Resolution and the Format at the &quot;*********&quot;&quot; on the left.&cr;&lf;&cr;&lf;To learn about scripting Photoshop, rightclick the subpatch, it has a small script which is a Command (written in JavaScript) for Photoshop requesting full document thumbnail.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is easy as well. Connect the subpatch below to the Photoshop (Network Sender) and press &apos;Send&apos;.&cr;&lf;&cr;&lf;See info about the Resolution and the Format at the &quot;*********&quot;&quot; on the left.&cr;&lf;&cr;&lf;To learn about scripting Photoshop, rightclick the subpatch, it has a small script which is a Command (written in JavaScript) for Photoshop requesting a full document image.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -395,7 +395,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="16185" top="2760" width="2910" height="645">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Requesting a thumbnail of the selected Layers.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Requesting an image of selected Layers.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -411,7 +411,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="16185" top="3555" width="2925" height="1620">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This example requests a thumbnail of some selected layers of the PSD. Photoshop answers with an uncompressed Pixmap of those layers.&cr;&lf;&cr;&lf;Rightclick the subpatch to learn about the Command.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This example requests a image of some selected layers of the PSD. Photoshop answers with an uncompressed Pixmap of those layers.&cr;&lf;&cr;&lf;Rightclick the subpatch to learn about the Command.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -459,7 +459,7 @@
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="95">
    <BOUNDS type="Node" left="15390" top="13125" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="15390" top="13125" width="2520" height="1290">
+   <BOUNDS type="Box" left="15390" top="13125" width="2520" height="2055">
    </BOUNDS>
    <BOUNDS type="Window" left="16875" top="13500" width="6240" height="5010">
    </BOUNDS>
@@ -517,7 +517,7 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="99" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="11400" top="11085" width="1185" height="240">
+   <BOUNDS type="Box" left="11400" top="11085" width="1140" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="11400" top="11085" width="0" height="0">
    </BOUNDS>
@@ -541,9 +541,9 @@
    </BOUNDS>
    <BOUNDS type="Node" left="12705" top="11085" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
    <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
@@ -641,9 +641,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="124" systemname="IOBox (String)">
    <BOUNDS type="Node" left="19785" top="3555" width="3360" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="19785" top="3555" width="2910" height="3090">
+   <BOUNDS type="Box" left="19785" top="3555" width="2865" height="1290">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is pretty simple again. Choose the path, the name, and bang the &apos;Send&apos;.&cr;&lf;&cr;&lf;The script is simple as well.&cr;&lf;Rightclick the subpatch to learn more.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is pretty simple again. Choose the path, the name, and press &apos;Send&apos;.&cr;&lf;&cr;&lf;The script is simple as well.&cr;&lf;Rightclick the subpatch to learn more.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -705,9 +705,9 @@
    </BOUNDS>
    <BOUNDS type="Node" left="17145" top="11085" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
    <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
@@ -797,7 +797,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7770" top="1110" width="4545" height="1395">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Talking to Photoshop require the paar of &cr;&lf;Photoshop (Network Sender) / Photoshop (Network Receiver) modules.&cr;&lf;&cr;&lf;Connect each of the following examples to the Photoshop (Network Sender) and rightclick &apos;Send&apos;.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Talking to Photoshop requires a pair of &cr;&lf;Photoshop (Network Sender) / Photoshop (Network Receiver) modules.&cr;&lf;&cr;&lf;Connect each of the following examples to the Photoshop (Network Sender) and rightclick &apos;Send&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1217,7 +1217,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="870" top="1935" width="3645" height="930">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop&apos;s &quot;Remote Connections&quot; must be enabled. See this checkbox under the &quot;Edit &gt; Remote Connections...&quot; in your Adobe Photoshop. Define the password in the same dialog.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|For this to work you need to enable Photoshop&apos;s &quot;Remote Connections&quot;. &cr;&lf;See &quot;Edit &gt; Remote Connections...&quot; and define a password in the same dialog.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1275,7 +1275,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="435" top="3375" width="5160" height="1995">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Photoshop (EX9.Texture) is a convenience module, just place it in your patch, fill the IOBoxes and you&apos;ll get a texture from Photoshop on every change made to its documents.&cr;&lf;&cr;&lf;If the resolution of the PSD is bigger than the requested one, Photoshop sends the scaled down version of its document. If the resolution of the PSD is smaller, the thumbnail will have its resolution.&cr;&lf;&cr;&lf;There are two formats available: JPEG and uncompressed Pixmap.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Photoshop (EX9.Texture) is a convenience module, just place it in your patch, fill the IOBoxes and you&apos;ll get a texture from Photoshop on every change made to its documents.&cr;&lf;&cr;&lf;If the resolution of the PSD is bigger than the requested one, Photoshop sends the scaled down version of its document. If the resolution of the PSD is smaller, the thumbnail will have its resolution.&cr;&lf;&cr;&lf;There are two formats available: JPEG and uncompressed Pixmap.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

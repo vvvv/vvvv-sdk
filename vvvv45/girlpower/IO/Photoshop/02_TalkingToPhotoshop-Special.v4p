@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_TalkingToPhotoshop-Special.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
-   <BOUNDS type="Window" left="1410" top="360" width="12690" height="12900">
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_TalkingToPhotoshop-Special.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
+   <BOUNDS type="Window" left="3840" top="360" width="12690" height="12900">
    </BOUNDS>
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="49">
    <BOUNDS type="Node" left="8299" top="6450" width="100" height="100">
@@ -237,7 +237,7 @@
    <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="61">
    <BOUNDS type="Node" left="4260" top="10950" width="3930" height="270">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Host Connected" visible="1">
    </PIN>
@@ -341,9 +341,9 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6855" top="10335" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
    <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
@@ -473,7 +473,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="465" top="2895" width="2970" height="2445">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to create a text layer in particular location in PSD.&cr;&lf;&cr;&lf;This example places the &apos;Text&apos; inside the &apos;Group&apos; of the &apos;Document&apos;. For the sake of simplicity the Group is not nested inside the other group.&cr;&lf;&cr;&lf;To learn more and modify the command to your own needs, rightclick the subpatch.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to create a text layer in a particular location in a PSD.&cr;&lf;&cr;&lf;This example places the &apos;Text&apos; inside the &apos;Group&apos; of the &apos;Document&apos;. For the sake of simplicity the Group is not nested inside another group.&cr;&lf;&cr;&lf;To learn more and modify the command to your own needs, rightclick the subpatch.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -515,7 +515,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4350" top="2100" width="2910" height="645">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to the particular layer in a PSD.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to a particular layer in a PSD.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -577,7 +577,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8160" top="2100" width="2910" height="645">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to the particular layer in a PSD.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Sending an image to a particular layer in a PSD.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -593,7 +593,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8160" top="2895" width="2910" height="3090">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Here an image is placed instead of a layer placed inside of a Smart Object, which in turns is inside of a group in a PSD.&cr;&lf;&cr;&lf;PSD &gt; Group &gt; Smart Object &gt; Layer.&cr;&lf;&cr;&lf;Smart Objects must be treated in a special way by the script, as they must be opened in a separate document, changed, saved and closed again.&cr;&lf;&cr;&lf;Rightclick the subpatch to learn more.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Here an image is placed instead of a layer placed inside of a Smart Object, which in turn is inside of a group in a PSD.&cr;&lf;&cr;&lf;PSD &gt; Group &gt; Smart Object &gt; Layer.&cr;&lf;&cr;&lf;Smart Objects must be treated in a special way by the script, as they must be opened in a separate document, changed, saved and closed again.&cr;&lf;&cr;&lf;Rightclick the subpatch to learn more.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -637,7 +637,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="420" top="870" width="3645" height="735">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|These examples are very specialized and must be adjusted to your own need. The aim is to show how to script Photoshop.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|These examples are very specialized and must be adjusted to your own needs. The aim is to show how to script Photoshop.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -769,5 +769,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="141" srcpinname="Output Enum" dstnodeid="22" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="61" dstpinname="Input">
    </LINK>
    </PATCH>
