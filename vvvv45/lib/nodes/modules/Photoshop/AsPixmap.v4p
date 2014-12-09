@@ -305,6 +305,8 @@
    </PIN>
    <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Read" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="20" dstpinname="Texture">
    </LINK>
@@ -333,9 +335,9 @@
    <LINK srcnodeid="22" srcpinname="Output" dstnodeid="16" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2985" top="810" width="480" height="480">
+   <BOUNDS type="Box" left="2580" top="810" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="2985" top="810" width="0" height="0">
+   <BOUNDS type="Node" left="2580" top="810" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -349,6 +351,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Apply">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Set">
    </LINK>
@@ -361,5 +365,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Output" dstnodeid="24" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Read">
    </LINK>
    </PATCH>

@@ -662,7 +662,47 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE systemname="CreateTextLayer" filename="%VVVV%\girlpower\IO\Photoshop\CreateTextLayer.v4p" componentmode="Hidden" id="16" nodename="%VVVV%\girlpower\IO\Photoshop\CreateTextLayer.v4p">
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="141" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="8640" top="6795" width="570" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8640" top="6795" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   </NODE>
+   <NODE systemname="SendImageToLayer" filename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="4650" top="8385" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10155" top="4620" width="11025" height="8025">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Group" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Document" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4650" top="8385">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Output String" dstnodeid="45" dstpinname="Group">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Output String" dstnodeid="45" dstpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output String" dstnodeid="45" dstpinname="Document">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="CreateTextLayer" filename="%VVVV%\girlpower\IO\Photoshop\Subpatches\CreateTextLayer.v4p" componentmode="Hidden" id="16" nodename="%VVVV%\girlpower\IO\Photoshop\Subpatches\CreateTextLayer.v4p">
    <BOUNDS type="Node" left="525" top="8385" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="525" top="8385" width="4800" height="3600">
@@ -692,7 +732,9 @@
    </LINK>
    <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="16" dstpinname="Text">
    </LINK>
-   <NODE systemname="SendImageToSmartObject" filename="%VVVV%\girlpower\IO\Photoshop\SendImageToSmartObject.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\SendImageToSmartObject.v4p" componentmode="Hidden" id="22">
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="61" dstpinname="Input">
+   </LINK>
+   <NODE systemname="SendImageToSmartObject" filename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToSmartObject.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToSmartObject.v4p" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="8310" top="8385" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Window" left="2445" top="1845" width="9855" height="8055">
@@ -728,48 +770,6 @@
    </LINK>
    <LINK srcnodeid="49" srcpinname="Texture Out" dstnodeid="22" dstpinname="Texture">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="141" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="8640" top="6795" width="570" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8640" top="6795" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="141" srcpinname="Output Enum" dstnodeid="22" dstpinname="Format">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="61" dstpinname="Input">
-   </LINK>
-   <NODE systemname="SendImageToLayer" filename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" nodename="%VVVV%\girlpower\IO\Photoshop\Subpatches\SendImageToLayer.v4p" componentmode="Hidden" id="45">
-   <BOUNDS type="Node" left="4650" top="8385" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="10155" top="4620" width="11025" height="8025">
-   </BOUNDS>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Group" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Do Send" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Document" visible="1">
-   </PIN>
-   <PIN pinname="Photoshop Out" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="4650" top="8385">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="44" srcpinname="Output String" dstnodeid="45" dstpinname="Group">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Output String" dstnodeid="45" dstpinname="Layer">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Do Send">
-   </LINK>
-   <LINK srcnodeid="41" srcpinname="Output String" dstnodeid="45" dstpinname="Document">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
    </LINK>
    </PATCH>

@@ -1,11 +1,11 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (EX9.Texture).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\PhotoshopIn (Photoshop).v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="5235" top="5355" width="10920" height="8115">
+   <BOUNDS type="Window" left="15270" top="4800" width="10920" height="8115">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="2895" top="5850" width="1065" height="270">
+   <BOUNDS type="Node" left="2895" top="5850" width="2865" height="270">
    </BOUNDS>
    <PIN pinname="Remote Host" visible="1" slicecount="1" values="localhost">
    </PIN>
@@ -21,7 +21,7 @@
    </BOUNDS>
    </NODE>
    <NODE systemname="Photoshop (Network Receiver)" filename="%VVVV%\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p" nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="2865" top="1830" width="1065" height="270">
+   <BOUNDS type="Node" left="2865" top="1830" width="3105" height="270">
    </BOUNDS>
    <PIN pinname="Remote Host" visible="1">
    </PIN>
@@ -31,6 +31,8 @@
    </PIN>
    <BOUNDS type="Window" left="6315" top="1230" width="8190" height="9840">
    </BOUNDS>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
    <BOUNDS type="Box" left="1845" top="435" width="945" height="240">
@@ -57,7 +59,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="3000" top="435" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvv">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="vvvv">
    </PIN>
@@ -189,7 +191,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
-   <PIN pinname="Input Node" slicecount="1" values="||" visible="1">
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
@@ -220,9 +222,9 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <INFO author="vvvv group" description="Streams a texture from Photoshop." tags="ex9">
+   <INFO author="vvvv group" description="Streams a texture from Photoshop." tags="psd, ex9">
    </INFO>
-   <NODE systemname="StreamTexture" filename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\StreamTexture.v4p" componentmode="Hidden" id="14">
+   <NODE systemname="RequestImageOnEvent" filename="%VVVV%\lib\nodes\modules\Photoshop\RequestImageOnEvent.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\RequestImageOnEvent.v4p" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="2880" top="4080" width="1605" height="270">
    </BOUNDS>
    <BOUNDS type="Window" left="1665" top="1455" width="16740" height="14715">
@@ -231,6 +233,8 @@
    </PIN>
    <PIN pinname="Texture Out" visible="1" slicecount="1" values="||">
    </PIN>
+   <BOUNDS type="Box" left="2880" top="4080">
+   </BOUNDS>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Response" dstnodeid="14" dstpinname="Photoshop Response">
    </LINK>
@@ -245,7 +249,7 @@
    <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="14" dstpinname="Format">
    </LINK>
    <NODE id="17" systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden">
-   <BOUNDS type="Node" left="4815" top="4065" width="100" height="100">
+   <BOUNDS type="Node" left="4965" top="4080" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
@@ -253,9 +257,15 @@
    </PIN>
    <BOUNDS type="Window" left="5910" top="4065" width="9405" height="12060">
    </BOUNDS>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4965" top="4080">
+   </BOUNDS>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Response" dstnodeid="17" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="17" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="On Data" dstnodeid="17" dstpinname="Apply">
    </LINK>
    </PATCH>

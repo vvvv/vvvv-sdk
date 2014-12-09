@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
    <NODE systemname="DecryptMessage" filename="DecryptMessage.v4p" nodename="DecryptMessage.v4p" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="1515" top="8130" width="100" height="100">
    </BOUNDS>
@@ -47,10 +47,10 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" values="vvvv">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="vvvvvv">
+   <PIN pinname="Input String" slicecount="1" values="vvvv">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="19065" top="2355" width="8190" height="10785">
+   <BOUNDS type="Window" left="6315" top="1230" width="8190" height="10575">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -61,7 +61,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="IP">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="localhost">
+   <PIN pinname="Input String" slicecount="1" values="192.168.2.4">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -176,7 +176,7 @@
    </LINK>
    <LINK srcnodeid="89" srcpinname="Output" dstnodeid="2" dstpinname="Decrypt">
    </LINK>
-   <INFO author="vvvv group" description="Receives responses from Photoshop." tags="">
+   <INFO author="vvvv group" description="Receives responses from Photoshop." tags="psd">
    </INFO>
    <NODE systemname="CollectChunks" filename="%VVVV%\lib\nodes\modules\Photoshop\CollectChunks.v4p" nodename="%VVVV%\lib\nodes\modules\Photoshop\CollectChunks.v4p" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="1515" top="5895" width="100" height="100">
@@ -215,5 +215,23 @@
    <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
    </LINK>
    <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="38" dstpinname="Receive">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="92" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3675" top="8640" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3675" top="8640" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|On Data|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="89" srcpinname="Output" dstnodeid="92" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

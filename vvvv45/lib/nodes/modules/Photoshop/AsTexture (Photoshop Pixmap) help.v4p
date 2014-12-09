@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsTexture (Photoshop Pixmap) help.v4p">
-   <BOUNDS type="Window" left="900" top="1860" width="9000" height="5145">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsTexture (Photoshop Pixmap) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="915" top="1530" width="9000" height="5805">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -133,9 +133,55 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="2430" width="4695" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="2430" width="2820" height="1800">
+   <BOUNDS type="Box" left="225" top="2430" width="2895" height="1545">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This module checks the raw data and returns a Texture out of both formats coming from Photoshop (JPEG and uncompressed pixmap).&cr;&lf;&cr;&lf;Its smaller brother is the&cr;&lf;AsTexture (Photoshop Pixmap) which works only with pixmaps.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This module returns a texture out of the uncompressed pixmap data coming from Photoshop.&cr;&lf;&cr;&lf;See the more general module which knows how to work with any image data coming from Photoshop:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <INFO author="" description="" tags="">
+   </INFO>
+   <NODE nodename="AsTexture (Photoshop)" componentmode="Hidden" id="13" systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p">
+   <BOUNDS type="Node" left="285" top="4125" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="4125" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="5910" top="4065" width="9405" height="12060">
+   </BOUNDS>
+   <PIN pinname="Apply" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1380" top="4095" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="300" left="1380" top="4095" type="Box" width="345">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="4455" width="1755" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="4455" width="1755" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsTexture (Photoshop)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

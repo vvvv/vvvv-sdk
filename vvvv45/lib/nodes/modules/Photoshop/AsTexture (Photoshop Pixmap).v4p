@@ -73,7 +73,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Unzip (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (Value)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2805" top="7535" width="1605" height="270">
+   <BOUNDS type="Node" left="2805" top="7535" width="1530" height="270">
    </BOUNDS>
    <PIN pinname="Output Count" slicecount="1" values="6">
    </PIN>
@@ -131,13 +131,13 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="9" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="2535" top="8960" width="795" height="240">
+   <BOUNDS type="Box" left="2415" top="8960" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2535" top="8960" width="0" height="0">
+   <BOUNDS type="Node" left="2415" top="8960" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
-   <PIN pinname="Input Node" slicecount="1" values="||" visible="1">
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
    <NODE id="10" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
@@ -416,10 +416,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <INFO author="vvvv group" description="Returns a texture from Photoshop&apos;s pixmap." tags="ex9">
+   <INFO author="vvvv group" description="Returns a texture from Photoshop&apos;s pixmap." tags="psd, ex9">
    </INFO>
    <NODE systemname="AsTexture (Raw)" filename="%VVVV%\lib\nodes\modules\Photoshop\plugins\RawAsTexture\RawAsTexture.csproj" nodename="AsTexture (Raw)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="2535" top="8160" width="2055" height="270">
+   <BOUNDS type="Node" left="2415" top="8160" width="1935" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -458,4 +458,18 @@
    </LINK>
    <LINK srcnodeid="40" srcpinname="Texture Out" dstnodeid="9" dstpinname="Input Node">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2565" top="8490" width="405" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2565" top="8490" width="405" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="EX9">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
