@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="2d\TreemapNode.cs" />
+    <Compile Include="Animation\OneEuroFilter\OneEuroFilterNode.cs" />
     <Compile Include="Animation\ParticlesThreaded\Particle.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystem.cs" />
     <Compile Include="Animation\ParticlesThreaded\ParticleSystemNode.cs" />
@@ -95,6 +96,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Raw\AsTextureNode.cs" />
     <Compile Include="Raw\AsValueNode.cs" />
     <Compile Include="Raw\ChangeNode.cs" />
     <Compile Include="Raw\EqualsNode.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="String\ApplyModifiersNode.cs" />
     <Compile Include="String\Base64Nodes.cs" />
     <Compile Include="String\EnumEntries2String.cs" />
+    <Compile Include="String\FileURICoding.cs" />
     <Compile Include="String\FormatNode.cs" />
     <Compile Include="String\HTMLCoding.cs" />
     <Compile Include="String\StringInsertNode.cs" />
@@ -323,7 +326,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Animation\OneEuroFilter" />
+    <Folder Include="vvvv\Architecture" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
 </Project>
