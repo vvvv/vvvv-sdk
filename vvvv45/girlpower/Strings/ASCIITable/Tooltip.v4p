@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" systemname="Tooltip" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" scrollx="1050" scrolly="0">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" systemname="Tooltip" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" scrollx="9240" scrolly="0">
    <BOUNDS type="Window" left="2100" top="1320" width="17925" height="15045">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
@@ -55,13 +55,13 @@
    </BOUNDS>
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="00001001">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="09">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="9">
    </PIN>
    <PIN pinname="Input 4" visible="1">
    </PIN>
@@ -139,8 +139,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="43" srcpinname="Output" dstnodeid="42" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output 2" dstnodeid="51" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="20010" top="2490" width="285" height="240">
@@ -256,10 +254,6 @@
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="42" srcpinname="Output 3" dstnodeid="51" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output 1" dstnodeid="51" dstpinname="Input 3">
-   </LINK>
    <LINK srcnodeid="35" srcpinname="Color Output" dstnodeid="37" dstpinname="Color">
    </LINK>
    <NODE systemname="Text (EX9)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Text (EX9)" componentmode="Hidden" id="27">
@@ -295,7 +289,7 @@
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="4" values="BIN,HEX,DEC,">
+   <PIN pinname="Input String" slicecount="4" values="HEX,DEC,BIN,">
    </PIN>
    </NODE>
    <LINK srcnodeid="26" srcpinname="Output String" dstnodeid="27" dstpinname="Text">
@@ -1639,5 +1633,11 @@
    <LINK srcnodeid="193" srcpinname="Output" dstnodeid="197" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="193" srcpinname="Output" dstnodeid="200" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output 2" dstnodeid="51" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output 1" dstnodeid="51" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output 3" dstnodeid="51" dstpinname="Input 3">
    </LINK>
    </PATCH>
