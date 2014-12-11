@@ -1,0 +1,223 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Power (Value) help.v4p">
+   <BOUNDS height="6885" left="4035" top="1575" type="Window" width="5055">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1035" top="2775" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5640" top="3240" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1035" top="2775" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2160" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5940" top="3540" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1935" left="2160" top="1245" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="8" values="1.00000,2.00000,3.00000,4.00000,5.00000,6.00000,7.00000,8.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="8.00000">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Power (Value)">
+   <BOUNDS height="0" left="1785" top="3630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mix Count" slicecount="1">
+   </PIN>
+   <PIN pinname="Input1" visible="1">
+   </PIN>
+   <PIN pinname="Input2" visible="1">
+   </PIN>
+   <PIN pinname="Mix 1" visible="1">
+   </PIN>
+   <PIN pinname="Mix 2" visible="1">
+   </PIN>
+   <PIN pinname="Mix 3" visible="1">
+   </PIN>
+   <PIN pinname="Mix 4" visible="1">
+   </PIN>
+   <PIN pinname="Delta" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 2" linkstyle="PolyLine" srcnodeid="10" srcpinname="Y Output Value">
+   <LINKPOINT x="3195" y="3330">
+   </LINKPOINT>
+   <LINKPOINT x="2370" y="3330">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="795" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6240" top="3840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1935" left="795" top="4155" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="8" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="8.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2145" top="4170" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2145" top="4170" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2 = 2^1 = 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2145" top="4425" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2145" top="4425" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|4 = 2^2 = 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2145" top="4650" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2145" top="4650" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|8 = 2^3 = 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2055" top="4890" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2055" top="4890" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|16 = 2^4 = 2 * 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2055" top="5115" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2055" top="5115" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="945" top="1140" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|32 = 2^5 = 2 * 2 * 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2040" top="5355" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="2040" top="5355" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="990" top="1380" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|64 = 2^6 = 2 * 2 * 2 * 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1950" top="5580" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="1950" top="5580" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="1035" top="1620" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|128 = 2^7 = 2 * 2 * 2 * 2 * 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="1950" top="5820" type="Node" width="375">
+   </BOUNDS>
+   <BOUNDS height="240" left="1950" top="5820" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="1080" top="1860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|256 = 2^8 = 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="390" type="Box" width="3435">
+   </BOUNDS>
+   <BOUNDS height="160" left="2490" top="40950" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|calculates the a raised to the bth power. &cr;&lf;complex results get returned as the real part.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="3045">
+   </BOUNDS>
+   <BOUNDS height="160" left="2490" top="40950" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Power - Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
