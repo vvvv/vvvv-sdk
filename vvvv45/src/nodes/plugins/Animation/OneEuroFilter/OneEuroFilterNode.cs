@@ -31,7 +31,7 @@ namespace VVVV.Nodes
 		[Input("Minimum Cutoff", DefaultValue = 1.0, MinValue = 0.0, MaxValue = 10.0)]
 		public ISpread<double> FMinCutoff;
 		
-		[Input("Beta", DefaultValue = 0.7, MinValue = 0.0, MaxValue = 1.0)]
+		[Input("Beta", DefaultValue = 0.7, MinValue = 0.0, MaxValue = 10.0)]
 		public ISpread<double> FBeta;
 		
 		[Input("Cutoff for Derivative", DefaultValue = 1.0, MinValue = 0.0, MaxValue = 10.0, Visibility = PinVisibility.OnlyInspector)]
