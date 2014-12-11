@@ -16,6 +16,7 @@ namespace VVVV.Nodes
 	            Version = "Save",
 	            Help = "Opens a dialog (without blocking vvvv) for chosing a file to save.",
 	            Tags = "",
+	            AutoEvaluate = true,
 	            Author = "vux, vvvv group")]
     public class FileSaveDialogNode : IPluginEvaluate, IDisposable
     {
