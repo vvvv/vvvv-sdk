@@ -43,6 +43,10 @@ namespace VVVV.Nodes
 	{
 		[Input("Value Input")]
 		ISpread<bool> FValueIn;
+
+        //autosave
+        [Input("Autosave", IsSingle = true)]
+        ISpread<bool> FAutoSave;
 		
 		[Output("Value Output")]
 		ISpread<bool> FValueOut;
@@ -165,7 +169,7 @@ namespace VVVV.Nodes
 					FActiveOut[slice] = s.Active;
 					
 					//update config pin
-					if (valueSet)
+                    if (valueSet && FAutoSave[0])
 					{
 						if (FInternalValueConfig[slice] != s.Value)
 							FInternalValueConfig[slice] = s.Value;

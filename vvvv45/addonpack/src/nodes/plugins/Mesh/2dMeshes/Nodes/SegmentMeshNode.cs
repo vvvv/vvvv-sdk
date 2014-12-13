@@ -19,6 +19,7 @@ namespace VVVV.Nodes
                 Info.Category = "EX9.Geometry";						//try to use an existing one
                 Info.Version = "2d";						//versions are optional. leave blank if not needed
                 Info.Help = "Orthogonal to Segment (DX9)";
+                Info.Tags = "circle, disk";
                 Info.Bugs = "";
                 Info.Credits = "";								//give credits to thirdparty code used
                 Info.Warnings = "";

@@ -16,6 +16,7 @@ namespace VVVV.Nodes
 	            Version = "Open",
 	            Help = "Opens a file dialog (without blocking vvvv)",
 	            Tags = "",
+	            AutoEvaluate = true,
 	            Author = "vux, vvvv group")]
     public class FileOpenDialogNode : IPluginEvaluate, IDisposable
     {
