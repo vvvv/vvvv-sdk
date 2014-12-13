@@ -61,6 +61,10 @@ namespace VVVV.Nodes
 		//additional slider pins
 		[Input("Is Long Slider")]
 		IDiffSpread<bool> FIsLongSliderIn;
+
+        //autosave
+        [Input("Autosave", IsSingle=true)]
+        ISpread<bool> FAutoSave;
 		
 		
 		#region mainloop
@@ -184,7 +188,7 @@ namespace VVVV.Nodes
 					FActiveOut[slice] = s.Active;
 					
 					//update config pin
-					if (valueSet)
+                    if (valueSet && FAutoSave[0])
 					{
 		
 						if (Math.Abs(s.Value - FInternalValueConfig[slice]) > 0.00000001)

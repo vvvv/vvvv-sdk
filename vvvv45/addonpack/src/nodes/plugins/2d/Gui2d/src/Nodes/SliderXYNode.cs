@@ -43,7 +43,11 @@ namespace VVVV.Nodes
 	{
 		[Input("Value Input")]
 		ISpread<Vector2D> FValueIn;
-		
+
+        //autosave
+        [Input("Autosave", IsSingle = true)]
+        ISpread<bool> FAutoSave;
+
 		[Output("Value Output")]
 		ISpread<Vector2D> FValueOut;
 		
@@ -174,7 +178,7 @@ namespace VVVV.Nodes
 					FActiveOut[slice] = s.Active;
 					
 					//update config pin
-					if (valueSet)
+                    if (valueSet && FAutoSave[0])
 					{
 						if (VMath.Abs(s.Value - FInternalValueConfig[slice]) > 0.00000001)
 							FInternalValueConfig[slice] = s.Value;
