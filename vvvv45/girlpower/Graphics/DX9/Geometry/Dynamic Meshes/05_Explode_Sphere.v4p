@@ -1,11 +1,11 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\05_Explode_Sphere.v4p" systemname="04_Deform_Sphere_Simple" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\04_Deform_Sphere_Simple.v4p" scrollx="0" scrolly="360">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\05_Explode_Sphere.v4p" systemname="04_Deform_Sphere_Simple" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\04_Deform_Sphere_Simple.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="0" top="255" width="14760" height="16455">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="VertexBuffer (EX9.Geometry Split)" nodename="VertexBuffer (EX9.Geometry Split)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="8745" top="2595" width="2025" height="270">
+   <BOUNDS type="Node" left="8745" top="2595" width="1935" height="270">
    </BOUNDS>
    <PIN pinname="Vertex Buffer" visible="1" slicecount="1" values="||">
    </PIN>
@@ -293,7 +293,7 @@
    </BOUNDS>
    <BOUNDS height="10530" left="675" top="5100" type="Box" width="3900">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The mesh is split into the &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split). The &apos;Vertex Buffer&apos; is split further into &apos;Position XYZ&apos; and &apos;Normal XYZ&apos; of every vertex.&cr;&lf;&cr;&lf;The same radom value is defined for each coordinate of the each 3 vertices building up a face. So the number of vertices is divided by 9 (3 x XYZ) - this is the count of random values. Each random value is then duplicated 9 times (the same value for each coordinate of each vertex). The &apos;Width&apos; of the RandomSpread (Spread) defines how far the random values can go.&cr;&lf;&cr;&lf;The displacement vector for each face is constructed:&cr;&lf;&cr;&lf;The SetSlice (Spreads) takes the spread of unit vectors (each coordinate = 1) and the spread of random values. It uses the &apos;Indices&apos; of the mesh to replace particular unit vectors with the random values (&apos;Bin Size&apos;=3 because each vertex consist of XYZ). Every 3 indices of the &apos;Index Buffer&apos; define the IDs of the vertices of one face. So exactly the vertices of one face are getting the same random value.&cr;&lf;&cr;&lf;The resulting spread of random values is multiplied with the normalized normals (just to be sure, that their length is 1). This yields a spread of displacement vectors which are added to the position of every vertex of the mesh.&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Join) joins the information belonging to every vertex. Please note the &apos;Diffuse Color&apos; pin (hidden by default). Open the Inspector (Ctrl+I) to activate it.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) is used to generate values for the &apos;Hue&apos; of the HSV (Color), which creates the color for every vertex.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) returns the complete mesh out of the &apos;Vertex Buffer&apos; and the &apos;Indices&apos;.&cr;&lf;&cr;&lf;This mesh is drawn using the DrawFixed (EX9.Effect). This effect draws the triangles of the mesh with a color defined for the vertices. The Normals (EX9) draws the normals.&cr;&lf;&cr;&lf;Note the two &apos;RenderState&apos; nodes: the Shade &amp; the Fill.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The mesh is split into the &apos;Vertex Buffer&apos; and &apos;Indices&apos; by the Mesh (EX9.Geometry Split). The &apos;Vertex Buffer&apos; is split further into &apos;Position XYZ&apos; and &apos;Normal XYZ&apos; of every vertex.&cr;&lf;&cr;&lf;The same radom value is defined for each coordinate of the each 3 vertices building up a face. So the number of vertices is divided by 9 (3 x XYZ) - this is the count of random values. Each random value is then duplicated 9 times (the same value for each coordinate of each vertex). The &apos;Width&apos; of the RandomSpread (Spread) defines how far the random values can go.&cr;&lf;&cr;&lf;The displacement vector for each face is constructed in steps 3 and 4:&cr;&lf;&cr;&lf;The SetSlice (Spreads) takes the spread of unit vectors (each coordinate = 1) and the spread of random values. It uses the &apos;Indices&apos; of the mesh to replace particular unit vectors with the random values (&apos;Bin Size&apos;=3 because each vertex consist of XYZ). Every 3 indices of the &apos;Index Buffer&apos; define the IDs of the vertices of one face. So exactly the vertices of one face are getting the same random value.&cr;&lf;&cr;&lf;The resulting spread of random values is multiplied with the normalized normals (just to be sure, that their length is 1). This yields a spread of displacement vectors which are added to the position of every vertex of the mesh.&cr;&lf;&cr;&lf;The VertexBuffer (EX9.Geometry Join) joins the information for every vertex. Please note the &apos;Diffuse Color&apos; pin (hidden by default). Open the Inspector (Ctrl+I) to activate it.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) is used to generate values for the &apos;Hue&apos; of the HSV (Color), which creates the color for every vertex.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) returns the complete mesh out of the &apos;Vertex Buffer&apos; and the &apos;Indices&apos;.&cr;&lf;&cr;&lf;This mesh is drawn using the DrawFixed (EX9.Effect). This effect draws the triangles of the mesh with a color defined for the vertices. Normals are drawn by the Normals (EX9).&cr;&lf;&cr;&lf;Note the two &apos;RenderState&apos; nodes: the Shade &amp; the Fill.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -907,7 +907,7 @@
    </BOUNDS>
    <BOUNDS height="3255" left="675" top="1560" type="Box" width="3720">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Depending on the &apos;smoothing angle&apos; the Normals (EX9.Geometry Mesh) splits every vertex of the adjacent faces, so that the faces are not sharing the same vertex anymore.&cr;&lf;&cr;&lf;The number of vertices is counted and for every 3 of them (constructing one face) a random value is chosen. &cr;&lf;&cr;&lf;The random value is then duplicated 9 times (the same value goes to each coordinate of the 3 vertices). This random value is multiplied with the normals of the face producing displacement vectors which are added to the original positions of the vertices.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Depending on the &apos;smoothing angle&apos; the Normals (EX9.Geometry Mesh) splits every vertex of the adjacent faces into many, so that the faces are not sharing the same vertex anymore.&cr;&lf;&cr;&lf;The number of vertices is counted and for every 3 of them (constructing one face) a random value is chosen. &cr;&lf;&cr;&lf;The random value is then duplicated 9 times (the same value goes for each coordinate of the 3 vertices). This random value is multiplied with the normals of the face producing displacement vectors which are added to the original positions of the vertices.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1023,9 +1023,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="465" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="8430" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="8670" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="8430" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="8670" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -1039,9 +1039,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="466" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="10320" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="10560" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="10320" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="10560" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="4.">
    </PIN>
@@ -1055,9 +1055,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="467" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="11595" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="11835" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="11595" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="11835" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1071,9 +1071,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="468" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="12645" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="12885" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="12645" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="12885" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1087,9 +1087,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="469" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="13485" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="13725" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="13485" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="13725" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1103,9 +1103,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="470" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="14100" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="14340" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="14100" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="14340" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1119,9 +1119,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="471" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="255" top="15105" type="Node" width="315">
+   <BOUNDS height="270" left="255" top="15300" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="255" top="15105" type="Box" width="405">
+   <BOUNDS height="390" left="255" top="15300" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1149,5 +1149,9 @@
    </PIN>
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
+   </NODE>
+   <NODE systemname="XFile (EX9.Geometry Load)" nodename="XFile (EX9.Geometry Load)" componentmode="Hidden" id="473">
+   <BOUNDS type="Node" left="12510" top="1395" width="100" height="100">
+   </BOUNDS>
    </NODE>
    </PATCH>

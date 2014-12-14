@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.4.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\07_Mesh_and_Subsets.v4p" systemname="TexturingSubsets" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\TexturingSubsets.v4p" scrollx="15" scrolly="0">
    <BOUNDS type="Window" left="330" top="435" width="18780" height="13830">
    </BOUNDS>
@@ -159,9 +159,9 @@
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="585" top="540" type="Node" width="840">
    </BOUNDS>
-   <BOUNDS height="705" left="585" top="540" type="Box" width="3360">
+   <BOUNDS height="915" left="585" top="540" type="Box" width="3360">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to create several subsets out of one mesh. And apply different textures to these subsets for example.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is how to load a mesh with several subsets and apply different textures / transforms / colors and so on to these subsets.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -193,7 +193,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="1605" width="4380" height="7140">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|The XFile (EX9.Geometry Load) returns a spread of 6 subsets of a mesh.&cr;&lf;&cr;&lf;The Colors, Textures, Texture Transforms and Color Transforms can be applied iduvidually to each subset when drawing by an Effect.&cr;&lf;&cr;&lf;The &apos;Enabled&apos; pin is also spreadable, so individual subsets can be turned on/off.&cr;&lf;&cr;&lf;Dealing with transformations for each subset can be tricky.&cr;&lf;&cr;&lf;- If all subsets of the mesh are sitting in the center, then simply applying transforms to them produce the expected results.&cr;&lf;&cr;&lf;- But when the subsets are sitting somewhere in 3d space (like in this example - sides of the cube are there where they should be) then the transformations should be applied with a special care:&cr;&lf;&cr;&lf;The scale and rotation always happening around the center of the coordinate system. So the coordinate system should be:&cr;&lf;&cr;&lf;first: moved to the position of the subset, &cr;&lf;&cr;&lf;then the transformation is applied &cr;&lf;&cr;&lf;and as a last step, the coordinate system is returned back.&cr;&lf;&cr;&lf;The center of each subset is returned by the BoundingBox (EX9.Geometry Mesh).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The XFile (EX9.Geometry Load) returns a spread of 6 subsets of a mesh.&cr;&lf;&cr;&lf;The Colors, Textures, Texture Transforms and Color Transforms can be applied iduvidually to each subset when drawn by an Effect.&cr;&lf;&cr;&lf;The &apos;Enabled&apos; pin is also spreadable, so individual subsets can be turned on/off.&cr;&lf;&cr;&lf;Dealing with transformations for each subset can be tricky.&cr;&lf;&cr;&lf;- If all subsets of the mesh are sitting in the center, then simply applying transforms to them produce the expected results.&cr;&lf;&cr;&lf;- But when the subsets are sitting somewhere in 3d space (like in this example - sides of the cube are there where they should be) then the transformations should be applied with a special care:&cr;&lf;&cr;&lf;The scale and rotation always happening around the center of the coordinate system. So the coordinate system should be:&cr;&lf;&cr;&lf;first: moved to the position of the subset, &cr;&lf;&cr;&lf;then the transformation is applied &cr;&lf;&cr;&lf;and as a last step, the coordinate system is returned back.&cr;&lf;&cr;&lf;The center of each subset is returned by the BoundingBox (EX9.Geometry Mesh).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -411,9 +411,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="114" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="405" top="2415" type="Node" width="315">
+   <BOUNDS height="270" left="405" top="2220" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="405" top="2415" type="Box" width="420">
+   <BOUNDS height="435" left="405" top="2220" type="Box" width="420">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -565,9 +565,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="130" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10110" top="615" width="3405" height="270">
+   <BOUNDS type="Node" left="10110" top="645" width="3405" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10110" top="615" width="4365" height="300">
+   <BOUNDS type="Box" left="10110" top="645" width="4365" height="300">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; The mesh with six subsets - one for each side of a cube.|">
    </PIN>

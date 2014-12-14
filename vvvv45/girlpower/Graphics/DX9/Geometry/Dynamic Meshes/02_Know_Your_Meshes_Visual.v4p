@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\02_Know_Your_Meshes_Visual.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="435" top="825" width="18045" height="12855">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.3.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="10815" top="825" width="100" height="100">
@@ -895,7 +895,7 @@
    </BOUNDS>
    <BOUNDS height="10755" left="675" top="1560" type="Box" width="3135">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own using XFile (EX9.Geometry Load). Let&apos;s start with a simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;Here the whole mesh is drawn 2 times: first as a &apos;Solid&apos; mesh and once again as &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of each vertex are drawn as well, note the tiny yellow lines.&cr;&lf;&cr;&lf;The mesh is split into a &apos;Vertex Buffer&apos; and &apos;Indices&apos;. The &apos;Vertex Buffer&apos; is split further into &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; (not used here) for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). The circle is translated to this position, then the Billboard (Transform) makes it always facing to the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked face is drawn. First a transform and a text is created for each of the 24 vertices but then only the selected 3 vertices are being &quot;getsliced&quot;.&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed of 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Try different geometries, like Box, Torus, Teapot, or load your own using the XFile (EX9.Geometry Load). Let&apos;s start with a simple Grid.&cr;&lf;&cr;&lf;Change this value to pick one of the vertices. The GetSlice (Spreads) picks 3 slices (for X, Y and Z) from the spread of all vertex positions coming out of the VertexBuffer (EX9.Geometry).&cr;&lf;&cr;&lf;Change this value to pick one of the triangles. This GetSlice picks 3 indices forming a trianlge.&cr;&lf;&cr;&lf;The whole mesh is drawn 2 times: first as a &apos;Solid&apos; mesh and once again as &apos;WireFrame&apos;.&cr;&lf;&cr;&lf;The normals of each vertex are drawn as well, note the tiny yellow lines.&cr;&lf;&cr;&lf;The mesh is split into a &apos;Vertex Buffer&apos; and &apos;Indices&apos;. The &apos;Vertex Buffer&apos; is split further into &apos;Position XYZ&apos; and &apos;NormalXYZ&apos; (not used here) for every vertex.&cr;&lf;&cr;&lf;The Segment (DX9) creates a small circle at the position of the picked vertex (See Step 2). The circle is translated to this position, then the Billboard (Transform) makes it facing always to the Camera and the UniformScale (Transform) scales it down.&cr;&lf;&cr;&lf;The text with the Index number of the vertices of the picked face is drawn. First a transform and a text is created for each of the 24 vertices but then only 3 selected vertices are being &quot;getsliced&quot;.&cr;&lf;&cr;&lf;The Triangle (DX9 Indexed) draws a semi-transparent white triangle constructed of 3 vertices picked in Step 3.&cr;&lf;&cr;&lf;Finally the scene is rendered to a window according to a placed camera.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -951,9 +951,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="92" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="5535" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="5325" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="5535" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="5325" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -1145,9 +1145,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="112" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="6180" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="5970" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="6180" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="5970" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -1161,9 +1161,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="113" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="7215" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="7005" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="7215" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="7005" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -1177,9 +1177,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="114" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="8895" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="8460" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="8895" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="8460" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1193,9 +1193,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="115" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="225" top="9960" type="Node" width="315">
+   <BOUNDS height="270" left="225" top="9750" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="225" top="9960" type="Box" width="405">
+   <BOUNDS height="390" left="225" top="9750" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|9&cr;&lf;.|">
    </PIN>
@@ -1209,9 +1209,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="116" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="45" top="10785" type="Node" width="315">
+   <BOUNDS height="270" left="45" top="10575" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="45" top="10785" type="Box" width="600">
+   <BOUNDS height="405" left="45" top="10575" type="Box" width="600">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1264,4 +1264,18 @@
    </LINK>
    <LINK srcnodeid="58" srcpinname="Output" dstnodeid="119" dstpinname="Index">
    </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="120" systemname="IOBox (Color)">
+   <BOUNDS type="Box" left="11010" top="7995" width="285" height="285">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11010" top="7995" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.56282,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="120" srcpinname="Color Output" dstnodeid="19" dstpinname="Color">
+   </LINK>
+   <NODE systemname="XFile (EX9.Geometry Load)" nodename="XFile (EX9.Geometry Load)" componentmode="Hidden" id="121">
+   <BOUNDS type="Node" left="14265" top="825" width="100" height="100">
+   </BOUNDS>
+   </NODE>
    </PATCH>
