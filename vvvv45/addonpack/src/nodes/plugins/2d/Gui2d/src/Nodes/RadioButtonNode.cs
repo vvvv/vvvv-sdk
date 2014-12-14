@@ -42,6 +42,10 @@ namespace VVVV.Nodes
 		
 		[Input("Value Input")]
 		IDiffSpread<int> FValueIn;
+
+        //autosave
+        [Input("Autosave", IsSingle = true)]
+        ISpread<bool> FAutoSave;
 		
 		[Output("Value Output")]
 		ISpread<int> FValueOut;
@@ -160,7 +164,7 @@ namespace VVVV.Nodes
 				int pcount = group.FControllers.Length;
 				
 				FValueOut[i] = group.SelectedSlice;
-				if (valueSet) FInternalValueConfig[i] = group.SelectedSlice;
+                if (valueSet && FAutoSave[0]) FInternalValueConfig[i] = group.SelectedSlice;
 				
 				for (int j = 0; j < pcount; j++)
 				{
