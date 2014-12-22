@@ -38,6 +38,14 @@ namespace VVVV.Nodes
 		Pixmap
 	}
 	
+	public enum ColorChannels
+	{
+		Red,
+		Green,
+		Blue,
+		Alpha
+	}
+	
 	[Startable]
 	public class GlobalEnumManager : IStartable
 	{
@@ -62,6 +70,10 @@ namespace VVVV.Nodes
 			
 			//RS232
 			UpdatePortList();
+			
+			//Color Channels
+			EnumManager.UpdateEnum("ColorChannels", "Red", Enum.GetNames(typeof(ColorChannels)));
+			
 		}
 		public void Shutdown()
 		{
