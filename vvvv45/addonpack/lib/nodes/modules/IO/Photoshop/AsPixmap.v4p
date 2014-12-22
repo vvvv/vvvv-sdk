@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsPixmap.v4p" scrollx="0" scrolly="315" systemname="AsPixmap" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsPixmap.v4p">
-   <BOUNDS type="Window" left="17505" top="3705" width="9030" height="12390">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\AsPixmap.v4p" scrollx="0" scrolly="315" systemname="AsPixmap" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsPixmap.v4p">
+   <BOUNDS type="Window" left="5265" top="3300" width="9030" height="12390">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -244,8 +244,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="15" dstpinname="Texture">
-   </LINK>
    <NODE systemname="AsRaw (EX9.Texture)" nodename="AsRaw (EX9.Texture)" componentmode="Hidden" id="20">
    <BOUNDS type="Node" left="1455" top="9480" width="1185" height="270">
    </BOUNDS>
@@ -316,6 +314,32 @@
    </LINK>
    <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Read">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="20" dstpinname="Texture">
+   <NODE systemname="Swizzle (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Swizzle\Swizzle (EX9.Texture Filter).v4p" nodename="Swizzle (EX9.Texture Filter)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="1470" top="3045" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="25" dstpinname="Texture">
    </LINK>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="15" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="20" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2730" top="3045" width="690" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2730" top="3045" width="2955" height="735">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Rearranging channels. &cr;&lf;ARGB comes in. RGBA comes out. &cr;&lf;This is what Photoshop wants.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
