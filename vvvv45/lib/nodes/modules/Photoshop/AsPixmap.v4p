@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsPixmap.v4p" scrollx="0" scrolly="315" systemname="AsPixmap" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Photoshop\AsPixmap.v4p">
-   <BOUNDS type="Window" left="15585" top="3870" width="13035" height="12975">
+   <BOUNDS type="Window" left="17505" top="3705" width="9030" height="12390">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -230,55 +230,7 @@
    </NODE>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 4">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7305" top="5730" width="2295" height="480">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7305" top="5730" width="2670" height="1845">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Color Mode:&cr;&lf;1 for RGB currently supported&cr;&lf;&cr;&lf;Channel Count:&cr;&lf;1 or 3 currently supported&cr;&lf;&cr;&lf;Bits Per Channel:&cr;&lf;8 currently supported|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 5">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="0" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7305" top="7890" width="2295" height="480">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7305" top="7890" width="4350" height="2085">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop currently supports only RGB images (without an alpha channel).&cr;&lf;&cr;&lf;Before sending a texture encoded as Photoshop Pixmap, it is encoded as X8B8G8R8. &apos;X&apos; is an extra channel, so there are actually 4 channels set to the Photoshop, but the header must have the &apos;Channel Count&apos; set to 3. It looks like the Photoshop makes some internal magic and reads only 3 bytes for every pixel.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="ChangeFormat (EX9.Texture)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\ChangeFormat (EX9.Texture).v4p" nodename="ChangeFormat (EX9.Texture)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="1470" top="8685" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" visible="1" values="A8R8G8B8">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="1875" top="8295" width="1035" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="1875" top="8295" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="X8R8G8B8">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="18" dstpinname="Format">
    </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="19" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="1485" top="915" width="795" height="240">
@@ -292,8 +244,6 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="18" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="15" dstpinname="Texture">
    </LINK>
    <NODE systemname="AsRaw (EX9.Texture)" nodename="AsRaw (EX9.Texture)" componentmode="Hidden" id="20">
@@ -308,8 +258,6 @@
    <PIN pinname="Read" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="20" dstpinname="Texture">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="21" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="2010" top="9120" width="600" height="240">
    </BOUNDS>
@@ -367,5 +315,7 @@
    <LINK srcnodeid="16" srcpinname="Output" dstnodeid="24" dstpinname="Input Node">
    </LINK>
    <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Read">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="20" dstpinname="Texture">
    </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\01_Photoshop_General-Info.v4p" systemname="03_Photoshop-GeneralInfo" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\01_Photoshop_General-Info.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="270" top="2025" width="18105" height="8730">
+   <BOUNDS type="Window" left="4740" top="1440" width="18105" height="8730">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -95,9 +95,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="375" top="3015" width="2160" height="270">
+   <BOUNDS type="Node" left="375" top="3165" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="375" top="3015" width="2310" height="360">
+   <BOUNDS type="Box" left="375" top="3165" width="2310" height="360">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Image Formats:|">
    </PIN>
@@ -111,23 +111,23 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="375" top="3375" width="4740" height="480">
+   <BOUNDS type="Node" left="375" top="3525" width="4740" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="375" top="3375" width="2655" height="615">
+   <BOUNDS type="Box" left="375" top="3525" width="2595" height="1545">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two formats available: JPEG and uncompressed Pixmap.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are two formats available: JPEG and uncompressed Pixmap.&cr;&lf;&cr;&lf;Snapshots of the whole PSDs can be requested as JPEGs or Pixmaps. Snapshots of the idividual layers can be only Pixmaps.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="String Type" slicecount="1" values="String">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="375" top="4140" width="2160" height="270">
+   <BOUNDS type="Node" left="375" top="5475" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="375" top="4140" width="2310" height="360">
+   <BOUNDS type="Box" left="375" top="5475" width="2310" height="360">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Channels:">
    </PIN>
@@ -141,11 +141,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="375" top="4500" width="4740" height="480">
+   <BOUNDS type="Node" left="375" top="5835" width="4740" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="375" top="4500" width="2625" height="1635">
+   <BOUNDS type="Box" left="375" top="5835" width="2520" height="1350">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Only RGB textures are supported, no alpha channels - this is the only way Photoshop transmit images. Use the &apos;X8R8G8B8&apos; format for textures destined for Photoshop.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|vvvv sends 4 channel (rgb + alpha) images to Photoshop.&cr;&lf;&cr;&lf;Photoshop responses only with 3 channels at the moment. So there is no transparency, Adobe?|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -155,9 +155,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="405" top="1365" width="2160" height="270">
+   <BOUNDS type="Node" left="375" top="1365" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="405" top="1365" width="2310" height="360">
+   <BOUNDS type="Box" left="375" top="1365" width="2310" height="360">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Resolution:">
    </PIN>
@@ -171,9 +171,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="405" top="1725" width="4740" height="480">
+   <BOUNDS type="Node" left="375" top="1725" width="4740" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="405" top="1725" width="3195" height="1140">
+   <BOUNDS type="Box" left="375" top="1725" width="3195" height="1140">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|If the resolution of the PSD is bigger than the requested one, Photoshop sends a scaled down version of its document. If the resolution of the PSD is smaller, the returned image will have its resolution.|">
    </PIN>

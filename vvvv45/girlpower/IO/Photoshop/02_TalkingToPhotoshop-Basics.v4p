@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\02_TalkingToPhotoshop-Basics.v4p" scrollx="0" scrolly="0" systemname="Patches" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\Patches.v4p">
-   <BOUNDS type="Window" left="4275" top="1065" width="16560" height="14700">
+   <BOUNDS type="Window" left="8145" top="1020" width="16365" height="14700">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="11955" top="8475" width="450" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="11955" top="8475" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="512">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2000">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -451,27 +451,27 @@
    </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="94">
-   <BOUNDS type="Node" left="14940" top="12780" width="100" height="100">
+   <BOUNDS type="Node" left="14970" top="12765" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
+   <PIN pinname="Blend Mode" slicecount="1" values="| Off|">
+   </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="95">
-   <BOUNDS type="Node" left="14940" top="13275" width="100" height="100">
+   <BOUNDS type="Node" left="14985" top="13320" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="14940" top="13275" width="2520" height="2055">
+   <BOUNDS type="Box" left="14985" top="13320" width="2520" height="2055">
    </BOUNDS>
    <BOUNDS type="Window" left="16875" top="13500" width="6240" height="5010">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Photoshop Response|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="94" srcpinname="Layer" dstnodeid="95" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="96" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9510" top="10365" width="2145" height="270">
    </BOUNDS>
@@ -523,7 +523,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10950" top="11085" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="192.168.178.37">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="192.168.2.7">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="192.168.1.1">
    </PIN>
@@ -689,7 +689,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="14940" top="11085" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="192.168.178.37">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="192.168.2.7">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="192.168.1.1">
    </PIN>
@@ -840,26 +840,10 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden" id="85">
-   <BOUNDS type="Node" left="14955" top="12285" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="14955" top="12285">
-   </BOUNDS>
-   <PIN pinname="Apply" visible="1" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="84" srcpinname="Response" dstnodeid="85" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="85" srcpinname="Texture Out" dstnodeid="94" dstpinname="Texture">
-   </LINK>
    <NODE systemname="AsRaw (EX9.Texture Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsRaw (EX9.Texture Photoshop).v4p" nodename="AsRaw (EX9.Texture Photoshop)" componentmode="Hidden" id="144">
    <BOUNDS type="Node" left="8010" top="9180" width="2235" height="270">
    </BOUNDS>
-   <BOUNDS type="Window" left="16845" top="4605" width="10350" height="11415">
+   <BOUNDS type="Window" left="17610" top="4905" width="11610" height="11415">
    </BOUNDS>
    <BOUNDS type="Box" left="8010" top="9180">
    </BOUNDS>
@@ -867,17 +851,17 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="144" dstpinname="Send">
-   </LINK>
-   <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="144" dstpinname="Texture">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="145" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="9105" top="8580" width="615" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="9105" top="8580" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Pixmap">
    </PIN>
    </NODE>
    <LINK srcnodeid="145" srcpinname="Output Enum" dstnodeid="144" dstpinname="Format">
@@ -905,7 +889,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="13410" top="8475" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Pixmap">
    </PIN>
    </NODE>
    <LINK srcnodeid="147" srcpinname="Output Enum" dstnodeid="146" dstpinname="Format">
@@ -938,6 +922,8 @@
    <PIN pinname="Height" visible="1">
    </PIN>
    <PIN pinname="Send" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="150" dstpinname="Width">
@@ -1013,9 +999,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="165" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="13680" top="735" width="1485" height="270">
+   <BOUNDS type="Node" left="13530" top="735" width="1485" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="13680" top="735" width="2430" height="390">
+   <BOUNDS type="Box" left="13530" top="735" width="2430" height="390">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Scroll for more &gt;&gt;|">
    </PIN>
@@ -1114,7 +1100,23 @@
    <PIN pinname="Input String" slicecount="1" values="01_Photoshop_General-Info.v4p">
    </PIN>
    </NODE>
-   <LINK srcnodeid="84" srcpinname="On Data" dstnodeid="85" dstpinname="Apply">
+   <NODE systemname="AsTexture (Photoshop)" filename="%VVVV%\lib\nodes\modules\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden" id="192">
+   <BOUNDS type="Node" left="14955" top="12285" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14955" top="12285">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="84" srcpinname="Response" dstnodeid="192" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="84" srcpinname="On Data" dstnodeid="192" dstpinname="Apply">
+   </LINK>
+   <LINK srcnodeid="192" srcpinname="Texture Out" dstnodeid="94" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="94" srcpinname="Layer" dstnodeid="95" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Texture Out" dstnodeid="144" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="144" srcpinname="Output" dstnodeid="61" dstpinname="Input">
    </LINK>
