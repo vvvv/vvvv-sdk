@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" systemname="Tooltip" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="705" top="975" width="20790" height="11820">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" systemname="Tooltip" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Tooltip.v4p" scrollx="3435" scrolly="0">
+   <BOUNDS type="Window" left="1320" top="210" width="16560" height="8175">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -25,7 +25,7 @@
    </PIN>
    <PIN pinname="Bold" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" values="1" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="54">
@@ -267,6 +267,8 @@
    </PIN>
    <PIN pinname="Bold" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="26">
    <BOUNDS type="Node" left="12255" top="8655" width="100" height="100">
@@ -316,6 +318,8 @@
    <PIN pinname="Quality" slicecount="1" values="ClearType">
    </PIN>
    <PIN pinname="Bold" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="15" systemname="IOBox (Enumerations)">
@@ -597,7 +601,7 @@
    </PIN>
    <PIN pinname="Color" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" values="1" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="79" systemname="IOBox (Value Advanced)">
@@ -762,6 +766,8 @@
    <PIN pinname="Resolution" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="97">
@@ -1327,7 +1333,7 @@
    </BOUNDS>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" values="1" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="83" srcpinname="Output" dstnodeid="168" dstpinname="Texture">
@@ -1655,5 +1661,39 @@
    <LINK srcnodeid="213" srcpinname="Y Output Value" dstnodeid="200" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="213" srcpinname="Y Output Value" dstnodeid="197" dstpinname="Switch">
+   </LINK>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="214">
+   <BOUNDS type="Node" left="15405" top="2310" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="214" dstpinname="Input">
+   </LINK>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="215">
+   <BOUNDS type="Node" left="15405" top="2775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="214" srcpinname="Count" dstnodeid="215" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="16" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="37" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="55" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="27" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="96" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="80" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Output" dstnodeid="168" dstpinname="Enabled" hiddenwhenlocked="1">
    </LINK>
    </PATCH>

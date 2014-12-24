@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" systemname="Buttons" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" scrollx="45" scrolly="-2166">
-   <BOUNDS type="Window" left="3675" top="240" width="11625" height="11820">
+   <BOUNDS type="Window" left="1440" top="765" width="11625" height="11820">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -31,21 +31,11 @@
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="X" visible="1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE systemname="Billboard (Transform)" nodename="Billboard (Transform)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="840" top="1155" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Object Space" slicecount="1" values="Pixel">
+   <PIN pinname="X" visible="1" slicecount="3" values="0,51,102">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="8" dstpinname="Transform In">
-   </LINK>
    <NODE systemname="Scale (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="10">
    <BOUNDS type="Node" left="2070" top="3165" width="100" height="100">
    </BOUNDS>
@@ -283,7 +273,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="3195" top="1725" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="282">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-34">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -331,7 +321,7 @@
    <LINK srcnodeid="56" srcpinname="Output" dstnodeid="54" dstpinname="Input 1">
    </LINK>
    <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="2295" top="1740" width="100" height="100">
+   <BOUNDS type="Node" left="2295" top="1695" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -365,7 +355,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="2970" top="1320" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-163">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-50">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -379,8 +369,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="8" dstpinname="X">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Transform Out" dstnodeid="13" dstpinname="Transform In">
    </LINK>
@@ -541,5 +529,19 @@
    <LINK srcnodeid="80" srcpinname="Output" dstnodeid="66" dstpinname="Set">
    </LINK>
    <LINK srcnodeid="67" srcpinname="PositionXY" dstnodeid="13" dstpinname="PointsXY">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="84" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1020" top="465" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1020" top="465" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform In|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="84" srcpinname="Output Node" dstnodeid="8" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="8" dstpinname="X">
    </LINK>
    </PATCH>
