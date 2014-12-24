@@ -140,7 +140,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Value";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "Legacy";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "bjo:rn";

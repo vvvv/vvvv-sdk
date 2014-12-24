@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha26.1.dtd" >
-   <PATCH nodename="C:\Users\woeishi\vvvv\vvvv45\addonpack\lib\nodes\plugins\Mesh (Join Subsets) help.v4p" componentmode="InAWindow" systemname="Mesh (Join Subsets) help" filename="C:\Users\woeishi\vvvv\vvvv45\addonpack\lib\nodes\plugins\Mesh (Join Subsets) help.v4p">
-   <BOUNDS height="6825" left="6615" top="600" type="Window" width="5745">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Mesh (EX9.Geometry Join Subsets) help.v4p" componentmode="InAWindow" systemname="Mesh (Join Subsets) help" filename="C:\Users\woeishi\vvvv\vvvv45\addonpack\lib\nodes\plugins\Mesh (Join Subsets) help.v4p">
+   <BOUNDS height="7695" left="6615" top="600" type="Window" width="5745">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="22" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="180" top="5775" type="Node" width="0">
@@ -57,7 +57,7 @@
    <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="585" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="495" left="255" top="585" type="Box" width="5310">
+   <BOUNDS height="540" left="255" top="585" type="Box" width="4080">
    </BOUNDS>
    <BOUNDS height="160" left="7020" top="13845" type="Window" width="215">
    </BOUNDS>
@@ -75,7 +75,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="7020" top="13845" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Mesh - EX9.Geometry Join Subsets|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Mesh (EX9.Geometry Join Subsets)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -147,7 +147,7 @@
    </PIN>
    <PIN pinname="Mesh" visible="1">
    </PIN>
-   <PIN pinname="Indices Bin Size" slicecount="1" values="2">
+   <PIN pinname="Indices Bin Size" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="CentroidXYZ" visible="1">
    </PIN>
@@ -165,7 +165,7 @@
    <LINK srcnodeid="27" srcpinname="Mesh" dstnodeid="42" dstpinname="Mesh">
    </LINK>
    <NODE systemname="VertexBuffer (EX9.Geometry Split)" nodename="VertexBuffer (EX9.Geometry Split)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="345" top="2040" width="100" height="100">
+   <BOUNDS type="Node" left="345" top="2040" width="990" height="270">
    </BOUNDS>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
@@ -217,7 +217,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="3" values="0.07,0.07,0.07">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -227,5 +227,91 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="45" dstpinname="Rotate XYZ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="47" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2175" top="2205" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2175" top="2205" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Indices Bin Size">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2700" top="2175" width="1425" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2700" top="2175" width="1380" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; &apos;Indices Bin Size&apos;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2880" top="2415" width="6915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2880" top="2415" width="1965" height="2055">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Please note, this is per triangle! So 1 means 3 indices, 2 means 6 indices and so on. &cr;&lf;&cr;&lf;In this example every 6 indices (two triangles) are used to build up 1128 rectangular subsets.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1830" top="2040" width="195" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1830" top="2040" width="285" height="465">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="19">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.0.0">
+   </PACK>
+   <NODE systemname="Count (Node)" nodename="Count (Node)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="585" top="3180" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Mesh" dstnodeid="53" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="54" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="600" top="3585" width="480" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="600" top="3585" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Count" dstnodeid="54" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
