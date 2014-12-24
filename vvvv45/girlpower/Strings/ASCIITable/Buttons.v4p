@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" systemname="Buttons" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" scrollx="45" scrolly="-2166">
-   <BOUNDS type="Window" left="1440" top="765" width="11625" height="11820">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" systemname="Buttons" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\Buttons.v4p" scrollx="45" scrolly="6120">
+   <BOUNDS type="Window" left="3420" top="1065" width="11625" height="11820">
    </BOUNDS>
    <PACK Name="addonpack" Version="33.3.0">
    </PACK>
@@ -231,7 +231,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Index" visible="1" slicecount="1" values="0">
+   <PIN pinname="Index" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="35" srcpinname="Output" dstnodeid="36" dstpinname="Spread">
@@ -408,8 +408,6 @@
    </NODE>
    <LINK srcnodeid="68" srcpinname="Output Node" dstnodeid="67" dstpinname="Mouse">
    </LINK>
-   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="36" dstpinname="Index">
-   </LINK>
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="74">
    <BOUNDS type="Node" left="3480" top="8430" width="100" height="100">
    </BOUNDS>
@@ -462,8 +460,6 @@
    </NODE>
    <LINK srcnodeid="78" srcpinname="Y Output Value" dstnodeid="77" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="77" dstpinname="Index">
-   </LINK>
    <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="74" dstpinname="Select">
    </LINK>
    <LINK srcnodeid="77" srcpinname="Output" dstnodeid="25" dstpinname="Alpha">
@@ -479,9 +475,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Selected Mode|">
    </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="79" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="80">
    <BOUNDS type="Node" left="5355" top="5715" width="100" height="100">
    </BOUNDS>
@@ -543,5 +539,21 @@
    <LINK srcnodeid="84" srcpinname="Output Node" dstnodeid="8" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="53" srcpinname="Output" dstnodeid="8" dstpinname="X">
+   </LINK>
+   <NODE systemname="AvoidNIL (Spreads)" filename="%VVVV%\lib\nodes\modules\Spreads\AvoidNIL (Spreads).v4p" nodename="AvoidNIL (Spreads)" componentmode="Hidden" id="85">
+   <BOUNDS type="Node" left="5010" top="6585" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="66" srcpinname="Output" dstnodeid="85" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="85" srcpinname="Output" dstnodeid="36" dstpinname="Index">
+   </LINK>
+   <LINK srcnodeid="85" srcpinname="Output" dstnodeid="79" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="85" srcpinname="Output" dstnodeid="77" dstpinname="Index">
    </LINK>
    </PATCH>
