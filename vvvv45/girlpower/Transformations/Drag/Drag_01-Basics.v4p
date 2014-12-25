@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_01.v4p" systemname="Drag_01" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_01.v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_01.v4p" systemname="Drag_01" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_01.v4p" scrollx="0" scrolly="-1698">
    <BOUNDS type="Window" left="600" top="375" width="13335" height="9630">
    </BOUNDS>
    <PACK Name="dx11" Version="33.0">
@@ -518,102 +518,6 @@
    </LINK>
    <LINK srcnodeid="11" srcpinname="Output" dstnodeid="30" dstpinname="TranslateXY">
    </LINK>
-   <NODE id="0" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6180" top="14595" width="315">
-   </BOUNDS>
-   <BOUNDS type="Box" height="390" left="6180" top="14595" width="405">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="5.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE id="1" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6180" top="13545" width="315">
-   </BOUNDS>
-   <BOUNDS type="Box" height="390" left="6180" top="13545" width="405">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="4.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE id="2" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6180" top="12480" width="315">
-   </BOUNDS>
-   <BOUNDS type="Box" height="390" left="6180" top="12480" width="405">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="3.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE id="3" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6180" top="11460" width="315">
-   </BOUNDS>
-   <BOUNDS type="Box" height="390" left="6180" top="11460" width="405">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="2.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE id="9" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6180" top="10380" width="315">
-   </BOUNDS>
-   <BOUNDS type="Box" height="390" left="6180" top="10380" width="405">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="1.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE id="10" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS type="Node" height="270" left="6660" top="10380" width="7425">
-   </BOUNDS>
-   <BOUNDS type="Box" height="5805" left="6660" top="10380" width="4170">
-   </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|On banging the Reset IOBox the FrameDelay (Animation) returns the spread from its &apos;Default 1&apos; pin, which contains 10 random values (used as 5 starting XY position for the small Quads).&cr;&lf;&cr;&lf;Rightclick to open this subpatch, it just combines the Transform and HitTest (2d Quad) nodes. This HitTest node performs hittesting on Quads, just type &apos;hittest&apos; in the NodeBrowser (Ctrl+N) to see all other options.&cr;&lf;&cr;&lf;The Drag (2d) performs only the logic and calculates the offset, so it doesn&apos;t care what kind of shapes are being dragged, it just returns the &apos;OffsetXY&apos; and whether the shapes are being dragged now or not.&cr;&lf;&cr;&lf;The offsets are added to the old positions of the Quads, resulting in their new position, which is over the FrameDelay (Animation) comes back to the HitQuad subpatch in the next frame.&cr;&lf;&cr;&lf;The updated positions of the Quads are used to transform them and finally the Quad (DX9) draws them to the Renderer.&cr;&lf;&cr;&lf;Note, if you&apos;re using other primitives, like Segment (DX9) you must use another HitTest node suitable for this shape.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="12" srcpinname="OffsetXY" dstnodeid="11" dstpinname="Input 2">
    </LINK>
    <NODE systemname="HitQuad" filename="Subpatches\HitQuad.v4p" nodename="Subpatches\HitQuad.v4p" componentmode="Hidden" id="19" stayontop="0">
