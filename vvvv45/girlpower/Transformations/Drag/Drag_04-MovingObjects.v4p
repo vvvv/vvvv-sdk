@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_04-MovingObjects.v4p" systemname="Drag_04" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_04.v4p" scrollx="0" scrolly="-360">
-   <BOUNDS type="Window" left="240" top="165" width="14985" height="10620">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_04-MovingObjects.v4p" systemname="Drag_04" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_04.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="1575" top="4905" width="14370" height="11565">
    </BOUNDS>
    <PACK Name="dx11" Version="33.0">
    </PACK>
@@ -755,7 +755,7 @@
    </BOUNDS>
    <BOUNDS type="Box" height="5175" left="990" top="1965" width="3855">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|Every second a new random spread of small values is generated and put through the Damper (Animation) which smoothes the changes over time. These small changing values are added in the step 3 to the positions of the points making them randomly move.&cr;&lf;&cr;&lf;The SetSlice (Spreads) sets those slices of this random spread to 0 which are being dragged. So the dragged points are not moving randomly. &cr;&lf;&cr;&lf;The Drag (2d) returns whether the points are being dragged or not on its &apos;Dragging&apos; output pin. The Select (Value) returns on its &apos;Former Slice&apos; pin the IDs of those slices which are &apos;true&apos;.&cr;&lf;&cr;&lf;Note that the &apos;Bin Size&apos; pin is set to 2, because every point has 2 coordinates: X and Y.&cr;&lf;&cr;&lf;The spread of small changing values is added to the positions of the points from the previous frame making the points randomly move.&cr;&lf;&cr;&lf;This step corresponds to the step 4 from the first example on dragging.&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|Every second a new random spread of small values is generated and put through the Damper (Animation) which smoothes the changes over time. These small changing values are added in step 3 to the positions of the points making them randomly move.&cr;&lf;&cr;&lf;The SetSlice (Spreads) sets those slices of this random spread that are being dragged to 0. So while dragged a point stops moving randomly.  &cr;&lf;&cr;&lf;Drag (2d) returns whether the points are being dragged or not on its &apos;Dragging&apos; output pin. On its &apos;Former Slice&apos; pin the Select (Value) node returns the IDs of those slices that are &apos;true&apos; (ie. being dragged).&cr;&lf;&cr;&lf;Note that the &apos;Bin Size&apos; pin is set to 2, because every point has 2 coordinates: X and Y.&cr;&lf;&cr;&lf;The spread of small changing values is added to the positions of the points from the previous frame making the points move randomly.&cr;&lf;&cr;&lf;This step corresponds to step 4 from the first example on dragging.&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

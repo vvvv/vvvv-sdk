@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_01-Basics.v4p" systemname="Drag_01" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_01.v4p" scrollx="0" scrolly="-360">
-   <BOUNDS type="Window" left="600" top="375" width="13335" height="9630">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Transformations\Drag\Drag_01-Basics.v4p" systemname="Drag_01" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_01.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="225" top="180" width="13335" height="9630">
    </BOUNDS>
    <PACK Name="dx11" Version="33.0">
    </PACK>
@@ -323,7 +323,7 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
    <BOUNDS type="Node" left="315" top="525" width="3405" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="315" top="525" width="2805" height="525">
+   <BOUNDS type="Box" left="315" top="525" width="3120" height="510">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|The most simple case. This example shows how to drag Quads.|">
    </PIN>
@@ -337,9 +337,9 @@
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="810" top="1335" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="5805" left="810" top="1335" type="Box" width="4170">
+   <BOUNDS height="6030" left="810" top="1335" type="Box" width="4200">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|On banging the &apos;Reset&apos; IOBox the FrameDelay (Animation) returns the spread from its &apos;Default 1&apos; pin, which contains 10 random values (used as 5 starting XY position for the small Quads).&cr;&lf;&cr;&lf;Rightclick to open this subpatch, it just combines the Transform and HitTest (2d Quad) nodes. This HitTest node performs hittesting on Quads, just type &apos;hittest&apos; in the NodeBrowser (Ctrl+N) to see all other options.&cr;&lf;&cr;&lf;The Drag (2d) performs only the logic and calculates the offset, so it doesn&apos;t care what kind of shapes are being dragged, it just returns the &apos;OffsetXY&apos; and whether the shapes are being dragged now or not.&cr;&lf;&cr;&lf;The offsets are added to the old positions of the Quads, resulting in their new position, which is over the FrameDelay (Animation) comes back to the HitQuad subpatch in the next frame.&cr;&lf;&cr;&lf;The updated positions of the Quads are used to transform them and finally the Quad (DX9) draws them to the Renderer.&cr;&lf;&cr;&lf;Note, if you&apos;re using other primitives, like Segment (DX9) you must use another HitTest node suitable for this shape.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|On banging the &apos;Reset&apos; IOBox the FrameDelay (Animation) returns the spread from its &apos;Default 1&apos; pin, which contains 10 random values (used as 5 starting XY positions for the small Quads).&cr;&lf;&cr;&lf;Rightclick to open this subpatch, it just combines the Transform and HitTest (2d Quad) nodes. This HitTest node performs hittesting on Quads, just type &apos;hittest&apos; in the NodeBrowser (Ctrl+N) to see all other hittest-options.&cr;&lf;&cr;&lf;The Drag (2d) calculates an offset for any slice that is being Hit and Dragged. It doesn&apos;t care what kind of shapes are being dragged, it just returns the &apos;OffsetXY&apos; and indicates whether a shape is being dragged now or not.&cr;&lf;&cr;&lf;The offsets are added to the old positions of the Quads, resulting in their new position, which via the FrameDelay (Animation) is fed back to the HitQuad subpatch in the next frame.&cr;&lf;&cr;&lf;The updated positions of the Quads are used to transform them and finally the Quad (DX9) draws them to the Renderer.&cr;&lf;&cr;&lf;Note, if you&apos;re using other primitives, like Segment (DX9) you must use another HitTest node suitable for this shape.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
