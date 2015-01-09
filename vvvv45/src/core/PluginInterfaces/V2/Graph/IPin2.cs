@@ -85,6 +85,14 @@ namespace VVVV.PluginInterfaces.V2.Graph
         }
         
         /// <summary>
+        /// Gets/Sets the pins visibility. 
+        /// </summary>
+        PinVisibility Visibility
+        {
+            get; set;
+        }
+        
+        /// <summary>
         /// Returns a list of connected pins. For Inputs this is a maximum of one.
         /// </summary>
         IViewableCollection<IPin2> ConnectedPins
