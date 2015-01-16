@@ -106,6 +106,20 @@ namespace System.Drawing
         }
 
         /// <summary>
+        /// Normalizes the length
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public static PointF Normalize(this PointF point)
+        {
+            var distance = (float)Math.Sqrt(point.X * point.X + point.Y * point.Y);
+            if (distance != 0)
+                return new PointF(point.X / distance, point.Y / distance);
+            else
+                return new PointF();
+        }
+
+        /// <summary>
         /// Returns the distance to another point.
         /// </summary>
         public static float GetDistanceTo(this Point from, Point to)
