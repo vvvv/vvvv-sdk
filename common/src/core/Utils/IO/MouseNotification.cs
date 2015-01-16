@@ -30,6 +30,12 @@ namespace VVVV.Utils.IO
             ClientArea = clientArea;
         }
 
+        public bool IsMouseDown { get { return Kind == MouseNotificationKind.MouseDown; } }
+        public bool IsMouseUp { get { return Kind == MouseNotificationKind.MouseUp; } }
+        public bool IsMouseMove { get { return Kind == MouseNotificationKind.MouseMove; } }
+        public bool IsMouseWheel { get { return Kind == MouseNotificationKind.MouseWheel; } }
+        public bool IsMouseClick { get { return Kind == MouseNotificationKind.MouseClick; } }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(obj, this))
