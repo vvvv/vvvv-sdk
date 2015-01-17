@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 		Tags = "",
 		Author = "motzi"
 	)]
-    public class VectorLength2dSpectralNode : LengthSpectral<Vector2D>
+    public class Vector2dLengthSpectralNode : LengthSpectral<Vector2D>
     {
         override protected double Distance(Vector2D t1, Vector2D t2)
         {
@@ -31,7 +31,7 @@ namespace VVVV.Nodes
         Tags = "",
         Author = "motzi"
     )]
-    public class VectorLength3dSpectralNode : LengthSpectral<Vector3D>
+    public class Vector3dLengthSpectralNode : LengthSpectral<Vector3D>
     {
         override protected double Distance(Vector3D t1, Vector3D t2)
         {
