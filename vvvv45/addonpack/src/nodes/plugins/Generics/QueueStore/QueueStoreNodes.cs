@@ -21,18 +21,12 @@ namespace VVVV.Nodes
 	[PluginInfo(
            Name = "QueueStore", 
            Category = "Spreads", 
-           Help = "Stores a series of queues", 
-           Tags = "spread,append,set,remove",
+           Help = "Stores a series of queues",
+           Tags = "append, remove, spreadop, collection",
            Author = "motzi"
     )]
 	#endregion PluginInfo
-	public class QueueStoreNodes : QueueStore<double>
-	{
-		override protected ISpread<double> CloneInputSpread(ISpread<double> spread)
-        {
-            return spread.Clone() as ISpread<double>;
-        }
-	}
+	public class SpreadsQueueStoreNode : QueueStore<double> {}
 
 
 }

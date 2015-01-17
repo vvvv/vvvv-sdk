@@ -24,10 +24,10 @@ namespace VVVV.Nodes.Generic
         [Input("Insert", IsSingle = true)]
         public ISpread<bool> FDoInsert;
 
-        [Input("Split", IsSingle = true, IsBang = true)]
+        [Input("New", IsSingle = true, IsBang = true)]
         public ISpread<bool> FDoSplit;
 
-        [Input("Duplicate on split", IsSingle = true, IsToggle = true)]
+        [Input("Duplicate Last Input", IsSingle = true, IsToggle = true)]
         public ISpread<bool> FSplitDuplicate;
 
         [Input("Remove Index", DefaultValue = 0)]
@@ -45,13 +45,12 @@ namespace VVVV.Nodes.Generic
         [Output("Output")]
         public ISpread<ISpread<T>> FOutput;
 
-        [Output("Frames Recorded")]
+        [Output("Output Queue Size")]
         public ISpread<int> FFramesRecorded;
 
         [Import()]
         public ILogger FLogger;
 
-        bool FRecording = false;
         List<ISpread<T>> FBuffer = new List<ISpread<T>>();
 
         public void OnImportsSatisfied()
@@ -108,39 +107,31 @@ namespace VVVV.Nodes.Generic
                         }
 
                         FFramesRecorded.RemoveAt(i);
-
-                        // set FRecording to false so another FFramesRecorded slice can be 
-                        // inserted when FDoInsert is true in the same frame
-                        if (FFramesRecorded.SliceCount < 1)
-                            FRecording = false;
                     }
                 }
             }
 
             if (FDoInsert[0])
             {
-                if (!FRecording)
-                {
-                    FRecording = true;
+                // is empty, so insert new slice
+                if (FFramesRecorded.SliceCount < 1)
                     FFramesRecorded.Insert(0, 0);
-                }
-                if (FDoSplit[0])
+                // new slice for FFramesRecorded reqested
+                else if (FDoSplit[0])
                 {
+                    // duplicate current slice and insert in old queue
                     if (FSplitDuplicate[0])
                     {
-                        FBuffer.Insert(0, CloneInputSpread(FInput));
+                        FBuffer.Insert(0, FInput.Clone());
                         FFramesRecorded[0]++;
                     }
                     FFramesRecorded.Insert(0, 0);
                 }
 
-                FBuffer.Insert(0, CloneInputSpread(FInput));
+                FBuffer.Insert(0, FInput.Clone());
                 FFramesRecorded[0]++;
             }
-            else
-                FRecording = false;
-
-
+            
             FOutput.AssignFrom(FBuffer);
 
             if (FOutput.SliceCount == 0)
@@ -160,8 +151,5 @@ namespace VVVV.Nodes.Generic
                 FFramesRecorded[0] = count;
             }
         }
-
-
-        abstract protected ISpread<T> CloneInputSpread(ISpread<T> spread);
     }
 }
