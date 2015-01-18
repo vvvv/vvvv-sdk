@@ -9,6 +9,7 @@ namespace System.Drawing
 {
     public static class DrawingExtensions
     {
+
         /// <summary>
         /// Returns the bounds of the given point cloud.
         /// </summary>
@@ -67,6 +68,14 @@ namespace System.Drawing
         public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
         {
             return new RectangleF(centerPosition.X - size.Width * 0.5f, centerPosition.Y - size.Height * 0.5f, size.Width, size.Height);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="Point">Point</see> by casting the float components to integer.
+        /// </summary>
+        public static Point ToPoint(this PointF p1)
+        {
+            return new Point((int)p1.X, (int)p1.Y);
         }
 
         /// <summary>
