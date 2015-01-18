@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.3.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\contour tracker.v4p" filename="D:\personal\gregsn\Desktop\damper variable spread size\contour tracker.v4p" systemname="contour tracker">
-   <BOUNDS height="14505" left="9330" top="690" type="Window" width="12780">
+   <PATCH nodename="E:\dev\vvvv\vvvv45\public\vvvv45\girlpower\Animation\Animation Slots\contour tracker.v4p" filename="D:\personal\gregsn\Desktop\damper variable spread size\contour tracker.v4p" systemname="contour tracker">
+   <BOUNDS height="13350" left="8790" top="960" type="Window" width="12780">
    </BOUNDS>
    <NODE componentmode="InAWindow" filename="%VVVV%\freeframe\Contour.dll" id="35" nodename="Contour (FreeFrame DShow9)" systemname="Contour (FreeFrame DShow9)">
    <BOUNDS height="100" left="5520" top="6495" type="Node" width="100">
@@ -451,9 +451,9 @@
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1965" top="285" type="Node" width="915">
+   <BOUNDS height="270" left="1530" top="165" type="Node" width="915">
    </BOUNDS>
-   <BOUNDS height="390" left="1965" top="285" type="Box" width="4710">
+   <BOUNDS height="390" left="1530" top="165" type="Box" width="4710">
    </BOUNDS>
    <BOUNDS height="160" left="10680" top="24090" type="Window" width="215">
    </BOUNDS>
@@ -712,6 +712,20 @@
    <BOUNDS type="Box" left="4875" top="11715" width="1995" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|fix ids of contour. &gt;&gt;&gt;&gt;&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="165" top="840" width="1815" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="840" width="4230" height="3450">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Indices of the Contour (FreeFrame DShow9) sorrily get bigger and bigger over time.&cr;&lf;&cr;&lf;Beacause of that they can&apos;t be used as animation slot ids directly, since you typically only have a limited number of animation slots and want to use them in the best way possible. &cr;&lf;&cr;&lf;So you typically want to get slot ids as small as possible.&cr;&lf;The ReIndex node (at the bottom of tha patch) attacks that issue.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
