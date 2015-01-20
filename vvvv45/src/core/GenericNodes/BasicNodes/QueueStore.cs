@@ -30,6 +30,9 @@ namespace VVVV.Nodes.Generic
         [Input("Duplicate Last Input", IsSingle = true, IsToggle = true)]
         public ISpread<bool> FSplitDuplicate;
 
+        [Input("Append", IsSingle = true, IsToggle = true)]
+        public ISpread<bool> FAppend;
+
         [Input("Remove Index", DefaultValue = 0)]
         public ISpread<int> FIndex;
 
@@ -76,33 +79,24 @@ namespace VVVV.Nodes.Generic
 
             if (FRemove[0])
             {
-                //FLogger.Log(LogType.Debug,"---------------------");
-
                 if (FFramesRecorded.SliceCount > 0)
                 {
 
                     foreach (int i in FIndex.Select(x => x % FFramesRecorded.SliceCount).Distinct().OrderByDescending(x => x))
                     {
-                        //FLogger.Log(LogType.Debug, "i="+i.ToString()+" , FFramesRec.SliceCount=" +FFramesRecorded.SliceCount.ToString());
                         int offset = 0;
                         for (int j = 0; j < i; j++)
                         {
 
                             offset += FFramesRecorded[j];
-                            //FLogger.Log(LogType.Debug, "+ " + FFramesRecorded[j].ToString() + " = " + offset.ToString());
                         }
-
-                        //FLogger.Log(LogType.Debug, "offset: "+offset.ToString()+ " - FramesRecorded[i]: "+ FFramesRecorded[i].ToString());
-
 
                         if (FFramesRecorded.SliceCount > 1)
                         {
-                            //FLogger.Log(LogType.Debug, ". Removing " + i.ToString() +": "+ FFramesRecorded[i].ToString());
                             FBuffer.RemoveRange(offset, FFramesRecorded[i]);
                         }
                         else
                         {
-                            //FLogger.Log(LogType.Debug, ".. Removing " + i.ToString() +": "+ FFramesRecorded[i].ToString());
                             FBuffer.RemoveRange(0, FFramesRecorded[i]);
                         }
 
@@ -122,14 +116,45 @@ namespace VVVV.Nodes.Generic
                     // duplicate current slice and insert in old queue
                     if (FSplitDuplicate[0])
                     {
-                        FBuffer.Insert(0, FInput.Clone());
-                        FFramesRecorded[0]++;
+                        if(!FAppend[0])
+                        {
+                            FBuffer.Insert(0, FInput.Clone());
+                            FFramesRecorded[0]++;
+                        }
+                        else
+                        {
+                            // search beginning of last queue
+                            int count = 0;
+                            for (int i = 0; i < FFramesRecorded.SliceCount - 1; i++)
+                                count += FFramesRecorded[i];
+                            
+                            FBuffer.Insert(count, FInput.Clone());
+                            FFramesRecorded[FFramesRecorded.SliceCount - 1]++;
+                        }
+                        
                     }
-                    FFramesRecorded.Insert(0, 0);
+                    if (!FAppend[0])
+                        FFramesRecorded.Insert(0, 0);
+                    else
+                        FFramesRecorded.Add(0);
                 }
 
-                FBuffer.Insert(0, FInput.Clone());
-                FFramesRecorded[0]++;
+                if(!FAppend[0])
+                {
+                    FBuffer.Insert(0, FInput.Clone());
+                    FFramesRecorded[0]++;
+                }
+                else
+                {
+                    // search beginning of last queue
+                    int count = 0;
+                    for (int i = 0; i < FFramesRecorded.SliceCount - 1; i++)
+                        count += FFramesRecorded[i];
+
+                    FBuffer.Insert(count, FInput.Clone());
+                    FFramesRecorded[FFramesRecorded.SliceCount - 1]++;
+                }
+                
             }
             
             FOutput.AssignFrom(FBuffer);
@@ -151,5 +176,6 @@ namespace VVVV.Nodes.Generic
                 FFramesRecorded[0] = count;
             }
         }
+
     }
 }
