@@ -170,6 +170,7 @@ namespace System.Drawing
         /// Applies the geometric transform represented by this Matrix to the
         /// given rectangle.
         /// </summary>
+        /// <param name="t">A Matrix</param>
         /// <param name="rect">The rectangle to transform.</param>
         /// <returns>The transformed rectangle.</returns>
         public static RectangleF TransformRectangle(this Matrix t, RectangleF rect)
