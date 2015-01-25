@@ -1,0 +1,281 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\GeometricMean (Spectral) help.v4p">
+   <BOUNDS height="6885" left="3225" top="3615" type="Window" width="8445">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="285" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9045" top="6525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="285" top="1560" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="2.00000,3.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="285" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9345" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="285" top="3870" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2085" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5205" top="9915" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2085" top="2610" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="300" top="4230" type="Node" width="1155">
+   </BOUNDS>
+   <BOUNDS height="315" left="300" top="4230" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="sqrt(2*3)">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="255" left="195" top="5115" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="540" left="195" top="5115" type="Box" width="3450">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A better explaination can be found at:&cr;&lf;http://en.wikipedia.org/wiki/Geometric_mean|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="GeometricMean (Spectral)">
+   <BOUNDS height="0" left="1305" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Bin Size" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="11" nodename="Mean (Spectral)">
+   <BOUNDS height="0" left="1035" top="5880" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="10" nodename="MeanSquare (Spectral)">
+   <BOUNDS height="0" left="1710" top="5880" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2805" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9345" top="6825" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="2805" top="1560" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="4.00000,8.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2805" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="7125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2805" top="3870" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4605" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5505" top="10215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4605" top="2580" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="GeometricMean (Spectral)">
+   <BOUNDS height="0" left="3825" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Bin Size" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5430" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9645" top="7125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="5430" top="1560" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="4" values="2.00000,4.00000,8.00000,16.00000">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5430" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9945" top="7425" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="5430" top="3870" type="Box" width="1065">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7230" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5805" top="10515" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7230" top="2640" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1.00000">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="GeometricMean (Spectral)">
+   <BOUNDS height="0" left="6450" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Bin Size" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2805" top="4245" type="Node" width="1155">
+   </BOUNDS>
+   <BOUNDS height="315" left="2805" top="4245" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="sqrt(4*8)">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5415" top="4230" type="Node" width="1155">
+   </BOUNDS>
+   <BOUNDS height="285" left="5415" top="4230" type="Box" width="1290">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="(2*4*8*16)^(1/4)">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="705" left="15" top="390" type="Box" width="4290">
+   </BOUNDS>
+   <BOUNDS height="160" left="120" top="21000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the geometric mean of the incoming spread.&cr;&lf;The geometric mean multipies all values and then calculates the Nth-square root, where N is the spread size.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="120" top="21000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GeometricMean - Spectral|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="210" top="5880" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="210" top="5880" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

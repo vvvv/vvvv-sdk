@@ -1,0 +1,109 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Select (Color) help.v4p">
+   <BOUNDS height="7635" left="3375" top="5280" type="Window" width="7680">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="4125" top="270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5880" top="8220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3075" left="4125" top="270" type="Box" width="2850">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="10" visible="1" values="|0.000000,0.592556,0.730000,1.000000|,|0.000000,0.730000,0.121392,1.000000|,|0.157305,0.000000,0.730000,1.000000|,|0.465395,0.000000,0.730000,1.000000|,|0.708154,0.730000,0.000000,1.000000|,|0.665868,0.000000,0.730000,1.000000|,|0.000000,0.021336,0.730000,1.000000|,|0.730000,0.000000,0.559596,1.000000|,|0.730000,0.000000,0.325549,1.000000|,|0.000000,0.370787,0.730000,1.000000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Select (Color)">
+   <BOUNDS height="0" left="4110" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="10" visible="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="4" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7005" top="255" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11850" top="8505" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3090" left="7005" top="255" type="Box" width="465">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="10" values="1.00000,2.00000,0.00000,5.00000,0.00000,1.00000,0.00000,0.00000,1.00000,0.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="1320" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6180" top="8520" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3075" left="1320" top="3975" type="Box" width="2850">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="10" visible="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Color Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="495" top="1995" type="Node" width="5130">
+   </BOUNDS>
+   <BOUNDS height="1800" left="495" top="1995" type="Box" width="3495">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|In this case, the first color (light blue) is inserted 1 time into the new spread, the color 2 (green) is inserted 2 times, color 3 (dark blue) won&apos;t be a part of the new spread, but violet will be present 5 times. And so on...&cr;&lf;&cr;&lf;The new spread can have a different spread count than the original one!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Select" linkstyle="VHV" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="3165">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="39630" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select selects, how often a slice form a given spread is inserted into a new spread.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9630" top="39630" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select - Color|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

@@ -1,0 +1,457 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\effects\Attractor3d help.v4p" bgcolor="15132390">
+   <BOUNDS height="8535" left="2550" top="1965" type="Window" width="12495">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="24" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="6045" top="525" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5700" left="9585" top="2655" type="Window" width="6420">
+   </BOUNDS>
+   <BOUNDS height="4695" left="6045" top="525" type="Box" width="5610">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.24309,0.24309,0.24309,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="23" nodename="RandomSpread (Spreads Legacy)">
+   <BOUNDS height="0" left="8685" top="8940" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" pintype="Input" slicecount="1" visible="-1" values="3">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" slicecount="1" visible="-1" values="1.7">
+   </PIN>
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="22" nodename="Damper (Animation)">
+   <BOUNDS height="0" left="8685" top="9285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" pintype="Input" slicecount="1" visible="-1" values="5">
+   </PIN>
+   <PIN pinname="Velocity Out" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Acceleration Out" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Cyclic" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Go To Position" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <NODE id="21" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="8685" top="8580" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" pintype="Input" slicecount="1" visible="-1" values="0.5">
+   </PIN>
+   <PIN pinname="Pause" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Reverse" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Reset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Phase" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="Random Seed" srcnodeid="21" srcpinname="Cycles">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8850" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13755" top="9120" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1950" left="8850" top="5550" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-3">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="1.03636363636362">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Attractor Strength|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="19" nodename="Group (EX9)">
+   <BOUNDS height="270" left="5160" top="12045" type="Node" width="5340">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="19" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7440" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14055" top="9420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1950" left="7440" top="5550" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0.145454545454543">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Attractor Power|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6060" top="5550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15405" top="9420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1950" left="6060" top="5550" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" slicecount="1" visible="-1" values="0.690909090909092">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.500000000000001">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Attractor Radius|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="15" nodename="Sphere (EX9.Geometry)">
+   <BOUNDS height="0" left="10635" top="10545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Radius" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="12" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="7815" top="10515" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="8010" top="10200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y">
+   </PIN>
+   <PIN pinname="Resolution X">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Translate (Transform Vector)">
+   <BOUNDS height="0" left="10800" top="10080" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="XYZ" srcnodeid="22" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11310" top="7320" type="Node" width="630">
+   </BOUNDS>
+   <BOUNDS height="270" left="11310" top="7320" type="Box" width="630">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by fibo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="480" left="375" top="6645" type="Node" width="990">
+   </BOUNDS>
+   <BOUNDS height="315" left="375" top="6645" type="Box" width="1005">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|CREDITS:&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="990" top="7035" type="Node" width="2550">
+   </BOUNDS>
+   <BOUNDS height="285" left="990" top="7035" type="Box" width="2955">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|kalle for contributing to the help patch|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="975" top="7380" type="Node" width="2250">
+   </BOUNDS>
+   <BOUNDS height="255" left="975" top="7380" type="Box" width="2565">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|fibo for porting Attractor.fx to 3d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="75" top="315" type="Node" width="1905">
+   </BOUNDS>
+   <BOUNDS height="360" left="75" top="315" type="Box" width="3135">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Attractor3d - EX9.Effect|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="135" top="825" type="Node" width="3795">
+   </BOUNDS>
+   <BOUNDS height="270" left="135" top="825" type="Box" width="3795">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Porting to 3d of the Attractor.fx girlpower&apos;s shader|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="1950" left="165" top="2370" type="Node" width="4800">
+   </BOUNDS>
+   <BOUNDS height="1950" left="165" top="2370" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This is a minimal shader that uses the attractor3d function.&cr;&lf;&cr;&lf;Choose your favourite shader and put the directive&cr;&lf;&cr;&lf;#include attractor3d.fxh&cr;&lf;&cr;&lf;then use the attractor3d function in a vertex shader.&cr;&lf;&cr;&lf;Look inside the Attractor3d.fx below for a working example.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="25" nodename="Attractor3d (EX9.Effect)">
+   <BOUNDS height="100" left="7800" top="10890" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="7800" top="10890" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="16020" top="9435" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" visible="1" values="| attractor3D|">
+   </PIN>
+   <PIN pinname="Radius" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   <PIN pinname="Strength" visible="1">
+   </PIN>
+   <PIN pinname="Center XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Layer 2" hiddenwhenlocked="0" srcnodeid="25" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Power" hiddenwhenlocked="1" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Strength" hiddenwhenlocked="1" srcnodeid="20" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Center XYZ" srcnodeid="22" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Radius" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Render State" srcnodeid="12" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Mesh" srcnodeid="11" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="26" nodename="Constant (EX9.Effect)">
+   <BOUNDS height="100" left="10455" top="11040" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Resolution X">
+   </PIN>
+   <PIN pinname="Resolution Y">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="10455" top="11040" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="14175" top="9705" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="0.17">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|0.00000,1.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Mesh" hiddenwhenlocked="0" srcnodeid="15" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Layer 3" srcnodeid="26" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="27" nodename="Camera (Transform Softimage)" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\Transform\">
+   <BOUNDS height="100" left="9570" top="12525" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="9570" top="12525" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="13215" top="8940" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0.11">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Projection Transform" hiddenwhenlocked="1" srcnodeid="27" srcpinname="Projection">
+   </LINK>
+   <LINK dstnodeid="24" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="27" srcpinname="View">
+   </LINK>
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="28" nodename="AxisAndGrid (DX9)" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\EX9\">
+   <BOUNDS height="100" left="5160" top="11700" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5160" top="11700" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="6000" left="9570" top="8400" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Layer 1" srcnodeid="28" srcpinname="Layer">
+   </LINK>
+   </PATCH>

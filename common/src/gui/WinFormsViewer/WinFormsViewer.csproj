@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\Default.Gui.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{98936436-EA28-437E-A2A4-CC7CAA532658}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.HDE.Viewer.WinFormsViewer</RootNamespace>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>VVVV.HDE.Viewer.WinFormsViewer</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DoubleBufferedTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DoubleBufferedTreeView.Designer.cs">
+      <DependentUpon>DoubleBufferedTreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HierarchyViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HierarchyViewer.Designer.cs">
+      <DependentUpon>HierarchyViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapperHierarchyNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MapperTreeNode.cs" />
+    <Compile Include="TableViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TableViewer.Designer.cs">
+      <DependentUpon>TableViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TreeViewer.Designer.cs">
+      <DependentUpon>TreeViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Viewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <EmbeddedResource Include="HierarchyViewer.resx">
+      <DependentUpon>HierarchyViewer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TableViewer.resx">
+      <DependentUpon>TableViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TreeViewer.resx">
+      <DependentUpon>TreeViewer.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PiccoloGraphicalEditor\PiccoloGraphicalEditor.csproj">
+      <Project>{304E1C6A-585F-4748-8E3B-33558E35B0D4}</Project>
+      <Name>PiccoloGraphicalEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>

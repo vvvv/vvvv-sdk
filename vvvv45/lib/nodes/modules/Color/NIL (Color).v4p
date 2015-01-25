@@ -1,0 +1,47 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Color\NIL (Color).v4p">
+   <BOUNDS height="90000" left="4065" top="7665" type="Window" width="135000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="1560" top="795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="21750" top="8730" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1560" top="795" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Select (Color)" systemname="Select (Color)">
+   <BOUNDS height="0" left="1560" top="420" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" pintype="Input" slicecount="1" visible="0" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Former Slice" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Color Input" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1560" top="105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8535" top="2625" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1560" top="105" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Select" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="kalle" description="Outputs an empty color spread." tags="empty, constant">
+   </INFO>
+   </PATCH>
