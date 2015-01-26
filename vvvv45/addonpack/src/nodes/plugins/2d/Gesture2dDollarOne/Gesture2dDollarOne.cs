@@ -77,8 +77,6 @@ using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-
-using VVVV.Core.Logging;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -108,9 +106,6 @@ namespace VVVV.Nodes
 
 		[Output("Output")]
 		public ISpread<ISpread<Vector2D>> FResampled;
-
-		[Import()]
-		public ILogger FLogger;
 		#endregion fields & pins
 		
 		
@@ -383,9 +378,6 @@ namespace VVVV.Nodes
 
 		[Output("Angle")]
         public ISpread<double> FAngle;
-		
-		[Import()]
-        public ILogger FLogger;
 		#endregion fields & pins
  
 		//called when data for any output pin is requested
@@ -407,9 +399,6 @@ namespace VVVV.Nodes
 				FOutput[i] = result[0];
 				FAngle[i] = result[1];
 			}
-			
-			//double[] result = OptimalCosineDistance(new List<double>(FGesture), new List<double>(FInput));
-			//FLogger.Log(LogType.Debug, "hi tty!");
 		}
 		
 		private double[] OptimalCosineDistance(List<Vector2D> v1, List<Vector2D> v2)
