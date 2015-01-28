@@ -204,6 +204,15 @@ namespace VVVV.Nodes
 				Author="vux"
 				)]
 	public class REPLACEME_CLASSStackNode : StackNode<REPLACEME_CLASS> {}
+
+    [PluginInfo(
+           Name = "QueueStore",
+           Category = "NODECATEGORY",
+           Help = "Stores a series of queues",
+           Tags = "append, remove, generic, spreadop, collection",
+           Author = "motzi"
+    )]
+    public class REPLACEME_CLASSQueueStoreNodes : QueueStore<REPLACEME_CLASS> {}
 	
 	#endregion Collections
 	

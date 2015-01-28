@@ -235,6 +235,19 @@ namespace VVVV.Hosting.Graph
             }
         }
         
+        public PinVisibility Visibility
+        {
+            get
+            {
+                return FInternalCOMInterf.Visibility;
+            }
+            
+            set
+            {
+                FInternalCOMInterf.Visibility = value;
+            }
+        }
+        
         public IViewableCollection<IPin2> ConnectedPins
         {
             get
