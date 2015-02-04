@@ -59,6 +59,7 @@
     <PropertyGroup>
       <ILDasmPath>$(FrameworkSdkPath)bin\NetFX 4.0 Tools\ildasm.exe</ILDasmPath>
       <ILDasmPath Condition="$(FrameworkSdkPath.Contains('v8.1A'))">$(FrameworkSdkPath)bin\NetFX 4.5.1 Tools\ildasm.exe</ILDasmPath>
+		<ILDasmPath Condition="$(FrameworkSdkPath.Contains('v10.0A'))">$(FrameworkSdkPath)bin\NetFX 4.6 Tools\ildasm.exe</ILDasmPath>
       <ILDasm>"$(ILDasmPath)" /nobar /linenum /output:"$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
     </PropertyGroup>
     <Exec Command="$(ILDasm)" />
