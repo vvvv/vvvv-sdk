@@ -1,0 +1,387 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_40beta23_test\plugins\Tweener (Value) help.v4p">
+   <BOUNDS height="12615" left="2460" top="120" type="Window" width="12375">
+   </BOUNDS>
+   <NODE hiddenwhenlocked="1" id="26" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="2025" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" visible="1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="25" nodename="Add (Value)">
+   <BOUNDS height="0" left="2595" top="5640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="-0.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="24" nodename="Add (Value)">
+   <BOUNDS height="0" left="2025" top="5655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="-0.5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="23" nodename="Line (EX9.Geometry)">
+   <BOUNDS height="0" left="2025" top="7245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   <PIN pinname="BinSize" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="2025" top="8670" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="29550" top="9495" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="3570" left="2025" top="8670" type="Box" width="6105">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2265" top="1215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="29385" top="1500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2265" top="1215" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="128">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="20" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="2025" top="6630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="VerticesXYZ" hiddenwhenlocked="0" srcnodeid="20" srcpinname="XYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3315" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="29745" top="4650" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3315" top="3765" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transition Type|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4785" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="30360" top="4770" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4785" top="3765" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transition Mode|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Spread Count" hiddenwhenlocked="1" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="17" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2025" top="1560" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="29610" top="3420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2025" top="1560" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Block">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Alignment" hiddenwhenlocked="1" srcnodeid="17" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="1320" left="7350" top="3765" type="Node" width="1125">
+   </BOUNDS>
+   <BOUNDS height="2910" left="7350" top="3765" type="Box" width="1605">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Transition Types:&cr;&lf;&cr;&lf;0 = Linear&cr;&lf;1 = Quadratic&cr;&lf;2 = Cubic&cr;&lf;3 = Quartic&cr;&lf;4 = Quintic&cr;&lf;5 = Sinusoidal&cr;&lf;6 = Exponential&cr;&lf;7 = Circulair&cr;&lf;8 = Elastic&cr;&lf;9 = Back&cr;&lf;10 = Bounce|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4230" top="5055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="32325" top="6705" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="4230" top="5055" type="Box" width="2805">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Used Tweener Type|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="1320" left="9015" top="3765" type="Node" width="1350">
+   </BOUNDS>
+   <BOUNDS height="2910" left="9015" top="3765" type="Box" width="1665">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Transition Mode:&cr;&lf;&cr;&lf;0 = Ease In&cr;&lf;1 = Ease Out&cr;&lf;2 = Easi In/Out&cr;&lf;3 = Ease Out/In|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="13" nodename="Cons (Spreads)">
+   <BOUNDS height="270" left="2025" top="2805" type="Node" width="555">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="12" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="3375" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="11" nodename="Pillow (DX9)">
+   <BOUNDS height="0" left="3855" top="7245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="1" id="10" nodename="Group (EX9)">
+   <BOUNDS height="0" left="2025" top="8010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Layer 1" srcnodeid="23" srcpinname="Layer">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="9" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3855" top="6585" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" slicecount="1" values="0.125">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" visible="1" values="0.07">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" visible="1" values="0.07">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Input 1" hiddenwhenlocked="0" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="8" nodename="CDR (Spreads)">
+   <BOUNDS height="0" left="3150" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Remainder" visible="1">
+   </PIN>
+   <PIN pinname="Last Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Y" srcnodeid="8" srcpinname="Remainder">
+   </LINK>
+   <NODE hiddenwhenlocked="1" id="7" nodename="CDR (Spreads)">
+   <BOUNDS height="0" left="2025" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Remainder" visible="1">
+   </PIN>
+   <PIN pinname="Last Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="24" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="X" srcnodeid="7" srcpinname="Remainder">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Layer 2" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="TranslateX" srcnodeid="7" srcpinname="Last Slice">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Layers" srcnodeid="10" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="TranslateY" hiddenwhenlocked="0" srcnodeid="8" srcpinname="Last Slice">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2025" top="765" type="Node" width="1800">
+   </BOUNDS>
+   <BOUNDS height="270" left="2025" top="765" type="Box" width="1800">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Input For the Line|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3360" top="1710" type="Node" width="2175">
+   </BOUNDS>
+   <BOUNDS height="270" left="3360" top="1710" type="Box" width="2175">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Input for moving Pillow|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6240" top="3765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="32220" top="4215" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6240" top="3765" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Inverse">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="615" top="5640" type="Node" width="1320">
+   </BOUNDS>
+   <BOUNDS height="270" left="615" top="5640" type="Box" width="1320">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get Line Centred|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="615" top="6090" type="Node" width="1305">
+   </BOUNDS>
+   <BOUNDS height="270" left="615" top="6090" type="Box" width="1305">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Splt Line and Pill|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="1740" left="5580" top="360" type="Node" width="8115">
+   </BOUNDS>
+   <BOUNDS height="3045" left="5580" top="360" type="Box" width="5100">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Westbam 2-august-2008&cr;&lf;&cr;&lf;My First Plugin, fully spread-able, input 0.0000 - 1.0000&cr;&lf;&cr;&lf;Credits to: Zeh Fernando&cr;&lf;http://vvvv.org/tiki-index.php?page=UserPagezeh&cr;&lf;http://zehfernando.com/&cr;&lf;&cr;&lf;Tweener is a plugin for vvvv to create &quot;tweenings&quot;.&cr;&lf;&cr;&lf;It&apos;s a concept brought from the ActionScript class of the same name:&cr;&lf;http://hosted.zeh.com.br/tweener/docs/en-us/&cr;&lf;For all Transition Types:&cr;&lf;http://hosted.zeh.com.br/tweener/docs/en-us/misc/transitions.html|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 2" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":PLUGINS:\TweenerShaper.dll|VVVV.Nodes.TweenerShaper">
+   <BOUNDS height="270" left="2610" top="4545" type="Node" width="4425">
+   </BOUNDS>
+   <BOUNDS height="0" left="7215" top="4830" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2610" top="4545" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Transition Type" visible="1">
+   </PIN>
+   <PIN pinname="Transition Mode" visible="1">
+   </PIN>
+   <PIN pinname="Inverse" visible="1">
+   </PIN>
+   <PIN pinname="Used Transition TYPE" visible="1">
+   </PIN>
+   <PIN pinname="Value Output" visible="1">
+   </PIN>
+   <PIN pinname="Value Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Transition Type" srcnodeid="19" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transition Mode" srcnodeid="18" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Inverse" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input String" srcnodeid="0" srcpinname="Used Transition TYPE">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Input 1" srcnodeid="0" srcpinname="Value Output">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="0" dstpinname="Value Input">
+   </LINK>
+   </PATCH>

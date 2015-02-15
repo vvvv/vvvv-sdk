@@ -1,0 +1,161 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Shear (Transform) help.v4p">
+   <BOUNDS height="6090" left="1410" top="3195" type="Window" width="10530">
+   </BOUNDS>
+   <NODE id="8" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="255" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="GlobalRenderState (EX9)">
+   <BOUNDS height="0" left="5220" top="480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="5205" top="75" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="ColorAsAlphaBlend">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Render State" srcnodeid="6" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="Renderer (EX9)">
+   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="0" left="5250" top="900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="9045" top="6225" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="4455" left="5250" top="900" type="Box" width="4500">
+   </BOUNDS>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="2820" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Hue" slicecount="1" visible="1" values="0.1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" visible="1" values="0.63">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Shear (Transform)">
+   <BOUNDS height="0" left="855" top="3210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Shear X by Y" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Shear X by Z" slicecount="1" visible="1" values="-0.62">
+   </PIN>
+   <PIN pinname="Shear Y by X" slicecount="1" values="0.76">
+   </PIN>
+   <PIN pinname="Shear Y by Z" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Shear Z by X" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Shear Z by Y" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1140" left="15" top="390" type="Box" width="4965">
+   </BOUNDS>
+   <BOUNDS height="160" left="9600" top="40890" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|generate a shear transformation. with it you can distort an entire scene or create psychedelic effects.&cr;&lf;note that you can unshear the transform by concatenating another shear transform with negative shear values.&cr;&lf;this is a volume preserving transformation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9600" top="40890" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Shear - Transform|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename=":EFFECTS:\FlatDirectional.fx">
+   <BOUNDS height="0" left="525" top="4950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="4005" top="9180" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="525" top="4950" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient Color" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Light" slicecount="1" values="|0.273148,0.276454,0.273667,1.000000|">
+   </PIN>
+   <PIN pinname="Diffuse Light" slicecount="1" values="|0.175797,0.176358,0.175287,1.000000|">
+   </PIN>
+   <PIN pinname="Specular Light" slicecount="1" values="|1.000000,1.000000,1.000000,1.000000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Ambient Color" linkstyle="VHV" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="2850" y="4815">
+   </LINKPOINT>
+   <LINKPOINT x="1170" y="4815">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Diffuse Color" linkstyle="VHV" srcnodeid="4" srcpinname="Output">
+   <LINKPOINT x="2850" y="4815">
+   </LINKPOINT>
+   <LINKPOINT x="1335" y="4815">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Transform" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="540" y="5235">
+   </LINKPOINT>
+   <LINKPOINT x="4980" y="5235">
+   </LINKPOINT>
+   <LINKPOINT x="4980" y="915">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

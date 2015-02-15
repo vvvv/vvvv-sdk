@@ -1,0 +1,131 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\modules\Devices\MidiAllNotesOff (Devices).v4p">
+   <BOUNDS height="6000" left="3375" top="7590" type="Window" width="9000">
+   </BOUNDS>
+   <NODE id="3" nodename="I (Spreads)">
+   <BOUNDS height="0" left="2520" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname=".. To [" slicecount="1" values="128">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="1995" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6495" top="6660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1995" top="1950" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Channel">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="855" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12045" top="8715" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="855" top="1950" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="0" nodename="C:\Users\joreg\dev\vake\source\complete\vvvv40_DynamicNodes\modules\tonfilms\MidiNoteOut (Devices).v4p">
+   <BOUNDS height="0" left="1920" top="4290" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="6300" top="13065" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1920" top="4290" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Play" visible="1">
+   </PIN>
+   <PIN pinname="Velocity" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Note" visible="1">
+   </PIN>
+   <PIN pinname="Channel" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Play" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="tonfilm" description="module to send a all note off message" tags="io, panic">
+   </INFO>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="4140" top="1950" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4140" top="1950" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Microsoft GS Wavetable Synth|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Midi Output Port|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Enum" dstnodeid="0" dstpinname="Midi Output Port">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3405" top="1800" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3405" top="1800" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="Cross (2d)" nodename="Cross (2d)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="2025" top="3540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Y In" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="6" dstpinname="Y In">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="6" dstpinname="X In">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="X Out" dstnodeid="0" dstpinname="Channel">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Out" dstnodeid="0" dstpinname="Note">
+   </LINK>
+   </PATCH>

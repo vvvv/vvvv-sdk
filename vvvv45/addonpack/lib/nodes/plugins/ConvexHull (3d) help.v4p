@@ -1,0 +1,365 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta19.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\3d\ConvexHull3d\trunk\ConvexHull (3d) help.v4p">
+   <BOUNDS height="9075" left="480" top="1365" type="Window" width="13170">
+   </BOUNDS>
+   <NODE id="24" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="720" top="2505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="23" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="2220" top="2430" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="45">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3750" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="6">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="1785" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="X" srcnodeid="24" srcpinname="Output">
+   <LINKPOINT x="1890" y="3645">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Y" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Z" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="20" nodename=":PLUGINS:\ConvexHull3d.dll|vvvv.Nodes.ConvexHullNodeIndices">
+   <BOUNDS height="0" left="2025" top="4440" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4365" top="6645" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2025" top="4440" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Vertices InXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="1005" top="5835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Mesh (EX9.Geometry Join)">
+   <BOUNDS height="0" left="2010" top="5535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Indices" srcnodeid="20" srcpinname="Indices">
+   </LINK>
+   <NODE id="17" nodename="VertexBuffer (EX9.Geometry Join)">
+   <BOUNDS height="0" left="1590" top="4980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Vertex Buffer" srcnodeid="17" srcpinname="Vertex Buffer">
+   </LINK>
+   <NODE componentmode="InAWindow" id="16" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="1950" top="8250" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5280" left="13905" top="3840" type="Window" width="7005">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1950" top="8250" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="4410" top="7335" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="3930" top="7785" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Transform In" srcnodeid="15" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Projection Transform" srcnodeid="14" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="13" nodename="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="5685" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Resolution X" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Mesh (EX9.Geometry Split)">
+   <BOUNDS height="0" left="6390" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Mesh" srcnodeid="13" srcpinname="Mesh">
+   </LINK>
+   <NODE id="11" nodename="VertexBuffer (EX9.Geometry Split)">
+   <BOUNDS height="0" left="5625" top="3810" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Enable Texture Coordinate 0" slicecount="1" values="|2D TexCoords|">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Vertex Buffer" srcnodeid="12" srcpinname="Vertex Buffer">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Texture Coordinate 0 XY" srcnodeid="11" srcpinname="Texture Coordinate 0 XY">
+   </LINK>
+   <NODE id="10" nodename="RGB (Color Join)">
+   <BOUNDS height="0" left="3705" top="5850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Red" slicecount="1" values="0.9">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="690" top="5055" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Draw Mode" slicecount="1" values="ColorAsAlphaAdd">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Render State In" srcnodeid="9" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename=":EFFECTS:\Constant.fx">
+   <BOUNDS height="0" left="1965" top="6930" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="1650" top="6705" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="1965" top="6930" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TConstant|">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Render State" srcnodeid="19" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename=":MODULES:\PerfMeter (Debug).v4p" path="C:\vvvv_40beta19\modules\">
+   <BOUNDS height="0" left="5205" top="6465" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7830" top="7815" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5205" top="6465" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Group (EX9)">
+   <BOUNDS height="0" left="2655" top="7605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Layer 1" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Layer 2" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <NODE id="5" nodename="Normals (EX9.Geometry Mesh)">
+   <BOUNDS height="0" left="1815" top="6060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Mesh" srcnodeid="18" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2550" top="1470" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5595" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2550" top="1470" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="50">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Position XYZ" srcnodeid="20" srcpinname="VerticesXYZ">
+   </LINK>
+   <NODE id="3" nodename="Mouse (System Window)">
+   <BOUNDS height="0" left="4470" top="3165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="3285" top="3720" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="3" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="X" srcnodeid="3" srcpinname="X">
+   </LINK>
+   <NODE id="1" nodename="Cons (Spreads)">
+   <BOUNDS height="0" left="2370" top="4020" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input 1" srcnodeid="21" srcpinname="XYZ">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input 2" srcnodeid="2" srcpinname="XYZ">
+   <LINKPOINT x="3225" y="3975">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="InputXYZ" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7290" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9360" top="5010" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3360" left="7290" top="1410" type="Box" width="5040">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|Convex Hull (3d)&cr;&lf;&cr;&lf;The code is a port from java to c# of John E. Lloyd&apos;s Quickhull algorithm&cr;&lf;&cr;&lf;http://www.cs.ubc.ca/~lloyd/index.html&cr;&lf;&cr;&lf;To install, just copy the dll in the vvvv plugin folder&cr;&lf;&cr;&lf;If you experience any problem, or have any question about this plugin:&cr;&lf;&cr;&lf;Email: julien@mrvux.com&cr;&lf;&cr;&lf;or send me an message in vvvv wesite (username: vux)&cr;&lf;|">
+   </PIN>
+   </NODE>
+   <NODE nodename="ConvexHull (2d)" id="25">
+   <BOUNDS type="Node" left="6735" top="5655" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="255" left="345" top="585" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="345" top="585" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="1620" top="13020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|find the hull surrounding all points|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)">
+   <BOUNDS height="270" left="345" top="210" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="345" top="210" type="Box" width="2790">
+   </BOUNDS>
+   <BOUNDS height="160" left="1620" top="13020" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ConvexHull - 3d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
