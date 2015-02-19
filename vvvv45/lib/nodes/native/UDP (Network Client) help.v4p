@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\UDP (Network Client) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\UDP (Network Client) help.v4p">
    <BOUNDS height="10470" left="1050" top="1605" type="Window" width="5895">
    </BOUNDS>
    <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)">
@@ -102,6 +102,8 @@
    <PIN pinname="Do Send" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Local Port" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Remote Port" linkstyle="PolyLine" srcnodeid="9" srcpinname="Y Output Value">
@@ -225,7 +227,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\IO\Networking\0_Networking_Overview_1.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\IO\Networking\0_Networking_Overview_1.v4p">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="21">
@@ -235,7 +237,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\IO\Networking\0_Networking_Overview_2.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\IO\Networking\0_Networking_Overview_2.v4p">
    </PIN>
    </NODE>
    <NODE id="20" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox">
@@ -258,4 +260,34 @@
    <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\IO\Networking\2_Advanced (OSC)\03_Remote Synth\Controller.v4p|">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1020" top="4005" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1020" top="4005" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Local Port" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1860" top="4005" width="990" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1860" top="4005" width="990" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; local port|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
    </PATCH>

@@ -575,6 +575,11 @@ namespace VVVV.PluginInterfaces.V2
 	    	get;
 	    }
 	    
+	    PinVisibility Visibility
+	    {
+	        get; set;
+	    }
+	    
 	    string Type
 	    {
 	    	get;

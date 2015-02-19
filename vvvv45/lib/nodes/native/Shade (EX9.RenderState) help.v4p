@@ -1,15 +1,15 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Shade (EX9.RenderState) help.v4p">
-   <BOUNDS height="6885" left="1620" top="3165" type="Window" width="8940">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\Shade (EX9.RenderState) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="7080" left="1620" top="3165" type="Window" width="10005">
    </BOUNDS>
-   <NODE componentmode="InABox" id="6" nodename="Renderer (EX9)">
-   <BOUNDS height="0" left="120" top="1065" type="Node" width="0">
+   <NODE componentmode="InABox" id="6" nodename="RENDERER (EX9)">
+   <BOUNDS height="0" left="180" top="2685" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
    </BOUNDS>
-   <BOUNDS height="3135" left="120" top="1065" type="Box" width="3480">
+   <BOUNDS height="3135" left="180" top="2685" type="Box" width="3480">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
    </PIN>
@@ -17,23 +17,33 @@
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (Enumerations)">
-   <BOUNDS height="0" left="675" top="4620" type="Node" width="0">
+   <BOUNDS height="0" left="660" top="840" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6420" top="5955" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="765" left="675" top="4620" type="Box" width="1530">
+   <BOUNDS height="765" left="660" top="840" type="Box" width="1530">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    <PIN pinname="Style" slicecount="1" values="List">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Flat">
+   <PIN pinname="Input Enum" slicecount="1" values="Gouraud">
    </PIN>
    </NODE>
    <NODE id="4" nodename="Shade (EX9.RenderState)">
-   <BOUNDS height="0" left="135" top="5550" type="Node" width="0">
+   <BOUNDS height="0" left="180" top="1710" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -53,9 +63,11 @@
    </PIN>
    <PIN pinname="Shading" slicecount="1" visible="1" values="Flat">
    </PIN>
+   <PIN pinname="Render State In" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
    <NODE id="3" nodename="Pillow (DX9)">
-   <BOUNDS height="0" left="150" top="6030" type="Node" width="0">
+   <BOUNDS height="0" left="180" top="2145" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State" visible="1">
    </PIN>
@@ -67,9 +79,9 @@
    <LINK dstnodeid="3" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
-   <BOUNDS height="4875" left="3660" top="1065" type="Node" width="840">
+   <BOUNDS height="4875" left="3840" top="1500" type="Node" width="840">
    </BOUNDS>
-   <BOUNDS height="4455" left="3660" top="1065" type="Box" width="4980">
+   <BOUNDS height="4335" left="3840" top="1500" type="Box" width="5265">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -114,4 +126,6 @@
    </NODE>
    <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
    </LINK>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
    </PATCH>
