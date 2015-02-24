@@ -1,0 +1,231 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta20.dtd" >
+   <PATCH nodename="D:\repositories\vvvv_individual\Bass\help\BeatScanner (Bass) help.v4p">
+   <BOUNDS height="9945" left="2175" top="2865" type="Window" width="10905">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6540" top="120" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12375" top="6930" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4515" left="6540" top="120" type="Box" width="4155">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Beat detector paramters:&cr;&lf;&cr;&lf;-Bandwidth: Bandwidth in Hz -between 0 and samplerate/2&cr;&lf;-Center: The center-frequency in Hz &cr;&lf;-Release Time:Beat release time in ms&cr;&lf;&cr;&lf;Example:&cr;&lf;Center =90&cr;&lf;Width=10&cr;&lf;Release Time = 20&cr;&lf;&cr;&lf;Will look between 90 (+/-) 10 Hertz for the beat.&cr;&lf;20ms is the minimum time before another beat can be triggered (to avoid double beats).&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="360" top="615" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1215" left="360" top="615" type="Box" width="2940">
+   </BOUNDS>
+   <BOUNDS height="160" left="10635" top="16200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Beat detection on a file.&cr;&lf;All the file search if done in a thread, fully spreadable.&cr;&lf;Outputs the beat positions as soon as they are found.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="360" top="240" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="360" top="240" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="10635" top="16200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|BeatScanner - Bass|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename=":PLUGINS:\BassSound.dll|VVVV.Nodes.BeatScannerNode" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="2910" top="3750" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="3750" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3180" top="5850" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="BandWidth" visible="1">
+   </PIN>
+   <PIN pinname="Center Frequency" visible="1">
+   </PIN>
+   <PIN pinname="Release Time" visible="1">
+   </PIN>
+   <PIN pinname="Percent Complete" visible="1">
+   </PIN>
+   <PIN pinname="Beat Positions" visible="1">
+   </PIN>
+   <PIN pinname="Bin Sizes" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" componentmode="InABox" nodename="IOBox (String)">
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="0" left="450" top="2055" width="0">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="9480" top="5625" width="215">
+   </BOUNDS>
+   <BOUNDS type="Box" height="240" left="450" top="2055" width="2985">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\..\Music\Prefuse 73\Piano overlord\08 track 08.mp3|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|File Name|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output String" dstnodeid="16" dstpinname="Path">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2235" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9330" top="5790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2235" top="2820" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="BandWidth">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="16" dstpinname="BandWidth">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3315" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10650" top="4635" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="3315" top="2370" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Center Freq|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="90,500">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Center Frequency">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4440" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10620" top="5820" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4440" top="2805" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Release Time|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Release Time">
+   </LINK>
+   <NODE nodename="AsString (Value)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="3345" top="4230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Percent Complete" dstnodeid="21" dstpinname="Input">
+   </LINK>
+   <NODE nodename="Add (String Spectral)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="3360" top="4740" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="22" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="2535" top="5265" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2535" top="5265" width="885" height="855">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5445" top="8895" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Percent Complete|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="23" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="AsString (Value)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="1530" top="4800" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Beat Positions" dstnodeid="24" dstpinname="Input">
+   </LINK>
+   <NODE nodename="Add (String Spectral)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="2280" top="7020" width="2760" height="270">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Semicolon">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Bin Sizes" dstnodeid="25" dstpinname="Bin Size">
+   <LINKPOINT x="4725" y="4275">
+   </LINKPOINT>
+   <LINKPOINT x="4485" y="6420">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="25" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26">
+   <BOUNDS type="Node" left="1560" top="8460" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1560" top="8460" width="8025" height="600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4755" top="11205" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Beat Positions|">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Add (String Spectral)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="2280" top="7530" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="27" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Output" dstnodeid="26" dstpinname="Input String">
+   </LINK>
+   </PATCH>

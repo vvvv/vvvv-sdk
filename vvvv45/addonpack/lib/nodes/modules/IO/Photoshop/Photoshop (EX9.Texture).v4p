@@ -1,0 +1,271 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (EX9.Texture).v4p" systemname="PhotoshopIn (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\PhotoshopIn (Photoshop).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="15270" top="4800" width="10920" height="8115">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="Photoshop (Network Sender)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Sender).v4p" nodename="Photoshop (Network Sender)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="2895" top="5850" width="2865" height="270">
+   </BOUNDS>
+   <PIN pinname="Remote Host" visible="1" slicecount="1" values="localhost">
+   </PIN>
+   <PIN pinname="Password" visible="1" slicecount="1" values="vvvvvv">
+   </PIN>
+   <PIN pinname="Host Connected" visible="1">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Window" left="1230" top="705" width="20670" height="11700">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Photoshop (Network Receiver)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" nodename="Photoshop (Network Receiver)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="2865" top="1830" width="3105" height="270">
+   </BOUNDS>
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <PIN pinname="Response" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="6315" top="1230" width="8190" height="9840">
+   </BOUNDS>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1845" top="435" width="945" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1845" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="localhost">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="192.168.1.1">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="IP">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Host|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="0" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3000" top="435" width="630" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3000" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvvv">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Password">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="2" dstpinname="Remote Host">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="2" dstpinname="Password">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="5" dstpinname="Remote Host">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="5" dstpinname="Password">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2880" top="6390" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2880" top="6390" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Host Connected|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Host Connected" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9645" top="435" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9645" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enable">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4290" top="435" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4290" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="512">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5355" top="435" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5355" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="512">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="11" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="6270" top="435" width="900" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6270" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Format">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7560" top="435" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7560" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Lock to Current Document|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="13" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1545" top="6435" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1545" top="6435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
+   </PIN>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="1845" width="2250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="1845" width="2250" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop (Network Receiver)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="5865" width="2250" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="5865" width="2250" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Photoshop (Network Sender)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Streams a texture from Photoshop." tags="psd, ex9">
+   </INFO>
+   <NODE systemname="RequestImageOnEvent" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\RequestImageOnEvent.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\RequestImageOnEvent.v4p" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2880" top="4080" width="1605" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1665" top="1455" width="16740" height="14715">
+   </BOUNDS>
+   <PIN pinname="Format" visible="1" slicecount="1" values="JPEG">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="2880" top="4080">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Response" dstnodeid="14" dstpinname="Photoshop Response">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Photoshop Out" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Lock to Current Document">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="14" dstpinname="Format">
+   </LINK>
+   <NODE id="17" systemname="AsTexture (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsTexture (Photoshop).v4p" nodename="AsTexture (Photoshop)" componentmode="Hidden">
+   <BOUNDS type="Node" left="4965" top="4080" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="5910" top="4065" width="9405" height="12060">
+   </BOUNDS>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4965" top="4080">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Response" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Texture Out" dstnodeid="13" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="On Data" dstnodeid="17" dstpinname="Apply">
+   </LINK>
+   </PATCH>
