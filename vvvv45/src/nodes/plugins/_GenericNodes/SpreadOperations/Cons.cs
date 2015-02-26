@@ -25,7 +25,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Cons",
                 Category = "Color",
-                Help = "Concatenates all input spreads to one output spread",
+                Help = "Concatenates all Input spreads.",
                 Tags = ""
                 )]
     public class ColorCons : Cons<RGBAColor>
@@ -34,7 +34,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Cons",
                 Category = "String",
-                Help = "Concatenates all input spreads to one output spread",
+                Help = "Concatenates all Input spreads.",
                 Tags = ""
                 )]
     public class StringCons : Cons<string>
@@ -43,7 +43,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Cons",
                 Category = "Transform",
-                Help = "Concatenates all input spreads to one output spread",
+                Help = "Concatenates all Input spreads.",
                 Tags = ""
                 )]
     public class TransformCons : Cons<Matrix>
@@ -52,7 +52,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Cons",
                 Category = "Enumerations",
-                Help = "Concatenates all input spreads to one output spread",
+                Help = "Concatenates all Input spreads.",
                 Tags = ""
                 )]
     public class EnumCons : Cons<EnumEntry>
@@ -61,7 +61,7 @@ namespace VVVV.Nodes
 
     [PluginInfo(Name = "Cons",
             Category = "Raw",
-            Help = "Concatenates all input spreads to one output spread",
+            Help = "Concatenates all Input spreads.",
             Tags = ""
             )]
     public class RawCons : Cons<System.IO.Stream>

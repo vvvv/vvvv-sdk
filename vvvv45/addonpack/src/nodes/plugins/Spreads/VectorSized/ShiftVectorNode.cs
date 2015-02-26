@@ -12,7 +12,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "Spreads", Version = "Vector", Help = "Shift (Spreads) with bin and vector size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "Spreads", Version = "Vector", Help = "Shift (Spreads) with Bin and Vector Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftVectorNode : IPluginEvaluate
 	{
@@ -106,27 +106,27 @@ namespace VVVV.Nodes
 
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "String", Version = "Bin", Help = "Shift (String) with bin size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "String", Version = "Bin", Help = "Shift (String) with Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftStringBin : ShiftBin<string> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "Color", Version = "Bin", Help = "Shift (Color) with bin size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "Color", Version = "Bin", Help = "Shift (Color) with Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftColorBin : ShiftBin<RGBAColor> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "Transform", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "Transform", Version = "Bin", Help = "Shifts the slices in the Spread by the given Phase. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftTransformBin : ShiftBin<Matrix4x4> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "Enumerations", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "Enumerations", Version = "Bin", Help = "Shifts the slices in the Spread by the given Phase. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftEnumBin : ShiftBin<EnumEntry> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Shift", Category = "Raw", Version = "Bin", Help = "Shifts the slices in the spread upwards by the given phase, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Shift", Category = "Raw", Version = "Bin", Help = "Shifts the slices in the Spread by the given Phase. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ShiftRawBin : ShiftBin<System.IO.Stream> {}
 }
