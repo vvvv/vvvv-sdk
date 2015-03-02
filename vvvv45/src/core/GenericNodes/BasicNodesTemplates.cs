@@ -25,7 +25,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Cons",
                 Category = "NODECATEGORY",
-                Help = "Concatenates all input spreads to one output spread.",
+                Help = "Concatenates all Input spreads.",
                 Tags = "generic, spreadop"
                 )]
     public class REPLACEME_CLASSConsNode : Cons<REPLACEME_CLASS> {}
@@ -51,7 +51,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Reverse", 
 	            Category = "NODECATEGORY", 
 	            Version = "Bin",
-	            Help = "Reverses the order of slices in a given spread.",
+	            Help = "Reverses the order of the slices in the Spread.",
 	            Tags = "invert, generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Shift", 
 	            Category = "NODECATEGORY", 
 	            Version = "Bin", 
-	            Help = "Shifts the slices in a spread upwards by the given phase.", 
+	            Help = "Shifts the slices in the Spread by the given Phase.", 
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -77,7 +77,7 @@ namespace VVVV.Nodes
     
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "NODECATEGORY",
-	            Help = "Deletes the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -85,23 +85,23 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Select",
                 Category = "NODECATEGORY",
-                Help = "Select which slices and how many form the output spread.",
-	            Tags = "resample, generic, spreadop"
+                Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted. ",
+	            Tags = "repeat, resample, duplicate, spreadop"
 	           )]
     public class REPLACEME_CLASSSelectNode : Select<REPLACEME_CLASS> {}
     
     [PluginInfo(Name = "Select", 
 				Category = "NODECATEGORY",
 				Version = "Bin",				
-				Help = "Select the slices which form the new spread.", 
-				Tags = "repeat, generic, spreadop",
+				Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted. ", 
+				Tags = "repeat, resample, duplicate, spreadop",
 				Author = "woei"
 			)]
     public class REPLACEME_CLASSSelectBinNode : SelectBin<REPLACEME_CLASS> {}
     
 	[PluginInfo(Name = "Unzip", 
 	            Category = "NODECATEGORY",
-	            Help = "Unzips a spread into multiple spreads.", 
+	            Help = "The inverse of Zip. Interprets the Input spread as being interleaved and untangles it.", 
 	            Tags = "split, generic, spreadop"
 	           )]
 	public class REPLACEME_CLASSUnzipNode : Unzip<REPLACEME_CLASS> {}
@@ -109,23 +109,23 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Unzip", 
 	            Category = "NODECATEGORY",
 	            Version = "Bin",
-	            Help = "Unzips a spread into multiple spreads.", 
+	            Help = "The inverse of Zip. Interprets the Input spread as being interleaved and untangles it. With Bin Size.", 
 	            Tags = "split, generic, spreadop"
 	           )]
 	public class REPLACEME_CLASSUnzipBinNode : Unzip<IInStream<REPLACEME_CLASS>> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "NODECATEGORY",
-	            Help = "Zips spreads together.", 
-	            Tags = "join, generic, spreadop"
+	            Help = "Interleaves all Input spreads.", 
+	            Tags = "interleave, join, generic, spreadop"
 	           )]
 	public class REPLACEME_CLASSZipNode : Zip<REPLACEME_CLASS> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "NODECATEGORY",
 				Version = "Bin",	            
-	            Help = "Zips spreads together.", 
-	            Tags = "join, generic, spreadop"
+	            Help = "Interleaves all Input spreads.", 
+	            Tags = "interleave, join, generic, spreadop"
 	           )]
 	public class REPLACEME_CLASSZipBinNode : Zip<IInStream<REPLACEME_CLASS>> {}
 	
@@ -148,14 +148,14 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "NODECATEGORY",
-                Help = "Returns all pairs of successive slices. From an input ABCD returns AB, BC, CD.",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD.",
                 Tags = "generic, spreadop"
                 )]
     public class REPLACEME_CLASSPairwiseNode : Pairwise<REPLACEME_CLASS> {}
 
     [PluginInfo(Name = "SplitAt",
                 Category = "NODECATEGORY",
-                Help = "Splits a spread at the given index.",
+                Help = "Splits the Input spread in two at the specified Index.",
                 Tags = "generic, spreadop"
                 )]
     public class REPLACEME_CLASSSplitAtNode : SplitAtNode<REPLACEME_CLASS> { }

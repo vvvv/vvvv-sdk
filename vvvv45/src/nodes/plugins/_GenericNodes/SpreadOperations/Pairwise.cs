@@ -24,7 +24,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "2d",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector2DPairwise : Pairwise<Vector2D>
@@ -33,7 +33,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "3d",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector3DPairwise : Pairwise<Vector3D>
@@ -42,7 +42,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "4d",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class Vector4DPairwise : Pairwise<Vector4D>
@@ -51,7 +51,7 @@ namespace VVVV.Nodes
         
     [PluginInfo(Name = "Pairwise",
                 Category = "Color",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class ColorPairwise : Pairwise<RGBAColor>
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "String",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class StringPairwise : Pairwise<string>
@@ -69,7 +69,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Transform",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class TransformPairwise : Pairwise<Matrix4x4>
@@ -78,7 +78,7 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "Enumerations",
-                Help = "Returns all combinations of successive slices. From an input ABCD returns AB, BC, CD",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD",
                 Tags = ""
                 )]
     public class EnumPairwise : Pairwise<EnumEntry>

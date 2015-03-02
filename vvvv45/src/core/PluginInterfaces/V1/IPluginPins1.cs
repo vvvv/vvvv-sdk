@@ -901,6 +901,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// Using <see cref="VVVV.PluginInterfaces.V1.IPluginHost.UpdateEnum">IPluginHost.UpdateEnum</see> 
 		/// a newly created Enum can be filled with custom entries.</param>
 		void SetSubType(string enumName);
+		/// <summary>
+		/// This method must be called before SetSubtype, it sets the default entry for this particular enum config pin 
+		/// </summary>
+		/// <param name="entryName">The exact name of the entry</param>
+		void SetDefaultEntry(string entryName);
 	}
 	
 	/// <summary>
@@ -931,6 +936,11 @@ namespace VVVV.PluginInterfaces.V1
 		/// Using <see cref="VVVV.PluginInterfaces.V1.IPluginHost.UpdateEnum">IPluginHost.UpdateEnum</see> 
 		/// a newly created Enum can be filled with custom entries.</param>
 		void SetSubType(string enumName);
+		/// <summary>
+		/// This method must be called before SetSubtype, it sets the default entry for this particular enum pin 
+		/// </summary>
+		/// <param name="entryName">The exact name of the entry</param>
+		void SetDefaultEntry(string entryName);
 	}
 
 	/// <summary>
