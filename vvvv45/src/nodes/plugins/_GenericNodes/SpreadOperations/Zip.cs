@@ -16,8 +16,8 @@ namespace VVVV.Nodes
 {
     static class ZipInfo 
     { 
-        public const string HELP = "Zips spreads together";
-        public const string TAGS = "spread, join";
+        public const string HELP = "Interleaves all Input spreads.";
+        public const string TAGS = "interleave, join, generic, spreadop";
     }
 
     [PluginInfo(Name = "Zip", Category = "Value", Help = ZipInfo.HELP, Tags = ZipInfo.TAGS)]

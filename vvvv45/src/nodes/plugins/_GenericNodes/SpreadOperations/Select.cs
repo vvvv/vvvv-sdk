@@ -12,7 +12,7 @@ namespace VVVV.Nodes
   
     [PluginInfo(Name = "Select",
                 Category = "Value",
-                Help = "Select which slices and how many form the output spread",
-	            Tags = "repeat, resample, duplicate")]
+                Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
+	            Tags = "repeat, resample, duplicate, spreadop")]
     public class ValueSelectNode : Select<double> {}
 }
