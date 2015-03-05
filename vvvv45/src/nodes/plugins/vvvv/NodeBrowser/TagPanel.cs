@@ -732,6 +732,11 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeFilter = (int) NodeType.VST;
                 FTags.Remove("v");
             }
+            else if (FTags.Contains("l"))
+            {
+                FNodeFilter = (int) NodeType.VL;
+                FTags.Remove("l");
+            }
             else if (FTags.Contains("."))
             {
                 FNodeFilter = -2;
@@ -838,6 +843,11 @@ namespace VVVV.Nodes.NodeBrowser
                         case NodeType.VST:
                             {
                     			e.Graphics.DrawString(" v", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
+                                break;
+                            }
+                        case NodeType.VL:
+                            {
+                                e.Graphics.DrawString(" l", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                             // Added code:
