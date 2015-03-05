@@ -708,7 +708,7 @@ namespace VVVV.Hosting
                 // every time.
                 if (factory is EditorFactory) return;
                 
-                if (!(info.Type == NodeType.Dynamic || info.Type == NodeType.Effect)) return;
+                if (!(info.Type == NodeType.Dynamic || info.Type == NodeType.Effect || info.Type == NodeType.VL)) return;
                 
                 // Go through all the running hosts using this changed node info
                 // and create a new plugin for them.
