@@ -226,5 +226,12 @@ namespace System.Drawing
             rect.Height = maxY - minY;
             return rect;
         }
+
+        public static Matrix Inverse(this Matrix m)
+        {
+            var i = m.Clone();
+            i.Invert();
+            return i;
+        }
     }
 }
