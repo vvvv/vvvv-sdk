@@ -804,7 +804,6 @@ namespace VVVV.Hosting
         
         #endregion
 
-
         public void DisableShortCuts()
         {
             FVVVVHost.DisableShortCuts();
@@ -813,6 +812,11 @@ namespace VVVV.Hosting
         public void EnableShortCuts()
         {
             FVVVVHost.EnableShortCuts();
+        }
+        
+        public IWin32Window FiftyEditor
+        {
+            set {FVVVVHost.FiftyEditor = value;}
         }
     }
 }
