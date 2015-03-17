@@ -89,6 +89,11 @@ namespace VVVV.Nodes.Finder
                 Flags |= FilterFlags.Dynamic;
                 Tags.Remove("d");
             }
+            if (Tags.Contains("l"))
+            {
+                Flags |= FilterFlags.VL;
+                Tags.Remove("l");
+            }
             if (Tags.Contains("i"))
             {
                 Flags |= FilterFlags.IONode;

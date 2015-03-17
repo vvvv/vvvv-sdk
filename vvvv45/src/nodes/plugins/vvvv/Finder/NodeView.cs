@@ -83,6 +83,9 @@ namespace VVVV.Nodes.Finder
                 case NodeType.Dynamic:
                     Flags |= FilterFlags.Dynamic;
                     break;
+                case NodeType.VL:
+                    Flags |= FilterFlags.VL;
+                    break;
                 case NodeType.Text:
                     Flags |= FilterFlags.Text;
                     break;

@@ -178,6 +178,11 @@ namespace VVVV.Nodes.NodeBrowser
         			if (!path.EndsWith("effects"))
         				path = Path.Combine(path, "effects");
         		}
+                else if (FCloneInfo.Type == NodeType.VL)
+                {
+                    if (!path.EndsWith("vl"))
+                        path = Path.Combine(path, "vl");
+                }
         		else if (!path.EndsWith("plugins"))
         			path = Path.Combine(path, "plugins");
         			

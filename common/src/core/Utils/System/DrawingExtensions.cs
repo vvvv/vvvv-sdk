@@ -85,6 +85,11 @@ namespace System.Drawing
         {
             return new PointF(p1.X + p2.X, p1.Y + p2.Y);
         }
+        
+        public static Point Plus(this Point p1, Point p2)
+        {
+            return new Point(p1.X + p2.X, p1.Y + p2.Y);
+        }
 
         /// <summary>
         /// Translates a given <see cref="PointF">p1</see> by a specified <see cref="PointF">p2</see>.
@@ -93,10 +98,20 @@ namespace System.Drawing
         {
             return new PointF(p1.X - p2.X, p1.Y - p2.Y);
         }
+        
+        public static Point Minus(this Point p1, Point p2)
+        {
+            return new Point(p1.X - p2.X, p1.Y - p2.Y);
+        }
 
         public static PointF Multiply(this PointF point, float factor)
         {
             return new PointF(point.X * factor, point.Y * factor);
+        }
+        
+        public static Point Multiply(this Point point, int factor)
+        {
+            return new Point(point.X * factor, point.Y * factor);
         }
 
         public static PointF Lerp(this PointF p1, PointF p2, float x)
