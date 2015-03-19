@@ -12,7 +12,7 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "Spreads", Version = "Vector", Help = "Reverse (Spreads) with bin and vector size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "Spreads", Version = "Vector", Help = "Reverse (Spreads) with Bin and Vector Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseVectorNode : IPluginEvaluate
 	{
@@ -76,27 +76,27 @@ namespace VVVV.Nodes
 	
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "String", Version = "Bin", Help = "Reverse (String) with bin size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "String", Version = "Bin", Help = "Reverse (String) with Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseStringBin : ReverseBin<string> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "Color", Version = "Bin", Help = "Reverse (Color) with bin size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "Color", Version = "Bin", Help = "Reverse (Color) with Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseColorBin : ReverseBin<RGBAColor> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "Transform", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "Transform", Version = "Bin", Help = "Reverses the order of the slices in the Spread. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseTransformBin : ReverseBin<Matrix4x4> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "Enumerations", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "Enumerations", Version = "Bin", Help = "Reverses the order of the slices in the Spread. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseEnumBin : ReverseBin<EnumEntry> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "Reverse", Category = "Raw", Version = "Bin", Help = "Reverses the order of the slices in the spread, with bin size", Author = "woei")]
+	[PluginInfo(Name = "Reverse", Category = "Raw", Version = "Bin", Help = "Reverses the order of the slices in the Spread. With Bin Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class ReverseRawBin : ReverseBin<System.IO.Stream> {}
 }

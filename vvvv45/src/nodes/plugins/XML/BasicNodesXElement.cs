@@ -24,7 +24,7 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Cons",
                 Category = "XElement",
-                Help = "Concatenates all input spreads to one output spread.",
+                Help = "Concatenates all Input spreads.",
                 Tags = "generic, spreadop"
                 )]
     public class XElementConsNode : Cons<XElement> {}
@@ -50,7 +50,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Reverse", 
 	            Category = "XElement", 
 	            Version = "Bin",
-	            Help = "Reverses the order of slices in a given spread.",
+	            Help = "Reverses the order of the slices in the Spread. With Bin Size.",
 	            Tags = "invert, generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -59,7 +59,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Shift", 
 	            Category = "XElement", 
 	            Version = "Bin", 
-	            Help = "Shifts the slices in a spread upwards by the given phase.", 
+	            Help = "Shifts the slices in the Spread by the given Phase. With Bin Size.", 
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -68,7 +68,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "SetSlice",
 	            Category = "XElement",
 	            Version = "Bin",
-	            Help = "Replaces individual slices of a spread with the given input",
+	            Help = "Replaces slices in the Spread that are addressed by the Index pin, with the given Input.",
 	            Tags = "generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -76,7 +76,7 @@ namespace VVVV.Nodes
     
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "XElement",
-	            Help = "Deletes the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, generic, spreadop",
 	            Author = "woei"
 	           )]
@@ -84,23 +84,23 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Select",
                 Category = "XElement",
-                Help = "Select which slices and how many form the output spread.",
-	            Tags = "resample, generic, spreadop"
+                Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
+	            Tags = "repeat, resample, duplicate, spreadop"
 	           )]
     public class XElementSelectNode : Select<XElement> {}
     
     [PluginInfo(Name = "Select", 
 				Category = "XElement",
 				Version = "Bin",				
-				Help = "Select the slices which form the new spread.", 
-				Tags = "repeat, generic, spreadop",
+				Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted. With Bin Size.", 
+				Tags = "repeat, resample, duplicate, spreadop",
 				Author = "woei"
 			)]
     public class XElementSelectBinNode : SelectBin<XElement> {}
     
 	[PluginInfo(Name = "Unzip", 
 	            Category = "XElement",
-	            Help = "Unzips a spread into multiple spreads.", 
+	            Help = "The inverse of Zip. Interprets the Input spread as being interleaved and untangles it.", 
 	            Tags = "split, generic, spreadop"
 	           )]
 	public class XElementUnzipNode : Unzip<XElement> {}
@@ -108,23 +108,23 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Unzip", 
 	            Category = "XElement",
 	            Version = "Bin",
-	            Help = "Unzips a spread into multiple spreads.", 
+	            Help = "The inverse of Zip. Interprets the Input spread as being interleaved and untangles it. With Bin Size.", 
 	            Tags = "split, generic, spreadop"
 	           )]
 	public class XElementUnzipBinNode : Unzip<IInStream<XElement>> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "XElement",
-	            Help = "Zips spreads together.", 
-	            Tags = "join, generic, spreadop"
+	            Help = "Interleaves all Input spreads.", 
+	            Tags = "interleave, join, generic, spreadop"
 	           )]
 	public class XElementZipNode : Zip<XElement> {}
 	
 	[PluginInfo(Name = "Zip", 
 	            Category = "XElement",
 				Version = "Bin",	            
-	            Help = "Zips spreads together.", 
-	            Tags = "join, generic, spreadop"
+	            Help = "Interleaves all Input spreads.", 
+	            Tags = "interleave, join, generic, spreadop"
 	           )]
 	public class XElementZipBinNode : Zip<IInStream<XElement>> {}
 	
@@ -147,14 +147,14 @@ namespace VVVV.Nodes
     
     [PluginInfo(Name = "Pairwise",
                 Category = "XElement",
-                Help = "Returns all pairs of successive slices. From an input ABCD returns AB, BC, CD.",
+                Help = "Returns all combinations of pairs of successive slices. From an input ABCD returns AB, BC, CD.",
                 Tags = "generic, spreadop"
                 )]
     public class XElementPairwiseNode : Pairwise<XElement> {}
 
     [PluginInfo(Name = "SplitAt",
                 Category = "XElement",
-                Help = "Splits a spread at the given index.",
+                Help = "Splits the Input spread in two at the specified Index.",
                 Tags = "generic, spreadop"
                 )]
     public class XElementSplitAtNode : SplitAtNode<XElement> { }

@@ -12,7 +12,7 @@ using VVVV.Utils.Streams;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Select", Category = "Value", Version = "Vector", Help = "Select (Value) with bin and vector size", Author = "woei")]
+	[PluginInfo(Name = "Select", Category = "Value", Version = "Vector", Tags = "repeat, resample, duplicate, spreadop", Help = "Select (Value) with Bin and Vector Size.", Author = "woei")]
 	#endregion PluginInfo
 	public class SelectVectorNode : IPluginEvaluate
 	{

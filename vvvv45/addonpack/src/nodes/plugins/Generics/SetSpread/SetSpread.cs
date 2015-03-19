@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "Spreads",
-	            Help = "SetSpread with Bin Size",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -25,7 +25,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "String",
-	            Help = "SetSpread with Bin Size",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -34,8 +34,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "Color",
-	            Help = "SetSpread with Bin Size",
-	            Tags = "split",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
+	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
 	public class SetSpreadColor : SetSpread<RGBAColor> {}
@@ -43,7 +43,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "Transform",
-	            Help = "SetSpread with Bin Size",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -52,7 +52,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "Enumerations",
-	            Help = "SetSpread with Bin Size",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -61,7 +61,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SetSpread",
 	            Category = "Raw",
-	            Help = "SetSpread with Bin Size",
+	            Help = "Replaces a sub-spread in the Spread that is addressed via Offset and Count, with the given Input.",
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
