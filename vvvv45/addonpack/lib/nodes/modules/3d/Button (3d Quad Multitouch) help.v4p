@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.7.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.8.dtd" >
    <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch) help.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="0" top="0" width="16440" height="11745">
    </BOUNDS>
@@ -256,12 +256,12 @@
    <PIN pinname="Input 3" slicecount="1" values="|1.00000,0.00134,0.01164,0.74714|">
    </PIN>
    </NODE>
-   <NODE id="13" componentmode="Hidden" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE id="13" componentmode="InAWindow" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS type="Node" height="0" left="630" top="9210" width="0">
    </BOUNDS>
    <BOUNDS type="Box" height="3600" left="630" top="9210" width="4800">
    </BOUNDS>
-   <BOUNDS type="Window" left="16425" top="0" width="7425" height="11565">
+   <BOUNDS type="Window" left="16425" top="0" width="7425" height="7605">
    </BOUNDS>
    <PIN pinname="testcamera" visible="1">
    </PIN>
@@ -510,7 +510,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="33.8.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="10650" top="6030" width="1185" height="1530">
@@ -743,7 +743,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6030" top="5280" width="4155" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain quad which pointer touches it, use these infos below|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain quad which pointer is over it, use these infos below|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -757,7 +757,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11565" top="5280" width="3465" height="570">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain pointer which quad touches it, use these infos below|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain pointer which quad it touches, use these infos below|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -852,13 +852,13 @@
    <BOUNDS type="Node" left="11205" top="10620" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Button (3d Mesh Multitouch)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch).v4p" nodename="Button (3d Mesh Multitouch)" componentmode="Hidden" id="64">
+   <NODE systemname="BUTTON (3D MESH MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch).v4p" nodename="Button (3d Mesh Multitouch)" componentmode="Hidden" id="64">
    <BOUNDS type="Node" left="10260" top="10125" width="100" height="100">
    </BOUNDS>
    </NODE>
    <INFO author="motzi" description="" tags="">
    </INFO>
-   <NODE id="31" systemname="Button (3d Quad Multitouch)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" nodename="Button (3d Quad Multitouch)" componentmode="Hidden">
+   <NODE id="31" systemname="BUTTON (3D QUAD MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" nodename="Button (3d Quad Multitouch)" componentmode="Hidden">
    <BOUNDS type="Node" left="3645" top="3900" width="11835" height="270">
    </BOUNDS>
    <PIN pinname="Index of Nearest" visible="1">
@@ -871,7 +871,7 @@
    </PIN>
    <PIN pinname="Transform Quad" visible="1">
    </PIN>
-   <PIN pinname="Cursor Transform" visible="1">
+   <PIN pinname="Pointer Transform" visible="1">
    </PIN>
    <BOUNDS type="Window" left="1845" top="0" width="11940" height="15150">
    </BOUNDS>
@@ -885,15 +885,9 @@
    </PIN>
    <PIN pinname="Index Of Touched" visible="1">
    </PIN>
-   <PIN pinname="Pointer Transform" visible="1">
+   <PIN pinname="Quad Index" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Nearest Quad" dstnodeid="15" dstpinname="Index" linkstyle="Bezier">
-   <LINKPOINT x="11010" y="4905">
-   </LINKPOINT>
-   <LINKPOINT x="3270" y="4905">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Touched" dstnodeid="17" dstpinname="Input 1" linkstyle="Bezier">
    <LINKPOINT x="2120" y="4530">
    </LINKPOINT>
@@ -916,8 +910,6 @@
    </LINK>
    <LINK srcnodeid="31" srcpinname="Touched" dstnodeid="33" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="31" srcpinname="Nearest Quad" dstnodeid="34" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Quad Index" dstnodeid="42" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Pointer Count" dstnodeid="41" dstpinname="Y Input Value">
@@ -933,5 +925,9 @@
    </LINKPOINT>
    <LINKPOINT x="3060" y="5198">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Index of Nearest" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Quad Index" dstnodeid="15" dstpinname="Index">
    </LINK>
    </PATCH>

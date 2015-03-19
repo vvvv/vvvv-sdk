@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.7.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.8.dtd" >
    <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch) help.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="300" top="270" width="16920" height="11775">
    </BOUNDS>
@@ -633,7 +633,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6150" top="5460" width="4155" height="465">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain quad which pointer touches it, use these infos below|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain quad which pointer is over it, use these infos below|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -647,7 +647,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="11685" top="5460" width="3465" height="570">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain pointer which quad touches it, use these infos below|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain pointer which quad it touches, use these infos below|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -850,7 +850,7 @@
    </LINK>
    <LINK srcnodeid="33" srcpinname="Output" dstnodeid="28" dstpinname="Diffuse Color">
    </LINK>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="33.8.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="64" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3285" top="1800" width="795" height="240">
@@ -898,7 +898,7 @@
    </NODE>
    <INFO author="motzi" description="" tags="">
    </INFO>
-   <NODE id="19" systemname="Button (3d Mesh Multitouch)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch).v4p" nodename="Button (3d Mesh Multitouch)" componentmode="Hidden">
+   <NODE id="19" systemname="BUTTON (3D MESH MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch).v4p" nodename="Button (3d Mesh Multitouch)" componentmode="Hidden">
    <BOUNDS type="Node" left="3765" top="4080" width="12465" height="270">
    </BOUNDS>
    <PIN pinname="Index of Nearest" visible="1">
@@ -911,7 +911,7 @@
    </PIN>
    <PIN pinname="Transform Quad" visible="1">
    </PIN>
-   <PIN pinname="Cursor Transform" visible="1">
+   <PIN pinname="Pointer Transform" visible="1">
    </PIN>
    <BOUNDS type="Window" left="1845" top="0" width="11940" height="15150">
    </BOUNDS>
@@ -936,8 +936,6 @@
    <PIN pinname="Mesh" visible="1">
    </PIN>
    <PIN pinname="Touched Index" visible="1">
-   </PIN>
-   <PIN pinname="Pointer Transform" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Touched" dstnodeid="36" dstpinname="Input 1" linkstyle="Bezier">
@@ -970,8 +968,6 @@
    </LINK>
    <LINK srcnodeid="19" srcpinname="Pointer List" dstnodeid="18" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Nearest Mesh" dstnodeid="22" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="19" srcpinname="Mesh Count" dstnodeid="7" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Mesh List" dstnodeid="5" dstpinname="Y Input Value">
@@ -990,7 +986,7 @@
    </LINK>
    <LINK srcnodeid="19" srcpinname="Mesh Index" dstnodeid="34" dstpinname="Index">
    </LINK>
-   <NODE systemname="Button (3d Quad Multitouch)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" nodename="Button (3d Quad Multitouch)" componentmode="Hidden" id="68">
+   <NODE systemname="BUTTON (3D QUAD MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" nodename="Button (3d Quad Multitouch)" componentmode="Hidden" id="68">
    <BOUNDS type="Node" left="10170" top="10170" width="100" height="100">
    </BOUNDS>
    </NODE>
@@ -999,5 +995,7 @@
    </LINKPOINT>
    <LINKPOINT x="3300" y="5115">
    </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Index of Nearest" dstnodeid="22" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
