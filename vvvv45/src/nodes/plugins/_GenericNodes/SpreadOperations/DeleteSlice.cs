@@ -19,7 +19,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "Spreads",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "String",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -37,7 +37,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "Color",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -46,7 +46,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "Transform",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -55,7 +55,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "Enumerations",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
@@ -64,7 +64,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "DeleteSlice",
 	            Category = "Raw",
-	            Help = "Delete the slice at the given index.",
+	            Help = "Removes slices from the Spread at the positions addressed by the Index pin.",
 	            Tags = "remove, filter",
 	            Author = "woei")]
 	#endregion PluginInfo
