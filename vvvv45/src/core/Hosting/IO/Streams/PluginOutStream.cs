@@ -97,8 +97,16 @@ namespace VVVV.Hosting.IO.Streams
         public NodeOutStream(INodeOut nodeOut, IConnectionHandler handler)
         {
             FNodeOut = nodeOut;
-            FNodeOut.SetInterface(this);
-            FNodeOut.SetConnectionHandler(handler, this);
+            if (typeof(T).Assembly.IsDynamic)
+            {
+                FNodeOut.SetInterface(new DynamicTypeWrapper(this));
+                FNodeOut.SetConnectionHandler(handler, new DynamicTypeWrapper(this));
+            }
+            else
+            {
+                FNodeOut.SetInterface(this);
+                FNodeOut.SetConnectionHandler(handler, this);
+            }
         }
         
         object IGenericIO.GetSlice(int index)
