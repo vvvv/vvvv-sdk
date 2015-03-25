@@ -89,11 +89,29 @@ namespace VVVV.Hosting
 			//get {return ComponentMode.Parse(GetAttribute("componentmode"));}
 			set {SetAttribute("componentmode", value.ToString());}
 		}
+
+        public bool CreateMe
+        {
+            get 
+            {
+                var a = GetAttribute("createme");
+                if (a != null)
+                    return bool.Parse(a);
+                return false;
+            }
+            set { SetAttribute("createme", value.ToString()); }
+        }
 		
 		public bool DeleteMe 
 		{
-			get {return bool.Parse(GetAttribute("deleteme"));}
-			set {SetAttribute("deleteme", value.ToString());}
+			get 
+            {
+                var a = GetAttribute("deleteme");
+                if (a != null)
+                    return bool.Parse(a);
+                return false;
+            }
+			set { SetAttribute("deleteme", value.ToString()); }
 		}
 					
 		public PinMessage AddPin(string pinName)

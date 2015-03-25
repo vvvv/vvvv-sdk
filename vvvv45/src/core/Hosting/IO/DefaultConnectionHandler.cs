@@ -12,23 +12,31 @@ namespace VVVV.Hosting.IO
             if (source == null) return true;
             if (sink == null) return true;
 
-            var sourceDataType = GetDataType(source.GetType());
-            var sinkDataType = GetDataType(sink.GetType());
+            var sourceDataType = GetDataType(GetType(source));
+            var sinkDataType = GetDataType(GetType(source));
 			
 			return sinkDataType.IsAssignableFrom(sourceDataType);
 		}
 		
 		public string GetFriendlyNameForSink(object sink)
 		{
-            var sinkDataType = GetDataType(sink.GetType());
+            var sinkDataType = GetDataType(GetType(sink));
 			return string.Format(" [ Needs: {0} ]", sinkDataType.GetCSharpName());
 		}
 		
 		public string GetFriendlyNameForSource(object source)
 		{
-            var sourceDataType = GetDataType(source.GetType());
+            var sourceDataType = GetDataType(GetType(source));
 			return string.Format(" [ Supports: {0} ]", sourceDataType.GetCSharpName());
 		}
+
+        private static Type GetType(object value)
+        {
+            var wrapper = value as DynamicTypeWrapper;
+            if (wrapper != null)
+                return wrapper.Value.GetType();
+            return value.GetType();
+        }
 
         private static Type GetDataType(Type ioType)
         {
