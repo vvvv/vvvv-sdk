@@ -244,7 +244,10 @@ namespace VVVV.Hosting.IO.Streams
         public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
         {
             FNodeIn = nodeIn;
-            FNodeIn.SetConnectionHandler(handler, this);
+            if (typeof(T).Assembly.IsDynamic)
+                FNodeIn.SetConnectionHandler(handler, new DynamicTypeWrapper(this));
+            else
+                FNodeIn.SetConnectionHandler(handler, this);
             FAutoValidate = nodeIn.AutoValidate;
             FUpstreamStream = FNullStream;
         }
@@ -280,6 +283,9 @@ namespace VVVV.Hosting.IO.Streams
                 FNodeIn.GetUpstreamInterface(out usI);
                 FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
                 // Check fastest way first: TUpstream == T 
+                var wrapper = usI as DynamicTypeWrapper;
+                if (wrapper != null)
+                    usI = wrapper.Value;
                 FUpstreamStream = usI as MemoryIOStream<T>;
                 if (FUpstreamStream == null)
                 {
