@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\Windows\ScreenInfo\ScreenInfo (Windows) help.v4p">
-   <BOUNDS height="7650" left="1125" top="1125" type="Window" width="4830">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="D:\develop\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\ScreenInfo (Windows) help.v4p">
+   <BOUNDS height="8685" left="1125" top="1125" type="Window" width="4830">
    </BOUNDS>
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
    <BOUNDS height="270" left="240" top="225" type="Node" width="3660">
@@ -182,7 +182,7 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Transform" srcnodeid="18" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InAWindow" id="16" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="16" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="315" top="6825" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6360" left="5925" top="1110" type="Window" width="6120">
@@ -190,6 +190,16 @@
    <BOUNDS height="1800" left="315" top="6825" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="15" nodename="Quad (DX9)">
@@ -447,13 +457,41 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30">
-   <BOUNDS type="Node" left="1755" top="6825" width="2670" height="270">
+   <BOUNDS type="Node" left="1905" top="6840" width="2670" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1755" top="6825" width="2670" height="270">
+   <BOUNDS type="Box" left="1905" top="6840" width="2670" height="270">
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|showing your current display setup|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="405" top="7785" width="8445" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="405" top="7785" width="4305" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="https://msdn.microsoft.com/en-us/library/vstudio/System.Windows.Forms.Screen_properties%28v=vs.100%29.aspx">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="330" top="7350" width="2670" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="330" top="7350" width="2670" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|node wraps .net screen class:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>

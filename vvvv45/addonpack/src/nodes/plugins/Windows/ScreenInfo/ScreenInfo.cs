@@ -50,6 +50,7 @@ namespace VVVV.Nodes
     	private IValueOut FWorkAreaOutput;
     	private IValueOut FWorkAreaOffsetOutput;
     	private IValueOut FBitsPerPixel;
+    	private IStringOut FDeviceName;
     	private IValueOut FIsPrimary;
 		
     	#endregion field declaration
@@ -204,6 +205,9 @@ namespace VVVV.Nodes
 	    	FHost.CreateValueOutput("Bits Per Pixel", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBitsPerPixel);
 	    	FBitsPerPixel.SetSubType(0.0, 1.1, 0.01, 0, false, false, true);
 	    	
+	    	FHost.CreateStringOutput("Device Name", TSliceMode.Dynamic, TPinVisibility.True, out FDeviceName);
+	    	FDeviceName.SetSubType("", false);
+	    	
 	    	FHost.CreateValueOutput("Is Primary", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIsPrimary);
 	    	FIsPrimary.SetSubType(0.0, 1.1, 0.01, 0, false, true, false);
 	    	
@@ -235,6 +239,8 @@ namespace VVVV.Nodes
         		FResolutionOffsetOutput.SliceCount = screens.Length;
         		FWorkAreaOutput.SliceCount = screens.Length;
         		FWorkAreaOffsetOutput.SliceCount = screens.Length;
+        		FBitsPerPixel.SliceCount = screens.Length;
+        		FDeviceName.SliceCount = screens.Length;
         		FIsPrimary.SliceCount = screens.Length;
 	        	
         		//loop for all slices
@@ -246,6 +252,7 @@ namespace VVVV.Nodes
         			FWorkAreaOutput.SetValue2D(i, screens[i].WorkingArea.Width, screens[i].WorkingArea.Height);
         			FWorkAreaOffsetOutput.SetValue2D(i, screens[i].WorkingArea.Left, screens[i].WorkingArea.Top);
         			FBitsPerPixel.SetValue(i, (double)screens[i].BitsPerPixel);
+        			FDeviceName.SetString(i, screens[i].DeviceName);
         			FIsPrimary.SetValue(i, (double)screens[i].Primary.GetHashCode());
         			
         		}
