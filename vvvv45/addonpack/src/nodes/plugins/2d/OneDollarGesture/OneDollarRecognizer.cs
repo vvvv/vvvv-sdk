@@ -111,7 +111,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Vectorize", 
 		Category = "2d", 
 		Help = "Normalizes a set of 2d vectors", 
-		Tags = "$1, OneDollarGesture",
+		Tags = "$1, OneDollarRecognizer",
 		Author = "motzi",
 		Credits = "Jacob Wobbrock, Yang Li"
 	)]
@@ -289,7 +289,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "OptimalCosineDistance",
 	            Category = "2d",
 	            Help = "Calculates the minimal angular distance between two sets of 2d vectors",
-	            Tags = "Protractor, $1, OneDollarGesture",
+	            Tags = "Protractor, $1, OneDollarRecognizer",
 				Author = "motzi",
 				Credits = "Yiang Li, Jacob Wobbrock"
 	)]
