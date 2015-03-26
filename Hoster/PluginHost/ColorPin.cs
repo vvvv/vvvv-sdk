@@ -72,7 +72,7 @@ namespace Hoster
 		
 		unsafe public void GetColorPointer(out int SliceCount, out double* ValueP)
 		{
-			//todo: return sth meaningfull
+			//TODO: return sth meaningfull
 			SliceCount = 0;
 			fixed(double* p = &FValues[0].R)
 			{ValueP = p;}
@@ -80,9 +80,26 @@ namespace Hoster
 		
 		unsafe public void GetColorPointer(out double* ValueP)
 		{
-			//todo: return sth meaningfull
+			//TODO: return sth meaningfull
 			fixed(double* p = &FValues[0].R)
 			{ValueP = p;}
+		}
+		
+		unsafe public void GetColorPointer(out double** ppDst)
+		{
+		    //TODO: not implemented
+		    fixed(double* p = &FValues[0].R)
+		    {ppDst = (double**)p;}
+		}
+		
+		unsafe public void GetColorPointer(out int* pLength, out double** ppData)
+		{
+		    //TODO: not implemented
+		    fixed(double* p = &FValues[0].R)
+		    {
+		        ppData = (double**)p;
+		        pLength = (int*)0;
+		    }
 		}
 		
 		override protected string AsString(int index)

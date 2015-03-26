@@ -133,6 +133,13 @@ namespace Hoster
 			ValueP = &f;
 			SliceCount = 0;
 		}
+		
+		unsafe public void GetMatrixPointer(out int* sliceCount, out float** ValueP)
+		{
+			//TODO: not implemented
+			sliceCount = (int*)0;
+			ValueP = (float**)0;
+		}
 	}	
 	
 	
@@ -155,6 +162,12 @@ namespace Hoster
 		public void GetMatrix(int Index, out Matrix4x4 Value)
 		{
 			Value = new Matrix4x4();
+		}
+		
+		unsafe public void GetMatrixPointer(out float** ValueP)
+		{
+			//TODO: not implemented
+			ValueP = (float**)0;
 		}
 
 		override protected void ChangeSliceCount()
@@ -193,7 +206,7 @@ namespace Hoster
 
 			FPinIsChanged = true;
 		}
-
+		
 		override protected string AsString(int index)
 		{
 			if (FIsInteger)
