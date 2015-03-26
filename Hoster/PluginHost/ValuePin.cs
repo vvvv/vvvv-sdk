@@ -239,6 +239,19 @@ namespace Hoster
 			fixed(double* p = &FValues[0])
 			{ValueP = p;}
 		}
+		
+		unsafe public void GetValuePointer(out int* sliceCount, out double** ppDst)
+		{
+		  //TODO: not implemented
+		  sliceCount = (int*)0;
+		  ppDst = (double**)0;
+		}
+		
+		unsafe public void GetValuePointer(out double** ppDst)
+		{
+		  //TODO: not implemented
+		  ppDst = (double**)0;
+		}
 
 		override protected string AsString(int index)
 		{
