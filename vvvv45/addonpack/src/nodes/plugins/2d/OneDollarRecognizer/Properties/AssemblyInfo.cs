@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DemoPlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("OneDollar Gesture Recognizer")]
+[assembly: AssemblyDescription("OneDollar Gesture Recognizer Nodes for VVVV")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DemoPlugin")]
-[assembly: AssemblyCopyright("Copyright 2010")]
+[assembly: AssemblyProduct("OneDollarGesture")]
+[assembly: AssemblyCopyright("Jacob Wobbrock, Yiang Li, motzi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
