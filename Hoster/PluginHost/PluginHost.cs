@@ -187,6 +187,11 @@ namespace Hoster
 			EntryName = "";
 		}
 		
+		public void Evaluate()
+		{
+		    //TODO: not implemented 
+		}
+		
 		private void AddPin(TBasePin Pin)
 		{
 			if ((Pin.Direction == TPinDirection.Configuration) || (Pin.Direction == TPinDirection.Input))
@@ -349,6 +354,18 @@ namespace Hoster
 			Pin = new TStatePin(this, TPinDirection.Input, SliceMode, Visibility);
 			
 			AddPin(Pin as TBasePin);
+		}
+		
+		public void CreateRawInput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IRawIn Pin)
+		{
+		    //TODO: not implemented
+		    Pin = null;
+		}
+
+		public void CreateRawOutput(string Name, TSliceMode SliceMode, TPinVisibility Visibility, out IRawOut Pin)
+		{
+		    //TODO: not implemented
+		    Pin = null;
 		}
 		
 		//called by the plugin the host can delete a pin

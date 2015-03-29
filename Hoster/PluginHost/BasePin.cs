@@ -111,10 +111,10 @@ namespace Hoster
 			}
 		}
 		
-		public void SetPinUpdater(IPinUpdater pinUpdater)
-		{
-			
-		}
+//		public void SetPinUpdater(IPinUpdater pinUpdater)
+//		{
+//			
+//		}
 
 		public bool SliceCountIsChanged
 		{
@@ -124,6 +124,11 @@ namespace Hoster
 		public bool IsConnected
 		{
 			get {return false;}
+		}
+		
+		public IPluginHost PluginHost
+		{
+			get {return null;}
 		}
 		
 		public bool PinIsChanged
@@ -172,6 +177,19 @@ namespace Hoster
 			{
 				g.DrawString(AsDisplayString(i), f, b, r.X+2, FSliceHeight + 2 + i * FSliceHeight);
 			}
+		}
+		
+		public bool AllowFeedback 
+		{
+		    //TODO: not implmented
+		    get;
+			set;
+		}
+		
+		public bool Validate()
+		{
+		    //TODO: not implmented
+		    return false;
 		}
 	}	
 }
