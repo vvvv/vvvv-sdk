@@ -39,8 +39,13 @@ namespace VVVV.Hosting
                     FFileName = value;
                 }
 			}
-		}
-		
+        }
+
+        public void AddSaveMe()
+        {
+            FPatch.DocumentElement.SetAttribute("saveme", FFileName);
+        }
+
 		public NodeMessage AddNode(int id)
 		{
 			var node = new NodeMessage(FPatch, id);

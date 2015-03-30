@@ -325,6 +325,7 @@ namespace VVVV.Nodes
 					else
 					{
 						pm = new PatchMessage(patchClass[0]);
+                        pm.AddSaveMe();
 						FPatchMessages.Add(patchClass[0], pm);
 					}
 					
