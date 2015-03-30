@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using VVVV.Hosting.Interfaces;
 using VVVV.Hosting.Interfaces.EX9;
 using VVVV.PluginInterfaces.InteropServices.EX9;
@@ -200,6 +201,14 @@ namespace VVVV.Hosting
         /// Enables the short cuts of vvvv.
         /// </summary>
         void EnableShortCuts();
+        
+        /// <summary>
+        /// The 50 editors control
+        /// </summary>
+        IWin32Window FiftyEditor
+        {
+            set;
+        }
     }
     
     #region Listeners

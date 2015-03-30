@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props" Condition="Exists('packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" />
   <PropertyGroup>
     <AssemblyName>TimelinerSA</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,7 +21,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>VVVVPlugHostMono</RootNamespace>
     <TargetFrameworkProfile />
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>False</Optimize>
@@ -57,9 +58,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDX">
-      <HintPath>..\vvvv45\src\thirdparty\SlimDX.dll</HintPath>
+      <HintPath>packages\VVVV.SlimDX.1.0.1\build\net40\lib\x86\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex">
+      <HintPath>packages\VVVV.System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -68,6 +72,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="VVVV.Core">
+      <HintPath>packages\VVVV.Core.33.7.0\lib\net40\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>packages\VVVV.PluginInterfaces.33.7.0\build\net40\lib\x86\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils">
+      <HintPath>packages\VVVV.Utils.33.7.0\lib\net40\VVVV.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -108,20 +121,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vvvv45\src\core\PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\vvvv45\src\core\Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\vvvv45\src\nodes\plugins\Windows\Remoter\Remoter.csproj">
-      <Project>{BE8F0188-A22A-4ED6-B94D-963F37F114AD}</Project>
+    <ProjectReference Include="Remoter\Remoter.csproj">
+      <Project>{5509AC01-1916-4134-8B4D-BE560A715A89}</Project>
       <Name>Remoter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
+  <Import Project="packages\VVVV.PluginInterfaces.33.7.0\build\net40\VVVV.PluginInterfaces.targets" Condition="Exists('packages\VVVV.PluginInterfaces.33.7.0\build\net40\VVVV.PluginInterfaces.targets')" />
 </Project>

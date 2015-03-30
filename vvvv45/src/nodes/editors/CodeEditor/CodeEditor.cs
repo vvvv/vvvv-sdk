@@ -599,7 +599,7 @@ namespace VVVV.HDE.CodeEditor
             KeyEventArgs ke = new KeyEventArgs((Keys)m.WParam.ToInt32() | ModifierKeys);
             FNeedsKeyUp = !(m.Msg == 0x101);
             
-            if (ke.Control && ke.KeyCode == Keys.S && m.Msg == 0x100)
+            if (ke.Control && ke.KeyCode == Keys.S && !ke.Alt && m.Msg == 0x100)
             {
                 if (!TextDocument.IsReadOnly)
                 {
@@ -613,6 +613,21 @@ namespace VVVV.HDE.CodeEditor
                         project.CompileAsync();
                     }
                     OnSavePressed();
+                }
+                return true;
+            }
+            else if (ke.Control && ke.KeyCode == Keys.S && ke.Alt && m.Msg == 0x100)
+            {
+                string ext = Path.GetExtension(TextDocument.Project.LocalPath);
+
+                var saveDialog = new System.Windows.Forms.SaveFileDialog();
+                saveDialog.InitialDirectory = Path.GetDirectoryName(TextDocument.Project.LocalPath);
+                saveDialog.Filter = String.Format("{0} Document (*.{1})|*.{1}", ext.ToUpper(), ext.ToLower());
+                saveDialog.AddExtension = true;
+
+                if (saveDialog.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(saveDialog.FileName, TextDocument.TextContent);
                 }
                 return true;
             }

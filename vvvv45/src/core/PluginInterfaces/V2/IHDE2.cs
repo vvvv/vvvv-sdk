@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using VVVV.Core;
 using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
@@ -350,6 +351,14 @@ namespace VVVV.PluginInterfaces.V2
         /// Enables the short cuts of vvvv.
         /// </summary>
         void EnableShortCuts();
+        
+        /// <summary>
+        /// The 50 editors control
+        /// </summary>
+        IWin32Window FiftyEditor
+        {
+            set;
+        }
 	}
 	#endregion IHDEHost
 	

@@ -22,6 +22,13 @@ namespace Hoster
 			UpstreamSlice = Slice;
 		}
 		
+		unsafe public void GetUpStreamSlices(out int sliceCount, out int* slices)
+		{
+		  //TODO: not implemented 
+		  sliceCount = 0;
+		  slices = (int*)0;
+		}
+		
 		public void GetUpstreamInterface(out INodeIOBase UpstreamInterface)
 		{
 			//should return interface of upstream connected pin
@@ -38,6 +45,11 @@ namespace Hoster
 		{
 			FGuids = Guids;
 			FFriendlyName = FriendlyName;
+		}
+		
+		public void SetSubType2(Type type, Guid[] guids, string friendlyName)
+		{
+		    //TODO: not implemented
 		}
 		
 		public void MarkPinAsChanged()
@@ -65,5 +77,10 @@ namespace Hoster
 		
 		override public void SetSpreadAsString(string Spread)
 		{}
+		
+		public bool IsConvoluted 
+		{
+		    get {return false;}
+		}
 	}	
 }
