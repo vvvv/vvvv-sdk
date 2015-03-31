@@ -162,8 +162,8 @@ namespace VVVV.Nodes.WindowSwitcher
         public void Up()
         {
             FSelectedWindowIndex = (FWindowLIFO.Count + (FSelectedWindowIndex - 1)) % FWindowLIFO.Count;
-            //special treatment for Kommunikator: leave it always out for now
-            if (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator")
+            //special treatment for Kommunikator and FiftyEditor: leave em always out for now
+            if (string.IsNullOrEmpty(FWindowLIFO[FSelectedWindowIndex].Caption) || (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator"))
                 Up();
             else
                 SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
@@ -172,8 +172,8 @@ namespace VVVV.Nodes.WindowSwitcher
         public void Down()
         {
             FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FWindowLIFO.Count;
-            //special treatment for Kommunikator: leave it always out for now
-            if (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator")
+            //special treatment for Kommunikator and FiftyEditor: leave em always out for now
+            if (string.IsNullOrEmpty(FWindowLIFO[FSelectedWindowIndex].Caption) || (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator"))
                 Down();
             else
                 SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
