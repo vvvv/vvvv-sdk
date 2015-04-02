@@ -26,17 +26,26 @@ namespace VVVV.Hosting
 			FPatch.AppendChild(patch);
 			Filename = fileName;
 		}
-		
+
+        private string FFileName;
 		public string Filename
 		{
-			get {return FPatch.DocumentElement.GetAttribute("saveme");}
+			get {return FFileName;}
 			set 
 			{
-				if (!string.IsNullOrEmpty(value))
-					FPatch.DocumentElement.SetAttribute("saveme", value);
+                if (FFileName != value)
+                {
+                    FPatch.DocumentElement.SetAttribute("nodename", value);
+                    FFileName = value;
+                }
 			}
-		}
-		
+        }
+
+        public void AddSaveMe()
+        {
+            FPatch.DocumentElement.SetAttribute("saveme", FFileName);
+        }
+
 		public NodeMessage AddNode(int id)
 		{
 			var node = new NodeMessage(FPatch, id);
