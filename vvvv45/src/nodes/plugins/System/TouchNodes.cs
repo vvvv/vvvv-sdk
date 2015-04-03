@@ -88,16 +88,17 @@ namespace VVVV.Nodes.Input
                                 User32.ScreenToClient(e.HWnd, ref position);
                                 var clientArea = new Size(cr.Width, cr.Height);
                                 var id = touchPoint.dwID;
+                                var primary = (touchPoint.dwFlags & Const.TOUCHEVENTF_PRIMARY) > 0;
                                 var contactArea = (touchPoint.dwMask & Const.TOUCHINPUTMASKF_CONTACTAREA) > 0
                                     ? new Size(touchPoint.cxContact / 100, touchPoint.cyContact / 100)
                                     : Size.Empty;
 
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_DOWN) > 0)
-                                    yield return new TouchDownNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchDownNotification(position, clientArea, id, primary, contactArea);
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_MOVE) > 0)
-                                    yield return new TouchMoveNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchMoveNotification(position, clientArea, id, primary, contactArea);
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_UP) > 0)
-                                    yield return new TouchUpNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchUpNotification(position, clientArea, id, primary, contactArea);
                             }
                         }
                     }
@@ -149,6 +150,8 @@ namespace VVVV.Nodes.Input
         public ISpread<Vector2D> PositionOut;
         [Output("Id")]
         public ISpread<int> IdOut;
+        [Output("Primary")]
+        public ISpread<bool> PrimaryOut;
         [Output("Contact Area")]
         public ISpread<Vector2D> ContactAreaOut;
 
@@ -177,6 +180,7 @@ namespace VVVV.Nodes.Input
             FEventTypeOut.SliceCount = notifications.Count;
             PositionOut.SliceCount = notifications.Count;
             IdOut.SliceCount = notifications.Count;
+            PrimaryOut.SliceCount = notifications.Count;
             ContactAreaOut.SliceCount = notifications.Count;
 
             for (int i = 0; i < notifications.Count; i++)
@@ -187,6 +191,7 @@ namespace VVVV.Nodes.Input
                 var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
                 PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 IdOut[i] = n.Id;
+                PrimaryOut[i] = n.Primary;
                 ContactAreaOut[i] = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
             }
         }
@@ -228,6 +233,8 @@ namespace VVVV.Nodes.Input
         public ISpread<Vector2D> PositionOut;
         [Output("Id")]
         public ISpread<int> IdOut;
+        [Output("Primary")]
+        public ISpread<bool> PrimaryOut;
         [Output("Contact Area")]
         public ISpread<Vector2D> ContactAreaOut;
         [Output("Is New")]
@@ -240,6 +247,7 @@ namespace VVVV.Nodes.Input
         {
             PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
+            PrimaryOut.SliceCount = 0;
             ContactAreaOut.SliceCount = 0;
             IsNewOut.SliceCount = 0;
             FSubscription = new Subscription<TouchDevice, TouchNotification>(
@@ -254,6 +262,7 @@ namespace VVVV.Nodes.Input
                     var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                     var contactArea = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
                     var index = IdOut.IndexOf(n.Id);
+                    var primary = n.Primary;
                     switch (n.Kind)
                     {
                         case TouchNotificationKind.TouchDown:
@@ -261,6 +270,7 @@ namespace VVVV.Nodes.Input
                             {
                                 IdOut.Add(n.Id);
                                 PositionOut.Add(normalizedPosition);
+                                PrimaryOut.Add(primary);
                                 ContactAreaOut.Add(contactArea);
                                 IsNewOut.Add(true);
                             }
@@ -270,6 +280,7 @@ namespace VVVV.Nodes.Input
                             {
                                 IdOut.RemoveAt(index);
                                 PositionOut.RemoveAt(index);
+                                PrimaryOut.RemoveAt(index);
                                 ContactAreaOut.RemoveAt(index);
                                 IsNewOut.RemoveAt(index);
                             }
@@ -278,6 +289,7 @@ namespace VVVV.Nodes.Input
                             if (index >= 0)
                             {
                                 PositionOut[index] = normalizedPosition;
+                                PrimaryOut[index] = primary;
                                 ContactAreaOut[index] = contactArea;
                                 IsNewOut[index] = false;
                             }
