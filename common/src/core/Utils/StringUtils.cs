@@ -173,4 +173,59 @@ namespace VVVV.Utils
             }
         }
     }
+
+    /// <summary>
+    /// Calculate exact sizes of strings
+    /// </summary>
+    public static class FontExtentions
+    {
+        /// <summary>
+        /// Calculates the ascent in pixels of this font
+        /// </summary>
+        /// <param name="font"></param>
+        /// <returns></returns>
+        public static float GetAscentPixels(this Font font)
+        {
+            var fontFamily = font.FontFamily;
+            var ascent = fontFamily.GetCellAscent(font.Style);
+            return font.Size * ascent / fontFamily.GetEmHeight(font.Style);
+        }
+
+        /// <summary>
+        /// Calculates the descent in pixels of this font
+        /// </summary>
+        /// <param name="font"></param>
+        /// <returns></returns>
+        public static float GetDescentPixels(this Font font)
+        {
+            var fontFamily = font.FontFamily;
+            var descent = fontFamily.GetCellDescent(font.Style);
+            return font.Size * descent / fontFamily.GetEmHeight(font.Style);
+        }
+
+        /// <summary>
+        /// Calculates the distance from base line to base line of this font
+        /// </summary>
+        /// <param name="font"></param>
+        /// <returns></returns>
+        public static float GetLineSpacingPixels(this Font font)
+        {
+            var fontFamily = font.FontFamily;
+            var lineSpacing = fontFamily.GetLineSpacing(font.Style);
+            return font.Size * lineSpacing / fontFamily.GetEmHeight(font.Style);
+        }
+
+        /// <summary>
+        /// Calculates the maximum height in pixels of this font
+        /// </summary>
+        /// <param name="font"></param>
+        /// <returns></returns>
+        public static float GetCellHeightPixels(this Font font)
+        {
+            var fontFamily = font.FontFamily;
+            var ascent = fontFamily.GetCellAscent(font.Style);
+            var descent = fontFamily.GetCellDescent(font.Style);
+            return font.Size * (ascent + descent) / fontFamily.GetEmHeight(font.Style);
+        }
+    }
 }
