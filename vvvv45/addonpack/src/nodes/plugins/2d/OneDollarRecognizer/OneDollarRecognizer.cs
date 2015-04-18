@@ -1,73 +1,3 @@
-#region license
-/**
- * The $1 Unistroke Recognizer (VVVV Version)
- * VVVV port from C# example by motzi, 2015
- * The port uses code from the original example code found here:
- * http://depts.washington.edu/aimgroup/proj/dollar/index.html
- * 
- * The new-BSD license from the original license (see below) applies.
-**/
-/**
- * The $1 Unistroke Recognizer (C# version)
- *
- *		Jacob O. Wobbrock, Ph.D.
- * 		The Information School
- *		University of Washington
- *		Mary Gates Hall, Box 352840
- *		Seattle, WA 98195-2840
- *		wobbrock@u.washington.edu
- *
- *		Andrew D. Wilson, Ph.D.
- *		Microsoft Research
- *		One Microsoft Way
- *		Redmond, WA 98052
- *		awilson@microsoft.com
- *
- *		Yang Li, Ph.D.
- *		Department of Computer Science and Engineering
- * 		University of Washington
- *		The Allen Center, Box 352350
- *		Seattle, WA 98195-2840
- * 		yangli@cs.washington.edu
- *
- * The Protractor enhancement was published by Yang Li and programmed here by 
- * Jacob O. Wobbrock.
- *
- *	Li, Y. (2010). Protractor: A fast and accurate gesture 
- *	  recognizer. Proceedings of the ACM Conference on Human 
- *	  Factors in Computing Systems (CHI '10). Atlanta, Georgia
- *	  (April 10-15, 2010). New York: ACM Press, pp. 2169-2172.
- * 
- * This software is distributed under the "New BSD License" agreement:
- * 
- * Copyright (c) 2007-2011, Jacob O. Wobbrock, Andrew D. Wilson and Yang Li.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *    * Redistributions of source code must retain the above copyright
- *      notice, this list of conditions and the following disclaimer.
- *    * Redistributions in binary form must reproduce the above copyright
- *      notice, this list of conditions and the following disclaimer in the
- *      documentation and/or other materials provided with the distribution.
- *    * Neither the names of the University of Washington nor Microsoft,
- *      nor the names of its contributors may be used to endorse or promote 
- *      products derived from this software without specific prior written
- *      permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL Jacob O. Wobbrock OR Andrew D. Wilson
- * OR Yang Li BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
- * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-**/
-#endregion license
-
 #region usings
 using System;
 using System.Collections.Generic;
@@ -84,24 +14,24 @@ namespace VVVV.Nodes
 
 	#region PluginInfo
 	[PluginInfo(Name = "Resample", 
-		Category = "2d Vector Distancebased", 
+		Category = "2d", 
+        Version = "Vector Distancebased",
 		Help = "Resamples a Spread of 2d Vectors according to a specified distance between points", 
-		Tags = "linear,interpolation",
+		Tags = "linear, interpolation",
 		Author = "motzi",
 		Credits = "Jacob Wobbrock"
 	)]
 	#endregion PluginInfo
-	
 	public class Vector2dDistanceResampleNode : IPluginEvaluate
 	{
 		#region fields & pins
 		[Input("Input")]
 		public ISpread<ISpread<Vector2D>> FPoints;
 		
-		[Input("StepSize", DefaultValue = 1.0)]
+		[Input("Stepsize", DefaultValue = 1.0)]
 		public ISpread<double> FStep;
 		
-		[Input("MinStepSize", DefaultValue = 0.01)]
+		[Input("Minimum Stepsize", DefaultValue = 0.01)]
 		public ISpread<double> FMinStep;
 
 		[Output("Output")]
@@ -179,9 +109,9 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "Vectorize", 
-		Category = "2d Vector", 
+		Category = "2d", 
 		Help = "Normalizes a set of 2d vectors", 
-		Tags = "$1, DollarOne",
+		Tags = "$1, OneDollarRecognizer",
 		Author = "motzi",
 		Credits = "Jacob Wobbrock, Yang Li"
 	)]
@@ -357,9 +287,9 @@ namespace VVVV.Nodes
 	
 	#region PluginInfo
 	[PluginInfo(Name = "OptimalCosineDistance",
-	            Category = "2d Vector Spectral",
+	            Category = "2d",
 	            Help = "Calculates the minimal angular distance between two sets of 2d vectors",
-	            Tags = "Protractor,$1,DollarOne",
+	            Tags = "Protractor, $1, OneDollarRecognizer",
 				Author = "motzi",
 				Credits = "Yiang Li, Jacob Wobbrock"
 	)]
