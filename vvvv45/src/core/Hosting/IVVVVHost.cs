@@ -203,9 +203,9 @@ namespace VVVV.Hosting
         void EnableShortCuts();
         
         /// <summary>
-        /// The 50 editors control
+        /// Reference to the 50 Editor
         /// </summary>
-        IWin32Window FiftyEditor
+        IQueryDelete FiftyEditor
         {
             set;
         }

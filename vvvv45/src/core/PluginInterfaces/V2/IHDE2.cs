@@ -353,9 +353,9 @@ namespace VVVV.PluginInterfaces.V2
         void EnableShortCuts();
         
         /// <summary>
-        /// The 50 editors control
+        /// Reference to the 50 Editor
         /// </summary>
-        IWin32Window FiftyEditor
+        IQueryDelete FiftyEditor
         {
             set;
         }
@@ -742,7 +742,7 @@ namespace VVVV.PluginInterfaces.V2
     	/// <param name="column">The column number to move to.</param>
     	/// </summary>
     	void MoveTo(int lineNumber, int column);
-    	
+ 
     	/// <summary>
     	/// Informs the editor to close the currently opened file.
     	/// </summary>

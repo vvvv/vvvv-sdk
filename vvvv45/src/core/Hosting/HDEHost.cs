@@ -836,7 +836,7 @@ namespace VVVV.Hosting
             FVVVVHost.EnableShortCuts();
         }
         
-        public IWin32Window FiftyEditor
+        public IQueryDelete FiftyEditor
         {
             set {FVVVVHost.FiftyEditor = value;}
         }
