@@ -31,5 +31,7 @@ namespace VVVV.Hosting
 		void Shutdown();
 		
 		void RunRefactor();
+
+        bool OnThreadMessage(IntPtr msg);
 	}
 }

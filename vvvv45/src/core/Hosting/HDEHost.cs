@@ -131,6 +131,9 @@ namespace VVVV.Hosting
             Logger = new DefaultLogger();
 
             IORegistry = new IORegistry();
+
+            // Will tell Windows Forms that a message loop is indeed running
+            Application.RegisterMessageLoop(IsSendingMessages);
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
@@ -152,6 +155,9 @@ namespace VVVV.Hosting
         
         public void Initialize(IVVVVHost vvvvHost, INodeBrowserHost nodeBrowserHost, IWindowSwitcherHost windowSwitcherHost, IKommunikatorHost kommunikatorHost)
         {
+            // Used for Windows Forms message loop
+            FIsRunning = true;
+
         	//set blackbox mode?
         	this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
         	
@@ -240,6 +246,21 @@ namespace VVVV.Hosting
                 LoadPackNodes(packsDirInfo);
             if (internalPacksDirInfo.Exists)
                 LoadPackNodes(internalPacksDirInfo);
+        }
+
+        bool IsSendingMessages()
+        {
+            return FIsRunning;
+        }
+        bool FIsRunning;
+
+        public unsafe bool OnThreadMessage(IntPtr msgPtr)
+        {
+            // In case someone installs a filter on the Windows Forms application this way it gets properly notified about it
+            var winformsMsg = *(Message*)msgPtr.ToPointer();
+            if (Application.FilterMessage(ref winformsMsg))
+                return true;
+            return false;
         }
 
         private void LoadPackNodes(DirectoryInfo packsDirInfo)
@@ -388,6 +409,7 @@ namespace VVVV.Hosting
         public void Shutdown()
         {
             FStartableRegistry.ShutDown();
+            FIsRunning = false;
         }
         
         public void RunRefactor()
