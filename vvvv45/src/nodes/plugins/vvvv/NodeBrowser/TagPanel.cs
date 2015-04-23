@@ -727,15 +727,15 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeFilter = (int) NodeType.Dynamic;
                 FTags.Remove("d");
             }
-            else if (FTags.Contains("v"))
+            else if (FTags.Contains("a"))
             {
                 FNodeFilter = (int) NodeType.VST;
-                FTags.Remove("v");
+                FTags.Remove("a");
             }
-            else if (FTags.Contains("l"))
+            else if (FTags.Contains("v"))
             {
                 FNodeFilter = (int) NodeType.VL;
-                FTags.Remove("l");
+                FTags.Remove("v");
             }
             else if (FTags.Contains("."))
             {
@@ -842,12 +842,12 @@ namespace VVVV.Nodes.NodeBrowser
                             }
                         case NodeType.VST:
                             {
-                    			e.Graphics.DrawString(" v", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
+                    			e.Graphics.DrawString(" a", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                         case NodeType.VL:
                             {
-                                e.Graphics.DrawString(" l", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
+                                e.Graphics.DrawString(" v", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
                                 break;
                             }
                             // Added code:

@@ -41,8 +41,8 @@ namespace VVVV.Nodes.NodeBrowser
                     case NodeType.Patch: {FTooltip = "v4p "; break;}
                     case NodeType.Effect: {FTooltip = "x  "; break;}
                     case NodeType.Freeframe: {FTooltip = "f  "; break;}
-                    case NodeType.VST: {FTooltip = "v "; break;}
-                    case NodeType.VL: {FTooltip = "vl"; break;}
+                    case NodeType.VST: {FTooltip = "a "; break;}
+                    case NodeType.VL: {FTooltip = "VL"; break;}
             }
             
             if (!string.IsNullOrEmpty(NodeInfo.Shortcut))

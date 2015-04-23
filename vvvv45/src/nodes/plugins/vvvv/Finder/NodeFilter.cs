@@ -109,10 +109,10 @@ namespace VVVV.Nodes.Finder
                 Flags |= FilterFlags.Native;
                 Tags.Remove("n");
             }
-            if (Tags.Contains("v"))
+            if (Tags.Contains("a"))
             {
                 Flags |= FilterFlags.VST;
-                Tags.Remove("v");
+                Tags.Remove("a");
             }
             if (Tags.Contains("t"))
             {
@@ -124,10 +124,10 @@ namespace VVVV.Nodes.Finder
                 Flags |= FilterFlags.Unknown;
                 Tags.Remove("r");
             }
-            if (Tags.Contains("a"))
+            if (Tags.Contains("v"))
             {
-                Flags |= FilterFlags.Addon;
-                Tags.Remove("a");
+                Flags |= FilterFlags.VL;
+                Tags.Remove("v");
             }
             if (Tags.Contains("b"))
             {
