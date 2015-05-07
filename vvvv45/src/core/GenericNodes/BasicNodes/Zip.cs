@@ -32,6 +32,8 @@ namespace VVVV.Nodes.Generic
 		
 		public void Evaluate(int SpreadMax)
 		{
+            if (!FInputStreams.IsChanged && !FAllowEmptySpreadsConfig.IsChanged) return;
+
             IEnumerable<IInStream<T>> inputStreams;
             int inputStreamsLength;
             if (FAllowEmptySpreads)
@@ -59,15 +61,12 @@ namespace VVVV.Nodes.Generic
                         foreach (var inputStream in inputStreams)
                         {
                             writer.Position = i++;
-                            if (inputStream.IsChanged)
+                            using (var reader = inputStream.GetCyclicReader())
                             {
-                                using (var reader = inputStream.GetCyclicReader())
+                                while (!writer.Eos)
                                 {
-                                    while (!writer.Eos)
-                                    {
-                                        reader.Read(buffer, 0, numSlicesToRead);
-                                        writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
-                                    }
+                                    reader.Read(buffer, 0, numSlicesToRead);
+                                    writer.Write(buffer, 0, numSlicesToRead, inputStreamsLength);
                                 }
                             }
                         }
