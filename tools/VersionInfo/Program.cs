@@ -37,7 +37,7 @@ namespace VVVV.Tools
             }
             
             var vi = FileVersionInfo.GetVersionInfo(filename);
-            var version = string.Format("45{0}{1}", vi.ProductVersion, vi.FileMajorPart);
+            var version = string.Format("50{0}{1}", vi.ProductVersion, vi.FileMajorPart);
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
             if (vi.FilePrivatePart > 0)
