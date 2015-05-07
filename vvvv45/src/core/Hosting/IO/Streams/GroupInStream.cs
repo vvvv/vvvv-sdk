@@ -46,9 +46,9 @@ namespace VVVV.Hosting.IO.Streams
 					IsPinGroup = false,
 					Order = FInputAttribute.Order + FOffsetCounter * 1000 + i,
 					BinOrder = FInputAttribute.Order + FOffsetCounter * 1000 + i,
-					AutoValidate = FInputAttribute.AutoValidate
+					AutoValidate = false
 				};
-				var io = FFactory.CreateIOContainer(typeof(IInStream<T>), attribute);
+				var io = FFactory.CreateIOContainer(typeof(IInStream<T>), attribute, false);
 				FIOContainers.Add(io);
 			}
 			
@@ -84,11 +84,13 @@ namespace VVVV.Hosting.IO.Streams
 		
 		public bool Sync()
 		{
-			IsChanged = false;
+			IsChanged = FStreams.Sync();
 			foreach (var stream in FStreams)
 			{
 				IsChanged |= stream.Sync();
 			}
+            // Acknowledge the change
+            FStreams.Flush();
 			return IsChanged;
 		}
 		
