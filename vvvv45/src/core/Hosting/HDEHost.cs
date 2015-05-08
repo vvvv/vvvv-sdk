@@ -201,9 +201,14 @@ namespace VVVV.Hosting
             var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
             if (packsDirInfo.Exists)
                 LoadPackFactories(packsDirInfo, catalog);
-            var internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
-            if (internalPacksDirInfo.Exists)
-                LoadPackFactories(internalPacksDirInfo, catalog);
+            // Are we inside of our repository?
+            var internalPacksDirInfo = default(DirectoryInfo);
+            if (Directory.Exists(Path.Combine(ExePath, "src")))
+            {
+                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
+                if (internalPacksDirInfo.Exists)
+                    LoadPackFactories(internalPacksDirInfo, catalog);
+            }
 
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
@@ -244,7 +249,7 @@ namespace VVVV.Hosting
             //from the installed packs
             if (packsDirInfo.Exists)
                 LoadPackNodes(packsDirInfo);
-            if (internalPacksDirInfo.Exists)
+            if (internalPacksDirInfo != null && internalPacksDirInfo.Exists)
                 LoadPackNodes(internalPacksDirInfo);
         }
 

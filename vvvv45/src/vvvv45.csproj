@@ -6,18 +6,20 @@
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
+  
   <!-- Override vvvvv45.props -->
-  <!-- Zip -->
+  
+  <!-- Deploy -->
   <PropertyGroup>
-    <ZipFileNamePrefix>vvvv</ZipFileNamePrefix>
-    <ZipInclude>..\**\*.*</ZipInclude>
-    <ZipExclude>..\*.rsm;..\*.drc;..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\addonpack\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*;..\packs\**\*.*</ZipExclude>
+    <DeployInclude>$(RootDir)**\*.*</DeployInclude>
+    <DeployExclude>$(RootDir)*.rsm;$(RootDir)0.v4p;$(RootDir)*.drc;$(RootDir)**\.gitignore;$(RootDir)**\*.pdb;$(RootDir)src\**\*.*;$(RootDir)tests\**\*.*;$(RootDir)addonpack\**\*.*;$(RootDir)lib\nodes\plugins\*\bin\**\*.*;$(RootDir)packs\**\*.*</DeployExclude>
     <!-- Files to exclude for platform specific builds -->
-    <ZipExclude Condition=" '$(Platform)' == 'x86' ">$(ZipExclude);..\lib\thirdparty\x64\**\*.*</ZipExclude>
-    <ZipExclude Condition=" '$(Platform)' == 'x64' ">$(ZipExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</ZipExclude>
-    <ZipReadOnlyFiles>lib\nodes\*.*</ZipReadOnlyFiles>
-    <ZipHiddenFiles>vvvv.exe.config</ZipHiddenFiles>
+    <DeployExclude Condition=" '$(Platform)' == 'x86' ">$(DeployExclude);..\lib\thirdparty\x64\**\*.*</DeployExclude>
+    <DeployExclude Condition=" '$(Platform)' == 'x64' ">$(DeployExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</DeployExclude>
+    <DeployReadOnlyFiles>lib\nodes\*.*</DeployReadOnlyFiles>
+    <DeployHiddenFiles>vvvv.exe.config;vvvv.jdbg</DeployHiddenFiles>
   </PropertyGroup>
+  
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
     <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
@@ -89,4 +91,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="vvvv45.targets" />
+
+  <Target Name="Build" DependsOnTargets="$(VVVV_BuildDependsOn)" />
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
 </Project>

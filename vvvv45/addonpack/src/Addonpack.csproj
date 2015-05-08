@@ -613,4 +613,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="Addonpack.targets" />
+
+  <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
+  <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+  <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
 </Project>
