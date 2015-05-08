@@ -36,9 +36,6 @@ namespace VVVV.Nodes
 		
 		[Output("Output Bin Size")]
 		IOutStream<int> FOutBin;
-
-        [Output("Debug")]
-        ISpread<int> FDebug;
 		#pragma warning restore
 		#endregion fields & pins
 		
