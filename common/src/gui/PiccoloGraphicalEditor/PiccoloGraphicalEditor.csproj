@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\Default.Gui.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{304E1C6A-585F-4748-8E3B-33558E35B0D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.HDE.Viewer.PiccoloGraphicalEditor</RootNamespace>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>VVVV.HDE.Viewer.PiccoloGraphicalEditor</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UMD.HCIL.Piccolo">
+      <HintPath>..\..\thirdparty\UMD.HCIL.Piccolo.dll</HintPath>
+    </Reference>
+    <Reference Include="UMD.HCIL.PiccoloX">
+      <HintPath>..\..\thirdparty\UMD.HCIL.PiccoloX.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Circle.cs" />
+    <Compile Include="Dot.cs" />
+    <Compile Include="EventHandlers.cs" />
+    <Compile Include="GraphEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GraphEditor.Designer.cs" />
+    <Compile Include="GraphElement.cs" />
+    <Compile Include="LinkPath.cs" />
+    <Compile Include="Poly.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="Solid.cs" />
+    <Compile Include="Text.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GraphEditor.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GraphElement Classes.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
