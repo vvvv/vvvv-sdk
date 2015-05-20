@@ -145,6 +145,8 @@ namespace VVVV.Hosting.IO.Streams
             
             public IStreamReader<T> GetReader()
             {
+                if (Offset == 0 && Length == FDataStream.Length)
+                    return FDataStream.GetReader();
                 return new InnerStreamReader(this);
             }
             
