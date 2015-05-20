@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace VVVV.Utils.Streams
@@ -16,10 +17,15 @@ namespace VVVV.Utils.Streams
                 this.Array = array;
             }
 
-            public int Length { get { return Array.Length; } }
+            public int Length 
+            {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                get { return Array.Length; } 
+            }
 
             public T this[int i]
             {
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 get { return Array[i]; }
             }
 
