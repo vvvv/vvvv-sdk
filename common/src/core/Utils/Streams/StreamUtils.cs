@@ -536,31 +536,6 @@ namespace VVVV.Utils.Streams
             return new MemoryIOStream<T>(source.ToArray());
         }
 
-        public static int Sum(this IInStream<int> stream)
-        {
-            var result = 0;
-            using (var buffer = MemoryPool<int>.GetBuffer())
-            using (var reader = stream.GetReader())
-            {
-                while (!reader.Eos)
-                {
-                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
-                    if (itemsRead != buffer.Length)
-                    {
-                        for (int i = 0; i < itemsRead; i++)
-                            result += buffer[i];
-                    }
-                    else
-                    {
-                        // No index out of bounds check
-                        for (int i = 0; i < buffer.Length; i++)
-                            result += buffer[i];
-                    }
-                }
-            }
-            return result;
-        }
-
         public static bool AnyChanged(params IInStream[] streams)
         {
             foreach (var stream in streams)

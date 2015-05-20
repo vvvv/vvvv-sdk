@@ -123,6 +123,12 @@
     <Compile Include="Streams\ReverseStream.cs" />
     <Compile Include="Streams\CyclicStream.cs" />
     <Compile Include="Streams\RangeStream.cs" />
+    <Compile Include="Streams\StreamExtensions.cs" />
+    <Compile Include="Streams\StreamExtensions.Gen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StreamExtensions.Gen.tt</DependentUpon>
+    </Compile>
     <Compile Include="StringUtils.cs" />
     <Compile Include="System\ArrayExtensions.cs" />
     <Compile Include="System\CollectionExtensions.cs" />
@@ -168,6 +174,10 @@
       <LastGenOutput>SystemIOExtensions.Gen.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="Streams\StreamExtensions.Gen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamExtensions.Gen.cs</LastGenOutput>
+    </None>
     <None Include="VVVV.Utils.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
