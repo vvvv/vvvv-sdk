@@ -154,7 +154,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 	{
 		public static bool IsConnected(this IPin2 pin)
 		{
-			return (pin.Status & StatusCode.IsConnected) == StatusCode.IsConnected;
+            return pin.ConnectedPins.Count > 0;
 		}
 	}
 }
