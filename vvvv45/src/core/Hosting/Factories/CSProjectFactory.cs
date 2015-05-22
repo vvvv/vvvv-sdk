@@ -57,24 +57,25 @@ namespace VVVV.Hosting.Factories
         protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
         {
             var nodeInfos = new List<INodeInfo>();
-            
             // Normalize the filename
             filename = new Uri(filename).LocalPath;
-            
             var project = CreateProject(filename);
-            
-            // Do we need to compile it?
-            RecompileIfNeeded(project);
-            
-            LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos, false);
-            
-            foreach (var nodeInfo in nodeInfos)
+            try
             {
-                nodeInfo.Type = NodeType.Dynamic;
-                nodeInfo.UserData = project;
-                nodeInfo.CommitUpdate();
+                // Do we need to compile it?
+                RecompileIfNeeded(project);
+
+                LoadNodeInfosFromFile(project.AssemblyLocation, filename, ref nodeInfos, false);
             }
-            
+            finally
+            {
+                foreach (var nodeInfo in nodeInfos)
+                {
+                    nodeInfo.Type = NodeType.Dynamic;
+                    nodeInfo.UserData = project;
+                    nodeInfo.CommitUpdate();
+                }
+            }
             return nodeInfos;
         }
         

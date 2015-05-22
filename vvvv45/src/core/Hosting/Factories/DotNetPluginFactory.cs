@@ -149,72 +149,75 @@ namespace VVVV.Hosting.Factories
             
             // Remember the current directory for later assembly resolution
             FCurrentAssemblyDir = Path.GetDirectoryName(filename);
-            
-            var assembly = Assembly.ReflectionOnlyLoadFrom(filename);
-            foreach (var type in assembly.GetExportedTypes())
+
+            try
             {
-                if (!type.IsAbstract && !type.IsGenericTypeDefinition && FReflectionOnlyPluginBaseType.IsAssignableFrom(type))
-                {
-                    var attribute = GetPluginInfoAttributeData(type);
-                    
-                    if (attribute != null)
-                    {
-                        // V2
-                        var nodeInfo = ExtractNodeInfoFromAttributeData(attribute, sourcefilename);
-                        nodeInfo.Arguments = type.FullName;
-                        nodeInfo.Type = NodeType.Plugin;
-                        nodeInfos.Add(nodeInfo);
-                    }
-                    else
-                    {
-                        // V1. See below.
-                        containsV1Plugins = true;
-                    }
-                }
-
-
-                bool nonlazy = FStartableRegistry.ProcessType(type, assembly);
-
-                if (nonlazy)
-                {
-                    nonLazyStartable = true;
-                }
-            }
-            
-            // V1 plugins need to be loaded in LoadFrom context in order to instantiate the
-            // static PluginInfo field. Type instantiation is not possible in
-            // ReflectionOnly context.
-            // TODO: This is very slow. Think about caching.
-            if (containsV1Plugins)
-            {
-                assembly = Assembly.LoadFrom(filename);
+                var assembly = Assembly.ReflectionOnlyLoadFrom(filename);
                 foreach (var type in assembly.GetExportedTypes())
                 {
-                    if (!type.IsAbstract && !type.IsGenericTypeDefinition && typeof(IPluginBase).IsAssignableFrom(type))
+                    if (!type.IsAbstract && !type.IsGenericTypeDefinition && FReflectionOnlyPluginBaseType.IsAssignableFrom(type))
                     {
-                        var nodeInfo = ExtractNodeInfoFromType(type, sourcefilename);
-                        if (nodeInfo != null)
+                        var attribute = GetPluginInfoAttributeData(type);
+
+                        if (attribute != null)
                         {
+                            // V2
+                            var nodeInfo = ExtractNodeInfoFromAttributeData(attribute, sourcefilename);
                             nodeInfo.Arguments = type.FullName;
-                            nodeInfo.Type = NodeType.Plugin;
                             nodeInfos.Add(nodeInfo);
+                        }
+                        else
+                        {
+                            // V1. See below.
+                            containsV1Plugins = true;
+                        }
+                    }
+
+
+                    bool nonlazy = FStartableRegistry.ProcessType(type, assembly);
+
+                    if (nonlazy)
+                    {
+                        nonLazyStartable = true;
+                    }
+                }
+
+                // V1 plugins need to be loaded in LoadFrom context in order to instantiate the
+                // static PluginInfo field. Type instantiation is not possible in
+                // ReflectionOnly context.
+                // TODO: This is very slow. Think about caching.
+                if (containsV1Plugins)
+                {
+                    assembly = Assembly.LoadFrom(filename);
+                    foreach (var type in assembly.GetExportedTypes())
+                    {
+                        if (!type.IsAbstract && !type.IsGenericTypeDefinition && typeof(IPluginBase).IsAssignableFrom(type))
+                        {
+                            var nodeInfo = ExtractNodeInfoFromType(type, sourcefilename);
+                            if (nodeInfo != null)
+                            {
+                                nodeInfo.Arguments = type.FullName;
+                                nodeInfos.Add(nodeInfo);
+                            }
                         }
                     }
                 }
-            }
 
-            if (nonLazyStartable)
-            {
-                var assemblyload = Assembly.LoadFrom(filename);
-                FStartableRegistry.ProcessAssembly(assemblyload);
+                if (nonLazyStartable)
+                {
+                    var assemblyload = Assembly.LoadFrom(filename);
+                    FStartableRegistry.ProcessAssembly(assemblyload);
+                }
             }
-            
-            
-            foreach (var nodeInfo in nodeInfos)
+            finally
             {
-                nodeInfo.Factory = this;
-                if (commitUpdates)
-                    nodeInfo.CommitUpdate();
+                foreach (var nodeInfo in nodeInfos)
+                {
+                    nodeInfo.Type = NodeType.Plugin;
+                    nodeInfo.Factory = this;
+                    if (commitUpdates)
+                        nodeInfo.CommitUpdate();
+                }
             }
         }
 
@@ -525,10 +528,10 @@ namespace VVVV.Hosting.Factories
                             int dictionaryOffset;
                             switch (magicNumber)
                             {
-                                    case 0x010B: dictionaryOffset = 0x60; break;
-                                    case 0x020B: dictionaryOffset = 0x70; break;
+                                case 0x010B: dictionaryOffset = 0x60; break;
+                                case 0x020B: dictionaryOffset = 0x70; break;
                                 default:
-                                    throw new BadImageFormatException("Invalid Image Format");
+                                    return false;
                             }
 
                             //position to RVA 15
