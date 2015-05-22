@@ -53,7 +53,7 @@ namespace VVVV.Core.Logging
 			logger.Log(logType, string.Format(msg, arg0, arg1, arg2));
 		}
 		
-		public static void Log(this ILogger logger, LogType logType, string msg, object[] args)
+		public static void Log(this ILogger logger, LogType logType, string msg, params object[] args)
 		{
 			logger.Log(logType, string.Format(msg, args));
 		}
