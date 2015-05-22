@@ -125,16 +125,15 @@ namespace VVVV.Core.Model.CS
             compilerParams.OutputAssembly = assemblyLocation;
             compilerParams.GenerateExecutable = false;
             compilerParams.GenerateInMemory = false;
+            compilerParams.IncludeDebugInformation = true;
+            compilerParams.CompilerOptions += "/unsafe ";
 
             switch (BuildConfiguration)
             {
                 case BuildConfiguration.Release:
-                    compilerParams.IncludeDebugInformation = false;
-                    compilerParams.CompilerOptions += "/unsafe /optimize ";
+                    compilerParams.CompilerOptions += "/optimize ";
                     break;
                 case BuildConfiguration.Debug:
-                    compilerParams.IncludeDebugInformation = true;
-                    compilerParams.CompilerOptions += "/unsafe";
                     break;
             }
 
