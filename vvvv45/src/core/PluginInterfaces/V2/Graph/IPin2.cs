@@ -142,6 +142,11 @@ namespace VVVV.PluginInterfaces.V2.Graph
         /// The disconnected event occurs when the pin gets disconnected.
         /// </summary>
         event PinConnectionEventHandler Disconnected;
+
+        /// <summary>
+        /// The status changed event occurs when the pins status changed.
+        /// </summary>
+        event EventHandler StatusChanged;
     }
 	
     [ComVisible(false)]
