@@ -40,6 +40,10 @@ namespace VVVV.Nodes.Generic
 
         public void Evaluate(int SpreadMax)
         {
+            // Early exit - important for expensive types like strings and streams.
+            if (!FInputStreams.IsChanged)
+                return;
+
             var outputLength = FInputStreams.GetLengthSum();
             FOutputStream.Length = outputLength;
             FOutputBinSizeStream.Length = FInputStreams.Length;
