@@ -46,12 +46,12 @@ namespace VVVV.Hosting.Graph
             
             public void ConnectedCB(IPin otherPin)
             {
-                FPin.OnConnected(new PinConnectionEventArgs(otherPin));
+                FPin.OnConnected(otherPin);
             }
             
             public void DisconnectedCB(IPin otherPin)
             {
-                FPin.OnDisconnected(new PinConnectionEventArgs(otherPin));
+                FPin.OnDisconnected(otherPin);
             }
         }
         
@@ -69,9 +69,7 @@ namespace VVVV.Hosting.Graph
         }
         #endregion
         
-        private INode2 FParentNode;
         private readonly IPin FInternalCOMInterf;
-        private readonly string FName;
         private readonly ProxyNodeInfoFactory FNodeInfoFactory;
         private PinListener FPinListener;
         private int FObserverCount;
@@ -81,20 +79,22 @@ namespace VVVV.Hosting.Graph
             FParentNode = node;
             FInternalCOMInterf = internalCOMInterf;
             FNodeInfoFactory = nodeInfoFactory;
-            FName = FInternalCOMInterf.Name;
             FInternalCOMInterf.Tag = this;
         }
         
         protected override void DisposeManaged()
         {
             if (FPinListener != null)
+            {
                 FPinListener.Dispose();
+                FPinListener = null;
+            }
             base.DisposeManaged();
         }
         
         public override string ToString()
         {
-            return FName;
+            return Name;
         }
         
         private void IncObserverCount()
@@ -107,7 +107,7 @@ namespace VVVV.Hosting.Graph
         private void DecObserverCount()
         {
             FObserverCount--;
-            if (FObserverCount == 0)
+            if (FObserverCount == 0 && FPinListener != null)
             {
                 FPinListener.Dispose();
                 FPinListener = null;
@@ -163,12 +163,11 @@ namespace VVVV.Hosting.Graph
             get
             {
                 if (FParentNode == null)
-                {
                     FParentNode = Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
-                }
                 return FParentNode;
             }
         }
+        INode2 FParentNode;
         
         public INode2 ParentNodeByPatch(INode2 patch)
         {
@@ -252,15 +251,17 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                var pins = new ViewableCollection<IPin2>();
-                foreach (var internalPin in FInternalCOMInterf.GetConnectedPins())
+                if (FConnectedPins == null)
                 {
-                    var node = Node.Create(internalPin.ParentNode, FNodeInfoFactory);
-                    pins.Add(new Pin(node, internalPin, FNodeInfoFactory));
+                    FConnectedPins = new ViewableCollection<IPin2>();
+                    IncObserverCount();
+                    foreach (var internalPin in FInternalCOMInterf.GetConnectedPins())
+                        FConnectedPins.Add(new Pin(null, internalPin, FNodeInfoFactory));
                 }
-                return pins;
+                return FConnectedPins;
             }
         }
+        ViewableCollection<IPin2> FConnectedPins;
         
         public string Type
         {
@@ -290,9 +291,12 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
+                if (FName == null)
+                    FName = FInternalCOMInterf.Name;
                 return FName;
             }
         }
+        string FName;
         
         public StatusCode Status
         {
@@ -359,11 +363,12 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        protected virtual void OnConnected(PinConnectionEventArgs args)
+        protected virtual void OnConnected(IPin otherPin)
         {
-            if (FConnected != null) {
-                FConnected(this, args);
-            }
+            // Clear cache
+            FConnectedPins = null;
+            if (FConnected != null)
+                FConnected(this, new PinConnectionEventArgs(otherPin));
         }
         
         private event PinConnectionEventHandler FDisconnected;
@@ -380,12 +385,13 @@ namespace VVVV.Hosting.Graph
                 DecObserverCount();
             }
         }
-        
-        protected virtual void OnDisconnected(PinConnectionEventArgs args)
+
+        protected virtual void OnDisconnected(IPin otherPin)
         {
-            if (FDisconnected != null) {
-                FDisconnected(this, args);
-            }
+            // Clear cache
+            FConnectedPins = null;
+            if (FDisconnected != null)
+                FDisconnected(this, new PinConnectionEventArgs(otherPin));
         }
     }
 }
