@@ -76,9 +76,9 @@ namespace VVVV.Utils.Streams
 			}
 		}
 
-        public static Buffer GetBuffer()
+        public static Buffer GetBuffer(int length = StreamUtils.BUFFER_SIZE)
         {
-            var array = GetArray();
+            var array = GetArray(length);
             return new Buffer(array);
         }
 	}
