@@ -51,11 +51,21 @@ namespace VVVV.Nodes
 				if (FVec.Length>0)
 				{
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
-					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FClose.SliceCount);				
-					
-					FOutBin.Length = spread.Count;
-					FOutput.Length = FInput.Length*2;
-					using (var binWriter = FOutBin.GetWriter())
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,FClose.SliceCount);
+
+                    int outCount = 0;
+                    for (int o = 0; o < spread.Count; o++)
+                    {
+                        int curCount = spread[o].Length * 2;
+                        if (!FClose[o])
+                            curCount -= 2 * spread.VectorSize;
+                        outCount += Math.Max(curCount,0);
+                    }
+
+
+                    FOutBin.Length = spread.Count;
+					FOutput.Length = outCount;
+                    using (var binWriter = FOutBin.GetWriter())
 					using (var dataWriter = FOutput.GetWriter())
 					{
 						int incr = 0;
@@ -67,17 +77,21 @@ namespace VVVV.Nodes
 							{
 								for (int v = 0; v < vecSize; v++)
 								{
-									dataWriter.Position = incr+v;
+                                    dataWriter.Position = incr + v;
 									double[] src = spread.GetBinColumn(b,v).ToArray();
-		
-									for (int s=0; s<binSize/2;s++)
-									{
-										dataWriter.Write(src[s],vecSize);
-										if (s+1<binSize/2 || !(FClose[b]))
-											dataWriter.Write(src[s+1],vecSize);
-										else
-											dataWriter.Write(src[0],vecSize);
-									}
+
+                                    int s = 0;
+                                    while (s<src.Length-1)
+                                    {
+                                        dataWriter.Write(src[s], vecSize);
+                                        s++;
+                                        dataWriter.Write(src[s], vecSize);
+                                    }
+                                    if (FClose[b])
+                                    {
+                                        dataWriter.Write(src[s], vecSize);
+                                        dataWriter.Write(src[0], vecSize);
+                                    }
 								}
 								incr+=binSize*vecSize;
 							}
