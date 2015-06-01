@@ -1,0 +1,47 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Raw\AsTransform (Raw).v4p" systemname="AsTransform (Raw)" filename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Raw\AsTransform (Raw).v4p">
+   <BOUNDS type="Window" left="12510" top="5295" width="5220" height="3885">
+   </BOUNDS>
+   <NODE systemname="AsValue (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsValue (Raw)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="1335" top="1065" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="Single">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetMatrix (Transform)" nodename="SetMatrix (Transform)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="645" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Matrix In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="1" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="645" top="2190" width="630" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="645" top="2190" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Out|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Transform Out" dstnodeid="1" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1320" top="435" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1320" top="435" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="3" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="2" dstpinname="Matrix In">
+   </LINK>
+   <INFO author="" description="Interprets a sequence of bytes as a transformation matrix." tags="">
+   </INFO>
+   </PATCH>

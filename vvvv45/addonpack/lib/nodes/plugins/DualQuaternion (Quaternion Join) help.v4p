@@ -1,0 +1,187 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\Quaternion\DualQuaternion (Quaternion Join).v4p" filename="C:\Users\vux\Desktop\QuadTimer.v4p" systemname="QuadTimer">
+   <BOUNDS height="7170" left="6255" top="3060" type="Window" width="10500">
+   </BOUNDS>
+   <NODE systemname="DualQuaternion (Quaternion Join)" filename="%VVVV%\myplugins\lib\nodes\plugins\Quaternion\VVVV.Nodes.Quaternion.dll" nodename="DualQuaternion (Quaternion Join)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="3255" top="3300" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXYZ" visible="1">
+   </PIN>
+   <PIN pinname="RotateXYZW" visible="1">
+   </PIN>
+   <PIN pinname="Output 1XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Output 2XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="3255" top="2025" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3255" top="2025" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0.22,0,0">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Translate XYZ|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="TranslateXYZ">
+   </LINK>
+   <NODE systemname="Euler (Quaternion Set Vector)" nodename="Euler (Quaternion Set Vector)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="5610" top="1845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Rotate XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Quaternion XYZW" dstnodeid="4" dstpinname="RotateXYZW" linkstyle="Bezier">
+   <LINKPOINT x="5595" y="2708">
+   </LINKPOINT>
+   <LINKPOINT x="4440" y="2708">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="3240" top="4305" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3240" top="4305" width="795" height="960">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output1" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output 1XYZW" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4365" top="4305" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="960" left="4365" top="4305" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="|0, 0, 0, 1|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Output 2|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output 2XYZW" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="90" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1080" left="90" top="495" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Converts a Translation/Rotation into a dual &cr;&lf;quaternion representation, normally used for &cr;&lf;smooter skinning|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="90" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="90" top="120" type="Box" width="5235">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|DualQuaternion (Quaternion Join)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="5610" top="825" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5610" top="825" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0.11,0">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Rotation XYZ|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Rotate XYZ">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1590" top="4320" width="945" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1590" top="4320" width="1470" height="825">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Output 1 is a&cr;&lf;passtrough from rotation.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="6945" top="3060" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6945" top="3060" width="795" height="960">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Quaternion XYZW" dstnodeid="15" dstpinname="Y Input Value" linkstyle="Bezier">
+   <LINKPOINT x="5780" y="2698">
+   </LINKPOINT>
+   <LINKPOINT x="6835" y="2478">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5280" top="4380" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="855" left="5280" top="4380" type="Box" width="3195">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Output 2 keeps the translation data, but adds some info about the rotation while preserving translation part|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

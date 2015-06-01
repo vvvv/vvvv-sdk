@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="..\..\..\Default.Plugin.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{A92ED5A1-B981-446E-A512-1F1B1C475905}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VVVV</RootNamespace>
+    <AssemblyName>OleDbNodes</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex">
+      <HintPath>..\..\..\..\..\..\..\..\packages\VVVV.System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\OleDbDataType.cs" />
+    <Compile Include="Nodes\OleDbDataBaseNode.cs" />
+    <Compile Include="Nodes\OleDbDeleteNode.cs" />
+    <Compile Include="Nodes\OleDbInsertNode.cs" />
+    <Compile Include="Nodes\OleDbSelectNode.cs" />
+    <Compile Include="Nodes\OleDbUpdateNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\src\core\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseDatabaseNodes\BaseDatabaseNodes.csproj">
+      <Project>{D8586FB0-058B-4AC8-A493-FF5CAE2B2957}</Project>
+      <Name>BaseDatabaseNodes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
