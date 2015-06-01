@@ -370,31 +370,24 @@ namespace VVVV.Hosting
 		private string GetIOBoxPinName(string pinType, bool input)
 		{
 			if (pinType == "String")
-			{	if (input)
-					return "Input String";
-				else
-					return "Output String";}
+			{	
+                return input ? "Input String" : "Output String";
+			}
 			else if (pinType == "Value")
-			{	if (input)
-					return "Y Input Value";
-				else
-					return "Y Output Value";}
+			{
+                return input ? "Y Input Value" : "Y Output Value";
+			}
 			else if (pinType == "Color")
-			{	if (input)
-					return "Color Input";
-				else
-					return "Color Output";}
-			else if (pinType == "Enumerations")
-			{	if (input)
-					return "Input Enum";
-				else
-					return "Output Enum";}
+			{	
+                return input ? "Color Input" : "Color Output";
+			}
+			else if (pinType.StartsWith("Enumeration")) //beware: category is named: Enumerations (plural) while pintype is named: Enumeration (singular). 
+			{	
+                return input ? "Input Enum" : "Output Enum";
+			}
 			else //assume node
 			{
-				if (input)
-					return "Input Node";
-				else
-					return "Output Node";
+                return input ? "Input Node" : "Output Node";
 			}
 		}
 		
