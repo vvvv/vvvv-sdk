@@ -1,17 +1,15 @@
 #region usings
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Security;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.Graph;
-using VVVV.Utils.VColor;
-using VVVV.Utils.VMath;
 
 using VVVV.Core.Logging;
 #endregion usings
@@ -80,21 +78,17 @@ namespace VVVV.Hosting
 			var snippet = hdeHost.GetXMLSnippetFromSelection();
 			try 
 			{
-				//since lately the doctypes uri is pathencoded..
-				//and the xmlparser does not understand that..
-				//first extract the doctypes uri..
+				//doctype path may include utf8 encoded characters
 				var doctype = snippet.Split(new Char[] {'>'}, 2);
-				//unescape it..
-				//write it back to the snippet..
-				snippet = Uri.UnescapeDataString(doctype[0]) + ">" + doctype[1];
-				//snippet = Uri.UnescapeDataString(snippet);
-				FDocument.LoadXml(snippet);	
+				//so decode those..
+				snippet = UTF8toUnicode(doctype[0]) + ">" + doctype[1];
+				FDocument.LoadXml(snippet);
 			} 
 			catch (Exception e)
 			{
 				System.Windows.Forms.MessageBox.Show(e.Message);
 			}
-				
+			
 			//create new subpatch
 			var subID = nodeBrowserHost.CreateNode(ni, selectionCenter);
 			var patch = new PatchMessage(patchPath);
@@ -366,34 +360,34 @@ namespace VVVV.Hosting
 		}
 		//FLogger.Log(LogType.Debug, "hi tty!");
 		
+		string UTF8toUnicode(string input)
+        {
+            var utf8Bytes = Encoding.Default.GetBytes(input);
+            var unicodeBytes = Encoding.Convert(Encoding.UTF8, Encoding.Unicode, utf8Bytes);
+            return Encoding.Unicode.GetString(unicodeBytes);
+        }
+		
 		private string GetIOBoxPinName(string pinType, bool input)
 		{
 			if (pinType == "String")
-			{	if (input)
-					return "Input String";
-				else
-					return "Output String";}
+			{	
+                return input ? "Input String" : "Output String";
+			}
 			else if (pinType == "Value")
-			{	if (input)
-					return "Y Input Value";
-				else
-					return "Y Output Value";}
+			{
+                return input ? "Y Input Value" : "Y Output Value";
+			}
 			else if (pinType == "Color")
-			{	if (input)
-					return "Color Input";
-				else
-					return "Color Output";}
-			else if (pinType == "Enumerations")
-			{	if (input)
-					return "Input Enum";
-				else
-					return "Output Enum";}
+			{	
+                return input ? "Color Input" : "Color Output";
+			}
+			else if (pinType.StartsWith("Enumeration")) //beware: category is named: Enumerations (plural) while pintype is named: Enumeration (singular). 
+			{	
+                return input ? "Input Enum" : "Output Enum";
+			}
 			else //assume node
 			{
-				if (input)
-					return "Input Node";
-				else
-					return "Output Node";
+                return input ? "Input Node" : "Output Node";
 			}
 		}
 		
