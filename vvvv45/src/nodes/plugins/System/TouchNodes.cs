@@ -93,11 +93,11 @@ namespace VVVV.Nodes.Input
                                     : Size.Empty;
 
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_DOWN) > 0)
-                                    yield return new TouchDownNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchDownNotification(position, clientArea, id, contactArea, touchPoint.hSource.ToInt64());
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_MOVE) > 0)
-                                    yield return new TouchMoveNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchMoveNotification(position, clientArea, id, contactArea, touchPoint.hSource.ToInt64());
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_UP) > 0)
-                                    yield return new TouchUpNotification(position, clientArea, id, contactArea);
+                                    yield return new TouchUpNotification(position, clientArea, id, contactArea, touchPoint.hSource.ToInt64());
                             }
                         }
                     }
@@ -152,6 +152,9 @@ namespace VVVV.Nodes.Input
         [Output("Contact Area")]
         public ISpread<Vector2D> ContactAreaOut;
 
+        [Output("Device ID")]
+        public ISpread<long> DeviceIDOut;
+
         private static readonly IList<TouchNotification> FEmptyList = new List<TouchNotification>(0);
         private TouchDevice FTouchDevice;
         private IEnumerator<IList<TouchNotification>> FEnumerator;
@@ -178,6 +181,7 @@ namespace VVVV.Nodes.Input
             PositionOut.SliceCount = notifications.Count;
             IdOut.SliceCount = notifications.Count;
             ContactAreaOut.SliceCount = notifications.Count;
+            DeviceIDOut.SliceCount = notifications.Count;
 
             for (int i = 0; i < notifications.Count; i++)
             {
@@ -188,6 +192,7 @@ namespace VVVV.Nodes.Input
                 PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 IdOut[i] = n.Id;
                 ContactAreaOut[i] = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
+                DeviceIDOut[i] = n.TouchDeviceID;
             }
         }
 
@@ -233,6 +238,9 @@ namespace VVVV.Nodes.Input
         [Output("Is New")]
         public ISpread<bool> IsNewOut;
 
+        [Output("Device ID")]
+        public ISpread<long> DeviceIDOut;
+
         private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
         private Subscription<TouchDevice, TouchNotification> FSubscription;
 
@@ -242,6 +250,8 @@ namespace VVVV.Nodes.Input
             IdOut.SliceCount = 0;
             ContactAreaOut.SliceCount = 0;
             IsNewOut.SliceCount = 0;
+            DeviceIDOut.SliceCount = 0;
+
             FSubscription = new Subscription<TouchDevice, TouchNotification>(
                 touchDevice =>
                 {
@@ -254,6 +264,7 @@ namespace VVVV.Nodes.Input
                     var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                     var contactArea = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
                     var index = IdOut.IndexOf(n.Id);
+                    var deviceid = n.TouchDeviceID;
                     switch (n.Kind)
                     {
                         case TouchNotificationKind.TouchDown:
@@ -263,6 +274,7 @@ namespace VVVV.Nodes.Input
                                 PositionOut.Add(normalizedPosition);
                                 ContactAreaOut.Add(contactArea);
                                 IsNewOut.Add(true);
+                                DeviceIDOut.Add(deviceid);
                             }
                             break;
                         case TouchNotificationKind.TouchUp:
@@ -272,6 +284,7 @@ namespace VVVV.Nodes.Input
                                 PositionOut.RemoveAt(index);
                                 ContactAreaOut.RemoveAt(index);
                                 IsNewOut.RemoveAt(index);
+                                DeviceIDOut.RemoveAt(index);
                             }
                             break;
                         case TouchNotificationKind.TouchMove:
