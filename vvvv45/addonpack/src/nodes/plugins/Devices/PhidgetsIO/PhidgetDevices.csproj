@@ -42,14 +42,21 @@
     <Compile Include="StepperController\StepperControllerNode.cs" />
     <Compile Include="StepperController\WrapperStepperController.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Dependencies\phidget21.dll">
+  <ItemGroup Condition=" '$(Platform)' == 'x86' ">
+    <None Include="Dependencies\x86\phidget21.dll">
       <Link>phidget21.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Platform)' == 'x64' ">
+    <None Include="Dependencies\x64\phidget21.dll">
+      <Link>phidget21.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
