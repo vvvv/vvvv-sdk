@@ -17,7 +17,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "RGB", 
         Category = "Kinect",
-        Version="Microsoft", 
+        Version="Microsoft DX9", 
         Author = "vux", 
         Tags = "EX9, texture",
         Help = "Returns an X8R8G8B8 formatted texture from the Kinects RGB camera")]

@@ -11,7 +11,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Kinect", 
 	            Category = "Devices",
-	            Version="Microsoft", 
+	            Version="Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9",
 	            Help = "Provides access to a Kinect through the MSKinect API")]
