@@ -6,7 +6,8 @@ namespace VVVV.Nodes
 {
     [PluginInfo(
 		Name = "Length", 
-		Category = "2d Vector Spectral", 
+		Category = "2d",
+		Version = "Vector Spectral",
 		Help = "Calculates the length of a path consisting of a spread of 2d points", 
 		Tags = "",
 		Author = "motzi"
@@ -21,7 +22,8 @@ namespace VVVV.Nodes
 
     [PluginInfo(
         Name = "Length",
-        Category = "3d Vector Spectral",
+        Category = "3d",
+        Version = "Vector Spectral",
         Help = "Calculates the length of a path consisting of a spread of 3d points",
         Tags = "",
         Author = "motzi"
