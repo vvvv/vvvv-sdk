@@ -28,8 +28,40 @@ namespace System.Collections.Generic
 
         public static void AssignFrom<T>(this IList<T> list, IEnumerable<T> items)
         {
+            if (list == items)
+                return;
             list.Clear();
             list.AddRange(items);
+        }
+
+        public static int RemoveAll<T>(this IList<T> list, Predicate<T> match)
+        {
+            var mutableList = list as List<T>;
+            if (mutableList != null)
+                return mutableList.RemoveAll(match);
+            throw new NotImplementedException();
+        }
+
+        public static void RemoveRange<T>(this IList<T> list, IEnumerable<T> items)
+        {
+            var mutableList = list as List<T>;
+            if (mutableList != null)
+            {
+                mutableList.RemoveRange(items);
+                return;
+            }
+            throw new NotImplementedException();
+        }
+
+        public static void RemoveRange<T>(this IList<T> list, int index, int count)
+        {
+            var mutableList = list as List<T>;
+            if (mutableList != null)
+            {
+                mutableList.RemoveRange(index, count);
+                return;
+            }
+            throw new NotImplementedException();
         }
 
         public static void Sort<T>(this IList<T> list, Comparison<T> comparison)
