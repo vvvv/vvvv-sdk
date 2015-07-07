@@ -314,15 +314,15 @@ namespace VVVV.Nodes.Input
             var leftBounds = GetLeftMostMonitorBounds(position.Y);
             var rightBounds = GetRightMostMonitorBounds(position.Y);
             if (position.X <= leftBounds.Left)
-                newPosition.X = rightBounds.Right;
+                newPosition.X = rightBounds.Right - 2;
             if (position.X >= rightBounds.Right - 1)
-                newPosition.X = leftBounds.Left;
+                newPosition.X = leftBounds.Left + 1;
             var topBounds = GetTopMostMonitorBounds(position.X);
             var bottomBounds = GetBottomMostMonitorBounds(position.X);
             if (position.Y <= topBounds.Top)
-                newPosition.Y = bottomBounds.Bottom;
+                newPosition.Y = bottomBounds.Bottom - 2;
             if (position.Y >= bottomBounds.Bottom - 1)
-                newPosition.Y = topBounds.Top;
+                newPosition.Y = topBounds.Top + 1;
             if (newPosition != position)
             {
                 Cursor.Position = newPosition;
@@ -347,24 +347,24 @@ namespace VVVV.Nodes.Input
             var rightBounds = GetRightMostMonitorBounds(position.Y);
             if (position.X <= leftBounds.Left)
             {
-                newPosition.X = rightBounds.Right;
+                newPosition.X = rightBounds.Right - 2;
                 delta = new Size(-1, delta.Height);
             }
             if (position.X >= rightBounds.Right - 1)
             {
-                newPosition.X = leftBounds.Left;
+                newPosition.X = leftBounds.Left + 1;
                 delta = new Size(1, delta.Height);
             }
             var topBounds = GetTopMostMonitorBounds(position.X);
             var bottomBounds = GetBottomMostMonitorBounds(position.X);
             if (position.Y <= topBounds.Top)
             {
-                newPosition.Y = bottomBounds.Bottom;
+                newPosition.Y = bottomBounds.Bottom - 2;
                 delta = new Size(delta.Width, -1);
             }
             if (position.Y >= bottomBounds.Bottom - 1)
             {
-                newPosition.Y = topBounds.Top;
+                newPosition.Y = topBounds.Top + 1;
                 delta = new Size(delta.Width, 1);
             }
             if (newPosition != position)
