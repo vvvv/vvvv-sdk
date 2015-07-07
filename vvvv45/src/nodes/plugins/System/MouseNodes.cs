@@ -123,6 +123,8 @@ namespace VVVV.Nodes.Input
                 Help = "Returns the systemwide mouse.")]
     public class DesktopMouseNode : DesktopDeviceInputNode<Mouse>
     {
+        private static readonly List<DesktopMouseNode> CursorWriters = new List<DesktopMouseNode>();
+
         public enum DataSource
         {
             Cursor,
@@ -149,6 +151,10 @@ namespace VVVV.Nodes.Input
 
         void CycleModeIn_Changed(IDiffSpread<CycleMode> spread)
         {
+            if (CMode == CycleMode.NoCycle)
+                CursorWriters.Remove(this);
+            else
+                CursorWriters.Add(this);
             SubscribeToDevices();
         }
 
@@ -157,10 +163,17 @@ namespace VVVV.Nodes.Input
             SubscribeToDevices();
         }
 
+        void SetCursorPosition(Point newPosition)
+        {
+            if (CursorWriters[CursorWriters.Count - 1] == this)
+                Cursor.Position = newPosition;
+        }
+
         public override void Dispose()
         {
             DataSourceIn.Changed -= ModeIn_Changed;
             CycleModeIn.Changed -= CycleModeIn_Changed;
+            CursorWriters.Remove(this);
         }
 
         // Little helper classes to keep track of individual mouse positions
@@ -228,15 +241,19 @@ namespace VVVV.Nodes.Input
             return Mouse.Empty;
         }
 
+        CycleMode CMode
+        {
+            get { return CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle; }
+        }
+
         private Mouse CreateCursorMouse()
         {
             var initialPosition = Control.MousePosition;
-            var cycleMode = CycleModeIn.SliceCount > 0 ? CycleModeIn[0] : CycleMode.NoCycle;
             var mouseData = new MouseData() { Position = initialPosition };
             var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[0]);
             IObservable<MouseNotification> notifications;
-            switch (cycleMode)
+            switch (CMode)
             {
                 case CycleMode.NoCycle:
                     notifications = mouseInput
@@ -325,7 +342,7 @@ namespace VVVV.Nodes.Input
                 newPosition.Y = topBounds.Top + 1;
             if (newPosition != position)
             {
-                Cursor.Position = newPosition;
+                SetCursorPosition(newPosition);
                 position = newPosition;
             }
             if (mouseData.Position != position)
@@ -369,7 +386,7 @@ namespace VVVV.Nodes.Input
             }
             if (newPosition != position)
             {
-                Cursor.Position = newPosition;
+                SetCursorPosition(newPosition);
                 position = newPosition;
             }
             if (mouseData.Position != position)
