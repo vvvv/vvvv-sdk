@@ -1592,56 +1592,36 @@
    </LINK>
    <PACK Name="addonpack" Version="33.8.0">
    </PACK>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="955">
-   <BOUNDS type="Node" left="3225" top="4530" width="100" height="100">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="990" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2850" top="5730" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
+   <BOUNDS type="Node" left="2850" top="5730" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Cycle Mode" visible="1">
-   </PIN>
+   </NODE>
+   <LINK srcnodeid="306" srcpinname="Output" dstnodeid="990" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="CameraMouse (Mouse)" filename="%VVVV%\lib\nodes\modules\Mouse\CameraMouse (Mouse).v4p" nodename="CameraMouse (Mouse)" componentmode="Hidden" id="991">
+   <BOUNDS type="Node" left="3210" top="4515" width="100" height="100">
+   </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="955" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
+   <LINK srcnodeid="991" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="989" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="1635" top="4020" width="1350" height="240">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="992" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1875" top="5580" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1635" top="4020" width="0" height="0">
+   <BOUNDS type="Node" left="1875" top="5580" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="|DirectX Renderer|">
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE id="988" componentmode="Hidden" systemname="CycleMode (Mouse)" filename="%VVVV%\lib\nodes\modules\Mouse\CycleMode (Mouse).v4p" nodename="CycleMode (Mouse)" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Caption Filter" visible="1" pintype="Input" slicecount="1" values="|DirectX Renderer|">
-   </PIN>
-   <BOUNDS type="Node" left="1650" top="4455" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="0" top="0" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="21180" top="750" width="6555" height="10095">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Window Handle" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Patch" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="989" srcpinname="Output String" dstnodeid="988" dstpinname="Caption Filter">
+   <LINK srcnodeid="227" srcpinname="X" dstnodeid="992" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
