@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta33.9.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
    <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
-   <BOUNDS height="13275" left="10680" top="2100" type="Window" width="17160">
+   <BOUNDS height="10605" left="10290" top="3555" type="Window" width="17400">
    </BOUNDS>
    <INFO author="vvvv group" description="move your camera with keyboard and mouse like in the 3d modeller &quot;Softimage&quot;" tags="3d, perspective, modelling, tool">
    </INFO>
@@ -63,7 +63,7 @@
    </PIN>
    <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="97" nodename="Min (Value)" systemname="Min (Value)">
@@ -223,7 +223,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -812,20 +812,6 @@
    </LINK>
    <LINK dstnodeid="79" dstpinname="FOV" srcnodeid="80" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="38" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="255" left="2535" top="945" type="Node" width="3810">
-   </BOUNDS>
-   <BOUNDS height="885" left="2535" top="945" type="Box" width="1995">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|wrap mouse (increment cycle) only if mouse button down on a DirectX Renderer|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="37" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="10740" top="9930" type="Node" width="0">
    </BOUNDS>
@@ -1255,7 +1241,7 @@
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="7080" top="1620" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1" slicecount="2" values="0.307972902553413,0.438368860055607">
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -1396,10 +1382,12 @@
    </LINK>
    <PACK Name="addonpack" Version="33.8.0">
    </PACK>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="108">
-   <BOUNDS type="Node" left="6900" top="1230" width="100" height="100">
+   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="118">
+   <BOUNDS type="Node" left="7065" top="930" width="1635" height="270">
    </BOUNDS>
-   <PIN pinname="Cycle Mode" visible="1" slicecount="1" values="NoCycle">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
    </PIN>
    <PIN pinname="Left Button" visible="1">
    </PIN>
@@ -1407,49 +1395,33 @@
    </PIN>
    <PIN pinname="Right Button" visible="1">
    </PIN>
-   <PIN pinname="PositionXY" visible="1">
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="PositionXY" dstnodeid="109" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="102" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Middle Button" dstnodeid="102" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="98" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="98" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="51" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="84" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window Camera)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" nodename="Mouse (Devices Window Camera)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="7050" top="435" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="108" srcpinname="Left Button" dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="PositionXY" dstnodeid="109" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Left Button" dstnodeid="102" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Middle Button" dstnodeid="102" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Left Button" dstnodeid="51" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Left Button" dstnodeid="98" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Right Button" dstnodeid="98" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Right Button" dstnodeid="84" dstpinname="Input 1">
-   </LINK>
-   <NODE systemname="CycleMode (Mouse)" filename="%VVVV%\lib\nodes\modules\Mouse\CycleMode (Mouse).v4p" nodename="CycleMode (Mouse)" componentmode="Hidden" id="115">
-   <BOUNDS type="Node" left="2565" top="600" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Caption Filter" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="116" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="2565" top="225" width="1395" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="2565" top="225" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="|DirectX Renderer|">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="116" srcpinname="Output String" dstnodeid="115" dstpinname="Caption Filter">
+   <LINK srcnodeid="119" srcpinname="Device" dstnodeid="118" dstpinname="Mouse">
    </LINK>
    </PATCH>

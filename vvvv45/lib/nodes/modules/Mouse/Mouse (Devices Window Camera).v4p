@@ -1,0 +1,433 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" systemname="Mouse (Devices Window Camera)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" scrollx="15" scrolly="0">
+   <NODE systemname="HandleFromPoint (Windows)" nodename="HandleFromPoint (Windows)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="2520" top="4185" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PointXY" visible="1" slicecount="2" values="-0.0234497133923919,-0.130676552363299">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2370" top="3735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Cycle Mode" slicecount="1" visible="1" values="NoCycle">
+   </PIN>
+   <PIN pinname="Queue Mode" visible="1" slicecount="1" values="Discard">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="HandleFromCaption (Windows)" nodename="HandleFromCaption (Windows)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="750" top="4230" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Title" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="750" top="4875" width="630" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Handle" dstnodeid="10" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Handle" dstnodeid="10" dstpinname="Input 2">
+   </LINK>
+   <BOUNDS type="Window" left="19890" top="1365" width="6465" height="11790">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.8.0">
+   </PACK>
+   <LINK srcnodeid="1" srcpinname="PositionXY" dstnodeid="0" dstpinname="PointXY">
+   </LINK>
+   <NODE systemname="WindowLists (Windows)" nodename="WindowLists (Windows)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="585" top="2190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="VVVV Windows" visible="1">
+   </PIN>
+   <PIN pinname="TopMost Window" visible="1">
+   </PIN>
+   <PIN pinname="Update" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Sift (String)" nodename="Sift (String)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="1185" top="3195" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" visible="1">
+   </PIN>
+   <PIN pinname="Comparison" slicecount="1" values="Contains">
+   </PIN>
+   <PIN pinname="Input Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="VVVV Windows" dstnodeid="22" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1365" top="645" width="1305" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1365" top="645" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|DirectX Renderer|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Caption Filter|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="22" dstpinname="Filter">
+   </LINK>
+   <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="750" top="3720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="|_root.v4p *  C:\Work\Native Instruments\|">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Input Index" dstnodeid="20" dstpinname="Index">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="VVVV Windows" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2940" top="630" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2940" top="630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="2160" top="8535" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="41">
+   <BOUNDS type="Node" left="2145" top="8970" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Ord Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2910" top="8190" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2910" top="8190" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="2595" top="4710" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Left Button" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Middle Button" dstnodeid="47" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Right Button" dstnodeid="47" dstpinname="Input 3">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="60" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2400" top="8175" width="360" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2400" top="8175" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="60" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <INFO author="" description="Returns the mouse of the defined Window with its Cycle Mode set to &apos;IncrementCycle&apos;. Useful for Camera modules." tags="">
+   </INFO>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="90">
+   <BOUNDS type="Node" left="585" top="1725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="90" srcpinname="Bang" dstnodeid="23" dstpinname="Update">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="90" dstpinname="Simulate" linkstyle="Bezier">
+   <LINKPOINT x="6015" y="6435">
+   </LINKPOINT>
+   <LINKPOINT x="5385" y="0">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="91">
+   <BOUNDS type="Node" left="1590" top="9600" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Cycle Mode" slicecount="1" visible="1" values="IncrementCycle">
+   </PIN>
+   <PIN pinname="Queue Mode" visible="1" slicecount="1" values="Discard">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="93" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1575" top="10230" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1575" top="10230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Device">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="91" srcpinname="Device" dstnodeid="93" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="95">
+   <BOUNDS type="Node" left="2595" top="5550" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   <PIN pinname="Down Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="95" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="41" dstpinname="Ord Value">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="99">
+   <BOUNDS type="Node" left="1290" top="8925" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="99" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Output" dstnodeid="91" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="100">
+   <BOUNDS type="Node" left="750" top="5580" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="100" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Automata (Animation)" nodename="Automata (Animation)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="1710" top="6450" width="900" height="270">
+   </BOUNDS>
+   <PIN pinname="Quadrupels (from, event, to, action)" slicecount="1" values="|idle OnEnter inWindow DoEnter&cr;&lf;inWindow OnLeave idle DoLeave&cr;&lf;inWindow OnDown downInWindow DoDown&cr;&lf;downInWindow OnUp inWindow DoUp&cr;&lf;|">
+   </PIN>
+   <PIN pinname="OnEnter" visible="1">
+   </PIN>
+   <PIN pinname="OnLeave" visible="1">
+   </PIN>
+   <PIN pinname="OnDown" visible="1">
+   </PIN>
+   <PIN pinname="OnUp" visible="1">
+   </PIN>
+   <PIN pinname="Current state" visible="1">
+   </PIN>
+   <PIN pinname="DoDown" visible="1">
+   </PIN>
+   <PIN pinname="DoUp" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="100" srcpinname="Output" dstnodeid="101" dstpinname="OnEnter">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="102">
+   <BOUNDS type="Node" left="1305" top="5580" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Inverse Output" dstnodeid="102" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="101" dstpinname="OnLeave">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Up Edge" dstnodeid="101" dstpinname="OnDown">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Down Edge" dstnodeid="101" dstpinname="OnUp">
+   </LINK>
+   <NODE systemname="EQ (String)" nodename="EQ (String)" componentmode="Hidden" id="103">
+   <BOUNDS type="Node" left="1710" top="7245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="101" srcpinname="Current state" dstnodeid="103" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="104" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2925" top="6660" width="1440" height="465">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2925" top="6660" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" visible="1" values="inWindow,downInWindow">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Output String" dstnodeid="103" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="112">
+   <BOUNDS type="Node" left="1710" top="7680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="103" srcpinname="Output" dstnodeid="112" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="8" dstpinname="Title">
+   </LINK>
+   <LINK srcnodeid="112" srcpinname="Output" dstnodeid="99" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="112" srcpinname="Output" dstnodeid="40" dstpinname="Switch">
+   </LINK>
+   <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="4500" top="7860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="PositionXY" dstnodeid="113" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="DoDown" dstnodeid="113" dstpinname="Set">
+   </LINK>
+   <NODE systemname="Cursor (System)" nodename="Cursor (System)" componentmode="Hidden" id="114">
+   <BOUNDS type="Node" left="4335" top="8895" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Cursor X" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Y" visible="1">
+   </PIN>
+   <PIN pinname="Set Cursor Position" visible="1">
+   </PIN>
+   <PIN pinname="Show" slicecount="1" visible="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="115">
+   <BOUNDS type="Node" left="4500" top="8295" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="113" srcpinname="Output" dstnodeid="115" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="115" srcpinname="X" dstnodeid="114" dstpinname="Cursor X">
+   </LINK>
+   <LINK srcnodeid="115" srcpinname="Y" dstnodeid="114" dstpinname="Cursor Y">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="DoUp" dstnodeid="114" dstpinname="Set Cursor Position">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Enum" dstnodeid="91" dstpinname="Cycle Mode">
+   </LINK>
+   </PATCH>
