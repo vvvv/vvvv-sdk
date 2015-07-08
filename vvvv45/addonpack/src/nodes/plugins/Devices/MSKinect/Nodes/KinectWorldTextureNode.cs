@@ -17,7 +17,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "World", 
 	            Category = "Kinect", 
-	            Version = "Microsoft", 
+	            Version = "Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
 	            Help = "Returns a A32B32G32R32F formatted texture with world-space coordinates encoded in each pixel")]

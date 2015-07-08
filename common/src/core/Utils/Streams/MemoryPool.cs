@@ -60,7 +60,7 @@ namespace VVVV.Utils.Streams
 		public static void PutArray(T[] array)
 		{
             // Clear the array before putting it back (break references)
-            if (!typeof(T).IsPrimitive)
+            if (!typeof(T).IsValueType)
             {
                 Array.Clear(array, 0, array.Length);
             }

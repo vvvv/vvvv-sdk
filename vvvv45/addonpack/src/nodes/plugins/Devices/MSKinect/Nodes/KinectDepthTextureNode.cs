@@ -16,7 +16,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Depth", 
 	            Category = "Kinect", 
-	            Version = "Microsoft", 
+	            Version = "Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
 	            Help = "Returns a 16bit depthmap from the Kinects depth camera.")]

@@ -16,7 +16,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Player", 
 	            Category = "Kinect", 
-	            Version = "Microsoft", 
+	            Version = "Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
 	            Help = "?")]

@@ -1,33 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\Counter (Animation) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="E:\dev\vvvv\public\vvvv45\lib\nodes\native\Counter (Animation) help.v4p">
    <BOUNDS height="7095" left="3435" top="2775" type="Window" width="11910">
    </BOUNDS>
-   <NODE id="22" nodename="Counter (Animation)" systemname="Counter (Animation)">
-   <BOUNDS height="0" left="885" top="4275" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Up" visible="1">
-   </PIN>
-   <PIN pinname="Down" visible="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" visible="1" values="20">
-   </PIN>
-   <PIN pinname="Increment" visible="1">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Reset" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Mode" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Underflow" visible="1">
-   </PIN>
-   <PIN pinname="Overflow" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="28" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
    </BOUNDS>
@@ -69,9 +43,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="30" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="885" top="1665" type="Node" width="0">
    </BOUNDS>
@@ -90,8 +64,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Up" srcnodeid="30" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="31" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1050" top="2385" type="Node" width="0">
    </BOUNDS>
@@ -108,8 +80,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Down" srcnodeid="31" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="2025" top="1755" type="Node" width="1545">
    </BOUNDS>
@@ -138,32 +108,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="39" nodename="Counter (Animation)" systemname="Counter (Animation)">
-   <BOUNDS height="270" left="6090" top="4230" type="Node" width="1200">
-   </BOUNDS>
-   <PIN pinname="Up" visible="1">
-   </PIN>
-   <PIN pinname="Down" visible="1">
-   </PIN>
-   <PIN pinname="Minimum" visible="1">
-   </PIN>
-   <PIN pinname="Maximum" visible="1">
-   </PIN>
-   <PIN pinname="Increment" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" visible="1" values="1">
-   </PIN>
-   <PIN pinname="Reset" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Mode" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Underflow" visible="1">
-   </PIN>
-   <PIN pinname="Overflow" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="38" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6090" top="4740" type="Node" width="0">
    </BOUNDS>
@@ -175,9 +119,9 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="12">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="38" dstpinname="Y Input Value" srcnodeid="39" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6090" top="1680" type="Node" width="0">
    </BOUNDS>
@@ -196,8 +140,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="39" dstpinname="Up" srcnodeid="37" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="36" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="6255" top="2400" type="Node" width="0">
    </BOUNDS>
@@ -216,8 +158,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="39" dstpinname="Down" srcnodeid="36" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="7200" top="1770" type="Node" width="1545">
    </BOUNDS>
@@ -254,8 +194,6 @@
    <PIN pinname="Input Enum" slicecount="1" values="Unlimited">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Mode" srcnodeid="40" srcpinname="Output Enum">
-   </LINK>
    <NODE componentmode="InABox" id="41" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="1545" top="3195" type="Node" width="0">
    </BOUNDS>
@@ -270,8 +208,6 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Increment" srcnodeid="41" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="2025" top="3180" type="Node" width="3780">
    </BOUNDS>
@@ -307,15 +243,13 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="10">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Minimum">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="6585" top="3390" width="0" height="0">
    </BOUNDS>
@@ -323,15 +257,13 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="15">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Maximum">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="46" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="7230" top="3825" width="0" height="0">
    </BOUNDS>
@@ -340,14 +272,12 @@
    <PIN pinname="Input Enum" slicecount="1" values="Wrap">
    </PIN>
    </NODE>
-   <LINK srcnodeid="46" srcpinname="Output Enum" dstnodeid="39" dstpinname="Mode">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7200" top="3210" width="3570" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="7200" top="3210" width="2490" height="480">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Minimum and Maximum values of the counter.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Minimum and Maximum values of the counter.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -361,7 +291,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8385" top="3795" width="2490" height="720">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Map modes &apos;Wrap&apos; and &apos;Clamp&apos; take Minimum and Maximum into account.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Map modes &apos;Wrap&apos; and &apos;Clamp&apos; take Minimum and Maximum into account.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -375,7 +305,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="7710" top="5595" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -391,7 +321,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6660" top="5595" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -405,25 +335,21 @@
    <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="51">
    <BOUNDS type="Node" left="6660" top="5070" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Set" visible="1">
+   <PIN pinname="Set" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="39" srcpinname="Underflow" dstnodeid="51" dstpinname="Set">
-   </LINK>
    <LINK srcnodeid="51" srcpinname="Output" dstnodeid="50" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="52">
    <BOUNDS type="Node" left="7710" top="5070" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Set" visible="1">
+   <PIN pinname="Set" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="39" srcpinname="Overflow" dstnodeid="52" dstpinname="Set">
-   </LINK>
    <LINK srcnodeid="52" srcpinname="Output" dstnodeid="49" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
@@ -431,7 +357,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8385" top="5715" width="2295" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Lights up when Minimum or Maximum are exceeded.|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Lights up when Minimum or Maximum are exceeded.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -440,4 +366,84 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE id="22" nodename="Counter (Animation)" systemname="Counter (Animation)">
+   <BOUNDS height="0" left="885" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Up" visible="1">
+   </PIN>
+   <PIN pinname="Down" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Increment" visible="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Underflow" visible="1">
+   </PIN>
+   <PIN pinname="Overflow" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Up" srcnodeid="30" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Down" srcnodeid="31" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Mode" srcnodeid="40" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Increment" srcnodeid="41" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="39" nodename="Counter (Animation)" systemname="Counter (Animation)">
+   <BOUNDS height="270" left="6090" top="4230" type="Node" width="1200">
+   </BOUNDS>
+   <PIN pinname="Up" visible="1">
+   </PIN>
+   <PIN pinname="Down" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Maximum" visible="1">
+   </PIN>
+   <PIN pinname="Increment" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Underflow" visible="1">
+   </PIN>
+   <PIN pinname="Overflow" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Y Input Value" srcnodeid="39" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Up" srcnodeid="37" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Down" srcnodeid="36" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Minimum">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="39" dstpinname="Maximum">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Output Enum" dstnodeid="39" dstpinname="Mode">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Underflow" dstnodeid="51" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Overflow" dstnodeid="52" dstpinname="Set">
+   </LINK>
+   <PACK Name="addonpack" Version="33.8.0">
+   </PACK>
    </PATCH>

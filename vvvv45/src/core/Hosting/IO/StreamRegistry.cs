@@ -575,7 +575,7 @@ namespace VVVV.Hosting.IO
                                                    }
                                                }
                                            }
-                                           catch (ArgumentException)
+                                           catch (Exception)
                                            {
                                                // Type constraints weren't satisfied.
                                            }

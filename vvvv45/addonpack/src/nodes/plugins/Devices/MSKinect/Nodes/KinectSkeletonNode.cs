@@ -14,7 +14,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "Skeleton",
                 Category = "Kinect",
-                Version = "Microsoft",
+                Version = "Microsoft DX9",
                 Author = "vux",
                 Tags = "EX9",
                 Help = "Returns skeleton data for each tracked user")]

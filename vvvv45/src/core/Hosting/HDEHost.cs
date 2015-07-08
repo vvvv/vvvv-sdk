@@ -239,10 +239,25 @@ namespace VVVV.Hosting
             {
                 this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
             }
-           
+
+            var clockport = 3334;
+
+            try
+            {
+                if (Environment.CommandLine.Contains("/clockport"))
+                {
+                    var env = Environment.GetCommandLineArgs();
+                    var idx = Array.IndexOf(env, "/clockport") + 1;
+                    clockport = int.Parse(env[idx]);
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Could not parse clockport, make sure you have the right syntax, e.g. '/clockport 3344' ");
+            }
             
             //start time server of client
-            FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, 3334) : new UDPTimeServer(3334);
+            FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, clockport) : new UDPTimeServer(clockport);
             FNetTimeSync.Start();
 
             //now that all basics are set up, see if there are any node search paths to add

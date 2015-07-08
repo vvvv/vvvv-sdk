@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
    <BOUNDS height="9615" left="0" top="0" type="Window" width="6480">
    </BOUNDS>
    <NODE id="22" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="2">
    </PIN>
@@ -24,36 +24,10 @@
    <PIN pinname="Layer 1" visible="1">
    </PIN>
    </NODE>
-   <NODE id="20" nodename="Quad (DX9)" systemname="Quad (DX9)">
-   <BOUNDS height="0" left="3345" top="6570" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <NODE id="19" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
-   <BOUNDS height="0" left="3510" top="6105" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" slicecount="3" values="0.02,0.02,0.02">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="20" dstpinname="Transform" linkstyle="Bezier" srcnodeid="19" srcpinname="Transform Out">
-   <LINKPOINT x="3540" y="6525">
-   </LINKPOINT>
-   <LINKPOINT x="3540" y="6525">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="InAWindow" id="17" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="420" top="8565" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="6975" left="6600" top="75" type="Window" width="8430">
+   <BOUNDS height="6975" left="6600" top="0" type="Window" width="8430">
    </BOUNDS>
    <BOUNDS height="3600" left="420" top="8565" type="Box" width="4800">
    </BOUNDS>
@@ -71,7 +45,7 @@
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
-   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
@@ -81,8 +55,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="17" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="22" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="22" dstpinname="Layer 2" linkstyle="PolyLine" srcnodeid="20" srcpinname="Layer">
    </LINK>
    <NODE id="16" nodename="SetSlice (Spreads Legacy)" systemname="SetSlice (Spreads Legacy)">
    <BOUNDS height="0" left="2190" top="5100" type="Node" width="0">
@@ -294,7 +266,7 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="Projection" linkstyle="PolyLine" srcnodeid="24" srcpinname="Projection">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh).v4p" systemname="Button (3d Mesh)">
+   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh).v4p" systemname="Button (3d Mesh)">
    <BOUNDS height="0" left="2790" top="3615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="9195" left="14220" top="4200" type="Window" width="9000">
@@ -324,8 +296,6 @@
    <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="Transform In" linkstyle="PolyLine" srcnodeid="25" srcpinname="Cursor Transform">
-   </LINK>
    <LINK dstnodeid="16" dstpinname="Index" linkstyle="PolyLine" srcnodeid="25" srcpinname="Index of Nearest">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="25" srcpinname="Mouse Over">
@@ -387,5 +357,19 @@
    <LINK srcnodeid="11" srcpinname="Count" dstnodeid="28" dstpinname="Select">
    </LINK>
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="16" dstpinname="Spread">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="4005" top="6630" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Device" dstnodeid="29" dstpinname="Mouse">
+   <LINKPOINT x="4035" y="3495">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="22" dstpinname="Layer 2">
    </LINK>
    </PATCH>

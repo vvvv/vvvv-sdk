@@ -39,8 +39,8 @@ namespace VVVV.Nodes
 {
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Value",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Help = "Counts the occurrence of equal slices",
+	            Tags = "count, spectral, spread",
 	           	Author = "woei")]
 	public class OccurrenceValue: Occurrence<double>
 	{
@@ -61,9 +61,9 @@ namespace VVVV.Nodes
 	}
 
     [PluginInfo(Name = "Occurrence",
-                Category = "Vector2D",
-                Help = "counts the occurrence of equal slices",
-                Tags = "count, occurrence, spectral, spread",
+                Category = "2d",
+                Help = "Counts the occurrence of equal slices",
+                Tags = "count, spectral, spread",
                 Author = "woei")]
     public class OccurrenceVector2D : Occurrence<Vector2D>
     {
@@ -85,9 +85,9 @@ namespace VVVV.Nodes
     }
 
     [PluginInfo(Name = "Occurrence",
-                Category = "Vector3D",
-                Help = "counts the occurrence of equal slices",
-                Tags = "count, occurrence, spectral, spread",
+                Category = "3d",
+                Help = "Counts the occurrence of equal slices",
+                Tags = "count, spectral, spread",
                 Author = "woei")]
     public class OccurrenceVector3D : Occurrence<Vector3D>
     {
@@ -110,9 +110,9 @@ namespace VVVV.Nodes
     }
 
     [PluginInfo(Name = "Occurrence",
-                Category = "Vector4D",
-                Help = "counts the occurrence of equal slices",
-                Tags = "count, occurrence, spectral, spread",
+                Category = "4d",
+                Help = "Counts the occurrence of equal slices",
+                Tags = "count, spectral, spread",
                 Author = "woei")]
     public class OccurrenceVector4D : Occurrence<Vector4D>
     {
@@ -137,8 +137,8 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "String",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Help = "Counts the occurrence of equal slices",
+	            Tags = "count, spectral, spread",
 	           	Author = "woei")]
 	public class OccurrenceString: Occurrence<string>
 	{
@@ -167,8 +167,8 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Color",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Help = "Counts the occurrence of equal slices",
+	            Tags = "count, spectral, spread",
 	           	Author = "woei")]
 	public class OccurrenceColor: Occurrence<RGBAColor>
 	{
@@ -193,15 +193,15 @@ namespace VVVV.Nodes
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Enumerations",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Help = "Counts the occurrence of equal slices",
+	            Tags = "count, spectral, spread",
 	           	Author = "woei")]
 	public class OccurrenceEnum: Occurrence<EnumEntry> {}
 	
 	[PluginInfo(Name = "Occurrence", 
 	            Category = "Transform",
-	            Help = "counts the occurrence of equal slices",
-	            Tags = "count, occurrence, spectral, spread",
+	            Help = "Counts the occurrence of equal slices",
+	            Tags = "count, spectral, spread",
 	           	Author = "woei")]
 	public class OccurrenceTransform: Occurrence<Matrix4x4> {}
 }
