@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.1.dtd" >
-   <PATCH nodename="W:\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="2565" scrolly="210">
-   <BOUNDS type="Window" left="1035" top="1515" width="25770" height="13380">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="1035" top="1515" width="18435" height="13380">
    </BOUNDS>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="121" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="930" top="17715" width="0" height="0">
@@ -1590,206 +1590,38 @@
    </LINK>
    <LINK srcnodeid="967" srcpinname="Output" dstnodeid="958" dstpinname="Set" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="33.8.0">
    </PACK>
-   <NODE id="979" nodename="Multiply (Value)" systemname="Multiply (Value)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="22035" top="6015" type="Node" width="0">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="990" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2850" top="5730" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="978" nodename="WindowLists (Windows)" systemname="WindowLists (Windows)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="22245" top="4665" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="TopMost VVVV Window" visible="1">
-   </PIN>
-   <PIN pinname="TopMost Window" visible="1">
-   </PIN>
-   <PIN pinname="Update" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="977" nodename="AND (Boolean)" systemname="AND (Boolean)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="23100" top="6120" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="976" nodename="AND (Boolean)" systemname="AND (Boolean)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="22080" top="5205" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="976" dstpinname="Input 1" srcnodeid="977" srcpinname="Output" hiddenwhenlocked="1">
-   </LINK>
-   <NODE componentmode="InABox" id="975" nodename="IOBox (String)" systemname="IOBox (String)" hiddenwhenlocked="1">
-   <BOUNDS height="270" left="23790" top="4905" type="Node" width="1365">
-   </BOUNDS>
-   <BOUNDS height="270" left="23790" top="4905" type="Box" width="1365">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Renderer">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="974" nodename="EQ (String)" systemname="EQ (String)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="22935" top="5685" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="974" dstpinname="Input 1" srcnodeid="978" srcpinname="TopMost Window" hiddenwhenlocked="1">
-   </LINK>
-   <LINK dstnodeid="974" dstpinname="Input 2" srcnodeid="978" srcpinname="TopMost VVVV Window" hiddenwhenlocked="1">
-   </LINK>
-   <NODE componentmode="Hidden" id="973" nodename="Sift (String)" systemname="Sift (String)" hiddenwhenlocked="1">
-   <BOUNDS height="0" left="23565" top="5250" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Substring" visible="1">
-   </PIN>
-   <PIN pinname="Position" visible="1">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   <PIN pinname="Filter" visible="1">
-   </PIN>
-   <PIN pinname="Comparison" slicecount="1" values="Contains">
-   </PIN>
-   <PIN pinname="Hits" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="973" dstpinname="Input" srcnodeid="978" srcpinname="TopMost VVVV Window" hiddenwhenlocked="1">
-   </LINK>
-   <LINK dstnodeid="973" dstpinname="Filter" srcnodeid="975" srcpinname="Output String" hiddenwhenlocked="1">
-   </LINK>
-   <LINK dstnodeid="977" dstpinname="Input 1" srcnodeid="974" srcpinname="Output" hiddenwhenlocked="1">
-   </LINK>
-   <NODE componentmode="Hidden" id="972" nodename="Ord2Enum (Enumerations)" systemname="Ord2Enum (Enumerations)" hiddenwhenlocked="1">
-   <BOUNDS height="270" left="22035" top="6435" type="Node" width="870">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="972" dstpinname="Ord Value" srcnodeid="979" srcpinname="Output" hiddenwhenlocked="1">
-   </LINK>
-   <NODE id="971" nodename="FrameDelay (Value)" systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" hiddenwhenlocked="1">
-   <BOUNDS type="Node" height="0" left="21975" top="5595" width="0">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output 1" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="976" srcpinname="Output" dstnodeid="971" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="971" srcpinname="Output 1" dstnodeid="979" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="981" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="23580" top="5655" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="973" srcpinname="Hits" dstnodeid="981" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="981" srcpinname="Output" dstnodeid="977" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="955">
-   <BOUNDS type="Node" left="3150" top="4485" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Cycle Mode" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="972" srcpinname="Enum" dstnodeid="955" dstpinname="Cycle Mode" hiddenwhenlocked="1">
-   <LINKPOINT x="22080" y="7740">
-   </LINKPOINT>
-   <LINKPOINT x="4875" y="3795">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="955" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="985" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
-   <BOUNDS type="Box" left="21975" top="4005" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="21975" top="4005" width="0" height="0">
+   <BOUNDS type="Node" left="2850" top="5730" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
    </NODE>
-   <LINK srcnodeid="985" srcpinname="Y Output Value" dstnodeid="976" dstpinname="Input 2" hiddenwhenlocked="1">
+   <LINK srcnodeid="306" srcpinname="Output" dstnodeid="990" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="985" srcpinname="Y Output Value" dstnodeid="978" dstpinname="Update" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="yzw (3d)" filename="%VVVV%\addonpack\lib\nodes\plugins\Swizzle4d.dll" nodename="yzw (3d)" componentmode="Hidden" id="986" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="21975" top="3150" width="100" height="100">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="992" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1875" top="5580" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="XYZW" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="965" srcpinname="Output" dstnodeid="986" dstpinname="XYZW" hiddenwhenlocked="1">
-   <LINKPOINT x="10035" y="6000">
-   </LINKPOINT>
-   <LINKPOINT x="21780" y="2670">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="987" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="21975" top="3600" width="100" height="100">
+   <BOUNDS type="Node" left="1875" top="5580" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="986" srcpinname="XYZ" dstnodeid="987" dstpinname="Input" hiddenwhenlocked="1">
+   <LINK srcnodeid="227" srcpinname="X" dstnodeid="992" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="987" srcpinname="Output" dstnodeid="985" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   <NODE systemname="Mouse (Devices Window Camera)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" nodename="Mouse (Devices Window Camera)" componentmode="Hidden" id="993">
+   <BOUNDS type="Node" left="3240" top="4530" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="993" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
    </LINK>
    </PATCH>
