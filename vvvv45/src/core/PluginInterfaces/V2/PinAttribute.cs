@@ -256,6 +256,15 @@ namespace VVVV.PluginInterfaces.V2
             get;
             set;
         }
+
+        /// <summary>
+        /// The default value for this node pin.
+        /// </summary>
+        public object DefaultNodeValue
+        {
+            get;
+            set;
+        }
         
         /// <summary>
         /// Converts an ISpread&lt;ISpread&lt;T&gt;&gt; from a bin sized spread to a dynamic pin group.
@@ -296,6 +305,7 @@ namespace VVVV.PluginInterfaces.V2
             clonedInstance.DefaultString = DefaultString;
             clonedInstance.DefaultValue = DefaultValue;
             clonedInstance.DefaultValues = DefaultValues;
+            clonedInstance.DefaultNodeValue = DefaultNodeValue;
             clonedInstance.Dimension = Dimension;
             clonedInstance.DimensionNames = DimensionNames;
             clonedInstance.EnumName = EnumName;

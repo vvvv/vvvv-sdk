@@ -237,11 +237,12 @@ namespace VVVV.Hosting.IO.Streams
         private MemoryIOStream<T> FNullStream = new MemoryIOStream<T>();
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
+        private readonly T FDefaultValue;
         private MemoryIOStream<T> FUpstreamStream;
         private int FLength;
         private int* FUpStreamSlices;
 
-        public NodeInStream(INodeIn nodeIn, IConnectionHandler handler)
+        public NodeInStream(INodeIn nodeIn, IConnectionHandler handler, T defaultValue = default(T))
         {
             FNodeIn = nodeIn;
             if (typeof(T).Assembly.IsDynamic)
@@ -249,6 +250,7 @@ namespace VVVV.Hosting.IO.Streams
             else
                 FNodeIn.SetConnectionHandler(handler, this);
             FAutoValidate = nodeIn.AutoValidate;
+            FDefaultValue = defaultValue;
             FUpstreamStream = FNullStream;
         }
 
@@ -306,6 +308,9 @@ namespace VVVV.Hosting.IO.Streams
                             // Not connected
                             FUpstreamStream = FNullStream;
                             FUpstreamStream.Length = FLength;
+                            using (var writer = FUpstreamStream.GetWriter())
+                                while (!writer.Eos)
+                                    writer.Write(FDefaultValue);
                         }
                     }
                 }
