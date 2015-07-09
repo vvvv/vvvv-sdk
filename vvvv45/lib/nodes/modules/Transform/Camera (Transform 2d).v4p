@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p">
-   <BOUNDS type="Window" left="21240" top="1995" width="16275" height="9090">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="12825" top="1020" width="14190" height="12405">
    </BOUNDS>
    <INFO author="vvvv group" description="Easy to use virtual camera for day to day work with the Renderer (EX9) and 2d scenes." tags="flat">
    </INFO>
@@ -97,7 +97,7 @@
    <NODE systemname="FrameDifference (Animation)" nodename="FrameDifference (Animation)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="4515" top="2940" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input" visible="1" slicecount="1" values="30">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -167,9 +167,9 @@
    </PIN>
    <PIN pinname="ScaleXY" visible="1">
    </PIN>
-   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
    </PIN>
-   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
    </PIN>
    </NODE>
    <LINK srcnodeid="103" srcpinname="Transform Out" dstnodeid="106" dstpinname="Transform In 2">
@@ -191,7 +191,7 @@
    </PIN>
    <PIN pinname="Drag" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="PositionXY" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="PositionXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
    </PIN>
    <PIN pinname="OffsetXY" visible="1">
    </PIN>
@@ -734,6 +734,42 @@
    </LINK>
    <LINK srcnodeid="53" srcpinname="Up Edge" dstnodeid="112" dstpinname="Initialize">
    </LINK>
+   <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="113">
+   <BOUNDS type="Node" left="4740" top="10080" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="108" srcpinname="Output Node" dstnodeid="113" dstpinname="Source">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="114" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="4740" top="10815" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4740" top="10815" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Inverse Transform Out|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="113" srcpinname="Transform Out" dstnodeid="114" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="115" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6060" top="2910" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6060" top="2910" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0.704260651629073,-0.244147157190636">
+   </PIN>
+   </NODE>
    <NODE systemname="Mouse (Devices Window Camera)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" nodename="Mouse (Devices Window Camera)" componentmode="Hidden" id="111">
    <BOUNDS type="Node" left="5550" top="2175" width="100" height="100">
    </BOUNDS>
@@ -745,8 +781,10 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="14325" top="1995" width="11430" height="13455">
+   <BOUNDS type="Window" left="16500" top="345" width="11430" height="13455">
    </BOUNDS>
+   <PIN pinname="Reset Cursor" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="111" srcpinname="Mouse Wheel" dstnodeid="109" dstpinname="Input">
    </LINK>
@@ -775,5 +813,7 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Enabled" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="115" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
