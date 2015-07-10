@@ -88,9 +88,7 @@ namespace VVVV.Hosting.Graph
         {
             var node = internalCOMInterf.Tag as Node;
             if (node == null)
-            {
                 node = new Node(internalCOMInterf, nodeInfoFactory);
-            }
             return node;
         }
         #endregion
@@ -108,8 +106,6 @@ namespace VVVV.Hosting.Graph
         {
             FInternalCOMInterf = internalCOMInterf;
             FNodeInfoFactory = nodeInfoFactory;
-            
-            FInternalNodeListener = new InternalNodeListener(this);
             FInternalCOMInterf.Tag = this;
         }
         
@@ -306,6 +302,8 @@ namespace VVVV.Hosting.Graph
                             FNodes.Add(childNode);
                         }
                     }
+                    if (HasPatch)
+                        IncObserverCount();
                 }
                 return FNodes;
             }
@@ -319,12 +317,12 @@ namespace VVVV.Hosting.Graph
                 if (FPins == null)
                 {
                     FPins = new ViewableCollection<IPin2>();
-                    IncObserverCount();
                     foreach (var internalPin in FInternalCOMInterf.GetPins())
                     {
                         var pin = Pin.Create(this, internalPin, FNodeInfoFactory);
                         FPins.Add(pin);
                     }
+                    IncObserverCount();
                 }
                 return FPins;
             }
@@ -359,10 +357,10 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                if (FInternalCOMInterf.ParentNode == null)
-                    return null;
-                else
-                    return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
+                var parentNode = FInternalCOMInterf.ParentNode;
+                if (parentNode != null)
+                    return Node.Create(parentNode, FNodeInfoFactory);
+                return null;
             }
         }
         
@@ -410,28 +408,67 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        public event EventHandler StatusChanged;
+        public event EventHandler StatusChanged
+        {
+            add
+            {
+                FStatusChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FStatusChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler FStatusChanged;
         
         protected virtual void OnStatusChanged()
         {
-            if (StatusChanged != null)
-                StatusChanged(this, EventArgs.Empty);
+            if (FStatusChanged != null)
+                FStatusChanged(this, EventArgs.Empty);
         }
         
-        public event EventHandler InnerStatusChanged;
+        public event EventHandler InnerStatusChanged
+        {
+            add
+            {
+                FInnerStatusChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FInnerStatusChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler FInnerStatusChanged;
         
         protected virtual void OnInnerStatusChanged()
         {
-            if (InnerStatusChanged != null)
-                InnerStatusChanged(this, EventArgs.Empty);
+            if (FInnerStatusChanged != null)
+                FInnerStatusChanged(this, EventArgs.Empty);
         }
         
-        public event EventHandler<BoundsChangedEventArgs> BoundsChanged;
+        public event EventHandler<BoundsChangedEventArgs> BoundsChanged
+        {
+            add
+            {
+                FBoundsChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FBoundsChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler<BoundsChangedEventArgs> FBoundsChanged;
         
         protected virtual void OnBoundsChanged(BoundsType boundsType)
         {
-            if (BoundsChanged != null)
-                BoundsChanged(this, new BoundsChangedEventArgs(boundsType));
+            if (FBoundsChanged != null)
+                FBoundsChanged(this, new BoundsChangedEventArgs(boundsType));
         }
 
         #region IViewableList<INode2>
@@ -489,8 +526,8 @@ namespace VVVV.Hosting.Graph
 
         protected void OnAdded(INode2 node)
         {
-            // Clear the cache
-            FNodes = null;
+            if (FNodes != null)
+                FNodes.Add(node);
             if (FAdded != null)
                 FAdded(this, node);
             if (FAdded_ != null)
@@ -514,8 +551,8 @@ namespace VVVV.Hosting.Graph
 
         protected void OnRemoved(INode2 node)
         {
-            // Clear the cache
-            FNodes = null;
+            if (FNodes != null)
+                FNodes.Remove(node);
             if (FRemoved != null)
                 FRemoved(this, node);
             if (FRemoved_ != null)
