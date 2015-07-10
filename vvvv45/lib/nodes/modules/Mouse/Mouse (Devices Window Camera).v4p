@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" systemname="Mouse (Devices Window Camera)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" scrollx="420" scrolly="2025">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" systemname="Mouse (Devices Window Camera)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" scrollx="0" scrolly="0">
    <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="3540" top="3720" width="100" height="100">
    </BOUNDS>
@@ -897,6 +897,16 @@
    </PIN>
    <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="X1 Button" visible="1">
+   </PIN>
+   <PIN pinname="X2 Button" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="41" srcpinname="Enum" dstnodeid="206" dstpinname="Cycle Mode">
    </LINK>
@@ -932,56 +942,24 @@
    </NODE>
    <LINK srcnodeid="47" srcpinname="Output" dstnodeid="207" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="208">
-   <BOUNDS type="Node" left="2160" top="11550" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   <PIN pinname="X1 Button" visible="1">
-   </PIN>
-   <PIN pinname="X2 Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="99" srcpinname="Output" dstnodeid="208" dstpinname="Enabled">
+   <LINK srcnodeid="206" srcpinname="Left Button" dstnodeid="135" dstpinname="Left Button">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Left Button" dstnodeid="120" dstpinname="Y Input Value">
+   <LINK srcnodeid="206" srcpinname="Middle Button" dstnodeid="135" dstpinname="Middle Button">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Middle Button" dstnodeid="121" dstpinname="Y Input Value">
+   <LINK srcnodeid="206" srcpinname="Right Button" dstnodeid="135" dstpinname="Right Button">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Right Button" dstnodeid="122" dstpinname="Y Input Value">
+   <LINK srcnodeid="206" srcpinname="X1 Button" dstnodeid="135" dstpinname="X1 Button">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="X1 Button" dstnodeid="123" dstpinname="Y Input Value">
+   <LINK srcnodeid="206" srcpinname="X2 Button" dstnodeid="135" dstpinname="X2 Button">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="X2 Button" dstnodeid="124" dstpinname="Y Input Value">
+   <LINK srcnodeid="206" srcpinname="Left Button" dstnodeid="120" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Left Button" dstnodeid="135" dstpinname="Left Button">
+   <LINK srcnodeid="206" srcpinname="Middle Button" dstnodeid="121" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Middle Button" dstnodeid="135" dstpinname="Middle Button">
+   <LINK srcnodeid="206" srcpinname="Right Button" dstnodeid="122" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="Right Button" dstnodeid="135" dstpinname="Right Button">
+   <LINK srcnodeid="206" srcpinname="X1 Button" dstnodeid="123" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="X1 Button" dstnodeid="135" dstpinname="X1 Button">
+   <LINK srcnodeid="206" srcpinname="X2 Button" dstnodeid="124" dstpinname="Y Input Value">
    </LINK>
-   <LINK srcnodeid="208" srcpinname="X2 Button" dstnodeid="135" dstpinname="X2 Button">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="209" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3540" top="11535" width="6030" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3540" top="11535" width="2625" height="735">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; workaround to get the mouseclicks even the moment we&apos;re switching cycle-mode|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    </PATCH>
