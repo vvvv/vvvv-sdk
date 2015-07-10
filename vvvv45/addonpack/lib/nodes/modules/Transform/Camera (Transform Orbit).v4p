@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="0" scrolly="0">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="1860" scrolly="2160">
    <BOUNDS type="Window" left="1035" top="1515" width="18435" height="13380">
    </BOUNDS>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="121" systemname="IOBox (Node)">
@@ -1621,9 +1621,69 @@
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
-   <PIN pinname="Reset Cursor" slicecount="1" values="1">
+   <PIN pinname="Reset Cursor" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="993" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="994" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="19515" top="2010" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="19515" top="2010" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="994" srcpinname="Y Output Value" dstnodeid="993" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="996">
+   <BOUNDS type="Node" left="18135" top="11280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="965" srcpinname="Output" dstnodeid="996" dstpinname="Input">
+   </LINK>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="997">
+   <BOUNDS type="Node" left="18135" top="11775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="996" srcpinname="Output" dstnodeid="997" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="998" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="18135" top="12390" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="18135" top="12390" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Idle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="997" srcpinname="Output" dstnodeid="998" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
