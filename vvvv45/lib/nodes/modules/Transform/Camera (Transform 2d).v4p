@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="12825" top="1020" width="14190" height="12405">
    </BOUNDS>
    <INFO author="vvvv group" description="Easy to use virtual camera for day to day work with the Renderer (EX9) and 2d scenes." tags="flat">
@@ -97,7 +97,7 @@
    <NODE systemname="FrameDifference (Animation)" nodename="FrameDifference (Animation)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="4515" top="2940" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="30">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -167,9 +167,9 @@
    </PIN>
    <PIN pinname="ScaleXY" visible="1">
    </PIN>
-   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
    </PIN>
-   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
    </PIN>
    </NODE>
    <LINK srcnodeid="103" srcpinname="Transform Out" dstnodeid="106" dstpinname="Transform In 2">
@@ -191,7 +191,7 @@
    </PIN>
    <PIN pinname="Drag" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="PositionXY" visible="1" slicecount="2" values="0.704260651629073,-0.244147157190636">
+   <PIN pinname="PositionXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
    </PIN>
    <PIN pinname="OffsetXY" visible="1">
    </PIN>
@@ -769,10 +769,54 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="0.704260651629073,-0.244147157190636">
+   <PIN pinname="Y Input Value" slicecount="2" values="-0.791397833055066,-0.147540987266157">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (Devices Window Camera)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" nodename="Mouse (Devices Window Camera)" componentmode="Hidden" id="111">
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="116">
+   <BOUNDS type="Node" left="7755" top="9840" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="101" srcpinname="Dragging" dstnodeid="116" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="117" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7755" top="10815" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7755" top="10815" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Idle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="118">
+   <BOUNDS type="Node" left="7755" top="10335" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="92" srcpinname="ShiftKey" dstnodeid="118" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Output" dstnodeid="118" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Output" dstnodeid="117" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window Cyclic)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" nodename="Mouse (Devices Window Cyclic)" componentmode="Hidden" id="111">
    <BOUNDS type="Node" left="5550" top="2175" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse Wheel" visible="1">
@@ -817,49 +861,5 @@
    <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Enabled" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="115" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="116">
-   <BOUNDS type="Node" left="7755" top="9840" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="101" srcpinname="Dragging" dstnodeid="116" dstpinname="Input">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="117" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7755" top="10815" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7755" top="10815" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Idle">
-   </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="118">
-   <BOUNDS type="Node" left="7755" top="10335" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="92" srcpinname="ShiftKey" dstnodeid="118" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="116" srcpinname="Output" dstnodeid="118" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Output" dstnodeid="117" dstpinname="Y Input Value">
    </LINK>
    </PATCH>

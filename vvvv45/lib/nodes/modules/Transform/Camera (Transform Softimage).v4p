@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
-   <BOUNDS height="12930" left="9000" top="1545" type="Window" width="17040">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" locked="0">
+   <BOUNDS height="10605" left="10290" top="3555" type="Window" width="17400">
    </BOUNDS>
    <INFO author="vvvv group" description="move your camera with keyboard and mouse like in the 3d modeller &quot;Softimage&quot;" tags="3d, perspective, modelling, tool">
    </INFO>
@@ -1241,7 +1241,7 @@
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="7065" top="2070" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="XY" visible="1" slicecount="2" values="-3.16956601355063,1.47909418299457">
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -1382,52 +1382,6 @@
    </LINK>
    <PACK Name="addonpack" Version="33.8.0">
    </PACK>
-   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="118">
-   <BOUNDS type="Node" left="7050" top="1380" width="1635" height="270">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   <PIN pinname="Left Button" visible="1">
-   </PIN>
-   <PIN pinname="Middle Button" visible="1">
-   </PIN>
-   <PIN pinname="Right Button" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="118" srcpinname="PositionXY" dstnodeid="109" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="102" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Middle Button" dstnodeid="102" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="98" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="98" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="51" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="84" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Left Button" dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="Mouse (Devices Window Camera)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Camera).v4p" nodename="Mouse (Devices Window Camera)" componentmode="Hidden" id="119">
-   <BOUNDS type="Node" left="7050" top="885" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <PIN pinname="Reset Cursor" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="119" srcpinname="Device" dstnodeid="118" dstpinname="Mouse">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="120" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="15660" top="10845" width="480" height="480">
    </BOUNDS>
@@ -1476,6 +1430,44 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    </NODE>
+   <NODE systemname="Mouse (Devices Window Cyclic)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" nodename="Mouse (Devices Window Cyclic)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="7050" top="885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Reset Cursor" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
    <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="119" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Left Button" dstnodeid="102" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Middle Button" dstnodeid="102" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Left Button" dstnodeid="98" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Right Button" dstnodeid="98" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Left Button" dstnodeid="51" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Right Button" dstnodeid="84" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="PositionXY" dstnodeid="109" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Left Button" dstnodeid="72" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
    </LINK>
    </PATCH>
