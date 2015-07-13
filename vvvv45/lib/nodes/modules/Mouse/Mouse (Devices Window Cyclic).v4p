@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" systemname="Mouse (Devices Window Cyclic)" filename="C:\vvvv\alpha\vvvv_50alpha33.9_x64\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" scrollx="0" scrolly="4050">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" systemname="Mouse (Devices Window Cyclic)" filename="C:\vvvv\alpha\vvvv_50alpha33.9_x64\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" scrollx="0" scrolly="4050">
    <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="3540" top="3720" width="100" height="100">
    </BOUNDS>
@@ -614,14 +614,6 @@
    </NODE>
    <LINK srcnodeid="155" srcpinname="SizeXY" dstnodeid="153" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="ScreenInfo (Windows FromPoint)" nodename="ScreenInfo (Windows FromPoint)" componentmode="Hidden" id="163">
-   <BOUNDS type="Node" left="4770" top="8100" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="ResolutionXY" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="139" dstpinname="Y Input Value">
-   </LINK>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="164">
    <BOUNDS type="Node" left="3855" top="9075" width="100" height="100">
    </BOUNDS>
@@ -746,8 +738,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="186" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="186" srcpinname="Output" dstnodeid="153" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="186" srcpinname="Output" dstnodeid="150" dstpinname="Input 2">
@@ -1013,5 +1003,15 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="100" srcpinname="Output" dstnodeid="214" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="ScreenInfo (Windows)" nodename="ScreenInfo (Windows)" componentmode="Hidden" id="163">
+   <BOUNDS type="Node" left="4770" top="8100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ResolutionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="139" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="186" dstpinname="Input">
    </LINK>
    </PATCH>
