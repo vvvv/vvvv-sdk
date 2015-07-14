@@ -1,7 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" systemname="Mouse (Devices Window Cyclic)" filename="C:\vvvv\alpha\vvvv_50alpha33.9_x64\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" scrollx="0" scrolly="4050">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" systemname="Mouse (Devices Window Cyclic)" filename="C:\vvvv\alpha\vvvv_50alpha33.9_x64\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" scrollx="0" scrolly="0">
    <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="3540" top="3720" width="100" height="100">
+   <BOUNDS type="Node" left="4200" top="3555" width="100" height="100">
    </BOUNDS>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
@@ -161,7 +161,7 @@
    <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Input 2">
    </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="47">
-   <BOUNDS type="Node" left="3975" top="4680" width="100" height="100">
+   <BOUNDS type="Node" left="4635" top="4515" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -211,9 +211,9 @@
    <LINK srcnodeid="90" srcpinname="Bang" dstnodeid="23" dstpinname="Update">
    </LINK>
    <LINK srcnodeid="47" srcpinname="Output" dstnodeid="90" dstpinname="Simulate" linkstyle="Bezier">
-   <LINKPOINT x="6935" y="6415">
+   <LINKPOINT x="7375" y="6305">
    </LINKPOINT>
-   <LINKPOINT x="5845" y="0">
+   <LINKPOINT x="6065" y="0">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="93" systemname="IOBox (Node)">
@@ -227,7 +227,7 @@
    </PIN>
    </NODE>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="95">
-   <BOUNDS type="Node" left="3975" top="5505" width="100" height="100">
+   <BOUNDS type="Node" left="4635" top="5340" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
@@ -361,7 +361,7 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Mouse Wheel|">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="5">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="18">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="120" systemname="IOBox (Value Advanced)">
@@ -461,7 +461,7 @@
    </PIN>
    <PIN pinname="Mouse" visible="1">
    </PIN>
-   <PIN pinname="Mouse Wheel" visible="1" slicecount="1" values="5">
+   <PIN pinname="Mouse Wheel" visible="1" slicecount="1" values="18">
    </PIN>
    <PIN pinname="Left Button" visible="1" slicecount="1" values="0">
    </PIN>
@@ -625,7 +625,7 @@
    </PIN>
    </NODE>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="165">
-   <BOUNDS type="Node" left="4260" top="7515" width="100" height="100">
+   <BOUNDS type="Node" left="4635" top="7560" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
@@ -879,16 +879,14 @@
    </PIN>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="41" srcpinname="Enum" dstnodeid="206" dstpinname="Cycle Mode">
    </LINK>
    <LINK srcnodeid="117" srcpinname="Output Enum" dstnodeid="206" dstpinname="Queue Mode">
    </LINK>
-   <LINK srcnodeid="206" srcpinname="Mouse Wheel" dstnodeid="135" dstpinname="Mouse Wheel">
-   </LINK>
    <LINK srcnodeid="206" srcpinname="PositionXY" dstnodeid="138" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="206" srcpinname="Mouse Wheel" dstnodeid="119" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="100" srcpinname="Output" dstnodeid="170" dstpinname="Input">
    </LINK>
@@ -1014,4 +1012,56 @@
    </LINK>
    <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="186" dstpinname="Input">
    </LINK>
+   <NODE systemname="ActiveWindow (Windows)" nodename="ActiveWindow (Windows)" componentmode="Hidden" id="215">
+   <BOUNDS type="Node" left="6510" top="4980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="216">
+   <BOUNDS type="Node" left="6330" top="5445" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="175" srcpinname="Parent Handle" dstnodeid="216" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="215" srcpinname="Handle" dstnodeid="216" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="217">
+   <BOUNDS type="Node" left="1920" top="11040" width="465" height="270">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="216" srcpinname="Output" dstnodeid="217" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="206" srcpinname="Mouse Wheel" dstnodeid="217" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="217" srcpinname="Output" dstnodeid="135" dstpinname="Mouse Wheel">
+   </LINK>
+   <LINK srcnodeid="217" srcpinname="Output" dstnodeid="119" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="218" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6930" top="5400" width="2460" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6930" top="5400" width="2115" height="540">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Use mousewheel only if the mouse in the ActiveWindow.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
