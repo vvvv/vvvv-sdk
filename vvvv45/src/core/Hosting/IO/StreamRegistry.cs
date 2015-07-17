@@ -323,7 +323,7 @@ namespace VVVV.Hosting.IO
                                   else
                                   {
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
-                                      stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject) as IInStream;
+                                      stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject, new DefaultConnectionHandler(), context.IOAttribute.DefaultNodeValue) as IInStream;
                                   }
                                   // Using MemoryIOStream -> needs to be synced on managed side.
                                   if (attribute.AutoValidate)
