@@ -12,7 +12,7 @@ using VVVV.Internals.Bullet.EX9;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "RigidBody", Category = "Bullet",Version="EX9.Geometry",
+	[PluginInfo(Name = "RigidBody", Category = "Bullet", Version="EX9.Geometry DX9",
 		Help = "Retrieves mesh data for a rigid body", Author = "vux")]
 	public class BulletGetRigidBodyMesh : IPluginEvaluate,IPluginDXMesh
 	{

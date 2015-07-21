@@ -14,7 +14,7 @@ using BulletSharp.SoftBody;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "CreateSoftBody", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "CreateSoftBody", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Creates a soft body", AutoEvaluate = true)]
 	public class BulletCreateSoftBodyNode : IPluginEvaluate
 	{

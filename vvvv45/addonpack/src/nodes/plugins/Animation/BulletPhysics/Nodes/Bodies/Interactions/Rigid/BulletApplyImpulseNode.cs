@@ -8,7 +8,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "ApplyImpulse", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "ApplyImpulse", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Applies an impulse on a rigid body", AutoEvaluate = true)]
 	public class BulletApplyImuplseNode : AbstractBodyForceNode
 	{

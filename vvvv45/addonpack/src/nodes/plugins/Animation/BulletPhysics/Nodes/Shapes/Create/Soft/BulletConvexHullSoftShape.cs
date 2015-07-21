@@ -9,7 +9,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "ConvexHull", Category = "Bullet",Version="SoftShape", Author = "vux")]
+	[PluginInfo(Name = "ConvexHull", Category = "Bullet", Version="SoftShape DX9", Author = "vux")]
 	public class BulletConvexHullSoftShape : AbstractSoftShapeNode
 	{
 		[Input("Vertices")]

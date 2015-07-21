@@ -10,7 +10,7 @@ using VVVV.Bullet.DataTypes.Shapes.Rigid;
 
 namespace VVVV.Bullet.Nodes.Shapes.Create.Rigid
 {
-    [PluginInfo(Name = "Bvh", Category = "Bullet", Author = "vux")]
+    [PluginInfo(Name = "Bvh", Category = "Bullet", Version = "DX9", Author = "vux")]
     public class BulletBvhShapeNode : AbstractBulletRigidShapeNode
     {
         [Input("Vertices")]

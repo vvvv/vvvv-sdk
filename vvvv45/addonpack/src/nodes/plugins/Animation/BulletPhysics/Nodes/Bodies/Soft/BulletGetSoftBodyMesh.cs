@@ -12,7 +12,7 @@ using VVVV.Internals.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "SoftBody", Category = "Bullet",Version="EX9.Geometry",
+	[PluginInfo(Name = "SoftBody", Category = "Bullet", Version="EX9.Geometry DX9",
 		Help = "Gets a soft body data as mesh", Author = "vux")]
 	public class BulletGetSoftBodyMesh : IPluginEvaluate,IPluginDXMesh
 	{

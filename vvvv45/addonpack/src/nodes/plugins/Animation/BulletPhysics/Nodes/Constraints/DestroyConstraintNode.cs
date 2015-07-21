@@ -8,7 +8,7 @@ using VVVV.Internals.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="DestroyConstraint",Category="Bullet",Author="vux",AutoEvaluate=true)]
+	[PluginInfo(Name="DestroyConstraint", Category="Bullet", Version = "DX9", Author="vux", AutoEvaluate=true)]
 	public class DestroyConstraintNode : IPluginEvaluate
 	{
 		[Input("Constraints", Order = 0)]

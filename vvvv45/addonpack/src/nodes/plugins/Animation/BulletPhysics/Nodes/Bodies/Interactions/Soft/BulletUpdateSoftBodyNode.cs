@@ -7,7 +7,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "UpdateSoftBodyConfig", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "UpdateSoftBodyConfig", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Updates soft body settings", AutoEvaluate = true)]
 	public class BulletUpdateSoftBodyNode : IPluginEvaluate
 	{

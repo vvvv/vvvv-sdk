@@ -11,7 +11,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "GetRigidShapeDetails", Category = "Bullet", Author = "vux")]
+	[PluginInfo(Name = "GetRigidShapeDetails", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class GetRigidShapeDetailsNode : IPluginEvaluate
 	{
 		[Input("Shape")]

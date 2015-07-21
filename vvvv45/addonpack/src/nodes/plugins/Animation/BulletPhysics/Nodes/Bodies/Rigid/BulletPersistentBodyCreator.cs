@@ -8,7 +8,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "CreateRigidBody", Category = "Bullet",Version="Persist", Author = "vux",
+	[PluginInfo(Name = "CreateRigidBody", Category = "Bullet", Version="Persist DX9", Author = "vux",
 		Help = "Creates a rigid body, and keeps reference as output",AutoEvaluate = true)]
 	public class BulletPersistentBodyCreator : AbstractRigidBodyCreator
 	{

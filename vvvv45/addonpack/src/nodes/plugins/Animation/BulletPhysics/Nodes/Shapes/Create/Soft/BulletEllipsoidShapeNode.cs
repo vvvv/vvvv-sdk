@@ -12,7 +12,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="Ellipsoid",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="Ellipsoid", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletEllipsoidShapeNode : AbstractSoftShapeNode
 	{
 		[Input("Center", DefaultValues = new double[] {0,0,0 })]

@@ -10,7 +10,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	//[PluginInfo(Name = "CollisionCheck", Category = "Bullet", Author = "vux")]
+	//[PluginInfo(Name = "CollisionCheck", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class BulletCollisionCheckNode : IPluginEvaluate
 	{
 		[Input("World",IsSingle=true)]

@@ -1,27 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv_45beta27\addonpack\girlpower\BulletPhysics\05_Soft_Sphere.v4p" filename="C:\vvvv\vvvv_45beta27\addonpack\girlpower\BulletPhysics\01_BasicPrimitives.v4p" systemname="01_BasicPrimitives">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\girlpower\BulletPhysics\05_Soft_Sphere.v4p" filename="C:\vvvv\vvvv_45beta27\addonpack\girlpower\BulletPhysics\01_BasicPrimitives.v4p" systemname="01_BasicPrimitives" scrollx="0" scrolly="-360">
    <BOUNDS height="11400" left="3555" top="1095" type="Window" width="12645">
    </BOUNDS>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="0" nodename="SoftWorld (Bullet)" systemname="SoftWorld (Bullet)">
-   <BOUNDS height="270" left="2490" top="1320" type="Node" width="2295">
-   </BOUNDS>
-   <PIN pinname="Rigid Bodies" visible="1">
-   </PIN>
-   <PIN pinname="Has Reset" visible="1">
-   </PIN>
-   <PIN pinname="Reset" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="World" visible="1">
-   </PIN>
-   <PIN pinname="SoftBodies" visible="1">
-   </PIN>
-   <PIN pinname="TimeStep" visible="1">
-   </PIN>
-   <PIN pinname="Air Density" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InAWindow" id="1" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="100" left="7110" top="12690" type="Node" width="100">
    </BOUNDS>
@@ -56,38 +36,10 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Projection" srcnodeid="5" srcpinname="Projection">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="6" nodename="CreateRigidBody (Bullet Persist)" systemname="CreateRigidBody (Bullet Persist)">
-   <BOUNDS height="100" left="1080" top="13410" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Bodies" visible="1">
-   </PIN>
-   <PIN pinname="Do Create" visible="1">
-   </PIN>
-   <PIN pinname="Shapes" visible="1">
-   </PIN>
-   <PIN pinname="World" visible="1">
-   </PIN>
-   <PIN pinname="Is Static" visible="1">
-   </PIN>
-   <PIN pinname="Friction" slicecount="1" values="0.8">
-   </PIN>
-   <PIN pinname="Restitution" slicecount="1" values="0.5">
-   </PIN>
-   <PIN pinname="Allow Sleep" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="8" nodename="RigidBody (Bullet EX9.Geometry)" systemname="RigidBody (Bullet EX9.Geometry)">
-   <BOUNDS height="100" left="6315" top="8610" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Bodies" visible="1">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" id="9" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
    <BOUNDS height="100" left="7095" top="9390" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
+   <PIN pinname="Mesh" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -96,36 +48,6 @@
    <PIN pinname="Diffuse Color" visible="1" slicecount="1" values="|0.90000,0.70000,0.70000,1.00000|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Mesh" linkstyle="Bezier" srcnodeid="8" srcpinname="Mesh">
-   <LINKPOINT x="6375" y="9285">
-   </LINKPOINT>
-   <LINKPOINT x="7245" y="8985">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="8" dstpinname="Bodies" linkstyle="Bezier" srcnodeid="0" srcpinname="Rigid Bodies">
-   <LINKPOINT x="3400" y="4338">
-   </LINKPOINT>
-   <LINKPOINT x="6020" y="5848">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Do Create" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="Has Reset">
-   <LINKPOINT x="4790" y="6550">
-   </LINKPOINT>
-   <LINKPOINT x="3400" y="8450">
-   </LINKPOINT>
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="10" nodename="Box (Bullet)" systemname="Box (Bullet)">
-   <BOUNDS height="100" left="1230" top="12825" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Shape" visible="1">
-   </PIN>
-   <PIN pinname="SizeXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Mass" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Shapes" srcnodeid="10" srcpinname="Shape">
-   </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="4725" top="270" type="Node" width="100">
    </BOUNDS>
@@ -144,8 +66,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Reset" srcnodeid="11" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="4020" top="300" type="Node" width="100">
    </BOUNDS>
@@ -164,12 +84,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Enabled" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
-   <LINKPOINT x="4065" y="1050">
-   </LINKPOINT>
-   <LINKPOINT x="4290" y="1050">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="14" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="7110" top="11550" type="Node" width="2730">
    </BOUNDS>
@@ -188,70 +102,22 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="14" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="16" nodename="GetRigidBodyDetails (Bullet)" systemname="GetRigidBodyDetails (Bullet)">
-   <BOUNDS height="100" left="7260" top="7035" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Bodies" visible="1">
-   </PIN>
-   <PIN pinname="PositionXYZ" visible="1">
-   </PIN>
-   <PIN pinname="RotationXYZW" visible="1">
-   </PIN>
-   <PIN pinname="Is New" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Id" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Custom Object" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Has Custom Object" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Custom" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Is Kinematic" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Is Static" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Has Contact Response" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Is Active" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Shapes Bin Size" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Shapes" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Angular VelocityXYZ" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Linear VelocityXYZ" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="16" dstpinname="Bodies" linkstyle="Bezier" srcnodeid="0" srcpinname="Rigid Bodies">
-   <LINKPOINT x="3405" y="3543">
-   </LINKPOINT>
-   <LINKPOINT x="6960" y="5053">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="17" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
    <BOUNDS height="100" left="6990" top="7770" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Transform In" pintype="Input" slicecount="1" visible="-1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="17" dstpinname="XYZ" linkstyle="Bezier" srcnodeid="16" srcpinname="PositionXYZ">
-   <LINKPOINT x="7260" y="7538">
-   </LINKPOINT>
-   <LINKPOINT x="7035" y="7538">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="18" nodename="Rotate (Quaternion Vector)" systemname="Rotate (Quaternion Vector)">
    <BOUNDS height="100" left="7665" top="8415" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Transform In" visible="1">
    </PIN>
-   <PIN pinname="Quaternion XYZW" visible="1">
+   <PIN pinname="Quaternion XYZW" visible="1" slicecount="4" values="0,0,0,1">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -262,18 +128,10 @@
    <LINKPOINT x="7665" y="8213">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="18" dstpinname="Quaternion XYZW" srcnodeid="16" srcpinname="RotationXYZW">
-   </LINK>
    <LINK dstnodeid="9" dstpinname="Transform" linkstyle="Bezier" srcnodeid="18" srcpinname="Transform Out">
    <LINKPOINT x="7680" y="9188">
    </LINKPOINT>
    <LINKPOINT x="7440" y="8888">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="World" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="World">
-   <LINKPOINT x="2555" y="6550">
-   </LINKPOINT>
-   <LINKPOINT x="1060" y="8450">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
@@ -292,8 +150,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="SizeXYZ" srcnodeid="20" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="2790" top="12540" type="Node" width="100">
    </BOUNDS>
@@ -312,8 +168,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Is Static" srcnodeid="23" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="3570" top="12270" type="Node" width="2310">
    </BOUNDS>
@@ -470,8 +324,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="10" dstpinname="Mass" srcnodeid="38" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="6885" top="3015" type="Node" width="615">
    </BOUNDS>
@@ -514,7 +366,137 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Ellipsoid (Bullet)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" nodename="Ellipsoid (Bullet)" componentmode="Hidden" id="45">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" id="47" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
+   <BOUNDS height="100" left="9900" top="9360" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 2" linkstyle="VHV">
+   <LINKPOINT x="9885" y="10583">
+   </LINKPOINT>
+   <LINKPOINT x="8055" y="10583">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="9300" top="8550" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Render State Out" dstnodeid="47" dstpinname="Render State" linkstyle="VHV">
+   <LINKPOINT x="9360" y="9075">
+   </LINKPOINT>
+   <LINKPOINT x="9885" y="9075">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="49">
+   <BOUNDS type="Node" left="3375" top="675" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="10680" top="7755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="47" dstpinname="Diffuse Color">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="52">
+   <BOUNDS type="Node" left="1620" top="435" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1620" top="435" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Air Density|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="2835" top="4245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Source Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="4000">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Mapping" slicecount="1" values="Wrap">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="2835" top="3570" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Enabled" linkstyle="Bezier">
+   <LINKPOINT x="6015" y="2145">
+   </LINKPOINT>
+   <LINKPOINT x="2895" y="2145">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="53" dstpinname="Input">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="0" nodename="SoftWorld (Bullet DX9)" systemname="SoftWorld (Bullet DX9)">
+   <BOUNDS height="270" left="2490" top="1320" type="Node" width="2295">
+   </BOUNDS>
+   <PIN pinname="Rigid Bodies" visible="1">
+   </PIN>
+   <PIN pinname="Has Reset" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="World" visible="1">
+   </PIN>
+   <PIN pinname="SoftBodies" visible="1">
+   </PIN>
+   <PIN pinname="TimeStep" visible="1">
+   </PIN>
+   <PIN pinname="Air Density" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Reset" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Enabled" linkstyle="VHV" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="4065" y="1050">
+   </LINKPOINT>
+   <LINKPOINT x="4290" y="1050">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="0" dstpinname="TimeStep">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Air Density" linkstyle="VHV">
+   <LINKPOINT x="1680" y="983">
+   </LINKPOINT>
+   <LINKPOINT x="2940" y="983">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Ellipsoid (Bullet DX9)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" nodename="Ellipsoid (Bullet DX9)" componentmode="Hidden" id="45">
    <BOUNDS type="Node" left="1425" top="5010" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Shape" visible="1">
@@ -544,7 +526,97 @@
    <PIN pinname="Anchor Hardness" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="27" nodename="CreateSoftBody (Bullet)" systemname="CreateSoftBody (Bullet)">
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="45" dstpinname="Pressure Coefficient">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="16" nodename="GetRigidBodyDetails (Bullet DX9)" systemname="GetRigidBodyDetails (Bullet DX9)">
+   <BOUNDS height="100" left="7260" top="7035" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Bodies" visible="1">
+   </PIN>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="RotationXYZW" visible="1">
+   </PIN>
+   <PIN pinname="Is New" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Id" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Custom Object" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Has Custom Object" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Custom" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Is Kinematic" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Is Static" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Has Contact Response" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Is Active" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Shapes Bin Size" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Shapes" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Angular VelocityXYZ" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Linear VelocityXYZ" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="XYZ" linkstyle="Bezier" srcnodeid="16" srcpinname="PositionXYZ">
+   <LINKPOINT x="7260" y="7538">
+   </LINKPOINT>
+   <LINKPOINT x="7035" y="7538">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Quaternion XYZW" srcnodeid="16" srcpinname="RotationXYZW">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Bodies" linkstyle="Bezier" srcnodeid="0" srcpinname="Rigid Bodies">
+   <LINKPOINT x="3405" y="3543">
+   </LINKPOINT>
+   <LINKPOINT x="6960" y="5053">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="8" nodename="RigidBody (Bullet EX9.Geometry DX9)" systemname="RigidBody (Bullet EX9.Geometry DX9)">
+   <BOUNDS height="100" left="6315" top="8610" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Bodies" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Mesh" linkstyle="Bezier" srcnodeid="8" srcpinname="Mesh">
+   <LINKPOINT x="6375" y="9285">
+   </LINKPOINT>
+   <LINKPOINT x="7245" y="8985">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Bodies" linkstyle="Bezier" srcnodeid="0" srcpinname="Rigid Bodies">
+   <LINKPOINT x="3400" y="4338">
+   </LINKPOINT>
+   <LINKPOINT x="6020" y="5848">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="SoftBody (Bullet EX9.Geometry DX9)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" nodename="SoftBody (Bullet EX9.Geometry DX9)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="10065" top="8475" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bodies" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Is Valid" visible="-1" pintype="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Mesh" dstnodeid="47" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="SoftBodies" dstnodeid="46" dstpinname="Bodies" linkstyle="Bezier">
+   <LINKPOINT x="3675" y="5025">
+   </LINKPOINT>
+   <LINKPOINT x="10065" y="5025">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="27" nodename="CreateSoftBody (Bullet DX9)" systemname="CreateSoftBody (Bullet DX9)">
    <BOUNDS height="270" left="975" top="8895" type="Node" width="3975">
    </BOUNDS>
    <PIN pinname="Shapes" visible="1">
@@ -562,12 +634,6 @@
    <PIN pinname="Allow Sleep">
    </PIN>
    </NODE>
-   <LINK dstnodeid="27" dstpinname="World" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="World">
-   <LINKPOINT x="2495" y="4700">
-   </LINKPOINT>
-   <LINKPOINT x="1000" y="5785">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="27" dstpinname="Do Create" linkstyle="Bezier" srcnodeid="29" srcpinname="Y Output Value">
    <LINKPOINT x="6235" y="4815">
    </LINKPOINT>
@@ -580,128 +646,64 @@
    <LINKPOINT x="1330" y="8663">
    </LINKPOINT>
    </LINK>
+   <LINK dstnodeid="27" dstpinname="World" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="World">
+   <LINKPOINT x="2495" y="4700">
+   </LINKPOINT>
+   <LINKPOINT x="1000" y="5785">
+   </LINKPOINT>
+   </LINK>
    <LINK srcnodeid="45" srcpinname="Shape" dstnodeid="27" dstpinname="Shapes">
    </LINK>
-   <NODE systemname="SoftBody (Bullet EX9.Geometry)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" nodename="SoftBody (Bullet EX9.Geometry)" componentmode="Hidden" id="46">
-   <BOUNDS type="Node" left="10065" top="8475" width="100" height="100">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" id="6" nodename="CreateRigidBody (Bullet Persist DX9)" systemname="CreateRigidBody (Bullet Persist DX9)">
+   <BOUNDS height="100" left="1080" top="13410" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Bodies" visible="1">
    </PIN>
-   <PIN pinname="Mesh" visible="1">
+   <PIN pinname="Do Create" visible="1">
    </PIN>
-   <PIN pinname="Is Valid" visible="-1" pintype="Output">
+   <PIN pinname="Shapes" visible="1" slicecount="1" values="||">
    </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" id="47" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
-   <BOUNDS height="100" left="9900" top="9360" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
+   <PIN pinname="World" visible="1">
    </PIN>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Is Static" visible="1">
    </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Friction" slicecount="1" values="0.8">
    </PIN>
-   <PIN pinname="Diffuse Color" visible="1">
+   <PIN pinname="Restitution" slicecount="1" values="0.5">
    </PIN>
-   <PIN pinname="Render State" visible="1">
+   <PIN pinname="Allow Sleep" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="47" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 2" linkstyle="VHV">
-   <LINKPOINT x="9885" y="10583">
+   <LINK dstnodeid="6" dstpinname="Is Static" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Do Create" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="Has Reset">
+   <LINKPOINT x="4790" y="6550">
    </LINKPOINT>
-   <LINKPOINT x="8055" y="10583">
+   <LINKPOINT x="3400" y="8450">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="0" srcpinname="SoftBodies" dstnodeid="46" dstpinname="Bodies" linkstyle="Bezier">
-   <LINKPOINT x="3675" y="5025">
+   <LINK dstnodeid="6" dstpinname="World" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="0" srcpinname="World">
+   <LINKPOINT x="2555" y="6550">
    </LINKPOINT>
-   <LINKPOINT x="10065" y="5025">
+   <LINKPOINT x="1060" y="8450">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="46" srcpinname="Mesh" dstnodeid="47" dstpinname="Mesh">
-   </LINK>
-   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="48">
-   <BOUNDS type="Node" left="9300" top="8550" width="100" height="100">
+   <NODE id="10" componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Bullet.dll" nodename="Box (Bullet DX9)" systemname="Box (Bullet DX9)">
+   <BOUNDS type="Node" height="100" left="1230" top="12825" width="100">
    </BOUNDS>
-   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   <PIN pinname="Shape" visible="1">
    </PIN>
-   <PIN pinname="Render State Out" visible="1">
+   <PIN pinname="SizeXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Mass" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="48" srcpinname="Render State Out" dstnodeid="47" dstpinname="Render State" linkstyle="VHV">
-   <LINKPOINT x="9360" y="9075">
-   </LINKPOINT>
-   <LINKPOINT x="9885" y="9075">
-   </LINKPOINT>
+   <LINK srcnodeid="10" srcpinname="Shape" dstnodeid="6" dstpinname="Shapes">
    </LINK>
-   <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="49">
-   <BOUNDS type="Node" left="3375" top="675" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" slicecount="1" values="60">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="49" srcpinname="Output" dstnodeid="0" dstpinname="TimeStep">
+   <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Mass">
    </LINK>
-   <NODE systemname="HSL (Color Join)" nodename="HSL (Color Join)" componentmode="Hidden" id="50">
-   <BOUNDS type="Node" left="10680" top="7755" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Lightness" slicecount="1" values="0.8">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="47" dstpinname="Diffuse Color">
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="10" dstpinname="SizeXYZ">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="52">
-   <BOUNDS type="Node" left="1620" top="435" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1620" top="435" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Air Density|" encoded="0">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Air Density" linkstyle="VHV">
-   <LINKPOINT x="1680" y="983">
-   </LINKPOINT>
-   <LINKPOINT x="2940" y="983">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="Map (Value)" nodename="Map (Value)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="2835" top="4245" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Source Maximum" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="4000">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Mapping" slicecount="1" values="Wrap">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="45" dstpinname="Pressure Coefficient">
-   </LINK>
-   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="54">
-   <BOUNDS type="Node" left="2835" top="3570" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Enabled" linkstyle="Bezier">
-   <LINKPOINT x="6015" y="2145">
-   </LINKPOINT>
-   <LINKPOINT x="2895" y="2145">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="53" dstpinname="Input">
-   </LINK>
+   <PACK Name="addonpack" Version="33.10.0">
+   </PACK>
    </PATCH>

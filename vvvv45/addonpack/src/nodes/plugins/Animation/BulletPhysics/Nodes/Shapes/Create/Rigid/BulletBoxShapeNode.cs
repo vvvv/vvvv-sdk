@@ -11,7 +11,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="Box",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="Box", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletBoxShapeNode : AbstractBulletRigidShapeNode
 	{
 		[Input("Size", DefaultValues = new double[] { 1,1,1 })]

@@ -16,7 +16,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "GetContactDetails", Category = "Bullet", Author = "vux")]
+	[PluginInfo(Name = "GetContactDetails", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class BulletGetContactDetailsNode : IPluginEvaluate
 	{
 		[Input("World")]

@@ -14,7 +14,7 @@ using BulletSharp.SoftBody;
 
 namespace VVVV.Nodes.Bullet
 {
-    [PluginInfo(Name = "RayCast", Category = "Bullet", Version="SoftBody", Author = "vux")]
+    [PluginInfo(Name = "RayCast", Category = "Bullet", Version="SoftBody DX9", Author = "vux")]
     public class BulletSoftRayCastNode : IPluginEvaluate
     {
         [Input("World", IsSingle = true)]

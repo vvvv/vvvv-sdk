@@ -15,7 +15,7 @@ using BulletSharp;
 namespace VVVV.Nodes.Bullet
 {
 	
-	[PluginInfo(Name="Patch",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="Patch", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletPatchShapeNode : AbstractSoftShapeNode
 	{
 		//Need to declare 4d toggle

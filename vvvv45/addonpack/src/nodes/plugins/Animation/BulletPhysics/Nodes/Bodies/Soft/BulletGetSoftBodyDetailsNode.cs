@@ -9,7 +9,7 @@ using VVVV.Internals.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="GetSoftBodyDetails",Category="Bullet",
+	[PluginInfo(Name="GetSoftBodyDetails", Category="Bullet", Version = "DX9", 
 		Help = "Gets some info about a soft body", Author = "vux")]
 	public class BulletGetSoftBodyDetailsNode : IPluginEvaluate
 	{

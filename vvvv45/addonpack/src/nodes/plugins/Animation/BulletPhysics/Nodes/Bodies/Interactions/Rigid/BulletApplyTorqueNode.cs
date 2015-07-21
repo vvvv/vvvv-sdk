@@ -8,7 +8,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "ApplyTorque", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "ApplyTorque", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Applies a torque on a rigid body", AutoEvaluate = true)]
 	public class BulletApplyTorqueNode : AbstractBodyForceNode
 	{

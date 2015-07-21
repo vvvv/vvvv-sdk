@@ -11,7 +11,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="GetRigidBodyDetails",Category="Bullet",
+	[PluginInfo(Name="GetRigidBodyDetails", Category="Bullet", Version = "DX9", 
 		Help = "Retrieves details for a rigid body", Author = "vux")]
 	public class BulletGetRigidBodyDetailsNode : IPluginEvaluate
 	{
