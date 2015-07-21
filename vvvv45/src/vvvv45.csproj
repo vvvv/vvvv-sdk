@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="vvvv45.props" />
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  
   <!-- Override vvvvv45.props -->
-  
   <!-- Deploy -->
   <PropertyGroup>
     <DeployInclude>$(RootDir)**\*.*</DeployInclude>
@@ -19,7 +19,6 @@
     <DeployReadOnlyFiles>lib\nodes\*.*</DeployReadOnlyFiles>
     <DeployHiddenFiles>vvvv.exe.config;vvvv.jdbg</DeployHiddenFiles>
   </PropertyGroup>
-  
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
     <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
@@ -88,10 +87,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="vvvv45.targets" />
-
   <Target Name="Build" DependsOnTargets="$(VVVV_BuildDependsOn)" />
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />

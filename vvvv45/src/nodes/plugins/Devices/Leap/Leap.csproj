@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\Default.Plugin.Project.Settings" />
   <PropertyGroup>
     <ProjectGuid>{E0C5B55A-37EA-48D6-95B9-5EEF07C4AD8E}</ProjectGuid>
@@ -14,7 +14,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition.Codeplex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\..\common\src\thirdparty\System.ComponentModel.Composition.Codeplex.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\packages\VVVV.System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -33,6 +34,9 @@
       <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
       <Name>PluginInterfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

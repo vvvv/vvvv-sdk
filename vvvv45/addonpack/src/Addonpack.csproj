@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <Import Project="Addonpack.props" />
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{AA8072CA-3343-4199-AC22-62B9E352BAE9}</ProjectGuid>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
@@ -615,6 +617,9 @@
       <Project>{6421be18-0b20-4448-90a9-b93908994b8a}</Project>
       <Name>ShellExecute</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="Addonpack.targets" />
   <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
