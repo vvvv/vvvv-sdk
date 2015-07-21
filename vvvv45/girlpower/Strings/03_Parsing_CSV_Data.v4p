@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.8.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Strings\03_Parsing_CSV_Data.v4p" systemname="Parsing_CSV_Data" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\Parsing_CSV_Data.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="450" top="435" width="18105" height="10095">
    </BOUNDS>
@@ -67,7 +67,7 @@
    <NODE systemname="CAR (String)" nodename="CAR (String)" componentmode="Hidden" id="43">
    <BOUNDS type="Node" left="6930" top="3525" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="6" values="|time,monday,tuesday,wednesday,thursday,friday|,|&quot;8,00 am&quot;,data Structures I,data structures II,&quot;english &quot;&quot;basic&quot;&quot;&quot;,&quot;english &quot;&quot;advanced&quot;&quot;&quot;,|,|&quot;10,15 am&quot;,technology I,applications,&quot;french &quot;&quot;basic, advanced&quot;&quot;&quot;,history,interface design|,|&quot;12,30 pm&quot;,technology II,&quot;&quot;&quot;introduction to VVVV&quot;&quot;&quot;,,,|,|&quot;2,00 pm&quot;,,&quot;&quot;&quot;introduction to VVVV&quot;&quot;&quot;,how to meso?,dotnet,|,">
+   <PIN pinname="Input" visible="1" slicecount="5" values="|time,monday,tuesday,wednesday,thursday,friday|,|&quot;8,00 am&quot;,data Structures I,data structures II,&quot;english &quot;&quot;basic&quot;&quot;&quot;,&quot;english &quot;&quot;advanced&quot;&quot;&quot;,|,|&quot;10,15 am&quot;,technology I,applications,&quot;french &quot;&quot;basic, advanced&quot;&quot;&quot;,history,interface design|,|&quot;12,30 pm&quot;,technology II,&quot;&quot;&quot;introduction to VVVV&quot;&quot;&quot;,,test,|,|&quot;2,00 pm&quot;,,&quot;&quot;&quot;introduction to VVVV&quot;&quot;&quot;,how to meso?,dotnet,|">
    </PIN>
    <PIN pinname="First Slice" visible="1">
    </PIN>
@@ -103,7 +103,7 @@
    <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="71">
    <BOUNDS type="Node" left="8370" top="6720" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="24" values="|8,00 am|,|data Structures I|,|data structures II|,|english &quot;basic&quot;|,|english &quot;advanced&quot;|,,|10,15 am|,|technology I|,applications,|french &quot;basic, advanced&quot;|,history,|interface design|,|12,30 pm|,|technology II|,|&quot;introduction to VVVV&quot;|,,,,|2,00 pm|,,|&quot;introduction to VVVV&quot;|,|how to meso?|,dotnet,">
+   <PIN pinname="Input" visible="1" slicecount="22" values="|8,00 am|,|data Structures I|,|data structures II|,|english &quot;basic&quot;|,|english &quot;advanced&quot;|,|10,15 am|,|technology I|,applications,|french &quot;basic, advanced&quot;|,history,|interface design|,|12,30 pm|,|technology II|,|&quot;introduction to VVVV&quot;|,,test,|2,00 pm|,,|&quot;introduction to VVVV&quot;|,|how to meso?|,dotnet,">
    </PIN>
    <PIN pinname="Bin Size" visible="1">
    </PIN>
@@ -684,34 +684,6 @@
    </LINK>
    <LINK srcnodeid="48" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Keep Quotes">
    </LINK>
-   <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="44" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="8385" top="4560" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Output" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="Keep Quotes" slicecount="1" pintype="Input" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Intersperse" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse String" pintype="Input" visible="0" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Ignore between" pintype="Input" visible="1" slicecount="1" values="Double">
-   </PIN>
-   <PIN pinname="Former Index" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="43" srcpinname="Remainder" dstnodeid="44" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="45" srcpinname="Output Enum" dstnodeid="44" dstpinname="Intersperse">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="71" dstpinname="Input">
-   </LINK>
    <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="24" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="6915" top="4560" width="100" height="100">
    </BOUNDS>
@@ -741,5 +713,33 @@
    <LINK srcnodeid="24" srcpinname="Output" dstnodeid="72" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Output" dstnodeid="75" dstpinname="Input String" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="44" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="8385" top="4560" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Keep Quotes" slicecount="1" pintype="Input" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Intersperse" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse String" pintype="Input" visible="0" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Ignore between" pintype="Input" visible="1" slicecount="1" values="Double">
+   </PIN>
+   <PIN pinname="Former Index" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Remainder" dstnodeid="44" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Output Enum" dstnodeid="44" dstpinname="Intersperse">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="71" dstpinname="Input">
    </LINK>
    </PATCH>

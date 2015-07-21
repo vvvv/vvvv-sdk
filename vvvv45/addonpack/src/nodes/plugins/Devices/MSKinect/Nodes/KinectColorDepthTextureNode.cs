@@ -18,7 +18,7 @@ namespace VVVV.MSKinect.Nodes
 {
     [PluginInfo(Name = "RGBDepth", 
 	            Category = "Kinect",
-	            Version="Microsoft", 
+	            Version="Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9, texture",
 	            Help = "Returns a static G32R32F formatted texture whose pixels represent a UV map mapping pixels from depth to color space.")]

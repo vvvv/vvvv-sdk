@@ -103,6 +103,9 @@ namespace VVVV.Utils.IO
 
         private void UpdateSource(TSource source)
         {
+            if (FEnumerator != null && FEnumerator.MoveNext())
+                foreach (var item in FEnumerator.Current)
+                    FNotifications.Enqueue(item);
             if (source != FSource)
             {
                 Unsubscribe();
@@ -111,9 +114,6 @@ namespace VVVV.Utils.IO
                     FEnumerator = FSelector(FSource).Chunkify()
                         .GetEnumerator();
             }
-            if (FEnumerator != null && FEnumerator.MoveNext())
-                foreach (var item in FEnumerator.Current)
-                    FNotifications.Enqueue(item);
         }
 
         public void Dispose()
@@ -128,7 +128,6 @@ namespace VVVV.Utils.IO
                 FEnumerator.Dispose();
                 FEnumerator = null;
             }
-            FNotifications.Clear();
         }
     }
 }

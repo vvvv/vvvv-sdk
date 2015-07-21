@@ -30,7 +30,7 @@ namespace VVVV.Nodes.ImagePlayer
         public const string DEFAULT_FILEMASK = "*.*";
         public const int DEFAULT_BUFFER_SIZE = 32 * 1024;
         
-        private string[] FFiles = new string[0];
+        private List<string> FFiles = new List<string>();
         
         private readonly int FThreadsIO;
         private readonly int FThreadsTexture;
@@ -169,7 +169,7 @@ namespace VVVV.Nodes.ImagePlayer
         Task FScanTask;
         public void ScanDirectoriesAsync()
         {
-            FFiles = new string[0];
+            FFiles = new List<string>();
             // Wait till an ongoing directory scan is complete
             if (FScanTask != null)
             {
@@ -177,48 +177,35 @@ namespace VVVV.Nodes.ImagePlayer
             }
             FScanTask = ScanDirectoriesAsync(Directories, Filemasks)
                 .Then(files =>
-                {
-                    FFiles = files;
-                    FScanTask = null;
-                }
+                    {
+                        FFiles = files;
+                        FScanTask = null;
+                    }
                 );
         }
 
-        static string[] ScanDirectories(ISpread<string> directories, ISpread<string> filemasks)
+        static List<string> ScanDirectories(ISpread<string> directories, ISpread<string> filemasks)
         {
-            try
+            var files = new List<string>();
+            for (int i = 0; i < directories.SliceCount; i++)
             {
-                var files = new Spread<string>[directories.SliceCount];
-                int maxCount = 1;
-                for (int i = 0; i < files.Length; i++)
+                try
                 {
                     var directoryInfo = new DirectoryInfo(directories[i]);
-                    files[i] = directoryInfo.EnumerateFiles(filemasks[i])
+                    var filesInDir = directoryInfo.EnumerateFiles(filemasks[i])
                         .Where(f => !f.Attributes.HasFlag(FileAttributes.Hidden))
                         .OrderBy(f => f.Name)
-                        .Select(f => f.FullName)
-                        .ToSpread();
-                    maxCount = maxCount.CombineWith(files[i]);
+                        .Select(f => f.FullName);
+                    files.AddRange(filesInDir);
                 }
-                var result = new string[files.Length * maxCount];
-                for (int i = 0; i < files.Length; i++)
+                catch (DirectoryNotFoundException)
                 {
-                    int k = i;
-                    for (int j = 0; j < maxCount; j++)
-                    {
-                        result[k] = files[i][j];
-                        k += files.Length;
-                    }
                 }
-                return result;
             }
-            catch (DirectoryNotFoundException)
-            {
-                return new string[0];
-            }
+            return files;
         }
 
-        static Task<string[]> ScanDirectoriesAsync(ISpread<string> directories, ISpread<string> filemasks)
+        static Task<List<string>> ScanDirectoriesAsync(ISpread<string> directories, ISpread<string> filemasks)
         {
             return Task.Factory.StartNew(
                 () => ScanDirectories(directories, filemasks),
@@ -328,13 +315,13 @@ namespace VVVV.Nodes.ImagePlayer
             ref ISpread<bool> loadedFrames)
         {
             var files = FFiles;
-            frameCount = files.Length;
+            frameCount = files.Count;
             durationIO = 0.0;
             durationTexture = 0.0;
             unusedFrames = 0;
             
             // Nothing to do
-            if (files.Length == 0)
+            if (frameCount == 0)
             {
                 loadedFrames.SliceCount = 0;
                 return new Spread<Frame>(0);
@@ -344,7 +331,7 @@ namespace VVVV.Nodes.ImagePlayer
             var preloadFiles = preloadFrameNrs.Select(
                 frameNr => 
                 {
-                    var fileName = files[VMath.Zmod(frameNr, files.Length)];
+                    var fileName = files[VMath.Zmod(frameNr, files.Count)];
                     return CreateFrameInfo(fileName, bufferSize, preferedFormat);
                 })
                 .ToArray();

@@ -10,7 +10,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Hosting.Graph
 {
-    public class Node : ViewableList<INode2>, INode2
+    public class Node : IViewableList<INode2>, INode2, IDisposable
     {
         #region nested class InternalNodeListener
         class InternalNodeListener : INodeListener, IDisposable
@@ -26,35 +26,33 @@ namespace VVVV.Hosting.Graph
             public void AddedCB(INode internalChildNode)
             {
                 var childNode = Node.Create(internalChildNode, FObservedNode.FNodeInfoFactory);
-                
-                // HACK: We need to check if node not already in collection from Node.ctor -> GetChildren
-                if (!FObservedNode.Contains(childNode))
-                    FObservedNode.Add(childNode);
+                FObservedNode.OnAdded(childNode);
             }
             
             public void RemovedCB(INode internalChildNode)
             {
-                // TODO: Sometimes RemovedCB is called with out an AddedCB before.
-                var childNode = internalChildNode.Tag as Node;
-                if (childNode != null)
-                {
-                    FObservedNode.Remove(childNode);
-                    childNode.Dispose();
-                }
+                var childNode = Node.Create(internalChildNode, FObservedNode.FNodeInfoFactory);
+                FObservedNode.OnRemoved(childNode);
+                childNode.Dispose();
             }
             
             public void PinAddedCB(IPin internalPin)
             {
-                var pins = FObservedNode.FPins.Value;
-                var pin = Pin.Create(FObservedNode, internalPin, FObservedNode.FNodeInfoFactory);
-                pins.Add(pin);
+                if (FObservedNode.FPins != null)
+                {
+                    var pin = Pin.Create(FObservedNode, internalPin, FObservedNode.FNodeInfoFactory);
+                    FObservedNode.FPins.Add(pin);
+                }
             }
             
             public void PinRemovedCB(IPin internalPin)
             {
-                var pins = FObservedNode.FPins.Value;
-                var pin = internalPin.Tag as Pin;
-                pins.Remove(pin);
+                if (FObservedNode.FPins != null)
+                {
+                    var pin = internalPin.Tag as Pin;
+                    FObservedNode.FPins.Remove(pin);
+                    pin.Dispose();
+                }
             }
             
             public void LabelChangedCB()
@@ -90,9 +88,7 @@ namespace VVVV.Hosting.Graph
         {
             var node = internalCOMInterf.Tag as Node;
             if (node == null)
-            {
                 node = new Node(internalCOMInterf, nodeInfoFactory);
-            }
             return node;
         }
         #endregion
@@ -102,82 +98,60 @@ namespace VVVV.Hosting.Graph
         #endregion
         
         private readonly INode FInternalCOMInterf;
-        private readonly INodeInfo FNodeInfo;
-        private readonly InternalNodeListener FInternalNodeListener;
         private readonly ProxyNodeInfoFactory FNodeInfoFactory;
-        private readonly Lazy<ViewableCollection<IPin2>> FPins;
-        private readonly Lazy<IPin2> FLabelPin;
+        private InternalNodeListener FInternalNodeListener;
+        private int FObserverCount;
         
         private Node(INode internalCOMInterf, ProxyNodeInfoFactory nodeInfoFactory)
         {
             FInternalCOMInterf = internalCOMInterf;
             FNodeInfoFactory = nodeInfoFactory;
-            
-            FNodeInfo = nodeInfoFactory.ToProxy(internalCOMInterf.GetNodeInfo());
-            
-            FPins = new Lazy<ViewableCollection<IPin2>>(InitPins);
-            FLabelPin = new Lazy<IPin2>(InitLabelPin);
-
-            var children = internalCOMInterf.GetChildren();
-            if (children != null)
-            {
-                foreach (var internalChildNode in children)
-                {
-                    var childNode = Node.Create(internalChildNode, nodeInfoFactory);
-                    Add(childNode);
-                }
-            }
-            
-            FInternalNodeListener = new InternalNodeListener(this);
             FInternalCOMInterf.Tag = this;
         }
         
-        public override void Dispose()
+        public void Dispose()
         {
-            FInternalNodeListener.Dispose();
-            
-            if (FPins.IsValueCreated)
+            if (FInternalNodeListener != null)
             {
-                foreach (Pin pin in Pins)
+                FInternalNodeListener.Dispose();
+                FInternalNodeListener = null;
+            }
+            
+            if (FPins != null)
+            {
+                foreach (Pin pin in FPins)
                     pin.Dispose();
-                
-                FPins.Value.Dispose();
+                FPins.Clear();
             }
             
-            if (FLabelPin.IsValueCreated)
+            if (FLabelPin != null)
+                FLabelPin.Changed -= HandleLabelPinChanged;
+
+            if (FNodes != null)
             {
-                FLabelPin.Value.Changed -= HandleLabelPinChanged;
+                foreach (Node childNode in FNodes)
+                    childNode.Dispose();
+                FNodes.Clear();
             }
-            
-            var childNodes = this.ToList();
-            foreach (Node childNode in childNodes)
-            {
-                this.Remove(childNode);
-                childNode.Dispose();
-            }
-            childNodes.Clear();
             
             FNodeInfoFactory.NodeInfoUpdated -= HandleNodeInfoUpdated;
-            
-            base.Dispose();
         }
-        
-        private ViewableCollection<IPin2> InitPins()
+
+        private void IncObserverCount()
         {
-            var pins = new ViewableCollection<IPin2>();
-            foreach (var internalPin in FInternalCOMInterf.GetPins())
+            FObserverCount++;
+            if (FInternalNodeListener == null)
+                FInternalNodeListener = new InternalNodeListener(this);
+        }
+
+        private void DecObserverCount()
+        {
+            FObserverCount--;
+            if (FObserverCount == 0 && FInternalNodeListener != null)
             {
-                var pin = Pin.Create(this, internalPin, FNodeInfoFactory);
-                pins.Add(pin);
+                FInternalNodeListener.Dispose();
+                FInternalNodeListener = null;
             }
-            return pins;
-        }
-        
-        private IPin2 InitLabelPin()
-        {
-            var labelPin = this.FindPin(LABEL_PIN);
-            labelPin.Changed += HandleLabelPinChanged;
-            return labelPin;
         }
 
         void HandleLabelPinChanged(object sender, EventArgs e)
@@ -202,17 +176,27 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
+                if (FNodeInfo == null)
+                    FNodeInfo = FNodeInfoFactory.ToProxy(FInternalCOMInterf.GetNodeInfo());
                 return FNodeInfo;
             }
         }
+        INodeInfo FNodeInfo;
         
         public IPin2 LabelPin
         {
             get
             {
-                return FLabelPin.Value;
+                if (FLabelPin == null)
+                {
+                    FLabelPin = this.FindPin(LABEL_PIN);
+                    if (FLabelPin != null)
+                        FLabelPin.Changed += HandleLabelPinChanged;
+                }
+                return FLabelPin;
             }
         }
+        IPin2 FLabelPin;
         
         #region INamed
         public event RenamedHandler Renamed;
@@ -224,7 +208,6 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        private string FName;
         public string Name
         {
             get
@@ -247,10 +230,11 @@ namespace VVVV.Hosting.Graph
                 }
             }
         }
+        string FName;
 
         void HandleNodeInfoUpdated(object sender, INodeInfo nodeInfo)
         {
-            if (nodeInfo == FNodeInfo)
+            if (nodeInfo == NodeInfo)
             {
                 Name = ComputeName();
             }
@@ -258,18 +242,18 @@ namespace VVVV.Hosting.Graph
         
         private string ComputeName()
         {
-            string label = FLabelPin.Value[0];
+            string label = LabelPin[0];
             string suffix = string.IsNullOrEmpty(label) ? string.Empty : " -- " + label;
             
-            if (string.IsNullOrEmpty(FNodeInfo.Name))
+            if (string.IsNullOrEmpty(NodeInfo.Name))
             {
                 //subpatches
-                string file = System.IO.Path.GetFileNameWithoutExtension(FNodeInfo.Filename);
+                string file = System.IO.Path.GetFileNameWithoutExtension(NodeInfo.Filename);
                 
                 if (string.IsNullOrEmpty(file))
                 {
                     //unsaved patch
-                    return FNodeInfo.Filename + suffix;
+                    return NodeInfo.Filename + suffix;
                 }
                 else
                 {
@@ -279,7 +263,7 @@ namespace VVVV.Hosting.Graph
             }
             else
             {
-                return FNodeInfo.Username + suffix;
+                return NodeInfo.Username + suffix;
             }
         }
         #endregion
@@ -301,14 +285,49 @@ namespace VVVV.Hosting.Graph
         {
             return FInternalCOMInterf.GetBounds(boundsType);
         }
+
+        private List<INode2> Nodes
+        {
+            get
+            {
+                if (FNodes == null)
+                {
+                    FNodes = new List<INode2>();
+                    var children = FInternalCOMInterf.GetChildren();
+                    if (children != null)
+                    {
+                        foreach (var internalChildNode in children)
+                        {
+                            var childNode = Node.Create(internalChildNode, FNodeInfoFactory);
+                            FNodes.Add(childNode);
+                        }
+                    }
+                    if (HasPatch)
+                        IncObserverCount();
+                }
+                return FNodes;
+            }
+        }
+        List<INode2> FNodes;
         
         public IViewableCollection<IPin2> Pins
         {
             get
             {
-                return FPins.Value;
+                if (FPins == null)
+                {
+                    FPins = new ViewableCollection<IPin2>();
+                    foreach (var internalPin in FInternalCOMInterf.GetPins())
+                    {
+                        var pin = Pin.Create(this, internalPin, FNodeInfoFactory);
+                        FPins.Add(pin);
+                    }
+                    IncObserverCount();
+                }
+                return FPins;
             }
         }
+        ViewableCollection<IPin2> FPins;
         
         public IWindow2 Window
         {
@@ -338,10 +357,10 @@ namespace VVVV.Hosting.Graph
         {
             get
             {
-                if (FInternalCOMInterf.ParentNode == null)
-                    return null;
-                else
-                    return Node.Create(FInternalCOMInterf.ParentNode, FNodeInfoFactory);
+                var parentNode = FInternalCOMInterf.ParentNode;
+                if (parentNode != null)
+                    return Node.Create(parentNode, FNodeInfoFactory);
+                return null;
             }
         }
         
@@ -389,28 +408,286 @@ namespace VVVV.Hosting.Graph
             }
         }
         
-        public event EventHandler StatusChanged;
+        public event EventHandler StatusChanged
+        {
+            add
+            {
+                FStatusChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FStatusChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler FStatusChanged;
         
         protected virtual void OnStatusChanged()
         {
-            if (StatusChanged != null)
-                StatusChanged(this, EventArgs.Empty);
+            if (FStatusChanged != null)
+                FStatusChanged(this, EventArgs.Empty);
         }
         
-        public event EventHandler InnerStatusChanged;
+        public event EventHandler InnerStatusChanged
+        {
+            add
+            {
+                FInnerStatusChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FInnerStatusChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler FInnerStatusChanged;
         
         protected virtual void OnInnerStatusChanged()
         {
-            if (InnerStatusChanged != null)
-                InnerStatusChanged(this, EventArgs.Empty);
+            if (FInnerStatusChanged != null)
+                FInnerStatusChanged(this, EventArgs.Empty);
         }
         
-        public event EventHandler<BoundsChangedEventArgs> BoundsChanged;
+        public event EventHandler<BoundsChangedEventArgs> BoundsChanged
+        {
+            add
+            {
+                FBoundsChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FBoundsChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event EventHandler<BoundsChangedEventArgs> FBoundsChanged;
         
         protected virtual void OnBoundsChanged(BoundsType boundsType)
         {
-            if (BoundsChanged != null)
-                BoundsChanged(this, new BoundsChangedEventArgs(boundsType));
+            if (FBoundsChanged != null)
+                FBoundsChanged(this, new BoundsChangedEventArgs(boundsType));
         }
+
+        #region IViewableList<INode2>
+
+        public INode2 this[int index]
+        {
+            get 
+            {
+                return Nodes[index];
+            }
+        }
+
+        public bool Contains(INode2 item)
+        {
+            return Nodes.Contains(item);
+        }
+
+        public event OrderChangedHandler<INode2> OrderChanged
+        {
+            add
+            {
+                FOrderChanged += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FOrderChanged -= value;
+                DecObserverCount();
+            }
+        }
+        event OrderChangedHandler<INode2> FOrderChanged;
+
+        protected void OnOrderChanged()
+        {
+            if (FOrderChanged != null)
+                FOrderChanged(this);
+            if (FOrderChanged_ != null)
+                FOrderChanged_(this);
+        }
+
+        public event CollectionDelegate<INode2> Added
+        {
+            add
+            {
+                FAdded += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FAdded -= value;
+                DecObserverCount();
+            }
+        }
+        event CollectionDelegate<INode2> FAdded;
+
+        protected void OnAdded(INode2 node)
+        {
+            if (FNodes != null)
+                FNodes.Add(node);
+            if (FAdded != null)
+                FAdded(this, node);
+            if (FAdded_ != null)
+                FAdded_(this, node);
+        }
+
+        public event CollectionDelegate<INode2> Removed
+        {
+            add
+            {
+                FRemoved += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FRemoved -= value;
+                DecObserverCount();
+            }
+        }
+        event CollectionDelegate<INode2> FRemoved;
+
+        protected void OnRemoved(INode2 node)
+        {
+            if (FNodes != null)
+                FNodes.Remove(node);
+            if (FRemoved != null)
+                FRemoved(this, node);
+            if (FRemoved_ != null)
+                FRemoved_(this, node);
+        }
+
+        public event CollectionUpdateDelegate<INode2> Cleared
+        {
+            add
+            {
+                FCleared += value;
+                IncObserverCount();
+            }
+            remove
+            {
+                FCleared -= value;
+                DecObserverCount();
+            }
+        }
+        event CollectionUpdateDelegate<INode2> FCleared;
+
+        protected void OnCleared()
+        {
+            // Clear the cache
+            FNodes = null;
+            if (FCleared != null)
+                FCleared(this);
+            if (FCleared_ != null)
+                FCleared_(this);
+        }
+
+        public IEnumerator<INode2> GetEnumerator()
+        {
+            return Nodes.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public int Count
+        {
+            get { return Nodes.Count; }
+        }
+
+        public bool Contains(object item)
+        {
+            var node = item as INode2;
+            if (node != null)
+                return Contains(node);
+            return false;
+        }
+
+        event CollectionDelegate IViewableCollection.Added
+        {
+            add 
+            { 
+                FAdded_ += value;
+                IncObserverCount();
+            }
+            remove 
+            { 
+                FAdded_ -= value;
+                DecObserverCount();
+            }
+        }
+        CollectionDelegate FAdded_;
+
+        event CollectionDelegate IViewableCollection.Removed
+        {
+            add 
+            {
+                FRemoved_ += value;
+                IncObserverCount();
+            }
+            remove 
+            {
+                FRemoved_ -= value;
+                DecObserverCount();
+            }
+        }
+        event CollectionDelegate FRemoved_;
+
+        event CollectionUpdateDelegate IViewableCollection.Cleared
+        {
+            add 
+            {
+                FCleared_ += value;
+                IncObserverCount();
+            }
+            remove 
+            {
+                FCleared_ -= value;
+                DecObserverCount();
+            }
+        }
+        event CollectionUpdateDelegate FCleared_;
+
+        public event CollectionUpdateDelegate UpdateBegun;
+
+        protected void OnUpdateBegun()
+        {
+            if (UpdateBegun != null)
+                UpdateBegun(this);
+        }
+
+        public event CollectionUpdateDelegate Updated;
+
+        protected void OnUpdated()
+        {
+            if (Updated != null)
+                Updated(this);
+        }
+
+        object IViewableList.this[int index]
+        {
+            get { return this[index]; }
+        }
+
+        event OrderChangedHandler IViewableList.OrderChanged
+        {
+            add 
+            {
+                FOrderChanged_ += value;
+                IncObserverCount();
+            }
+            remove 
+            {
+                FOrderChanged_ -= value;
+                DecObserverCount();
+            }
+        }
+        event OrderChangedHandler FOrderChanged_;
+
+        #endregion
     }
 }

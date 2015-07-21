@@ -142,6 +142,11 @@ namespace VVVV.PluginInterfaces.V2.Graph
         /// The disconnected event occurs when the pin gets disconnected.
         /// </summary>
         event PinConnectionEventHandler Disconnected;
+
+        /// <summary>
+        /// The status changed event occurs when the pins status changed.
+        /// </summary>
+        event EventHandler StatusChanged;
     }
 	
     [ComVisible(false)]
@@ -149,7 +154,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 	{
 		public static bool IsConnected(this IPin2 pin)
 		{
-			return (pin.Status & StatusCode.IsConnected) == StatusCode.IsConnected;
+            return pin.ConnectedPins.Count > 0;
 		}
 	}
 }

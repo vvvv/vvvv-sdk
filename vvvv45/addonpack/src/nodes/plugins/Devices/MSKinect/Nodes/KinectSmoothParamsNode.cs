@@ -10,7 +10,7 @@ namespace MSKinect.Nodes
 {
     [PluginInfo(Name = "SmoothSettings", 
 	            Category = "Kinect", 
-	            Version = "Microsoft", 
+	            Version = "Microsoft DX9", 
 	            Author = "vux", 
 	            Tags = "EX9",
 	            Help = "Sets smoothing parameters for skeleton tracking")]

@@ -97,7 +97,7 @@ namespace VVVV.Hosting.IO.Streams
         public NodeOutStream(INodeOut nodeOut, IConnectionHandler handler)
         {
             FNodeOut = nodeOut;
-            if (typeof(T).Assembly.IsDynamic)
+            if (UsesDynamicAssembly(typeof(T)))
             {
                 FNodeOut.SetInterface(new DynamicTypeWrapper(this));
                 FNodeOut.SetConnectionHandler(handler, new DynamicTypeWrapper(this));
@@ -107,6 +107,11 @@ namespace VVVV.Hosting.IO.Streams
                 FNodeOut.SetInterface(this);
                 FNodeOut.SetConnectionHandler(handler, this);
             }
+        }
+
+        bool UsesDynamicAssembly(Type type)
+        {
+            return type.Assembly.IsDynamic || (type.IsGenericType && type.GetGenericArguments().Any(t => UsesDynamicAssembly(t)));
         }
         
         object IGenericIO.GetSlice(int index)

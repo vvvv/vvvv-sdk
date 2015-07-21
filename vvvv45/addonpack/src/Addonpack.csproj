@@ -103,6 +103,10 @@
       <Project>{DA4C22D0-13CE-4BD3-9145-067CEBF9841F}</Project>
       <Name>OccupationRate</Name>
     </ProjectReference>
+    <ProjectReference Include="nodes\plugins\2d\OneDollarRecognizer\OneDollarRecognizer.csproj">
+      <Project>{815ac6af-ca87-4a2c-b1e6-cff10e89d07e}</Project>
+      <Name>OneDollarRecognizer</Name>
+    </ProjectReference>
     <ProjectReference Include="nodes\plugins\2d\Rope2d\Rope2d.csproj">
       <Project>{5B75FE99-99DD-4E4A-9F41-53B0F3EC80FA}</Project>
       <Name>Rope2d</Name>
@@ -613,7 +617,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="Addonpack.targets" />
-
   <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Face (Kinect Microsoft) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Face (Kinect Microsoft DX9) help.v4p">
    <BOUNDS type="Window" left="11415" top="840" width="10380" height="11625">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -81,7 +81,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -135,7 +135,7 @@
    <NODE systemname="VERTEXBUFFER (EX9.GEOMETRY JOIN)" nodename="VertexBuffer (EX9.Geometry Join)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="3840" top="7755" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Position XYZ" visible="1">
+   <PIN pinname="Position XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
@@ -143,7 +143,7 @@
    </PIN>
    <PIN pinname="Enable Normal" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Normal XYZ" visible="1">
+   <PIN pinname="Normal XYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
    <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
@@ -280,7 +280,55 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="6" nodename="Kinect (Devices Microsoft)" systemname="Kinect (Devices Microsoft)">
+   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="3870" top="8880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Ambient Color">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Mesh" dstnodeid="22" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="21" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Render State Out" dstnodeid="22" dstpinname="Render State">
+   </LINK>
+   <NODE systemname="Perspective (Transform FOV)" filename="%VVVV%\addonpack\lib\nodes\modules\Transform\Perspective (Transform FOV).v4p" nodename="Perspective (Transform FOV)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="6735" top="8880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="FOV" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="6735" top="8880">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="15" dstpinname="Projection">
+   </LINK>
+   <PACK Name="addonpack" Version="33.8.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5820" top="2250" width="4635" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5820" top="2250" width="3045" height="705">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Depth Range &cr;&lf;(Near only works with Kinect for Windows, but not with the Kinect 360)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="6" nodename="Kinect (Devices Microsoft DX9)" systemname="Kinect (Devices Microsoft DX9)">
    <BOUNDS height="270" left="3180" top="3390" type="Node" width="3405">
    </BOUNDS>
    <PIN pinname="Index" visible="1" slicecount="1" values="0">
@@ -324,10 +372,14 @@
    </LINK>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enable Skeleton">
    </LINK>
-   <NODE systemname="Face (Kinect Microsoft)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" nodename="Face (Kinect Microsoft)" componentmode="Hidden" id="18">
+   <LINK srcnodeid="6" srcpinname="Color FOVXY" dstnodeid="25" dstpinname="FOV">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="Face (Kinect Microsoft DX9)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" nodename="Face (Kinect Microsoft DX9)" componentmode="Hidden" id="18">
    <BOUNDS type="Node" left="3180" top="4575" width="1890" height="270">
    </BOUNDS>
-   <PIN pinname="Kinect Runtime" visible="1">
+   <PIN pinname="Kinect Runtime" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Face PointsXYZ" visible="1">
    </PIN>
@@ -346,9 +398,11 @@
    </LINK>
    <LINK srcnodeid="18" srcpinname="Projected Face PointsXY" dstnodeid="30" dstpinname="Input">
    </LINK>
+   <LINK srcnodeid="18" srcpinname="Face NormalsXYZ" dstnodeid="19" dstpinname="Normal XYZ">
+   </LINK>
    <LINK srcnodeid="6" srcpinname="Kinect Runtime" dstnodeid="18" dstpinname="Kinect Runtime">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="5" nodename="RGB (Kinect Microsoft)" systemname="RGB (Kinect Microsoft)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.MSKinect.dll" id="5" nodename="RGB (Kinect Microsoft DX9)" systemname="RGB (Kinect Microsoft DX9)">
    <BOUNDS height="100" left="1845" top="5190" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Kinect Runtime" visible="1" slicecount="1" values="||">
@@ -363,59 +417,5 @@
    <LINK srcnodeid="5" srcpinname="Texture Out" dstnodeid="29" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="6" srcpinname="Kinect Runtime" dstnodeid="5" dstpinname="Kinect Runtime">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Face NormalsXYZ" dstnodeid="19" dstpinname="Normal XYZ">
-   </LINK>
-   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="22">
-   <BOUNDS type="Node" left="3870" top="8880" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
-   </PIN>
-   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Ambient Color">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="20" srcpinname="Mesh" dstnodeid="22" dstpinname="Mesh">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Layer" dstnodeid="21" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Render State Out" dstnodeid="22" dstpinname="Render State">
-   </LINK>
-   <NODE systemname="Perspective (Transform FOV)" filename="%VVVV%\addonpack\lib\nodes\modules\Transform\Perspective (Transform FOV).v4p" nodename="Perspective (Transform FOV)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="6735" top="8880" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="FOV" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="6735" top="8880">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="15" dstpinname="Projection">
-   </LINK>
-   <PACK Name="addonpack" Version="31.9.0">
-   </PACK>
-   <LINK srcnodeid="6" srcpinname="Color FOVXY" dstnodeid="25" dstpinname="FOV">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5820" top="2250" width="4635" height="480">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5820" top="2250" width="3045" height="705">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Depth Range &cr;&lf;(Near only works with Kinect for Windows, but not with the Kinect 360)|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled">
    </LINK>
    </PATCH>
