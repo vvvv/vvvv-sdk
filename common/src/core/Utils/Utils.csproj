@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
   <Import Project="..\Default.Core.Project.settings" />
   <PropertyGroup>
     <ProjectGuid>{C3773330-81FA-4253-823E-1BDE1529AA99}</ProjectGuid>
@@ -123,6 +123,12 @@
     <Compile Include="Streams\ReverseStream.cs" />
     <Compile Include="Streams\CyclicStream.cs" />
     <Compile Include="Streams\RangeStream.cs" />
+    <Compile Include="Streams\StreamExtensions.cs" />
+    <Compile Include="Streams\StreamExtensions.Gen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StreamExtensions.Gen.tt</DependentUpon>
+    </Compile>
     <Compile Include="StringUtils.cs" />
     <Compile Include="System\ArrayExtensions.cs" />
     <Compile Include="System\CollectionExtensions.cs" />
@@ -168,6 +174,10 @@
       <LastGenOutput>SystemIOExtensions.Gen.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="Streams\StreamExtensions.Gen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamExtensions.Gen.cs</LastGenOutput>
+    </None>
     <None Include="VVVV.Utils.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
