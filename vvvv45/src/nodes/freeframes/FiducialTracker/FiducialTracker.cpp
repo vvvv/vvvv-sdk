@@ -97,7 +97,7 @@ DWORD initialise()
 	memcpy(GParamConstants[1].Name, tempName1, 16);
 
     // populate the output structs
-    GOutputConstants[0].Type = 0;
+    GOutputConstants[0].Type = 10;
     GOutputConstants[1].Type = 10;
     GOutputConstants[2].Type = 10;
     GOutputConstants[3].Type = 10;
