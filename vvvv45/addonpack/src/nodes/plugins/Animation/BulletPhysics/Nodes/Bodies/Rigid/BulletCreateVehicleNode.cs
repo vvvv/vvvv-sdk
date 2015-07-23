@@ -12,7 +12,7 @@ using VVVV.Bullet.Utils;
 
 namespace VVVV.Bullet.Nodes.Bodies.Rigid
 {
-    [PluginInfo(Name = "CreateVehicle", Category = "Bullet", Author = "vux",
+    [PluginInfo(Name = "CreateVehicle", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Creates a vehicle", AutoEvaluate = true)]
     public class BulletCreateVehicleNode : AbstractRigidBodyCreator
     {

@@ -14,7 +14,7 @@ using VVVV.DataTypes.Bullet;
 namespace VVVV.Nodes.Bullet
 {
 	
-	[PluginInfo(Name="Rope",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="Rope", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletRopeShapeNode : AbstractSoftShapeNode
 	{
 		//Need to declare 4d toggle

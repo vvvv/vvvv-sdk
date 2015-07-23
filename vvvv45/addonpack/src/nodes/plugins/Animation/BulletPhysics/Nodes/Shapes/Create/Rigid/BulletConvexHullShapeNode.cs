@@ -11,7 +11,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="ConvexHull",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="ConvexHull", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletConvexHullShapeNode : AbstractBulletRigidShapeNode
 	{
 		[Input("Vertices")]

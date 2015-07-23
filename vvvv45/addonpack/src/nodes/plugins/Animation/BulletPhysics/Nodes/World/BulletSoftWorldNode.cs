@@ -14,7 +14,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="SoftWorld",Category="Bullet",Author="vux",AutoEvaluate=true)]
+	[PluginInfo(Name="SoftWorld", Category="Bullet", Version = "DX9", Author="vux", AutoEvaluate=true)]
 	public class BulletSoftWorldNode : IPluginEvaluate
 	{
 		[Input("Gravity",DefaultValues=new double[] { 0.0,-9.8,0.0 })]

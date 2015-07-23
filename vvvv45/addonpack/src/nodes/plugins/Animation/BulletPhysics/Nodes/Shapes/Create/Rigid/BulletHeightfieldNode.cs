@@ -11,7 +11,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "HeightField", Category = "Bullet", Author = "vux")]
+	[PluginInfo(Name = "HeightField", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class BulletHeightFieldShapeNode : AbstractBulletRigidShapeNode
 	{
 		private IValueIn FPinInResolution;

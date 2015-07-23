@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Bullet.Nodes.Vehicle
 {
-    [PluginInfo(Name = "WheelInfo", Category = "Bullet", Version = "Vehicle", Author = "vux",
+    [PluginInfo(Name = "WheelInfo", Category = "Bullet", Version = "Vehicle DX9", Author = "vux",
     Help = "Drives Bullet Vehicle", AutoEvaluate = true)]
     public class BuletGetWheelInfoNode : IPluginEvaluate
     {

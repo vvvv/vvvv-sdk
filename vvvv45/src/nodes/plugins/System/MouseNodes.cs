@@ -60,8 +60,14 @@ namespace VVVV.Nodes.Input
                             case WM.MOUSEWHEEL:
                                 unchecked
                                 {
-                                    var wheel = wParam.HiWord();
-                                    return new MouseWheelNotification(position, clientArea, wheel);
+                                    // Position is in screen coordinates
+                                    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms645617%28v=vs.85%29.aspx
+                                    if (User32.ScreenToClient(e.HWnd, ref position))
+                                    {
+                                        var wheel = wParam.HiWord();
+                                        return new MouseWheelNotification(position, clientArea, wheel);
+                                    }
+                                    break;
                                 }
                             case WM.MOUSEMOVE:
                                 return new MouseMoveNotification(position, clientArea);

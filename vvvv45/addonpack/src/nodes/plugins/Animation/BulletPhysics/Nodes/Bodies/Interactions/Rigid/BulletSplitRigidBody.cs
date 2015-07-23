@@ -13,7 +13,7 @@ using VVVV.Internals.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	//[PluginInfo(Name = "SplitBody", Category = "Bullet", Author = "vux", AutoEvaluate = true,Ignore=true)]
+	//[PluginInfo(Name = "SplitBody", Category = "Bullet", Version = "DX9", Author = "vux", AutoEvaluate = true,Ignore=true)]
 	public class BulletSplitRigidBodyNode : AbstractBodyInteractionNode<RigidBody>
 	{
 		[Input("World")]

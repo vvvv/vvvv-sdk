@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	//[PluginInfo(Name="Point2Point",Author="vux",Category="Bullet",Version="Constraint.Dual",AutoEvaluate=true)]
+	//[PluginInfo(Name="Point2Point", Author="vux", Category="Bullet", Version="Constraint.Dual DX9", AutoEvaluate=true)]
 	public class CreateDualP2PConstraintNode : AbstractDualConstraintNode<Point2PointConstraint>
 	{
 		[Input("Pivot 1", Order = 10)]

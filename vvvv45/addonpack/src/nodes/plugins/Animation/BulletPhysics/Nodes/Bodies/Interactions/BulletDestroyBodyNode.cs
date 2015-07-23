@@ -10,7 +10,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="DestroyBody",Category="Bullet",Author="vux",
+	[PluginInfo(Name="DestroyBody", Category="Bullet", Version = "DX9", Author="vux", 
 		Help="Destroys an existing bullet body (rigid or soft)",AutoEvaluate=true)]
 	public class BulletDestroyBodyNode : AbstractBodyInteractionNode<CollisionObject>
 	{

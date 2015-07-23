@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="Hinge",Author="vux",Category="Bullet",Version="Constraint.Single",AutoEvaluate=true)]
+	[PluginInfo(Name="Hinge", Author="vux", Category="Bullet", Version="Constraint.Single DX9",AutoEvaluate=true)]
 	public class CreateSingleHingeConstraintNode : AbstractSingleConstraintNode<HingeConstraint>
 	{
 		[Input("Pivot", Order=10)]

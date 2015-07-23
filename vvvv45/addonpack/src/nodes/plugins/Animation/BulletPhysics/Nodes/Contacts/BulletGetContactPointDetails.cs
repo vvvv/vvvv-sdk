@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "GetContactPointDetails", Category = "Bullet", Author = "vux")]
+	[PluginInfo(Name = "GetContactPointDetails", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class BulletGetContactPointDetails : IPluginEvaluate
 	{
 		[Input("Contact Points")]

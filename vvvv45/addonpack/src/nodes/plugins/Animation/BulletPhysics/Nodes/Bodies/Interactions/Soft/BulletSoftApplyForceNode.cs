@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "ApplyForce", Category = "Bullet",Version="SoftBody", Author = "vux",
+	[PluginInfo(Name = "ApplyForce", Category = "Bullet", Version="SoftBody DX9", Author = "vux",
 		Help = "Applies a force on a soft body", AutoEvaluate = true)]
 	public class BulletSoftApplyForceNode : AbstractBodyInteractionNode<SoftBody>
 	{

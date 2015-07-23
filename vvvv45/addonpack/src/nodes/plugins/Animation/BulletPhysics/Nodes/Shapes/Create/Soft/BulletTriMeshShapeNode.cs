@@ -9,7 +9,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "TriMesh", Category = "Bullet", Version = "SoftShape", Author = "vux")]
+	[PluginInfo(Name = "TriMesh", Category = "Bullet", Version = "SoftShape DX9", Author = "vux")]
 	public class BulletTriMeshShapeNode : AbstractSoftShapeNode
 	{
 		[Input("Vertices")]

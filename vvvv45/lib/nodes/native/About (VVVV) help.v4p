@@ -1,9 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\About (VVVV) help.v4p" locked="1">
-   <BOUNDS height="5550" left="1860" top="825" type="Window" width="9045">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\About (VVVV) help.v4p" locked="1">
+   <BOUNDS height="5715" left="1860" top="825" type="Window" width="9045">
    </BOUNDS>
-   <LINK dstnodeid="15" dstpinname="Input 2" hiddenwhenlocked="1" srcnodeid="14" srcpinname="String">
-   </LINK>
    <LINK dstnodeid="14" dstpinname="Time" hiddenwhenlocked="1" srcnodeid="5" srcpinname="Compile Date">
    </LINK>
    <LINK dstnodeid="15" dstpinname="Input 1" hiddenwhenlocked="1" srcnodeid="5" srcpinname="Version">
@@ -13,7 +11,7 @@
    <NODE hiddenwhenlocked="1" id="15" nodename="Add (String)">
    <PIN pinname="Intersperse" slicecount="1" values="CarriageReturn">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="2015.07.17-14.37.14">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -21,9 +19,11 @@
    </PIN>
    <BOUNDS height="0" left="5205" top="7695" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="3">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="14" nodename="TimeToString (String)">
@@ -334,6 +334,18 @@
    </LINK>
    <LINK srcnodeid="5" srcpinname="Copyright" dstnodeid="11" dstpinname="Input 17" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="5" srcpinname="Website" dstnodeid="15" dstpinname="Input 3" hiddenwhenlocked="1">
+   <NODE systemname="Architecture (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Architecture (VVVV)" componentmode="Hidden" id="22" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="6945" top="6315" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Website" dstnodeid="15" dstpinname="Input 4" hiddenwhenlocked="1">
    </LINK>
+   <LINK srcnodeid="14" srcpinname="String" dstnodeid="15" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="15" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <PACK Name="addonpack" Version="33.10.0">
+   </PACK>
    </PATCH>

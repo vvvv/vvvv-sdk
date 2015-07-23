@@ -13,7 +13,7 @@ using VVVV.Internals.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "RayCast", Category = "Bullet", Author = "vux")]
+	[PluginInfo(Name = "RayCast", Category = "Bullet", Version = "DX9", Author = "vux")]
 	public class BulletRayCastNode : IPluginEvaluate
 	{
 		[Input("World", IsSingle = true)]

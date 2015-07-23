@@ -7,7 +7,7 @@ using BulletSharp.SoftBody;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "SetMass", Category = "Bullet", Version = "SoftBody", Author = "vux",
+	[PluginInfo(Name = "SetMass", Category = "Bullet", Version = "SoftBody DX9", Author = "vux",
 		Help = "Updates a soft body mass", AutoEvaluate = true)]
 	public class BulletSoftSetMassNode : AbstractBodyInteractionNode<SoftBody>
 	{

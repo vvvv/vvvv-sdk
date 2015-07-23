@@ -12,7 +12,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "CreateRigidBody", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "CreateRigidBody", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Creates a rigid body", AutoEvaluate = true)]
 	public class BulletCreateRigidBodyNode : AbstractRigidBodyCreator
 	{

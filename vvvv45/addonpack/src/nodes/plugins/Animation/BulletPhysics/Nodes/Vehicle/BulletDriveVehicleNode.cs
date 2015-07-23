@@ -9,7 +9,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Bullet.Nodes.Bodies.Interactions.Vehicle
 {
-    [PluginInfo(Name = "Steer", Category = "Bullet", Version="Vehicle", Author = "vux",
+    [PluginInfo(Name = "Steer", Category = "Bullet", Version="Vehicle DX9", Author = "vux",
         Help = "Drives Bullet Vehicle", AutoEvaluate = true)]
     public class BulletSteerVehicleNode : AbstractBodyInteractionNode<RaycastVehicle>
     {
@@ -25,7 +25,7 @@ namespace VVVV.Bullet.Nodes.Bodies.Interactions.Vehicle
         }
     }
 
-    [PluginInfo(Name = "Brake", Category = "Bullet", Version = "Vehicle", Author = "vux",
+    [PluginInfo(Name = "Brake", Category = "Bullet", Version = "Vehicle DX9", Author = "vux",
     Help = "Drives Bullet Vehicle", AutoEvaluate = true)]
     public class BulletBrakeVehicleNode : AbstractBodyInteractionNode<RaycastVehicle>
     {
@@ -41,7 +41,7 @@ namespace VVVV.Bullet.Nodes.Bodies.Interactions.Vehicle
         }
     }
 
-    [PluginInfo(Name = "EngineForce", Category = "Bullet", Version = "Vehicle", Author = "vux",
+    [PluginInfo(Name = "EngineForce", Category = "Bullet", Version = "Vehicle DX9", Author = "vux",
     Help = "Drives Bullet Vehicle", AutoEvaluate = true)]
     public class BulletEngineForceVehicleNode : AbstractBodyInteractionNode<RaycastVehicle>
     {

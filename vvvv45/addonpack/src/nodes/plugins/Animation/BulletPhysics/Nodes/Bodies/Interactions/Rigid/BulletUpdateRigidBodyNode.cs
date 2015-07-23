@@ -8,7 +8,7 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "UpdateBody", Category = "Bullet",Version="Rigid", Author = "vux",
+	[PluginInfo(Name = "UpdateBody", Category = "Bullet", Version="Rigid DX9", Author = "vux",
 		Help = "Updates rigid body properties", AutoEvaluate = true)]
 	public class BulletUpdateRigidBodyNode : IPluginEvaluate
 	{

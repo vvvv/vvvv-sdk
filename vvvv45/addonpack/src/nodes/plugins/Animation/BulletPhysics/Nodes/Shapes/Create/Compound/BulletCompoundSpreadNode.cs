@@ -9,7 +9,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "CompoundShape", Category = "Bullet",Version="Spread", Author = "vux")]
+	[PluginInfo(Name = "CompoundShape", Category = "Bullet", Version="Spread DX9", Author = "vux")]
 	public class BulletCompoundSpreadNode : IPluginEvaluate
 	{
 		[Input("Shape")]

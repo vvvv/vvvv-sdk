@@ -9,7 +9,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "CompoundShape", Category = "Bullet",Version="Group", Author = "vux")]
+	[PluginInfo(Name = "CompoundShape", Category = "Bullet", Version="Group DX9", Author = "vux")]
 	public class BulletCompoundShapeGroupNode : IPluginEvaluate
 	{
 		[Input("Shape",IsPinGroup=true)]

@@ -9,7 +9,7 @@ using BulletSharp.SoftBody;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "AppendAnchor", Category = "Bullet", Author = "vux",
+	[PluginInfo(Name = "AppendAnchor", Category = "Bullet", Version = "DX9", Author = "vux",
 		Help = "Pins a soft body node to a rigid body", AutoEvaluate = true)]
 	public class BulletAppendAnchorNode : AbstractBodyInteractionNode<RigidBody>
 	{

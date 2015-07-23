@@ -12,7 +12,7 @@ using BulletSharp;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name = "TetGen", Category = "Bullet",Version="SoftShape", Author = "vux")]
+	[PluginInfo(Name = "TetGen", Category = "Bullet", Version="SoftShape DX9", Author = "vux")]
 	public class BulletTetGenSoftShapeNode : AbstractSoftShapeNode
 	{
 		[Input("Elements")]

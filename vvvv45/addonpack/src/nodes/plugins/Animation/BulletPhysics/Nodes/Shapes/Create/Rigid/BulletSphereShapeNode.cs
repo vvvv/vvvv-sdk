@@ -9,7 +9,7 @@ using VVVV.DataTypes.Bullet;
 
 namespace VVVV.Nodes.Bullet
 {
-	[PluginInfo(Name="Sphere",Category="Bullet",Author="vux")]
+	[PluginInfo(Name="Sphere", Category="Bullet", Version = "DX9", Author="vux")]
 	public class BulletSphereShapeNode : AbstractBulletRigidShapeNode
 	{
 		[Input("Radius", DefaultValue = 0.5)]
