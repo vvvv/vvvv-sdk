@@ -8,7 +8,7 @@ using SlimDX;
 
 namespace VVVV.Assimp.Nodes
 {
-    [PluginInfo(Name = "Node", Category = "Assimp", Version = "", Author = "vux,flateric")]
+    [PluginInfo(Name = "Node", Category = "Assimp", Version = "DX9", Author = "vux, flateric")]
     public class AssimpWorldNode : IPluginEvaluate
     {
         [Input("Scene", IsSingle = true)]

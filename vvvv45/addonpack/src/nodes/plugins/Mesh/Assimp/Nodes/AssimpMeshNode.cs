@@ -11,7 +11,7 @@ using SlimDX;
 
 namespace VVVV.Assimp.Nodes
 {
-    [PluginInfo(Name="Mesh",Category="EX9.Geometry",Version="Assimp",Author="vux,flateric")]
+    [PluginInfo(Name = "Mesh", Category = "EX9.Geometry", Version = "Assimp DX9", Author = "vux, flateric")]
     public class AssimpMeshNode : IPluginEvaluate,IPluginDXMesh,IDisposable,IPluginConnections
     {
         [Input("Scene",IsSingle=true)]

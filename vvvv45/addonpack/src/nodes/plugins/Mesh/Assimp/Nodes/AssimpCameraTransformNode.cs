@@ -8,7 +8,7 @@ using SlimDX;
 
 namespace VVVV.Assimp.Nodes
 {
-    [PluginInfo(Name = "Camera", Category = "Assimp", Version = "Transform", Author = "vux,flateric")]
+    [PluginInfo(Name = "Camera", Category = "Assimp", Version = "Transform DX9", Author = "vux, flateric")]
     public class AssimpCameraTransformNode : IPluginEvaluate
     {
         [Input("Camera")]

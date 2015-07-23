@@ -8,7 +8,7 @@ using System.IO;
 
 namespace VVVV.Assimp.Nodes
 {
-    [PluginInfo(Name="Scene",Category="Assimp",Author="vux,flateric")]
+    [PluginInfo(Name = "Scene", Category = "Assimp", Version = "DX9", Author = "vux, flateric")]
     public class AssimpSceneNode : IPluginEvaluate, IDisposable
     {
         [Input("Path",StringType=StringType.Filename,IsSingle=true)]

@@ -9,7 +9,7 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Assimp.Nodes
 {
-    [PluginInfo(Name = "Material", Category = "Assimp", Author = "vux,flateric")]
+    [PluginInfo(Name = "Material", Category = "Assimp", Version = "DX9", Author = "vux, flateric")]
     public class AssimpMaterialNode : IPluginEvaluate
     {
         [Input("Material")]
