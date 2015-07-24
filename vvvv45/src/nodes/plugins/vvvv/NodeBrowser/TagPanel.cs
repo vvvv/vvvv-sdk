@@ -404,8 +404,7 @@ namespace VVVV.Nodes.NodeBrowser
 
             int y = FRichTextBox.GetPositionFromCharIndex(FRichTextBox.GetFirstCharIndexFromLine(FHoverLine)).Y;
             string tip = "";
-            if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect || ni.Type == NodeType.VL)
-                tip = "Use CTRL+Enter or CTRL+Click to clone this node.\n";
+            
             if (!string.IsNullOrEmpty(ni.Shortcut))
                 tip = "(" + ni.Shortcut + ") " ;
             if (!string.IsNullOrEmpty(ni.Help))
@@ -418,8 +417,11 @@ namespace VVVV.Nodes.NodeBrowser
                 tip += "\n AUTHOR: " + ni.Author.Trim();
             if (!string.IsNullOrEmpty(ni.Credits))
                 tip += "\n CREDITS: " + ni.Credits.Trim();
+            if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect || ni.Type == NodeType.VL)
+                tip += "\n Use CTRL+Enter or CTRL+Click to clone this node.";
+
             if (!string.IsNullOrEmpty(tip))
-            	FToolTip.Show(tip, FRichTextBox, x, y + DIPX(15));
+            	FToolTip.Show(tip.Trim(), FRichTextBox, x, y + DIPX(15));
             else
                 FToolTip.Hide(FRichTextBox);
         }
