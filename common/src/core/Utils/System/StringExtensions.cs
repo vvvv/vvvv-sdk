@@ -50,5 +50,12 @@ namespace System
         {
             return source.IndexOf(value, comparisonType) >= 0;
         }
+
+        public static string ToEnvironmentNewLine(this string value)
+        {
+            if (Environment.NewLine != "\n")
+                return value.Replace("\n", Environment.NewLine);
+            return value;
+        }
     }
 }
