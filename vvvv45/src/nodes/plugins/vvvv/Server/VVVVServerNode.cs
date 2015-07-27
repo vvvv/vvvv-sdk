@@ -334,11 +334,11 @@ namespace VVVV.Nodes
 				foreach(var v in message.Values)
 				{
 					if (v is float)
-						values += ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+						values += "|" + ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + "|,";
 					else if (v is double)
-						values += ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+						values += "|" + ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + "|,";
 					else
-						values += v.ToString() + ",";
+						values += "|" + v.ToString() + "|,";
 				}
 				values = values.TrimEnd(',');
 				
