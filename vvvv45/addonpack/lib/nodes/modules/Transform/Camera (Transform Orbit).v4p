@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="1860" scrolly="2160">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit).v4p" systemname="Camera (Transform Orbit)" filename="C:\Users\Natan\Dropbox\_Software\_GEA\Transform\Camera (Transform Orbit)\Camera (Transform Orbit).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="1035" top="1515" width="18435" height="13380">
    </BOUNDS>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="121" systemname="IOBox (Node)">
@@ -1590,7 +1590,7 @@
    </LINK>
    <LINK srcnodeid="967" srcpinname="Output" dstnodeid="958" dstpinname="Set" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
-   <PACK Name="addonpack" Version="33.8.0">
+   <PACK Name="addonpack" Version="34.100.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="990" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2850" top="5730" width="795" height="240">
@@ -1681,9 +1681,33 @@
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
+   <PIN pinname="Caption Filter" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="993" srcpinname="Device" dstnodeid="227" dstpinname="Mouse">
    </LINK>
    <LINK srcnodeid="994" srcpinname="Y Output Value" dstnodeid="993" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="999" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2685" top="3615" width="1095" height="585">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2685" top="3615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" visible="1" values="Renderer,Preview">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="999" srcpinname="Output String" dstnodeid="993" dstpinname="Caption Filter">
    </LINK>
    </PATCH>

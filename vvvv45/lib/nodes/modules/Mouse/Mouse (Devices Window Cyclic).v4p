@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" systemname="Mouse (Devices Window Cyclic)" filename="C:\vvvv\alpha\vvvv_50alpha33.9_x64\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" scrollx="0" scrolly="0">
    <NODE systemname="Mouse (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Desktop)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="4200" top="3555" width="100" height="100">
@@ -20,18 +20,10 @@
    <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="HandleFromCaption (Windows)" nodename="HandleFromCaption (Windows)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="750" top="4230" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Title" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Handle" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="10">
    <BOUNDS type="Node" left="750" top="4875" width="630" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="2" values="4327756,4327756">
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="269306">
    </PIN>
@@ -40,11 +32,9 @@
    <PIN pinname="Inverse Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Handle" dstnodeid="10" dstpinname="Input 1">
-   </LINK>
    <BOUNDS type="Window" left="16500" top="345" width="11430" height="13455">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.8.0">
+   <PACK Name="addonpack" Version="34.100.0">
    </PACK>
    <NODE systemname="WindowLists (Windows)" nodename="WindowLists (Windows)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="585" top="2190" width="100" height="100">
@@ -55,21 +45,25 @@
    </PIN>
    <PIN pinname="Update" visible="1" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="VVVV Window Handles" visible="1">
+   </PIN>
+   <PIN pinname="TopMost VVVV Window" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="Sift (String)" nodename="Sift (String)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="1185" top="3195" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="|Mouse (Devices Window Cyclic).v4p *  C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Mouse\|">
    </PIN>
    <PIN pinname="Filter" visible="1">
    </PIN>
-   <PIN pinname="Comparison" slicecount="1" values="Contains">
+   <PIN pinname="Comparison" slicecount="1" values="ContainsAny">
    </PIN>
    <PIN pinname="Input Index" visible="1">
    </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="VVVV Windows" dstnodeid="22" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Box" left="1365" top="645" width="1305" height="240">
    </BOUNDS>
@@ -89,20 +83,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="22" dstpinname="Filter">
-   </LINK>
-   <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="20">
-   <BOUNDS type="Node" left="750" top="3720" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="|_root.v4p *  C:\Work\Native Instruments\|">
-   </PIN>
-   <PIN pinname="Index" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Input Index" dstnodeid="20" dstpinname="Index">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="VVVV Windows" dstnodeid="20" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4230" top="645" width="480" height="480">
@@ -275,8 +255,6 @@
    <LINK srcnodeid="95" srcpinname="Up Edge" dstnodeid="101" dstpinname="OnDown">
    </LINK>
    <LINK srcnodeid="95" srcpinname="Down Edge" dstnodeid="101" dstpinname="OnUp">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="8" dstpinname="Title">
    </LINK>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="113">
    <BOUNDS type="Node" left="7785" top="8250" width="100" height="100">
@@ -666,8 +644,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="100" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="170" srcpinname="Output" dstnodeid="101" dstpinname="OnLeave">
    </LINK>
    <LINK srcnodeid="155" srcpinname="XY" dstnodeid="150" dstpinname="Input 1">
@@ -1063,5 +1039,25 @@
    <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="139" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="163" srcpinname="ResolutionXY" dstnodeid="186" dstpinname="Input">
+   </LINK>
+   <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="735" top="4215" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Input Index" dstnodeid="20" dstpinname="Index">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="VVVV Window Handles" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="10" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="100" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="VVVV Windows" dstnodeid="22" dstpinname="Input">
    </LINK>
    </PATCH>
