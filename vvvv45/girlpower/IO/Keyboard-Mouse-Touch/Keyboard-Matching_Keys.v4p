@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Matching_Keys.v4p" systemname="Keyboard-Matching_Keys" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Matching_Keys.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Matching_Keys.v4p" systemname="Keyboard-Matching_Keys" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Matching_Keys.v4p">
    <BOUNDS type="Window" left="6465" top="2790" width="12435" height="9210">
    </BOUNDS>
    <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="7680" top="660" width="100" height="100">
+   <BOUNDS type="Node" left="5910" top="870" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
    </PIN>
@@ -11,7 +11,7 @@
    </PIN>
    </NODE>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="5685" top="2325" width="1095" height="270">
+   <BOUNDS type="Node" left="3915" top="2535" width="1095" height="270">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1">
    </PIN>
@@ -25,13 +25,13 @@
    </PIN>
    <PIN pinname="D4" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="5685" top="2325">
+   <BOUNDS type="Box" left="3915" top="2535">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Device" dstnodeid="1" dstpinname="Keyboard">
    </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="5685" top="2910" width="600" height="270">
+   <BOUNDS type="Node" left="3915" top="3120" width="600" height="270">
    </BOUNDS>
    <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
@@ -55,9 +55,9 @@
    <LINK srcnodeid="1" srcpinname="D4" dstnodeid="6" dstpinname="Input 4">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3825" top="4425" width="525" height="1785">
+   <BOUNDS type="Box" left="2055" top="4635" width="525" height="1785">
    </BOUNDS>
-   <BOUNDS type="Node" left="3825" top="4425" width="0" height="0">
+   <BOUNDS type="Node" left="2055" top="4635" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -79,9 +79,9 @@
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="7" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="9" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="6720" top="1935" width="1035" height="240">
+   <BOUNDS type="Box" left="4950" top="2145" width="1035" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6720" top="1935" width="0" height="0">
+   <BOUNDS type="Node" left="4950" top="2145" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="DownOnly">
    </PIN>
@@ -89,7 +89,7 @@
    <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="1" dstpinname="Key Mode">
    </LINK>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="5670" top="3810" width="100" height="100">
+   <BOUNDS type="Node" left="3900" top="4020" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -101,9 +101,9 @@
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="10" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5685" top="4425" width="525" height="1785">
+   <BOUNDS type="Box" left="3915" top="4635" width="525" height="1785">
    </BOUNDS>
-   <BOUNDS type="Node" left="5685" top="4425" width="0" height="0">
+   <BOUNDS type="Node" left="3915" top="4635" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -125,7 +125,7 @@
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="6015" top="3420" width="100" height="100">
+   <BOUNDS type="Node" left="4245" top="3630" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -137,7 +137,7 @@
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="10" dstpinname="Set">
    </LINK>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="9615" top="2325" width="1095" height="270">
+   <BOUNDS type="Node" left="7845" top="2535" width="1095" height="270">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1">
    </PIN>
@@ -151,11 +151,11 @@
    </PIN>
    <PIN pinname="D4" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="9615" top="2325">
+   <BOUNDS type="Box" left="7845" top="2535">
    </BOUNDS>
    </NODE>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="9615" top="3000" width="100" height="100">
+   <BOUNDS type="Node" left="7845" top="3210" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
@@ -179,9 +179,9 @@
    <LINK srcnodeid="15" srcpinname="D4" dstnodeid="14" dstpinname="Input 4">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="13" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="10650" top="1935" width="870" height="240">
+   <BOUNDS type="Box" left="8880" top="2145" width="870" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="10650" top="1935" width="0" height="0">
+   <BOUNDS type="Node" left="8880" top="2145" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="Toggle">
    </PIN>
@@ -189,9 +189,9 @@
    <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="15" dstpinname="Key Mode">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9615" top="4425" width="525" height="1785">
+   <BOUNDS type="Box" left="7845" top="4635" width="525" height="1785">
    </BOUNDS>
-   <BOUNDS type="Node" left="9615" top="4425" width="0" height="0">
+   <BOUNDS type="Node" left="7845" top="4635" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -215,9 +215,9 @@
    <LINK srcnodeid="0" srcpinname="Device" dstnodeid="15" dstpinname="Keyboard">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3780" top="6315" width="2160" height="480">
+   <BOUNDS type="Node" left="2010" top="6525" width="2160" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="3780" top="6315" width="1485" height="930">
+   <BOUNDS type="Box" left="2010" top="6525" width="1485" height="930">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|It&apos;s like a momentary switch.&cr;&lf;It bangs only one frame (hard to see).|">
    </PIN>
@@ -229,9 +229,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5670" top="6315" width="2160" height="480">
+   <BOUNDS type="Node" left="3900" top="6525" width="2160" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="5670" top="6315" width="1080" height="900">
+   <BOUNDS type="Box" left="3900" top="6525" width="1080" height="900">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|This version holds its state.|">
    </PIN>
@@ -243,9 +243,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9570" top="6315" width="2160" height="480">
+   <BOUNDS type="Node" left="7800" top="6525" width="2160" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="9570" top="6315" width="1380" height="765">
+   <BOUNDS type="Box" left="7800" top="6525" width="1380" height="765">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|Use this for toggle (continuous switch).|">
    </PIN>
@@ -257,7 +257,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="7350" top="5505" width="100" height="100">
+   <BOUNDS type="Node" left="5580" top="5715" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Select" visible="1">
    </PIN>
@@ -265,9 +265,9 @@
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="27" dstpinname="Select">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7845" top="5925" width="540" height="240">
+   <BOUNDS type="Box" left="6075" top="6135" width="540" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7845" top="5925" width="0" height="0">
+   <BOUNDS type="Node" left="6075" top="6135" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -279,9 +279,9 @@
    <LINK srcnodeid="27" srcpinname="Former Slice" dstnodeid="28" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7305" top="6315" width="2160" height="480">
+   <BOUNDS type="Node" left="5535" top="6525" width="2160" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="7305" top="6315" width="1080" height="900">
+   <BOUNDS type="Box" left="5535" top="6525" width="1080" height="900">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to retrieve the slice index.|">
    </PIN>
@@ -293,9 +293,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6885" top="2325" width="780" height="270">
+   <BOUNDS type="Node" left="5115" top="2535" width="780" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6885" top="2325" width="780" height="270">
+   <BOUNDS type="Box" left="5115" top="2535" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|1,2,3,4,5|">
    </PIN>
@@ -307,9 +307,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10830" top="2325" width="780" height="270">
+   <BOUNDS type="Node" left="9060" top="2535" width="780" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="10830" top="2325" width="780" height="270">
+   <BOUNDS type="Box" left="9060" top="2535" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|1,2,3,4,5|">
    </PIN>
@@ -320,4 +320,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
    </PATCH>
