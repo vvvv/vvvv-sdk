@@ -22,6 +22,34 @@ namespace VVVV.Nodes
     public class ValueCons : Cons<double>
     {
     }
+    
+    [PluginInfo(Name = "Cons",
+                Category = "2d",
+                Help = "Concatenates all input spreads to one output spread",
+                Tags = ""
+                )]
+    public class Vector2Cons : Cons<Vector2D>
+    {
+    }
+    
+    [PluginInfo(Name = "Cons",
+                Category = "3d",
+                Help = "Concatenates all input spreads to one output spread",
+                Tags = ""
+                )]
+    public class Vector3Cons : Cons<Vector3D>
+    {
+    }
+    
+    [PluginInfo(Name = "Cons",
+                Category = "4d",
+                Help = "Concatenates all input spreads to one output spread",
+                Tags = ""
+                )]
+    public class Vector4Cons : Cons<Vector4D>
+    {
+    }
+    
         
     [PluginInfo(Name = "Cons",
                 Category = "Color",
