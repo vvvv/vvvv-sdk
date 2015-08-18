@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
    <BOUNDS height="6165" left="2745" top="5700" type="Window" width="11625">
    </BOUNDS>
    <NODE id="21" nodename="Count (EX9.Geometry Mesh)" systemname="Count (EX9.Geometry Mesh)">
@@ -179,7 +179,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|loads a XFile and returns a mesh + texture-filename(s), if included in the file&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Loads a .dae (collada) file.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -193,7 +193,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10740" top="45240" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|XFile - EX9.Geometry Load|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|ColladaFile (EX9.Geometry)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -382,4 +382,22 @@
    <BOUNDS height="100" left="9465" top="2745" type="Node" width="100">
    </BOUNDS>
    </NODE>
+   <NODE systemname="Camera (Transform Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Camera (Transform Collada)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="2955" top="1920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="COLLADA Model" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Skeleton (Skeleton Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Skeleton (Skeleton Collada)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="3990" top="1920" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="COLLADA Model" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="COLLADA Model" dstnodeid="30" dstpinname="COLLADA Model">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="COLLADA Model" dstnodeid="31" dstpinname="COLLADA Model">
+   </LINK>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
    </PATCH>
