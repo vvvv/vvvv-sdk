@@ -29,7 +29,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="3285" top="5910" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Pose" visible="1">
+   <PIN pinname="Pose" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Start Joint" visible="1">
    </PIN>
@@ -50,18 +50,6 @@
    <PIN pinname="Pole TargetXYZ" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="Joint (Skeleton Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="Joint (Skeleton Join)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="3960" top="3930" width="600" height="270">
-   </BOUNDS>
-   <PIN pinname="Joint Name" visible="1">
-   </PIN>
-   <PIN pinname="Skeleton" visible="1">
-   </PIN>
-   <PIN pinname="Base Transform" visible="1">
-   </PIN>
-   <PIN pinname="Child1" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
    <BOUNDS type="Box" left="2895" top="3450" width="795" height="240">
    </BOUNDS>
@@ -76,20 +64,6 @@
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
    <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="4" dstpinname="Joint Name">
-   </LINK>
-   <NODE systemname="Joint (Skeleton Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="Joint (Skeleton Join)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="3285" top="4710" width="600" height="270">
-   </BOUNDS>
-   <PIN pinname="Joint Name" visible="1">
-   </PIN>
-   <PIN pinname="Child1" visible="1">
-   </PIN>
-   <PIN pinname="Skeleton" visible="1">
-   </PIN>
-   <PIN pinname="Base Transform" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
@@ -108,12 +82,6 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="7" dstpinname="Joint Name">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Skeleton" dstnodeid="7" dstpinname="Child1">
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Skeleton" dstnodeid="0" dstpinname="Pose">
-   </LINK>
    <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="0" dstpinname="Start Joint">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
@@ -121,7 +89,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="5220" top="3450" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="5.91,-1.88,0">
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="3.54,-0.53,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -141,11 +109,9 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="X" slicecount="1" values="3.28" visible="1">
+   <PIN pinname="X" slicecount="1" visible="1" values="3.28">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="4" dstpinname="Base Transform">
-   </LINK>
    <PACK Name="addonpack" Version="34.1.0">
    </PACK>
    <NODE systemname="SelectJoint (Skeleton GUI)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="SelectJoint (Skeleton GUI)" componentmode="InABox" id="12">
@@ -195,14 +161,12 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="X" slicecount="1" values="3.28" visible="1">
+   <PIN pinname="X" slicecount="1" visible="1" values="3.28">
    </PIN>
    <PIN pinname="Y" slicecount="1" values="-0.34">
    </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="18" dstpinname="Base Transform">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Skeleton" dstnodeid="4" dstpinname="Child1">
    </LINK>
    <LINK srcnodeid="17" srcpinname="Output String" dstnodeid="0" dstpinname="End Joint">
    </LINK>
@@ -342,4 +306,26 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Joint (Skeleton Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="Joint (Skeleton Join)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="3285" top="4710" width="600" height="270">
+   </BOUNDS>
+   <PIN pinname="Child1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="31" dstpinname="Joint Name">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Skeleton" dstnodeid="0" dstpinname="Pose">
+   </LINK>
+   <NODE systemname="Joint (Skeleton Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="Joint (Skeleton Join)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="3960" top="3930" width="600" height="270">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output String" dstnodeid="32" dstpinname="Joint Name">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="32" dstpinname="Base Transform">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Skeleton" dstnodeid="32" dstpinname="Child1">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Skeleton" dstnodeid="31" dstpinname="Child1">
+   </LINK>
    </PATCH>

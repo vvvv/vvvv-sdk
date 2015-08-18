@@ -1,6 +1,6 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="V:\releases\vvvv_33beta9a\help\ParallelEpiped (Transform Vector) help---------------.v4p">
-   <BOUNDS height="6255" left="405" top="2490" type="Window" width="6720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\ParallelEpiped (Transform Vector) help.v4p">
+   <BOUNDS height="6510" left="405" top="2490" type="Window" width="6720">
    </BOUNDS>
    <NODE id="14" nodename="Box (EX9.Geometry)">
    <BOUNDS height="0" left="1035" top="1590" type="Node" width="0">
@@ -8,8 +8,8 @@
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" hiddenwhenlocked="1" id="13" nodename="Renderer (EX9)">
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <NODE componentmode="InAWindow" hiddenwhenlocked="1" id="13" nodename="RENDERER (EX9)">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <BOUNDS height="0" left="1230" top="4470" type="Node" width="0">
    </BOUNDS>
@@ -17,7 +17,7 @@
    </BOUNDS>
    <BOUNDS height="4455" left="1230" top="4470" type="Box" width="4500">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Depth Buffer" slicecount="1" values="1.00000">
    </PIN>
@@ -25,8 +25,18 @@
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="12" nodename=":MODULES:\AxisAndGrid (DX9).v4p">
+   <NODE componentmode="Hidden" hiddenwhenlocked="1" id="12" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p">
    <BOUNDS height="0" left="120" top="3120" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="4725" top="8505" type="Window" width="9000">
@@ -38,7 +48,7 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE id="11" nodename=":MODULES:\Axis (DX9).v4p">
+   <NODE id="11" nodename=":MODULES:\vvvv group\EX9\Axis (DX9).v4p">
    <BOUNDS height="0" left="3630" top="2235" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="3420" top="8445" type="Window" width="9000">
@@ -54,7 +64,7 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="1" id="10" nodename=":MODULES:\Camera (Transform Softimage).v4p">
+   <NODE hiddenwhenlocked="1" id="10" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
    <BOUNDS height="0" left="2355" top="3915" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="10710" top="3750" type="Window" width="9000">
@@ -66,7 +76,7 @@
    <PIN pinname="Inital Distance" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK dstnodeid="13" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="10" srcpinname="View Projection">
+   <LINK dstnodeid="13" dstpinname="View" hiddenwhenlocked="1" srcnodeid="10" srcpinname="View Projection">
    </LINK>
    <NODE id="9" nodename="UniformScale (Transform)">
    <BOUNDS height="0" left="3930" top="1800" type="Node" width="0">
@@ -141,7 +151,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2490" top="33990" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|ParallelEpiped - Transform Vector|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|ParallelEpiped (Transform Vector)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -238,4 +248,6 @@
    </LINK>
    <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="0" dstpinname="Layer 1">
    </LINK>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
    </PATCH>
