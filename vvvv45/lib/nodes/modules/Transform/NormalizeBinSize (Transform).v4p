@@ -1,0 +1,69 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\NormalizeBinSize (Transform).v4p" systemname="NormalizeBinSize (Transform)" filename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\NormalizeBinSize (Transform).v4p">
+   <BOUNDS type="Window" left="5670" top="2025" width="5625" height="5220">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <INFO author="vvvv group" description="Translates given bin sizes to actual bins." tags="">
+   </INFO>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <NODE id="13" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Bin Size|">
+   </PIN>
+   <BOUNDS type="Box" left="2550" top="855" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2550" top="855" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="-999999">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="9999999">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE id="14" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <BOUNDS type="Box" left="2055" top="2750" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2055" top="2750" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Unzip (Transform Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (Transform Bin)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="2115" top="2010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output 1 Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Input Bin Size">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output 1 Bin Size" dstnodeid="14" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="32" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="975" top="870" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="975" top="870" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Output Node" dstnodeid="30" dstpinname="Input">
+   </LINK>
+   </PATCH>

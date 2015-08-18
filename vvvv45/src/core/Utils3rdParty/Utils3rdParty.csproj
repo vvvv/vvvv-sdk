@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" />
+  <Import Project="..\Default.Core.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{87863121-C124-4585-B3BB-7706F03ECC64}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Utils</RootNamespace>
+    <AssemblyName>VVVV.Utils3rdParty</AssemblyName>
+    <AssemblyDescription>The VVVV Utility Library</AssemblyDescription>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DocumentationFile>$(OutputPath)\VVVV.Utils3rdParty.xml</DocumentationFile>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>61eb2d67</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
+    <Compile Include="SlimDX\MatrixExtensions.cs" />
+    <Compile Include="SlimDX\TextureUtils.cs" />
+    <Compile Include="SlimDX\UInt32Utils.cs" />
+    <Compile Include="SlimDX\VectorExtensions.cs" />
+    <Compile Include="SlimDX\Vertices.cs" />
+    <Compile Include="VMath\Matrix4x4Extensions.cs" />
+    <Compile Include="VMath\Matrix4x4Utils.cs" />
+    <Compile Include="VMath\VectorExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\common\src\core\UtilsIL\UtilsIL.csproj">
+      <Project>{93cdb07f-0bb6-4891-b793-9c02114a88ae}</Project>
+      <Name>UtilsIL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Utils3rdParty.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets'))" />
+  </Target>
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
+</Project>

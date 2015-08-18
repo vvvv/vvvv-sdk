@@ -1,0 +1,169 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\native\Copy (String) help.v4p">
+   <BOUNDS type="Window" left="1980" top="1560" width="5190" height="5160">
+   </BOUNDS>
+   <NODE nodename="Copy (String)" id="0">
+   <BOUNDS type="Node" left="2145" top="2430" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="1">
+   <BOUNDS type="Node" left="1110" top="1635" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8895" top="5490" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="1635" width="930" height="420">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="TEXT">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="2145" top="2940" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9195" top="5790" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2145" top="2940" width="930" height="420">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="2" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="2370" top="1665" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11205" top="5490" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2370" top="1665" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Index">
+   </LINK>
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="3345" top="1665" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12045" top="5325" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3345" top="1665" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="585" left="15" top="390" type="Box" width="3060">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns substrings containing &apos;Count&apos; characters starting at &apos;Index&apos;.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-90" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Copy (String)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1095" top="1350" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1095" top="1350" width="525" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2340" top="1350" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2340" top="1350" width="525" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Index">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3315" top="1350" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3315" top="1350" width="525" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Count">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2100" top="3420" width="525" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2100" top="3420" width="720" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
