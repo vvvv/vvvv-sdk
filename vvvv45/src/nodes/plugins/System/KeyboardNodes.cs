@@ -25,7 +25,8 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Keyboard", 
 	            Category = "Devices", 
 	            Version = "Window",
-	            Help = "Returns the keyboard of the current render window.")]
+                AutoEvaluate = true, // Because we use a split node
+                Help = "Returns the keyboard of the current render window.")]
     public class KeyboardNode : WindowMessageNode, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Output("Device", IsSingle = true)]
@@ -86,6 +87,7 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Keyboard", 
                 Category = "Devices", 
                 Version = "Desktop",
+                AutoEvaluate = true, // Because we use a split node
                 Help = "Returns the systemwide keyboard.",
                 Bugs = "Spreading the node does not work reliable in Windows XP.")]
     public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
