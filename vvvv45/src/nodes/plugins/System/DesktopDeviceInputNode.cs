@@ -75,12 +75,14 @@ namespace VVVV.Nodes.Input
 
         protected virtual void SubscribeToDevices()
         {
+            // The following function doesn't work properly in Windows XP, returning installed mouses only.
             var devices = Device.GetDevices()
                 .Where(d => d.DeviceType == FDeviceType)
                 .OrderBy(d => d, new DeviceComparer())
                 .ToList();
-            if (devices.Count > 0)
-            {
+            // So let's not rely on it if we're running on XP.
+            if (devices.Count > 0 || !Environment.OSVersion.IsWinVistaOrHigher())
+            {   
                 var spreadMax = GetMaxSpreadCount();
                 DeviceOut.SliceCount = spreadMax;
                 DeviceNameOut.SliceCount = spreadMax;
@@ -89,7 +91,7 @@ namespace VVVV.Nodes.Input
                 for (int i = 0; i < spreadMax; i++)
                 {
                     var index = IndexIn[i];
-                    if (index < 0)
+                    if (index < 0 || devices.Count == 0)
                     {
                         DeviceOut[i] = CreateMergedDevice(i);
                         DeviceNameOut[i] = string.Empty;

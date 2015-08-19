@@ -54,8 +54,12 @@ namespace VVVV.Nodes.Input
         static RawInputService()
         {
             messageOnlyWindow = new MessageOnlyWindow();
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericKeyboard, DeviceFlags.InputSink | DeviceFlags.DeviceNotify, messageOnlyWindow.Handle, RegisterDeviceOptions.NoFiltering);
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.InputSink | DeviceFlags.DeviceNotify, messageOnlyWindow.Handle, RegisterDeviceOptions.NoFiltering);
+            var deviceFlags = DeviceFlags.InputSink;
+            // DeviceNotify is not supported in Win XP (https://msdn.microsoft.com/de-de/library/windows/desktop/ms645565%28v=vs.85%29.aspx)
+            if (Environment.OSVersion.IsWinVistaOrHigher())
+                deviceFlags |= DeviceFlags.DeviceNotify; 
+            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericKeyboard, deviceFlags, messageOnlyWindow.Handle, RegisterDeviceOptions.NoFiltering);
+            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, deviceFlags, messageOnlyWindow.Handle, RegisterDeviceOptions.NoFiltering);
         }
 
         ~RawInputService()

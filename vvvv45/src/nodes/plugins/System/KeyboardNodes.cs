@@ -86,7 +86,8 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Keyboard", 
                 Category = "Devices", 
                 Version = "Desktop",
-                Help = "Returns the systemwide keyboard.")]
+                Help = "Returns the systemwide keyboard.",
+                Bugs = "Spreading the node does not work reliable in Windows XP.")]
     public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
     {
         public DesktopKeyboardNode()
