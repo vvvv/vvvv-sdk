@@ -88,7 +88,7 @@ namespace VVVV.Nodes.Input
                 Version = "Desktop",
                 Help = "Returns the systemwide keyboard.",
                 Bugs = "Spreading the node does not work reliable in Windows XP.")]
-    public class DesktopKeyboardNode : DesktopDeviceInpuasdasdasdasdddassdasdtNode<Keyboard>
+    public class DesktopKeyboardNode : DesktopDeviceInputNode<Keyboard>
     {
         public DesktopKeyboardNode()
             : base(DeviceType.Keyboard, "KeyStates", "Keyboard")
