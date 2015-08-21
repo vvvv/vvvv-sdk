@@ -33,6 +33,7 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Mouse",
                 Category = "Devices", 
                 Version = "Window",
+                AutoEvaluate = true, // Because we use a split node
                 Help = "Returns the mouse of the current render window.")]
     public class WindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
@@ -126,6 +127,7 @@ namespace VVVV.Nodes.Input
     [PluginInfo(Name = "Mouse", 
                 Category = "Devices", 
                 Version = "Desktop",
+                AutoEvaluate = true, // Because we use a split node
                 Help = "Returns the systemwide mouse.")]
     public class DesktopMouseNode : DesktopDeviceInputNode<Mouse>
     {
