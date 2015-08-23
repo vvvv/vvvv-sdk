@@ -1,21 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Color\AvoidNIL (Color).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.7.dtd" >
+   <PATCH nodename="D:\develop\vvvv-sdk\vvvv45\lib\nodes\modules\Color\AvoidNIL (Color).v4p">
    <BOUNDS height="3840" left="9810" top="210" type="Window" width="3840">
    </BOUNDS>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="90" top="1485" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="7140" top="9915" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="240" left="90" top="1485" type="Box" width="450">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE hiddenwhenlocked="0" id="5" managers="" nodename="EQ (Value)" systemname="EQ (Value)">
-   <PIN pinname="Input 1" pintype="Input" visible="1">
+   <PIN pinname="Input 1" pintype="Input" visible="1" slicecount="1" values="1">
    </PIN>
    <BOUNDS height="270" left="480" top="1800" type="Node" width="915">
    </BOUNDS>
@@ -30,8 +18,6 @@
    <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="| &quot;0&quot;?|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Input 1" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
    <NODE id="4" nodename="Count (Color)" systemname="Count (Color)">
    <BOUNDS height="0" left="480" top="1155" type="Node" width="0">
    </BOUNDS>
@@ -44,8 +30,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="| input slices|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Count">
-   </LINK>
    <NODE id="3" nodename="Switch (Color Input)" systemname="Switch (Color Input)">
    <BOUNDS height="270" left="480" top="2160" type="Node" width="2715">
    </BOUNDS>
@@ -114,4 +98,28 @@
    </LINK>
    <INFO author="kalle" description="Replaces an empty color spread with a default color." tags="empty">
    </INFO>
+   <LINK srcnodeid="4" srcpinname="Count" dstnodeid="5" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3200" top="2510" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3200" top="2510" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Is NIL|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="33.7.0">
+   </PACK>
    </PATCH>
