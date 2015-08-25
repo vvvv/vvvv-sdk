@@ -285,12 +285,6 @@ namespace VVVV.Nodes.Texture.HTML
                         return traverseDirection == TraverseDirection.Down
                             ? XmlNodeType.Element
                             : XmlNodeType.EndElement;
-                    case CefDomNodeType.Entity:
-                        return traverseDirection == TraverseDirection.Down
-                            ? XmlNodeType.Entity
-                            : XmlNodeType.EndEntity;
-                    case CefDomNodeType.Notation:
-                        return XmlNodeType.Notation;
                     case CefDomNodeType.ProcessingInstruction:
                         return XmlNodeType.ProcessingInstruction;
                     case CefDomNodeType.Text:
@@ -309,7 +303,6 @@ namespace VVVV.Nodes.Texture.HTML
                             return XmlNodeType.Text;
                         }
                     case CefDomNodeType.Unsupported:
-                    case CefDomNodeType.XPathNamespace:
                     default:
                         throw new NotImplementedException();
                 }

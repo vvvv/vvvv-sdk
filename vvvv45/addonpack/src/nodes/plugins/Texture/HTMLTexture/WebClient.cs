@@ -41,9 +41,9 @@ namespace VVVV.Nodes.Texture.HTML
                 return base.GetScreenPoint(browser, viewX, viewY, ref screenX, ref screenY);
             }
 
-            protected override void OnCursorChange(CefBrowser browser, IntPtr cursorHandle)
+            protected override void OnCursorChange(CefBrowser browser, IntPtr cursorHandle, CefCursorType type, CefCursorInfo customCursorInfo)
             {
-                
+
             }
 
             protected override void OnPopupShow(CefBrowser browser, bool show)
@@ -197,13 +197,6 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 FRenderer.Detach();
                 base.OnBeforeClose(browser);
-            }
-        }
-
-        class DomEventEventListener : CefDomEventListener
-        {
-            protected override void HandleEvent(CefDomEvent e)
-            {
             }
         }
         

@@ -50,13 +50,11 @@ namespace VVVV.Nodes.Texture.HTML
             Logger = logger;
 
             var settings = new CefBrowserSettings();
-            settings.AcceleratedCompositing = CefState.Enabled;
             settings.FileAccessFromFileUrls = CefState.Enabled;
             settings.UniversalAccessFromFileUrls = CefState.Enabled;
 
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.TransparentPainting = true;
-            windowInfo.SetAsOffScreen(IntPtr.Zero);
+            windowInfo.SetAsWindowless(IntPtr.Zero, true);
 
             FWebClient = new WebClient(this);
             // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
@@ -225,7 +223,7 @@ namespace VVVV.Nodes.Texture.HTML
                                 FTextures[i] = FTextures[i].Update(newSize);
                     }
                     FBrowserHost.WasResized();
-                    FBrowserHost.Invalidate(new CefRectangle(0, 0, newSize.Width, newSize.Height), CefPaintElementType.View);
+                    FBrowserHost.Invalidate(CefPaintElementType.View);
                 }
             }
         }
@@ -506,7 +504,7 @@ namespace VVVV.Nodes.Texture.HTML
                     if (FEnabled)
                     {
                         FBrowserHost.WasHidden(false);
-                        FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
+                        FBrowserHost.Invalidate(CefPaintElementType.View);
                     }
                 }
             }
@@ -580,7 +578,7 @@ namespace VVVV.Nodes.Texture.HTML
                         var texture = new DoubleBufferedTexture(device, size);
                         FTextures.Add(texture);
                         // Trigger a redraw
-                        FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                        FBrowserHost.Invalidate(CefPaintElementType.View);
                     }
                 }
                 // Tell all textures to update - in case the size is not valid
@@ -593,7 +591,7 @@ namespace VVVV.Nodes.Texture.HTML
                         var newTexture = texture.Update(size);
                         // If the "new" texture is in a degraded state trigger a redraw
                         if (newTexture != texture && newTexture.IsDegraded)
-                            FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                            FBrowserHost.Invalidate(CefPaintElementType.View);
                         FTextures[i] = newTexture;
                     }
                 }
