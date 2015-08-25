@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -49,6 +50,9 @@ namespace VVVV.Nodes
         
         [Input ("Index")]
         protected IDiffSpread<int> FIndex;
+
+        [Output("Bone Names", Visibility = PinVisibility.OnlyInspector)]
+        protected ISpread<string> FBoneNamesOutput;
         
         [Output ("MeshName")]
         protected ISpread<string> FMeshNameOutput;
@@ -265,32 +269,30 @@ namespace VVVV.Nodes
 	        	if (FColladaModelIn.IsChanged || FIndex.IsChanged || FBinSize.IsChanged || FTimeInput.IsChanged)
 	        	{
 	        		int maxCount = Math.Max(FTimeInput.SliceCount, FSelectedInstanceMeshes.Count);
-					List<Matrix> transforms = new List<Matrix>();
-					List<Matrix> skinningTransforms = new List<Matrix>();
-					List<Matrix> bindShapeTransforms = new List<Matrix>();
-					List<Matrix> invBindPoseTransforms = new List<Matrix>();
+					var transforms = new List<Matrix>();
+					var skinningTransforms = new List<Matrix>();
+					var bindShapeTransforms = new List<Matrix>();
+					var invBindPoseTransforms = new List<Matrix>();
+                    var boneNames = new List<string>();
 					for (int i = 0; i < maxCount && FSelectedInstanceMeshes.Count > 0; i++)
 					{
 						int meshIndex = i % FSelectedInstanceMeshes.Count;
-						Model.InstanceMesh instanceMesh = FSelectedInstanceMeshes[meshIndex];
-						
-						
-
+						var instanceMesh = FSelectedInstanceMeshes[meshIndex];
 						float time = FTimeInput[i];
-						Matrix m = instanceMesh.ParentBone.GetAbsoluteTransformMatrix(time) * FColladaModel.ConversionMatrix;
+						var m = instanceMesh.ParentBone.GetAbsoluteTransformMatrix(time) * FColladaModel.ConversionMatrix;
 						
-						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++) {
+						for (int j = 0; j < instanceMesh.Mesh.Primitives.Count; j++)
 							transforms.Add(m);
-
-						}
 						
 						// Skinning
-						if (instanceMesh is Model.SkinnedInstanceMesh) {
-							Model.SkinnedInstanceMesh skinnedInstanceMesh = (Model.SkinnedInstanceMesh) instanceMesh;							
+						if (instanceMesh is Model.SkinnedInstanceMesh)
+                        {
+							var skinnedInstanceMesh = instanceMesh as Model.SkinnedInstanceMesh;
 							skinningTransforms.AddRange(skinnedInstanceMesh.GetSkinningMatrices(time));  // am i right, that this whole thing will only work with 1 selected mesh?
 							bindShapeTransforms.Add(skinnedInstanceMesh.BindShapeMatrix);
 							for (int j = 0; j<skinnedInstanceMesh.InvBindMatrixList.Count; j++)
 								invBindPoseTransforms.Add(skinnedInstanceMesh.InvBindMatrixList[j]);
+                            boneNames.AddRange(skinnedInstanceMesh.Bones.Select(b => b.Name));
 						}
 					}
 					
@@ -310,6 +312,8 @@ namespace VVVV.Nodes
 					FInvBindPoseTransformOutput.SliceCount = invBindPoseTransforms.Count;
 					for (int j = 0; j<invBindPoseTransforms.Count; j++)
 						FInvBindPoseTransformOutput.SetMatrix(j, invBindPoseTransforms[j].ToMatrix4x4());
+
+                    FBoneNamesOutput.AssignFrom(boneNames);
 	        	}
         	}
         	catch (Exception e)

@@ -14,6 +14,9 @@ namespace VVVV.SkeletonInterfaces
 			get;
 		}
 		
+        /// <summary>
+        /// The index in the skinning list. Set to -1 if the joint doesn't take part in skinning.
+        /// </summary>
 		int Id
 		{
 			set;

@@ -26,24 +26,19 @@ namespace VVVV.Nodes
 		private Vector3D FCachedScale;
 		private bool FDirty;
 		
-		public BoneWrapper(int id, string name)
+		public BoneWrapper(int id, string name, Matrix4x4 baseTransform)
 		{
 			FId = id;
 			FName = name;
 			FChildren = new List<IJoint>();
 			
-			FBaseTransform = VMath.IdentityMatrix;
+			FBaseTransform = baseTransform;
 			FAnimationTransform = VMath.IdentityMatrix;
 			FConstraints = new List<Vector2D>();
 			FConstraints.Add(new Vector2D(-1.0, 1.0));
 			FConstraints.Add(new Vector2D(-1.0, 1.0));
 			FConstraints.Add(new Vector2D(-1.0, 1.0));
 			SetDirty();
-		}
-		
-		public BoneWrapper(Model.Bone bone) : this(bone.Index, bone.Name)
-		{
-		    FBaseTransform = bone.GetTransformMatrix(0).ToMatrix4x4();
 		}
 		
 		public string Name
@@ -184,8 +179,7 @@ namespace VVVV.Nodes
 		
 		public IJoint DeepCopy()
 		{
-			BoneWrapper copy = new BoneWrapper(Id, Name);
-			copy.BaseTransform = new Matrix4x4(BaseTransform);
+			BoneWrapper copy = new BoneWrapper(Id, Name, new Matrix4x4(BaseTransform));
 			copy.AnimationTransform = new Matrix4x4(AnimationTransform);
 			
 			foreach (IJoint child in Children)

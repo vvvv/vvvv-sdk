@@ -507,7 +507,12 @@ namespace VVVV.Nodes
 			
 			Vector3D v = t * (new Vector3D(0));
 			v.z = 0;
-			g.DrawEllipse(jointPen, (float)v.x-5.0f, (float)v.y-5.0f, 10.0f, 10.0f);
+            var bounds = new RectangleF((float)v.x - 5.0f, (float)v.y - 5.0f, 10.0f, 10.0f);
+            // Draw circles for joints which take part in skinning and rectangles for those who don't
+            if (currJoint.Id >= 0)
+                g.DrawEllipse(jointPen, bounds);
+            else
+                g.DrawRectangle(jointPen, bounds.X, bounds.Y, bounds.Width, bounds.Height);
 			if (listIndex>=0)
 			{
 				Font f = new Font("Verdana", 7);
