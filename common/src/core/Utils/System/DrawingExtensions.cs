@@ -9,19 +9,25 @@ namespace System.Drawing
 {
     public static class DrawingExtensions
     {
-
         /// <summary>
         /// Returns the bounds of the given point cloud.
         /// </summary>
         public static RectangleF GetBounds(this IEnumerable<PointF> points)
         {
-            var cachedPoints = points.ToArray();
-            if (cachedPoints.Length > 0)
+            return GetBounds(points.ToArray());
+        }
+
+        /// <summary>
+        /// Returns the bounds of the given point cloud.
+        /// </summary>
+        public static RectangleF GetBounds(this PointF[] points)
+        {
+            if (points.Length > 0)
             {
-                var top = cachedPoints.Min(p => p.Y);
-                var bottom = cachedPoints.Max(p => p.Y);
-                var left = cachedPoints.Min(p => p.X);
-                var right = cachedPoints.Max(p => p.X);
+                var top = points.Min(p => p.Y);
+                var bottom = points.Max(p => p.Y);
+                var left = points.Min(p => p.X);
+                var right = points.Max(p => p.X);
                 return RectangleF.FromLTRB(left, top, right, bottom);
             }
             else
