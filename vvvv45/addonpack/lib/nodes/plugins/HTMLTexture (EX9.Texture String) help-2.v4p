@@ -1,0 +1,121 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.2.dtd" >
+   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\HTMLTexture (EX9.Texture Chromium) help-2.v4p">
+   <NODE systemname="HitTest (2d Quad)" filename="%VVVV%\addonpack\lib\nodes\plugins\HitTest2dNodes.dll" nodename="HitTest (2d Quad)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1500" top="2415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="PointsXY" visible="1">
+   </PIN>
+   <PIN pinname="Object Hit" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2115" top="3015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Count (Value)" nodename="Count (Value)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="2385" top="2640" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="KeyboardState (System Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyboardState (System Join)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="3915" top="3480" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Key" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Key Code" visible="1">
+   </PIN>
+   <PIN pinname="Key Code Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="Caps Lock" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Keyboard (System Window)" nodename="Keyboard (System Window)" componentmode="Hidden" id="4" filename="%VVVV%\lib\nodes\modules\System\Keyboard (System Window).v4p">
+   <BOUNDS type="Node" left="3735" top="1500" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="KeyCode" visible="1">
+   </PIN>
+   <PIN pinname="Key Code" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="KeyboardState (System Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyboardState (System Split)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="3735" top="2100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="Caps Lock" visible="1">
+   </PIN>
+   <PIN pinname="Key Code" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" systemname="IOBox (Node)" componentmode="InABox">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Transform In|">
+   </PIN>
+   <BOUNDS type="Box" left="1500" top="500" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1500" top="500" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output Node" dstnodeid="0" dstpinname="Transform In">
+   </LINK>
+   <NODE id="7" systemname="IOBox (Value Advanced)" componentmode="InABox">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="PointsXY">
+   </PIN>
+   <BOUNDS type="Box" left="2400" top="500" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2400" top="500" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="0" dstpinname="PointsXY">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Object Hit" dstnodeid="1" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Count" dstnodeid="1" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Key Code" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Keyboard" dstnodeid="5" dstpinname="Keyboard">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="3" dstpinname="Key Code Bin Size">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Caps Lock" dstnodeid="3" dstpinname="Caps Lock">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Time" dstnodeid="3" dstpinname="Time">
+   </LINK>
+   <NODE id="8" systemname="IOBox (Node)" componentmode="InABox">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Keyboard">
+   </PIN>
+   <BOUNDS type="Box" left="3915" top="4080" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3915" top="4080" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Keyboard" dstnodeid="8" dstpinname="Input Node">
+   </LINK>
+   <BOUNDS type="Window" left="4007" top="5435" width="5515" height="5080">
+   </BOUNDS>
+   <LINK srcnodeid="5" srcpinname="Key Code" dstnodeid="3" dstpinname="Key Code">
+   </LINK>
+   </PATCH>

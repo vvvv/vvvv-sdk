@@ -1,0 +1,1009 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha12.1.dtd" >
+   <PATCH nodename="X:\devvvv\help\Update (MySQL) help.v4p">
+   <BOUNDS height="11910" left="0" top="0" type="Window" width="15555">
+   </BOUNDS>
+   <NODE id="60" nodename="Database (MySQL Network)">
+   <BOUNDS height="270" left="5865" top="1920" type="Node" width="5595">
+   </BOUNDS>
+   <PIN pinname="MySQLDataBase" visible="1">
+   </PIN>
+   <PIN pinname="Host" visible="1">
+   </PIN>
+   <PIN pinname="Database" visible="1">
+   </PIN>
+   <PIN pinname="UserName" visible="1">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <PIN pinname="Connect" visible="1">
+   </PIN>
+   <PIN pinname="Connected" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="59" nodename="Select (MySQL)">
+   <BOUNDS height="270" left="5865" top="8400" type="Node" width="4860">
+   </BOUNDS>
+   <PIN pinname="MySQLDataBase" visible="1">
+   </PIN>
+   <PIN pinname="Tables" visible="1">
+   </PIN>
+   <PIN pinname="SendQuery" visible="1">
+   </PIN>
+   <PIN pinname="SetOutputPins (FieldName0, Fieldname1)" slicecount="1" values="|myid, myvalue|">
+   </PIN>
+   <PIN pinname="Fields" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatement" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatus" visible="1">
+   </PIN>
+   <PIN pinname="OnData" visible="1">
+   </PIN>
+   <PIN pinname="myid" visible="1">
+   </PIN>
+   <PIN pinname="myvalue" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="58" nodename="Insert (MySQL)">
+   <BOUNDS height="270" left="60" top="8400" type="Node" width="5055">
+   </BOUNDS>
+   <PIN pinname="MySQLDataBase" visible="1">
+   </PIN>
+   <PIN pinname="Table" visible="1">
+   </PIN>
+   <PIN pinname="Values" visible="1">
+   </PIN>
+   <PIN pinname="SendQuery" visible="1">
+   </PIN>
+   <PIN pinname="Fields" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatement" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatus" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="MySQLDataBase" srcnodeid="60" srcpinname="MySQLDataBase">
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="MySQLDataBase" linkstyle="PolyLine" srcnodeid="60" srcpinname="MySQLDataBase">
+   <LINKPOINT x="5895" y="2970">
+   </LINKPOINT>
+   <LINKPOINT x="90" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="57" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5865" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10125" top="10320" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="5865" top="990" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="localhost">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Host" srcnodeid="57" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="56" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8085" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10425" top="10620" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="8085" top="990" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Database" srcnodeid="56" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="55" nodename="IOBox (String)">
+   <BOUNDS height="0" left="9165" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10725" top="10920" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="9165" top="990" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="root">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="UserName" srcnodeid="55" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="54" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11010" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12480" top="11055" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="11010" top="990" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Connect" srcnodeid="54" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="53" nodename="IOBox (String)">
+   <BOUNDS height="0" left="10065" top="990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11025" top="11220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="10065" top="990" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="meso">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Password" linkstyle="VHV" srcnodeid="53" srcpinname="Output String">
+   <LINKPOINT x="10095" y="1605">
+   </LINKPOINT>
+   <LINKPOINT x="10320" y="1605">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="52" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="10995" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12780" top="11355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="10995" top="2370" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="52" dstpinname="Y Input Value" srcnodeid="60" srcpinname="Connected">
+   </LINK>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11475" top="2370" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="525" left="11475" top="2370" type="Box" width="2460">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|if connected is not 1 then there is an error in the settings above|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="510" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="1590" left="15" top="510" type="Box" width="4110">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To use the &quot;MySQL Network&quot; nodes, you need to have a running database and know the access data for it. &cr;&lf;We&apos;ll asume, that you have a local Database that is called &quot;vvvv&quot; and have a table there that is called &quot;mytable&quot;.&cr;&lf;&quot;mytable&quot; needs to have two fields:&cr;&lf;1. &quot;myid&quot; which is an &quot;INT&quot; field&cr;&lf;2. &quot;myvalues&quot; which is an &quot;TEXT&quot; field|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4290" top="7155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12780" top="11355" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="840" left="4290" top="7155" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|send query|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="58" dstpinname="SendQuery" srcnodeid="49" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="48" nodename="Delete (MySQL)">
+   <BOUNDS height="270" left="15915" top="8400" type="Node" width="3150">
+   </BOUNDS>
+   <PIN pinname="MySQLDataBase" visible="1">
+   </PIN>
+   <PIN pinname="Table" visible="1">
+   </PIN>
+   <PIN pinname="Where" visible="1">
+   </PIN>
+   <PIN pinname="SendQuery" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="MySQLDataBase" linkstyle="VHV" srcnodeid="60" srcpinname="MySQLDataBase">
+   <LINKPOINT x="5895" y="2970">
+   </LINKPOINT>
+   <LINKPOINT x="15945" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="47" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="1320" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5910" top="1320" type="Box" width="1215">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|hostname or IP|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="46" nodename="IOBox (String)">
+   <BOUNDS height="270" left="8130" top="1320" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="495" left="8130" top="1320" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|database name|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="45" nodename="IOBox (String)">
+   <BOUNDS height="270" left="9210" top="1320" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="495" left="9210" top="1320" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="username">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="44" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10110" top="1320" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="270" left="10110" top="1320" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="password">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="43" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="3030" type="Node" width="2760">
+   </BOUNDS>
+   <BOUNDS height="390" left="150" top="3030" type="Box" width="2715">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|1. Insert some values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="1410">
+   </BOUNDS>
+   <BOUNDS height="495" left="15" top="15" type="Box" width="2970">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MySQL nodes help|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="41" nodename="IOBox (String)">
+   <BOUNDS height="0" left="210" top="6885" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2865" top="10440" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="210" top="6885" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="mytable">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="58" dstpinname="Table" linkstyle="VHV" srcnodeid="41" srcpinname="Output String">
+   <LINKPOINT x="240" y="8250">
+   </LINKPOINT>
+   <LINKPOINT x="1335" y="8250">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5955" top="2250" type="Node" width="5640">
+   </BOUNDS>
+   <BOUNDS height="525" left="5955" top="2250" type="Box" width="3840">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;&lt; all MySQL nodes that should access the database have to be connected with this output pin|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="3405" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="2400" left="150" top="3405" type="Box" width="5490">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To write into a table, you need to specify three things:&cr;&lf;1. Table Name: If the table doesn&apos;t exist, the insert node will not work.&cr;&lf;2. Fields: If you write in all fileds, you can leave this field empty. If you write only in certain fileds, you need to specify the fieldnames and the order. Please note, that you will write this into (brackets)&cr;&lf;3. The Values you want to insert: You need to write this information into (brackets) and separate the single fields with ,commas,&cr;&lf;If you want to write into INTEGER fields, you simply write your numbers and if you want to insert TEXT, you need to use &apos;single quotes&apos;.&cr;&lf;Detailed information about SQL INSERT statements can be found at  http://www.w3schools.com/sql/sql_insert.asp|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="38" nodename="IOBox (String)">
+   <BOUNDS height="0" left="60" top="9105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1110" top="11505" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="555" left="60" top="9105" type="Box" width="4740">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Input String" linkstyle="VHV" srcnodeid="58" srcpinname="MySQLStatement">
+   </LINK>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (String)">
+   <BOUNDS height="270" left="60" top="9720" type="Node" width="3885">
+   </BOUNDS>
+   <BOUNDS height="300" left="60" top="9720" type="Box" width="3885">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this is the SQL statement that is sent to the Database|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (String)">
+   <BOUNDS height="0" left="360" top="10185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1410" top="11805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="360" left="360" top="10185" type="Box" width="4770">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Input String" srcnodeid="58" srcpinname="MySQLStatus">
+   </LINK>
+   <NODE componentmode="InABox" id="35" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1830" top="7230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="10740" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="1830" top="7230" type="Box" width="1260">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|(myid, myvalue)|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3060" top="6195" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4260" top="10770" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="345" left="3060" top="6195" type="Box" width="2700">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|(123, &apos;SQL with vvvv is super easy&apos;)|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="33" nodename="IOBox (String)">
+   <BOUNDS height="270" left="3135" top="6570" type="Node" width="4500">
+   </BOUNDS>
+   <BOUNDS height="465" left="3135" top="6570" type="Box" width="2520">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this are the values that will be inserted into the selected table|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="58" dstpinname="Values" linkstyle="PolyLine" srcnodeid="34" srcpinname="Output String">
+   <LINKPOINT x="3090" y="7125">
+   </LINKPOINT>
+   <LINKPOINT x="3840" y="7125">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="Fields" linkstyle="PolyLine" srcnodeid="35" srcpinname="Output String">
+   <LINKPOINT x="1860" y="8220">
+   </LINKPOINT>
+   <LINKPOINT x="2595" y="8220">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="32" nodename="IOBox (String)">
+   <BOUNDS height="270" left="360" top="10590" type="Node" width="3885">
+   </BOUNDS>
+   <BOUNDS height="495" left="360" top="10590" type="Box" width="4755">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|if everything worked, you should read &quot;OK&quot; in the field above. This message is updated everytime the &quot;send query&quot; Pin is banged|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="31" nodename="IOBox (String)">
+   <BOUNDS height="270" left="270" top="7200" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="525" left="270" top="7200" type="Box" width="1380">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the table you want to write into|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)">
+   <BOUNDS height="270" left="1905" top="7575" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="525" left="1905" top="7575" type="Box" width="1380">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the fields you want to write into|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5940" top="3030" type="Node" width="2760">
+   </BOUNDS>
+   <BOUNDS height="390" left="5940" top="3030" type="Box" width="2715">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2. Read some values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="28" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5940" top="3405" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="2280" left="5940" top="3405" type="Box" width="4680">
+   </BOUNDS>
+   <BOUNDS height="160" left="1200" top="1200" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|To read data out of MySQL Tables, you need to know a bit more about SQL syntax. An overview can be found at http://www.w3schools.com/sql/sql_select.asp&cr;&lf;We just want to read out all the data we have inserted into our table.&cr;&lf;To specify the fields, you need to create output pins of the &quot;Select&quot; node. To do this, you need to open the Inspector (STRG-I) and specify the names of the desired fileds in the &quot;SetOutputPins&quot; box. We write &quot;myid, myvalue&quot; (without the double quotes!)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)">
+   <BOUNDS height="0" left="7065" top="7395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3165" top="10740" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="7065" top="7395" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="mytable">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="Tables" srcnodeid="27" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="9915" top="7185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13080" top="11655" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="840" left="9915" top="7185" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|send query|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="SendQuery" srcnodeid="26" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6480" top="6420" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8790" top="10515" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="6480" top="6420" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="*">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="Fields" srcnodeid="25" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
+   <BOUNDS height="270" left="6540" top="6720" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="480" left="6540" top="6720" type="Box" width="915">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|* means: everything|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7125" top="7710" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="525" left="7125" top="7710" type="Box" width="1380">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the table you want to read from|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5865" top="8910" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1410" top="11805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="5865" top="8910" type="Box" width="1710">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input String" linkstyle="VHV" srcnodeid="59" srcpinname="MySQLStatement">
+   <LINKPOINT x="5895" y="8790">
+   </LINKPOINT>
+   <LINKPOINT x="7545" y="8790">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5865" top="9375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1710" top="12105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="5865" top="9375" type="Box" width="2610">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input String" linkstyle="Bezier" srcnodeid="59" srcpinname="MySQLStatus">
+   <LINKPOINT x="7110" y="9105">
+   </LINKPOINT>
+   <LINKPOINT x="6285" y="9015">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8865" top="8955" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1710" top="12105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="8865" top="8955" type="Box" width="660">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="myid">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input String" srcnodeid="59" srcpinname="myid">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="0" left="8865" top="9585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2010" top="12405" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="8865" top="9585" type="Box" width="1860">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="myvalue">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Input String" srcnodeid="59" srcpinname="myvalue">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="16935" top="7275" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3465" top="11040" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="16935" top="7275" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="mytable">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="0" left="17970" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9090" top="10815" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="17970" top="6030" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="270" left="16995" top="7590" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="720" left="16995" top="7590" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the table you want to delete from|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="18210" top="7185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13380" top="11955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="840" left="18210" top="7185" type="Box" width="840">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|send query|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="SendQuery" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Where" srcnodeid="17" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Table" srcnodeid="18" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10935" top="3030" type="Node" width="2760">
+   </BOUNDS>
+   <BOUNDS height="390" left="10935" top="3030" type="Box" width="2715">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|3. Update fields|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="10935" top="3405" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="1590" left="10935" top="3405" type="Box" width="3825">
+   </BOUNDS>
+   <BOUNDS height="160" left="1500" top="1500" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Updating means modifying. To modify values in a table you need to specify a search key (in this case all  entries with myid=123) and what you want to replace (in this case the text in the myvalue field).&cr;&lf;Detailed syntax can be found at http://www.w3schools.com/sql/sql_update.asp&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Update (MySQL)">
+   <BOUNDS height="270" left="10830" top="8400" type="Node" width="4275">
+   </BOUNDS>
+   <PIN pinname="SendQuery" visible="1">
+   </PIN>
+   <PIN pinname="MySQLDataBase" visible="1">
+   </PIN>
+   <PIN pinname="Table" visible="1">
+   </PIN>
+   <PIN pinname="Where" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatement" visible="1">
+   </PIN>
+   <PIN pinname="MySQLStatus" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="14325" top="7185" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13380" top="11955" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="840" left="14325" top="7185" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|send query|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="SendQuery" srcnodeid="11" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="MySQLDataBase" linkstyle="VHV" srcnodeid="60" srcpinname="MySQLDataBase">
+   <LINKPOINT x="5895" y="2970">
+   </LINKPOINT>
+   <LINKPOINT x="10860" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="270" left="16005" top="3030" type="Node" width="2760">
+   </BOUNDS>
+   <BOUNDS height="390" left="16005" top="3030" type="Box" width="2715">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|4. Delete everything|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="16005" top="3405" type="Node" width="3570">
+   </BOUNDS>
+   <BOUNDS height="2385" left="16005" top="3405" type="Box" width="3495">
+   </BOUNDS>
+   <BOUNDS height="160" left="1800" top="1800" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Deleting is easy. Just be careful not to delete something important.&cr;&lf;Detailed syntax can be found at: http://www.w3schools.com/sql/sql_delete.asp|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="11865" top="7860" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3465" top="11040" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="11865" top="7860" type="Box" width="975">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="mytable">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Table" srcnodeid="8" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="0" left="12345" top="6465" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3765" top="11340" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="330" left="12345" top="6465" type="Box" width="2250">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|myvalue = &apos;vvvv for president&apos;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="11190" top="5595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4065" top="11640" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="315" left="11190" top="5595" type="Box" width="1005">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|myid = 123|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Where" linkstyle="VHV" srcnodeid="6" srcpinname="Output String">
+   <LINKPOINT x="11220" y="7710">
+   </LINKPOINT>
+   <LINKPOINT x="14025" y="7710">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Set" linkstyle="Bezier" srcnodeid="7" srcpinname="Output String">
+   <LINKPOINT x="12375" y="7605">
+   </LINKPOINT>
+   <LINKPOINT x="12960" y="7335">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11265" top="5940" type="Node" width="1425">
+   </BOUNDS>
+   <BOUNDS height="270" left="11265" top="5940" type="Box" width="1425">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|WHERE myid =123|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="12465" top="6840" type="Node" width="1890">
+   </BOUNDS>
+   <BOUNDS height="270" left="12465" top="6840" type="Box" width="1890">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SET myvalue = &apos;newvalue&apos;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="10845" top="8895" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="1710" top="12105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="10845" top="8895" type="Box" width="3675">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="14640" top="8895" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2010" top="12405" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="14640" top="8895" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" linkstyle="VHV" srcnodeid="12" srcpinname="MySQLStatement">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="12" srcpinname="MySQLStatus">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="18045" top="6375" type="Node" width="2370">
+   </BOUNDS>
+   <BOUNDS height="510" left="18045" top="6375" type="Box" width="1230">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|nothing means everything here|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11625" top="1260" type="Node" width="705">
+   </BOUNDS>
+   <BOUNDS height="270" left="11625" top="1260" type="Box" width="705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="connect">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

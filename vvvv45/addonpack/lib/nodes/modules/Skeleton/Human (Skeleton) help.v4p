@@ -1,0 +1,51 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Skeleton\Human (Skeleton) help.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="1410" top="1905" width="6120" height="4725">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Human (Skeleton)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="3690" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|A humanoid skeleton with 25 joints compatible with the skeleton as returned by the Kinect2.|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="SelectJoint (Skeleton GUI)" filename="%VVVV%\addonpack\lib\nodes\plugins\SkeletonNodes.dll" nodename="SelectJoint (Skeleton GUI)" componentmode="InAWindow" id="4">
+   <BOUNDS type="Node" left="2610" top="2550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="2550" width="4485" height="5055">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7710" top="1785" width="6240" height="6585">
+   </BOUNDS>
+   <PIN pinname="Skeleton" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Selection">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
+   <NODE id="0" componentmode="Hidden" nodename="Human (Skeleton)" systemname="Human (Skeleton)" filename="%VVVV%\addonpack\lib\nodes\modules\Skeleton\Human (Skeleton).v4p">
+   <BOUNDS type="Node" left="2625" top="1800" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2625" top="1800" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Skeleton" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Skeleton" dstnodeid="4" dstpinname="Skeleton">
+   </LINK>
+   </PATCH>
