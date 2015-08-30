@@ -289,17 +289,19 @@ namespace System.Drawing
         }
 
         public static void DrawCenteredCircle(this Graphics g, Pen pen,
-                              float centerX, float centerY, float radius)
+                              float centerX, float centerY, float size)
         {
+            var radius = size / 2f;
             g.DrawEllipse(pen, centerX - radius, centerY - radius,
-                          radius + radius, radius + radius);
+                          size, size);
         }
 
         public static void FillCenteredCircle(this Graphics g, Brush brush,
-                                      float centerX, float centerY, float radius)
+                                      float centerX, float centerY, float size)
         {
+            var radius = size / 2f;
             g.FillEllipse(brush, centerX - radius, centerY - radius,
-                          radius + radius, radius + radius);
+                          size, size);
         }
     }
 }
