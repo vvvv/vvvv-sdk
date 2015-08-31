@@ -52,6 +52,8 @@ namespace VVVV.Nodes.Texture.HTML
             var settings = new CefBrowserSettings();
             settings.FileAccessFromFileUrls = CefState.Enabled;
             settings.UniversalAccessFromFileUrls = CefState.Enabled;
+            settings.WebGL = CefState.Enabled;
+            settings.WindowlessFrameRate = 60;
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsWindowless(IntPtr.Zero, true);
