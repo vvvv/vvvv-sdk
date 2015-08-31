@@ -29,6 +29,8 @@ namespace VVVV.Nodes.Texture.HTML
         public const string DEFAULT_CONTENT = @"<html><head></head><body bgcolor=""#ffffff""></body></html>";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
+        public const int MIN_FRAME_RATE = 1;
+        public const int MAX_FRAME_RATE = 60;
 
         private volatile bool FEnabled;
         private readonly WebClient FWebClient;
@@ -45,15 +47,26 @@ namespace VVVV.Nodes.Texture.HTML
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
 
-        public HTMLTextureRenderer(ILogger logger)
+        /// <summary>
+        /// Create a new texture renderer.
+        /// </summary>
+        /// <param name="logger">The logger to log to.</param>
+        /// <param name="frameRate">
+        /// The maximum rate in frames per second (fps) that CefRenderHandler::OnPaint will
+        /// be called for a windowless browser. The actual fps may be lower if the browser
+        /// cannot generate frames at the requested rate. The minimum value is 1 and the 
+        /// maximum value is 60 (default 30).
+        /// </param>
+        public HTMLTextureRenderer(ILogger logger, int frameRate)
         {
             Logger = logger;
+            FrameRate = VMath.Clamp(frameRate, MIN_FRAME_RATE, MAX_FRAME_RATE);
 
             var settings = new CefBrowserSettings();
             settings.FileAccessFromFileUrls = CefState.Enabled;
             settings.UniversalAccessFromFileUrls = CefState.Enabled;
             settings.WebGL = CefState.Enabled;
-            settings.WindowlessFrameRate = 60;
+            settings.WindowlessFrameRate = frameRate;
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsWindowless(IntPtr.Zero, true);
@@ -64,6 +77,8 @@ namespace VVVV.Nodes.Texture.HTML
             // Block until browser is created
             FBrowserAttachedEvent.WaitOne();
         }
+
+        public int FrameRate { get; private set; }
 
         internal void Attach(CefBrowser browser)
         {
