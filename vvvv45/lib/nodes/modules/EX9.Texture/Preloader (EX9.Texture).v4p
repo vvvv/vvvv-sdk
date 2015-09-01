@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9.Texture\Preloader (EX9.Texture).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Preloader (EX9.Texture).v4p">
    <BOUNDS height="6000" left="12690" top="8430" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="21" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -14,7 +14,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Layer Out|">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8325" top="615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="8325" top="615" type="Box" width="480">
@@ -80,7 +80,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2880" top="4275" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="2880" top="4275" type="Box" width="480">
@@ -241,6 +241,8 @@
    </PIN>
    <PIN pinname="Short Filenames" visible="1">
    </PIN>
+   <PIN pinname="Update" slicecount="1" visible="1" values="0">
+   </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Mask" srcnodeid="10" srcpinname="Output String">
    </LINK>
@@ -250,7 +252,7 @@
    </LINK>
    <INFO author="vvvv group" description="a simple way to preload all textures of a given directory" tags="image, picture, memory">
    </INFO>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5535" top="750" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="5535" top="750" type="Box" width="480">
@@ -272,7 +274,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Load in Background|">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6255" top="420" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="6255" top="420" type="Box" width="480">
@@ -332,7 +334,7 @@
    </LINK>
    <LINK dstnodeid="2" dstpinname="Input 2" srcnodeid="4" srcpinname="Count">
    </LINK>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5070" top="4395" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="5070" top="4395" type="Box" width="795">
@@ -348,7 +350,7 @@
    </LINK>
    <LINK dstnodeid="13" dstpinname="Input" srcnodeid="7" srcpinname="Short Filenames">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="9405" top="1050" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="240" left="9405" top="1050" type="Box" width="795">
@@ -368,4 +370,8 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Height" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Update">
+   </LINK>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
    </PATCH>
