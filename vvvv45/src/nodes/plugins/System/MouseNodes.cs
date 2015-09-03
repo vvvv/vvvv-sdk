@@ -37,13 +37,46 @@ namespace VVVV.Nodes.Input
                 Help = "Returns the mouse of the current render window.")]
     public class WindowMouseNode : WindowMessageNode, IPluginEvaluate
     {
+        class CycleData
+        {
+            public readonly Point InitialCursorPosition;
+            public readonly Point InitialPosition;
+            public readonly Point ResetPosition;
+            public readonly Point ResetCursorPosition;
+            public Point Position;
+            public Point IncrementalPosition;
+
+            public CycleData(Point position, Size clientArea)
+            {
+                InitialCursorPosition = Cursor.Position;
+                InitialPosition = position;
+                ResetPosition = new Point(
+                    VMath.Clamp(InitialPosition.X, clientArea.Width / 4, 3 * clientArea.Width / 4), 
+                    VMath.Clamp(InitialPosition.Y, clientArea.Height / 4, 3 * clientArea.Height / 4));
+                ResetCursorPosition = InitialCursorPosition.Plus(ResetPosition.Minus(InitialPosition));
+                Position = position;
+                IncrementalPosition = position;
+            }
+        }
+
+        [Input("Cycle On Mouse Down")]
+        public ISpread<bool> CycleEnabledIn;
+
         [Output("Device", IsSingle = true)]
         public ISpread<Mouse> MouseOut;
 
         private PluginContainer FMouseStatesSplitNode;
 
+        bool IsCycleEnabled
+        {
+            get { return CycleEnabledIn.SliceCount > 0 ? CycleEnabledIn[0] : false; }
+        }
+
         protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
         {
+            var pressedButtons = MouseButtons.None;
+            var cycleData = default(CycleData);
+
             var mouseNotifications = windowMessages
                 .Where(e => e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
                 .Select<WMEventArgs, MouseNotification>(e =>
@@ -103,7 +136,71 @@ namespace VVVV.Nodes.Input
                     return null;
                 }
                 )
-                .OfType<MouseNotification>();
+                .OfType<MouseNotification>()
+                .Select(n =>
+                {
+                    if (n.IsMouseDown)
+                        pressedButtons |= ((MouseButtonNotification)n).Buttons;
+                    else if (n.IsMouseUp)
+                        pressedButtons &= ~(((MouseButtonNotification)n).Buttons);
+                    var isCycling = pressedButtons != MouseButtons.None && IsCycleEnabled;
+                    var wasCycling = cycleData != null;
+                    if (isCycling != wasCycling)
+                    {
+                        if (wasCycling)
+                            Cursor.Position = cycleData.InitialCursorPosition;
+                        if (isCycling)
+                            cycleData = new CycleData(n.Position, n.ClientArea);
+                        else
+                            cycleData = default(CycleData);
+                    }
+                    if (isCycling)
+                    {
+                        var position = n.Position;
+                        var delta = new Size(position.X - cycleData.Position.X, position.Y - cycleData.Position.Y);
+                        if (position.X <= 0)
+                        {
+                            position = cycleData.ResetPosition;
+                            delta = Size.Empty;
+                        }
+                        else if (position.X >= n.ClientArea.Width - 1)
+                        {
+                            position = cycleData.ResetPosition;
+                            delta = Size.Empty;
+                        }
+                        if (position.Y <= 0)
+                        {
+                            position = cycleData.ResetPosition;
+                            delta = Size.Empty;
+                        }
+                        else if (position.Y >= n.ClientArea.Height - 1)
+                        {
+                            position = cycleData.ResetPosition;
+                            delta = Size.Empty;
+                        }
+
+                        cycleData.Position = position;
+                        cycleData.IncrementalPosition += delta;
+                        if (position != n.Position)
+                            Cursor.Position = cycleData.ResetCursorPosition;
+                        switch (n.Kind)
+                        {
+                            case MouseNotificationKind.MouseDown:
+                                return new MouseDownNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseDownNotification)n).Buttons);
+                            case MouseNotificationKind.MouseUp:
+                                return new MouseUpNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseUpNotification)n).Buttons);
+                            case MouseNotificationKind.MouseMove:
+                                return new MouseMoveNotification(cycleData.IncrementalPosition, n.ClientArea);
+                            case MouseNotificationKind.MouseWheel:
+                                return new MouseWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseWheelNotification)n).WheelDelta);
+                            case MouseNotificationKind.MouseClick:
+                                return new MouseClickNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseClickNotification)n).Buttons, ((MouseClickNotification)n).ClickCount);
+                            default:
+                                break;
+                        }
+                    }
+                    return n;
+                });
             MouseOut[0] = new Mouse(mouseNotifications);
 
             // Create a mouse states split node for us and connect our mouse out to its mouse in
