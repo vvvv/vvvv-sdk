@@ -62,6 +62,9 @@ namespace VVVV.Nodes.Input
         [Input("Cycle On Mouse Down")]
         public ISpread<bool> CycleEnabledIn;
 
+        [Input("Reset Cursor After Cycle", DefaultBoolean = true)]
+        public ISpread<bool> ResetCursorIn;
+
         [Output("Device", IsSingle = true)]
         public ISpread<Mouse> MouseOut;
 
@@ -70,6 +73,11 @@ namespace VVVV.Nodes.Input
         bool IsCycleEnabled
         {
             get { return CycleEnabledIn.SliceCount > 0 ? CycleEnabledIn[0] : false; }
+        }
+
+        bool ResetCursor
+        {
+            get { return ResetCursorIn.SliceCount > 0 ? ResetCursorIn[0] : false; }
         }
 
         protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
@@ -147,7 +155,7 @@ namespace VVVV.Nodes.Input
                     var wasCycling = cycleData != null;
                     if (isCycling != wasCycling)
                     {
-                        if (wasCycling)
+                        if (wasCycling && ResetCursor)
                             Cursor.Position = cycleData.InitialCursorPosition;
                         if (isCycling)
                             cycleData = new CycleData(n.Position, n.ClientArea);
