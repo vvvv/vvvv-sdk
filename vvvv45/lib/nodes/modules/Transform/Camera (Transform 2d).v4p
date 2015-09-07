@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" scrollx="0" scrolly="0">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" systemname="Camera (Transform 2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\Camera (Transform 2d).v4p" scrollx="0" scrolly="30">
    <BOUNDS type="Window" left="12825" top="1020" width="14190" height="12405">
    </BOUNDS>
    <INFO author="vvvv group" description="Easy to use virtual camera for day to day work with the Renderer (EX9) and 2d scenes." tags="flat">
@@ -167,9 +167,9 @@
    </PIN>
    <PIN pinname="ScaleXY" visible="1">
    </PIN>
-   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="CenterXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0,0">
    </PIN>
    </NODE>
    <LINK srcnodeid="103" srcpinname="Transform Out" dstnodeid="106" dstpinname="Transform In 2">
@@ -191,7 +191,7 @@
    </PIN>
    <PIN pinname="Drag" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="PositionXY" visible="1" slicecount="2" values="-0.791397833055066,-0.147540987266157">
+   <PIN pinname="PositionXY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="OffsetXY" visible="1">
    </PIN>
@@ -756,22 +756,6 @@
    </NODE>
    <LINK srcnodeid="113" srcpinname="Transform Out" dstnodeid="114" dstpinname="Input Node">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="115" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6060" top="2910" width="795" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="6060" top="2910" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="2" values="-0.791397833055066,-0.147540987266157">
-   </PIN>
-   </NODE>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="116">
    <BOUNDS type="Node" left="7755" top="9840" width="100" height="100">
    </BOUNDS>
@@ -816,76 +800,38 @@
    </LINK>
    <LINK srcnodeid="118" srcpinname="Output" dstnodeid="117" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Mouse (Devices Window Cyclic)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" nodename="Mouse (Devices Window Cyclic)" componentmode="Hidden" id="111">
-   <BOUNDS type="Node" left="5550" top="2175" width="100" height="100">
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="120">
+   <BOUNDS type="Node" left="5715" top="1605" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Mouse Wheel" visible="1">
+   <PIN pinname="Cycle On Mouse Down" slicecount="1" values="1">
    </PIN>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
    <PIN pinname="Right Button" visible="1">
    </PIN>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="16500" top="345" width="11430" height="13455">
-   </BOUNDS>
-   <PIN pinname="Reset Cursor" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Caption Filter" visible="1">
+   <PIN pinname="Mouse Wheel" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="111" srcpinname="Mouse Wheel" dstnodeid="109" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="103" dstpinname="TranslateXY" linkstyle="VHV">
-   <LINKPOINT x="5745" y="6015">
+   <LINK srcnodeid="120" srcpinname="PositionXY" dstnodeid="101" dstpinname="PositionXY" linkstyle="VHV">
+   <LINKPOINT x="5975" y="7265">
    </LINKPOINT>
-   <LINKPOINT x="4440" y="6015">
+   <LINKPOINT x="4900" y="7240">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="103" dstpinname="CenterXY" linkstyle="VHV">
-   <LINKPOINT x="5745" y="6120">
+   <LINK srcnodeid="120" srcpinname="PositionXY" dstnodeid="103" dstpinname="CenterXY" linkstyle="VHV">
+   <LINKPOINT x="5975" y="6035">
    </LINKPOINT>
-   <LINKPOINT x="4995" y="6120">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="111" srcpinname="Right Button" dstnodeid="101" dstpinname="Drag" linkstyle="VHV">
-   <LINKPOINT x="6390" y="7320">
-   </LINKPOINT>
-   <LINKPOINT x="4665" y="7320">
+   <LINKPOINT x="4930" y="6010">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="101" dstpinname="PositionXY" linkstyle="VHV">
-   <LINKPOINT x="5745" y="7410">
+   <LINK srcnodeid="120" srcpinname="PositionXY" dstnodeid="103" dstpinname="TranslateXY" linkstyle="VHV">
+   <LINKPOINT x="5975" y="6050">
    </LINKPOINT>
-   <LINKPOINT x="4965" y="7410">
+   <LINKPOINT x="4375" y="6025">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Enabled" hiddenwhenlocked="1">
+   <LINK srcnodeid="120" srcpinname="Right Button" dstnodeid="101" dstpinname="Drag">
    </LINK>
-   <LINK srcnodeid="111" srcpinname="PositionXY" dstnodeid="115" dstpinname="Y Input Value">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="119" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="5280" top="1470" width="990" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="5280" top="1470" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="2" visible="1" values="Renderer,Preview">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Columns" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="119" srcpinname="Output String" dstnodeid="111" dstpinname="Caption Filter">
+   <LINK srcnodeid="120" srcpinname="Mouse Wheel" dstnodeid="109" dstpinname="Input">
    </LINK>
    </PATCH>

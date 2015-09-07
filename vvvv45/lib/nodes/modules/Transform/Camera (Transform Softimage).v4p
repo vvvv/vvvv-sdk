@@ -1241,7 +1241,7 @@
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="7065" top="2070" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1" slicecount="2" values="-3.16956601355063,1.47909418299457">
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -1430,7 +1430,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (Devices Window Cyclic)" filename="%VVVV%\lib\nodes\modules\Mouse\Mouse (Devices Window Cyclic).v4p" nodename="Mouse (Devices Window Cyclic)" componentmode="Hidden" id="119">
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="119">
    <BOUNDS type="Node" left="7050" top="885" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Device" visible="1">
@@ -1448,6 +1448,8 @@
    <PIN pinname="PositionXY" visible="1">
    </PIN>
    <PIN pinname="Caption Filter" visible="1">
+   </PIN>
+   <PIN pinname="Cycle On Mouse Down" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="122" srcpinname="Y Output Value" dstnodeid="119" dstpinname="Enabled">
@@ -1471,29 +1473,5 @@
    <LINK srcnodeid="119" srcpinname="Middle Button" dstnodeid="72" dstpinname="Input 2" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="119" srcpinname="Right Button" dstnodeid="72" dstpinname="Input 3" hiddenwhenlocked="1">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="123" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6720" top="225" width="870" height="465">
-   </BOUNDS>
-   <BOUNDS type="Node" left="6720" top="225" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="2" visible="1" values="Renderer,Preview">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Columns" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="123" srcpinname="Output String" dstnodeid="119" dstpinname="Caption Filter">
    </LINK>
    </PATCH>
