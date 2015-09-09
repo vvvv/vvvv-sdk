@@ -62,7 +62,7 @@ namespace VVVV.Nodes.Input
         [Input("Cycle On Mouse Down")]
         public ISpread<bool> CycleEnabledIn;
 
-        [Input("Reset Cursor After Cycle", DefaultBoolean = true)]
+        [Input("Reset Cursor After Cycle", DefaultBoolean = false)]
         public ISpread<bool> ResetCursorIn;
 
         [Output("Device", IsSingle = true)]
