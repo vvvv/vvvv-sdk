@@ -155,8 +155,14 @@ namespace VVVV.Nodes.Input
                     var wasCycling = cycleData != null;
                     if (isCycling != wasCycling)
                     {
-                        if (wasCycling && ResetCursor)
-                            Cursor.Position = cycleData.InitialCursorPosition;
+                        if (wasCycling)
+                        {
+                            if (ResetCursor)
+                                Cursor.Position = cycleData.InitialCursorPosition;
+                            else
+                                Cursor.Position = cycleData.InitialCursorPosition.Plus(cycleData.IncrementalPosition.Minus(cycleData.InitialPosition));
+
+                        }
                         if (isCycling)
                             cycleData = new CycleData(n.Position, n.ClientArea);
                         else
