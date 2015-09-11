@@ -300,10 +300,12 @@ namespace VVVV.Nodes
 				try
 				{
 					skeleton = (Skeleton)currInterface;
-				} catch (Exception e) {
+                    rootJoint = (IJoint)skeleton.Root;
+                }
+                catch (Exception e)
+                {
 					FHost.Log(TLogType.Error, e.Message);
 				}
-				rootJoint = (IJoint)skeleton.Root;
 				
 				if (!initialized && configSelectedNames!=null)
 				{
