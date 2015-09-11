@@ -424,7 +424,10 @@ namespace VVVV.Nodes
 		
 		private bool hasClicked(IJoint currJoint, Vector3D mousePos)
 		{
-			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
+            if (!jointPositions.ContainsKey(currJoint.Name))
+                return false;
+            if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5)
+            {
 				bool alreadySelected = false;
 				for (int i=0; i<selectedJoints.Count; i++)
 				{
