@@ -10,10 +10,15 @@ namespace VVVV.Core.Model
         string LocalPath { get; }
         void SaveTo(string path);
         Stream Content { get; set; }
+        Stream ContentOnDisk { get; }
         /// <summary>
         /// This event occurs each time the content of this document changes.
         /// </summary>
         event EventHandler<ContentChangedEventArgs> ContentChanged;
+        /// <summary>
+        /// Raised when the file has been modified by another program.
+        /// </summary>
+        event EventHandler<EventArgs> FileChanged;
         bool IsDirty { get; }
         bool IsReadOnly { get; set; }
     }

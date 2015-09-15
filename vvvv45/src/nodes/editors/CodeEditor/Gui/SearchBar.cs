@@ -9,7 +9,7 @@ using ICSharpCode.TextEditor;
 using ICSharpCode.TextEditor.Document;
 using ICSharpCode.TextEditor.Gui.CompletionWindow;
 
-namespace VVVV.HDE.CodeEditor.Gui.SearchBar
+namespace VVVV.HDE.CodeEditor.Gui
 {
 	public class SearchBar : UserControl
 	{
@@ -34,9 +34,6 @@ namespace VVVV.HDE.CodeEditor.Gui.SearchBar
 			FSearchTextBox.TextChanged += FSearchTextBox_TextChanged;
 			
 			FTextEditorControl.ActiveTextAreaControl.Resize += FTextEditorControl_ActiveTextAreaControl_Resize;
-			
-			// Add ourself to the TextEditorControl
-			FTextEditorControl.Controls.Add(this);
 		}
 
 		protected override void Dispose(bool disposing)

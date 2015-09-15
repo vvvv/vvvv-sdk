@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Caching;
 using System.Collections.Generic;
 using VVVV.Core.Logging;
+using System.Text;
 
 namespace VVVV.Core.Model
 {
@@ -13,13 +14,13 @@ namespace VVVV.Core.Model
             get
             {
                 Content.Position = 0;
-                using (var reader = new LeaveOpenStreamReader(Content))
+                using (var reader = new StreamReader(Content, Encoding.Default, true, 4096, true))
                     return reader.ReadToEnd();
             }
             set
             {
                 var newContent = new MemoryStream();
-                using (var writer = new LeaveOpenStreamWriter(newContent))
+                using (var writer = new StreamWriter(newContent, Encoding.Default, 4096, true))
                     writer.Write(value);
                 Content = newContent;
             }
