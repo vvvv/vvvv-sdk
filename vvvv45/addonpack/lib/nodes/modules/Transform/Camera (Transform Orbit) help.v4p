@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha33.9.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit) help.v4p">
    <BOUNDS type="Window" left="0" top="0" width="11085" height="8190">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -52,32 +52,6 @@
    <PIN pinname="Orbit Movement Velocity" slicecount="1" values="0.02">
    </PIN>
    </NODE>
-   <NODE systemname="Transform (Transform 3d)" nodename="Transform (Transform 3d)" componentmode="Hidden" id="13" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="1650" top="6015" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Pitch" slicecount="1" values="0.25">
-   </PIN>
-   <PIN pinname="ScaleX" visible="1">
-   </PIN>
-   <PIN pinname="ScaleY" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="2280" top="5610" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2280" top="5610" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="20">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="13" dstpinname="ScaleX" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="13" dstpinname="ScaleY" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="8" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="5775" top="6630" width="100" height="100">
    </BOUNDS>
@@ -248,50 +222,6 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="View" dstnodeid="16" dstpinname="View">
    </LINK>
-   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="15" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="1335" top="6525" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Geometry" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="15" dstpinname="Transform" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="Grid (EX9.Geometry)" filename="" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="14" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="1500" top="5595" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Geometry Out" visible="1">
-   </PIN>
-   <PIN pinname="Resolution X" slicecount="1" values="20">
-   </PIN>
-   <PIN pinname="Resolution Y" slicecount="1" values="20">
-   </PIN>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="14" srcpinname="Mesh" dstnodeid="15" dstpinname="Mesh" hiddenwhenlocked="1">
-   </LINK>
-   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="35" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="1335" top="5190" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Render State Out" visible="1">
-   </PIN>
-   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="35" srcpinname="Render State Out" dstnodeid="15" dstpinname="Render State" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="16" dstpinname="Layers" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="16" srcpinname="Actual Backbuffer Width" dstnodeid="8" dstpinname="Aspect Width" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="16" srcpinname="Actual Backbuffer Height" dstnodeid="8" dstpinname="Aspect Height" hiddenwhenlocked="1">
@@ -310,6 +240,14 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="34.100.0">
    </PACK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="1335" top="6465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
+   </LINK>
    </PATCH>
