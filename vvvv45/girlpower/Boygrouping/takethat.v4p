@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha14.1.dtd" >
-   <PATCH bgcolor="14145495" nodename="Y:\vvvv33_trunk\girlpower\takethat.v4p">
-   <BOUNDS height="10425" left="855" top="5145" type="Window" width="9660">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Boygrouping\takethat.v4p" bgcolor="14145495">
+   <BOUNDS height="10425" left="855" top="4845" type="Window" width="9660">
    </BOUNDS>
    <NODE id="15" nodename="QUAD (DX9)">
    <BOUNDS height="0" left="5805" top="8565" type="Node" width="0">
@@ -46,7 +46,7 @@
    </NODE>
    <LINK dstnodeid="14" dstpinname="TranslateX" srcnodeid="12" srcpinname="Output">
    </LINK>
-   <NODE id="-2" nodename="Boygroup (VVVV Client)">
+   <NODE id="16" nodename="Boygroup (VVVV Client)">
    <BOUNDS height="0" left="3240" top="7185" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="ClientID" visible="1">
@@ -108,22 +108,32 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="-2" srcpinname="ClientID">
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="16" srcpinname="ClientID">
    </LINK>
    <LINK dstnodeid="13" dstpinname="TranslateX" srcnodeid="8" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="7" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="3135" top="9360" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="855" top="285" type="Window" width="6120">
+   <BOUNDS height="4860" left="840" top="0" type="Window" width="6120">
    </BOUNDS>
    <BOUNDS height="1800" left="3135" top="9360" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="15" srcpinname="Layer">
@@ -160,7 +170,7 @@
    </NODE>
    <LINK dstnodeid="5" dstpinname="Go To Position" srcnodeid="4" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2850" top="6645" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4125" top="12210" type="Window" width="215">
@@ -172,7 +182,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="-2" dstpinname="ServerID" srcnodeid="3" srcpinname="Y Output Value">
+   <LINK dstnodeid="16" dstpinname="ServerID" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="270" left="3375" top="6645" type="Node" width="5115">
@@ -189,13 +199,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
-   <BOUNDS height="270" left="3615" top="720" type="Node" width="4080">
+   <BOUNDS height="270" left="4095" top="1515" type="Node" width="4080">
    </BOUNDS>
-   <BOUNDS height="690" left="3615" top="720" type="Box" width="4080">
+   <BOUNDS height="255" left="4095" top="1515" type="Box" width="450">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|read &cr;&lf;http://vvvv.org/tiki-index.php?page=Boygrouping&cr;&lf;for an introduction to synchronized dancing|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|read |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -216,8 +226,38 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="7" dstpinname="View Transform" srcnodeid="13" srcpinname="Transform Out">
+   <LINK dstnodeid="7" dstpinname="View" srcnodeid="13" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="12" dstpinname="Input" srcnodeid="5" srcpinname="Position Out">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4095" top="1785" width="3375" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4095" top="1785" width="3375" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://vvvv.org/documentation/boygrouping">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4095" top="2055" width="3300" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4095" top="2055" width="3300" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|for an introduction to synchronized dancing|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
    </PATCH>
