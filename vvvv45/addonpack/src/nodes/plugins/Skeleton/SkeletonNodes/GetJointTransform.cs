@@ -1,41 +1,8 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 
 //the vvvv node namespace
@@ -61,22 +28,14 @@ namespace VVVV.Nodes
     	public static int OUTPUT_MODE_STATIC = 1;
     	
     	private ITransformOut FTransformOutput;
-    	private Skeleton inputSkeleton;
-    	private List<string> jointNames;
-    	private int outputMode;
-    	private bool jointsSelected = false;
-    	
-    	
+    	private Skeleton FSkeleton;
+    	private List<string> FJointNames;
+    	private int FOutputMode;
+    	private bool FJointsSelected = false;
+
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public GetJointTransform()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -198,28 +157,20 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
-	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
 
-	    	//create inputs
-	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
+            //create inputs
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+            FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
-	    	
 	    	FHost.CreateTransformInput("Inverse Bind Pose", TSliceMode.Dynamic, TPinVisibility.True, out FInverseBindPoseInput);
-	    	
 	    	FHost.UpdateEnum("SkinningMatricesOutputMode", "Dynamic", new string[]{"Dynamic", "Fixed to 60"});
 	    	FHost.CreateEnumInput("Output Transform Count", TSliceMode.Single, TPinVisibility.True, out FOutputModeInput);
 	    	FOutputModeInput.SetSubType("SkinningMatricesOutputMode");
-	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
 	    	// create outputs
-	    	
 	    	FHost.CreateTransformOutput("Transform", TSliceMode.Dynamic, TPinVisibility.True, out FTransformOutput);
-	    	
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -243,18 +194,18 @@ namespace VVVV.Nodes
         	
         	if (FJointNameInput.PinIsChanged)
         	{
-        		jointNames = new List<string>();
+        		FJointNames = new List<string>();
         		string jointName;
         		for (int i=0; i<FJointNameInput.SliceCount; i++)
         		{
         			FJointNameInput.GetString(i, out jointName);
-        			jointNames.Add(jointName);
+        			FJointNames.Add(jointName);
         		}
         		recalculate = true;
-        		if (jointNames.Count==1 && string.IsNullOrEmpty(jointNames[0]))
-        			jointsSelected = false;
+        		if (FJointNames.Count==1 && string.IsNullOrEmpty(FJointNames[0]))
+        			FJointsSelected = false;
         		else
-        			jointsSelected = true;
+        			FJointsSelected = true;
         	}
         	
         	if (FSkeletonInput.PinIsChanged)
@@ -263,23 +214,23 @@ namespace VVVV.Nodes
         		{
 	        		object currInterface;
 	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
-	        		inputSkeleton = (Skeleton)currInterface;
+	        		FSkeleton = (Skeleton)currInterface;
 	        		
 	        		// if there are no specific joints selected via input pin, collect them all
-	        		if (jointNames==null || !jointsSelected)
+	        		if (FJointNames==null || !FJointsSelected)
 	        		{
-	        			jointNames = new List<string>();
-	        			foreach (KeyValuePair<string, IJoint> pair in inputSkeleton.JointTable)
+	        			FJointNames = new List<string>();
+	        			foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
 	        			{
 	        				// Only add those with a valid array index.
 	    					// It's not a must that all bones are used as skinning matrices.
 	        				if (pair.Value.Id >= 0)
-	        					jointNames.Add(pair.Key);
+	        					FJointNames.Add(pair.Key);
 	        			}
 	        		}
         		}
         		else
-        			inputSkeleton = null;
+        			FSkeleton = null;
         		recalculate = true;
         	}
         	
@@ -290,29 +241,29 @@ namespace VVVV.Nodes
         	
         	if (FOutputModeInput.PinIsChanged)
         	{
-        		FOutputModeInput.GetOrd(0, out outputMode);
+        		FOutputModeInput.GetOrd(0, out FOutputMode);
         		recalculate = true;
         	}
         	
-        	if (recalculate && inputSkeleton!=null)
+        	if (recalculate && FSkeleton!=null)
         	{
-        		inputSkeleton.CalculateCombinedTransforms();
+        		FSkeleton.CalculateCombinedTransforms();
         		int jointCount;
-        		if (outputMode == OUTPUT_MODE_DYNAMIC)
-        			jointCount = jointNames.Count;
+        		if (FOutputMode == OUTPUT_MODE_DYNAMIC)
+        			jointCount = FJointNames.Count;
         		else
         			jointCount = 60;
         		FTransformOutput.SliceCount = jointCount;
         		IJoint currJoint;
         		Matrix4x4 currIBPMatrix;
         		int i=0;
-        		for (i=0; i<jointNames.Count; i++)
+        		for (i=0; i<FJointNames.Count; i++)
         		{
-        			currJoint = inputSkeleton.JointTable[jointNames[i]];
+        			currJoint = FSkeleton.JointTable[FJointNames[i]];
         			if (currJoint!=null)
         			{
         				int sliceIndex;
-        				if (outputMode == OUTPUT_MODE_STATIC)
+        				if (FOutputMode == OUTPUT_MODE_STATIC)
         					sliceIndex = currJoint.Id;
         				else
         					sliceIndex = i;
@@ -327,18 +278,9 @@ namespace VVVV.Nodes
         			FTransformOutput.SetMatrix(j, VMath.IdentityMatrix);
         		}
         	}
-        
         }
-             
-        #endregion mainloop  
-        
-        #region helper
-        
 
-        
-        #endregion helper
-        
-        
-        
-	}
+        #endregion mainloop
+
+    }
 }

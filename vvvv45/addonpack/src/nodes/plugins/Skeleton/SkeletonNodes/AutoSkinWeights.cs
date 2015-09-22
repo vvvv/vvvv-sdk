@@ -1,42 +1,9 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 
 //the vvvv node namespace
@@ -61,21 +28,14 @@ namespace VVVV.Nodes
     	private IValueOut FBindIndicesOutput;
     	private IValueOut FIndicesOutput;
     	
-    	private Skeleton skeleton;
-    	private List<Vector3D> vertices;
-    	private Dictionary<int, Dictionary<int,double>> skinWeights;
+    	private Skeleton FSkeleton;
+    	private List<Vector3D> FVertices = new List<Vector3D>();
+    	private Dictionary<int, Dictionary<int, double>> FSkinWeights = new Dictionary<int, Dictionary<int, double>>();
     	
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public AutoSkinWeights()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			vertices = new List<Vector3D>();
-		}
-        
+
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
         // A derived class should not be able to override this method.
@@ -197,31 +157,22 @@ namespace VVVV.Nodes
         	//assign host
 	    	FHost = Host;
 	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-
 	    	//create inputs
 	    	String[] dimensions = new String[3];
 	    	FHost.CreateValueFastInput("Vertices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVerticesInput);
-	    	
-	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonInput);
+
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+            FHost.CreateNodeInput("Skeleton", TSliceMode.Dynamic, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
 	    	
 	    	FHost.CreateValueFastInput("Apply", 1, null, TSliceMode.Single, TPinVisibility.True, out FApplyInput);
 	    	FApplyInput.SetSubType(0,1,1,0,true, false, true);
 	    	
 	    	// create outputs
-	    	
 			FHost.CreateValueOutput("Bind Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBindIndicesOutput);
-	    	
 	    	FHost.CreateValueOutput("Skin Weights", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSkinWeightsOutput);
-	    	
 	    	FHost.CreateValueOutput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIndicesOutput);
-	    	
-	
-	    	
-	    
-	    	
         }
 
         #endregion pin creation
@@ -241,20 +192,18 @@ namespace VVVV.Nodes
         	//if any of the inputs has changed
         	//recompute the outputs
         	
-        	if (vertices.Count!=FVerticesInput.SliceCount/3)
+        	if (FVertices.Count != FVerticesInput.SliceCount / 3)
         	{
-        		vertices.Clear();
+        		FVertices.Clear();
         		double x, y, z;
-	        	for (int i=0; i<FVerticesInput.SliceCount-2; i+=3)
+	        	for (int i = 0; i < FVerticesInput.SliceCount - 2; i += 3)
 	        	{
 	        		FVerticesInput.GetValue(i, out x);
 	        		FVerticesInput.GetValue(i+1, out y);
 	        		FVerticesInput.GetValue(i+2, out z);
-	        		vertices.Add(new Vector3D(x,y,z));
+	        		FVertices.Add(new Vector3D(x,y,z));
 	        	}
         	}
-        	
-        	
         	
         	if (FSkeletonInput.PinIsChanged)
         	{
@@ -262,32 +211,33 @@ namespace VVVV.Nodes
         		{
 	        		object currInterface;
 	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
-	        		skeleton = (Skeleton)currInterface;
+	        		FSkeleton = (Skeleton)currInterface;
         		}
         	}
+
         	double apply;
         	FApplyInput.GetValue(0, out apply);
-        	if (apply==1 && skeleton!=null)
+        	if (apply == 1 && FSkeleton != null)
         	{
-        		skeleton.CalculateCombinedTransforms();
-        		skinWeights = new Dictionary<int, Dictionary<int,double>>();
+        		FSkeleton.CalculateCombinedTransforms();
+                FSkinWeights.Clear();
         		Vector3D origin = new Vector3D(0);
         		double d;
-        		for (int i=0; i<vertices.Count; i++)
+        		for (int i = 0; i < FVertices.Count; i++)
         		{
-        			IJoint nearest = getNearestBone(vertices[i], skeleton.Root, out d);
+        			IJoint nearest = getNearestBone(FVertices[i], FSkeleton.Root, out d);
         			Dictionary<int, double> jointWeights = new Dictionary<int, double>();
         			jointWeights.Add(nearest.Id, 1.0);
-        			skinWeights.Add(i, jointWeights);
+        			FSkinWeights.Add(i, jointWeights);
         			
         		}
         	
 	        	int sliceNum = 0;
-				for (int i=0; i<vertices.Count; i++)
+				for (int i = 0; i < FVertices.Count; i++)
 				{
-					if (!skinWeights.ContainsKey(i))
+					if (!FSkinWeights.ContainsKey(i))
 						continue;
-					IDictionaryEnumerator boneEnum = skinWeights[i].GetEnumerator();
+					IDictionaryEnumerator boneEnum = FSkinWeights[i].GetEnumerator();
 					while (boneEnum.MoveNext())
 					{
 						FIndicesOutput.SliceCount = sliceNum+1;
@@ -299,14 +249,7 @@ namespace VVVV.Nodes
 						sliceNum++;
 					}
 				}
-        		
         	}
-        	
-        	
-        	
-        	
-        	
-        	
         }
              
         #endregion mainloop  
@@ -356,9 +299,6 @@ namespace VVVV.Nodes
 		        	vxw.z = v.x*w.y - v.y*w.x;
 		        	distBone = VMath.Min(distBone, System.Math.Sqrt(vxw.x*vxw.x + vxw.y*vxw.y + vxw.z*vxw.z) / System.Math.Sqrt(v.x*v.x + v.y*v.y + v.z*v.z));
 	        	}
-	        	
-	        	
-	        	
         	}
 
 		    nearestDistance = 1000000;
@@ -382,11 +322,7 @@ namespace VVVV.Nodes
         		return currJoint;
 		    }
         }
-        
-        
+  
         #endregion helper
-        
-        
-        
 	}
 }
