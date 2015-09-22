@@ -25,7 +25,7 @@ namespace VVVV.Nodes
     	
     	private INodeOut FSkeletonOutput;
 
-    	private Skeleton Fskeleton;
+    	private Skeleton FSkeleton;
     	
     	#endregion field declaration
        
@@ -200,47 +200,51 @@ namespace VVVV.Nodes
         	
         	if (FJointNameInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FOffsetModeInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
-        		Fskeleton = new Skeleton();
+        		FSkeleton = new Skeleton();
         		
         		int currId = 0;
         		for (int i=0; i<FJointNameInput.SliceCount; i++)
         		{
         			string jointName;
-        			string parentName;
         			FJointNameInput.GetString(i%FJointNameInput.SliceCount, out jointName);
-        			FParentNameInput.GetString(i%FParentNameInput.SliceCount, out parentName);
-        			IJoint currJoint = new JointInfo(jointName);
-        			Matrix4x4 baseTransform;
-        			FBaseTransformInput.GetMatrix(i%FBaseTransformInput.SliceCount, out baseTransform);
-        			currJoint.BaseTransform = baseTransform; //VMath.Translate(basePositionX, basePositionY, basePositionZ);
-        			currJoint.Constraints.Clear();
-        			for (int j=i*3; j<i*3+3; j++)
-		        	{
-		        		double constraintMin, constraintMax;
-		        		FConstraintsInput.GetValue2D(j%FConstraintsInput.SliceCount, out constraintMin, out constraintMax);
-		        		currJoint.Constraints.Add(new Vector2D(constraintMin, constraintMax));
-		        	}
+                    if (!string.IsNullOrEmpty(jointName))
+                    {
+                        string parentName;
+                        FParentNameInput.GetString(i % FParentNameInput.SliceCount, out parentName);
+                        IJoint currJoint = new JointInfo(jointName);
+                        Matrix4x4 baseTransform;
+                        FBaseTransformInput.GetMatrix(i % FBaseTransformInput.SliceCount, out baseTransform);
+                        currJoint.BaseTransform = baseTransform; //VMath.Translate(basePositionX, basePositionY, basePositionZ);
 
-        			if (string.IsNullOrEmpty(parentName))
-        			{
-        				if (Fskeleton.Root==null)
-        				{
-        			    	Fskeleton.Root = currJoint;
-        			    	currJoint.Id = currId;
-        			    	currId++;
-        					Fskeleton.BuildJointTable();
-        				}
-        			}
-        			else
-        			{
-        				if (Fskeleton.JointTable.ContainsKey(parentName))
-        				{
-        					currJoint.Parent = Fskeleton.JointTable[parentName];
-        					currJoint.Id = currId;
-        			    	currId++;
-        				}
-        				Fskeleton.BuildJointTable();
-        			}
+                        currJoint.Constraints.Clear();
+                        for (int j = i * 3; j < i * 3 + 3; j++)
+                        {
+                            double constraintMin, constraintMax;
+                            FConstraintsInput.GetValue2D(j % FConstraintsInput.SliceCount, out constraintMin, out constraintMax);
+                            currJoint.Constraints.Add(new Vector2D(constraintMin, constraintMax));
+                        }
+
+                        if (string.IsNullOrEmpty(parentName))
+                        {
+                            if (FSkeleton.Root == null)
+                            {
+                                FSkeleton.Root = currJoint;
+                                currJoint.Id = currId;
+                                currId++;
+                                FSkeleton.BuildJointTable();
+                            }
+                        }
+                        else
+                        {
+                            if (FSkeleton.JointTable.ContainsKey(parentName))
+                            {
+                                currJoint.Parent = FSkeleton.JointTable[parentName];
+                                currJoint.Id = currId;
+                                currId++;
+                            }
+                            FSkeleton.BuildJointTable();
+                        }
+                    }
         		}
         		
         		int positionInWorldSpace = 0;
@@ -248,7 +252,7 @@ namespace VVVV.Nodes
         		if (positionInWorldSpace>0)
     			{
         			List<Vector3D> offsetList = new List<Vector3D>();
-    				foreach (KeyValuePair<string, IJoint> pair in Fskeleton.JointTable)
+    				foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
     				{
     					Vector3D worldPos = pair.Value.BaseTransform * (new Vector3D(0));
     					Vector3D parentWorldPos;
@@ -260,7 +264,7 @@ namespace VVVV.Nodes
     					offsetList.Add(offset);
     				}
     				int i=0;
-    				foreach (KeyValuePair<string, IJoint> pair in Fskeleton.JointTable)
+    				foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
     				{
     					pair.Value.BaseTransform = VMath.Translate(offsetList[i]);
     					i++;
@@ -270,7 +274,7 @@ namespace VVVV.Nodes
         		FSkeletonOutput.MarkPinAsChanged();
         	}
         	
-        	FSkeletonOutput.SetInterface(Fskeleton);
+        	FSkeletonOutput.SetInterface(FSkeleton);
         }
 
         #endregion mainloop
