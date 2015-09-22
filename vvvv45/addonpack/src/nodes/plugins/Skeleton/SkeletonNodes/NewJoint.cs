@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.VMath;
 using VVVV.SkeletonInterfaces;
+using System.Linq;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -29,8 +30,6 @@ namespace VVVV.Nodes
 		private ISkeleton FSkeleton;
 		private IJoint FRootJoint;
 		private List<INodeIn> FChildPins;
-    
-    	private bool initialized = false;
     	
     	#endregion field declaration
        
@@ -233,23 +232,19 @@ namespace VVVV.Nodes
         {     	
         	//if any of the inputs has changed
         	//recompute the outputs
-        	if (FJointNameInput.PinIsChanged || !initialized)
+        	if (FJointNameInput.PinIsChanged)
         	{
         		string name;
         		FJointNameInput.GetString(0, out name);
-        		FRootJoint.Name = name;
-        		FSkeleton.BuildJointTable();
-        		FSkeletonOutput.MarkPinAsChanged();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    FRootJoint.Name = name;
+                    FSkeleton.BuildJointTable();
+                    FSkeletonOutput.MarkPinAsChanged();
+                }
         	}
         	
-        	bool childrenChanged = false;
-        	for (int i=0; i<FChildPins.Count; i++)
-        	{
-        		if (FChildPins[i].PinIsChanged)
-        			childrenChanged = true;
-        	}
-        	
-        	if (childrenChanged)
+        	if (FChildPins.Any(c => c.PinIsChanged))
         	{
 	        	FSkeleton.ClearAll();
 	        	FSkeleton.Root = FRootJoint;
@@ -302,8 +297,6 @@ namespace VVVV.Nodes
         	}
         
         	FSkeletonOutput.SetInterface(FSkeleton);
-        	
-        	initialized = true;
         }
              
         #endregion mainloop  
