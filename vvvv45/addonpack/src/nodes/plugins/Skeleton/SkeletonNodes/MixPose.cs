@@ -276,10 +276,10 @@ namespace VVVV.Nodes
 	        	}
             }
         	
-        	if (recalculate)
+        	if (recalculate && (FPoses[0] != null))
         	{
         		// the following would be much nicer, if mixJoints() would take a dynamic number of poses and amounts
-        		if (FOutputJoint==null)
+        		if (FOutputJoint == null)
         		{
         			FOutputJoint = FPoses[0].DeepCopy();
         			FSkeleton.Root = FOutputJoint;
@@ -287,6 +287,7 @@ namespace VVVV.Nodes
         		}
         		else
         			copyAttributes(FPoses[0], FOutputJoint);
+
         		double amount = FAmounts[0];
         		IJoint interimPose;
         		for (int i=0; i<FPoses.Count-1; i++)
