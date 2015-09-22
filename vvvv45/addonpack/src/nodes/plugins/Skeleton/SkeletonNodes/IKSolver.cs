@@ -264,8 +264,9 @@ namespace VVVV.Nodes
         	
         	if (FVelocityInput.PinIsChanged)
         	{
-        		double x;
-        		FVelocityInput.GetValue(0, out x);
+        		double x = 1;
+                if (FVelocityInput.SliceCount > 0)
+                    FVelocityInput.GetValue(0, out x);
         		iterationsPerFrame = (int)(x*10);
         	}
         	
@@ -274,23 +275,27 @@ namespace VVVV.Nodes
 	        	if (FTargetInput.PinIsChanged)
 	        	{
 	        		targetPosW = new Vector3D();
-	        		FTargetInput.GetValue3D(0, out targetPosW.x, out targetPosW.y, out targetPosW.z);
+                    if (FTargetInput.SliceCount > 0)
+	        		    FTargetInput.GetValue3D(0, out targetPosW.x, out targetPosW.y, out targetPosW.z);
 	        		recalculate = true;
 	        	}
 	        	
 	        	if (FEpsilonInput.PinIsChanged)
 	        	{
-	        		FEpsilonInput.GetValue(0, out epsilon);
+                    if (FEpsilonInput.SliceCount > 0)
+                        FEpsilonInput.GetValue(0, out epsilon);
 	        		recalculate = true;
 	        	}
 	        	
 	        	if (FPoleTargetInput.PinIsChanged || FEnablePoleTargetInput.PinIsChanged)
 	        	{
-	        		double x;
-	        		FEnablePoleTargetInput.GetValue(0, out x);
+	        		double x = 0;
+                    if (FEnablePoleTargetInput.SliceCount > 0)
+                        FEnablePoleTargetInput.GetValue(0, out x);
 	        		enablePoleTarget = x>0.0;
 	        		poleTargetW = new Vector3D();
-	        		FPoleTargetInput.GetValue3D(0, out poleTargetW.x, out poleTargetW.y, out poleTargetW.z);
+                    if (FPoleTargetInput.SliceCount > 0)
+                        FPoleTargetInput.GetValue3D(0, out poleTargetW.x, out poleTargetW.y, out poleTargetW.z);
 	        		recalculateOrientation = true;
 	        	}
 	        	
@@ -373,7 +378,8 @@ namespace VVVV.Nodes
 	        	if (!enablePoleTarget)
 	        		chainRotation = VMath.IdentityMatrix;
 	        	
-	        	FOutputSkeleton.JointTable[chainStart].AnimationTransform = chainRotation * FOutputSkeleton.JointTable[chainStart].AnimationTransform;
+                if (FOutputSkeleton != null)
+	        	    FOutputSkeleton.JointTable[chainStart].AnimationTransform = chainRotation * FOutputSkeleton.JointTable[chainStart].AnimationTransform;
         	}
         	
         	FPoseOutput.SetInterface(FOutputSkeleton);
