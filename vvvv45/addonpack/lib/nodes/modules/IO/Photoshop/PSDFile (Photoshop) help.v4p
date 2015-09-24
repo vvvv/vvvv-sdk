@@ -41,7 +41,7 @@
    </PIN>
    <PIN pinname="Layer Name" visible="1">
    </PIN>
-   <PIN pinname="Alignment" slicecount="1" values="FitIn" visible="1">
+   <PIN pinname="Alignment" slicecount="1" visible="1" values="FitIn">
    </PIN>
    </NODE>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="4">
@@ -70,6 +70,8 @@
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.03041,0.90251,0.99444,1.00000|">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
@@ -227,9 +229,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6435" top="1890" width="4590" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6435" top="1890" width="3810" height="2550">
+   <BOUNDS type="Box" left="6435" top="1890" width="4110" height="2925">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Usage:&cr;&lf;&cr;&lf;1) Use the &quot;ExportLayerCoordinatesToXML.jsx&quot; script to export layer infos&cr;&lf;&cr;&lf;2) Use the &quot;ExportLayersToFiles.jsx&quot; script to export the individual layers as to a directory with the same name as your .xml file&cr;&lf;&cr;&lf;3) Load the .xml file here (Note: it has to be placed right next to the directory containing all the layers)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Usage:&cr;&lf;&cr;&lf;1) Use the &quot;ExportLayerCoordinatesToXML.jsx&quot; script to export layer infos to an .xml file&cr;&lf;&cr;&lf;2) Use the &quot;ExportLayersToFiles.jsx&quot; script to export the individual layers as to a directory with the same name as your .xml file. Here make sure to leave the &quot;Prefix&quot; blank and have &quot;Transparency&quot; and &quot;Crop Layers&quot; checked.&cr;&lf;&cr;&lf;3) Make sure the .xml file has the same name as the directory that holds all the .pngs and also that it is placed right next to it. Then Load it in the &quot;Filename&quot; pin.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -300,6 +302,32 @@
    <BOUNDS type="Box" left="6510" top="840" width="1230" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|For scripts see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="23" systemname="IOBox (Color)">
+   <BOUNDS type="Box" left="1530" top="6480" width="345" height="300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1530" top="6480" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.03041,0.90251,0.99444,1.00000|">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Color Output" dstnodeid="6" dstpinname="Background Color">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6420" top="5055" width="4215" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6420" top="5055" width="4230" height="780">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note:&cr;&lf;&cr;&lf;Don&apos;t use spaces in your layers names. Use - or _ instead.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
