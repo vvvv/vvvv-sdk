@@ -238,7 +238,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly T FDefaultValue;
-        private MemoryIOStream<T> FUpstreamStream;
+        private IInStream<T> FUpstreamStream;
         private int FLength;
         private int* FUpStreamSlices;
 
@@ -261,8 +261,8 @@ namespace VVVV.Hosting.IO.Streams
 
         public IStreamReader<T> GetReader()
         {
-            if (FNodeIn.IsConvoluted)
-                return new ConvolutedReader(FUpstreamStream, FLength, FUpStreamSlices);
+            if (FNodeIn.IsConvoluted && FUpstreamStream is MemoryIOStream<T>)
+                return new ConvolutedReader(FUpstreamStream as MemoryIOStream<T>, FLength, FUpStreamSlices);
             return FUpstreamStream.GetReader();
         } 
 
@@ -283,11 +283,13 @@ namespace VVVV.Hosting.IO.Streams
             {
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
+
                 FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
                 // Check fastest way first: TUpstream == T 
                 var wrapper = usI as DynamicTypeWrapper;
                 if (wrapper != null)
                     usI = wrapper.Value;
+
                 FUpstreamStream = usI as MemoryIOStream<T>;
                 if (FUpstreamStream == null)
                 {
@@ -313,6 +315,10 @@ namespace VVVV.Hosting.IO.Streams
                                     writer.Write(FDefaultValue);
                         }
                     }
+                }
+                else
+                {
+                    // general IInStream<T>
                 }
             }
             return IsChanged;

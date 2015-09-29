@@ -41,10 +41,14 @@ namespace VVVV.Utils.IO
 
     public class KeyDownNotification : KeyCodeNotification
     {
-        public KeyDownNotification(Keys keyCode)
-            : base(KeyNotificationKind.KeyDown, keyCode)
+        public KeyDownNotification(KeyEventArgs args)
+            : base(KeyNotificationKind.KeyDown, args.KeyCode)
         {
+            origArgs = args;
         }
+        KeyEventArgs origArgs;
+
+        public bool Handled { get { return origArgs.Handled; } set { origArgs.Handled = value; } } 
     }
 
     public class KeyPressNotification : KeyNotification
