@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\vvvv50\demos\Editors\BezierPatch (EX9.Geometry 2d) .v4p" componentmode="InAWindow" systemname="BezierPatch (EX9.Geometry 3d)" filename="C:\Users\joreg\Documents\repos\vvvv\vvvv50\demos\Editors\BezierPatch (EX9.Geometry 3d).v4p" scrollx="3660" scrolly="0">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\EX9.Geometry\BezierPatch (EX9.Geometry 2d) .v4p" componentmode="InAWindow" systemname="BezierPatch (EX9.Geometry 3d)" filename="C:\Users\joreg\Documents\repos\vvvv\vvvv50\demos\Editors\BezierPatch (EX9.Geometry 3d).v4p" scrollx="3660" scrolly="0">
    <BOUNDS height="13425" left="14400" top="1695" type="Window" width="13170">
    </BOUNDS>
    <NODE id="43" nodename="B-Spline (Value)" systemname="B-Spline (Value)">
@@ -25,7 +25,7 @@
    </PIN>
    <PIN pinname="Spread Count" visible="1" slicecount="1" values="7">
    </PIN>
-   <PIN pinname="Alignment" slicecount="1" values="Block">
+   <PIN pinname="Alignment" slicecount="1" values="Block" visible="1">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="0.5">
    </PIN>
@@ -101,7 +101,7 @@
    </PIN>
    <PIN pinname="Spread Count" visible="1" slicecount="1" values="7">
    </PIN>
-   <PIN pinname="Alignment" slicecount="1" values="Block">
+   <PIN pinname="Alignment" slicecount="1" values="Block" visible="1">
    </PIN>
    <PIN pinname="Input" slicecount="1" values="0.5">
    </PIN>
@@ -171,11 +171,11 @@
    <LINK dstnodeid="40" dstpinname="Texture Coordinate 0 XY" srcnodeid="31" srcpinname="XY">
    </LINK>
    <NODE componentmode="InABox" id="29" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="0" left="12210" top="6480" type="Node" width="0">
+   <BOUNDS height="0" left="12780" top="7365" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12870" top="8760" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="12210" top="6480" type="Box" width="840">
+   <BOUNDS height="240" left="12780" top="7365" type="Box" width="840">
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
@@ -235,6 +235,8 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Alignment" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="91" srcpinname="Output" dstnodeid="43" dstpinname="Control">
    </LINK>
@@ -246,6 +248,8 @@
    <PIN pinname="Input" slicecount="1" values="0.5">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="92" srcpinname="Output" dstnodeid="37" dstpinname="Control">
@@ -473,5 +477,55 @@
    <LINK srcnodeid="118" srcpinname="Output" dstnodeid="119" dstpinname="XY">
    </LINK>
    <LINK srcnodeid="119" srcpinname="XYZ" dstnodeid="1" dstpinname="Control XYZ">
+   </LINK>
+   <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="120">
+   <BOUNDS type="Node" left="5325" top="8625" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Output" dstnodeid="120" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="122" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5910" top="9420" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5910" top="9420" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="120" srcpinname="Width" dstnodeid="122" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="123" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="12660" top="5205" width="720" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12660" top="5205" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Block">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="123" srcpinname="Output Enum" dstnodeid="91" dstpinname="Alignment">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output Enum" dstnodeid="92" dstpinname="Alignment">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output Enum" dstnodeid="36" dstpinname="Alignment">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output Enum" dstnodeid="42" dstpinname="Alignment">
    </LINK>
    </PATCH>
