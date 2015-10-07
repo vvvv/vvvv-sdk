@@ -333,12 +333,28 @@ namespace VVVV.Nodes
 				var values = "";
 				foreach(var v in message.Values)
 				{
-					if (v is float)
-						values += "|" + ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + "|,";
-					else if (v is double)
-						values += "|" + ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + "|,";
-					else
-						values += "|" + v.ToString() + "|,";
+                    if (v is float)
+                        values += ((float)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+                    else if (v is double)
+                        values += ((double)v).ToString(System.Globalization.CultureInfo.InvariantCulture) + ",";
+                    else
+                    {
+                        //pipes are used in pin values only to surround slices that have a "space", "comma" or "pipe" in them
+                        //therefore they only make sense in string and color values in the first place 
+                        //but also it does no harm if a slice is surrounded by pipes anyway
+                        //so lets check if first and last character is a pipe, then assume user knows those rules and don't do anything
+                        //otherwise:
+                        //- always escape a single pipe with an extra pipe
+                        //- always surround the string with pipes
+                        string s = v.ToString();
+                        if (s.StartsWith("|") && s.EndsWith("|"))
+                            values += s + ",";
+                        else
+                        {
+                            s = s.Replace("|", "||"); //escape a single pipe with a double pipe
+                            values += "|" + s + "|,"; //quote the string with pipes in order for it to be treated as a single slice
+                        }
+                    }
 				}
 				values = values.TrimEnd(',');
 				
