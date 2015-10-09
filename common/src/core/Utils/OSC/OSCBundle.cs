@@ -25,9 +25,11 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY 
 // WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion licence/info
-	
+
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// VVVV OSC Utilities 
@@ -44,7 +46,7 @@ namespace VVVV.Utils.OSC
 
         public OSCBundle(DateTime ts, bool extendedMode = false) : base(extendedMode)
 		{
-			this.address = BUNDLE;
+			this.FAddress = BUNDLE;
 			this.timestamp = ts;
 		}
 
@@ -57,7 +59,7 @@ namespace VVVV.Utils.OSC
 
 		public OSCBundle(bool extendedMode = false) : base (extendedMode)
 		{
-			this.address = BUNDLE;
+			this.FAddress = BUNDLE;
 			this.timestamp = DateTime.Now;
 		}
 
@@ -112,9 +114,9 @@ namespace VVVV.Utils.OSC
 
 		override public void Append(object value)
 		{
-			if( value is OSCPacket) 
+			if (value is OSCPacket) 
 			{
-				values.Add(value);
+				FValues.Add(value);
 			}
 			else 
 			{
@@ -122,7 +124,16 @@ namespace VVVV.Utils.OSC
 			}
 		}
 
-		override public bool IsBundle() { return true; }
+        public override IEnumerable<OSCMessage> MatchAddress(string address)
+        {
+            var messages = new List<OSCMessage>();
+            foreach (OSCPacket packet in FValues)
+                messages.AddRange(packet.MatchAddress(address));
+
+            return messages;
+        }
+
+        override public bool IsBundle() { return true; }
 	}
 }
 
