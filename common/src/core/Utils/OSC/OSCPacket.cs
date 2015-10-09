@@ -370,6 +370,7 @@ namespace VVVV.Utils.OSC
 			get { return (ArrayList)FValues.Clone(); }
 		}
 
+        private MessagePattern[] FAddressParts;
         protected string FAddress;
         public string Address
         {
@@ -378,7 +379,30 @@ namespace VVVV.Utils.OSC
             {
                 // TODO: validate
                 FAddress = value;
+                FAddressParts = Array.ConvertAll(
+                    Address.Split('/'),
+                    pattern => new MessagePattern(pattern));
             }
+        }
+
+        //taken from: https://bitbucket.org/horizongir/bonsai
+        protected bool IsMatch(string methodName)
+        {
+            var parts = methodName.Split('/');
+            if (FAddressParts.Length == parts.Length)
+            {
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    var methodPart = parts[i];
+                    var addressPart = FAddressParts[i];
+                    if (!addressPart.IsMatch(methodPart))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         abstract public IEnumerable<OSCMessage> MatchAddress(string address);

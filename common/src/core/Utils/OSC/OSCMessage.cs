@@ -239,7 +239,7 @@ namespace VVVV.Utils.OSC
         public override IEnumerable<OSCMessage> MatchAddress(string address)
         {
             //todo: pattern matching
-            if (address == FAddress)
+            if (IsMatch(address))
                 yield return this;
         }
 
