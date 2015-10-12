@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\effects\Attractor3d help.v4p" bgcolor="15132390">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\effects\Attractor3d help.v4p" bgcolor="15132390">
    <BOUNDS height="8535" left="2550" top="1965" type="Window" width="12495">
    </BOUNDS>
-   <NODE componentmode="InABox" id="24" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="24" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="6045" top="525" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5700" left="9585" top="2655" type="Window" width="6420">
@@ -11,15 +11,21 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1" slicecount="1" values="||">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.24309,0.24309,0.24309,1.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="23" nodename="RandomSpread (Spreads Legacy)">
@@ -74,7 +80,7 @@
    </NODE>
    <LINK dstnodeid="23" dstpinname="Random Seed" srcnodeid="21" srcpinname="Cycles">
    </LINK>
-   <NODE componentmode="InABox" id="20" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="20" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8850" top="5550" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13755" top="9120" type="Window" width="215">
@@ -130,7 +136,7 @@
    </NODE>
    <LINK dstnodeid="24" dstpinname="Layers" hiddenwhenlocked="1" srcnodeid="19" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="18" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7440" top="5550" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="14055" top="9420" type="Window" width="215">
@@ -168,7 +174,7 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Attractor Power|">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6060" top="5550" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="15405" top="9420" type="Window" width="215">
@@ -311,7 +317,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Attractor3d - EX9.Effect|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Attractor3d (EX9.Effect)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -420,7 +426,7 @@
    </LINK>
    <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="27" nodename="Camera (Transform Softimage)" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\Transform\">
+   <NODE componentmode="Hidden" id="27" nodename="CAMERA (TRANSFORM SOFTIMAGE)">
    <BOUNDS height="100" left="9570" top="12525" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="9570" top="12525" type="Box" width="4800">
@@ -431,18 +437,18 @@
    </PIN>
    <PIN pinname="Projection" visible="1">
    </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="2">
+   <PIN pinname="Initial Distance" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Initial Yaw" slicecount="1" values="0.11">
    </PIN>
    <PIN pinname="Initial Pitch" slicecount="1" values="0.1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="24" dstpinname="Projection Transform" hiddenwhenlocked="1" srcnodeid="27" srcpinname="Projection">
+   <LINK dstnodeid="24" dstpinname="Projection" hiddenwhenlocked="1" srcnodeid="27" srcpinname="Projection">
    </LINK>
-   <LINK dstnodeid="24" dstpinname="View Transform" hiddenwhenlocked="1" srcnodeid="27" srcpinname="View">
+   <LINK dstnodeid="24" dstpinname="View" hiddenwhenlocked="1" srcnodeid="27" srcpinname="View">
    </LINK>
-   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="28" nodename="AxisAndGrid (DX9)" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\EX9\">
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="28" nodename="AxisAndGrid (DX9)">
    <BOUNDS height="100" left="5160" top="11700" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="5160" top="11700" type="Box" width="4800">
@@ -454,4 +460,6 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="Layer 1" srcnodeid="28" srcpinname="Layer">
    </LINK>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
    </PATCH>
