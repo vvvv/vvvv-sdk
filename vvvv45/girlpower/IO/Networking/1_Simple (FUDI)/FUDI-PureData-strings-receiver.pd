@@ -1,0 +1,24 @@
+#N canvas 853 15 717 520 12;
+#X text 34 24 This patch is a part of vvvv-pd example on how to communicate.
+Check this: http://vvvv.org/documentation/pure-data;
+#X symbolatom 37 344 25 0 0 0 - - -;
+#X floatatom 37 377 5 0 0 0 - - -;
+#X obj 37 120 netreceive 4002 1;
+#X obj 37 259 unpack s f s f s f;
+#X floatatom 235 377 5 0 0 0 - - -;
+#X symbolatom 235 344 25 0 0 0 - - -;
+#X floatatom 426 377 5 0 0 0 - - -;
+#X symbolatom 426 344 25 0 0 0 - - -;
+#X text 238 248 < A string coming from vvvv represents a list of atoms
+separated by spaces. Atoms can be splitted for example by the unpack
+node.;
+#X text 238 115 < netreceive listens to the port 4002 and receives
+data from vvvv. "1" as the last argument means UDP network perception.
+The simple FUDI protocol is used to exchage the data.;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 1 2 0;
+#X connect 4 2 6 0;
+#X connect 4 3 5 0;
+#X connect 4 4 8 0;
+#X connect 4 5 7 0;

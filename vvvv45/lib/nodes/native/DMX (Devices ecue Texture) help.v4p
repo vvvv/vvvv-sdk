@@ -1,0 +1,159 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha17.dtd" >
+   <PATCH nodename="X:\help\DMX (Devices ecue Texture) help.v4p">
+   <BOUNDS height="8880" left="3600" top="3360" type="Window" width="8070">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="135" type="Node" width="1140">
+   </BOUNDS>
+   <BOUNDS height="390" left="180" top="135" type="Box" width="4185">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DMX (Devices ecue Texture)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="585" type="Node" width="3345">
+   </BOUNDS>
+   <BOUNDS height="375" left="195" top="585" type="Box" width="5130">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sends textures to ecue-devices according to an ecue-patch-file|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="DMX (Devices ecue Texture)">
+   <BOUNDS height="0" left="1770" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Section Ambient Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2835" top="3525" type="Node" width="2325">
+   </BOUNDS>
+   <BOUNDS height="270" left="2835" top="3525" type="Box" width="2355">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt;-- needs ecue-patch-file here|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="2265" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13455" top="6480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="2265" top="3270" type="Box" width="555">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Section Ambient Color" srcnodeid="4" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="450" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="13575" top="5490" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="945" left="450" top="1815" type="Box" width="1395">
+   </BOUNDS>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="1785" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Source" srcnodeid="3" srcpinname="EX9 Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="2" srcpinname="Texture Out">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="1" managers="" nodename="Segment (DX9)">
+   <BOUNDS height="0" left="465" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Resolution" pintype="Input" slicecount="1" visible="1" values="4">
+   </PIN>
+   <PIN pinname="Layer" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Draw Slicewise" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Sampler State" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" pintype="Input" slicecount="1" visible="1" values="OnShape_UV">
+   </PIN>
+   <PIN pinname="Color" pintype="Input" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Cycles" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Inner Radius" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" visible="-1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="0" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   <NODE id="0" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="630" top="615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-3.46944695195361E-018">
+   </PIN>
+   <PIN pinname="ScaleY" slicecount="1" values="1.5">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="-0.09">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Transform" hiddenwhenlocked="1" srcnodeid="0" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="7" componentmode="InABox" nodename="IOBox (String)">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|fast facts:&cr;&lf;&cr;&lf;to be able to create ecue-patch-files you need the so called ecue-patchelor-application&cr;&lf;which is part of  ecue´s  &quot;lighting application suite&quot;, for more information please refer to: http://www.ecue.de/products/software/lighting-application-suite.html&cr;&lf;&cr;&lf;for every section in a patch file one texture will be sent&cr;&lf;if you´ve got for example two sections but only one texture connected the same image will be shown on both sections.&cr;&lf;&cr;&lf;if a texture is smaller than the section it is sent to the remaining area will be set to the color specified via the ambient color pin. the ambient color can only be set together with a texture&cr;&lf;&cr;&lf;the node can only be used once per running vvvv instance&cr;&lf;it also cannot be used togther with DMX (Devices ecue Butler)&cr;&lf;this is due to limitations of the EcueDeviceDriverDll.dll&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <BOUNDS type="Node" height="1950" left="285" top="4125" width="6180">
+   </BOUNDS>
+   <BOUNDS type="Box" height="4125" left="285" top="4125" width="7170">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="0" top="0" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

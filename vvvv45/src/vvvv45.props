@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <StartAction>Program</StartAction>
+
+    <RootDir>$(MSBuildThisFileDirectory)..\</RootDir>
+    <PublicPath>$(MSBuildThisFileDirectory)..\..\</PublicPath>
+    <MSBuildCommunityTasksPath>$(PublicPath)common\src\.build</MSBuildCommunityTasksPath>
+    <VVVVPath>$(MSBuildThisFileDirectory)..\</VVVVPath>
+    <VVVVExe>$(VVVVPath)vvvv.exe</VVVVExe>
+    
+    <StartProgram>$(VVVVExe)</StartProgram>
+    <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Deploy' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' " />
+
+  <PropertyGroup>
+    <VVVV_BuildDependsOn>VVVV_Build</VVVV_BuildDependsOn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Deploy' ">
+    <VVVV_BuildDependsOn>$(VVVV_BuildDependsOn);VVVV_Deploy</VVVV_BuildDependsOn>
+  </PropertyGroup>
+  
+  <!-- Deploy -->
+  <PropertyGroup>
+    <!-- Override these -->
+    <DeployBaseDir>$(MSBuildThisFileDirectory)..\..\build\</DeployBaseDir>
+    <!-- Leave the deploy directory empty and the task will use the deploy base directory in combination with the deploy prefix, version info and platform -->
+    <DeployDir/>
+    <!-- Used for choosing a deploy directory name (if not set) and the zip file name -->
+    <DeployPrefix>vvvv</DeployPrefix>
+    <!-- The files to copy to the deploy directory -->
+    <DeployInclude />
+    <!-- The files to not copy to the deploy directory -->
+    <DeployExclude />
+    <DeployReadOnlyFiles />
+    <DeployHiddenFiles />    
+  </PropertyGroup>
+
+  <!-- Zip -->
+  <!-- We used the Zip task from this project. Because of http://msbuildtasks.tigris.org/issues/show_bug.cgi?id=148 we switched to cmd line call to 7-Zip. -->
+  <!--<Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>-->
+  <PropertyGroup>
+    <SevenZip>$(ProgramFiles)\7-Zip\7z.exe</SevenZip>
+  </PropertyGroup>
+
+  <!-- ARToolKitPlus -->
+  <PropertyGroup>
+    <ARToolKitPlus>thirdparty\ARToolKitPlus\</ARToolKitPlus>
+    <ARToolKitPlusOutputPath>$(ARToolKitPlus)lib\Win32\</ARToolKitPlusOutputPath>
+    <ARToolKitPlusLibFile>$(ARToolKitPlusOutputPath)\libARToolKitPlus.a</ARToolKitPlusLibFile>
+    <ARToolKitPlusCompilerOptions>-O2 -W -fexceptions -DWIN32 -DNDEBUG -D_MBCS -D_LIB -DLIBRPP_STATIC</ARToolKitPlusCompilerOptions>
+    <ARToolKitPlusCompilerIncludes>-I$(ARToolKitPlus)include</ARToolKitPlusCompilerIncludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <ARToolKitPlusSourceFiles Include="$(ARToolKitPlus)\src\**\*.cpp"
+                              Exclude="$(ARToolKitPlus)\src\**\MATLAB\*.cpp" />
+    <ARToolKitPlusObjectFiles Include="@(ARToolKitPlusSourceFiles->'%(RootDir)%(Directory)%(Filename).o')" />
+  </ItemGroup>
+</Project>
