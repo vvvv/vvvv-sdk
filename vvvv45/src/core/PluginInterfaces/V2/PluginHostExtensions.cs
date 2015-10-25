@@ -203,7 +203,9 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public static IStringConfig CreateStringConfig(this IPluginHost host, ConfigAttribute attribute, Type type)
 		{
-			IStringConfig result = null;
+            if (type == typeof(char))
+                attribute.MaxChars = 1;
+            IStringConfig result = null;
 			host.CreateStringConfig(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType) attribute.StringType);
 			result.Order = attribute.Order;
@@ -212,7 +214,9 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public static IStringIn CreateStringInput(this IPluginHost host, InputAttribute attribute, Type type)
 		{
-			IStringIn result = null;
+            if (type == typeof(char))
+                attribute.MaxChars = 1;
+            IStringIn result = null;
 			host.CreateStringInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType) attribute.StringType);
             SetInputProperties(result, attribute);
@@ -221,7 +225,9 @@ namespace VVVV.PluginInterfaces.V2
 		
 		public static IStringOut CreateStringOutput(this IPluginHost host, OutputAttribute attribute, Type type)
 		{
-			IStringOut result = null;
+            if (type == typeof(char))
+                attribute.MaxChars = 1;
+            IStringOut result = null;
 			host.CreateStringOutput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			result.SetSubType2(attribute.DefaultString, attribute.MaxChars, attribute.FileMask, (TStringType) attribute.StringType);
             SetOutputProperties(result, attribute);

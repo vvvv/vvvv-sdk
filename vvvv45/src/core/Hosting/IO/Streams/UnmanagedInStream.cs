@@ -290,6 +290,116 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
+    unsafe class ByteInStream : UnmanagedInStream<byte>
+    {
+        class ByteInStreamReader : UnmanagedInStreamReader
+        {
+            private readonly double* FPData;
+
+            public ByteInStreamReader(ByteInStream stream, double* pData)
+                : base(stream)
+            {
+                FPData = pData;
+            }
+
+            public override byte Read(int stride)
+            {
+                Debug.Assert(Position < Length);
+                var result = (byte)Math.Round(FPData[Position]);
+                Position += stride;
+                return result;
+            }
+
+            protected override void Copy(byte[] destination, int destinationIndex, int length, int stride)
+            {
+                fixed (byte* destinationPtr = destination)
+                {
+                    byte* dst = destinationPtr + destinationIndex;
+                    double* src = FPData + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *(dst++) = (byte)Math.Round(*src);
+                        src += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPData;
+
+        public ByteInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(pLength, validateFunc)
+        {
+            FPPData = ppData;
+        }
+
+        public override IStreamReader<byte> GetReader()
+        {
+            return new ByteInStreamReader(this, *FPPData);
+        }
+
+        public override object Clone()
+        {
+            return new ByteInStream(FPLength, FPPData, FValidateFunc);
+        }
+    }
+
+    unsafe class SByteInStream : UnmanagedInStream<sbyte>
+    {
+        class SByteInStreamReader : UnmanagedInStreamReader
+        {
+            private readonly double* FPData;
+
+            public SByteInStreamReader(SByteInStream stream, double* pData)
+                : base(stream)
+            {
+                FPData = pData;
+            }
+
+            public override sbyte Read(int stride)
+            {
+                Debug.Assert(Position < Length);
+                var result = (sbyte)Math.Round(FPData[Position]);
+                Position += stride;
+                return result;
+            }
+
+            protected override void Copy(sbyte[] destination, int destinationIndex, int length, int stride)
+            {
+                fixed (sbyte* destinationPtr = destination)
+                {
+                    sbyte* dst = destinationPtr + destinationIndex;
+                    double* src = FPData + Position;
+
+                    for (int i = 0; i < length; i++)
+                    {
+                        *(dst++) = (sbyte)Math.Round(*src);
+                        src += stride;
+                    }
+                }
+            }
+        }
+
+        private readonly double** FPPData;
+
+        public SByteInStream(int* pLength, double** ppData, Func<bool> validateFunc)
+            : base(pLength, validateFunc)
+        {
+            FPPData = ppData;
+        }
+
+        public override IStreamReader<sbyte> GetReader()
+        {
+            return new SByteInStreamReader(this, *FPPData);
+        }
+
+        public override object Clone()
+        {
+            return new SByteInStream(FPLength, FPPData, FValidateFunc);
+        }
+    }
+
     unsafe class IntInStream : UnmanagedInStream<int>
     {
         class IntInStreamReader : UnmanagedInStreamReader

@@ -42,7 +42,31 @@ namespace VVVV.Hosting.IO.Streams
             base.Flush(force);
         }
     }
-    
+
+    class CharOutStream : MemoryIOStream<char>
+    {
+        private readonly IStringOut FStringOut;
+
+        public CharOutStream(IStringOut stringOut)
+        {
+            FStringOut = stringOut;
+        }
+
+        public override void Flush(bool force = false)
+        {
+            if (force || IsChanged)
+            {
+                FStringOut.SliceCount = Length;
+                for (int i = 0; i < Length; i++)
+                {
+                    var value = this[i];
+                    FStringOut.SetString(i, value.ToString());
+                }
+            }
+            base.Flush(force);
+        }
+    }
+
     class EnumOutStream<T> : MemoryIOStream<T>
     {
         protected readonly IEnumOut FEnumOut;
