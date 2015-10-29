@@ -47,7 +47,29 @@ namespace VVVV.Hosting.IO
                 else
                     return IOContainer.Create(context, stream, container);
             });
-            
+
+            RegisterInput(typeof(IInStream<byte>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new ByteInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+
+            RegisterInput(typeof(IInStream<sbyte>), (factory, context) =>
+            {
+                var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
+                var stream = new SByteInStream(pLength, ppDoubleData, validateFunc);
+                if (context.IOAttribute.AutoValidate && context.IOAttribute.CheckIfChanged)
+                    // In order to manage the IsChanged flag on the stream
+                    return IOContainer.Create(context, stream, container, s => s.Sync());
+                else
+                    return IOContainer.Create(context, stream, container);
+            });
+
             RegisterInput(typeof(IInStream<int>), (factory, context) =>
             {
                 var container = GetValueContainer(factory, context, out pLength, out ppDoubleData, out validateFunc);
@@ -242,6 +264,19 @@ namespace VVVV.Hosting.IO
                         return IOContainer.Create(context, stream, container);
                 });
 
+            RegisterInput<MemoryIOStream<char>>(
+                (factory, context) =>
+                {
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringIn)));
+                    var stringIn = container.RawIOObject as IStringIn;
+                    var stream = new CharInStream(stringIn);
+                    // Using MemoryIOStream -> needs to be synced on managed side.
+                    if (context.IOAttribute.AutoValidate)
+                        return IOContainer.Create(context, stream, container, s => s.Sync());
+                    else
+                        return IOContainer.Create(context, stream, container);
+                });
+
             RegisterInput<MemoryIOStream<System.IO.Stream>>(
                 (factory, context) =>
                 {
@@ -346,7 +381,21 @@ namespace VVVV.Hosting.IO
                                valueOut.GetValuePointer(out ppDoubleData);
                                return IOContainer.Create(context, new FloatOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
                            });
-            
+
+            RegisterOutput(typeof(IOutStream<byte>), (factory, context) => {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
+                var valueOut = container.RawIOObject as IValueOut;
+                valueOut.GetValuePointer(out ppDoubleData);
+                return IOContainer.Create(context, new ByteOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
+            });
+
+            RegisterOutput(typeof(IOutStream<sbyte>), (factory, context) => {
+                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
+                var valueOut = container.RawIOObject as IValueOut;
+                valueOut.GetValuePointer(out ppDoubleData);
+                return IOContainer.Create(context, new SByteOutStream(ppDoubleData, GetSetValueLengthAction(valueOut)), container);
+            });
+
             RegisterOutput(typeof(IOutStream<int>), (factory, context) => {
                                var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IValueOut)));
                                var valueOut = container.RawIOObject as IValueOut;
@@ -487,7 +536,18 @@ namespace VVVV.Hosting.IO
                     else
                         return IOContainer.Create(context, new StringOutStream(stringOut), container);
                 });
-            
+
+            RegisterOutput<MemoryIOStream<char>>(
+                (factory, context) =>
+                {
+                    var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(IStringOut)));
+                    var stringOut = container.RawIOObject as IStringOut;
+                    if (context.IOAttribute.AutoFlush)
+                        return IOContainer.Create(context, new CharOutStream(stringOut), container, null, s => s.Flush());
+                    else
+                        return IOContainer.Create(context, new CharOutStream(stringOut), container);
+                });
+
             RegisterOutput(typeof(IOutStream<>), (factory, context) => {
                                var host = factory.PluginHost;
                                var t = context.DataType;
