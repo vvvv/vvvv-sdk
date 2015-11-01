@@ -49,6 +49,8 @@ namespace VVVV.Core.Model
 
         public event EventHandler<ContentChangedEventArgs> ContentChanged;
 
+        public event EventHandler<EventArgs> FileChanged;
+
         public bool IsDirty
         {
             get { return false; }
@@ -64,6 +66,11 @@ namespace VVVV.Core.Model
         {
             get { return null; }
             set { throw new NotSupportedException(); }
+        }
+
+        public Stream ContentOnDisk
+        {
+            get { return null; }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace VVVV.Nodes
         {
             //if any of the inputs has changed
             //recompute the outputs
-            FColladaModel = FColladaModelIn[0];
+            FColladaModel = FColladaModelIn.SliceCount > 0 ? FColladaModelIn[0] : null;
             if (FColladaModel == null)
                 return;
             
@@ -114,8 +114,7 @@ namespace VVVV.Nodes
                 if (FColladaModelIn.IsChanged || FIndex.IsChanged)
                 {
                     FSkeleton.ClearAll();
-                    FSkeleton.InsertJoint(string.Empty, new BoneWrapper(FSelectedMesh.RootBone));
-                    CreateSkeleton(ref FSkeleton, FSelectedMesh.Bones);
+                    CreateSkeleton(FSkeleton, FSelectedMesh.RootBone, FSelectedMesh.Bones);
                 }
                 
                 foreach (Model.Bone bone in FSelectedMesh.Bones)
@@ -131,24 +130,13 @@ namespace VVVV.Nodes
         #endregion mainloop
         
         #region helper
-        private void CreateSkeleton(ref Skeleton skeleton, IEnumerable<Model.Bone> bones)
+        void CreateSkeleton(Skeleton skeleton, Model.Bone bone, List<Model.Bone> bonesToSkin)
         {
-            int id = 0;
-            foreach (var bone in bones)
-            {
-                var joint = new BoneWrapper(bone);
-                joint.Id = id++;
-
-                // Find parent joint (bone can have parent which is not in joint list, so traverse up to root)
-                var parent = bone.Parent;
-                IJoint parentJoint = null;
-                while (parent != null && parentJoint == null)
-                {
-                    skeleton.JointTable.TryGetValue(parent.Name, out parentJoint);
-                    parent = parent.Parent;
-                }
-                skeleton.InsertJoint(parentJoint.Name, joint);
-            }
+            var joint = new BoneWrapper(bonesToSkin.IndexOf(bone), bone.Name, bone.GetTransformMatrix(0).ToMatrix4x4());
+            var parentName = bone.Parent != null ? bone.Parent.Name : string.Empty;
+            skeleton.InsertJoint(parentName, joint);
+            foreach (var child in bone.Children)
+                CreateSkeleton(skeleton, child, bonesToSkin);
         }
         #endregion
     }

@@ -1,42 +1,10 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
+using System.Linq;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -59,13 +27,9 @@ namespace VVVV.Nodes
 
     	private INodeOut FSkeletonOutput;
     	
-		private ISkeleton outputSkeleton;
-		private IJoint rootJoint;
-		private List<INodeIn> childPins;
-    
-    	private bool initialized = false;
-    	
-    	private System.Guid[] guids;
+		private ISkeleton FSkeleton;
+		private IJoint FRootJoint;
+		private List<INodeIn> FChildPins;
     	
     	#endregion field declaration
        
@@ -75,14 +39,11 @@ namespace VVVV.Nodes
         {
 			//the nodes constructor
 			//nothing to declare for this node
-			rootJoint = new JointInfo();
-			rootJoint.Id = 0;
-			outputSkeleton = new Skeleton(rootJoint);
-			outputSkeleton.BuildJointTable();
-			childPins = new List<INodeIn>();
-			
-			guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
+			FRootJoint = new JointInfo();
+			FRootJoint.Id = 0;
+			FSkeleton = new Skeleton(FRootJoint);
+			FSkeleton.BuildJointTable();
+			FChildPins = new List<INodeIn>();
 		}
         
         // Implementing IDisposable's Dispose method.
@@ -205,38 +166,30 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
-	    	
 
-	    	//create inputs
-	    	
-	    	FHost.CreateStringInput("Joint Name", TSliceMode.Single, TPinVisibility.True, out FJointNameInput);
-	    	
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            //create inputs
+            FHost.CreateStringInput("Joint Name", TSliceMode.Single, TPinVisibility.True, out FJointNameInput);
 	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Single, TPinVisibility.True, out FBaseTransformInput);
-	    	
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "Min";
 	    	dimensions[1] = "Max";
 	    	FHost.CreateValueInput("Rotation Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True, out FRotationConstraintsInput);
 	    	FRotationConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
-	    	
-	    	
 	    	INodeIn node;
 	    	FHost.CreateNodeInput("Child1", TSliceMode.Single, TPinVisibility.True, out node);
 	    	node.SetSubType(guids, "Skeleton");
-	    	childPins.Add(node);
+	    	FChildPins.Add(node);
 	    	
 	    	FHost.CreateValueConfig("Children Count", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FChildrenCountInput);
 	    	FChildrenCountInput.SetSubType(0,50, 1.0, 1.0, false, false, true);
 	    	
-	    	
-	    	
 	    	// create outputs
-	    	
 	    	FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
 	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
 	    	FSkeletonOutput.MarkPinAsChanged();
-	    
-	    	
         }
 
         #endregion pin creation
@@ -251,22 +204,24 @@ namespace VVVV.Nodes
         		double pinCount;
         		valueInput.GetValue(0, out pinCount);
         		
-        		int oldChildrenCount = childPins.Count;
+        		int oldChildrenCount = FChildPins.Count;
         		for (int i=oldChildrenCount-1; i>=(int)pinCount; i--)
         		{
-        			FHost.DeletePin(childPins[i]);
+        			FHost.DeletePin(FChildPins[i]);
         		}
         		for (int i=oldChildrenCount-1; i>=(int)pinCount; i--)
         		{
-        			childPins.RemoveAt(i);
+        			FChildPins.RemoveAt(i);
         		}
-        		
-        		INodeIn node;
+
+                var guids = new System.Guid[1];
+                guids[0] = SkeletonNodeIO.GUID;
+                INodeIn node;
         		for (int i=oldChildrenCount; i<pinCount; i++)
         		{
         			FHost.CreateNodeInput("Child"+(i+1), TSliceMode.Single, TPinVisibility.True, out node);
 	    			node.SetSubType(guids, "Skeleton");
-					childPins.Add(node);
+					FChildPins.Add(node);
         		}
         	}
         }
@@ -277,51 +232,44 @@ namespace VVVV.Nodes
         {     	
         	//if any of the inputs has changed
         	//recompute the outputs
-        	
-        	
-        	
-        	if (FJointNameInput.PinIsChanged || !initialized)
+        	if (FJointNameInput.PinIsChanged)
         	{
         		string name;
         		FJointNameInput.GetString(0, out name);
-        		rootJoint.Name = name;
-        		outputSkeleton.BuildJointTable();
-        		FSkeletonOutput.MarkPinAsChanged();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    FRootJoint.Name = name;
+                    FSkeleton.BuildJointTable();
+                    FSkeletonOutput.MarkPinAsChanged();
+                }
         	}
         	
-        	bool childrenChanged = false;
-        	for (int i=0; i<childPins.Count; i++)
+        	if (FChildPins.Any(c => c.PinIsChanged))
         	{
-        		if (childPins[i].PinIsChanged)
-        			childrenChanged = true;
-        	}
-        	
-        	if (childrenChanged)
-        	{
-	        	outputSkeleton.ClearAll();
-	        	outputSkeleton.Root = rootJoint;
-	        	outputSkeleton.BuildJointTable();
+	        	FSkeleton.ClearAll();
+	        	FSkeleton.Root = FRootJoint;
+	        	FSkeleton.BuildJointTable();
 	        	
-	        	for (int i=0; i<childPins.Count; i++)
+	        	for (int i=0; i<FChildPins.Count; i++)
 	        	{
 	        		if (true) //childPinsList[i].PinIsChanged)
 	        		{
 	        			FSkeletonOutput.MarkPinAsChanged();
-	        			if (childPins[i].IsConnected)
+	        			if (FChildPins[i].IsConnected)
 	        			{
 	        				object currInterface;
-	        				childPins[i].GetUpstreamInterface(out currInterface);
+	        				FChildPins[i].GetUpstreamInterface(out currInterface);
 	        				ISkeleton subSkeleton = (ISkeleton)currInterface;
 	        				IJoint child = subSkeleton.Root.DeepCopy();
-	        				outputSkeleton.InsertJoint(outputSkeleton.Root.Name, child);
-		        			outputSkeleton.BuildJointTable();
+	        				FSkeleton.InsertJoint(FSkeleton.Root.Name, child);
+		        			FSkeleton.BuildJointTable();
 	        			}
 	        		}
 	        	}
 	        	
 	        	// re-calculate the IDs ...
 	        	int currId = 0;
-				foreach (KeyValuePair<string, IJoint> pair in outputSkeleton.JointTable)
+				foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
 				{
 					pair.Value.Id = currId;
 					currId++;
@@ -332,36 +280,25 @@ namespace VVVV.Nodes
         	{
         		Matrix4x4 baseTransform;
         		FBaseTransformInput.GetMatrix(0, out baseTransform);
-        		rootJoint.BaseTransform = baseTransform;
+        		FRootJoint.BaseTransform = baseTransform;
         		FSkeletonOutput.MarkPinAsChanged();
         	}
         	
         	if (FRotationConstraintsInput.PinIsChanged)
         	{
-        		rootJoint.Constraints.Clear();
+        		FRootJoint.Constraints.Clear();
 	        	for (int i=0; i<3; i++)
 	        	{
 	        		double from, to;
 	        		FRotationConstraintsInput.GetValue2D(i, out from, out to);
-	        		rootJoint.Constraints.Add(new Vector2D(from, to));
+	        		FRootJoint.Constraints.Add(new Vector2D(from, to));
 	        	}
 	        	FSkeletonOutput.MarkPinAsChanged();
         	}
         
-        	FSkeletonOutput.SetInterface(outputSkeleton);
-        	
-        	initialized = true;
+        	FSkeletonOutput.SetInterface(FSkeleton);
         }
              
         #endregion mainloop  
-        
-        #region helper
-        
-        
-        
-        #endregion helper
-        
-        
-        
 	}
 }

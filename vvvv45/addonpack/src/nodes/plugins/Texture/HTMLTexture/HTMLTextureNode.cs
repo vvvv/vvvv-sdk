@@ -60,6 +60,8 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<int> FWidthIn;
         [Input("Height", DefaultValue = HTMLTextureRenderer.DEFAULT_HEIGHT)]
         public ISpread<int> FHeightIn;
+        [Input("Frame Rate", MinValue = HTMLTextureRenderer.MIN_FRAME_RATE, MaxValue = HTMLTextureRenderer.MAX_FRAME_RATE, DefaultValue = 60)]
+        public ISpread<int> FFrameRateIn;
         [Input("Zoom Level")]
         public ISpread<double> FZoomLevelIn;
         [Input("Mouse Event")]
@@ -108,7 +110,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         public void Evaluate(int spreadMax)
         {
-            FWebRenderers.ResizeAndDispose(spreadMax, () => new HTMLTextureRenderer(FLogger));
+            FWebRenderers.ResizeAndDispose(spreadMax, (i) => new HTMLTextureRenderer(FLogger, FFrameRateIn[i]));
 
             FTextureOut.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
@@ -123,6 +125,14 @@ namespace VVVV.Nodes.Texture.HTML
             for (int i = 0; i < spreadMax; i++)
             {
                 var webRenderer = FWebRenderers[i];
+
+                var frameRate = VMath.Clamp(FFrameRateIn[i], HTMLTextureRenderer.MIN_FRAME_RATE, HTMLTextureRenderer.MAX_FRAME_RATE);
+                if (frameRate != webRenderer.FrameRate)
+                {
+                    webRenderer.Dispose();
+                    webRenderer = new HTMLTextureRenderer(FLogger, frameRate);
+                    FWebRenderers[i] = webRenderer;
+                }
 
                 // Check enabled state
                 webRenderer.Enabled = FEnabledIn[i];

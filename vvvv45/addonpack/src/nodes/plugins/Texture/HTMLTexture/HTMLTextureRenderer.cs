@@ -29,6 +29,8 @@ namespace VVVV.Nodes.Texture.HTML
         public const string DEFAULT_CONTENT = @"<html><head></head><body bgcolor=""#ffffff""></body></html>";
         public const int DEFAULT_WIDTH = 640;
         public const int DEFAULT_HEIGHT = 480;
+        public const int MIN_FRAME_RATE = 1;
+        public const int MAX_FRAME_RATE = 60;
 
         private volatile bool FEnabled;
         private readonly WebClient FWebClient;
@@ -45,20 +47,31 @@ namespace VVVV.Nodes.Texture.HTML
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
 
-        public HTMLTextureRenderer(ILogger logger)
+        /// <summary>
+        /// Create a new texture renderer.
+        /// </summary>
+        /// <param name="logger">The logger to log to.</param>
+        /// <param name="frameRate">
+        /// The maximum rate in frames per second (fps) that CefRenderHandler::OnPaint will
+        /// be called for a windowless browser. The actual fps may be lower if the browser
+        /// cannot generate frames at the requested rate. The minimum value is 1 and the 
+        /// maximum value is 60 (default 30).
+        /// </param>
+        public HTMLTextureRenderer(ILogger logger, int frameRate)
         {
             Logger = logger;
+            FrameRate = VMath.Clamp(frameRate, MIN_FRAME_RATE, MAX_FRAME_RATE);
 
             FLoaded = false;
 
             var settings = new CefBrowserSettings();
-            settings.AcceleratedCompositing = CefState.Enabled;
             settings.FileAccessFromFileUrls = CefState.Enabled;
             settings.UniversalAccessFromFileUrls = CefState.Enabled;
+            settings.WebGL = CefState.Enabled;
+            settings.WindowlessFrameRate = frameRate;
 
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.TransparentPainting = true;
-            windowInfo.SetAsOffScreen(IntPtr.Zero);
+            windowInfo.SetAsWindowless(IntPtr.Zero, true);
 
             FWebClient = new WebClient(this);
             // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
@@ -66,6 +79,8 @@ namespace VVVV.Nodes.Texture.HTML
             // Block until browser is created
             FBrowserAttachedEvent.WaitOne();
         }
+
+        public int FrameRate { get; private set; }
 
         internal void Attach(CefBrowser browser)
         {
@@ -228,7 +243,7 @@ namespace VVVV.Nodes.Texture.HTML
                                 FTextures[i] = FTextures[i].Update(newSize);
                     }
                     FBrowserHost.WasResized();
-                    FBrowserHost.Invalidate(new CefRectangle(0, 0, newSize.Width, newSize.Height), CefPaintElementType.View);
+                    FBrowserHost.Invalidate(CefPaintElementType.View);
                 }
             }
         }
@@ -515,7 +530,7 @@ namespace VVVV.Nodes.Texture.HTML
                     if (FEnabled)
                     {
                         FBrowserHost.WasHidden(false);
-                        FBrowserHost.Invalidate(new CefRectangle(0, 0, Size.Width, Size.Height), CefPaintElementType.View);
+                        FBrowserHost.Invalidate(CefPaintElementType.View);
                     }
                 }
             }
@@ -590,7 +605,7 @@ namespace VVVV.Nodes.Texture.HTML
                         var texture = new DoubleBufferedTexture(device, size);
                         FTextures.Add(texture);
                         // Trigger a redraw
-                        FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                        FBrowserHost.Invalidate(CefPaintElementType.View);
                     }
                 }
                 // Tell all textures to update - in case the size is not valid
@@ -603,7 +618,7 @@ namespace VVVV.Nodes.Texture.HTML
                         var newTexture = texture.Update(size);
                         // If the "new" texture is in a degraded state trigger a redraw
                         if (newTexture != texture && newTexture.IsDegraded)
-                            FBrowserHost.Invalidate(new CefRectangle(0, 0, size.Width, size.Height), CefPaintElementType.View);
+                            FBrowserHost.Invalidate(CefPaintElementType.View);
                         FTextures[i] = newTexture;
                     }
                 }

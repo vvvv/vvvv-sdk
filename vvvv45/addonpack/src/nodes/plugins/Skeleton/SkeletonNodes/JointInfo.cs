@@ -1,12 +1,3 @@
-/*
- * Erstellt mit SharpDevelop.
- * Benutzer: matthias
- * Datum: 08.01.2009
- * Zeit: 23:08
- * 
- * Sie können diese Vorlage unter Extras > Optionen > Codeerstellung > Standardheader ändern.
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,14 +7,9 @@ using VVVV.SkeletonInterfaces;
 
 namespace VVVV.Nodes
 {
-	/// <summary>
-	/// Description of JointInfo.
-	/// </summary>
-	/// 
 	[Serializable]
 	public class JointInfo : IJoint
 	{
-		
 		private string name;
 		public string shortname;
 		public int index;
@@ -76,8 +62,6 @@ namespace VVVV.Nodes
 			constraints.Add(new Vector2D(-1.0, 1.0));
 			constraints.Add(new Vector2D(-1.0, 1.0));
 		}
-		
-
 		
 		public void setTransform(Matrix4x4 t)
 		{
@@ -153,8 +137,6 @@ namespace VVVV.Nodes
 			
 			return ret;
 		}
-		
-		
 		
 		// interfaces implementations inherited for IJoint
 		
@@ -293,8 +275,7 @@ namespace VVVV.Nodes
 			IJoint copy = this.clone();
 			return copy;
 		}
-		
-		
+
 		/*public Matrix4x4 ConstrainedRotation
 		{
 			get
@@ -305,7 +286,5 @@ namespace VVVV.Nodes
 			}
 		}
 		*/
-		
 	}
-	
 }

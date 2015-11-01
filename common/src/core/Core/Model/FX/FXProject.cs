@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Timers;
 
@@ -54,7 +55,7 @@ namespace VVVV.Core.Model.FX
             content.CopyTo(stream);
             if (Documents.Count > 1)
             {
-                using (var writer = new LeaveOpenStreamWriter(stream))
+                using (var writer = new StreamWriter(stream, Encoding.Default, 4096, true))
                 {
                     var fakechange = "//" + System.DateTime.Now.ToLongTimeString();
                     writer.Write(fakechange);

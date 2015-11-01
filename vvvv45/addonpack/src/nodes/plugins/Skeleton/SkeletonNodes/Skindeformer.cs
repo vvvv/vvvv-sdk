@@ -1,42 +1,9 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -59,22 +26,14 @@ namespace VVVV.Nodes
     	private ITransformIn FJointTransformsInput;
     	
     	//output pin declaration
-
     	private IValueOut FVerticesOutput;	
-    	
-    	private ArrayList vertices;
-    	private ArrayList vertTransformed;
-    	private Dictionary<int, Dictionary<int,double>> skinWeights;
+    	private ArrayList FVertices = new ArrayList();
+    	private ArrayList FVertTransformed = new ArrayList();
+    	private Dictionary<int, Dictionary<int,double>> FSkinWeights = new Dictionary<int, Dictionary<int, double>>();
     	
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public Skindeformer()
-        {
-			vertices = new ArrayList();
-			
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -197,23 +156,15 @@ namespace VVVV.Nodes
         	//assign host
 	    	FHost = Host;
 	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-
 	    	//create inputs
 	    	FHost.CreateValueInput("Vertices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVerticesInput);
-	    	
 	    	FHost.CreateValueInput("BindIndices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FBindIndicesInput);
-	    	
 	    	FHost.CreateValueInput("SkinWeights", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FSkinWeightsInput);
-	    	
 	    	FHost.CreateValueInput("Indices", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FIndicesInput);
-	    	
 	    	FHost.CreateTransformInput("Joint Transformations", TSliceMode.Dynamic, TPinVisibility.True, out FJointTransformsInput);
 			
 	    	//outputs
 	    	FHost.CreateValueOutput("Vertices XYZ", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FVerticesOutput);
-	    	
         }
 
         #endregion pin creation
@@ -237,22 +188,22 @@ namespace VVVV.Nodes
         	
         	if (FSkinWeightsInput.PinIsChanged || FBindIndicesInput.PinIsChanged || FIndicesInput.PinIsChanged)
         	{
-        		skinWeights = new Dictionary<int, Dictionary<int,double>>();
+                FSkinWeights.Clear();
         		for (int i=0; i<FIndicesInput.SliceCount; i++)
         		{
         			double vertexIndex, jointIndex, skinWeight;
         			FIndicesInput.GetValue(i, out vertexIndex);
         			FBindIndicesInput.GetValue(i, out jointIndex);
         			FSkinWeightsInput.GetValue(i, out skinWeight);
-        			if (skinWeights.ContainsKey((int)vertexIndex))
+        			if (FSkinWeights.ContainsKey((int)vertexIndex))
         			{
-        				skinWeights[(int)vertexIndex].Add((int)jointIndex, skinWeight);
+        				FSkinWeights[(int)vertexIndex].Add((int)jointIndex, skinWeight);
         			}
         			else
         			{
         				Dictionary<int,double> jointTable = new Dictionary<int,double>();
         				jointTable.Add((int)jointIndex, skinWeight);
-        				skinWeights.Add((int)vertexIndex, jointTable);
+        				FSkinWeights.Add((int)vertexIndex, jointTable);
         			}
         		}
         		
@@ -261,16 +212,16 @@ namespace VVVV.Nodes
         	
         	if (FVerticesInput.PinIsChanged)
         	{
-        		vertices = new ArrayList();
-        		vertTransformed = new ArrayList();
+                FVertices.Clear();
+                FVertTransformed.Clear();
         		double x, y, z;
 	        	for (int i=0; i<FVerticesInput.SliceCount-2; i+=3)
 	        	{
 	        		FVerticesInput.GetValue(i, out x);
 	        		FVerticesInput.GetValue(i+1, out y);
 	        		FVerticesInput.GetValue(i+2, out z);
-	        		vertices.Add(new Vector3D(x,y,z));
-	        		vertTransformed.Add(new Vector3D(0));
+	        		FVertices.Add(new Vector3D(x,y,z));
+	        		FVertTransformed.Add(new Vector3D(0));
 	        	}
 	        	
 	        	recalculate = true;
@@ -280,67 +231,49 @@ namespace VVVV.Nodes
         	{
         		recalculate = true;
         	}
-        	
-        	
-        	
+       	
         	if (recalculate)
         	{
-        		for (int i=0; i<vertTransformed.Count; i++)
+        		for (int i=0; i<FVertTransformed.Count; i++)
 	        	{
-	        		vertTransformed[i] = new Vector3D(0);
+	        		FVertTransformed[i] = new Vector3D(0);
 	        		calculateTransformedVertex(i);
 	        	}
         	}
         	
-        	
-        	
-        	FVerticesOutput.SliceCount = vertices.Count*3;
+        	FVerticesOutput.SliceCount = FVertices.Count*3;
 			Vector3D currVertex;
-        	for (int i=0; i<vertTransformed.Count; i++)
+        	for (int i=0; i<FVertTransformed.Count; i++)
 			{
-        		currVertex = (Vector3D)vertTransformed[i];
+        		currVertex = (Vector3D)FVertTransformed[i];
         		if (currVertex.x==0 && currVertex.y==0 && currVertex.z==0)
-        			currVertex = (Vector3D)vertices[i];
-        		
+        			currVertex = (Vector3D)FVertices[i];
         		
 				FVerticesOutput.SetValue(i*3, currVertex.x);
 				FVerticesOutput.SetValue(i*3+1, currVertex.y);
 				FVerticesOutput.SetValue(i*3+2, currVertex.z);
         	}
-        	
-        	
-        	
-        	
-
         }
              
         #endregion mainloop  
         
         #region helper
-        
-        
+
         public void calculateTransformedVertex(int vertexIndex)
         {
-        	if (!skinWeights.ContainsKey(vertexIndex))
+        	if (!FSkinWeights.ContainsKey(vertexIndex))
         	    return;
-        	IDictionaryEnumerator influenceEnum = skinWeights[vertexIndex].GetEnumerator();
+        	IDictionaryEnumerator influenceEnum = FSkinWeights[vertexIndex].GetEnumerator();
         	
         	Matrix4x4 jointTransform;
         	while (influenceEnum.MoveNext())
         	{
         		FJointTransformsInput.GetMatrix((int)influenceEnum.Key, out jointTransform);
-        		vertTransformed[vertexIndex] = (Vector3D)vertTransformed[vertexIndex] + (double)influenceEnum.Value * (jointTransform * (Vector3D)vertices[vertexIndex]);
+        		FVertTransformed[vertexIndex] = (Vector3D)FVertTransformed[vertexIndex] + (double)influenceEnum.Value * (jointTransform * (Vector3D)FVertices[vertexIndex]);
         	}
-        	
         }
-        
-       
-        	
-        
+
         #endregion helper
-        
-        
-        
+
 	}
-	
 }

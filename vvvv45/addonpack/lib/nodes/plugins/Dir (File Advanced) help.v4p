@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Dir (File Advanced) help.v4p" systemname="Dir (File Advanced) help" filename="C:\Users\buhlert\Projekte\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Dir (File Advanced) help.v4p">
    <BOUNDS height="9000" left="420" top="855" type="Window" width="14895">
    </BOUNDS>
@@ -187,7 +187,7 @@
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Dir.dll" id="20" nodename="Dir (File Advanced)" systemname="Dir (File Advanced)">
    <BOUNDS height="0" left="3795" top="3990" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="Directory" visible="1">
+   <PIN pinname="Directory" visible="1" slicecount="1" values="..\..\..\..\">
    </PIN>
    <PIN pinname="Update" visible="1">
    </PIN>
@@ -218,8 +218,6 @@
    <PIN pinname="Filenames" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="Directory" srcnodeid="19" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="20" dstpinname="Update" srcnodeid="17" srcpinname="Bang">
    </LINK>
    <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="20" dstpinname="Sort Order">
@@ -319,7 +317,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="252" top="180" width="4788" height="396">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Dir (File Advanced) help|">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Dir (File Advanced)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -396,6 +394,8 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.8.0">
+   <PACK Name="addonpack" Version="34.100.0">
    </PACK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="20" dstpinname="Directory">
+   </LINK>
    </PATCH>

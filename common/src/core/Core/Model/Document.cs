@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Caching;
+using System.Threading;
 using VVVV.Core.Logging;
 
 namespace VVVV.Core.Model
 {
     public abstract class Document : IDContainer, IDocument
     {
+        FileSystemWatcher FWatcher;
+
         public Document(string name, string path)
             : base(name)
         {
@@ -16,6 +19,11 @@ namespace VVVV.Core.Model
 
         protected override void DisposeManaged()
         {
+            if (FWatcher != null)
+            {
+                FWatcher.Dispose();
+                FWatcher = null;
+            }
             OnDisposed();
             base.DisposeManaged();
         }
@@ -35,6 +43,42 @@ namespace VVVV.Core.Model
         }
 
         public event EventHandler<ContentChangedEventArgs> ContentChanged;
+
+        public event EventHandler<EventArgs> FileChanged
+        {
+            add
+            {
+                FFileChanged += value;
+                if (FWatcher == null)
+                {
+                    var directory = Path.GetDirectoryName(LocalPath);
+                    var extension = Path.GetExtension(LocalPath);
+                    FWatcher = new FileSystemWatcher(directory, $"*{extension}");
+                    FWatcher.NotifyFilter = NotifyFilters.LastWrite;
+                    FWatcher.EnableRaisingEvents = true;
+                    FWatcher.Changed += FWatcher_Changed;
+                }
+            }
+            remove
+            {
+                FFileChanged -= value;
+                if (FileChangedListenerCount == 0 && FWatcher != null)
+                {
+                    FWatcher.Changed -= FWatcher_Changed;
+                    FWatcher.Dispose();
+                    FWatcher = null;
+                }
+            }
+        }
+
+        private void FWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (FFileChanged != null && e.FullPath == LocalPath)
+                FFileChanged(this, EventArgs.Empty);
+        }
+
+        event EventHandler<EventArgs> FFileChanged;
+        int FileChangedListenerCount => FFileChanged != null ? FFileChanged.GetInvocationList().Length : 0;
 
         private Stream FContent;
         public Stream Content

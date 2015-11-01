@@ -35,7 +35,7 @@ namespace VVVV.Nodes.Generic
 			FInput.Sync(); 
 			FBin.Sync();
 			
-			if (FInput.IsChanged || FBin.IsChanged)
+			if (FInput.IsChanged || FBin.IsChanged || FReverse.IsChanged)
 			{
 				VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin, FReverse.SliceCount);			
 	    

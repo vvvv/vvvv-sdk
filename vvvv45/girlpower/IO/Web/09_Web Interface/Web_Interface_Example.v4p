@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\09_Web Interface\Web_Interface_Example.v4p">
-   <BOUNDS height="7035" left="4170" top="3225" type="Window" width="9405">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\Web_Interface_Example.v4p">
+   <BOUNDS height="7035" left="3360" top="3180" type="Window" width="9540">
    </BOUNDS>
    <NODE id="14" nodename="PatchAlias (VVVV)" systemname="PatchAlias (VVVV)">
    <BOUNDS height="0" left="945" top="3705" type="Node" width="0">
@@ -41,7 +41,7 @@
    </PIN>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
    </PIN>
-   <PIN pinname="Color Input" pintype="Input" slicecount="3" visible="1" values="|0.83140,0.00000,0.15290,1.00000|,|1.00000,0.58820,0.00000,0.00000|,|1.00000,0.90980,0.09410,1.00000|">
+   <PIN pinname="Color Input" pintype="Input" slicecount="3" visible="1" values="|0.83920,0.00000,0.15290,1.00000|,|0.00000,0.78040,0.30590,0.00000|,|1.00000,0.90980,0.09410,1.00000|">
    </PIN>
    <PIN pinname="Color Output" pintype="Output" visible="1">
    </PIN>
@@ -55,7 +55,7 @@
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Group One: Value|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="3" values="0,1,2">
+   <PIN pinname="Y Input Value" slicecount="3" values="234,1345,2456">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
@@ -93,7 +93,7 @@
    </PIN>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
    </PIN>
-   <PIN pinname="Color Input" pintype="Input" slicecount="3" visible="1" values="|0.00000,0.20390,0.92550,0.00000|,|0.20390,0.66270,1.00000,1.00000|,|0.50980,1.00000,0.93330,1.00000|">
+   <PIN pinname="Color Input" pintype="Input" slicecount="3" visible="1" values="|0.00000,0.20390,0.92940,0.00000|,|0.20390,0.66270,1.00000,1.00000|,|0.50980,1.00000,0.93330,1.00000|">
    </PIN>
    <PIN pinname="Color Output" pintype="Output" visible="1">
    </PIN>
@@ -105,7 +105,7 @@
    </BOUNDS>
    <BOUNDS height="1095" left="7545" top="1845" type="Box" width="1020">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="4" values="|Slice 1|,|Slice 2|,|Slice 3|,|Slice 4|">
+   <PIN pinname="Input String" slicecount="4" values="|Slice 1|,|Slice 23456345zhd|,|Slice 3|,|Slice 4|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Group Two: Text|">
    </PIN>
@@ -135,11 +135,11 @@
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="600" top="750" type="Node" width="4740">
    </BOUNDS>
-   <BOUNDS height="2880" left="600" top="750" type="Box" width="4770">
+   <BOUNDS height="735" left="600" top="750" type="Box" width="4755">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|this module offers a way to remote your patch through a website.&cr;&lf;&cr;&lf;Steps:&cr;&lf;- turn off skype (as it blocks port 80). alternatively you can open the Web Interface module and on all 5 HTTP nodes inside change the port to say 81&cr;&lf;- Choose a URL a USERNAME and PASSWORD&cr;&lf;- open your favorite Web-Browser.&cr;&lf;- Type in http://localhost/yourURL or http://localhost:81/yourURL (if you changed the port)&cr;&lf;- change some values on the page&cr;&lf;- type in Username and Password and press the submit button&cr;&lf;- Come back here and see the result.&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|this module offers a way to remote your patch through a website.&cr;&lf;&cr;&lf;Steps:&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -165,7 +165,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="myPatch.vvvv">
+   <PIN pinname="Input String" slicecount="1" values="yourURL">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -258,6 +258,34 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="password" srcnodeid="2" srcpinname="Output String">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.1.0">
    </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="1470" width="2175" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="1470" width="2175" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://localhost:81/yourURL">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="600" top="1725" width="4560" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="1725" width="4560" height="690">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|- change some values on the page&cr;&lf;- type in Username and Password and press the submit button&cr;&lf;- Come back here and see the result.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

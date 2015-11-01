@@ -1,45 +1,17 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template with gui
-
-//////description
-//basic vvvv plugin template with gui.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Collections.Generic;
 using System.Collections;
 
 using VVVV.PluginInterfaces.V1;
 using VVVV.SkeletonInterfaces;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-	
 	//class definition, inheriting from UserControl for the GUI stuff
 	public class SelectJoint: UserControl, IPlugin
 	{
@@ -256,18 +228,16 @@ namespace VVVV.Nodes
 		{
 			//assign host
 			FHost = Host;
-			
-			System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-	    	
-	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
+
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
-	    	
 	    	FHost.CreateStringConfig("Selection", TSliceMode.Dynamic, TPinVisibility.Hidden, out FSelectionInput);
 	    	
-		
+		    //create outputs
 	    	FHost.CreateStringOutput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameOutput);
-			
 		}
 
 		#endregion pin creation
@@ -276,7 +246,6 @@ namespace VVVV.Nodes
 		
 		public void Configurate(IPluginConfig Input)
 		{
-			
 			if (Input.Name=="Selection" && selectedJoints.Count==0)
 			{
 				string[] separator = new string[1];
@@ -300,10 +269,12 @@ namespace VVVV.Nodes
 				try
 				{
 					skeleton = (Skeleton)currInterface;
-				} catch (Exception e) {
+                    rootJoint = (IJoint)skeleton.Root;
+                }
+                catch (Exception e)
+                {
 					FHost.Log(TLogType.Error, e.Message);
 				}
-				rootJoint = (IJoint)skeleton.Root;
 				
 				if (!initialized && configSelectedNames!=null)
 				{
@@ -325,9 +296,8 @@ namespace VVVV.Nodes
 				//redraw gui only if anything changed
 				Invalidate();
 			}
-			
 
-			if (selectedJoints.Count>0)
+            if (selectedJoints.Count>0)
 			{
 				FJointNameOutput.SliceCount = selectedJoints.Count;
 				for (int i=0; i<selectedJoints.Count; i++)
@@ -339,8 +309,6 @@ namespace VVVV.Nodes
 				FJointNameOutput.SetString(0, "");
 			
 			buildConfig();
-				
-
 			
 			initialized = true;
 		}
@@ -422,7 +390,10 @@ namespace VVVV.Nodes
 		
 		private bool hasClicked(IJoint currJoint, Vector3D mousePos)
 		{
-			if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5) {
+            if (!jointPositions.ContainsKey(currJoint.Name))
+                return false;
+            if (VMath.Dist(mousePos, jointPositions[currJoint.Name])<5)
+            {
 				bool alreadySelected = false;
 				for (int i=0; i<selectedJoints.Count; i++)
 				{
@@ -481,15 +452,10 @@ namespace VVVV.Nodes
 			
 			if (rootJoint!=null)
 				drawJoint(g, rootJoint, transformStack, Color.Black);
-			
-			
-			
 		}
-	
 		
 		private Vector3D drawJoint(Graphics g, IJoint currJoint, Stack transformStack, Color c)
 		{
-
 			int listIndex = -1;
 			for (int i=0; i<selectedJoints.Count; i++)
 			{
@@ -498,7 +464,6 @@ namespace VVVV.Nodes
 					c = Color.Red;
 					listIndex = i;
 				}
-				
 			}
 			
 			Pen jointPen = new Pen(c, 1f);
@@ -507,7 +472,12 @@ namespace VVVV.Nodes
 			
 			Vector3D v = t * (new Vector3D(0));
 			v.z = 0;
-			g.DrawEllipse(jointPen, (float)v.x-5.0f, (float)v.y-5.0f, 10.0f, 10.0f);
+            var bounds = new RectangleF((float)v.x - 5.0f, (float)v.y - 5.0f, 10.0f, 10.0f);
+            // Draw circles for joints which take part in skinning and rectangles for those who don't
+            if (currJoint.Id >= 0)
+                g.DrawEllipse(jointPen, bounds);
+            else
+                g.DrawRectangle(jointPen, bounds.X, bounds.Y, bounds.Width, bounds.Height);
 			if (listIndex>=0)
 			{
 				Font f = new Font("Verdana", 7);
@@ -541,15 +511,11 @@ namespace VVVV.Nodes
 			
 			transformStack.Pop();
 			
-			
-			
 			return v;
-
 		}
 		
 		private void buildConfig()
 		{
-			
 			FSelectionInput.SliceCount = selectedJoints.Count;
 			for (int i=0; i<selectedJoints.Count; i++)
 			{
@@ -583,7 +549,5 @@ namespace VVVV.Nodes
 			
 			return ret;
 		}
-			
 	}
-
 }

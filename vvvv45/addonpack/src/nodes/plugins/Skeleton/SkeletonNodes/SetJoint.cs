@@ -1,45 +1,13 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.SkeletonInterfaces;
-using SlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-	
 	//class definition
 	public class SetJoint: IPlugin, IDisposable
     {	          	
@@ -67,13 +35,6 @@ namespace VVVV.Nodes
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public SetJoint()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -195,34 +156,23 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
-	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
 
-	    	//create inputs
-	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            //create inputs
+            FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
-	    	
 	    	FHost.CreateStringInput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameInput);
-	    	
 	    	FHost.CreateValueInput("Constraints", 2, null, TSliceMode.Dynamic, TPinVisibility.False, out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.01, -1.0, 1.0, false, false, false);
-	    	
 	    	FHost.CreateTransformInput("Base Transform", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
-	    	
 	    	FHost.CreateTransformInput("Animation Transform", TSliceMode.Dynamic, TPinVisibility.True, out FAnimationTransformInput);
-	    	
-			//FHost.CreateValueInput("Rotation", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FRotationInput);
-	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
 	    	// create outputs
-	    	
 	    	FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
 	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
-	    	
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -243,7 +193,6 @@ namespace VVVV.Nodes
         	//recompute the outputs
         	
         	bool recalculate = false;
-        	
         	
         	if (FJointNameInput.PinIsChanged)
         	{
@@ -287,10 +236,8 @@ namespace VVVV.Nodes
         	
         	if (FSkeletonInput.PinIsChanged || FAnimationTransformInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
-        		
         		if (inputSkeleton!=null)
         		{
-        			
 	        		IJoint currJoint;
 	        		for (int i=0; i<jointNames.Count; i++)
 	        		{
@@ -358,18 +305,8 @@ namespace VVVV.Nodes
         	}
         	
         	FSkeletonOutput.SetInterface(inputSkeleton);
-        	
         }
              
         #endregion mainloop  
-        
-        #region helper
-        
-		
-        
-        #endregion helper
-        
-        
-        
 	}
 }

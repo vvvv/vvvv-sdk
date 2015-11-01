@@ -4,7 +4,7 @@
 <!-- We are lucky you made it here...-->
 
 <!-- Patch Block-->
-<!ELEMENT PATCH (BOUNDS | NODE | LINK)+>
+<!ELEMENT PATCH (BOUNDS | NODE | LINK | INFO | PACK)+>
 <!ATTLIST PATCH
 	componentmode (Hidden | InABox | InAWindow)  #IMPLIED
 	locked (0 | 1)  #IMPLIED
@@ -13,7 +13,16 @@
 	createme CDATA #IMPLIED
 	systemname CDATA #IMPLIED
 	filename CDATA #IMPLIED
+    scrollx CDATA #IMPLIED
+    scrolly CDATA #IMPLIED
 >
+
+<!-- Pack Element-->
+<!ELEMENT PACK (#PCDATA)>
+<!ATTLIST PACK
+    Name CDATA #IMPLIED
+    Version CDATA #IMPLIED
+> 
 
 <!-- Node Block-->
 <!ELEMENT NODE (BOUNDS | PIN | INFO)+>

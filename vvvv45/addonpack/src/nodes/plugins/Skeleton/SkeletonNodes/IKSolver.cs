@@ -1,48 +1,13 @@
-﻿#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
-//use what you need
+﻿//use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
-using SlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-	
 	//class definition
 	public class IKSolver: IPlugin, IDisposable
     {	          	
@@ -65,8 +30,8 @@ namespace VVVV.Nodes
     	private INodeOut FPoseOutput;
     	private IValueOut FDebugOutput;
     	
-    	private Skeleton outputSkeleton;
-    	private Skeleton workingSkeleton;
+    	private Skeleton FOutputSkeleton;
+    	private Skeleton FWorkingSkeleton;
     	private string chainStart;
     	private string chainEnd;
     	private Vector3D targetPosW;
@@ -74,19 +39,14 @@ namespace VVVV.Nodes
     	private Vector3D poleTargetW;
     	private List<IJoint> jointChain;
     	private Dictionary<String, Vector3D> rotations;
-    	private Matrix4x4 chainRotation;
-    	private bool enablePoleTarget = false;
+    	private Matrix4x4 chainRotation = VMath.IdentityMatrix;
+        private bool enablePoleTarget = false;
     	private int iterationsPerFrame = 10;
     	private double epsilon = 0.001;
     	
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public IKSolver()
-        {
-			chainRotation = VMath.IdentityMatrix;
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -208,37 +168,27 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
-	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-	    	
-	    	FHost.CreateNodeInput("Pose", TSliceMode.Single, TPinVisibility.True, out FPoseInput);
+
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            //create inputs
+            FHost.CreateNodeInput("Pose", TSliceMode.Single, TPinVisibility.True, out FPoseInput);
 		    FPoseInput.SetSubType(guids, "Skeleton");
-		    
 		    FHost.CreateStringInput("Start Joint", TSliceMode.Single, TPinVisibility.True, out FChainStart);
-		    
 	    	FHost.CreateStringInput("End Joint", TSliceMode.Single, TPinVisibility.True, out FChainEnd);
-	    	
 	    	FHost.CreateValueInput("Target", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FTargetInput);
-	    	
 	    	FHost.CreateValueInput("Epsilon", 1, null, TSliceMode.Single, TPinVisibility.True, out FEpsilonInput);
-	    	
 	    	FHost.CreateValueInput("Velocity", 1, null, TSliceMode.Single, TPinVisibility.True, out FVelocityInput);
 	    	FVelocityInput.SetSubType(0.0, 10.0, 0.1, 1.0, false, false, false);
-	    	
 	    	FHost.CreateValueInput("Pole Target", 3, null, TSliceMode.Dynamic, TPinVisibility.True, out FPoleTargetInput);
-	    	
 	    	FHost.CreateValueInput("Enable Pole Target", 1, null, TSliceMode.Single, TPinVisibility.True, out FEnablePoleTargetInput);
 	    	FEnablePoleTargetInput.SetSubType(0.0, 1.0, 1.0, 0.0, false, false, true);
 	    	
 	    	// create outputs
-	    	
 	    	FHost.CreateNodeOutput("Output Pose", TSliceMode.Single, TPinVisibility.True, out FPoseOutput);
 	    	FPoseOutput.SetSubType(guids, "Skeleton");
-	    	
 	    	FHost.CreateValueOutput("Debug", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FDebugOutput);
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -249,14 +199,12 @@ namespace VVVV.Nodes
         {
         	//nothing to configure in this plugin
         	//only used in conjunction with inputs of type cmpdConfigurate
-        	
-        	
         }
         
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
         public void Evaluate(int SpreadMax)
-        {     	
+        {
         	//if any of the inputs has changed
         	//recompute the outputs
         	bool recalculate = false;
@@ -284,12 +232,12 @@ namespace VVVV.Nodes
         		{
 	        		FPoseInput.GetUpstreamInterface(out currInterface);
 	        		Skeleton s = (Skeleton)currInterface;
-	        		if (outputSkeleton==null || !s.Uid.Equals(outputSkeleton.Uid))
+	        		if (FOutputSkeleton==null || !s.Uid.Equals(FOutputSkeleton.Uid))
 	        		{
-		        		outputSkeleton = (Skeleton)((Skeleton)currInterface).DeepCopy();
-		        		outputSkeleton.BuildJointTable();
-		        		workingSkeleton = (Skeleton)outputSkeleton.DeepCopy();
-		        		workingSkeleton.BuildJointTable();
+		        		FOutputSkeleton = (Skeleton)((Skeleton)currInterface).DeepCopy();
+		        		FOutputSkeleton.BuildJointTable();
+		        		FWorkingSkeleton = (Skeleton)FOutputSkeleton.DeepCopy();
+		        		FWorkingSkeleton.BuildJointTable();
 		        		chainRangeChanged = true;
 	        		}
 	        		else
@@ -298,69 +246,73 @@ namespace VVVV.Nodes
 	        			{
 	        				if (!jointChain.Exists(delegate(IJoint j) {return j.Name==pair.Key;}))
 	        				{
-		        				outputSkeleton.JointTable[pair.Key].BaseTransform = pair.Value.BaseTransform;
-		        				outputSkeleton.JointTable[pair.Key].AnimationTransform = pair.Value.AnimationTransform;
-		        				workingSkeleton.JointTable[pair.Key].BaseTransform = pair.Value.BaseTransform;
-		        				workingSkeleton.JointTable[pair.Key].AnimationTransform = pair.Value.AnimationTransform;
+		        				FOutputSkeleton.JointTable[pair.Key].BaseTransform = pair.Value.BaseTransform;
+		        				FOutputSkeleton.JointTable[pair.Key].AnimationTransform = pair.Value.AnimationTransform;
+		        				FWorkingSkeleton.JointTable[pair.Key].BaseTransform = pair.Value.BaseTransform;
+		        				FWorkingSkeleton.JointTable[pair.Key].AnimationTransform = pair.Value.AnimationTransform;
 	        				}
-	        				outputSkeleton.JointTable[pair.Key].Constraints = pair.Value.Constraints;
-		        			workingSkeleton.JointTable[pair.Key].Constraints = pair.Value.Constraints;
+	        				FOutputSkeleton.JointTable[pair.Key].Constraints = pair.Value.Constraints;
+		        			FWorkingSkeleton.JointTable[pair.Key].Constraints = pair.Value.Constraints;
 	        			}
 	        		}
-	        		workingSkeleton.CalculateCombinedTransforms();
+	        		FWorkingSkeleton.CalculateCombinedTransforms();
 	        		recalculate = true;
         		}
         		else
-        			outputSkeleton = null;
+        			FOutputSkeleton = null;
         	}
         	
         	if (FVelocityInput.PinIsChanged)
         	{
-        		double x;
-        		FVelocityInput.GetValue(0, out x);
+        		double x = 1;
+                if (FVelocityInput.SliceCount > 0)
+                    FVelocityInput.GetValue(0, out x);
         		iterationsPerFrame = (int)(x*10);
         	}
         	
-        	if (iterationsPerFrame>0)
+        	if (iterationsPerFrame > 0)
         	{
-	        	
 	        	if (FTargetInput.PinIsChanged)
 	        	{
 	        		targetPosW = new Vector3D();
-	        		FTargetInput.GetValue3D(0, out targetPosW.x, out targetPosW.y, out targetPosW.z);
+                    if (FTargetInput.SliceCount > 0)
+	        		    FTargetInput.GetValue3D(0, out targetPosW.x, out targetPosW.y, out targetPosW.z);
 	        		recalculate = true;
 	        	}
 	        	
 	        	if (FEpsilonInput.PinIsChanged)
 	        	{
-	        		FEpsilonInput.GetValue(0, out epsilon);
+                    if (FEpsilonInput.SliceCount > 0)
+                        FEpsilonInput.GetValue(0, out epsilon);
 	        		recalculate = true;
 	        	}
 	        	
 	        	if (FPoleTargetInput.PinIsChanged || FEnablePoleTargetInput.PinIsChanged)
 	        	{
-	        		double x;
-	        		FEnablePoleTargetInput.GetValue(0, out x);
+	        		double x = 0;
+                    if (FEnablePoleTargetInput.SliceCount > 0)
+                        FEnablePoleTargetInput.GetValue(0, out x);
 	        		enablePoleTarget = x>0.0;
 	        		poleTargetW = new Vector3D();
-	        		FPoleTargetInput.GetValue3D(0, out poleTargetW.x, out poleTargetW.y, out poleTargetW.z);
+                    if (FPoleTargetInput.SliceCount > 0)
+                        FPoleTargetInput.GetValue3D(0, out poleTargetW.x, out poleTargetW.y, out poleTargetW.z);
 	        		recalculateOrientation = true;
 	        	}
 	        	
-	        	if (chainRangeChanged && outputSkeleton!=null)
+	        	if (chainRangeChanged && FOutputSkeleton!=null)
 	        	{
 	        		initRotations();
 	        	}
 	        	
 	        	double delta = VMath.Dist(endPosW, targetPosW);
-	        	if ((delta>epsilon || recalculate) && outputSkeleton!=null && !string.IsNullOrEmpty(chainStart) && !string.IsNullOrEmpty(chainEnd))
+	        	if ((delta>epsilon || recalculate) && FOutputSkeleton!=null && !string.IsNullOrEmpty(chainStart) && !string.IsNullOrEmpty(chainEnd))
 	        	{
 	        		List<Vector2D> constraints = new List<Vector2D>();
 	        		for (int i=0; i<iterationsPerFrame; i++)
 	        		{
 	        			for (int j=0; j<3; j++)
 	        			{
-			        		IJoint currJoint = workingSkeleton.JointTable[chainEnd];
+			        		IJoint currJoint = FWorkingSkeleton.JointTable[chainEnd];
 			        		endPosW = currJoint.CombinedTransform*new Vector3D(0);
 			        		while (currJoint.Name!=chainStart)
 			        		{
@@ -378,22 +330,22 @@ namespace VVVV.Nodes
 				        			rot[j] += torque;
 				        			rotations[currJoint.Name] = rot;
 				        			currJoint.AnimationTransform = newTransform;
-				        			outputSkeleton.JointTable[currJoint.Name].AnimationTransform = currJoint.AnimationTransform;
+				        			FOutputSkeleton.JointTable[currJoint.Name].AnimationTransform = currJoint.AnimationTransform;
 			        			}
 			        		}
 	        			}
 	        			try
 	        			{
 		        			Matrix4x4 pre;
-			        		if (workingSkeleton.JointTable[chainStart].Parent!=null)
-			        			pre = workingSkeleton.JointTable[chainStart].Parent.CombinedTransform;
+			        		if (FWorkingSkeleton.JointTable[chainStart].Parent!=null)
+			        			pre = FWorkingSkeleton.JointTable[chainStart].Parent.CombinedTransform;
 			        		else
 			        			pre = VMath.IdentityMatrix;
-			        		((JointInfo)workingSkeleton.JointTable[chainStart]).CalculateCombinedTransforms(pre);
+			        		((JointInfo)FWorkingSkeleton.JointTable[chainStart]).CalculateCombinedTransforms(pre);
 	        			}
 	        			catch (Exception)
 	        			{
-	        				workingSkeleton.CalculateCombinedTransforms();
+	        				FWorkingSkeleton.CalculateCombinedTransforms();
 	        			}
 	        		}
 	        		
@@ -401,12 +353,12 @@ namespace VVVV.Nodes
 	        		FPoseOutput.MarkPinAsChanged();
 	        	}
 	        	
-	        	if ((recalculate || recalculateOrientation) && enablePoleTarget && outputSkeleton!=null && !string.IsNullOrEmpty(chainStart) && !string.IsNullOrEmpty(chainEnd))
+	        	if ((recalculate || recalculateOrientation) && enablePoleTarget && FOutputSkeleton!=null && !string.IsNullOrEmpty(chainStart) && !string.IsNullOrEmpty(chainEnd))
 	        	{
-	        		endPosW = workingSkeleton.JointTable[chainEnd].CombinedTransform*new Vector3D(0);
-	        		Vector3D poleTargetLocal =  VMath.Inverse(workingSkeleton.JointTable[chainStart].CombinedTransform)*poleTargetW;
-	        		Vector3D t = VMath.Inverse(workingSkeleton.JointTable[chainStart].CombinedTransform)*endPosW; // endpoint in local coords
-	        		Vector3D a = VMath.Inverse(workingSkeleton.JointTable[chainStart].CombinedTransform)*(workingSkeleton.JointTable[chainStart].Children[0].CombinedTransform*new Vector3D(0)); // next child in local coords
+	        		endPosW = FWorkingSkeleton.JointTable[chainEnd].CombinedTransform*new Vector3D(0);
+	        		Vector3D poleTargetLocal =  VMath.Inverse(FWorkingSkeleton.JointTable[chainStart].CombinedTransform)*poleTargetW;
+	        		Vector3D t = VMath.Inverse(FWorkingSkeleton.JointTable[chainStart].CombinedTransform)*endPosW; // endpoint in local coords
+	        		Vector3D a = VMath.Inverse(FWorkingSkeleton.JointTable[chainStart].CombinedTransform)*(FWorkingSkeleton.JointTable[chainStart].Children[0].CombinedTransform*new Vector3D(0)); // next child in local coords
 	        		Vector3D x = t*((a.x*t.x+a.y*t.y+a.z*t.z)/Math.Pow(VMath.Dist(new Vector3D(0), t),2));
 	        		Vector3D y = t*((poleTargetLocal.x*t.x+poleTargetLocal.y*t.y+poleTargetLocal.z*t.z)/Math.Pow(VMath.Dist(new Vector3D(0), t),2));
 	        		
@@ -426,10 +378,11 @@ namespace VVVV.Nodes
 	        	if (!enablePoleTarget)
 	        		chainRotation = VMath.IdentityMatrix;
 	        	
-	        	outputSkeleton.JointTable[chainStart].AnimationTransform = chainRotation * outputSkeleton.JointTable[chainStart].AnimationTransform;
+                if (FOutputSkeleton != null)
+	        	    FOutputSkeleton.JointTable[chainStart].AnimationTransform = chainRotation * FOutputSkeleton.JointTable[chainStart].AnimationTransform;
         	}
         	
-        	FPoseOutput.SetInterface(outputSkeleton);
+        	FPoseOutput.SetInterface(FOutputSkeleton);
         }
              
         #endregion mainloop  
@@ -472,7 +425,7 @@ namespace VVVV.Nodes
         {
         	rotations = new Dictionary<string, Vector3D>();
         	jointChain = new List<IJoint>();
-        	IJoint currJoint = outputSkeleton.JointTable[chainEnd];
+        	IJoint currJoint = FOutputSkeleton.JointTable[chainEnd];
     		while (currJoint.Name!=chainStart)
     		{
     			currJoint = currJoint.Parent;
@@ -516,9 +469,6 @@ namespace VVVV.Nodes
         }
         
         #endregion helper
-        
-    
-        
 	}
 }
 
