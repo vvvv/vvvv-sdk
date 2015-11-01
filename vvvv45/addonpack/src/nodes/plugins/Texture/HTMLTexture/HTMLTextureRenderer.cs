@@ -49,6 +49,8 @@ namespace VVVV.Nodes.Texture.HTML
         {
             Logger = logger;
 
+            FLoaded = false;
+
             var settings = new CefBrowserSettings();
             settings.AcceleratedCompositing = CefState.Enabled;
             settings.FileAccessFromFileUrls = CefState.Enabled;
@@ -151,6 +153,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void Reset()
         {
+            FLoaded = false;
             FDocumentSizeIsValid = false;
             FDomIsValid = false;
             FErrorText = string.Empty;
@@ -490,6 +493,12 @@ namespace VVVV.Nodes.Texture.HTML
             get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => !t.IsValid); }
         }
 
+        private bool FLoaded;
+        public bool Loaded
+        {
+            get { return FLoaded; }
+        }
+
         public bool Enabled
         {
             get { return FEnabled; }
@@ -533,6 +542,7 @@ namespace VVVV.Nodes.Texture.HTML
                     UpdateDom(frame);
                     UpdateDocumentSize();
                 }
+                FLoaded = true;
             }
             else
                 // Reset computed values like document size or DOM

@@ -89,6 +89,8 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<int> FDocumentHeightOut;
         [Output("Is Loading")]
         public ISpread<bool> FIsLoadingOut;
+        [Output("Loaded")]
+        public ISpread<bool> FLoadedOut;
         [Output("Current Url")]
         public ISpread<string> FCurrentUrlOut;
         [Output("Error Text")]
@@ -114,6 +116,7 @@ namespace VVVV.Nodes.Texture.HTML
             FDocumentWidthOut.SliceCount = spreadMax;
             FDocumentHeightOut.SliceCount = spreadMax;
             FIsLoadingOut.SliceCount = spreadMax;
+            FLoadedOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
             FCurrentUrlOut.SliceCount = spreadMax;
 
@@ -146,6 +149,7 @@ namespace VVVV.Nodes.Texture.HTML
                 // Set outputs
                 FErrorTextOut[i] = webRenderer.CurrentError;
                 FIsLoadingOut[i] = webRenderer.IsLoading;
+                FLoadedOut[i] = webRenderer.Loaded;
                 // As long as the renderer is in the loading state stick to the old values
                 if (!webRenderer.IsLoading)
                 {
