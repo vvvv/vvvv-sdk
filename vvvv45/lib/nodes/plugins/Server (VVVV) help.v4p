@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\Server (VVVV) help.v4p" systemname="PinServerTester" filename="C:\Users\joreg\Desktop\vvvvs\PinServerTester.v4p">
-   <BOUNDS type="Window" left="7320" top="2250" width="16695" height="10215">
+   <BOUNDS type="Window" left="405" top="3705" width="16695" height="10215">
    </BOUNDS>
    <NODE systemname="Self (VVVV)" nodename="Self (VVVV)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="7680" top="240" width="100" height="100">
@@ -674,7 +674,7 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="34.100.0">
    </PACK>
    <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="76">
    <BOUNDS type="Node" left="9135" top="7290" width="100" height="100">
@@ -709,5 +709,53 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Output" dstnodeid="54" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="PinInfo (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PinInfo (VVVV)" componentmode="Hidden" id="78">
+   <BOUNDS type="Node" left="5880" top="4080" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="2" values="|/77/11/Y Input Value|,|/77/68/Input String|">
+   </PIN>
+   <PIN pinname="Update" slicecount="1" values="0" visible="1">
+   </PIN>
+   <PIN pinname="Node Label" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Exposed Pins" dstnodeid="78" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="79" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="5880" top="4575" width="855" height="1890">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5880" top="4575" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="78" srcpinname="Node Label" dstnodeid="79" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="80" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6630" top="3855" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6630" top="3855" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="80" srcpinname="Y Output Value" dstnodeid="78" dstpinname="Update">
    </LINK>
    </PATCH>
