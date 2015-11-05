@@ -201,11 +201,12 @@ namespace VVVV.Hosting
             var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
             if (packsDirInfo.Exists)
                 LoadPackFactories(packsDirInfo, catalog);
+            
             // Are we inside of our repository?
             var internalPacksDirInfo = default(DirectoryInfo);
             if (Directory.Exists(Path.Combine(ExePath, "src")))
             {
-                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
+                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv50"));
                 if (internalPacksDirInfo.Exists)
                     LoadPackFactories(internalPacksDirInfo, catalog);
             }
