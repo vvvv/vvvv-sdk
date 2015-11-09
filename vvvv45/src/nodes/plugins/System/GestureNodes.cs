@@ -258,7 +258,7 @@ namespace VVVV.Nodes.Input
     public class ZoomGestureEventsSplitNode : GestureEventsSplitNode
     {
         [Output("Distance")]
-        public ISpread<int> DistanceOut;
+        public ISpread<double> DistanceOut;
 
         protected override GestureNotificationKind SetGestureKindFilter()
         {
@@ -273,7 +273,7 @@ namespace VVVV.Nodes.Input
                 if (gesture.Kind == GestureNotificationKind.GestureZoom)
                 {
                     int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
-                    DistanceOut.Add(distance);
+                    DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
                 }
             }
         }
@@ -461,11 +461,11 @@ namespace VVVV.Nodes.Input
                 int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                 if (index < 0)
                 {
-                    DistanceOut.Add(distance/(double)gesture.ClientArea.Height);
+                    DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
                 }
                 else
                 {
-                    DistanceOut[index] = distance / (double)gesture.ClientArea.Height;
+                    DistanceOut[index] = distance / (double)gesture.ClientArea.Height * 2;
                 }
             }
             else if (index >= 0)
