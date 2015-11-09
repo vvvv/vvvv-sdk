@@ -1,0 +1,156 @@
+#N canvas 568 17 1335 873 12;
+#X declare -lib mrpeach;
+#X obj 911 534 phasor~ 0;
+#X obj 989 311 soundfiler;
+#X floatatom 989 343 8 0 0 0 - - -;
+#X obj 910 579 *~;
+#X obj 911 473 /;
+#X floatatom 911 503 8 0 0 0 - - -;
+#X obj 911 442 * 44100;
+#X obj 989 375 t b f f;
+#X obj 960 799 dac~;
+#X obj 1044 581 *~;
+#X obj 1077 311 table sampleL;
+#X obj 1181 311 table sampleR;
+#X obj 910 665 tabread4~ sampleL;
+#X obj 1044 666 tabread4~ sampleR;
+#X msg 989 273 read -resize \$1 sampleL sampleR;
+#X obj 651 116 import mrpeach;
+#X obj 650 234 unpackOSC;
+#X obj 910 730 *~ 1;
+#X obj 1044 733 *~ 1;
+#X obj 703 439 expr $f1*(1-$f2);
+#X obj 650 440 *;
+#X obj 650 284 routeOSC /vol /pan /speed /play;
+#X obj 596 191 bng 30 250 50 0 empty empty 1 10 15 0 20 -262144 -262144
+-1;
+#X obj 600 435 bng 30 250 50 0 empty empty 4 10 15 0 20 -262144 -262144
+-1;
+#X obj 816 388 bng 30 250 50 0 empty empty 5 10 15 0 20 -262144 -262144
+-1;
+#X obj 596 280 bng 30 250 50 0 empty empty 2 10 15 0 20 -262144 -262144
+-1;
+#X obj 598 356 bng 30 250 50 0 empty empty 3 10 15 0 20 -262144 -262144
+-1;
+#X obj 989 170 loadbang;
+#X obj 947 307 bng 30 250 50 0 empty empty 6 10 15 0 20 -262144 -262144
+-1;
+#X obj 946 368 bng 30 250 50 0 empty empty 7 10 15 0 20 -262144 -262144
+-1;
+#X obj 865 470 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
+-1;
+#X obj 864 528 bng 30 250 50 0 empty empty 9 10 15 0 20 -262144 -262144
+-1;
+#X obj 866 660 bng 30 250 50 0 empty empty 10 3 15 0 20 -262144 -262144
+-1;
+#X obj 865 722 bng 30 250 50 0 empty empty 11 3 15 0 20 -262144 -262144
+-1;
+#X obj 46 105 pddp/dsp;
+#X text 44 17 This patch is a part of vvvv-pd example on how to communicate.
+Check this: http://vvvv.org/documentation/pure-data;
+#X obj 43 175 bng 30 250 50 0 empty empty 1 10 15 0 20 -262144 -262144
+-1;
+#X obj 43 212 bng 30 250 50 0 empty empty 2 10 15 0 20 -262144 -262144
+-1;
+#X obj 43 259 bng 30 250 50 0 empty empty 3 10 15 0 20 -262144 -262144
+-1;
+#X obj 42 360 bng 30 250 50 0 empty empty 4 10 15 0 20 -262144 -262144
+-1;
+#X obj 41 419 bng 30 250 50 0 empty empty 5 10 15 0 20 -262144 -262144
+-1;
+#X text 86 410 Speed value is used for the calculation of the frequency
+of the [phasor~] object (which is like LFO (Animation) in vvvv). The
+Play value is also multiplied there. If the Play set to 0 \, then the
+frequency of the [phasor~] is set to 0 \, so the samples of the WAV
+file will not be played.;
+#X text 86 353 The panning value is just multiplied with volume for
+the left channel. For the right channel the 1-x version of this value
+is multiplied.;
+#X text 86 205 After unpacking OSC-message the [routeOSC] distributes
+the values to its output pins.;
+#X text 86 175 [udpreceive] listens to the port defined in vvvv patch.
+;
+#X obj 42 505 bng 30 250 50 0 empty empty 6 10 15 0 20 -262144 -262144
+-1;
+#X obj 42 593 bng 30 250 50 0 empty empty 7 10 15 0 20 -262144 -262144
+-1;
+#X text 87 496 [soundfiler] object receives a message instructing him
+to reads a sound file and save its samples to the two arrays for the
+left and right channel. [table] object on the right are these arays.
+It returns a number of samples on its output pin.;
+#X text 122 104 < First of all click this toggele to turn the dsp on.
+;
+#X obj 43 663 bng 30 250 50 0 empty empty 8 10 15 0 20 -262144 -262144
+-1;
+#X obj 989 239 pack s;
+#X obj 43 708 bng 30 250 50 0 empty empty 9 10 15 0 20 -262144 -262144
+-1;
+#X obj 44 772 bng 30 250 50 0 empty empty 10 4 15 0 20 -262144 -262144
+-1;
+#X obj 45 811 bng 30 250 50 0 empty empty 11 4 15 0 20 -262144 -262144
+-1;
+#X text 87 803 The signals are multiplied with the calculated values
+of the volume for the left and right channels and sent to line out.
+;
+#X text 774 116 < this library contains OSC objects.;
+#X obj 855 393 *;
+#X obj 873 342 t b f;
+#X obj 650 195 udpreceive 4445;
+#X obj 703 359 t b f;
+#X text 87 252 PD performs math expressions only if the value on the
+left pin (called hot) is changing. Values on the right pin (cold) will
+be just stored and the operation will be not performed immediately.
+The [trigger] object sends the value (float) from its second pin and
+then bangs with its left pin forcing the calculation.;
+#X text 85 584 [t] object is a trigger which bangs its output pins
+from right to left. Last two pins returns floats and the first one
+is just a bang. Order of the bangs is important for the calculations.
+(see step 3).;
+#X text 86 655 The duration (frequency) for the [phasor~] object is
+calculated.;
+#X text 87 702 The [phasor~] objects returns values (0..1) of a sawtooth
+wave. After multiplications with the total number of samples these
+values will be used as indices for the two arrays containing samples.
+;
+#X text 86 774 A sample stored at the current index is returned.;
+#X msg 989 205 ../../../../../lib/assets/sounds/vvvv.wav;
+#X connect 0 0 3 0;
+#X connect 0 0 9 0;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 3 0 12 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 6 0;
+#X connect 7 1 4 1;
+#X connect 7 2 9 1;
+#X connect 7 2 3 1;
+#X connect 9 0 13 0;
+#X connect 12 0 17 0;
+#X connect 13 0 18 0;
+#X connect 14 0 1 0;
+#X connect 16 0 21 0;
+#X connect 17 0 8 0;
+#X connect 18 0 8 1;
+#X connect 19 0 18 1;
+#X connect 20 0 17 1;
+#X connect 21 0 19 0;
+#X connect 21 0 20 0;
+#X connect 21 1 19 1;
+#X connect 21 1 20 1;
+#X connect 21 1 59 0;
+#X connect 21 2 56 0;
+#X connect 21 3 56 1;
+#X connect 21 3 57 0;
+#X connect 27 0 65 0;
+#X connect 50 0 14 0;
+#X connect 56 0 6 0;
+#X connect 57 0 56 0;
+#X connect 57 1 56 1;
+#X connect 58 0 16 0;
+#X connect 59 0 19 0;
+#X connect 59 0 20 0;
+#X connect 59 1 20 1;
+#X connect 59 1 19 1;
+#X connect 65 0 50 0;

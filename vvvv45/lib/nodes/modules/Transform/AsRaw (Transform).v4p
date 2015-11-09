@@ -1,0 +1,51 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
+   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Transform\AsRaw (Transform).v4p" systemname="AsRaw (Transform)" filename="C:\Work\anton-vvvv-sdk\vvvv45\lib\nodes\modules\Transform\AsRaw (Transform).v4p">
+   <BOUNDS type="Window" left="14640" top="3255" width="3030" height="3795">
+   </BOUNDS>
+   <NODE systemname="GetMatrix (Transform)" nodename="GetMatrix (Transform)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="660" top="1035" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsRaw (Value)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="675" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="Single">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Matrix Out" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="645" top="405" width="540" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="645" top="405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Transform">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="3" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="660" top="2220" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="660" top="2220" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="5" dstpinname="Input Node">
+   </LINK>
+   <INFO author="" description="Returns a transformation matrix as a sequence of bytes." tags="">
+   </INFO>
+   </PATCH>
