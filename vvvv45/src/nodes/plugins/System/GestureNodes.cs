@@ -110,15 +110,81 @@ namespace VVVV.Nodes.Input
                             User32.ScreenToClient(e.HWnd, ref position);
 
                             e.Handled = true;
-                            yield return new GestureNotification((GestureNotificationKind)gestureInfo.dwID, 
-                                                                position,
+                            switch ((GestureNotificationKind)gestureInfo.dwID)
+                            {
+                                case GestureNotificationKind.GestureBegin:
+                                    yield return new GestureBeginNotification(position,
                                                                 new Size(cr.Width, cr.Height),
                                                                 gestureInfo.dwInstanceID,
-                                                                gestureInfo.dwSequenceID, 
+                                                                gestureInfo.dwSequenceID,
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
                                                                 gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GestureEnd:
+                                    yield return new GestureEndNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GestureZoom:
+                                    yield return new GestureZoomNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GesturePan:
+                                    yield return new GesturePanNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GestureRotate:
+                                    yield return new GestureRotateNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GesturePressAndTap:
+                                    yield return new GesturePressAndTapNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                case GestureNotificationKind.GestureTwoFingerTap:
+                                    yield return new GestureTwoFingerTapNotification(position,
+                                                                new Size(cr.Width, cr.Height),
+                                                                gestureInfo.dwInstanceID,
+                                                                gestureInfo.dwSequenceID,
+                                                                gestureInfo.hwndTarget.ToInt64(),
+                                                                gestureInfo.dwFlags,
+                                                                gestureInfo.ullArguments,
+                                                                gestureInfo.cbExtraArgs);
+                                    break;
+                                default:
+                                    yield break;
+                            }
                         }
                     }
                     finally
