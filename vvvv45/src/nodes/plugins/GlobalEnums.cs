@@ -66,12 +66,6 @@ namespace VVVV.Nodes
         STOP_READING = 0x18  // B00011000
     }
 
-    public enum FirmataI2CAddressMode
-    {
-        ADDRESS_7bit,
-        ADDRESS_10bit
-    }
-
     [Startable]
 	public class GlobalEnumManager : IStartable
 	{
@@ -104,7 +98,7 @@ namespace VVVV.Nodes
             EnumManager.UpdateEnum("FirmataI2CReadModes", "READ_ONCE", Enum.GetNames(typeof(FirmataI2CReadMode)));
 
             //Firmata I2C Address Modes
-            EnumManager.UpdateEnum("FirmataI2CAddressModes", "ADDRESS_7bit", Enum.GetNames(typeof(FirmataI2CAddressMode)));
+            EnumManager.UpdateEnum("FirmataI2CAddressModes", "7 bit", new string[] {"7 bit", "10 bit"});
 
             //Color Channels
             EnumManager.UpdateEnum("ColorChannels", "Red", Enum.GetNames(typeof(ColorChannels)));
