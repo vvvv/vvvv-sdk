@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\lib\nodes\modules\EX9\Normals (EX9).v4p">
-   <BOUNDS height="6000" left="945" top="10365" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\EX9\Normals (EX9).v4p">
+   <BOUNDS height="6000" left="6135" top="6525" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="2340" top="840" type="Node" width="0">
@@ -57,13 +57,15 @@
    </BOUNDS>
    <BOUNDS height="160" left="20205" top="9885" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="4965" top="840" type="Box" width="795">
+   <BOUNDS height="255" left="4965" top="840" type="Box" width="780">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.15">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.08">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Length">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="1">
    </PIN>
    </NODE>
    <NODE id="2" nodename="ParallelEpiped (Transform Vector)" systemname="ParallelEpiped (Transform Vector)">
@@ -138,7 +140,7 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Mesh" srcnodeid="9" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" id="7" nodename="Line (EX9)" systemname="Line (EX9)">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" id="7" nodename="Line (EX9)" systemname="Line (EX9 Legacy)">
    <BOUNDS height="100" left="2400" top="4035" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="VerticesXYZ" visible="1">
@@ -157,7 +159,7 @@
    </PIN>
    <PIN pinname="Render State" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
+   <PIN pinname="Enabled" slicecount="1" values="1" visible="1">
    </PIN>
    <PIN pinname="Priority">
    </PIN>
@@ -177,5 +179,27 @@
    <LINK dstnodeid="7" dstpinname="Transform" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="7" dstpinname="VerticesXYZ" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7410" top="2355" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7410" top="2355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Enabled">
    </LINK>
    </PATCH>

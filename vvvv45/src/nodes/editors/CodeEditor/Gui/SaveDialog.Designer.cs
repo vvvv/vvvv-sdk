@@ -1,5 +1,5 @@
 ﻿
-namespace VVVV.HDE.CodeEditor.Gui.Dialogs
+namespace VVVV.HDE.CodeEditor.Gui
 {
 	partial class SaveDialog
 	{

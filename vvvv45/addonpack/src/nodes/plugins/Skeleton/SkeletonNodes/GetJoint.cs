@@ -1,41 +1,7 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
-using System.Collections;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 
 //the vvvv node namespace
@@ -60,18 +26,11 @@ namespace VVVV.Nodes
     	private ITransformOut FBaseTransformOutput;
     	private ITransformOut FAnimationTransformOutput;
     	
-    	private Skeleton inputSkeleton;
+    	private Skeleton FSkeleton;
     	
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public GetJoint()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -194,27 +153,19 @@ namespace VVVV.Nodes
         	//assign host
 	    	FHost = Host;
 	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-
-	    	//create inputs
-	    	FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
+            //create inputs
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+            FHost.CreateNodeInput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonInput);
 	    	FSkeletonInput.SetSubType(guids, "Skeleton");
-	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
 	    	
 	    	// create outputs
 	    	FHost.CreateValueOutput("ID", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out FJointIdOutput);
 	    	FJointIdOutput.SetSubType(0, 500, 1, 0, false, false, true);
-	    	
 	    	FHost.CreateStringOutput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameOutput);
-	    	
 	    	FHost.CreateTransformOutput("Base Transform", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformOutput);
-	    	
 	    	FHost.CreateTransformOutput("Animation Transform", TSliceMode.Dynamic, TPinVisibility.True, out FAnimationTransformOutput);
-	    	
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -240,15 +191,15 @@ namespace VVVV.Nodes
         		{
 	        		object currInterface;
 	        		FSkeletonInput.GetUpstreamInterface(out currInterface);
-	        		inputSkeleton = (Skeleton)currInterface;
+	        		FSkeleton = (Skeleton)currInterface;
         		}
         		else
-        			inputSkeleton = null;
+        			FSkeleton = null;
         	}
         	
         	if (FSkeletonInput.PinIsChanged || FJointNameInput.PinIsChanged)
         	{
-        		if (inputSkeleton!=null)
+        		if (FSkeleton!=null)
         		{
         			string jointName;
         			IJoint currJoint;
@@ -259,9 +210,9 @@ namespace VVVV.Nodes
         			{
         				
         				FJointNameInput.GetString(i, out jointName);
-        				if (inputSkeleton.JointTable.ContainsKey(jointName))
+        				if (FSkeleton.JointTable.ContainsKey(jointName))
         				{
-	        				currJoint = (IJoint)inputSkeleton.JointTable[jointName];
+	        				currJoint = (IJoint)FSkeleton.JointTable[jointName];
 	        				if (currJoint.Parent!=null)
 	        					FParentNameOutput.SetString(i, currJoint.Parent.Name);
 	        				else
@@ -277,22 +228,12 @@ namespace VVVV.Nodes
         					FBaseTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
 	        				FAnimationTransformOutput.SetMatrix(i, VMath.IdentityMatrix);
         				}
-        				
         			}
         		}
         	}
-        
         }
-             
-        #endregion mainloop  
         
-        #region helper
-        
+        #endregion mainloop
 
-        
-        #endregion helper
-        
-        
-        
-	}
+    }
 }

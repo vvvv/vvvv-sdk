@@ -1,47 +1,13 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
 {
-	
 	//class definition
 	public class CreateJoint: IPlugin, IDisposable
     {	          	
@@ -59,18 +25,11 @@ namespace VVVV.Nodes
     	
     	private INodeOut FSkeletonOutput;
 
-    	private Skeleton skeleton;
+    	private Skeleton FSkeleton;
     	
     	#endregion field declaration
        
     	#region constructor/destructor
-    	
-        public CreateJoint()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			
-		}
         
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
@@ -193,24 +152,17 @@ namespace VVVV.Nodes
         	//assign host
 	    	FHost = Host;
 	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-
 	    	//create inputs
-	    	
 	    	FHost.CreateStringInput("Joint Name", TSliceMode.Dynamic, TPinVisibility.True, out FJointNameInput);
-	    	
 	    	FHost.CreateStringInput("Parent Name", TSliceMode.Dynamic, TPinVisibility.True, out FParentNameInput);
-	    	
 	    	FHost.CreateTransformInput("Base Transformation", TSliceMode.Dynamic, TPinVisibility.True, out FBaseTransformInput);
 	    	
 	    	String[] dimensions = new String[2];
 	    	dimensions[0] = "Min";
 	    	dimensions[1] = "Max";
-
+            
     		FHost.CreateValueInput("Constraints", 2, dimensions, TSliceMode.Dynamic, TPinVisibility.True,  out FConstraintsInput);
 	    	FConstraintsInput.SetSubType2D(-1.0, 1.0, 0.1, -1.0, 1.0, false, false, false);
-	    	
 	    	
 	    	String[] offsetModes = new String[2];
 	    	offsetModes[0] = "parent";
@@ -218,12 +170,13 @@ namespace VVVV.Nodes
 	    	FHost.UpdateEnum("OffsetModes", "parent", offsetModes);
 	    	FHost.CreateEnumInput("Position relative to", TSliceMode.Single, TPinVisibility.True, out FOffsetModeInput);
 	    	FOffsetModeInput.SetSubType("OffsetModes");
-	    	
-	    	FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
+
+            //create outputs
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            FHost.CreateNodeOutput("Skeleton", TSliceMode.Single, TPinVisibility.True, out FSkeletonOutput);
 	    	FSkeletonOutput.SetSubType(guids, "Skeleton");
-	    	
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -247,47 +200,51 @@ namespace VVVV.Nodes
         	
         	if (FJointNameInput.PinIsChanged || FBaseTransformInput.PinIsChanged || FOffsetModeInput.PinIsChanged || FParentNameInput.PinIsChanged || FConstraintsInput.PinIsChanged || recalculate)
         	{
-        		skeleton = new Skeleton();
+        		FSkeleton = new Skeleton();
         		
         		int currId = 0;
         		for (int i=0; i<FJointNameInput.SliceCount; i++)
         		{
         			string jointName;
-        			string parentName;
         			FJointNameInput.GetString(i%FJointNameInput.SliceCount, out jointName);
-        			FParentNameInput.GetString(i%FParentNameInput.SliceCount, out parentName);
-        			IJoint currJoint = new JointInfo(jointName);
-        			Matrix4x4 baseTransform;
-        			FBaseTransformInput.GetMatrix(i%FBaseTransformInput.SliceCount, out baseTransform);
-        			currJoint.BaseTransform = baseTransform; //VMath.Translate(basePositionX, basePositionY, basePositionZ);
-        			currJoint.Constraints.Clear();
-        			for (int j=i*3; j<i*3+3; j++)
-		        	{
-		        		double constraintMin, constraintMax;
-		        		FConstraintsInput.GetValue2D(j%FConstraintsInput.SliceCount, out constraintMin, out constraintMax);
-		        		currJoint.Constraints.Add(new Vector2D(constraintMin, constraintMax));
-		        	}
-        			if (string.IsNullOrEmpty(parentName))
-        			{
-        				if (skeleton.Root==null)
-        				{
-        			    	skeleton.Root = currJoint;
-        			    	currJoint.Id = currId;
-        			    	currId++;
-        					skeleton.BuildJointTable();
-        				}
-        			}
-        			else
-        			{
-        				if (skeleton.JointTable.ContainsKey(parentName))
-        				{
-        					currJoint.Parent = skeleton.JointTable[parentName];
-        					currJoint.Id = currId;
-        			    	currId++;
-        				}
-        				skeleton.BuildJointTable();
-        			}
-        			
+                    if (!string.IsNullOrEmpty(jointName))
+                    {
+                        string parentName;
+                        FParentNameInput.GetString(i % FParentNameInput.SliceCount, out parentName);
+                        IJoint currJoint = new JointInfo(jointName);
+                        Matrix4x4 baseTransform;
+                        FBaseTransformInput.GetMatrix(i % FBaseTransformInput.SliceCount, out baseTransform);
+                        currJoint.BaseTransform = baseTransform; //VMath.Translate(basePositionX, basePositionY, basePositionZ);
+
+                        currJoint.Constraints.Clear();
+                        for (int j = i * 3; j < i * 3 + 3; j++)
+                        {
+                            double constraintMin, constraintMax;
+                            FConstraintsInput.GetValue2D(j % FConstraintsInput.SliceCount, out constraintMin, out constraintMax);
+                            currJoint.Constraints.Add(new Vector2D(constraintMin, constraintMax));
+                        }
+
+                        if (string.IsNullOrEmpty(parentName))
+                        {
+                            if (FSkeleton.Root == null)
+                            {
+                                FSkeleton.Root = currJoint;
+                                currJoint.Id = currId;
+                                currId++;
+                                FSkeleton.BuildJointTable();
+                            }
+                        }
+                        else
+                        {
+                            if (FSkeleton.JointTable.ContainsKey(parentName))
+                            {
+                                currJoint.Parent = FSkeleton.JointTable[parentName];
+                                currJoint.Id = currId;
+                                currId++;
+                            }
+                            FSkeleton.BuildJointTable();
+                        }
+                    }
         		}
         		
         		int positionInWorldSpace = 0;
@@ -295,7 +252,7 @@ namespace VVVV.Nodes
         		if (positionInWorldSpace>0)
     			{
         			List<Vector3D> offsetList = new List<Vector3D>();
-    				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
+    				foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
     				{
     					Vector3D worldPos = pair.Value.BaseTransform * (new Vector3D(0));
     					Vector3D parentWorldPos;
@@ -307,30 +264,19 @@ namespace VVVV.Nodes
     					offsetList.Add(offset);
     				}
     				int i=0;
-    				foreach (KeyValuePair<string, IJoint> pair in skeleton.JointTable)
+    				foreach (KeyValuePair<string, IJoint> pair in FSkeleton.JointTable)
     				{
     					pair.Value.BaseTransform = VMath.Translate(offsetList[i]);
     					i++;
     				}
     			}
-    			
 
         		FSkeletonOutput.MarkPinAsChanged();
         	}
         	
-        	FSkeletonOutput.SetInterface(skeleton);
-        	
+        	FSkeletonOutput.SetInterface(FSkeleton);
         }
-             
-        #endregion mainloop  
-        
-        #region helper
-        
 
-        
-        #endregion helper
-        
-        
-        
-	}
+        #endregion mainloop
+    }
 }

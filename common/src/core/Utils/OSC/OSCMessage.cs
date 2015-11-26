@@ -28,6 +28,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using VVVV.Utils.VColor;
@@ -71,12 +72,13 @@ namespace VVVV.Utils.OSC
 
 		public OSCMessage(string address, bool extendedMode = false) : base(extendedMode)
 		{
-            this.typeTag = ",";
+            this.FTypeTags = ",";
 			this.Address = address;
 		}
+
 		public OSCMessage(string address, object value, bool extendedMode =  false) : base(extendedMode)
 		{
-            this.typeTag = ",";
+            this.FTypeTags = ",";
 			this.Address = address;
 			Append(value);
 		}
@@ -85,9 +87,9 @@ namespace VVVV.Utils.OSC
 		{
 			ArrayList data = new ArrayList();
 
-			addBytes(data, packString(this.address));
+			addBytes(data, packString(this.FAddress));
 			padNull(data);
-			addBytes(data, packString(this.typeTag));
+			addBytes(data, packString(this.FTypeTags));
 			padNull(data);
 			
 			foreach(object value in this.Values)
@@ -121,7 +123,6 @@ namespace VVVV.Utils.OSC
 			
 			this.binaryData = (byte[])data.ToArray(typeof(byte));
 		}
-
 
 		public static OSCMessage Unpack(byte[] bytes, ref int start, bool extendedMode = false)
 		{
@@ -226,7 +227,7 @@ namespace VVVV.Utils.OSC
                 Fallback();
                 return;
             }
-			values.Add(value);
+			FValues.Add(value);
 		}
 
 	    private void Fallback()
@@ -235,20 +236,41 @@ namespace VVVV.Utils.OSC
 //	        values.Add("undefined");
 	    }
 
-	    protected string typeTag;
+        public override IEnumerable<OSCMessage> MatchAddress(string address)
+        {
+            //todo: pattern matching
+            if (IsMatch(address))
+                yield return this;
+        }
+
+        protected string FTypeTags;
 		protected void AppendTag(char type)
 		{
-			typeTag += type;
+			FTypeTags += type;
 		}
 
-		override public bool IsBundle() { return false; }
+        public IEnumerable<char> TypeTags
+        {
+            get
+            {
+                foreach (var chr in FTypeTags.TrimStart(','))
+                    yield return chr;
+            }
+        }
+
+        public IEnumerable<Object> Arguments
+        {
+            get { return (IEnumerable<Object>)FValues.ToArray().Clone(); }
+        }
+              
+        override public bool IsBundle() { return false; }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(this.Address + " ");
-            for(int i = 0; i < values.Count; i++)
-                sb.Append(values[i].ToString() + " ");
+            for(int i = 0; i < FValues.Count; i++)
+                sb.Append(FValues[i].ToString() + " ");
             return sb.ToString();
         }
 	}

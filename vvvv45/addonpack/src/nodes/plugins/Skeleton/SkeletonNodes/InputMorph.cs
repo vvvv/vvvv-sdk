@@ -1,43 +1,9 @@
-#region licence/info
-
-//////project name
-//vvvv plugin template
-
-//////description
-//basic vvvv node plugin template.
-//Copy this an rename it, to write your own plugin node.
-
-//////licence
-//GNU Lesser General Public License (LGPL)
-//english: http://www.gnu.org/licenses/lgpl.html
-//german: http://www.gnu.de/lgpl-ger.html
-
-//////language/ide
-//C# sharpdevelop 
-
-//////dependencies
-//VVVV.PluginInterfaces.V1;
-//VVVV.Utils.VColor;
-//VVVV.Utils.VMath;
-
-//////initial author
-//vvvv group
-
-#endregion licence/info
-
 //use what you need
 using System;
-using System.Drawing;
 using System.Collections.Generic;
-using System.IO;
 using VVVV.PluginInterfaces.V1;
-using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
-using System.Text.RegularExpressions;
-using System.Globalization;
-using VVVV.Utils.SharedMemory;
 using VVVV.SkeletonInterfaces;
-using SlimDX;
 
 //the vvvv node namespace
 namespace VVVV.Nodes
@@ -55,33 +21,22 @@ namespace VVVV.Nodes
 
     	private IValueConfig FPoseCount;
     	private IValueIn FInput;
-    	private List<INodeIn> poseNodes;
+    	private List<INodeIn> FPoseNodes = new List<INodeIn>();
     	
     	private INodeOut FPoseOutput;
     	
-    	private IJoint outputJoint;
-    	private Skeleton outputSkeleton;
-    	
-    	private List<IJoint> poses;
+    	private IJoint FOutputJoint;
+    	private Skeleton FSkeleton = new Skeleton();
+
+        private List<IJoint> FPoses = new List<IJoint>();
     	private double input;
 		double poseCount = 2;
 		private int passthrough = -1; // if an input pose is just passed through, its index is saved here, -1 if there's no passthrough
-		
     	
     	#endregion field declaration
        
     	#region constructor/destructor
     	
-        public SkeletonInputMorph()
-        {
-			//the nodes constructor
-			//nothing to declare for this node
-			outputSkeleton = new Skeleton();
-			
-			poses = new List<IJoint>();
-			poseNodes = new List<INodeIn>();
-		}
-        
         // Implementing IDisposable's Dispose method.
         // Do not make this method virtual.
         // A derived class should not be able to override this method.
@@ -202,13 +157,14 @@ namespace VVVV.Nodes
 	    {
         	//assign host
 	    	FHost = Host;
-	    	
-	    	System.Guid[] guids = new System.Guid[1];
-	    	guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-	    	
-	    	FHost.CreateValueConfig("Number of Input Poses", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPoseCount);
+
+            var guids = new System.Guid[1];
+            guids[0] = SkeletonNodeIO.GUID;
+
+            FHost.CreateValueConfig("Number of Input Poses", 1, null, TSliceMode.Single, TPinVisibility.OnlyInspector, out FPoseCount);
 	    	FPoseCount.SetSubType(2, 10, 1, 2, false, false, true);
 	    	
+            //create inputs
 	    	FHost.CreateValueInput("Input", 1, null, TSliceMode.Single, TPinVisibility.True, out FInput);
 		    FInput.SetSubType(0.0, 1.0, 0.01, 0.0, false, false, false);
 	    	
@@ -217,16 +173,13 @@ namespace VVVV.Nodes
     		{
     			FHost.CreateNodeInput("Pose "+(i+1), TSliceMode.Single, TPinVisibility.True, out currPoseNode);
 		    	currPoseNode.SetSubType(guids, "Skeleton");
-		    	poseNodes.Add(currPoseNode);
-		    	poses.Add(null);
+		    	FPoseNodes.Add(currPoseNode);
+		    	FPoses.Add(null);
     		}
 	    	
 	    	// create outputs
-	    	
 	    	FHost.CreateNodeOutput("Mixed Pose", TSliceMode.Single, TPinVisibility.True, out FPoseOutput);
 	    	FPoseOutput.SetSubType(guids, "Skeleton");
-	    	
-	    	
         }
 
         #endregion pin creation
@@ -240,34 +193,32 @@ namespace VVVV.Nodes
         	
         	if (Input.Name == "Number of Input Poses")
         	{
-        		System.Guid[] guids = new System.Guid[1];
-	    		guids[0] = new Guid("AB312E34-8025-40F2-8241-1958793F3D39");
-	    		
-        		IValueConfig valueInput = (IValueConfig)Input;
+                IValueConfig valueInput = (IValueConfig)Input;
         		valueInput.GetValue(0, out poseCount);
         		
         		FInput.SetSubType(0, poseCount-1, 0.01, 0.0, false, false, false);
         		
-        		int oldPoseCount = poseNodes.Count;
+        		int oldPoseCount = FPoseNodes.Count;
         		for (int i=oldPoseCount-1; i>=(int)poseCount; i--)
         		{
-        			FHost.DeletePin(poseNodes[i]);
+        			FHost.DeletePin(FPoseNodes[i]);
         		}
         		for (int i=oldPoseCount-1; i>=(int)poseCount; i--)
         		{
-        			poseNodes.RemoveAt(i);
-        			poses.RemoveAt(i);
+        			FPoseNodes.RemoveAt(i);
+        			FPoses.RemoveAt(i);
         		}
-        		
-        		INodeIn currPoseNode;
+
+                var guids = new System.Guid[1];
+                guids[0] = SkeletonNodeIO.GUID;
+                INodeIn currPoseNode;
         		for (int i=oldPoseCount; i<(int)poseCount; i++)
         		{
         			FHost.CreateNodeInput("Pose "+(i+1), TSliceMode.Single, TPinVisibility.True, out currPoseNode);
 			    	currPoseNode.SetSubType(guids, "Skeleton");
-			    	poseNodes.Add(currPoseNode);
-			    	poses.Add(null);
+			    	FPoseNodes.Add(currPoseNode);
+			    	FPoses.Add(null);
         		}
-		    	
         	}
         }
         
@@ -286,25 +237,24 @@ namespace VVVV.Nodes
         	}
         	
             object currInterface;
-            for (int i=0; i<poseNodes.Count; i++)
+            for (int i=0; i<FPoseNodes.Count; i++)
             {
-            	if (poseNodes[i].PinIsChanged)
+            	if (FPoseNodes[i].PinIsChanged)
             	{
-            		if (poseNodes[i].IsConnected)
+            		if (FPoseNodes[i].IsConnected)
             		{
-	            		poseNodes[i].GetUpstreamInterface(out currInterface);
+	            		FPoseNodes[i].GetUpstreamInterface(out currInterface);
 	            		IJoint currPose = ((Skeleton)currInterface).Root;
-	            		poses[i] = currPose;
+	            		FPoses[i] = currPose;
             		}
             		else
             		{
-            			poses[i] = null;
+            			FPoses[i] = null;
             			if (i==0)
-            				outputJoint = null;
+            				FOutputJoint = null;
             		}
             		recalculate = true;
             	}
-            	
             }
         	
         	if (recalculate)
@@ -316,45 +266,43 @@ namespace VVVV.Nodes
 				
         		if (amount2==0)
         		{
-        			outputJoint = poses[index1];
+        			FOutputJoint = FPoses[index1];
         			if (passthrough!=index1)
         			{
-        				outputSkeleton.Root = outputJoint;
-        				outputSkeleton.BuildJointTable();
+        				FSkeleton.Root = FOutputJoint;
+        				FSkeleton.BuildJointTable();
         			}
         			passthrough = index1;
         		}
         		else if (amount1==0)
         		{
-        			outputJoint = poses[index2];
+        			FOutputJoint = FPoses[index2];
         			if (passthrough!=-1)
         			{
-        				outputSkeleton.Root = outputJoint;
-        				outputSkeleton.BuildJointTable();
+        				FSkeleton.Root = FOutputJoint;
+        				FSkeleton.BuildJointTable();
         			}
         			passthrough = index2;
         		}
         		else
         		{
-        			if (outputJoint==null || passthrough>=0)
+        			if (FOutputJoint==null || passthrough>=0)
         			{
-	        			outputJoint = poses[index1].DeepCopy();
-	        			outputSkeleton.Root = outputJoint;
-						outputSkeleton.BuildJointTable();
+	        			FOutputJoint = FPoses[index1].DeepCopy();
+	        			FSkeleton.Root = FOutputJoint;
+						FSkeleton.BuildJointTable();
         			}
         			else
-        				copyAttributes(poses[index1], outputJoint);
-	        		mixJoints(outputJoint, poses[index1], amount1, poses[index2], amount2);
+        				copyAttributes(FPoses[index1], FOutputJoint);
+	        		mixJoints(FOutputJoint, FPoses[index1], amount1, FPoses[index2], amount2);
 	        		passthrough = -1;
         		}
    
-				outputSkeleton.Root = outputJoint;
+				FSkeleton.Root = FOutputJoint;
         		FPoseOutput.MarkPinAsChanged();
         	}
-        
 			
-        	FPoseOutput.SetInterface(outputSkeleton);
-        	
+        	FPoseOutput.SetInterface(FSkeleton);
         }
              
         #endregion mainloop  
@@ -397,8 +345,5 @@ namespace VVVV.Nodes
         }
         
         #endregion helper
-        
-        
-        
 	}
 }

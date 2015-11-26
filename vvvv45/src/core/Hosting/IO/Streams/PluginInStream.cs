@@ -47,7 +47,38 @@ namespace VVVV.Hosting.IO.Streams
             return base.Sync();
         }
     }
-    
+
+    class CharInStream : MemoryIOStream<char>
+    {
+        private readonly IStringIn FStringIn;
+        private readonly bool FAutoValidate;
+
+        public CharInStream(IStringIn stringIn)
+        {
+            FStringIn = stringIn;
+            FAutoValidate = stringIn.AutoValidate;
+        }
+
+        public override bool Sync()
+        {
+            IsChanged = FAutoValidate ? FStringIn.PinIsChanged : FStringIn.Validate();
+            if (IsChanged)
+            {
+                Length = FStringIn.SliceCount;
+                using (var writer = GetWriter())
+                {
+                    for (int i = 0; i < Length; i++)
+                    {
+                        string result;
+                        FStringIn.GetString(i, out result);
+                        writer.Write(result != null && result.Length > 0 ? result[0] : char.MinValue);
+                    }
+                }
+            }
+            return base.Sync();
+        }
+    }
+
     class EnumInStream<T> : MemoryIOStream<T>
     {
         protected readonly IEnumIn FEnumIn;

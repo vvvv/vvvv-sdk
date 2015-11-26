@@ -56,7 +56,7 @@ namespace VVVV.Utils.OSC
 		public OSCPacket(bool extendedMode = false)
 		{
 		    this.ExtendedVVVVMode = extendedMode;
-            this.values = new ArrayList();
+            this.FValues = new ArrayList();
 		}
 
 		protected static void addBytes(ArrayList data, byte[] bytes)
@@ -119,7 +119,6 @@ namespace VVVV.Utils.OSC
 		{
 			return ASCIIEncoding8Bit.GetBytes(value);
 		}
-
 
         protected static byte[] packChar(char value)
         {
@@ -193,7 +192,6 @@ namespace VVVV.Utils.OSC
             }
             return data;
         }
-
 
         protected static byte[] packVector4D(Vector4D value)
         {
@@ -345,7 +343,6 @@ namespace VVVV.Utils.OSC
             return m;
         }
 
-
         protected static DateTime unpackTimeTag(byte[] bytes, ref int start)
         {
             byte[] data = new byte[8];
@@ -366,24 +363,50 @@ namespace VVVV.Utils.OSC
 			if(bytes[start] == '#') return OSCBundle.Unpack(bytes, ref start, end, extendedMode);
 			else return OSCMessage.Unpack(bytes, ref start, extendedMode);
 		}
-
-
-		protected string address;
-		public string Address
-		{
-			get { return address; }
-			set 
-			{
-				// TODO: validate
-				address = value;
-			}
-		}
-
-		protected ArrayList values;
+		
+		protected ArrayList FValues;
 		public ArrayList Values
 		{
-			get { return (ArrayList)values.Clone(); }
+			get { return (ArrayList)FValues.Clone(); }
 		}
+
+        private MessagePattern[] FAddressParts;
+        protected string FAddress;
+        public string Address
+        {
+            get { return FAddress; }
+            set
+            {
+                // TODO: validate
+                FAddress = value;
+                FAddressParts = Array.ConvertAll(
+                    Address.Split('/'),
+                    pattern => new MessagePattern(pattern));
+            }
+        }
+
+        //taken from: https://bitbucket.org/horizongir/bonsai
+        protected bool IsMatch(string methodName)
+        {
+            var parts = methodName.Split('/');
+            if (FAddressParts.Length == parts.Length)
+            {
+                for (int i = 0; i < parts.Length; i++)
+                {
+                    var methodPart = parts[i];
+                    var addressPart = FAddressParts[i];
+                    if (!addressPart.IsMatch(methodPart))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        abstract public IEnumerable<OSCMessage> MatchAddress(string address);
+
 		abstract public void Append(object value);
 
 		abstract public bool IsBundle();

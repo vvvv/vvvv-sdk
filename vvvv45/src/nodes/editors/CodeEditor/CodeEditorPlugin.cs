@@ -22,7 +22,7 @@ using VVVV.Core.Model.FX;
 using VVVV.Core.Runtime;
 using VVVV.Core.View.Table;
 using VVVV.HDE.CodeEditor.ErrorView;
-using VVVV.HDE.CodeEditor.Gui.Dialogs;
+using VVVV.HDE.CodeEditor.Gui;
 using VVVV.HDE.CodeEditor.LanguageBindings.CS;
 using VVVV.HDE.CodeEditor.LanguageBindings.FX;
 using VVVV.HDE.Viewer.WinFormsViewer;

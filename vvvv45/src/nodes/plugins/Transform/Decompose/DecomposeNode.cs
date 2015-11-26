@@ -45,8 +45,9 @@ namespace VVVV.Nodes
 			FTransOut.SliceCount = SpreadMax;
 			FScaleOut.SliceCount = SpreadMax;
 			FRotOut.SliceCount = SpreadMax;
+            FOKOut.SliceCount = SpreadMax;
 
-			if(FInput.IsChanged)
+            if (FInput.IsChanged)
 			{
 				for (int i = 0; i < SpreadMax; i++)
 				{

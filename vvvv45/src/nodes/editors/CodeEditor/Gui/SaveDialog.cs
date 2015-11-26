@@ -3,7 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace VVVV.HDE.CodeEditor.Gui.Dialogs
+namespace VVVV.HDE.CodeEditor.Gui
 {
 	public enum SaveOption
 	{

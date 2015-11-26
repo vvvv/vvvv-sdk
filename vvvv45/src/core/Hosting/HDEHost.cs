@@ -99,8 +99,6 @@ namespace VVVV.Hosting
         
         public HDEHost()
         {
-            //AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
-            
             //set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
             
@@ -196,18 +194,29 @@ namespace VVVV.Hosting
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
 
+            //register custom assembly resolvers which look also in the PACK_NAME/core and PACK_NAME/core/[x86|x64] folders
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
             var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
             if (packsDirInfo.Exists)
                 LoadPackFactories(packsDirInfo, catalog);
+            
             // Are we inside of our repository?
             var internalPacksDirInfo = default(DirectoryInfo);
+            var internalPublicPacksDirInfo = default(DirectoryInfo);
             if (Directory.Exists(Path.Combine(ExePath, "src")))
             {
-                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
+                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv50"));
                 if (internalPacksDirInfo.Exists)
                     LoadPackFactories(internalPacksDirInfo, catalog);
+
+                //also add our public repo folder
+                internalPublicPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\public-vl"));
+                if (internalPublicPacksDirInfo.Exists)
+                    LoadPackFactories(internalPublicPacksDirInfo, catalog);
             }
 
             Container = new CompositionContainer(catalog);
@@ -266,6 +275,8 @@ namespace VVVV.Hosting
                 LoadPackNodes(packsDirInfo);
             if (internalPacksDirInfo != null && internalPacksDirInfo.Exists)
                 LoadPackNodes(internalPacksDirInfo);
+            if (internalPublicPacksDirInfo != null && internalPublicPacksDirInfo.Exists)
+                LoadPackNodes(internalPublicPacksDirInfo);
         }
 
         bool IsSendingMessages()
@@ -287,6 +298,14 @@ namespace VVVV.Hosting
         {
             foreach (var packDirInfo in packsDirInfo.GetDirectories())
             {
+                //check for vl package with vvvv folder
+                var vlPackInfo = new DirectoryInfo(Path.Combine(packDirInfo.FullName, "vvvv"));
+                if (vlPackInfo.Exists)
+                {
+                    LoadPackNodes(packDirInfo);
+                    continue;
+                }
+
                 var packDir = packDirInfo.FullName;
                 var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
                 if (nodesDirInfo.Exists)
@@ -296,11 +315,18 @@ namespace VVVV.Hosting
 
         private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
             foreach (var packDirInfo in packsDirInfo.GetDirectories())
             {
                 var packDir = packDirInfo.FullName;
+
+                //check for vl package with vvvv folder
+                var vlPackInfo = new DirectoryInfo(Path.Combine(packDir, "vvvv"));
+                if (vlPackInfo.Exists)
+                {
+                    LoadPackFactories(packDirInfo, catalog);
+                    continue;
+                }
+
                 var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
                 if (coreDirInfo.Exists)
                 {

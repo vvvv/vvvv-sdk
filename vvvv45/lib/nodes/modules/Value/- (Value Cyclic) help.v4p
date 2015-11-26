@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Value\- (Value Cyclic) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Value\- (Value Cyclic) help.v4p">
    <BOUNDS height="7665" left="1545" top="1380" type="Window" width="8085">
    </BOUNDS>
-   <NODE componentmode="InABox" id="18" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InABox" id="18" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="5550" top="4605" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4860" left="4875" top="4335" type="Window" width="6120">
@@ -10,6 +10,16 @@
    <BOUNDS height="1500" left="5550" top="4605" type="Box" width="1350">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="17" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -54,20 +64,22 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Transform" srcnodeid="16" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2325" top="1560" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="1680" top="1635" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="345" left="2325" top="1560" type="Box" width="945">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="6.99">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Angle1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="14" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -130,20 +142,22 @@
    </LINK>
    <LINK dstnodeid="16" dstpinname="Rotate" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3885" top="1560" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="1980" top="1935" type="Window" width="215">
    </BOUNDS>
    <BOUNDS height="345" left="3885" top="1560" type="Box" width="945">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.01">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-0.71">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Angle2">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="13" dstpinname="Rotate" srcnodeid="11" srcpinname="Y Output Value">
@@ -180,7 +194,7 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="11" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1830" top="3750" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="1320" top="4680" type="Window" width="215">
@@ -194,7 +208,7 @@
    </NODE>
    <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="10" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2835" top="3750" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="2190" top="4485" type="Window" width="215">
@@ -211,7 +225,7 @@
    <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="255" top="525" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="915" left="255" top="525" type="Box" width="4335">
+   <BOUNDS height="480" left="255" top="525" type="Box" width="3615">
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
@@ -229,7 +243,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Substract - Value Cylcic|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|- (Value Cylcic)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -302,4 +316,6 @@
    <BOUNDS height="3600" left="6480" top="1260" type="Box" width="4800">
    </BOUNDS>
    </NODE>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
    </PATCH>
