@@ -48,12 +48,12 @@ namespace VVVV.Nodes
 
     public enum FirmataPinMode
     {
-        INPUT,
-        OUTPUT,
-        ANALOG,
+        Input,
+        Output,
+        Analog,
         PWM,
-        SERVO,
-        SHIFT,
+        Servo,
+        Shift,
         I2C
     }
 
@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 			UpdatePortList();
 
             //Firmata Pin Modes
-            EnumManager.UpdateEnum("FirmataPinModes", "INPUT", Enum.GetNames(typeof(FirmataPinMode)));
+            EnumManager.UpdateEnum("FirmataPinModes", "Input", new string[] { "Input", "Output", "Analog In", "PWM", "Servo", "Shift", "I2C" });
 
             //Firmata I2C Read Modes
             EnumManager.UpdateEnum("FirmataI2CReadModes", "READ_ONCE", Enum.GetNames(typeof(FirmataI2CReadMode)));
