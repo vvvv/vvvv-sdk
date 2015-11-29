@@ -12,6 +12,7 @@ using VVVV.Utils.VMath;
 using VVVV.Hosting.Pins;
 
 using VVVV.Nodes.Generic;
+using System.IO;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -25,7 +26,8 @@ namespace VVVV.Nodes
 	           )]
 	public class ValueBufferNode : BufferNode<double>
 	{
-	}
+        public ValueBufferNode() : base(Copier<double>.Immutable) { }
+    }
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Color",
@@ -35,7 +37,8 @@ namespace VVVV.Nodes
 	           )]
 	public class ColorBufferNode : BufferNode<RGBAColor>
 	{
-	}
+        public ColorBufferNode() : base(Copier<RGBAColor>.Immutable) { }
+    }
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "String",
@@ -45,7 +48,8 @@ namespace VVVV.Nodes
 	           )]
 	public class StringBufferNode : BufferNode<string>
 	{
-	}
+        public StringBufferNode() : base(Copier<string>.Immutable) { }
+    }
 	
 	[PluginInfo(Name = "Buffer",
 	            Category = "Transform",
@@ -55,6 +59,7 @@ namespace VVVV.Nodes
 	           )]
 	public class TransformBufferNode : BufferNode<Matrix4x4>
 	{
+        public TransformBufferNode() : base(Copier<Matrix4x4>.Immutable) { }
 	}
 	
 	[PluginInfo(Name = "Buffer",
@@ -65,6 +70,7 @@ namespace VVVV.Nodes
 	           )]
 	public class EnumBufferNode : BufferNode<EnumEntry>
 	{
+        public EnumBufferNode() : base(Copiers.EnumEntry) { }
 	}
 	
 	[PluginInfo(Name = "Buffer",
@@ -75,5 +81,6 @@ namespace VVVV.Nodes
 	           )]
 	public class RawBufferNode : BufferNode<System.IO.Stream>
 	{
-	}
+        public RawBufferNode() : base(Copiers.Raw) { }
+    }
 }

@@ -23,50 +23,55 @@ namespace VVVV.Nodes
 	            AutoEvaluate = true
 	           )]
 	public class ValueQueueNode : QueueNode<double>
-	{
-	}
-	
-	[PluginInfo(Name = "Queue",
+    {
+        public ValueQueueNode() : base(Copier<double>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "Queue",
 	            Category = "Color",
 	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class ColorQueueNode : QueueNode<RGBAColor>
-	{
-	}
-	
-	[PluginInfo(Name = "Queue",
+    {
+        public ColorQueueNode() : base(Copier<RGBAColor>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "Queue",
 	            Category = "String",
 	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class StringQueueNode : QueueNode<string>
-	{
-	}
-	
-	[PluginInfo(Name = "Queue",
+    {
+        public StringQueueNode() : base(Copier<string>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "Queue",
 	            Category = "Transform",
 	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class TransformQueueNode : QueueNode<Matrix4x4>
-	{
-	}
-	
-	[PluginInfo(Name = "Queue",
+    {
+        public TransformQueueNode() : base(Copier<Matrix4x4>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "Queue",
 	            Category = "Enumerations",
 	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class EnumQueueNode : QueueNode<EnumEntry>
-	{
-	}
-	
-	[PluginInfo(Name = "Queue",
+    {
+        public EnumQueueNode() : base(Copiers.EnumEntry) { }
+    }
+
+    [PluginInfo(Name = "Queue",
 	            Category = "Raw",
 	            Help = "Inserts the input at index 0 and drops the oldest slice in a FIFO fashion",
 	            Tags = "",
@@ -74,19 +79,6 @@ namespace VVVV.Nodes
 	           )]
 	public class RawQueueNode : QueueNode<System.IO.Stream>
 	{
-        private static readonly byte[] buffer = new byte[4096];
-
-        protected override ISpread<System.IO.Stream> CloneInputSpread(ISpread<System.IO.Stream> spread)
-        {
-            var clone = new Spread<System.IO.Stream>(spread.SliceCount);
-            for (int i = 0; i < clone.SliceCount; i++)
-            {
-                var stream = spread[i];
-                var clonedStream = new System.IO.MemoryStream((int)stream.Length);
-                stream.CopyTo(clonedStream, buffer);
-                clone[i] = clonedStream;
-            }
-            return clone;
-        }
+        public RawQueueNode() : base(Copiers.Raw) { }
 	}
 }
