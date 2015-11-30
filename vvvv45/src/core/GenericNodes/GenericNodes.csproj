@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\Default.Core.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{9A20948B-DF40-4D71-B1CD-39DA080C044C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes.Generic</RootNamespace>
+    <AssemblyName>VVVV.Nodes.Generic</AssemblyName>
+    <AssemblyDescription>Collection of generic nodes</AssemblyDescription>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RestorePackages>true</RestorePackages>
+    <DocumentationFile>$(OutputPath)\VVVV.Nodes.Generic.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicNodes\QueueStore.cs" />
+    <Compile Include="BasicNodes\SplitAt.cs" />
+    <Compile Include="CloneNodes\FrameDelay.cs" />
+    <Compile Include="CloneNodesTemplates.cs" />
+    <Compile Include="EqualsNodes\ChangeNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
+    <Compile Include="BasicNodes\Cast.cs" />
+    <Compile Include="BasicNodesTemplates.cs" />
+    <Compile Include="DistanceNodesTemplates.cs" />
+    <Compile Include="DistanceNodes\NearestNeighbour.cs" />
+    <Compile Include="EqualsNodesTemplates.cs" />
+    <Compile Include="EqualsNodes\Equals.cs" />
+    <Compile Include="EqualsNodes\Occurrence.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BasicNodes\CARBin.cs" />
+    <Compile Include="BasicNodes\CDRBin.cs" />
+    <Compile Include="BasicNodes\ReverseBin.cs" />
+    <Compile Include="BasicNodes\ShiftBin.cs" />
+    <Compile Include="BasicNodes\Stack.cs" />
+    <Compile Include="BasicNodes\Buffer.cs" />
+    <Compile Include="BasicNodes\Cons.cs" />
+    <Compile Include="BasicNodes\DeleteSlice.cs" />
+    <Compile Include="BasicNodes\GetSpreadAdvanced.cs" />
+    <Compile Include="BasicNodes\Pairwise.cs" />
+    <Compile Include="BasicNodes\Queue.cs" />
+    <Compile Include="BasicNodes\RingBuffer.cs" />
+    <Compile Include="BasicNodes\Select.cs" />
+    <Compile Include="BasicNodes\SelectBin.cs" />
+    <Compile Include="BasicNodes\SetSlice.cs" />
+    <Compile Include="BasicNodes\SetSpread.cs" />
+    <Compile Include="BasicNodes\Store.cs" />
+    <Compile Include="BasicNodes\Unzip.cs" />
+    <Compile Include="BasicNodes\VecBinSpread.cs" />
+    <Compile Include="BasicNodes\Zip.cs" />
+    <Compile Include="REPLACEME_CLASS.cs" />
+    <Compile Include="SpectralNodesTemplates.cs" />
+    <Compile Include="SpectralNodes\Length.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GenericNodes.nuspec" />
+    <None Include="packages.config" />
+    <None Include="TemplateConvvvverter.v4p" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\Hosting\Hosting.csproj">
+      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
+      <Name>Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\core\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+</Project>

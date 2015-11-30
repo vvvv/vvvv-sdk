@@ -1,0 +1,79 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\TimeToString (String) help.v4p">
+   <BOUNDS height="2880" left="2040" top="2445" type="Window" width="5385">
+   </BOUNDS>
+   <NODE id="4" nodename="CurrentTime (Astronomy)">
+   <BOUNDS height="0" left="3810" top="450" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Current Time" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="TimeToString (String)">
+   <BOUNDS height="0" left="3840" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="885" top="1815" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3180" top="6840" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="885" top="1815" type="Box" width="3015">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="3" srcpinname="String">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2745" top="870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3420" top="3480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="2745" top="870" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Current Time">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Time" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="390" type="Box" width="3360">
+   </BOUNDS>
+   <BOUNDS height="160" left="10200" top="43260" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|takes a time input (38210.7055d, for example) and converts it to a string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10200" top="43260" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|TimeToString - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
