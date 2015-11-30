@@ -169,7 +169,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XElementBufferNode : BufferNode<XElement> {}
+	public class XElementBufferNode : BufferNode<XElement>
+    {
+        public XElementBufferNode() : base(XElementCopier.Default) { }
+    }
     
     [PluginInfo(Name = "Queue",
 	            Category = "XElement",
@@ -177,17 +180,23 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XElementQueueNode : QueueNode<XElement> {}
-	
-	[PluginInfo(Name = "RingBuffer",
+	public class XElementQueueNode : QueueNode<XElement>
+    {
+        public XElementQueueNode() : base(XElementCopier.Default) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "XElement",
 	            Help = "Inserts the input at the ringbuffer position.",
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XElementRingBufferNode : RingBufferNode<XElement> {}
-    
-	[PluginInfo(Name = "Store", 
+	public class XElementRingBufferNode : RingBufferNode<XElement>
+    {
+        public XElementRingBufferNode() : base(XElementCopier.Default) { }
+    }
+
+    [PluginInfo(Name = "Store", 
 	            Category = "XElement", 
 	            Help = "Stores a spread and sets/removes/inserts slices.", 
 	            Tags = "add, insert, remove, generic, spreadop, collection",

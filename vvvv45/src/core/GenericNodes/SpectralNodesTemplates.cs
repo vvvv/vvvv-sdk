@@ -22,7 +22,7 @@ namespace VVVV.Nodes
         override protected double Distance(REPLACEME_CLASS t1, REPLACEME_CLASS t2)
         {
             // calculate the length of a path between t1 and t2
-            throw new NotImplementedException("You need to implement the Clone method");
+            throw new NotImplementedException("You need to implement the Distance method");
         }
     }
 }
