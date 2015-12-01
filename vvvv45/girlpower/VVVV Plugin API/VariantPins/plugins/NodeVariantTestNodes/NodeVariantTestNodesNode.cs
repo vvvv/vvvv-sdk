@@ -36,6 +36,92 @@ namespace VVVV.Nodes
 		}
 	}	
 	
+	[PluginInfo(Name = "TestA", Category = "Node")]
+	public class VariantTestANode : IPluginEvaluate
+	{
+		[Input("X")]
+		public INodeIn FX; // node pin without any subtype info set
+		
+		[Output("Output")]
+		public ISpread<string> FOutput;
+
+		[Output("Color")]
+		public ISpread<RGBAColor> FColorOut;
+		
+		[Output("Value")]
+		public ISpread<double> FValueOut;
+		
+		[Import()]
+        public ILogger FLogger;		
+		
+		//called when data for any output pin is requested
+		public void Evaluate(int spreadMax)
+		{
+			object myData;
+			FX.GetUpstreamInterface(out myData);
+			
+			if (myData == null)
+			{			
+				FOutput[0] = "not connected";		
+				return;
+			}
+			
+			int upSlice;
+			FX.GetUpsreamSlice(0, out upSlice);
+						
+			var myValueData = myData as IValueData;
+			if (myValueData != null)
+			{
+				double x;
+				myValueData.GetValue(upSlice, out x);
+				
+				FOutput[0] = "value: " + x.ToString();		
+				FValueOut[0] = x;				
+				return;
+			}
+			
+			var myStringData = myData as IStringData;
+			if (myStringData != null)
+			{
+				string x;
+				myStringData.GetString(upSlice, out x);
+				FOutput[0] = "string: " + x.ToString();
+				return;
+			}
+			
+			var myColorData = myData as IColorData;
+			if (myColorData != null)
+			{
+				RGBAColor x;
+				myColorData.GetColor(upSlice, out x);
+				
+				FOutput[0] = "color: " + x.ToString();							
+				FColorOut[0] = x;				
+				return;
+			}
+			
+			var myRawData = myData as IRawData;
+			if (myRawData != null)
+			{
+				IStream x;
+				myRawData.GetData(upSlice, out x);
+				FOutput[0] = "raw: " + x.ToString();
+				return;
+			}		
+									
+			var myFooData = myData as IEnumerable<object>;
+			if (myFooData != null && myFooData.Any())
+			{
+				var spread = myFooData.ToSpread();
+				FOutput[0] = spread[upSlice].ToString();
+				return;
+			}
+				
+			FLogger.Log(LogType.Debug, myData.ToString());
+			FOutput[0] = "unknown data";
+		}
+	}
+
 	public class MyColorAndValueData : IColorData, IValueData
 	{
 		public RGBAColor Color;
@@ -52,23 +138,14 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	[PluginInfo(Name = "TestA", Category = "Node")]
-	public class VariantTestANode : IPluginEvaluate, IPartImportsSatisfiedNotification
+	[PluginInfo(Name = "TestBSource", Category = "Node")]
+	public class VariantTestBSourceNode : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		[Input("X")]
 		public INodeIn FX; // node pin without any subtype info set
 		
-		[Output("Output")]
-		public ISpread<string> FOutput;
-
 		[Output("Value And Color")]
-		public INodeOut FDataOut;
-		
-		[Output("Color")]
-		public ISpread<RGBAColor> FColorOut;
-		
-		[Output("Value")]
-		public ISpread<double> FValueOut;
+		public INodeOut FDataOut;		
 		
 		[Import()]
         public ILogger FLogger;		
@@ -95,10 +172,7 @@ namespace VVVV.Nodes
 			FX.GetUpstreamInterface(out myData);
 			
 			if (myData == null)
-			{			
-				FOutput[0] = "not connected";		
 				return;
-			}
 			
 			int upSlice;
 			FX.GetUpsreamSlice(0, out upSlice);
@@ -109,52 +183,19 @@ namespace VVVV.Nodes
 				double x;
 				myValueData.GetValue(upSlice, out x);
 				
-				FOutput[0] = "value: " + x.ToString();
-				FData.Value = x;				
-				FValueOut[0] = x;				
+				FData.Value = x;							
 				return;
 			}
-			
-			var myStringData = myData as IStringData;
-			if (myStringData != null)
-			{
-				string x;
-				myStringData.GetString(upSlice, out x);
-				FOutput[0] = "string: " + x.ToString();
-				return;
-			}
-			
+						
 			var myColorData = myData as IColorData;
 			if (myColorData != null)
 			{
 				RGBAColor x;
 				myColorData.GetColor(upSlice, out x);
 				
-				FOutput[0] = "color: " + x.ToString();				
-				FData.Color = x;				
-				FColorOut[0] = x;				
+				FData.Color = x;						
 				return;
 			}
-			
-			var myRawData = myData as IRawData;
-			if (myRawData != null)
-			{
-				IStream x;
-				myRawData.GetData(upSlice, out x);
-				FOutput[0] = "raw: " + x.ToString();
-				return;
-			}		
-									
-			var myFooData = myData as IEnumerable<object>;
-			if (myFooData != null && myFooData.Any())
-			{
-				var spread = myFooData.ToSpread();
-				FOutput[0] = spread[upSlice].ToString();
-				return;
-			}
-				
-			FLogger.Log(LogType.Debug, myData.ToString());
-			FOutput[0] = "unknown data";
 		}
 	}
 	
@@ -168,10 +209,7 @@ namespace VVVV.Nodes
 		public ISpread<RGBAColor> FColorOut;
 		
 		[Output("Value")]
-		public ISpread<double> FValueOut;
-		
-		[Import()]
-        public ILogger FLogger;		
+		public ISpread<double> FValueOut;		
 		
 		//called when data for any output pin is requested
 		public void Evaluate(int spreadMax)
@@ -184,7 +222,7 @@ namespace VVVV.Nodes
 			
 			int upSlice;
 			FX.GetUpsreamSlice(0, out upSlice);
-						
+
 			var myValueData = myData as IValueData;
 			if (myValueData != null)
 			{
