@@ -1048,7 +1048,6 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this input accepts.</param>
 		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
-		[Obsolete("Replaced by SetSubType2(Type type, Guid[] guids, string friendlyName).")]
 		void SetSubType(Guid[] guids, string friendlyName);
 		
 		/// <summary>
@@ -1100,7 +1099,6 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="guids">An array of Guids (typically only one) that specifies the interfaces that this output accepts.</param>
 		/// <param name="friendlyName">A user readable name specifying the type of the node connection.</param>
-		[Obsolete("Replaced by SetSubType2(Type type, Guid[] guids, string friendlyName).")]
 		void SetSubType(Guid[] guids, string friendlyName);
 		
 		/// <summary>

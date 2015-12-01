@@ -368,17 +368,23 @@ namespace VVVV.PluginInterfaces.V2
 			// to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
 			var guids = new List<Guid>();
 			var typeT = type;
-			
-			foreach (var interf in typeT.GetInterfaces())
-				guids.Add(interf.GUID);
-			
-			while (typeT != null)
-			{
-				guids.Add(typeT.GUID);
-				typeT = typeT.BaseType;
-			}
 
-			result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
+            if (type != null)
+            {
+                foreach (var interf in typeT.GetInterfaces())
+                    guids.Add(interf.GUID);
+
+                while (typeT != null)
+                {
+                    guids.Add(typeT.GUID);
+                    typeT = typeT.BaseType;
+                }
+
+                result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
+            }
+            else
+                result.SetSubType(new Guid[] { }, "Variant");
+
             SetOutputProperties(result, attribute);
 			return result;
 		}
