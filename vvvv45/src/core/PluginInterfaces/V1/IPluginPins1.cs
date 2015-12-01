@@ -648,14 +648,27 @@ namespace VVVV.PluginInterfaces.V1
 		void SetSubType4D(double min, double max, double stepSize, double default1, double default2, double default3, double default4, bool isBang, bool isToggle, bool isInteger);
 	}
 	
-	#endregion value pins
-	
-	#region string pins
-	
-	/// <summary>
-	/// Interface to a ConfigurationPin of type String.
-	/// </summary>
-	[Guid("1FF25AD1-FBAB-4B29-8BAC-82CE53135868"),
+
+    [Guid("EB2450D2-2381-44F9-A421-B3E2540FA8B5"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IValueData
+    {
+        /// <summary>
+        /// Used to retrieve a Value from the pin at the specified slice.
+        /// </summary>
+        /// <param name="index">The index of the slice to retrieve the Value from.</param>
+        /// <param name="value">The retrieved Value.</param>
+        void GetValue(int index, out double value);
+    }
+
+    #endregion value pins
+
+    #region string pins
+
+    /// <summary>
+    /// Interface to a ConfigurationPin of type String.
+    /// </summary>
+    [Guid("1FF25AD1-FBAB-4B29-8BAC-82CE53135868"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IStringConfig: IPluginConfig
 	{
@@ -750,7 +763,19 @@ namespace VVVV.PluginInterfaces.V1
 		/// <param name="stringType">Enum specifying the type of string more precisely.</param>
 		void SetSubType2(string @default, int maxCharacters, string fileMask, TStringType stringType);
 	}
-	
+
+    [Guid("4221296D-FD9E-4378-92ED-7ADE291E5242"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IStringData
+    {
+        /// <summary>
+        /// Used to retrieve a String from the pin at the specified slice.
+        /// </summary>
+        /// <param name="index">The index of the slice to retrieve the String from.</param>
+        /// <param name="value">The retrieved String.</param>
+        void GetString(int index, out string value);
+    }
+
 	#endregion string pins
 	
 	#region color pins
@@ -857,14 +882,26 @@ namespace VVVV.PluginInterfaces.V1
 		void SetSubType(RGBAColor @default, bool hasAlpha);
 		void GetColorPointer(out double** ppDst);
 	}
-	
-	#endregion color pins
-	
-	#region enum pins
-	/// <summary>
-	/// Interface to a ConfigurationPin of type Enum.
-	/// </summary>
-	[Guid("2FE17270-7B4C-4A46-A4EB-E8B56B9AD197"),
+
+    [Guid("C07687A7-5C92-4D99-9616-F9CFCD9414F1"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IColorData
+    {
+        /// <summary>
+        /// Used to retrieve a Color from the pin at the specified slice.
+        /// </summary>
+        /// <param name="index">The index of the slice to retrieve the Color from.</param>
+        /// <param name="color">The retrieved Color.</param>
+        void GetColor(int index, out RGBAColor color);
+    }
+
+    #endregion color pins
+
+    #region enum pins
+    /// <summary>
+    /// Interface to a ConfigurationPin of type Enum.
+    /// </summary>
+    [Guid("2FE17270-7B4C-4A46-A4EB-E8B56B9AD197"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IEnumConfig: IPluginConfig
 	{
@@ -1170,13 +1207,20 @@ namespace VVVV.PluginInterfaces.V1
         void MarkPinAsChanged();
     }
 
-	#endregion node pins	
-	
-	#region DXPins
-	/// <summary>
-	/// Interface to an OutputPin of type DirectX Mesh.
-	/// </summary>
-	[Guid("4D7E1619-0342-48EE-8AD0-13245226FD99"),
+    [Guid("59631F76-5FBB-435D-B79A-EEDBE5FE1923"),
+        InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe public interface IRawData : IPluginIn
+    {
+        void GetData(int slice, out VVVV.Utils.Win32.IStream stream);
+    }    
+
+    #endregion node pins	
+
+    #region DXPins
+    /// <summary>
+    /// Interface to an OutputPin of type DirectX Mesh.
+    /// </summary>
+    [Guid("4D7E1619-0342-48EE-8AD0-13245226FD99"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IDXMeshOut: IPluginOut
 	{
