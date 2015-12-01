@@ -99,8 +99,6 @@ namespace VVVV.Hosting
         
         public HDEHost()
         {
-            //AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
-            
             //set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
             
@@ -195,6 +193,10 @@ namespace VVVV.Hosting
             var factoriesPath = ExePath.ConcatPath(@"lib\factories");
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
+
+            //register custom assembly resolvers which look also in the PACK_NAME/core and PACK_NAME/core/[x86|x64] folders
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
 
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
@@ -313,8 +315,6 @@ namespace VVVV.Hosting
 
         private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
             foreach (var packDirInfo in packsDirInfo.GetDirectories())
             {
                 var packDir = packDirInfo.FullName;
@@ -331,10 +331,14 @@ namespace VVVV.Hosting
                 if (coreDirInfo.Exists)
                 {
                     FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + coreDirInfo.FullName);
                     var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
                     var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
                     if (platformDependentCorDirInfo.Exists)
-                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
+                    {
+                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);                        
+                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformDependentCorDirInfo.FullName);
+                    }
                 }
                 var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
                 if (factoriesDirInfo.Exists)

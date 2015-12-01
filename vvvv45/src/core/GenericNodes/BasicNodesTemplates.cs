@@ -170,7 +170,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class REPLACEME_CLASSBufferNode : BufferNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSBufferNode : BufferNode<REPLACEME_CLASS>
+    {
+        public REPLACEME_CLASSBufferNode() : base(REPLACEME_CLASSCopier.Default) { }
+    }
     
     [PluginInfo(Name = "Queue",
 	            Category = "NODECATEGORY",
@@ -178,7 +181,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class REPLACEME_CLASSQueueNode : QueueNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSQueueNode : QueueNode<REPLACEME_CLASS>
+    {
+        public REPLACEME_CLASSQueueNode() : base(REPLACEME_CLASSCopier.Default) { }
+    }
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "NODECATEGORY",
@@ -186,7 +192,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class REPLACEME_CLASSRingBufferNode : RingBufferNode<REPLACEME_CLASS> {}
+	public class REPLACEME_CLASSRingBufferNode : RingBufferNode<REPLACEME_CLASS>
+    {
+        public REPLACEME_CLASSRingBufferNode() : base(REPLACEME_CLASSCopier.Default) { }
+    }
     
 	[PluginInfo(Name = "Store", 
 	            Category = "NODECATEGORY", 
@@ -212,7 +221,10 @@ namespace VVVV.Nodes
            Tags = "append, remove, generic, spreadop, collection",
            Author = "motzi"
     )]
-    public class REPLACEME_CLASSQueueStoreNodes : QueueStore<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSQueueStoreNodes : QueueStore<REPLACEME_CLASS>
+    {
+        REPLACEME_CLASSQueueStoreNodes() : base(REPLACEME_CLASSCopier.Default) { }
+    }
 	
 	#endregion Collections
 	

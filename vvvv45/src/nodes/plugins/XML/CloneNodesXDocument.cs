@@ -15,12 +15,18 @@ namespace VVVV.Nodes
 	           )]
     public class XDocumentFrameDelayNode : FrameDelayNode<XDocument>
     {
-        protected override XDocument CloneSlice(XDocument slice)
-        {
-            if (slice == null) return null;
-            return new XDocument(slice);
-        }
+        public XDocumentFrameDelayNode() : base(XDocumentCopier.Default) { }
     }
 
+    class XDocumentCopier : Copier<XDocument>
+    {
+        public static readonly XDocumentCopier Default = new XDocumentCopier();
+
+        public override XDocument Copy(XDocument value)
+        {
+            if (value == null) return null;
+            return new XDocument(value);
+        }
+    }
 }
 

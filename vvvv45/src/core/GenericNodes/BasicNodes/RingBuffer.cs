@@ -37,6 +37,13 @@ namespace VVVV.Nodes.Generic
         [Output("Current Frame", IsSingle = true)]
         protected ISpread<int> FCurrentFrame;
 
+        readonly Copier<T> FCopier;
+
+        public RingBufferNode(Copier<T> copier)
+        {
+            FCopier = copier;
+        }
+
         int FCurrentPos = -1;
 
         bool FFirstFrame = true;
@@ -74,7 +81,7 @@ namespace VVVV.Nodes.Generic
                 FCurrentPos++;
                 if (FCurrentPos > frameCount - 1)
                     FCurrentPos = 0;
-                FOutput[FCurrentPos] = FInput.Clone() as ISpread<T>;
+                FOutput[FCurrentPos] = FCopier.CopySpread(FInput);
             }
 
             FCurrentFrame[0] = Math.Min(Math.Max(FCurrentPos, 0), frameCount - 1);

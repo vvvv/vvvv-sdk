@@ -177,7 +177,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XDocumentBufferNode : BufferNode<XDocument> {}
+	public class XDocumentBufferNode : BufferNode<XDocument>
+    {
+        public XDocumentBufferNode() : base(XDocumentCopier.Default) { }
+    }
     
     [PluginInfo(Name = "Queue",
                 Category = "XElement",
@@ -186,7 +189,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XDocumentQueueNode : QueueNode<XDocument> {}
+	public class XDocumentQueueNode : QueueNode<XDocument>
+    {
+        public XDocumentQueueNode() : base(XDocumentCopier.Default) { }
+    }
 	
 	[PluginInfo(Name = "RingBuffer",
                 Category = "XElement",
@@ -195,9 +201,12 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XDocumentRingBufferNode : RingBufferNode<XDocument> {}
-    
-	[PluginInfo(Name = "Store",
+	public class XDocumentRingBufferNode : RingBufferNode<XDocument>
+    {
+        public XDocumentRingBufferNode() : base(XDocumentCopier.Default) { }
+    }
+
+    [PluginInfo(Name = "Store",
                 Category = "XElement",
                 Version = "Document",
 	            Help = "Stores a spread and sets/removes/inserts slices.", 

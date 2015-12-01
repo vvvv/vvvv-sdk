@@ -14,12 +14,18 @@ namespace VVVV.Nodes
 	           )]
     public class XElementFrameDelayNode : FrameDelayNode<XElement>
     {
-        protected override XElement CloneSlice(XElement slice)
-        {
-            if (slice == null) return null;
-            return new XElement(slice);
-        }
+        public XElementFrameDelayNode() : base(XElementCopier.Default) { }
     }
 
+    class XElementCopier : Copier<XElement>
+    {
+        public static readonly XElementCopier Default = new XElementCopier();
+
+        public override XElement Copy(XElement value)
+        {
+            if (value == null) return null;
+            return new XElement(value);
+        }
+    }
 }
 
