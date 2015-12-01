@@ -8,7 +8,7 @@ namespace VVVV.Nodes
 	
 	//2.) do a 'replace all' for NODECATEGORY to set the version and the class name prefix for all node (e.g. Value, Color...)
 
-    //3.) you have to override the CloneSlice or the CloneSpread method for your type. overriding CloneSlice is easier, CloneSpread might allow some performance optimizations
+    //3.) you have to override the Copy or the CopySpread method for your type. overriding Copy is easier, CopySpread might allow some performance optimizations
 
     [PluginInfo(Name = "FrameDelay",
 	            Category = "NODECATEGORY",
@@ -17,11 +17,17 @@ namespace VVVV.Nodes
 	           )]
     public class REPLACEME_CLASSFrameDelayNode : FrameDelayNode<REPLACEME_CLASS>
     {
-        protected override REPLACEME_CLASS CloneSlice(REPLACEME_CLASS slice)
-        {
-            throw new NotImplementedException("You need to implement the Clone method");
-        }
+        public REPLACEME_CLASSFrameDelayNode() : base(REPLACEME_CLASSCopier.Default) { }
     }
 
+    class REPLACEME_CLASSCopier : Copier<REPLACEME_CLASS>
+    {
+        public static readonly REPLACEME_CLASSCopier Default = new REPLACEME_CLASSCopier();
+
+        public override REPLACEME_CLASS Copy(REPLACEME_CLASS value)
+        {
+            throw new NotImplementedException("You need to implement the Copy method");
+        }
+    }
 }
 

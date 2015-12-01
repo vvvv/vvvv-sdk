@@ -305,10 +305,14 @@ namespace VVVV.Hosting
                 if (coreDirInfo.Exists)
                 {
                     FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + coreDirInfo.FullName);
                     var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
                     var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
                     if (platformDependentCorDirInfo.Exists)
-                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
+                    {
+                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);                        
+                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformDependentCorDirInfo.FullName);
+                    }
                 }
                 var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
                 if (factoriesDirInfo.Exists)

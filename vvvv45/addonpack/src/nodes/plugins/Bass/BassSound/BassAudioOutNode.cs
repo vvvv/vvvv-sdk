@@ -41,6 +41,8 @@ namespace BassSound
         private ChannelsManager manager;
 
         private IValueIn FPinInDevice;
+        private IValueIn FPinInBuffer;
+        private IValueIn FPInInLoop;
         private IValueIn FPinInHandle;
 
         private int FDevice = -1000;
@@ -60,6 +62,12 @@ namespace BassSound
 
             this.FHost.CreateValueInput("Handles In", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInHandle);
             this.FPinInHandle.SetSubType(double.MinValue, double.MaxValue,1, 0, false, false, true);
+
+            this.FHost.CreateValueInput("Update Period", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPInInLoop);
+            this.FPInInLoop.SetSubType(double.MinValue, double.MaxValue, 1, 15, false, false, true);
+
+            this.FHost.CreateValueInput("Buffer Size", 1, null, TSliceMode.Dynamic, TPinVisibility.True, out this.FPinInBuffer);
+            this.FPinInBuffer.SetSubType(double.MinValue, double.MaxValue, 1, 128, false, false, true);
         }
 
         public void Configurate(IPluginConfig Input)
@@ -102,6 +110,19 @@ namespace BassSound
                 }
             }
             #endregion
+
+            if  (this.FPinInBuffer.PinIsChanged)
+            {
+                double db;
+                this.FPinInBuffer.GetValue(0, out db);
+                Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_BUFFER, Convert.ToInt32(db));
+            }
+            if (this.FPInInLoop.PinIsChanged)
+            {
+                double db;
+                this.FPInInLoop.GetValue(0, out db);
+                Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_UPDATEPERIOD, Convert.ToInt32(db));
+            }
 
             #region Handle Pin Changed
             if (this.FPinInHandle.PinIsChanged)

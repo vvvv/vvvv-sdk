@@ -19,10 +19,7 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class ColorFrameDelayNode : FrameDelayNode<RGBAColor>
     {
-        protected override RGBAColor CloneSlice(RGBAColor slice)
-        {
-            return slice;
-        }
+        public ColorFrameDelayNode() : base(Copier<RGBAColor>.Immutable) { }
     }
 
     [PluginInfo(Name = "FrameDelay", Category = "Raw",
@@ -30,15 +27,7 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
     {
-        private static readonly byte[] buffer = new byte[4096];
-
-        protected override System.IO.Stream CloneSlice(System.IO.Stream slice)
-        {
-            var clone = new System.IO.MemoryStream((int)slice.Length);
-            slice.Position = 0;
-            slice.CopyTo(clone, buffer);
-            return clone;
-        }
+        public RawFrameDelayNode() : base(Copiers.Raw) { }
     }
 
     [PluginInfo(Name = "FrameDelay", Category = "String",
@@ -46,10 +35,7 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class StringFrameDelayNode : FrameDelayNode<string>
     {
-        protected override string CloneSlice(string slice)
-        {
-            return slice;
-        }
+        public StringFrameDelayNode() : base(Copier<string>.Immutable) { }
     }
 
     [PluginInfo(Name = "FrameDelay", Category = "Value",
@@ -57,10 +43,7 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class ValueFrameDelayNode : FrameDelayNode<double>
     {
-        protected override double CloneSlice(double slice)
-        {
-            return slice;
-        }
+        public ValueFrameDelayNode() : base(Copier<double>.Immutable) { }
     }
 
     [PluginInfo(Name = "FrameDelay", Category = "Transform",
@@ -68,10 +51,7 @@ namespace VVVV.Nodes
                 Tags = "generic")]
     public class TransformFrameDelayNode : FrameDelayNode<Matrix>
     {
-        protected override Matrix CloneSlice(Matrix slice)
-        {
-            return slice;
-        }
+        public TransformFrameDelayNode() : base(Copier<Matrix>.Immutable) { }
     }
 
 //    [PluginInfo(Name = "FrameDelay", Category = "Enumerations",

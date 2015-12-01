@@ -24,56 +24,62 @@ namespace VVVV.Nodes
 	            AutoEvaluate = true
 	           )]
 	public class ValueRingBufferNode : RingBufferNode<double>
-	{
-	}
-	
-	[PluginInfo(Name = "RingBuffer",
+    {
+        public ValueRingBufferNode() : base(Copier<double>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "Color",
 	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class ColorRingBufferNode : RingBufferNode<RGBAColor>
-	{
-	}
-	
-	[PluginInfo(Name = "RingBuffer",
+    {
+        public ColorRingBufferNode() : base(Copier<RGBAColor>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "String",
 	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class StringRingBufferNode : RingBufferNode<string>
-	{
-	}
-	
-	[PluginInfo(Name = "RingBuffer",
+    {
+        public StringRingBufferNode() : base(Copier<string>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "Transform",
 	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class TransformRingBufferNode : RingBufferNode<Matrix4x4>
-	{
-	}
-	
-	[PluginInfo(Name = "RingBuffer",
+    {
+        public TransformRingBufferNode() : base(Copier<Matrix4x4>.Immutable) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "Enumerations",
 	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class EnumRingBufferNode : RingBufferNode<EnumEntry>
-	{
-	}
-	
-	[PluginInfo(Name = "RingBuffer",
+    {
+        public EnumRingBufferNode() : base(Copiers.EnumEntry) { }
+    }
+
+    [PluginInfo(Name = "RingBuffer",
 	            Category = "Raw",
 	            Help = "Inserts the input at the ringbuffer position and returns the whole Buffer as spread",
 	            Tags = "",
 	            AutoEvaluate = true
 	           )]
 	public class RawRingBufferNode : RingBufferNode<System.IO.Stream>
-	{
-	}
+    {
+        public RawRingBufferNode() : base(Copiers.Raw) { }
+    }
 }
