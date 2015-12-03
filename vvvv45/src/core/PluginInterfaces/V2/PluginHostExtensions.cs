@@ -351,7 +351,10 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
-			result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
+            if (type != null)
+                result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
+            else
+                result.SetSubType(new Guid[] { }, "Variant");
             SetInputProperties(result, attribute);
 			return result;
 		}
