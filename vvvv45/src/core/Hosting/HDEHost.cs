@@ -103,7 +103,9 @@ namespace VVVV.Hosting
             // Set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
 
-            AssemblyProbing.Initialize(PacksPath);
+            var packageRepositories = AssemblyProbing.ParseCommandLine("/package-repositories");
+            AssemblyProbing.AddPackageRepositories(packageRepositories);
+            AssemblyProbing.AddPackageRepository(PacksPath);
 
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
