@@ -14,7 +14,23 @@
     
     <StartProgram>$(VVVVExe)</StartProgram>
     <BuildingInsideVisualStudio Condition=" '$(BuildingInsideVisualStudio)' == '' ">false</BuildingInsideVisualStudio>
+    <PrivatePath>$(PublicPath)..\</PrivatePath>
   </PropertyGroup>
+
+  <!-- These settings get used when in our public repository -->
+  <PropertyGroup Condition="!Exists('$(PrivatePath).git\')">
+    <InPrivateRepo>false</InPrivateRepo>
+    <PackageRepositories></PackageRepositories>
+    <StartArguments></StartArguments>
+  </PropertyGroup>
+
+  <!-- These settings get used when in our private repository -->
+  <PropertyGroup Condition="Exists('$(PrivatePath).git\')">
+    <InPrivateRepo>true</InPrivateRepo>
+    <PackageRepositories>$(PrivatePath)vvvv50;$(PrivatePath)public-vl;$(PrivatePath)public-vl\packages</PackageRepositories>
+    <StartArguments>/package-repositories "$(PackageRepositories)"</StartArguments>
+  </PropertyGroup>
+  
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' " />
   <PropertyGroup Condition=" '$(Configuration)' == 'Deploy' " />

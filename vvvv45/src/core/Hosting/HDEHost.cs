@@ -97,17 +97,14 @@ namespace VVVV.Hosting
 #pragma warning restore
 
         private List<string> FAssemblySearchPaths = new List<string>();
-
-        static HDEHost()
-        {
-            AssemblyProbing.Initialize();
-        }
         
         public HDEHost()
         {
-            //set vvvv.exe path
+            // Set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
-            
+
+            AssemblyProbing.Initialize(PacksPath);
+
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
             
@@ -737,6 +734,8 @@ namespace VVVV.Hosting
             get;
             private set;
         }
+
+        public string PacksPath => Path.Combine(ExePath, "packs");
         
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
