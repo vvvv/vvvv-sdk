@@ -864,5 +864,27 @@ namespace VVVV.Hosting
         {
             set {FVVVVHost.FiftyEditor = value;}
         }
+
+        class DummyTimeProvider : ITimeProvider
+        {
+            private Func<double> timeProvider;
+
+            public DummyTimeProvider(Func<double> timeProvider)
+            {
+                this.timeProvider = timeProvider;
+            }
+
+            public DummyTimeProvider(double time)
+            {
+                this.timeProvider = () => time;
+            }
+
+            public double Time => timeProvider();
+        }
+
+        public void SetFrameTimeProvider(Func<double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
+        public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
+
+        public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
     }
 }
