@@ -371,7 +371,7 @@ namespace VVVV.PluginInterfaces.V2
         /// The given provider gets called by vvvv when it needs to pin down an official frame time for the current frame. 
         /// By using this you can potenitally reduce latency.
         /// </summary>
-        void SetFrameTimeProvider(Func<double> timeProvider);
+        void SetFrameTimeProvider(Func<double, double> timeProvider);
 
         /// <summary>
         /// The given provider gets called by vvvv when it needs to pin down an official frame time for the current frame. 
@@ -392,7 +392,7 @@ namespace VVVV.PluginInterfaces.V2
         /// <summary>
         /// provide the time
         /// </summary>
-        double Time { get; }
+        double GetTime(double originalNewFrameTime);
     }
 
     #region NodeBrowser

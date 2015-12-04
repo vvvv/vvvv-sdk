@@ -867,22 +867,17 @@ namespace VVVV.Hosting
 
         class DummyTimeProvider : ITimeProvider
         {
-            private Func<double> timeProvider;
+            private Func<double, double> timeProvider;
 
-            public DummyTimeProvider(Func<double> timeProvider)
+            public DummyTimeProvider(Func<double, double> timeProvider)
             {
                 this.timeProvider = timeProvider;
             }
 
-            public DummyTimeProvider(double time)
-            {
-                this.timeProvider = () => time;
-            }
-
-            public double Time => timeProvider();
+            public double GetTime(double originalNewFrameTime) => timeProvider(originalNewFrameTime);
         }
 
-        public void SetFrameTimeProvider(Func<double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
+        public void SetFrameTimeProvider(Func<double, double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
         public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
 
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();

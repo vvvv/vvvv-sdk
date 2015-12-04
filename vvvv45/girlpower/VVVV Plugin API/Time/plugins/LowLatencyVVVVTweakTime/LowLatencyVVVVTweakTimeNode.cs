@@ -15,7 +15,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "TweakTime", Category = "VVVV", Version = "LowLatency", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class LowLatencyVVVVTweakTimeNode : IPluginEvaluate, ITimeProvider, IPartImportsSatisfiedNotification
+	public class LowLatencyVVVVTweakTimeNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+		//, ITimeProvider
 	{
 		[Input("Time")]
 		public ISpread<double> FInput;
@@ -44,7 +45,13 @@ namespace VVVV.Nodes
 			// should be able to reduce the latency about up to a frame.
 		}
 		
-        public double Time { get; set; }		
+		double Time;
+
+//   	outcomment when you want to implement the interface ITimeProvider
+//      public double GetTime(double originalNewFrameTime) 
+//		{
+//			return Time;
+//		}
 		
 		bool enabled;
 		public bool Enabled
@@ -61,8 +68,8 @@ namespace VVVV.Nodes
 						// we can implement the interface or just hand a delegate 
 						// pointing to our time property. 
 						
-						FHost.SetFrameTimeProvider(this);
-						FHost.SetFrameTimeProvider(() => Time);
+						//FHost.SetFrameTimeProvider(this);
+						FHost.SetFrameTimeProvider(_ => Time);
 
 						// after setting the time provider vvvv will call us back each time
 						// it needs to pin down the frame time of the frame it is about to evaluate.
