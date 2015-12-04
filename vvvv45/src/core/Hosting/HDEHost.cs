@@ -205,35 +205,16 @@ namespace VVVV.Hosting
 
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
-            var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
-            if (packsDirInfo.Exists)
-                LoadPackFactories(packsDirInfo, catalog);
-
+            var packsPath = Path.Combine(ExePath, "packs");
+            if (Directory.Exists(packsPath))
+                LoadFactoriesFromLegacyPackages(packsPath, catalog);
+            //new package loading system
             LoadFactoriesFromPackages(catalog);
-            //// Are we inside of our repository?
-            //var internalPacksDirInfo = default(DirectoryInfo);
-            //var internalPublicPacksDirInfo = default(DirectoryInfo);
-            //if (Directory.Exists(Path.Combine(ExePath, "src")))
-            //{
-            //    internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv50"));
-            //    if (internalPacksDirInfo.Exists)
-            //        LoadPackFactories(internalPacksDirInfo, catalog);
-
-            //    //also add our public repo folder
-            //    internalPublicPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\public-vl"));
-            //    if (internalPublicPacksDirInfo.Exists)
-            //        LoadPackFactories(internalPublicPacksDirInfo, catalog);
-            //}
 
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
 
-            //NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
             PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\VVVV.Nodes.dll"));
-            //            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\Kommunikator.dll"));
-            //            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeBrowser.dll"));
-            //            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeCollector.dll"));
-            //            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\WindowSwitcher.dll"));
 
             //Get node infos from core plugins here to avoid looping all node infos
             var windowSwitcherNodeInfo = GetNodeInfo(WINDOW_SWITCHER);
@@ -277,8 +258,8 @@ namespace VVVV.Hosting
 
             //now that all basics are set up, see if there are any node search paths to add
             //from the installed packs
-            if (packsDirInfo.Exists)
-                LoadPackNodes(packsDirInfo);
+            if (Directory.Exists(packsPath))
+                LoadNodesFromLegacyPackages(packsPath);
             LoadNodesFromPackages();
         }
 
@@ -302,17 +283,9 @@ namespace VVVV.Hosting
             foreach (var package in AssemblyProbing.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
-                //check for vl package with vvvv folder
-                var vlPackInfo = new DirectoryInfo(Path.Combine(packagePath, "vvvv"));
-                if (vlPackInfo.Exists)
-                {
-                    LoadPackFactories(vlPackInfo.Parent, catalog);
-                    continue;
-                }
-
                 //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
-                var versionInfoFile = new FileInfo(Path.Combine(packagePath, "version.info"));
-                if (versionInfoFile.Exists)
+                var versionInfoPath = Path.Combine(packagePath, "version.info");
+                if (File.Exists(versionInfoPath))
                 {
                     foreach (var assembly in package.GetCompatibleAssemblyFiles())
                         catalog.Catalogs.Add(new AssemblyCatalog(assembly.SourcePath));
@@ -325,57 +298,46 @@ namespace VVVV.Hosting
             foreach (var package in AssemblyProbing.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
-                //check for vl package with vvvv folder
-                var vlPackInfo = new DirectoryInfo(Path.Combine(packagePath, "vvvv"));
-                if (vlPackInfo.Exists)
-                {
-                    LoadPackNodes(vlPackInfo.Parent);
-                    continue;
-                }
+                //check if the package contains a legacy package
+                var vvvvPath = Path.Combine(packagePath, "vvvv");
+                if (Directory.Exists(vvvvPath))
+                    LoadNodesFromLegacyPackage(vvvvPath);
             }
         }
 
-        private void LoadPackNodes(DirectoryInfo packsDirInfo)
+        private void LoadNodesFromLegacyPackages(string packsPath)
         {
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
-            {
-                //check for vl package with vvvv folder
-                var vlPackInfo = new DirectoryInfo(Path.Combine(packDirInfo.FullName, "vvvv"));
-                if (vlPackInfo.Exists)
-                {
-                    LoadPackNodes(packDirInfo);
-                    continue;
-                }
-
-                var packDir = packDirInfo.FullName;
-                var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
-                if (nodesDirInfo.Exists)
-                    NodeCollection.AddJob(nodesDirInfo.FullName, true);
-            }
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+                LoadNodesFromLegacyPackage(packPath);
         }
 
-        private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
+        private void LoadNodesFromLegacyPackage(string packagePath)
         {
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
-            {
-                var packDir = packDirInfo.FullName;
+            var nodesPath = Path.Combine(packagePath, "nodes");
+            if (Directory.Exists(nodesPath))
+                NodeCollection.AddJob(nodesPath, true);
+        }
 
-                var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
-                if (coreDirInfo.Exists)
+        private void LoadFactoriesFromLegacyPackages(string packsPath, AggregateCatalog catalog)
+        {
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+            {
+                var corePath = Path.Combine(packPath, "core");
+                if (Directory.Exists(corePath))
                 {
-                    FAssemblySearchPaths.Add(coreDirInfo.FullName);
-                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + coreDirInfo.FullName);
+                    FAssemblySearchPaths.Add(corePath);
+                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + corePath);
                     var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
-                    var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
-                    if (platformDependentCorDirInfo.Exists)
+                    var platformPath = Path.Combine(corePath, platformDir);
+                    if (Directory.Exists(platformPath))
                     {
-                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);                        
-                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformDependentCorDirInfo.FullName);
+                        FAssemblySearchPaths.Add(platformPath);
+                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformPath);
                     }
                 }
-                var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
-                if (factoriesDirInfo.Exists)
-                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
+                var factoriesPath = Path.Combine(packPath, "factories");
+                if (Directory.Exists(factoriesPath))
+                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
 
                 // We look for nodes later
             }
