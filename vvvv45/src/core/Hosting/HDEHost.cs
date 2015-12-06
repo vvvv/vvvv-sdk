@@ -280,7 +280,7 @@ namespace VVVV.Hosting
 
         private void LoadFactoriesFromPackages(AggregateCatalog catalog)
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyProbing.GetPackagesPreferingSourceOverInstalled())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
@@ -295,7 +295,7 @@ namespace VVVV.Hosting
 
         private void LoadNodesFromPackages()
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyProbing.GetPackagesPreferingSourceOverInstalled())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check if the package contains a legacy package
