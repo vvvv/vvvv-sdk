@@ -9,14 +9,14 @@ namespace VVVV.Core
     public class CommandLineArguments
     {
         //a file to open on startup
-        [Option("o", "open", Required = false, HelpText = "File to open on startup")]
-        public string InputFile = null;
+        [Option('o', "open", Required = false, HelpText = "File to open on startup")]
+        public string InputFile { get; set; }
 
-        [Option("e", "throwexceptions", Required = false, HelpText = "If true, vvvv will stop on exceptions")]
-        public bool ThrowExceptions = false;
+        [Option('e', "throwexceptions", Required = false, HelpText = "If true, vvvv will stop on exceptions")]
+        public bool ThrowExceptions { get; set; }
 
-        [Option("l", "local", Required = false, HelpText = "If true, vvvv will not try to comunicate with a runtime")]
-        public bool Local = false;
+        [Option('l', "local", Required = false, HelpText = "If true, vvvv will not try to comunicate with a runtime")]
+        public bool Local { get; set; }
 
         //help string
         [HelpOption(HelpText = "Dispaly this help screen")]
@@ -33,9 +33,9 @@ namespace VVVV.Core
         //parse the commandline and args.txt
         public void Parse()
         {
-            var parser = new CommandLineParser();
+            var parser = new Parser((parserSettings) => parserSettings.HelpWriter = Console.Out);
 
-            if(File.Exists("Args.txt"))
+            if (File.Exists("Args.txt"))
             {
             	try //parse Args.txt
             	{
@@ -43,7 +43,7 @@ namespace VVVV.Core
             		var text = streamReader.ReadToEnd();
             		var args = text.Split('\n');
             		streamReader.Close();
-            		if (!parser.ParseArguments(args, this, Console.Out))
+            		if (!parser.ParseArguments(args, this))
             		{
             			Console.WriteLine("Args.txt has syntax error(s):");
             			foreach (var arg in args)
@@ -60,7 +60,7 @@ namespace VVVV.Core
             }
 
             //parse commandline
-            if (!parser.ParseArguments(Environment.GetCommandLineArgs(), this, Console.Out))
+            if (!parser.ParseArguments(Environment.GetCommandLineArgs(), this))
             {
                 Console.WriteLine("Console command line has syntax error(s):");
                 foreach (var arg in Environment.GetCommandLineArgs())
