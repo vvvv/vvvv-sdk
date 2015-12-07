@@ -42,6 +42,13 @@ namespace VVVV.Nodes.Generic
         [Output("Phase")]
         protected ISpread<double> FPhase;
 
+        readonly Copier<T> FCopier;
+
+        public BufferNode(Copier<T> copier)
+        {
+            FCopier = copier;
+        }
+
         bool FFirstFrame = true;
 
 		public void Evaluate(int SpreadMax)
@@ -64,7 +71,7 @@ namespace VVVV.Nodes.Generic
             {
                 FOutput.SliceCount = frameCount;
                 for (int i = 0; i < frameCount; i++)
-                    FOutput[i] = FDefault[i].Clone() as ISpread<T>;
+                    FOutput[i] = FCopier.CopySpread(FDefault[i]);
             }
       
             //set slice count
@@ -75,7 +82,7 @@ namespace VVVV.Nodes.Generic
             else if (FOutput.SliceCount < frameCount)
             {
                 for (int i = FOutput.SliceCount; i < frameCount; i++)
-                    FOutput.Add(FDefault[i].Clone() as ISpread<T>);
+                    FOutput.Add(FCopier.CopySpread(FDefault[i]));
             }
 
             SpreadMax = Math.Max(Math.Max(FInput.SliceCount, FIndex.SliceCount), FDoInsert.SliceCount);
@@ -91,7 +98,7 @@ namespace VVVV.Nodes.Generic
 
                 if (FDoInsert[i])
                 {
-                    FOutput[bufferCounter] = FInput[i].Clone() as ISpread<T>;
+                    FOutput[bufferCounter] = FCopier.CopySpread(FInput[i]);
                     FPhase[i] = frameCount > 1 ? bufferCounter / (double)(frameCount - 1) : 0;
                 }  
             }

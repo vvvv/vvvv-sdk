@@ -32,6 +32,13 @@ namespace VVVV.Nodes.Generic
 		protected ISpread<ISpread<T>> FOutput;
 
 		List<ISpread<T>> FBuffer = new List<ISpread<T>>();
+
+        readonly Copier<T> FCopier;
+
+        public QueueNode(Copier<T> copier)
+        {
+            FCopier = copier;
+        }
 		
 		public void Evaluate(int SpreadMax)
 		{
@@ -46,7 +53,7 @@ namespace VVVV.Nodes.Generic
                 FBuffer.Clear();
 
         	if (FDoInsert[0])
-        		FBuffer.Insert(0, CloneInputSpread(FInput));
+        		FBuffer.Insert(0, FCopier.CopySpread(FInput));
 			
         	var frameCount = FFrameCount[0];
         	if (frameCount >= 0 && FBuffer.Count > frameCount)
@@ -54,10 +61,5 @@ namespace VVVV.Nodes.Generic
 			
 			FOutput.AssignFrom(FBuffer);
 		}
-
-        protected virtual ISpread<T> CloneInputSpread(ISpread<T> spread)
-        {
-            return spread.Clone() as ISpread<T>;
-        }
 	}
 }

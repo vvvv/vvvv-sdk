@@ -28,6 +28,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
+using VL.Core;
 
 namespace VVVV.Hosting
 {
@@ -99,9 +100,13 @@ namespace VVVV.Hosting
         
         public HDEHost()
         {
-            //set vvvv.exe path
+            // Set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
-            
+
+            var packageRepositories = AssemblyProbing.ParseCommandLine("/package-repositories");
+            AssemblyProbing.AddPackageRepositories(packageRepositories);
+            AssemblyProbing.AddPackageRepository(PacksPath);
+
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
             
@@ -156,35 +161,35 @@ namespace VVVV.Hosting
             // Used for Windows Forms message loop
             FIsRunning = true;
 
-        	//set blackbox mode?
-        	this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
-        	
+            //set blackbox mode?
+            this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
+
             // Set VVVV45 to this running vvvv.exe
             Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
-            
+
             FVVVVHost = vvvvHost;
             NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
-            
+
             FVVVVHost.AddMouseClickListener(this);
             FVVVVHost.AddNodeSelectionListener(this);
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
             FVVVVHost.AddComponentModeListener(this);
-            
+
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
-            
+
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
-            
+
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
-            
+
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
-            
+
             //do not add the entire directory for faster startup
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
@@ -200,51 +205,33 @@ namespace VVVV.Hosting
 
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
-            var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
-            if (packsDirInfo.Exists)
-                LoadPackFactories(packsDirInfo, catalog);
-            
-            // Are we inside of our repository?
-            var internalPacksDirInfo = default(DirectoryInfo);
-            var internalPublicPacksDirInfo = default(DirectoryInfo);
-            if (Directory.Exists(Path.Combine(ExePath, "src")))
-            {
-                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv50"));
-                if (internalPacksDirInfo.Exists)
-                    LoadPackFactories(internalPacksDirInfo, catalog);
-
-                //also add our public repo folder
-                internalPublicPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\public-vl"));
-                if (internalPublicPacksDirInfo.Exists)
-                    LoadPackFactories(internalPublicPacksDirInfo, catalog);
-            }
+            var packsPath = Path.Combine(ExePath, "packs");
+            if (Directory.Exists(packsPath))
+                LoadFactoriesFromLegacyPackages(packsPath, catalog);
+            //new package loading system
+            LoadFactoriesFromPackages(catalog);
 
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
-            
-            //NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+
             PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\VVVV.Nodes.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\Kommunikator.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeBrowser.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeCollector.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\WindowSwitcher.dll"));
-            
+
             //Get node infos from core plugins here to avoid looping all node infos
             var windowSwitcherNodeInfo = GetNodeInfo(WINDOW_SWITCHER);
             var kommunikatorNodeInfo = GetNodeInfo(KOMMUNIKATOR);
             var nodeBrowserNodeInfo = GetNodeInfo(NODE_BROWSER);
-            
+
             foreach (var factory in AddonFactories)
                 if (factory is PatchFactory)
                     NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"lib\nodes\native\"), factory, true, false);
-            
+
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
             FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            
+
             this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
-            if(IsBoygroupClient)
+            if (IsBoygroupClient)
             {
                 this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
             }
@@ -264,19 +251,16 @@ namespace VVVV.Hosting
             {
                 throw new Exception("Could not parse clockport, make sure you have the right syntax, e.g. '/clockport 3344' ");
             }
-            
+
             //start time server of client
             FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, clockport) : new UDPTimeServer(clockport);
             FNetTimeSync.Start();
 
             //now that all basics are set up, see if there are any node search paths to add
             //from the installed packs
-            if (packsDirInfo.Exists)
-                LoadPackNodes(packsDirInfo);
-            if (internalPacksDirInfo != null && internalPacksDirInfo.Exists)
-                LoadPackNodes(internalPacksDirInfo);
-            if (internalPublicPacksDirInfo != null && internalPublicPacksDirInfo.Exists)
-                LoadPackNodes(internalPublicPacksDirInfo);
+            if (Directory.Exists(packsPath))
+                LoadNodesFromLegacyPackages(packsPath);
+            LoadNodesFromPackages();
         }
 
         bool IsSendingMessages()
@@ -294,51 +278,67 @@ namespace VVVV.Hosting
             return false;
         }
 
-        private void LoadPackNodes(DirectoryInfo packsDirInfo)
+        private void LoadFactoriesFromPackages(AggregateCatalog catalog)
         {
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
+            foreach (var package in AssemblyProbing.GetPackagesPreferingSourceOverInstalled())
             {
-                //check for vl package with vvvv folder
-                var vlPackInfo = new DirectoryInfo(Path.Combine(packDirInfo.FullName, "vvvv"));
-                if (vlPackInfo.Exists)
+                var packagePath = package.GetPathOfPackage();
+                //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
+                var versionInfoPath = Path.Combine(packagePath, "version.info");
+                if (File.Exists(versionInfoPath))
                 {
-                    LoadPackNodes(packDirInfo);
-                    continue;
+                    foreach (var assembly in package.GetCompatibleAssemblyFiles())
+                        catalog.Catalogs.Add(new AssemblyCatalog(assembly.SourcePath));
                 }
-
-                var packDir = packDirInfo.FullName;
-                var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
-                if (nodesDirInfo.Exists)
-                    NodeCollection.AddJob(nodesDirInfo.FullName, true);
             }
         }
 
-        private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
+        private void LoadNodesFromPackages()
         {
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
+            foreach (var package in AssemblyProbing.GetPackagesPreferingSourceOverInstalled())
             {
-                var packDir = packDirInfo.FullName;
+                var packagePath = package.GetPathOfPackage();
+                //check if the package contains a legacy package
+                var vvvvPath = Path.Combine(packagePath, "vvvv");
+                if (Directory.Exists(vvvvPath))
+                    LoadNodesFromLegacyPackage(vvvvPath);
+            }
+        }
 
-                //check for vl package with vvvv folder
-                var vlPackInfo = new DirectoryInfo(Path.Combine(packDir, "vvvv"));
-                if (vlPackInfo.Exists)
-                {
-                    LoadPackFactories(packDirInfo, catalog);
-                    continue;
-                }
+        private void LoadNodesFromLegacyPackages(string packsPath)
+        {
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+                LoadNodesFromLegacyPackage(packPath);
+        }
 
-                var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
-                if (coreDirInfo.Exists)
+        private void LoadNodesFromLegacyPackage(string packagePath)
+        {
+            var nodesPath = Path.Combine(packagePath, "nodes");
+            if (Directory.Exists(nodesPath))
+                NodeCollection.AddJob(nodesPath, true);
+        }
+
+        private void LoadFactoriesFromLegacyPackages(string packsPath, AggregateCatalog catalog)
+        {
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+            {
+                var corePath = Path.Combine(packPath, "core");
+                if (Directory.Exists(corePath))
                 {
-                    FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    FAssemblySearchPaths.Add(corePath);
+                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + corePath);
                     var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
-                    var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
-                    if (platformDependentCorDirInfo.Exists)
-                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
+                    var platformPath = Path.Combine(corePath, platformDir);
+                    if (Directory.Exists(platformPath))
+                    {
+                        FAssemblySearchPaths.Add(platformPath);
+                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformPath);
+                    }
                 }
-                var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
-                if (factoriesDirInfo.Exists)
-                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
+                var factoriesPath = Path.Combine(packPath, "factories");
+                if (Directory.Exists(factoriesPath))
+                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
+
                 // We look for nodes later
             }
         }
@@ -702,6 +702,8 @@ namespace VVVV.Hosting
             get;
             private set;
         }
+
+        public string PacksPath => Path.Combine(ExePath, "packs");
         
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
@@ -886,5 +888,22 @@ namespace VVVV.Hosting
         {
             set {FVVVVHost.FiftyEditor = value;}
         }
+
+        class DummyTimeProvider : ITimeProvider
+        {
+            private Func<double, double> timeProvider;
+
+            public DummyTimeProvider(Func<double, double> timeProvider)
+            {
+                this.timeProvider = timeProvider;
+            }
+
+            public double GetTime(double originalNewFrameTime) => timeProvider(originalNewFrameTime);
+        }
+
+        public void SetFrameTimeProvider(Func<double, double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
+        public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
+
+        public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
     }
 }

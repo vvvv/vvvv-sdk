@@ -56,6 +56,13 @@ namespace VVVV.Nodes.Generic
 
         List<ISpread<T>> FBuffer = new List<ISpread<T>>();
 
+        readonly Copier<T> FCopier;
+
+        public QueueStore(Copier<T> copier)
+        {
+            FCopier = copier;
+        }
+
         public void OnImportsSatisfied()
         {
             //start with an empty stream output
@@ -118,7 +125,7 @@ namespace VVVV.Nodes.Generic
                     {
                         if(!FAppend[0])
                         {
-                            FBuffer.Insert(0, FInput.Clone());
+                            FBuffer.Insert(0, FCopier.CopySpread(FInput));
                             FFramesRecorded[0]++;
                         }
                         else
@@ -128,7 +135,7 @@ namespace VVVV.Nodes.Generic
                             for (int i = 0; i < FFramesRecorded.SliceCount - 1; i++)
                                 count += FFramesRecorded[i];
                             
-                            FBuffer.Insert(count, FInput.Clone());
+                            FBuffer.Insert(count, FCopier.CopySpread(FInput));
                             FFramesRecorded[FFramesRecorded.SliceCount - 1]++;
                         }
                         
@@ -141,7 +148,7 @@ namespace VVVV.Nodes.Generic
 
                 if(!FAppend[0])
                 {
-                    FBuffer.Insert(0, FInput.Clone());
+                    FBuffer.Insert(0, FCopier.CopySpread(FInput));
                     FFramesRecorded[0]++;
                 }
                 else
@@ -151,7 +158,7 @@ namespace VVVV.Nodes.Generic
                     for (int i = 0; i < FFramesRecorded.SliceCount - 1; i++)
                         count += FFramesRecorded[i];
 
-                    FBuffer.Insert(count, FInput.Clone());
+                    FBuffer.Insert(count, FCopier.CopySpread(FInput));
                     FFramesRecorded[FFramesRecorded.SliceCount - 1]++;
                 }
                 

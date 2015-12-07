@@ -209,10 +209,21 @@ namespace VVVV.Hosting
         {
             set;
         }
+
+        /// <summary>
+        /// This is the untweaked frametime. Tweaking frame time is possible via clock nodes or via SetFrameTime / SetFrameTimeProvider
+        /// </summary>
+        double GetOriginalFrameTime();
+
+        /// <summary>
+        /// The given provider gets called by vvvv when it needs to pin down an official frame time for the current frame. 
+        /// By using this you can potenitally reduce latency.
+        /// </summary>
+        void SetTimeProvider(ITimeProvider timeProvider);
     }
-    
+
     #region Listeners
-    
+
     /// <summary>
     /// Listener interface to be informed of a changed node-selection.
     /// </summary>

@@ -351,7 +351,10 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
-			result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
+            if (type != null)
+                result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
+            else
+                result.SetSubType(new Guid[] { }, "Variant");
             SetInputProperties(result, attribute);
 			return result;
 		}
@@ -365,17 +368,23 @@ namespace VVVV.PluginInterfaces.V2
 			// to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
 			var guids = new List<Guid>();
 			var typeT = type;
-			
-			foreach (var interf in typeT.GetInterfaces())
-				guids.Add(interf.GUID);
-			
-			while (typeT != null)
-			{
-				guids.Add(typeT.GUID);
-				typeT = typeT.BaseType;
-			}
 
-			result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
+            if (type != null)
+            {
+                foreach (var interf in typeT.GetInterfaces())
+                    guids.Add(interf.GUID);
+
+                while (typeT != null)
+                {
+                    guids.Add(typeT.GUID);
+                    typeT = typeT.BaseType;
+                }
+
+                result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
+            }
+            else
+                result.SetSubType(new Guid[] { }, "Variant");
+
             SetOutputProperties(result, attribute);
 			return result;
 		}
