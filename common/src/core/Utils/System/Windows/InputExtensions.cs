@@ -73,10 +73,10 @@ namespace System.Windows.Input
             return args.ChangedButton.ToMouseButtons();
         }
 
-        //public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs)
-        //{
-        //    return new KeyDownNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key));
-        //}
+        public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs)
+        {
+            return new KeyDownNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key));
+        }
 
         public static KeyUpNotification ToKeyUpNotification(this KeyEventArgs eventArgs)
         {

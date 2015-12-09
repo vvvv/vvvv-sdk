@@ -41,6 +41,7 @@ namespace VVVV.Utils.IO
 
     public class KeyDownNotification : KeyCodeNotification
     {
+        public KeyDownNotification(Keys keyCode) : this(new KeyEventArgs(keyCode)) { }
         public KeyDownNotification(KeyEventArgs args)
             : base(KeyNotificationKind.KeyDown, args.KeyCode)
         {

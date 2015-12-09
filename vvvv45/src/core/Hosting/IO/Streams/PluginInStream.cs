@@ -269,7 +269,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly INodeIn FNodeIn;
         private readonly bool FAutoValidate;
         private readonly T FDefaultValue;
-        private IInStream<T> FUpstreamStream;
+        private MemoryIOStream<T> FUpstreamStream;
         private int FLength;
         private int* FUpStreamSlices;
 
@@ -292,8 +292,8 @@ namespace VVVV.Hosting.IO.Streams
 
         public IStreamReader<T> GetReader()
         {
-            if (FNodeIn.IsConvoluted && FUpstreamStream is MemoryIOStream<T>)
-                return new ConvolutedReader(FUpstreamStream as MemoryIOStream<T>, FLength, FUpStreamSlices);
+            if (FNodeIn.IsConvoluted)
+                return new ConvolutedReader(FUpstreamStream, FLength, FUpStreamSlices);
             return FUpstreamStream.GetReader();
         } 
 
@@ -346,10 +346,6 @@ namespace VVVV.Hosting.IO.Streams
                                     writer.Write(FDefaultValue);
                         }
                     }
-                }
-                else
-                {
-                    // general IInStream<T>
                 }
             }
             return IsChanged;
