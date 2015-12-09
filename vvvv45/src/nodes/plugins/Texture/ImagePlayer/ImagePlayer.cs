@@ -30,7 +30,7 @@ namespace VVVV.Nodes.ImagePlayer
         public const string DEFAULT_FILEMASK = "*.*";
         public const int DEFAULT_BUFFER_SIZE = 32 * 1024;
         
-        private List<string> FFiles = new List<string>();
+        private volatile List<string> FFiles = new List<string>();
         
         private readonly int FThreadsIO;
         private readonly int FThreadsTexture;
@@ -176,9 +176,9 @@ namespace VVVV.Nodes.ImagePlayer
                 FScanTask.WaitForCompletionStatus();
             }
             FScanTask = ScanDirectoriesAsync(Directories, Filemasks)
-                .Then(files =>
+                .ContinueWith(t =>
                     {
-                        FFiles = files;
+                        FFiles = t.Result;
                         FScanTask = null;
                     }
                 );
