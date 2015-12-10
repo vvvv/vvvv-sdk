@@ -109,12 +109,16 @@ namespace VVVV.Hosting
             var packageRepositories = AssemblyProbing.ParseCommandLine(repoArg);
 
             //from args.txt
-            string args = File.ReadAllText(Path.Combine(ExePath, "args.txt"));
-            var repoPaths = args.Split(new string[] { "\r", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+            var argsFile = Path.Combine(ExePath, "args.txt");
+            if (File.Exists(argsFile))
+            {
+                var args = File.ReadAllText(argsFile);
+                var repoPaths = args.Split(new string[] { "\r", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                         .Where(l => l.StartsWith(repoArg))
-                        .SelectMany(r => r.Substring(repoArg.Length+1).Trim('"').Split(';'));
+                        .SelectMany(r => r.Substring(repoArg.Length + 1).Trim('"').Split(';'));
 
-            packageRepositories = packageRepositories.Union(repoPaths).ToArray();
+                packageRepositories = packageRepositories.Union(repoPaths).ToArray();
+            }
 
             AssemblyProbing.AddPackageRepositories(packageRepositories);
 
