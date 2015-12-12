@@ -1,1 +1,0 @@
-See http://inputsimulator.codeplex.com/

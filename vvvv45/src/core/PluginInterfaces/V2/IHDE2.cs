@@ -193,7 +193,6 @@ namespace VVVV.PluginInterfaces.V2
 			get;
 		}
 		
-	
 		/// <summary>
 		/// The realtime in seconds since the IHDEHost was created. On boygroup clients this ist the time 
 		/// since the server IHDEHost was created, synced over network. This time is not frame based,
@@ -202,8 +201,8 @@ namespace VVVV.PluginInterfaces.V2
 		double RealTime 
 		{
 			get;
-		}
-		
+		}		
+
 		/// <summary>
 		/// Initialize the internal realtime clock to a specific value
 		/// </summary>
@@ -359,14 +358,48 @@ namespace VVVV.PluginInterfaces.V2
         {
             set;
         }
-	}
-	#endregion IHDEHost
-	
-	#region NodeBrowser
-	/// <summary>
-	/// Allows the NodeBrower to be contacted by the host
-	/// </summary>
-	[Guid("A0C810DA-E0CC-4A2E-BC3F-8139766945F1"),
+
+        /// <summary>
+        /// This is the untweaked frametime. Tweaking frame time is possible via clock nodes or via SetFrameTime / SetFrameTimeProvider
+        /// </summary>
+	    double OriginalFrameTime
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The given provider gets called by vvvv when it needs to pin down an official frame time for the current frame. 
+        /// By using this you can potenitally reduce latency.
+        /// </summary>
+        void SetFrameTimeProvider(Func<double, double> timeProvider);
+
+        /// <summary>
+        /// The given provider gets called by vvvv when it needs to pin down an official frame time for the current frame. 
+        /// By using this you can potenitally reduce latency.
+        /// </summary>
+        void SetFrameTimeProvider(ITimeProvider timeProvider);
+    }
+    #endregion IHDEHost
+
+    /// <summary>
+    /// Implement this small interface and set it on the IHDEHost. 
+    /// You'll get called back at the beginning of the next frame when vvvv needs to pin down an official frame for all animation nodes.
+    /// </summary>
+    [Guid("74E506D4-84B5-4263-8B32-C3A615F4869C"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface ITimeProvider
+    {
+        /// <summary>
+        /// provide the time
+        /// </summary>
+        double GetTime(double originalNewFrameTime);
+    }
+
+    #region NodeBrowser
+    /// <summary>
+    /// Allows the NodeBrower to be contacted by the host
+    /// </summary>
+    [Guid("A0C810DA-E0CC-4A2E-BC3F-8139766945F1"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface INodeBrowser: IPluginBase
 	{

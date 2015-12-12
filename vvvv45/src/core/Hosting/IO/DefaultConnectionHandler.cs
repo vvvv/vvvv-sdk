@@ -21,13 +21,13 @@ namespace VVVV.Hosting.IO
 		public string GetFriendlyNameForSink(object sink)
 		{
             var sinkDataType = GetDataType(GetType(sink));
-			return string.Format(" [ Needs: {0} ]", sinkDataType.GetCSharpName());
+			return string.Format(" [{0}]", sinkDataType.GetCSharpName());
 		}
 		
 		public string GetFriendlyNameForSource(object source)
 		{
             var sourceDataType = GetDataType(GetType(source));
-			return string.Format(" [ Supports: {0} ]", sourceDataType.GetCSharpName());
+			return string.Format(" [{0}]", sourceDataType.GetCSharpName());
 		}
 
         private static Type GetType(object value)
