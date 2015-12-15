@@ -18,6 +18,7 @@ namespace VVVV.Nodes.Devices
 	#region PluginInfo
 	[PluginInfo(Name = "Leap",
 	Category = "Devices", 
+    Version = "Legacy",
 	Help = "Returns the tracking data of the Leap device",
 	Tags = "tracking, hand, finger",
 	AutoEvaluate = true)]
@@ -320,8 +321,9 @@ namespace VVVV.Nodes.Devices
 	
 	#region PluginInfo
 	[PluginInfo(Name = "CircleGesture",
-	Category = "Leap", 
-	Help = "Returns the tracking data of the Leap circle gesture",
+	Category = "Leap",
+    Version = "Legacy",
+    Help = "Returns the tracking data of the Leap circle gesture",
 	Tags = "tracking, hand, finger",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
@@ -366,8 +368,9 @@ namespace VVVV.Nodes.Devices
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SwipeGesture",
-	Category = "Leap", 
-	Help = "Returns the tracking data of the Leap swipe gesture",
+	Category = "Leap",
+    Version = "Legacy",
+    Help = "Returns the tracking data of the Leap swipe gesture",
 	Tags = "tracking, hand, finger",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
@@ -412,8 +415,9 @@ namespace VVVV.Nodes.Devices
 	
 	#region PluginInfo
 	[PluginInfo(Name = "KeyTabGesture",
-	Category = "Leap", 
-	Help = "Returns the tracking data of the Leap key tab gesture",
+	Category = "Leap",
+    Version = "Legacy",
+    Help = "Returns the tracking data of the Leap key tab gesture",
 	Tags = "tracking, hand, finger",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
@@ -453,8 +457,9 @@ namespace VVVV.Nodes.Devices
 	
     #region PluginInfo
 	[PluginInfo(Name = "ScreenTabGesture",
-	Category = "Leap", 
-	Help = "Returns the tracking data of the Leap screen tab gesture",
+	Category = "Leap",
+    Version = "Legacy",
+    Help = "Returns the tracking data of the Leap screen tab gesture",
 	Tags = "tracking, hand, finger",
 	AutoEvaluate = true)]
 	#endregion PluginInfo
