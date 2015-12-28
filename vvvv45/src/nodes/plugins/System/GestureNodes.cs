@@ -270,9 +270,9 @@ namespace VVVV.Nodes.Input
             DistanceOut.SliceCount = 0;
             foreach (var gesture in gestures)
             {
-                if (gesture.Kind == GestureNotificationKind.GestureZoom)
+                if (gesture.Kind == FGestureFilterKind)
                 {
-                    int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
+                    double distance = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                     DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
                 }
             }
@@ -458,7 +458,7 @@ namespace VVVV.Nodes.Input
         {
             if (isFilterMatch)
             {
-                int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
+                double distance = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                 if (index < 0)
                 {
                     DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
