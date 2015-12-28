@@ -286,9 +286,25 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PanGestureEventsSplitNode : GestureEventsSplitNode
     {
+        [Output("Distance")]
+        public ISpread<double> DistanceOut;
+
         protected override GestureNotificationKind SetGestureKindFilter()
         {
             return GestureNotificationKind.GesturePan;
+        }
+
+        protected override void UseGestures(IList<GestureNotification> gestures)
+        {
+            DistanceOut.SliceCount = 0;
+            foreach (var gesture in gestures)
+            {
+                if (gesture.Kind == FGestureFilterKind)
+                {
+                    double distance = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
+                    DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
+                }
+            }
         }
     }
 
@@ -482,9 +498,38 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PanGestureStateSplitNode : GestureStatesSplitNode
     {
+        [Output("Distance")]
+        public ISpread<double> DistanceOut;
+
+        public override void OnImportsSatisfied()
+        {
+            DistanceOut.SliceCount = 0;
+            base.OnImportsSatisfied();
+        }
+
         protected override GestureNotificationKind SetGestureKindFilter()
         {
             return GestureNotificationKind.GesturePan;
+        }
+
+        protected override void UseGesture(GestureNotification gesture, bool isFilterMatch, int index)
+        {
+            if (isFilterMatch)
+            {
+                double distance = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
+                if (index < 0)
+                {
+                    DistanceOut.Add(distance / (double)gesture.ClientArea.Height * 2);
+                }
+                else
+                {
+                    DistanceOut[index] = distance / (double)gesture.ClientArea.Height * 2;
+                }
+            }
+            else if (index >= 0)
+            {
+                DistanceOut.RemoveAt(index);
+            }
         }
     }
 
