@@ -164,19 +164,29 @@ namespace VVVV.Nodes.Input
         }
     }
 
-    public abstract class GestureEventsSplitNode : IPluginEvaluate, IDisposable
+    public abstract class GestureEventsSplitNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         [Input("Gesture Device", IsSingle = true)]
         public ISpread<GestureDevice> FInput;
+
+        [Output("Position", Order = -1)]
+        public ISpread<Vector2D> PositionOut;
 
         [Output("Id")]
         public ISpread<int> IdOut;
         [Output("Device ID")]
         public ISpread<long> DeviceIDOut;
 
+        protected GestureNotificationKind FGestureFilterKind;
+
         private static readonly IList<GestureNotification> FEmptyList = new List<GestureNotification>(0);
         private GestureDevice FGestureDevice;
         private IEnumerator<IList<GestureNotification>> FEnumerator;
+
+        public virtual void OnImportsSatisfied()
+        {
+            FGestureFilterKind = SetGestureKindFilter();
+        }
 
         public void Dispose()
         {
@@ -197,18 +207,28 @@ namespace VVVV.Nodes.Input
                 ? FEnumerator.Current
                 : FEmptyList;
 
-            notifications = UseNotifications(notifications, IdOut).ToList();
+            var gestures = notifications.Where(g => (g.Kind == FGestureFilterKind) || 
+                            ((g.Kind == GestureNotificationKind.GestureEnd) && (IdOut.Contains(g.Id))))
+                            .ToList();
 
-            IdOut.SliceCount = notifications.Count;
-            DeviceIDOut.SliceCount = notifications.Count;
-            for (int i = 0; i < notifications.Count; i++)
+            UseGestures(gestures);
+
+            PositionOut.SliceCount = gestures.Count;
+            IdOut.SliceCount = gestures.Count;
+            DeviceIDOut.SliceCount = gestures.Count;
+            for (int i = 0; i < gestures.Count; i++)
             {
-                IdOut[i] = notifications[i].Id;
-                DeviceIDOut[i] = notifications[i].GestureDeviceID;
+                var position = new Vector2D(gestures[i].Position.X, gestures[i].Position.Y);
+                var clientArea = new Vector2D(gestures[i].ClientArea.Width, gestures[i].ClientArea.Height);
+                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                PositionOut[i] = normalizedPosition;
+                IdOut[i] = gestures[i].Id;
+                DeviceIDOut[i] = gestures[i].GestureDeviceID;
             }
         }
 
-        public abstract IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> notifications, ISpread<int> ids);
+        protected abstract GestureNotificationKind SetGestureKindFilter();
+        protected virtual void UseGestures(IList<GestureNotification> notifications) { }
 
         private void Subscribe()
         {
@@ -237,55 +257,23 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class ZoomGestureEventsSplitNode : GestureEventsSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
         [Output("Distance")]
         public ISpread<int> DistanceOut;
 
-        public override IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> gestures, ISpread<int> ids)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
+            return GestureNotificationKind.GestureZoom;
+        }
+
+        protected override void UseGestures(IList<GestureNotification> gestures)
+        {
             DistanceOut.SliceCount = 0;
             foreach (var gesture in gestures)
             {
-                if ((gesture.Kind == GestureNotificationKind.GestureZoom) ||
-                    (gesture.Kind == GestureNotificationKind.GestureEnd && ids.Contains(gesture.Id)))
+                if (gesture.Kind == GestureNotificationKind.GestureZoom)
                 {
-                    var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                    var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                    PositionOut.Add(normalizedPosition);
                     int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                     DistanceOut.Add(distance);
-                    yield return gesture;
-                }
-            }
-        }
-    }
-
-    [PluginInfo(Name = "TwoFingerTapEvents",
-                Category = "Gesture",
-                Version = "Split",
-                Help = "Returns all the touch events of a given touch device.",
-                AutoEvaluate = true)]
-    public class TwoFingerTapGestureEventsSplitNode : GestureEventsSplitNode
-    {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> gestures, ISpread<int> ids)
-        {
-            PositionOut.SliceCount = 0;
-            foreach (var gesture in gestures)
-            {
-                if ((gesture.Kind == GestureNotificationKind.GestureTwoFingerTap) ||
-                    (gesture.Kind == GestureNotificationKind.GestureEnd && ids.Contains(gesture.Id)))
-                {
-                    var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                    var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                    PositionOut.Add(normalizedPosition);
-                    yield return gesture;
                 }
             }
         }
@@ -298,24 +286,9 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PanGestureEventsSplitNode : GestureEventsSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> gestures, ISpread<int> ids)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
-            foreach (var gesture in gestures)
-            {
-                if ((gesture.Kind == GestureNotificationKind.GesturePan) ||
-                    (gesture.Kind == GestureNotificationKind.GestureEnd && ids.Contains(gesture.Id)))
-                {
-                    var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                    var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                    PositionOut.Add(normalizedPosition);
-                    yield return gesture;
-                }
-            }
+            return GestureNotificationKind.GesturePan;
         }
     }
 
@@ -326,31 +299,39 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class RotateGestureEventsSplitNode : GestureEventsSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
         [Output("Rotate")]
         public ISpread<double> RotateOut;
 
-        public override IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> gestures, ISpread<int> ids)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
+            return GestureNotificationKind.GestureRotate;
+        }
+
+        protected override void UseGestures(IList<GestureNotification> gestures)
+        {
             RotateOut.SliceCount = 0;
             foreach (var gesture in gestures)
             {
-                if ((gesture.Kind == GestureNotificationKind.GestureRotate) ||
-                    (gesture.Kind == GestureNotificationKind.GestureEnd && ids.Contains(gesture.Id)))
+                if (gesture.Kind == FGestureFilterKind)
                 {
-                    var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                    var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                    PositionOut.Add(normalizedPosition);
                     double rotate = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                     rotate = rotate / 65535.0 * 2 - 1;
                     RotateOut.Add(rotate);
-
-                    yield return gesture;
                 }
             }
+        }
+    }
+
+    [PluginInfo(Name = "TwoFingerTapEvents",
+            Category = "Gesture",
+            Version = "Split",
+            Help = "Returns all the touch events of a given touch device.",
+            AutoEvaluate = true)]
+    public class TwoFingerTapGestureEventsSplitNode : GestureEventsSplitNode
+    {
+        protected override GestureNotificationKind SetGestureKindFilter()
+        {
+            return GestureNotificationKind.GestureTwoFingerTap;
         }
     }
 
@@ -361,24 +342,9 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PressAndTapGestureEventsSplitNode : GestureEventsSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override IEnumerable<GestureNotification> UseNotifications(IList<GestureNotification> gestures, ISpread<int> ids)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
-            foreach (var gesture in gestures)
-            {
-                if ((gesture.Kind == GestureNotificationKind.GesturePressAndTap) ||
-                    (gesture.Kind == GestureNotificationKind.GestureEnd && ids.Contains(gesture.Id)))
-                {
-                    var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                    var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                    PositionOut.Add(normalizedPosition);
-                    yield return gesture;
-                }
-            }
+            return GestureNotificationKind.GesturePressAndTap;
         }
     }
 
@@ -389,54 +355,69 @@ namespace VVVV.Nodes.Input
         [Input("Queue Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
         public ISpread<QueueMode> QueueModeIn;
 
+        [Output("Position", Order = -1)]
+        public ISpread<Vector2D> PositionOut;
 
         [Output("Id")]
         public ISpread<int> IdOut;
         [Output("Device ID")]
         public ISpread<long> DeviceIDOut;
 
+        protected GestureNotificationKind FGestureFilterKind;
+
         private readonly FrameBasedScheduler FScheduler = new FrameBasedScheduler();
         private Subscription<GestureDevice, GestureNotification> FSubscription;
 
         public virtual void OnImportsSatisfied()
         {
+            FGestureFilterKind = SetGestureKindFilter();
+
+            PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
             DeviceIDOut.SliceCount = 0;
 
             FSubscription = new Subscription<GestureDevice, GestureNotification>(
                 gestureDevice =>
                 {
-                    return gestureDevice.Notifications.Where(g => FilterGesture(g));
+                    return gestureDevice.Notifications.Where(g => (g.Kind == FGestureFilterKind) || (g.Kind == GestureNotificationKind.GestureEnd));
                 },
-                (gestureDevice, n) =>
+                (gestureDevice, g) =>
                 {
-                    var index = IdOut.IndexOf(n.Id);
-                    if (UseGesture(n, index))
+                    var index = IdOut.IndexOf(g.Id);
+                    var isFilterMatch = g.Kind == FGestureFilterKind;
+                    UseGesture(g, isFilterMatch, index);
+                    if (isFilterMatch)
                     {
+                        var position = new Vector2D(g.Position.X, g.Position.Y);
+                        var clientArea = new Vector2D(g.ClientArea.Width, g.ClientArea.Height);
+                        var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+
                         if (index < 0)
                         {
-                            IdOut.Add(n.Id);
-                            DeviceIDOut.Add(n.GestureDeviceID);
+                            PositionOut.Add(normalizedPosition);
+                            IdOut.Add(g.Id);
+                            DeviceIDOut.Add(g.GestureDeviceID);
                         }
                         else
                         {
-                            IdOut[index] = n.Id;
-                            DeviceIDOut[index] = n.GestureDeviceID;
+                            PositionOut[index] = normalizedPosition;
+                            IdOut[index] = g.Id;
+                            DeviceIDOut[index] = g.GestureDeviceID;
                         }
                     }
                     else if (index >= 0)
                     {
+                        PositionOut.RemoveAt(index);
                         IdOut.RemoveAt(index);
                         DeviceIDOut.RemoveAt(index);
                     }
-                    
                 },
                 FScheduler
             );
         }
 
-        public abstract bool FilterGesture(GestureNotification gesture);
-        public abstract bool UseGesture(GestureNotification gesture, int slice);
+        protected abstract GestureNotificationKind SetGestureKindFilter();
+        protected virtual void UseGesture(GestureNotification gesture, bool isFilterMatch, int index) { }
 
         public virtual void Dispose()
         {
@@ -459,50 +440,38 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class ZoomGestureStateSplitNode : GestureStatesSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
         [Output("Distance")]
         public ISpread<double> DistanceOut;
 
         public override void OnImportsSatisfied()
         {
-            PositionOut.SliceCount = 0;
             DistanceOut.SliceCount = 0;
             base.OnImportsSatisfied();
         }
 
-        public override bool FilterGesture(GestureNotification gesture)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            return ((gesture.Kind == GestureNotificationKind.GestureZoom) || (gesture.Kind == GestureNotificationKind.GestureEnd));
+            return GestureNotificationKind.GestureZoom;
         }
 
-        public override bool UseGesture(GestureNotification gesture, int slice)
+        protected override void UseGesture(GestureNotification gesture, bool isFilterMatch, int index)
         {
-            var use = gesture.Kind == GestureNotificationKind.GestureZoom;
-            if (use)
+            if (isFilterMatch)
             {
-                var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 int distance = (int)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
-                if (slice < 0)
+                if (index < 0)
                 {
-                    PositionOut.Add(normalizedPosition);
                     DistanceOut.Add(distance/(double)gesture.ClientArea.Height);
                 }
                 else
                 {
-                    PositionOut[slice] = normalizedPosition;
-                    DistanceOut[slice] = distance / (double)gesture.ClientArea.Height;
+                    DistanceOut[index] = distance / (double)gesture.ClientArea.Height;
                 }
             }
-            else if (slice >= 0)
+            else if (index >= 0)
             {
-                PositionOut.RemoveAt(slice);
-                DistanceOut.RemoveAt(slice);
+                DistanceOut.RemoveAt(index);
             }
-
-            return use;
         }
     }
 
@@ -513,37 +482,9 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PanGestureStateSplitNode : GestureStatesSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override void OnImportsSatisfied()
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
-            base.OnImportsSatisfied();
-        }
-
-        public override bool FilterGesture(GestureNotification gesture)
-        {
-            return ((gesture.Kind == GestureNotificationKind.GesturePan) || (gesture.Kind == GestureNotificationKind.GestureEnd));
-        }
-
-        public override bool UseGesture(GestureNotification gesture, int slice)
-        {
-            var use = gesture.Kind == GestureNotificationKind.GesturePan;
-            if (use)
-            {
-                var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                if (slice < 0)
-                    PositionOut.Add(normalizedPosition);
-                else
-                    PositionOut[slice] = normalizedPosition;
-            }
-            else if (slice >= 0)
-                PositionOut.RemoveAt(slice);
-
-            return use;
+            return GestureNotificationKind.GesturePan;
         }
     }
 
@@ -554,52 +495,36 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class RotateGestureStateSplitNode : GestureStatesSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
         [Output("Rotate")]
         public ISpread<double> RotateOut;
 
         public override void OnImportsSatisfied()
         {
-            PositionOut.SliceCount = 0;
             RotateOut.SliceCount = 0;
             base.OnImportsSatisfied();
         }
 
-        public override bool FilterGesture(GestureNotification gesture)
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            return ((gesture.Kind == GestureNotificationKind.GestureRotate) || (gesture.Kind == GestureNotificationKind.GestureEnd));
+            return GestureNotificationKind.GestureRotate;
         }
 
-        public override bool UseGesture(GestureNotification gesture, int slice)
+        protected override void UseGesture(GestureNotification gesture, bool isFilterMatch, int index)
         {
-            var use = gesture.Kind == GestureNotificationKind.GestureRotate;
-            if (use)
+            if (isFilterMatch)
             {
-                var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
                 double rotate = (double)(gesture.Arguments & Const.ULL_ARGUMENTS_BIT_MASK);
                 rotate = rotate / 65535.0 * 2 - 1;
                 
-                if (slice < 0)
-                {
-                    PositionOut.Add(normalizedPosition);
+                if (index < 0)
                     RotateOut.Add(rotate);
-                }
                 else
-                {
-                    PositionOut[slice] = normalizedPosition;
-                    RotateOut[slice] = rotate;
-                }
+                    RotateOut[index] = rotate;
             }
-            else if (slice >= 0)
+            else if (index >= 0)
             {
-                PositionOut.RemoveAt(slice);
-                RotateOut.RemoveAt(slice);
+                RotateOut.RemoveAt(index);
             }
-
-            return use;
         }
     }
 
@@ -610,37 +535,9 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class PressAndTapGestureStateSplitNode : GestureStatesSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override void OnImportsSatisfied()
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
-            base.OnImportsSatisfied();
-        }
-
-        public override bool FilterGesture(GestureNotification gesture)
-        {
-            return ((gesture.Kind == GestureNotificationKind.GesturePressAndTap) || (gesture.Kind == GestureNotificationKind.GestureEnd));
-        }
-
-        public override bool UseGesture(GestureNotification gesture, int slice)
-        {
-            var use = gesture.Kind == GestureNotificationKind.GesturePressAndTap;
-            if (use)
-            {
-                var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                if (slice < 0)
-                    PositionOut.Add(normalizedPosition);
-                else
-                    PositionOut[slice] = normalizedPosition;
-            }
-            else if (slice >= 0)
-                PositionOut.RemoveAt(slice);
-
-            return use;
+            return GestureNotificationKind.GesturePressAndTap;
         }
     }
 
@@ -651,37 +548,9 @@ namespace VVVV.Nodes.Input
                 AutoEvaluate = true)]
     public class TwoFingerTapGestureStateSplitNode : GestureStatesSplitNode
     {
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-
-        public override void OnImportsSatisfied()
+        protected override GestureNotificationKind SetGestureKindFilter()
         {
-            PositionOut.SliceCount = 0;
-            base.OnImportsSatisfied();
-        }
-
-        public override bool FilterGesture(GestureNotification gesture)
-        {
-            return ((gesture.Kind == GestureNotificationKind.GestureTwoFingerTap) || (gesture.Kind == GestureNotificationKind.GestureEnd));
-        }
-
-        public override bool UseGesture(GestureNotification gesture, int slice)
-        {
-            var use = gesture.Kind == GestureNotificationKind.GestureTwoFingerTap;
-            if (use)
-            {
-                var position = new Vector2D(gesture.Position.X, gesture.Position.Y);
-                var clientArea = new Vector2D(gesture.ClientArea.Width, gesture.ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                if (slice < 0)
-                    PositionOut.Add(normalizedPosition);
-                else
-                    PositionOut[slice] = normalizedPosition;
-            }
-            else if (slice >= 0)
-                PositionOut.RemoveAt(slice);
-
-            return use;
+            return GestureNotificationKind.GestureTwoFingerTap;
         }
     }
 }
