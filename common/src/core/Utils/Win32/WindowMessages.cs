@@ -484,6 +484,14 @@ namespace VVVV.Utils.Win32
         /// </summary>
         INITMENUPOPUP = 0x0117,
         /// <summary>
+        /// Passes information about a gesture 
+        /// </summary>
+        GESTURE = 0x0119,
+        /// <summary>
+        /// Gives you a chance to set the gesture configuration
+        /// </summary>
+        GESTURENOTIFY = 0x011A,
+        /// <summary>
         /// The WM_MENUSELECT message is sent to a menu's owner window when the user selects a menu item.
         /// </summary>
         MENUSELECT = 0x011F,

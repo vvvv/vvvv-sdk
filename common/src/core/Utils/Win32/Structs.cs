@@ -182,4 +182,39 @@ namespace VVVV.Utils.Win32
         public int cxContact;
         public int cyContact;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GESTURECONFIG //https://msdn.microsoft.com/en-us/library/windows/desktop/dd353231%28v=vs.85%29.aspx
+    {
+        public int dwID;    // gesture ID
+        public int dwWant;  // settings related to gesture ID that are to be turned on
+        public int dwBlock; // settings related to gesture ID that are to be turned off
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GESTUREINFO
+    {
+        public int cbSize;          // The size of the structure, in bytes. The caller must set this to sizeof(GESTUREINFO).
+        public int dwFlags;         // The state of the gesture
+        public int dwID;            // The identifier of the gesture command
+        public IntPtr hwndTarget;   // handle to window targeted by this gesture
+
+        public short x;             // current location of this gesture in physical screen coordinates
+        public short y;
+        public int dwInstanceID;    // internally used
+        public int dwSequenceID;    // internally used
+        public Int64 ullArguments;  // arguments for gestures whose arguments fit in 8 BYTES
+        public int cbExtraArgs;     // size, in bytes, of extra arguments, if any, that accompany this gesture
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct GESTURENOTIFYSTRUCT
+    {
+        public int cbSize;          // The size of the structure
+        public int dwFlags;         // Reserved for future use
+        public IntPtr hwndTarget;   // The target window for the gesture notification
+        public short x;             //The location of the gesture in physical screen coordinates
+        public short y;             
+        public int dwInstanceID;    // A specific gesture instance with gesture messages starting with GID_START and ending with GID_END
+    }
 }
