@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-    public sealed class OutputAttribute : IOAttribute
+    public class OutputAttribute : IOAttribute
     {
         public static readonly string DefaultBinName = " Bin Size";
         
