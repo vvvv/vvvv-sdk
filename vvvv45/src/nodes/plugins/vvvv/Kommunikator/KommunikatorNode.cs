@@ -51,7 +51,7 @@ namespace VVVV.Nodes.Kommunikator
         private const int CHeaderWidth = 900;
         private const int CHeaderHeight = 200;
         
-        private System.Uri CPictureUploadUri = new Uri("http://vvvv.org/web-api/picture-upload");
+        private System.Uri CPictureUploadUri = new Uri("https://vvvv.org/web-api/picture-upload");
         
         #endregion field declaration
         
