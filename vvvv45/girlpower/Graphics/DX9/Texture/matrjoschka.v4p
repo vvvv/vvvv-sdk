@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\Old Girlpowers\Textures\matrjoschka.v4p" componentmode="InAWindow" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Texture\matrjoschka.v4p" componentmode="InAWindow" locked="0" scrollx="0" scrolly="0">
    <BOUNDS height="11745" left="0" top="0" type="Window" width="13185">
    </BOUNDS>
    <NODE id="46" nodename="DX9Texture (EX9.Texture)">
@@ -562,16 +562,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="6" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="0" left="11520" top="1380" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="11385" top="1785" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="11520" top="1380" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   </NODE>
    <LINK dstnodeid="42" dstpinname="Sampler State" srcnodeid="31" srcpinname="Sampler State Out">
    </LINK>
    <LINK dstnodeid="37" dstpinname="Sampler State" srcnodeid="33" srcpinname="Sampler State Out">
@@ -583,7 +573,7 @@
    </BOUNDS>
    <BOUNDS height="1800" left="10200" top="2265" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -606,8 +596,6 @@
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Projection" srcnodeid="6" srcpinname="View Projection">
-   </LINK>
    <LINK dstnodeid="4" dstpinname="Layers" srcnodeid="42" srcpinname="Layer">
    <LINKPOINT x="8010" y="9960">
    </LINKPOINT>
@@ -706,16 +694,6 @@
    </LINK>
    <LINK dstnodeid="42" dstpinname="Texture" srcnodeid="46" srcpinname="Texture Out">
    </LINK>
-   <NODE componentmode="Hidden" id="47" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="0" left="285" top="2115" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="11385" top="1785" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="285" top="2115" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="48" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="1935" top="2115" type="Node" width="315">
    </BOUNDS>
@@ -732,4 +710,78 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="49" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11670" top="1020" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11670" top="1020" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.01">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="50" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12150" top="990" width="465" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12150" top="990" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3.18">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="51" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12660" top="1005" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12660" top="1005" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS height="100" left="11520" top="1380" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="11385" top="1785" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="11520" top="1380" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Projection" srcnodeid="6" srcpinname="View Projection">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Initial FOV">
+   </LINK>
+   <NODE componentmode="Hidden" id="47" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS height="100" left="285" top="2115" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="11385" top="1785" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="285" top="2115" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

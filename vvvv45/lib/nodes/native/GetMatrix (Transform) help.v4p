@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\native\GetMatrix (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\GetMatrix (Transform) help.v4p" scrollx="0" scrolly="0">
    <BOUNDS height="15360" left="2850" top="435" type="Window" width="12360">
    </BOUNDS>
    <NODE id="57" nodename="GetMatrix (Transform)">
@@ -365,7 +365,7 @@
    <LINK dstnodeid="36" dstpinname="Transform" srcnodeid="34" srcpinname="Transform Out">
    </LINK>
    <NODE id="33" nodename="GetMatrix (Transform)">
-   <PIN pinname="Transform" visible="1">
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <BOUNDS height="0" left="6300" top="8655" type="Node" width="0">
    </BOUNDS>
@@ -387,36 +387,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="32" dstpinname="Y Input Value" srcnodeid="33" srcpinname="Matrix Out">
-   </LINK>
-   <NODE id="31" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="0" left="6285" top="8220" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform In" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   <PIN pinname="Z UnTransformed" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Width">
-   </PIN>
-   <PIN pinname="Aspect Height">
-   </PIN>
-   <PIN pinname="Uniform Scale">
-   </PIN>
-   <PIN pinname="Alignment">
-   </PIN>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <BOUNDS left="6285" top="8220" type="Box">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="31" srcpinname="View Projection">
    </LINK>
    <NODE id="30" nodename="GetMatrix (Transform)">
    <PIN pinname="Transform" visible="1">
@@ -1125,7 +1095,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="210" top="24540" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|GetMatrix - Transform|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GetMatrix (Transform)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1156,4 +1126,36 @@
    </LINK>
    <LINK srcnodeid="62" srcpinname="Y" dstnodeid="24" dstpinname="LookAt Y">
    </LINK>
+   <NODE id="31" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="5820" top="8205" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="Z UnTransformed" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width">
+   </PIN>
+   <PIN pinname="Aspect Height">
+   </PIN>
+   <PIN pinname="Uniform Scale">
+   </PIN>
+   <PIN pinname="Alignment">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <BOUNDS left="5820" top="8205" type="Box">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Transform" srcnodeid="31" srcpinname="View Projection">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

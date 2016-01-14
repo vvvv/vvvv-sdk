@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.101.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\AlignToPath (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\Transform\AlignToPath (Transform) help.v4p">
    <BOUNDS type="Window" left="945" top="5925" width="5460" height="6450">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -43,7 +43,7 @@
    </BOUNDS>
    <PIN pinname="OutputXY" visible="1">
    </PIN>
-   <PIN pinname="Count" slicecount="1" values="20" visible="1">
+   <PIN pinname="Count" slicecount="1" visible="1" values="20">
    </PIN>
    <PIN pinname="Factor" slicecount="1" values="1">
    </PIN>
@@ -81,9 +81,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
@@ -101,18 +101,6 @@
    <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform In">
    </LINK>
    <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="2505" top="4470" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="View" dstnodeid="8" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Projection" dstnodeid="8" dstpinname="Projection">
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
@@ -149,5 +137,17 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Count">
+   </LINK>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="2430" top="4590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="View" dstnodeid="8" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Projection" dstnodeid="8" dstpinname="Projection">
    </LINK>
    </PATCH>

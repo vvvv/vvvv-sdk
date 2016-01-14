@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
-   <BOUNDS height="9615" left="0" top="0" type="Window" width="6480">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\3D\Button (3d Mesh) help.v4p">
+   <BOUNDS height="9615" left="0" top="0" type="Window" width="6765">
    </BOUNDS>
    <NODE id="22" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="0" left="405" top="7605" type="Node" width="0">
@@ -242,31 +242,7 @@
    </NODE>
    <LINK dstnodeid="13" dstpinname="Scale XYZ" srcnodeid="0" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" id="24" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <BOUNDS height="100" left="4605" top="2220" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="4605" top="2220" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="6000" left="5355" top="2850" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Inverse View" visible="1">
-   </PIN>
-   <PIN pinname="Distance" visible="1">
-   </PIN>
-   <PIN pinname="Near Plane" slicecount="1" values="0.05">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="17" dstpinname="View" linkstyle="PolyLine" srcnodeid="24" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="17" dstpinname="Projection" linkstyle="PolyLine" srcnodeid="24" srcpinname="Projection">
-   </LINK>
-   <NODE componentmode="InAWindow" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh).v4p" systemname="Button (3d Mesh)">
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" id="25" nodename="Button (3d Mesh).v4p" systemname="Button (3d Mesh)">
    <BOUNDS height="0" left="2790" top="3615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="9195" left="14220" top="4200" type="Window" width="9000">
@@ -277,7 +253,7 @@
    </PIN>
    <PIN pinname="Mouse Over" visible="1">
    </PIN>
-   <PIN pinname="View Projection" visible="1">
+   <PIN pinname="View Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Cursor Transform" visible="1">
    </PIN>
@@ -305,8 +281,6 @@
    <LINK dstnodeid="25" dstpinname="Transform Mesh" linkstyle="PolyLine" srcnodeid="13" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="25" dstpinname="Mesh" linkstyle="PolyLine" srcnodeid="5" srcpinname="Mesh">
-   </LINK>
-   <LINK dstnodeid="25" dstpinname="View Projection" linkstyle="PolyLine" srcnodeid="24" srcpinname="View Projection">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\effects\PhongDirectional.fx" id="1" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)">
    <BOUNDS height="0" left="405" top="6675" type="Node" width="0">
@@ -358,7 +332,7 @@
    </LINK>
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="16" dstpinname="Spread">
    </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="29">
+   <NODE systemname="Cursor (DX9 Legacy 2)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="29">
    <BOUNDS type="Node" left="4005" top="6630" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
@@ -371,5 +345,65 @@
    </LINKPOINT>
    </LINK>
    <LINK srcnodeid="29" srcpinname="Layer" dstnodeid="22" dstpinname="Layer 2">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5235" top="1890" width="405" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5235" top="1890" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="24" componentmode="Hidden" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
+   <PIN pinname="Initial Distance" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="4605" top="2220" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="4605" top="2220" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" height="6000" left="5355" top="2850" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Inverse View" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.05">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="View Projection" dstnodeid="25" dstpinname="View Projection" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Projection" dstnodeid="17" dstpinname="Projection" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="View" dstnodeid="17" dstpinname="View" linkstyle="PolyLine">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5700" top="1875" width="405" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5700" top="1875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Initial FOV">
    </LINK>
    </PATCH>

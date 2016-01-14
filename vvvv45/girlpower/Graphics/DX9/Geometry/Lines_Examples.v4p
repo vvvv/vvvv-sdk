@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\Lines_Examples.v4p" systemname="Lines_2" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\01_Basics\Lines_2.v4p">
    <BOUNDS type="Window" left="3150" top="720" width="23820" height="16185">
    </BOUNDS>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="60">
@@ -880,32 +880,6 @@
    </NODE>
    <LINK dstnodeid="115" dstpinname="Index" srcnodeid="114" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" id="113" nodename="IOBox (String)" systemname="Camera (Transform Softimage)">
-   <BOUNDS height="270" left="18705" top="6495" type="Node" width="2385">
-   </BOUNDS>
-   <BOUNDS height="270" left="18705" top="6495" type="Box" width="675">
-   </BOUNDS>
-   <BOUNDS height="6000" left="15375" top="13755" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Initial Yaw" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input String" visible="0">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="113" dstpinname="Initial Yaw" srcnodeid="118" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="112" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="19200" top="1860" type="Node" width="0">
    </BOUNDS>
@@ -1021,15 +995,11 @@
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="113" srcpinname="View" dstnodeid="102" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="113" srcpinname="Projection" dstnodeid="102" dstpinname="Projection">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="101" systemname="IOBox (String)">
    <BOUNDS type="Node" left="19725" top="1860" width="720" height="270">
    </BOUNDS>
@@ -1438,4 +1408,36 @@
    </NODE>
    <LINK srcnodeid="140" srcpinname="Y Output Value" dstnodeid="139" dstpinname="Input 2">
    </LINK>
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" id="113" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
+   <BOUNDS height="100" left="18810" top="6555" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="270" left="18810" top="6555" type="Box" width="675">
+   </BOUNDS>
+   <BOUNDS height="6000" left="15375" top="13755" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="113" dstpinname="Initial Yaw" srcnodeid="118" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="113" srcpinname="View" dstnodeid="102" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="113" srcpinname="Projection" dstnodeid="102" dstpinname="Projection">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>
