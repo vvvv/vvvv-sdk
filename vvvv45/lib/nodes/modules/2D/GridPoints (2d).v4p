@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.101.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\GridPoints (2d).v4p" systemname="GridPoints (2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\GridPoints (2d).v4p">
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="1500" top="2310" width="100" height="100">
@@ -11,6 +11,8 @@
    </PIN>
    <PIN pinname="Width" visible="1">
    </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="2595" top="2310" width="100" height="100">
@@ -22,6 +24,8 @@
    <PIN pinname="Alignment" slicecount="1" values="Block">
    </PIN>
    <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Cross (2d)" nodename="Cross (2d)" componentmode="Hidden" id="4">
@@ -37,7 +41,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="3240" top="1620" width="100" height="100">
+   <BOUNDS type="Node" left="1875" top="1575" width="100" height="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -47,9 +51,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3255" top="825" width="795" height="480">
+   <BOUNDS type="Box" left="1890" top="780" width="795" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="3255" top="825" width="0" height="0">
+   <BOUNDS type="Node" left="1890" top="780" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="1,1">
    </PIN>
@@ -65,6 +69,8 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="4" dstpinname="X In">
    </LINK>
@@ -76,9 +82,9 @@
    </LINK>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="6" dstpinname="XY">
    </LINK>
-   <BOUNDS type="Window" left="7485" top="7965" width="6495" height="5940">
+   <BOUNDS type="Window" left="5925" top="4350" width="5460" height="5940">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.100.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="1500" top="3525" width="100" height="100">
@@ -119,7 +125,7 @@
    <LINK srcnodeid="5" srcpinname="XY" dstnodeid="9" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="1710" top="1515" width="100" height="100">
+   <BOUNDS type="Node" left="2940" top="1575" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XY" visible="1">
    </PIN>
@@ -129,9 +135,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1710" top="825" width="795" height="480">
+   <BOUNDS type="Box" left="2940" top="780" width="795" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="1710" top="825" width="0" height="0">
+   <BOUNDS type="Node" left="2940" top="780" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="2,2">
    </PIN>
@@ -159,5 +165,39 @@
    <LINK srcnodeid="10" srcpinname="X" dstnodeid="0" dstpinname="Spread Count">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Y" dstnodeid="2" dstpinname="Spread Count">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="570" top="1575" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="X" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="570" top="780" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="570" top="780" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="CenterXY">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="13" dstpinname="XY">
    </LINK>
    </PATCH>
