@@ -4,24 +4,6 @@
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1500" top="3810" width="795" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="1500" top="3810" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="0.424533745041117,-0.366148727945983,0.364533745041117,-0.426148727945983" visible="1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="XY">
-   </PIN>
-   </NODE>
    <INFO author="" description="" tags="">
    </INFO>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="0">
@@ -122,8 +104,6 @@
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="9" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="855" top="1110" width="795" height="720">
    </BOUNDS>
@@ -142,6 +122,8 @@
    <PIN pinname="Default" slicecount="1" values="|0, 0, 0|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="CenterXYZ">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
@@ -163,9 +145,33 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="SizeXYZ">
+   </PIN>
    </NODE>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Width">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Center">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1500" top="3750" width="795" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1500" top="3750" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,,">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="XYZ">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="22" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
