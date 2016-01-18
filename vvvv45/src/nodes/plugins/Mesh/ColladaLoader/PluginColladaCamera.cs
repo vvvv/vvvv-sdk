@@ -10,7 +10,7 @@ using VVVV.PluginInterfaces.V2;
 
 namespace VVVV.Nodes
 {
-    [PluginInfo(Name = "Camera",
+    [PluginInfo(Name = "CameraState",
                 Category = "Transform",
                 Version = "Collada",
                 Author = "vvvv group",
