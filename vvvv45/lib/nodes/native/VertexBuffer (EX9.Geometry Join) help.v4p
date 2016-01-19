@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\VertexBuffer (EX9.Geometry Join) help.v4p">
-   <BOUNDS height="15735" left="4590" top="1380" type="Window" width="12180">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\VertexBuffer (EX9.Geometry Join) help.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS height="11700" left="0" top="150" type="Window" width="12180">
    </BOUNDS>
    <NODE id="68" nodename="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="5280" top="3930" type="Node" width="2325">
@@ -165,15 +165,15 @@
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" id="60" nodename="RENDERER (EX9)">
-   <BOUNDS height="0" left="3960" top="12135" type="Node" width="0">
+   <BOUNDS height="0" left="3975" top="12780" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="7455" left="12210" top="225" type="Window" width="7215">
    </BOUNDS>
-   <BOUNDS height="1800" left="3960" top="12135" type="Box" width="2400">
+   <BOUNDS height="1800" left="3975" top="12780" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -492,24 +492,6 @@
    <PIN pinname="Shading" slicecount="1" values="Gouraud">
    </PIN>
    </NODE>
-   <NODE id="1" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="0" left="4935" top="11685" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="2820" top="9465" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="4935" top="11685" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="1.4">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="60" dstpinname="View" srcnodeid="1" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="60" dstpinname="Projection" srcnodeid="1" srcpinname="Projection">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Layer" dstnodeid="3" dstpinname="Layer 2">
    </LINK>
    <NODE id="69" nodename="MESH (EX9.GEOMETRY JOIN)">
@@ -628,7 +610,7 @@
    </NODE>
    <LINK srcnodeid="75" srcpinname="Output Enum" dstnodeid="2" dstpinname="Shading">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="76">
+   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="76">
    <BOUNDS type="Node" left="3990" top="10515" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -640,7 +622,7 @@
    </LINK>
    <LINK srcnodeid="2" srcpinname="Render State Out" dstnodeid="30" dstpinname="Render State In">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="77">
    <BOUNDS type="Node" left="10485" top="2880" width="100" height="100">
@@ -804,6 +786,68 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="4950" top="12330" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2820" top="9465" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="4950" top="12330" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="1.4">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Initial FOV" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="View" srcnodeid="1" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Projection" srcnodeid="1" srcpinname="Projection">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="90" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5760" top="11940" width="555" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5760" top="11940" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="90" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Initial FOV">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="92" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="1485" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="1485" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="91">
+   <BOUNDS type="Node" left="675" top="1965" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="1965" width="1725" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Graphics\DX9\Geometry\Dynamic Meshes|">
    </PIN>
    </NODE>
    </PATCH>

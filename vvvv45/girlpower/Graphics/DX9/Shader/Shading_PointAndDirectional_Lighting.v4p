@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Shader\Shading_PointAndDirectional_Lighting.v4p" systemname="3D_Shading_PointAndDirectional" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\3D_Shading_PointAndDirectional.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Shader\Shading_PointAndDirectional_Lighting.v4p" systemname="3D_Shading_PointAndDirectional" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\3D_Shading_PointAndDirectional.v4p">
    <BOUNDS type="Window" left="0" top="0" width="16815" height="10275">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="4">
@@ -11,9 +11,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
@@ -270,24 +270,6 @@
    </LINK>
    <LINK srcnodeid="16" srcpinname="Output Y" dstnodeid="2" dstpinname="TranslateZ">
    </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="29">
-   <BOUNDS type="Node" left="14355" top="1665" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Initial Yaw" visible="1">
-   </PIN>
-   <PIN pinname="Initial Pitch" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="14355" top="1665">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="29" srcpinname="View" dstnodeid="4" dstpinname="View" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="Projection" dstnodeid="4" dstpinname="Projection" hiddenwhenlocked="1">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="14760" top="1080" width="420" height="240">
    </BOUNDS>
@@ -314,10 +296,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Inital Distance">
-   </LINK>
-   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial Pitch">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="35">
    <BOUNDS type="Node" left="11745" top="5835" width="100" height="100">
    </BOUNDS>
@@ -327,9 +305,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
@@ -341,10 +319,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="35" dstpinname="Layers">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="View" dstnodeid="35" dstpinname="View" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="Projection" dstnodeid="35" dstpinname="Projection" hiddenwhenlocked="1">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="38" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="11520" top="1185" width="420" height="240">
@@ -386,8 +360,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial Yaw">
-   </LINK>
    <LINK srcnodeid="12" srcpinname="Mesh" dstnodeid="15" dstpinname="Mesh">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Mesh" dstnodeid="19" dstpinname="Mesh">
@@ -606,4 +578,52 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="15765" top="1095" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15765" top="1095" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="29" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden">
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="14355" top="1665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Initial Yaw" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="14355" top="1665">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial Yaw">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Projection" dstnodeid="35" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="View" dstnodeid="35" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Projection" dstnodeid="4" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="View" dstnodeid="4" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

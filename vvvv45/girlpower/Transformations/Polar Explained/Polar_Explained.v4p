@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" systemname="Polar_Explained" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" scrollx="0" scrolly="-1299">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" systemname="Polar_Explained" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" scrollx="0" scrolly="-1299">
    <BOUNDS type="Window" left="2205" top="3030" width="13680" height="7650">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="4" managers="">
    <BOUNDS type="Node" left="7830" top="6495" width="100" height="100">
@@ -13,9 +13,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
@@ -46,21 +46,7 @@
    </NODE>
    <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
    </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="11" managers="">
-   <BOUNDS type="Node" left="8790" top="5955" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="11" srcpinname="View" dstnodeid="4" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Projection" dstnodeid="4" dstpinname="Projection">
-   </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="16" managers="">
+   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="16" managers="">
    <BOUNDS type="Node" left="7095" top="4500" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -80,8 +66,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Inital Distance">
-   </LINK>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="44" managers="">
    <BOUNDS type="Node" left="9600" top="6495" width="100" height="100">
    </BOUNDS>
@@ -540,4 +524,52 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="152" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10245" top="5565" width="495" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10245" top="5565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="153" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8895" top="5565" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8895" top="5565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="11" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" managers="">
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="8790" top="5955" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" visible="1" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="152" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Projection" dstnodeid="4" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="View" dstnodeid="4" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="153" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial Pitch">
+   </LINK>
    </PATCH>

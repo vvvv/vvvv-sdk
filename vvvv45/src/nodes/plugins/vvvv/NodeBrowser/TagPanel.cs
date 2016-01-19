@@ -34,12 +34,13 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> FTags;
         private Point FLastMouseHoverLocation = new Point(0, 0);
         private int FNodeFilter;
+        private bool FShowInternal;
 
         private List<INodeInfo> FSelectionList = new List<INodeInfo>();
         private List<string> FRTFSelectionList = new List<string>();
         private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
-        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
+        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "4D", "3D", "2D", "SPREADS", "VALUE" });
         
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
@@ -508,6 +509,8 @@ namespace VVVV.Nodes.NodeBrowser
             FSelectionList.Clear();
 
             var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
+            if (!FShowInternal)
+                nodeInfos = nodeInfos.Except(nodeInfos.Where(ni => ni.Version.Contains("Internal")));
             
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
@@ -541,6 +544,7 @@ namespace VVVV.Nodes.NodeBrowser
         }
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
+
         private int SortNodeInfo(INodeInfo n1, INodeInfo n2)
         {
             var s1 = NodeInfoToDisplayName(n1);
@@ -689,6 +693,8 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
+            FShowInternal = false;
+
             string query = TagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
@@ -744,7 +750,12 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeFilter = -2;
                 FTags.Remove(".");
             }
-            
+            else if (FTags.Contains("i"))
+            {
+                FShowInternal = true;
+                FTags.Remove("i");
+            }
+
             //clean up the list
             FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
             while (FTags.Contains(" "))

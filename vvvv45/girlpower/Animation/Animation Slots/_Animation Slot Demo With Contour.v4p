@@ -1,19 +1,19 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.7.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Contour.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo.v4p" systemname="_Animation Slot Demo" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Contour.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo.v4p" systemname="_Animation Slot Demo" scrollx="0" scrolly="0">
    <BOUNDS height="14040" left="1215" top="405" type="Window" width="13080">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="53" nodename="Renderer (EX9)" systemname="Renderer (EX9)" hiddenwhenlocked="1">
-   <BOUNDS height="100" left="8130" top="13005" type="Node" width="100">
+   <BOUNDS height="100" left="8130" top="13395" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="1800" left="8130" top="13005" type="Box" width="2400">
+   <BOUNDS height="1800" left="8130" top="13395" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="9105" left="14595" top="2985" type="Window" width="10155">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -51,20 +51,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="105" dstpinname="Text" hiddenwhenlocked="0" srcnodeid="107" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" id="111" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" hiddenwhenlocked="1">
-   <BOUNDS height="100" left="9105" top="12615" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="13">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="53" dstpinname="View" srcnodeid="111" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="53" dstpinname="Projection" srcnodeid="111" srcpinname="Projection">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\girlpower\Animation\Animation Slots\ContourTracker.v4p" hiddenwhenlocked="0" id="115" managers="" nodename="%VVVV%\girlpower\Animation\Animation Slots\ContourTracker.v4p" systemname="ContourTracker">
    <PIN pinname="X" visible="1">
@@ -280,7 +266,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.8.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE id="216" systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox">
    <BOUNDS type="Node" left="6060" top="6150" width="100" height="100">
@@ -454,4 +440,64 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="275" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9270" top="12555" width="495" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9270" top="12555" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="276" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9855" top="12555" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9855" top="12555" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="13">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="277" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10380" top="12555" width="480" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10380" top="12555" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" id="111" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" hiddenwhenlocked="1">
+   <BOUNDS height="100" left="9105" top="13005" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="13">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="53" dstpinname="View" srcnodeid="111" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="Projection" srcnodeid="111" srcpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="275" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="276" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="277" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Initial FOV">
+   </LINK>
    </PATCH>

@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\effects\Attractor3d help.v4p" bgcolor="15132390">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\effects\Attractor3d help.v4p" bgcolor="15132390" scrollx="0" scrolly="0">
    <BOUNDS height="8535" left="2550" top="1965" type="Window" width="12495">
    </BOUNDS>
    <NODE componentmode="InABox" id="24" nodename="RENDERER (EX9)">
-   <BOUNDS height="0" left="6045" top="525" type="Node" width="0">
+   <BOUNDS height="0" left="6045" top="1065" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5700" left="9585" top="2655" type="Window" width="6420">
    </BOUNDS>
-   <BOUNDS height="4695" left="6045" top="525" type="Box" width="5610">
+   <BOUNDS height="4065" left="6045" top="1065" type="Box" width="5580">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -426,29 +426,7 @@
    </LINK>
    <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="27" nodename="CAMERA (TRANSFORM SOFTIMAGE)">
-   <BOUNDS height="100" left="9570" top="12525" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="3600" left="9570" top="12525" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="6000" left="13215" top="8940" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Initial Distance" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0.11">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0.1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="24" dstpinname="Projection" hiddenwhenlocked="1" srcnodeid="27" srcpinname="Projection">
-   </LINK>
-   <LINK dstnodeid="24" dstpinname="View" hiddenwhenlocked="1" srcnodeid="27" srcpinname="View">
-   </LINK>
-   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="28" nodename="AxisAndGrid (DX9)">
+   <NODE componentmode="Hidden" hiddenwhenlocked="0" id="28" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9 Legacy)">
    <BOUNDS height="100" left="5160" top="11700" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="5160" top="11700" type="Box" width="4800">
@@ -460,6 +438,42 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="Layer 1" srcnodeid="28" srcpinname="Layer">
    </LINK>
-   <PACK Name="addonpack" Version="34.100.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE id="27" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS type="Node" height="100" left="10170" top="570" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="10170" top="570" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" height="6000" left="13215" top="8940" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0.11">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="View" dstnodeid="24" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Projection" dstnodeid="24" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10800" top="195" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10800" top="195" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Initial Distance">
+   </LINK>
    </PATCH>
