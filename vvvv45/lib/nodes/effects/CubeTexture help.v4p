@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\effects\CubeTexture help.v4p" scrollx="0" scrolly="0">
    <BOUNDS height="5790" left="1905" top="165" type="Window" width="10710">
    </BOUNDS>
@@ -368,86 +368,18 @@
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5115" top="1695" width="420" height="240">
+   <NODE id="26" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS type="Node" height="100" left="5100" top="1905" width="100">
    </BOUNDS>
-   <BOUNDS type="Node" left="5115" top="1695" width="0" height="0">
+   <BOUNDS type="Box" height="3600" left="5100" top="1905" width="4800">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5685" top="1665" width="480" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="5685" top="1665" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6240" top="1695" width="510" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="6240" top="1695" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <NODE id="20" componentmode="Hidden" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage Legacy)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
-   <PIN pinname="Initial FOV" visible="1">
-   </PIN>
-   <PIN pinname="Initial Distance" visible="1" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Initial Pitch" visible="1">
-   </PIN>
-   <BOUNDS type="Node" height="0" left="5100" top="2085" width="0">
-   </BOUNDS>
-   <BOUNDS type="Box" height="3600" left="5100" top="2085" width="4800">
-   </BOUNDS>
-   <PIN pinname="Distortion" visible="1" slicecount="1" values="||">
-   </PIN>
    <BOUNDS type="Window" height="12600" left="795" top="300" width="15510">
    </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Rotation" visible="1">
-   </PIN>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inverse View" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Interest" visible="1">
-   </PIN>
-   <PIN pinname="PositionXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Interest" visible="1">
-   </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="View" dstnodeid="6" dstpinname="View" hiddenwhenlocked="0">
+   <LINK srcnodeid="26" srcpinname="View" dstnodeid="6" dstpinname="View" hiddenwhenlocked="0">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Projection" dstnodeid="6" dstpinname="Projection" hiddenwhenlocked="0">
+   <LINK srcnodeid="26" srcpinname="Projection" dstnodeid="6" dstpinname="Projection" hiddenwhenlocked="0">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Inverse Rotation" dstnodeid="4" dstpinname="Texture Transform">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Inverse View" dstnodeid="3" dstpinname="Texture Transform">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Initial Pitch">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Initial Distance">
-   </LINK>
-   <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Initial FOV">
+   <LINK srcnodeid="26" srcpinname="Inverse View" dstnodeid="3" dstpinname="Texture Transform">
    </LINK>
    </PATCH>
