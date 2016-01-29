@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\AttractorSpread (Spreads) help.v4p" scrollx="225" scrolly="1680">
-   <BOUNDS height="13605" left="6735" top="660" type="Window" width="10860">
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\AttractorSpread (Spreads) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="14220" left="6735" top="660" type="Window" width="11220">
    </BOUNDS>
    <NODE id="48" nodename="AttractorSpread (Spreads)">
    <BOUNDS height="0" left="3480" top="5220" type="Node" width="0">
@@ -676,32 +676,6 @@
    </NODE>
    <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="30" srcpinname="Transform Out">
    </LINK>
-   <NODE id="9" nodename="Rotate (Transform)">
-   <BOUNDS height="0" left="7080" top="12330" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Z" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="8" nodename="LFO (Animation)">
-   <BOUNDS height="0" left="7350" top="11805" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Period" slicecount="1" values="30">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="9" dstpinname="X" srcnodeid="8" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="8" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Z" srcnodeid="8" srcpinname="Output">
-   </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
    </BOUNDS>
@@ -736,6 +710,8 @@
    <BOUNDS height="0" left="4935" top="11460" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="4" nodename="Add (Value)">
@@ -807,6 +783,8 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Clear" srcnodeid="4" srcpinname="Output">
    </LINK>
@@ -831,15 +809,23 @@
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE id="49" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="5340" top="12345" type="Node" width="100">
+   <BOUNDS height="100" left="5550" top="12345" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="15165" top="8310" type="Window" width="9000">
    </BOUNDS>
-   <BOUNDS height="3600" left="5340" top="12345" type="Box" width="4800">
+   <BOUNDS height="3600" left="5550" top="12345" type="Box" width="4800">
    </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="1.51">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="1" dstpinname="Projection" srcnodeid="49" srcpinname="View Projection">
+   <LINK srcnodeid="49" srcpinname="View" dstnodeid="1" dstpinname="View">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="1" dstpinname="Aspect Ratio">
+   <LINK srcnodeid="49" srcpinname="Projection" dstnodeid="1" dstpinname="Projection">
    </LINK>
+   <INFO author="" description="" tags="">
+   </INFO>
    </PATCH>
