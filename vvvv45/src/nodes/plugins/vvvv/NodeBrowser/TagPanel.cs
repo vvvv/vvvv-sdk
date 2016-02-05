@@ -432,33 +432,57 @@ namespace VVVV.Nodes.NodeBrowser
             if (FTags.Count == 0)
                 return nodeInfos;
             else
+            {
+                var regex = new Regex(@"\[(.+)\]");
                 return nodeInfos.Where((nodeInfo) =>
-                                       {
-                                           var displayName = NodeInfoToDisplayName(nodeInfo);
-                                           displayName = displayName.ToLower();
-                                           displayName = displayName.Replace('é', 'e');
-                                           bool containsAll = true;
-                                           string t = "";
-                                           foreach (string tag in FTags)
                                            {
-                                               t = tag.ToLower();
-                                               if (displayName.Contains(t))
+                                               var displayName = NodeInfoToDisplayName(nodeInfo);
+                                               //bezier hack
+                                               displayName = displayName.Replace('é', 'e');
+
+                                               //make all tags ToUpperFirst so they can be found
+                                               var match = regex.Match(displayName);
+                                               var upperedTags = match.Value.TrimStart('[').TrimEnd(']').Split(',').Select(x => x.Trim().ToUpperFirstInvariant());
+                                               displayName = regex.Replace(displayName, string.Join(", ", upperedTags));
+
+                                               var lowerDisplayName = displayName.ToLower();
+                                               bool containsAll = true;
+                                               string t = "";
+                                               foreach (string tag in FTags)
                                                {
-                                                   if (!AndTags)
+                                                   t = tag.ToLower().ToUpperFirstInvariant();
+
+                                                   var found = false;
+                                                   if (t.Length > 1)
+                                                   {
+                                                       //first char matches case-sensitive, all later chars match insensitive
+                                                       var pattern = "(" + t[0] + "(?i)" + string.Join("", t.Skip(1)) + "(?-i))";
+                                                       var rex = new Regex(pattern);
+                                                       var matches = rex.Match(displayName);
+                                                       found = matches.Length > 0;
+                                                   }
+                                                   else
+                                                       found = displayName.IndexOf(t[0]) >= 0;
+
+                                                   if (found)
+                                                   {
+                                                       if (!AndTags)
+                                                           break;
+                                                   }
+                                                   else
+                                                       containsAll = false;
+
+                                                   if ((AndTags) && (!containsAll))
                                                        break;
                                                }
+
+                                               //todo: remove OR-tags case or refine it 
+                                               if (((AndTags) && (containsAll)) || ((!AndTags) && (lowerDisplayName.Contains(t.ToLower()))))
+                                                   return true;
                                                else
-                                               {
-                                                   containsAll = false;
-                                                   break;
-                                               }
-                                           }
-                                           
-                                           if (((AndTags) && (containsAll)) || ((!AndTags) && (displayName.Contains(t))))
-                                               return true;
-                                           else
-                                               return false;
-                                       });
+                                                   return false;
+                                           });
+            }
         }
         
         private bool IsAvailableInActivePatch(INodeInfo nodeInfo)
@@ -547,8 +571,8 @@ namespace VVVV.Nodes.NodeBrowser
 
         private int SortNodeInfo(INodeInfo n1, INodeInfo n2)
         {
-            var s1 = NodeInfoToDisplayName(n1);
-            var s2 = NodeInfoToDisplayName(n2);
+            var s1 = NodeInfoToDisplayName(n1).ToLower();
+            var s2 = NodeInfoToDisplayName(n2).ToLower();
             
             //Workaround: Following code assumes s1 and s2 are either a filename
             //or include an opening parenthesis. Since node info rework there're
@@ -565,10 +589,13 @@ namespace VVVV.Nodes.NodeBrowser
             foreach (string tag in FTags)
             {
                 t = tag.TrimStart(new char[1]{'.'});
-                if (s1.ToLower().IndexOf(t) > -1)
-                    w1 = Math.Min(w1, s1.ToLower().IndexOf(t));
-                if (s2.ToLower().IndexOf(t) > -1)
-                    w2 = Math.Min(w2, s2.ToLower().IndexOf(t));
+                var i1 = s1.IndexOf(t);
+                if (i1 > -1)
+                    w1 = Math.Min(w1, i1);
+
+                var i2 = s2.IndexOf(t);
+                if (i2 > -1)
+                    w2 = Math.Min(w2, i2);
             }
             
             if (w1 != w2)
