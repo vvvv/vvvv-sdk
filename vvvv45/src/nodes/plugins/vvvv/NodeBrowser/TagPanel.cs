@@ -456,7 +456,7 @@ namespace VVVV.Nodes.NodeBrowser
                                                    if (t.Length > 1)
                                                    {
                                                        //first char matches case-sensitive, all later chars match insensitive
-                                                       var pattern = "(" + t[0] + "(?i)" + string.Join("", t.Skip(1)) + "(?-i))";
+                                                       var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
                                                        var rex = new Regex(pattern);
                                                        var matches = rex.Match(displayName);
                                                        found = matches.Length > 0;
