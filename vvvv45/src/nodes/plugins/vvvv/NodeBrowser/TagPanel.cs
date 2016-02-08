@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using VVVV.Core;
-using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -569,6 +563,36 @@ namespace VVVV.Nodes.NodeBrowser
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
 
+        private int Weight(int lastWeight, string text, string tag)
+        {
+            var pos = text.IndexOf(tag);
+            if (pos > -1)
+            {
+                //do the following finegrained check only for tags found before the category/version/tags
+                if (pos < text.IndexOf(" ("))
+                {
+                    //see if the tag is a complete subword in the nodename, like "Editor" in "PointEditorState"
+                    //if so, that counts more
+                    //it counts even more if that tag is also the last word in a nodename, like "Editor" in "PointEditor"
+                    //so check if there is either: 
+                    //- no character following
+                    //- or at least two characters following where the first isUpper, the second isLower 
+                    if (text.Length >= pos + tag.Length)
+                        return (text[pos + tag.Length] == ' ') ? Math.Min(pos, 1) : pos;
+                    else if (text.Length >= pos + tag.Length + 1)
+                    {
+                        var nextChar = pos + tag.Length;
+                        return (char.IsUpper(text[nextChar]) && char.IsLower(text[nextChar + 1])) ? Math.Min(pos, 1) : pos;
+                    }
+                }
+
+                //otherwise the simply the position of the tag is the pos
+                return Math.Min(lastWeight, pos);
+            }            
+            else
+                return lastWeight;
+        }
+
         private int SortNodeInfo(INodeInfo n1, INodeInfo n2)
         {
             var s1 = NodeInfoToDisplayName(n1).ToLower();
@@ -589,13 +613,9 @@ namespace VVVV.Nodes.NodeBrowser
             foreach (string tag in FTags)
             {
                 t = tag.TrimStart(new char[1]{'.'});
-                var i1 = s1.IndexOf(t);
-                if (i1 > -1)
-                    w1 = Math.Min(w1, i1);
 
-                var i2 = s2.IndexOf(t);
-                if (i2 > -1)
-                    w2 = Math.Min(w2, i2);
+                w1 = Weight(w1, s1, t);
+                w2 = Weight(w2, s2, t);
             }
             
             if (w1 != w2)
