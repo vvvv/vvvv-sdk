@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\3D\InverseKinematics (3D 2Bone) help.v4p">
    <BOUNDS height="11865" left="0" top="0" type="Window" width="8220">
    </BOUNDS>
@@ -59,7 +59,7 @@
    <NODE id="19" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="0" left="3555" top="10065" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -268,18 +268,6 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="27" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p">
-   <BOUNDS height="100" left="2085" top="9600" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="6000" left="3240" top="10260" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="2085" top="9600" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="19" dstpinname="Layer 1" srcnodeid="27" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" id="28" nodename="InverseKinematics (3d 2Bone)" systemname="InverseKinematics (3d 2Bone)" filename="%VVVV%\lib\nodes\modules\3D\InverseKinematics (3D 2Bone).v4p">
    <PIN pinname="Length Bone1">
    </PIN>
@@ -417,9 +405,23 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE componentmode="Hidden" id="27" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p">
+   <BOUNDS height="100" left="2085" top="9600" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="3240" top="10260" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2085" top="9600" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Layer 1" srcnodeid="27" srcpinname="Layer">
+   </LINK>
    <NODE id="26" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
    <PIN pinname="Initial FOV" visible="1">
    </PIN>
@@ -437,6 +439,8 @@
    </PIN>
    <PIN pinname="Initial Pitch" visible="1">
    </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial FOV">
    </LINK>
@@ -446,6 +450,6 @@
    </LINK>
    <LINK srcnodeid="26" srcpinname="View" dstnodeid="20" dstpinname="View">
    </LINK>
-   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Pitch">
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Latitude">
    </LINK>
    </PATCH>

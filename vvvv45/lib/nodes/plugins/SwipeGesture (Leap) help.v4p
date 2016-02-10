@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\SwipeGesture (Leap) help.v4p" systemname="SwipeGesture (Leap) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\SwipeGesture (Leap) help.v4p">
    <BOUNDS type="Window" left="210" top="270" width="8880" height="13290">
    </BOUNDS>
@@ -21,16 +21,6 @@
    </PIN>
    <PIN pinname="Layer 6" visible="1" slicecount="1" values="||">
    </PIN>
-   </NODE>
-   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="1785" top="8850" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="-540" top="1110" width="11280" height="9465">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1785" top="8850">
-   </BOUNDS>
    </NODE>
    <NODE systemname="Line (EX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="37">
    <BOUNDS type="Node" left="4050" top="8640" width="100" height="100">
@@ -100,8 +90,6 @@
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 2">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="53">
    <BOUNDS type="Node" left="1035" top="11280" width="3240" height="270">
    </BOUNDS>
@@ -330,22 +318,10 @@
    </LINK>
    <LINK srcnodeid="76" srcpinname="Transform Out" dstnodeid="80" dstpinname="Transform">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="81" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3540" top="10380" width="435" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="3540" top="10380" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="82" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4110" top="10380" width="405" height="240">
+   <BOUNDS type="Box" left="4035" top="10380" width="405" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4110" top="10380" width="0" height="0">
+   <BOUNDS type="Node" left="4035" top="10380" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="8.43">
    </PIN>
@@ -355,9 +331,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="83" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4605" top="10380" width="420" height="240">
+   <BOUNDS type="Box" left="4530" top="10380" width="420" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4605" top="10380" width="0" height="0">
+   <BOUNDS type="Node" left="4530" top="10380" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
    </PIN>
@@ -366,7 +342,7 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="2">
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="3510" top="10845" width="100" height="100">
    </BOUNDS>
    <PIN pinname="View" visible="1">
@@ -384,12 +360,22 @@
    </LINK>
    <LINK srcnodeid="2" srcpinname="View" dstnodeid="53" dstpinname="View">
    </LINK>
-   <LINK srcnodeid="81" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Initial Pitch">
-   </LINK>
    <LINK srcnodeid="82" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Initial Distance">
    </LINK>
    <LINK srcnodeid="83" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Initial FOV">
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1785" top="8850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="-540" top="1110" width="11280" height="9465">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1785" top="8850">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 2">
+   </LINK>
    </PATCH>

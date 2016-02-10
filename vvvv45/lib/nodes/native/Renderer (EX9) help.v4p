@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Renderer (EX9) help.v4p" scrollx="0" scrolly="-720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Renderer (EX9) help.v4p" scrollx="0" scrolly="-9795">
    <BOUNDS height="16980" left="2085" top="330" type="Window" width="18075">
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
@@ -690,24 +690,6 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Cursor (DX9 Legacy 2)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="216">
-   <BOUNDS type="Node" left="585" top="7710" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="215">
-   <BOUNDS type="Node" left="570" top="7230" width="1200" height="270">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="570" top="7230">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="215" srcpinname="Device" dstnodeid="216" dstpinname="Mouse">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="214">
    <BOUNDS type="Node" left="585" top="8265" width="100" height="100">
    </BOUNDS>
@@ -715,11 +697,9 @@
    </BOUNDS>
    <BOUNDS type="Window" left="1980" top="9330" width="6240" height="5010">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="216" srcpinname="Layer" dstnodeid="214" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="213" systemname="IOBox (String)">
    <BOUNDS type="Node" left="2010" top="1905" width="750" height="270">
    </BOUNDS>
@@ -798,24 +778,6 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Cursor (DX9 Legacy 2)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="208">
-   <BOUNDS type="Node" left="6570" top="7575" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="207">
-   <BOUNDS type="Node" left="6570" top="7155" width="1200" height="270">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="6570" top="7155">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="207" srcpinname="Device" dstnodeid="208" dstpinname="Mouse">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="206">
    <BOUNDS type="Node" left="6570" top="9060" width="100" height="100">
    </BOUNDS>
@@ -823,13 +785,11 @@
    </BOUNDS>
    <BOUNDS type="Window" left="1980" top="9330" width="6240" height="5010">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="208" srcpinname="Layer" dstnodeid="206" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="205" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="6810" top="8385" width="480" height="480">
    </BOUNDS>
@@ -1090,28 +1050,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="187" systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="540" top="15735" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="540" top="15735" width="4800" height="3600">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Window" left="465" top="4965" width="13575" height="10845">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transform" pintype="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Window Handle" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="Patch" pintype="Output" visible="-1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
    <NODE id="185" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="540" top="16335" width="100" height="100">
    </BOUNDS>
@@ -1119,7 +1057,7 @@
    </BOUNDS>
    <BOUNDS type="Window" left="14505" top="7860" width="6240" height="5010">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1" pintype="Input">
+   <PIN pinname="Layers" visible="1" pintype="Input" slicecount="1" values="||">
    </PIN>
    <PIN pinname="View" visible="1" pintype="Input" slicecount="1" values="||">
    </PIN>
@@ -1202,8 +1140,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="187" srcpinname="Layer" dstnodeid="185" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="184" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9750" top="4425" width="750" height="270">
    </BOUNDS>
@@ -2932,7 +2868,7 @@
    <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Graphics\DX9\Texture\TransparentTexture.v4p">
    </PIN>
    </NODE>
-   <NODE id="186" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <NODE id="186" systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="2175" top="15735" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="2175" top="15735" width="4800" height="3600">
@@ -2994,7 +2930,7 @@
    <BOUNDS type="Node" left="3165" top="17190" width="100" height="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="177">
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="177">
    <BOUNDS type="Node" left="3165" top="17970" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Initial Distance" slicecount="1" values="15">
@@ -3006,4 +2942,48 @@
    <PIN pinname="Initial Distance" slicecount="1" values="15">
    </PIN>
    </NODE>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="216">
+   <BOUNDS type="Node" left="585" top="7710" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="216" srcpinname="Layer" dstnodeid="214" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="208">
+   <BOUNDS type="Node" left="6570" top="7575" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="208" srcpinname="Layer" dstnodeid="206" dstpinname="Layers">
+   </LINK>
+   <NODE id="187" systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="540" top="15735" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="540" top="15735" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="465" top="4965" width="13575" height="10845">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="187" srcpinname="Layer" dstnodeid="185" dstpinname="Layers">
+   </LINK>
    </PATCH>

@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Multiply (3d Cross) help.v4p">
    <BOUNDS type="Window" left="0" top="0" width="7365" height="11760">
    </BOUNDS>
@@ -102,16 +102,6 @@
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Vector1 XYZ|">
-   </PIN>
-   </NODE>
-   <NODE id="55" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p">
-   <BOUNDS height="0" left="3120" top="9165" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="5490" top="9735" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="3120" top="9165" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
    <NODE hiddenwhenlocked="1" id="53" nodename="Translate (Transform)">
@@ -333,7 +323,7 @@
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 3" visible="1">
    </PIN>
@@ -344,12 +334,6 @@
    <LINKPOINT x="2970" y="9240">
    </LINKPOINT>
    <LINKPOINT x="2970" y="9240">
-   </LINKPOINT>
-   </LINK>
-   <LINK dstnodeid="36" dstpinname="Layer 2" srcnodeid="55" srcpinname="Layer" linkstyle="Bezier">
-   <LINKPOINT x="3150" y="9495">
-   </LINKPOINT>
-   <LINKPOINT x="3150" y="9495">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="36" dstpinname="Layer 3" srcnodeid="37" srcpinname="Layer" linkstyle="Bezier">
@@ -376,7 +360,7 @@
    </LINK>
    <LINK dstnodeid="65" dstpinname="Input1 XYZ" srcnodeid="56" srcpinname="Y Output Value" linkstyle="PolyLine">
    </LINK>
-   <NODE id="54" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
+   <NODE id="54" nodename="Camera (Transform Softimage)" systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
    <BOUNDS height="100" left="3915" top="10170" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="3135" top="11055" type="Window" width="9000">
@@ -411,9 +395,9 @@
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="66" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4515" top="9660" width="795" height="240">
+   <BOUNDS type="Box" left="4440" top="9795" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4515" top="9660" width="0" height="0">
+   <BOUNDS type="Node" left="4440" top="9795" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="6.42">
    </PIN>
@@ -424,18 +408,20 @@
    </NODE>
    <LINK srcnodeid="66" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Initial Distance">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="67" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4110" top="9660" width="360" height="240">
+   <NODE id="55" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="3120" top="9165" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS type="Node" left="4110" top="9660" width="0" height="0">
+   <BOUNDS height="6000" left="5490" top="9735" type="Window" width="9000">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
+   <BOUNDS height="3600" left="3120" top="9165" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="67" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Initial Pitch">
+   <LINK dstnodeid="36" dstpinname="Layer 2" srcnodeid="55" srcpinname="Layer" linkstyle="Bezier">
+   <LINKPOINT x="3150" y="9495">
+   </LINKPOINT>
+   <LINKPOINT x="3150" y="9495">
+   </LINKPOINT>
    </LINK>
    </PATCH>

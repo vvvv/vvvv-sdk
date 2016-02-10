@@ -556,12 +556,6 @@
    </NODE>
    <LINK srcnodeid="34" srcpinname="Texture Out" dstnodeid="24" dstpinname="Texture">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="8745" top="5490" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="40">
    <BOUNDS type="Node" left="7590" top="5955" width="1815" height="270">
    </BOUNDS>
@@ -573,7 +567,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 1">
@@ -627,8 +621,6 @@
    <LINK srcnodeid="34" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="45" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="39" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 3">
    </LINK>
    <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="46">
    <BOUNDS type="Node" left="9690" top="3870" width="100" height="100">
@@ -787,5 +779,13 @@
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Longitude">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Latitude">
+   </LINK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="39">
+   <BOUNDS type="Node" left="8745" top="5490" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 3">
    </LINK>
    </PATCH>

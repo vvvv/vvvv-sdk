@@ -2,20 +2,6 @@
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\effects\CubeTexture help.v4p" scrollx="0" scrolly="0">
    <BOUNDS height="5790" left="1905" top="165" type="Window" width="10710">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="19" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p">
-   <BOUNDS height="0" left="1710" top="4050" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6690" left="1020" top="1110" type="Window" width="10290">
-   </BOUNDS>
-   <BOUNDS height="3600" left="1710" top="4050" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Draw Mode" slicecount="1" values="WireFrame">
-   </PIN>
-   <PIN pinname="layer" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="18" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
    <BOUNDS height="0" left="3780" top="2685" type="Node" width="0">
    </BOUNDS>
@@ -245,7 +231,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -314,8 +300,6 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <LINK dstnodeid="5" dstpinname="Layer 1" hiddenwhenlocked="0" srcnodeid="19" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="0" left="7515" top="2970" type="Node" width="0">
    </BOUNDS>
@@ -381,5 +365,21 @@
    <LINK srcnodeid="26" srcpinname="Projection" dstnodeid="6" dstpinname="Projection" hiddenwhenlocked="0">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Inverse View" dstnodeid="3" dstpinname="Texture Transform">
+   </LINK>
+   <NODE componentmode="Hidden" id="19" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p">
+   <BOUNDS height="100" left="1710" top="4050" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6690" left="1020" top="1110" type="Window" width="10290">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1710" top="4050" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Draw Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layer 1" hiddenwhenlocked="0" srcnodeid="19" srcpinname="Layer">
    </LINK>
    </PATCH>
