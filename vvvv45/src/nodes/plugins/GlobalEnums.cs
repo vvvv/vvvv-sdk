@@ -103,6 +103,9 @@ namespace VVVV.Nodes
             //Color Channels
             EnumManager.UpdateEnum("ColorChannels", "Red", Enum.GetNames(typeof(ColorChannels)));
 
+            //Cursor Type
+            EnumManager.UpdateEnum("CursorType", "Pointer", new string[] { "Pointer", "Vert", "Hor", "Left Bottom", "Right Bottom", "Left Top", "Right Top" });
+
 
         }
 		public void Shutdown()
