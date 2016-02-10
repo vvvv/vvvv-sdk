@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Tablet (Devices Wintab) help.v4p" componentmode="InAWindow" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\Tablet (Devices Wintab) help.v4p" componentmode="InAWindow" scrollx="0" scrolly="0">
    <BOUNDS height="13485" left="9180" top="405" type="Window" width="14700">
    </BOUNDS>
    <NODE id="92" nodename="QUAD (DX9)">
@@ -1148,30 +1148,6 @@
    </LINK>
    <LINK dstnodeid="32" dstpinname="Color" srcnodeid="39" srcpinname="Output" linkstyle="PolyLine">
    </LINK>
-   <NODE componentmode="Hidden" id="21" nodename="CAMERA (TRANSFORM SOFTIMAGE)">
-   <BOUNDS height="0" left="5415" top="12180" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="12585" top="11115" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="5415" top="12180" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Interest" visible="1">
-   </PIN>
-   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="101">
-   </PIN>
-   <PIN pinname="Initial Distance" slicecount="1" values="15">
-   </PIN>
-   <PIN pinname="Near Plane" slicecount="1" values="0.25">
-   </PIN>
-   </NODE>
    <NODE id="20" nodename="Line (EX9.Geometry)">
    <BOUNDS height="0" left="17835" top="9960" type="Node" width="0">
    </BOUNDS>
@@ -1490,10 +1466,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="View" dstnodeid="34" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Projection" dstnodeid="34" dstpinname="Projection">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="93" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6315" top="1830" width="750" height="270">
    </BOUNDS>
@@ -1508,6 +1480,34 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="34.100.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE componentmode="Hidden" id="21" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS height="100" left="5415" top="12180" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="12585" top="11115" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="5415" top="12180" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Interest" visible="1">
+   </PIN>
+   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="101">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.25">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="View" dstnodeid="34" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Projection" dstnodeid="34" dstpinname="Projection">
+   </LINK>
    </PATCH>

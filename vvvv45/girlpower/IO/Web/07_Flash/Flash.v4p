@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\07_Flash\Flash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\07_Flash\Flash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
    <BOUNDS type="Window" left="0" top="0" width="11355" height="9045">
    </BOUNDS>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="7">
@@ -216,20 +216,10 @@
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="7" dstpinname="Texture">
    </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="56">
-   <BOUNDS type="Node" left="9150" top="3915" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.83987,0.83987,0.83987,1.00000|">
-   </PIN>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="6450" top="4650" width="540" height="270">
    </BOUNDS>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
@@ -241,8 +231,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="57" srcpinname="Layer" dstnodeid="52" dstpinname="Layers">
-   </LINK>
-   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 3">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="67" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7455" top="1905" width="360" height="240">
@@ -281,7 +269,7 @@
    <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
    </LINK>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="55">
-   <BOUNDS type="Node" left="9135" top="435" width="100" height="100">
+   <BOUNDS type="Node" left="8580" top="1365" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
@@ -290,11 +278,9 @@
    <PIN pinname="PositionXY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="55" srcpinname="Device" dstnodeid="56" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="55" srcpinname="Device" dstnodeid="4" dstpinname="Mouse Event">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="76" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7080" top="960" width="615" height="270">
@@ -310,8 +296,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 2">
-   </LINK>
    <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="4" dstpinname="Url">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="83" systemname="IOBox (String)">
@@ -598,4 +582,18 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="9150" top="3915" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.83987,0.83987,0.83987,1.00000|">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Cross">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 2">
+   </LINK>
    </PATCH>

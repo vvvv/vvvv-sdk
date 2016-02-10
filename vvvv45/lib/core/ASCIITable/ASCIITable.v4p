@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\core\ASCIITable\ASCIITable.v4p" scrollx="15" scrolly="75" systemname="asciiTable" filename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p" locked="1">
-   <BOUNDS type="Window" left="1395" top="450" width="6960" height="10320">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\core\ASCIITable\ASCIITable.v4p" scrollx="15" scrolly="75" systemname="asciiTable" filename="C:\Work\Anton-work\ASCII Table\asciiTable.v4p" locked="1">
+   <BOUNDS type="Window" left="1395" top="450" width="6930" height="10335">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="13">
-   <BOUNDS type="Node" left="0" top="0" width="100" height="100">
+   <BOUNDS type="Node" left="15" top="60" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="0" top="0" width="6750" height="9900">
+   <BOUNDS type="Box" left="15" top="60" width="6750" height="9900">
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="6720" height="10350">
    </BOUNDS>
@@ -24,22 +24,8 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="5715" top="6165" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.50292,0.50292,0.50292,1.00000|">
-   </PIN>
-   <BOUNDS type="Box" left="5715" top="6165">
-   </BOUNDS>
-   <BOUNDS type="Window" left="3660" top="1500" width="18525" height="13830">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="76">
    <BOUNDS type="Node" left="495" top="7275" width="5130" height="270">
    </BOUNDS>
@@ -322,8 +308,6 @@
    <PIN pinname="Mouse Untransformed" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="364" srcpinname="Mouse Untransformed" dstnodeid="24" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="364" srcpinname="Mouse Transformed" dstnodeid="315" dstpinname="Mouse">
    </LINK>
    <NODE systemname="Grid" filename="%VVVV%\girlpower\Strings\ASCIITable\Grid.v4p" componentmode="Hidden" id="365" nodename="%VVVV%\girlpower\Strings\ASCIITable\Grid.v4p">
@@ -366,8 +350,6 @@
    </LINK>
    <LINK srcnodeid="364" srcpinname="Mouse Transformed" dstnodeid="334" dstpinname="Mouse">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 4">
-   </LINK>
    <NODE id="343" systemname="S (Value)" nodename="S (Value)" componentmode="Hidden">
    <BOUNDS type="Node" left="1425" top="9705" width="100" height="100">
    </BOUNDS>
@@ -393,5 +375,23 @@
    <LINK srcnodeid="13" srcpinname="Actual Backbuffer Height" dstnodeid="342" dstpinname="Y">
    </LINK>
    <LINK srcnodeid="13" srcpinname="Actual Backbuffer Width" dstnodeid="342" dstpinname="X">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="4665" top="6165" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.50292,0.50292,0.50292,1.00000|">
+   </PIN>
+   <BOUNDS type="Box" left="4665" top="6165">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3660" top="1500" width="18525" height="13830">
+   </BOUNDS>
+   <PIN pinname="Cursor Type" slicecount="1" values="Cross">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="76" dstpinname="Layer 4">
    </LINK>
    </PATCH>
