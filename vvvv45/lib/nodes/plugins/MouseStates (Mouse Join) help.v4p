@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\plugins\MouseStates (Mouse Join) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\MouseStates (Mouse Join) help.v4p">
    <BOUNDS type="Window" left="10425" top="1845" width="6690" height="11370">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -285,11 +285,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1140" top="6060" width="600" height="270">
+   <BOUNDS type="Node" left="1140" top="5895" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1140" top="6060" width="1560" height="510">
+   <BOUNDS type="Box" left="1140" top="5895" width="1650" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|receives the &apos;Mouse&apos;&cr;&lf;v|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; receives the &apos;Mouse&apos;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -298,32 +298,20 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="1080" top="6585" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Mouse" dstnodeid="24" dstpinname="Mouse">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="25">
-   <BOUNDS type="Node" left="1065" top="7050" width="100" height="100">
+   <BOUNDS type="Node" left="735" top="7800" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1065" top="7050" width="2280" height="1380">
+   <BOUNDS type="Box" left="735" top="7800" width="2280" height="1380">
    </BOUNDS>
    <BOUNDS type="Window" left="16425" top="10995" width="6240" height="5010">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="25" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="180" top="9120" width="750" height="270">
+   <BOUNDS type="Node" left="180" top="9450" width="750" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="180" top="9120" width="750" height="270">
+   <BOUNDS type="Box" left="180" top="9450" width="750" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
    </PIN>
@@ -335,15 +323,15 @@
    </PIN>
    </NODE>
    <NODE systemname="MouseStates (Mouse Join)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Join)" componentmode="Hidden" id="34">
-   <BOUNDS type="Node" left="1050" top="9120" width="100" height="100">
+   <BOUNDS type="Node" left="1050" top="9450" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1050" top="9120">
+   <BOUNDS type="Box" left="1050" top="9450">
    </BOUNDS>
    </NODE>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="33">
-   <BOUNDS type="Node" left="2355" top="9120" width="100" height="100">
+   <BOUNDS type="Node" left="2355" top="9450" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2355" top="9120">
+   <BOUNDS type="Box" left="2355" top="9450">
    </BOUNDS>
    </NODE>
    <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="36">
@@ -444,4 +432,86 @@
    <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\IO\Keyboard-Mouse-Touch\Mouse-Simulation.v4p">
    </PIN>
    </NODE>
+   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="1065" top="6180" width="3285" height="270">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Mouse" dstnodeid="44" dstpinname="Mouse">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="45" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="990" top="5580" width="285" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="990" top="5580" width="315" height="345">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="...">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="870" top="6945" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="PositionXY" dstnodeid="46" dstpinname="TranslateXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="47" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1230" top="6630" width="300" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1230" top="6630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.08,0.08">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="1,1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="47" srcpinname="Y Output Value" dstnodeid="46" dstpinname="ScaleXY">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="720" top="7395" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Transform Out" dstnodeid="48" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="49" systemname="IOBox (Color)">
+   <BOUNDS type="Box" left="1695" top="6945" width="330" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1695" top="6945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Color Output" dstnodeid="48" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Layer" dstnodeid="25" dstpinname="Layers">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

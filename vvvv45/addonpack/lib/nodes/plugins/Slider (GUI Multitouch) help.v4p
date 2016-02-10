@@ -502,16 +502,6 @@
    <LINKPOINT x="1260" y="8340">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="Hidden" id="8" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
-   <BOUNDS height="270" left="3195" top="7650" type="Node" width="1470">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="PositionXY" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="27">
    <BOUNDS type="Node" left="4140" top="8100" width="100" height="100">
    </BOUNDS>
@@ -539,13 +529,11 @@
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="28">
    <BOUNDS type="Node" left="3210" top="8070" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="TranslateXY" visible="1">
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="PositionXY" dstnodeid="28" dstpinname="TranslateXY">
-   </LINK>
    <LINK srcnodeid="28" srcpinname="Transform Out" dstnodeid="23" dstpinname="Transform In">
    </LINK>
    <NODE componentmode="Hidden" id="11" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
@@ -574,4 +562,6 @@
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <LINK srcnodeid="11" srcpinname="PositionXY" dstnodeid="28" dstpinname="TranslateXY">
+   </LINK>
    </PATCH>
