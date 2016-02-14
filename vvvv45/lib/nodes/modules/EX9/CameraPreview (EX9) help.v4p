@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9) help.v4p" locked="0" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="0" top="0" width="11520" height="9825">
    </BOUNDS>
@@ -64,14 +64,6 @@
    <PIN pinname="Depth" slicecount="1" values="63">
    </PIN>
    </NODE>
-   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="21" hiddenwhenlocked="0">
-   <BOUNDS type="Node" left="885" top="6315" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="885" top="6315">
-   </BOUNDS>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7410" top="4290" width="795" height="240">
    </BOUNDS>
@@ -125,15 +117,13 @@
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="17" hiddenwhenlocked="0">
    <BOUNDS type="Node" left="645" top="6750" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2">
-   </LINK>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="16" hiddenwhenlocked="0">
    <BOUNDS type="Node" left="2145" top="2700" width="100" height="100">
    </BOUNDS>
@@ -554,4 +544,14 @@
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="21" hiddenwhenlocked="0">
+   <BOUNDS type="Node" left="885" top="6315" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="885" top="6315">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2">
+   </LINK>
    </PATCH>

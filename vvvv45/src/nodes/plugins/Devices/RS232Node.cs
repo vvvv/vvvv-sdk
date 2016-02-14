@@ -11,7 +11,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Devices
 {
-    [PluginInfo(Name = "RS232", Category = "Devices", AutoEvaluate = true)]
+    [PluginInfo(Name = "RS232", Category = "Devices", AutoEvaluate = true, Tags = "serial, port")]
     public class Rs232Node : IDisposable, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Input")]

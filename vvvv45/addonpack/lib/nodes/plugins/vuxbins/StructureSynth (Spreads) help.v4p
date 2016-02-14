@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
-   <PATCH nodename="C:\Documents and Settings\joreg\Desktop\vvvvs\vvvv_40beta21\plugins\StructureSynth (Spreads) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\vuxbins\StructureSynth (Spreads) help.v4p">
    <BOUNDS height="12405" left="9720" top="420" type="Window" width="12285">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="58" nodename="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="58" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="2640" top="11475" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="7560" left="0" top="420" type="Window" width="9720">
@@ -11,13 +11,19 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="57" nodename="Group (EX9)">
@@ -33,29 +39,11 @@
    </PIN>
    <PIN pinname="Layer 3" visible="1">
    </PIN>
-   <PIN pinname="Layer 4" visible="1">
+   <PIN pinname="Layer 4" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 5" visible="1">
    </PIN>
    <PIN pinname="Layer 6" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="56" nodename=":EFFECTS:\Constant_2.0.fx">
-   <BOUNDS height="0" left="5460" top="8145" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="12000" left="8550" top="9405" type="Window" width="12000">
-   </BOUNDS>
-   <BOUNDS height="6000" left="5460" top="8145" type="Box" width="6000">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
    <NODE id="55" nodename="Fill (EX9.RenderState)">
@@ -66,8 +54,6 @@
    <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
    </PIN>
    </NODE>
-   <LINK dstnodeid="56" dstpinname="Render State" srcnodeid="55" srcpinname="Render State Out">
-   </LINK>
    <NODE id="54" nodename="Line (EX9.Geometry)">
    <BOUNDS height="0" left="7230" top="8130" type="Node" width="0">
    </BOUNDS>
@@ -112,7 +98,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="51" nodename="SynthBox (EX9.Geometry).v4p" path="C:\Documents and Settings\joreg\Desktop\vvvvs\vvvv_40beta21\plugins\">
+   <NODE componentmode="Hidden" id="51" nodename="SynthBox (EX9.Geometry).v4p">
    <BOUNDS height="100" left="3195" top="7110" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
@@ -120,7 +106,7 @@
    <BOUNDS left="3195" top="7110" type="Box">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="50" nodename="SynthBox (EX9.Geometry).v4p" path="C:\Documents and Settings\joreg\Desktop\vvvvs\vvvv_40beta21\plugins\">
+   <NODE componentmode="Hidden" id="50" nodename="SynthBox (EX9.Geometry).v4p">
    <BOUNDS height="100" left="5625" top="7110" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
@@ -128,8 +114,6 @@
    <BOUNDS left="5625" top="7110" type="Box">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="56" dstpinname="Mesh" srcnodeid="50" srcpinname="Mesh">
-   </LINK>
    <NODE componentmode="InABox" id="49" nodename="IOBox (String)">
    <BOUNDS height="0" left="6915" top="645" type="Node" width="0">
    </BOUNDS>
@@ -140,7 +124,7 @@
    <PIN pinname="Input String" slicecount="1" values="|Notes:&cr;&lf;&cr;&lf;- transformation order is always significant: transformations are applied starting from the right-most one&cr;&lf;&cr;&lf;- preprocessor directives are supported (see the #define at the beginning of the script)&cr;&lf;&cr;&lf;-A small Synthbox module is provided, as the standard vvvv box node has different vertices compared to the structuresynth box, which makes the transform look wrong&cr;&lf;&cr;&lf;-Triangle output is supported as well, see structure synthe website for more information.&cr;&lf;|">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="48" nodename="Mesh (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="48" nodename="MESH (EX9.GEOMETRY JOIN)">
    <BOUNDS height="0" left="9180" top="8340" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Vertex Buffer" visible="1">
@@ -149,13 +133,17 @@
    </PIN>
    <PIN pinname="Mesh" visible="1">
    </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="47" nodename="VertexBuffer (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="47" nodename="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="0" left="8700" top="7395" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Position XYZ" visible="1">
    </PIN>
    <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="48" dstpinname="Vertex Buffer" srcnodeid="47" srcpinname="Vertex Buffer">
@@ -222,24 +210,6 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="41" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\Documents and Settings\joreg\Desktop\vvvvs\vvvv_40beta21\modules\vvvv group\Transform\">
-   <BOUNDS height="0" left="3525" top="10515" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="3600" left="3525" top="10515" type="Box" width="4800">
-   </BOUNDS>
-   <BOUNDS height="6000" left="18045" top="6180" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Position" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="58" dstpinname="View Transform" srcnodeid="41" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="58" dstpinname="Projection Transform" srcnodeid="41" srcpinname="Projection">
-   </LINK>
    <NODE componentmode="Hidden" id="40" nodename=":EFFECTS:\PhongDirectional.fx">
    <BOUNDS height="0" left="3045" top="8145" type="Node" width="0">
    </BOUNDS>
@@ -267,16 +237,16 @@
    <NODE componentmode="Hidden" id="39" nodename="Subtract (Value)">
    <BOUNDS height="0" left="4245" top="10920" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="3" values="0,0.618029713630676,-1.902099609375">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="3" values="0,0.0618034079670906,-0.190211296081543">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="39" dstpinname="Input 2" srcnodeid="41" srcpinname="Position">
-   </LINK>
    <LINK dstnodeid="40" dstpinname="Light Direction XYZ" srcnodeid="39" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="38" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" path="C:\Documents and Settings\joreg\Desktop\vvvvs\vvvv_40beta21\modules\vvvv group\EX9\">
+   <NODE componentmode="Hidden" id="38" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p">
    <BOUNDS height="0" left="390" top="9555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="390" top="9555" type="Box" width="4800">
@@ -310,7 +280,7 @@
    </NODE>
    <LINK dstnodeid="36" dstpinname="Input" srcnodeid="42" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="InABox" id="35" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="35" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1455" top="5775" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="1455" top="5775" type="Box" width="480">
@@ -352,10 +322,6 @@
    <PIN pinname="Box Color" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="56" dstpinname="Transform" srcnodeid="34" srcpinname="Grid">
-   </LINK>
-   <LINK dstnodeid="56" dstpinname="Color" srcnodeid="34" srcpinname="Grid Color">
-   </LINK>
    <LINK dstnodeid="54" dstpinname="VerticesXYZ" srcnodeid="34" srcpinname="LinesXYZ">
    </LINK>
    <LINK dstnodeid="54" dstpinname="Color" srcnodeid="34" srcpinname="Lines Color">
@@ -382,7 +348,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="32" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="32" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8985" top="5310" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="8985" top="5310" type="Box" width="480">
@@ -460,8 +426,6 @@
    </LINK>
    <LINK dstnodeid="57" dstpinname="Layer 3" srcnodeid="40" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="57" dstpinname="Layer 4" srcnodeid="56" srcpinname="Layer">
-   </LINK>
    <LINK dstnodeid="57" dstpinname="Layer 5" srcnodeid="54" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="57" dstpinname="Layer 6" srcnodeid="43" srcpinname="Layer">
@@ -482,4 +446,80 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="56" nodename="ConstantWrap (EX9.Effect)" systemname="ConstantWrap (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\ConstantWrap.fx">
+   <BOUNDS height="0" left="5460" top="8145" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="8550" top="9405" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5460" top="8145" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Render State" srcnodeid="55" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="56" dstpinname="Mesh" srcnodeid="50" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="56" dstpinname="Transform" srcnodeid="34" srcpinname="Grid">
+   </LINK>
+   <LINK dstnodeid="56" dstpinname="Color" srcnodeid="34" srcpinname="Grid Color">
+   </LINK>
+   <LINK dstnodeid="57" dstpinname="Layer 4" srcnodeid="56" srcpinname="Layer">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE id="61" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS type="Node" height="100" left="3615" top="10485" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="3615" top="10485" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" height="6000" left="18045" top="6180" width="9000">
+   </BOUNDS>
+   <PIN pinname="Initial Distance" visible="1">
+   </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Projection" dstnodeid="58" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="View" dstnodeid="58" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="PositionXYZ" dstnodeid="39" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="62" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4155" top="10155" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4155" top="10155" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="14">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="62" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Initial Distance">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="63" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3585" top="10140" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3585" top="10140" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.18">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Initial Latitude">
+   </LINK>
    </PATCH>

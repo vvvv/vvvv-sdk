@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
-   <BOUNDS height="6165" left="2745" top="5700" type="Window" width="11625">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\ColladaFile (EX9.Geometry) help.v4p" filename="C:\Users\joreg\Desktop\vvvvs\vvvv_45alpha25.2-4940\help\XFile (EX9.Geometry Load) help.v4p" systemname="XFile (EX9.Geometry Load) help">
+   <BOUNDS height="7020" left="2745" top="5700" type="Window" width="11625">
    </BOUNDS>
    <NODE id="21" nodename="Count (EX9.Geometry Mesh)" systemname="Count (EX9.Geometry Mesh)">
    <BOUNDS height="0" left="4515" top="3585" type="Node" width="0">
@@ -25,13 +25,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="19" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
-   <BOUNDS height="0" left="300" top="4980" type="Node" width="0">
+   <BOUNDS height="0" left="300" top="5745" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4800" left="2790" top="855" type="Window" width="6120">
    </BOUNDS>
-   <BOUNDS height="1800" left="300" top="4980" type="Box" width="2400">
+   <BOUNDS height="1800" left="300" top="5745" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
@@ -53,9 +53,15 @@
    </PIN>
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
    </NODE>
    <NODE id="18" nodename="FILETEXTURE (EX9.TEXTURE)" systemname="FileTexture (EX9.Texture)">
-   <BOUNDS height="0" left="1710" top="3690" type="Node" width="0">
+   <BOUNDS height="0" left="1650" top="4455" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" slicecount="1" visible="1" values="..imageswimp.jpg">
    </PIN>
@@ -203,7 +209,7 @@
    </PIN>
    </NODE>
    <NODE id="4" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
-   <BOUNDS height="0" left="615" top="3555" type="Node" width="0">
+   <BOUNDS height="0" left="615" top="4320" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -213,7 +219,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\effects\GouraudDirectional.fx" id="3" nodename=":EFFECTS:\GouraudDirectional.fx" systemname="GouraudDirectional (EX9.Effect)">
-   <BOUNDS height="0" left="300" top="4230" type="Node" width="0">
+   <BOUNDS height="0" left="300" top="4995" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -243,29 +249,21 @@
    <LINK dstnodeid="19" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
    </LINK>
    <NODE id="2" nodename="Rotate (Transform)" systemname="Rotate (Transform)">
-   <BOUNDS height="0" left="615" top="3180" type="Node" width="0">
+   <BOUNDS height="0" left="615" top="3945" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="Y" visible="1">
+   <PIN pinname="Y" visible="1" slicecount="1" values="0.526675895834342">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
-   <NODE id="1" nodename="LFO (Animation)" systemname="LFO (Animation)">
-   <BOUNDS height="0" left="1020" top="2775" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Period" slicecount="1" values="10">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="23" nodename="ColladaFile (EX9.Geometry)" systemname="ColladaFile (EX9.Geometry)">
-   <BOUNDS height="0" left="450" top="1455" type="Node" width="0">
+   <BOUNDS height="270" left="450" top="1290" type="Node" width="855">
    </BOUNDS>
-   <BOUNDS height="0" left="450" top="1455" type="Box" width="0">
+   <BOUNDS height="0" left="450" top="1290" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="6480" top="3570" type="Window" width="0">
    </BOUNDS>
@@ -277,9 +275,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="24" nodename="Mesh (EX9.Geometry Collada)" systemname="Mesh (EX9.Geometry Collada)">
-   <BOUNDS height="0" left="450" top="1920" type="Node" width="0">
+   <BOUNDS height="270" left="450" top="2205" type="Node" width="2250">
    </BOUNDS>
-   <BOUNDS height="0" left="450" top="1920" type="Box" width="0">
+   <BOUNDS height="0" left="450" top="2205" type="Box" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7050" top="4245" type="Window" width="0">
    </BOUNDS>
@@ -301,9 +299,9 @@
    <LINK dstnodeid="24" dstpinname="COLLADA Model" srcnodeid="23" srcpinname="COLLADA Model">
    </LINK>
    <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="0" left="450" top="990" type="Node" width="0">
+   <BOUNDS height="0" left="450" top="840" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="450" top="990" type="Box" width="2490">
+   <BOUNDS height="240" left="450" top="840" type="Box" width="2490">
    </BOUNDS>
    <BOUNDS height="160" left="10200" top="8115" type="Window" width="215">
    </BOUNDS>
@@ -323,26 +321,16 @@
    <LINK dstnodeid="20" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
    </LINK>
    <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
-   <BOUNDS height="100" left="1380" top="3195" type="Node" width="100">
+   <BOUNDS height="100" left="1545" top="3975" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="1380" top="3195" type="Box" width="630">
+   <BOUNDS height="240" left="1545" top="3975" type="Box" width="630">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.0699999999999998">
+   <PIN pinname="Y Input Value" slicecount="1" values="5.69">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="XYZ" srcnodeid="26" srcpinname="Y Output Value">
-   </LINK>
-   <NODE id="0" nodename="Translate (Transform)" systemname="Translate (Transform)">
-   <BOUNDS height="0" left="2250" top="4740" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" values="-0.5">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="19" dstpinname="View" srcnodeid="0" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\plugins\ColladaLoader.dll" id="27" nodename="Mesh (EX9.Geometry Collada)" systemname="Mesh (EX9.Geometry Collada)">
    <BOUNDS height="0" left="7575" top="2760" type="Node" width="0">
@@ -382,14 +370,14 @@
    <BOUNDS height="100" left="9465" top="2745" type="Node" width="100">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Camera (Transform Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Camera (Transform Collada)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="2955" top="1920" width="100" height="100">
+   <NODE systemname="CameraState (Transform Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Camera (Transform Collada)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="2955" top="2205" width="100" height="100">
    </BOUNDS>
    <PIN pinname="COLLADA Model" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Skeleton (Skeleton Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Skeleton (Skeleton Collada)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="3990" top="1920" width="100" height="100">
+   <BOUNDS type="Node" left="3990" top="2205" width="100" height="100">
    </BOUNDS>
    <PIN pinname="COLLADA Model" visible="1">
    </PIN>
@@ -398,6 +386,90 @@
    </LINK>
    <LINK srcnodeid="23" srcpinname="COLLADA Model" dstnodeid="31" dstpinname="COLLADA Model">
    </LINK>
-   <PACK Name="addonpack" Version="34.1.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="2025" top="5745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Actual Backbuffer Width" dstnodeid="32" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Actual Backbuffer Height" dstnodeid="32" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="19" dstpinname="Aspect Ratio">
+   </LINK>
+   <NODE systemname="Translate (Transform)" nodename="Translate (Transform)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="630" top="3120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="-42">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Transforms" dstnodeid="33" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Transform Out" dstnodeid="2" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="34" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1065" top="2625" width="555" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1065" top="2625" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-42">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Y">
+   </LINK>
+   <NODE id="1" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="270" left="960" top="3510" type="Node" width="855">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1485" top="1290" width="255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1485" top="1290" width="3435" height="750">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Note, that for this particular mesh, the &apos;Coordinate System of Source&apos; config pin (see Inspektor) should be set to &apos;RightHanded&apos;.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4800" top="1140" width="195" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4800" top="1140" width="285" height="885">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="37">
+   </PIN>
+   </NODE>
    </PATCH>

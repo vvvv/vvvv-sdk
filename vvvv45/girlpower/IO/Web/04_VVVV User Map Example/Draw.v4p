@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\girlpower\IO\Web\04_VVVV User Map Example\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\( vvvv user map )\Draw.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\04_VVVV User Map Example\Draw.v4p" systemname="Draw" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\( vvvv user map )\Draw.v4p">
    <BOUNDS type="Window" left="2625" top="390" width="23670" height="11580">
    </BOUNDS>
    <NODE componentmode="Hidden" id="29" nodename="Group (EX9)" systemname="Group (EX9)">
@@ -1100,26 +1100,6 @@
    <PIN pinname="Color Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="94">
-   <BOUNDS type="Node" left="19965" top="5460" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Node)" componentmode="InABox" id="95" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="19980" top="1485" width="795" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="19980" top="1485" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Node" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="95" srcpinname="Output Node" dstnodeid="94" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="94" srcpinname="Layer" dstnodeid="29" dstpinname="Layer 7">
-   </LINK>
    <NODE systemname="ConstantWrap (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\ConstantWrap.fx" nodename="ConstantWrap (EX9.Effect)" componentmode="Hidden" id="96">
    <BOUNDS type="Node" left="7320" top="5490" width="100" height="100">
    </BOUNDS>
@@ -1150,6 +1130,16 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="94">
+   <BOUNDS type="Node" left="19965" top="5460" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="94" srcpinname="Layer" dstnodeid="29" dstpinname="Layer 7">
+   </LINK>
    </PATCH>

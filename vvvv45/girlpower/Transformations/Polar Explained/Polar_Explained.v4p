@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" systemname="Polar_Explained" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Polar Explained\Polar_Explained.v4p" scrollx="0" scrolly="-1299">
    <BOUNDS type="Window" left="2205" top="3030" width="13680" height="7650">
    </BOUNDS>
@@ -31,7 +31,7 @@
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="6" managers="">
    <BOUNDS type="Node" left="7845" top="5205" width="825" height="270">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -46,14 +46,6 @@
    </NODE>
    <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="16" managers="">
-   <BOUNDS type="Node" left="7095" top="4500" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="23" systemname="IOBox (Value Advanced)" managers="">
    <BOUNDS type="Box" left="9405" top="5565" width="795" height="240">
    </BOUNDS>
@@ -81,8 +73,6 @@
    <LINK srcnodeid="4" srcpinname="Actual Backbuffer Height" dstnodeid="44" dstpinname="Aspect Height">
    </LINK>
    <LINK srcnodeid="44" srcpinname="Transform Out" dstnodeid="4" dstpinname="Aspect Ratio">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 1">
    </LINK>
    <NODE systemname="Cartesian (3d Vector)" nodename="Cartesian (3d Vector)" componentmode="Hidden" id="105">
    <BOUNDS type="Node" left="6570" top="2040" width="100" height="100">
@@ -547,7 +537,19 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="16" managers="">
+   <BOUNDS type="Node" left="7095" top="4500" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 1">
+   </LINK>
    <NODE id="11" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" managers="">
    <PIN pinname="Initial FOV" visible="1">
    </PIN>
@@ -561,6 +563,8 @@
    </PIN>
    <PIN pinname="Initial Pitch" visible="1">
    </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="152" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial FOV">
    </LINK>
@@ -570,6 +574,6 @@
    </LINK>
    <LINK srcnodeid="11" srcpinname="View" dstnodeid="4" dstpinname="View">
    </LINK>
-   <LINK srcnodeid="153" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial Pitch">
+   <LINK srcnodeid="153" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Initial Latitude">
    </LINK>
    </PATCH>

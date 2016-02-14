@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial3D\BlurRadial3D (EX9.Texture Filter) help.v4p" systemname="BlurRadial3D (EX9.Texture Filter) help" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial3D\BlurRadial3D (EX9.Texture Filter) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial3D\BlurRadial3D (EX9.Texture Filter) help.v4p" systemname="BlurRadial3D (EX9.Texture Filter) help" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\BlurRadial3D\BlurRadial3D (EX9.Texture Filter) help.v4p">
    <BOUNDS type="Window" left="2985" top="6975" width="12240" height="7425">
    </BOUNDS>
    <NODE systemname="BlurRadial3D (EX9.Texture Filter)" filename="BlurRadial3D (EX9.Texture Filter).v4p" nodename="BlurRadial3D (EX9.Texture Filter)" componentmode="Hidden" id="2">
@@ -83,7 +83,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="18" systemname="IOBox (Node)">
@@ -398,44 +398,6 @@
    </LINK>
    <LINK srcnodeid="18" srcpinname="Output Node" dstnodeid="2" dstpinname="Aspect Ratio" linkstyle="PolyLine">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="66">
-   <BOUNDS type="Node" left="5985" top="2580" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="66" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 3" linkstyle="VHV">
-   <LINKPOINT x="5985" y="2970">
-   </LINKPOINT>
-   <LINKPOINT x="4965" y="2970">
-   </LINKPOINT>
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="7635" top="1440" width="1500" height="270">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Initial Interest" slicecount="3" visible="1" values="0.777400264631424,-0.185509149964974,0.137069725485883">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" visible="1" values="-2.59">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" visible="1" values="4.76">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="71" srcpinname="View" dstnodeid="43" dstpinname="Input Node" linkstyle="VHV">
-   <LINKPOINT x="7815" y="1898">
-   </LINKPOINT>
-   <LINKPOINT x="7755" y="1898">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="71" srcpinname="Projection" dstnodeid="44" dstpinname="Input Node" linkstyle="VHV">
-   <LINKPOINT x="8010" y="1883">
-   </LINKPOINT>
-   <LINKPOINT x="9030" y="1883">
-   </LINKPOINT>
-   </LINK>
    <LINK srcnodeid="37" srcpinname="Transform Out" dstnodeid="18" dstpinname="Input Node" linkstyle="VHV">
    <LINKPOINT x="10260" y="2055">
    </LINKPOINT>
@@ -517,19 +479,13 @@
    <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Point XYZ" linkstyle="PolyLine">
    </LINK>
    <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="81">
-   <BOUNDS type="Node" left="7845" top="1080" width="100" height="100">
+   <BOUNDS type="Node" left="7815" top="1050" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Period" slicecount="1" values="5">
    </PIN>
    </NODE>
-   <LINK srcnodeid="81" srcpinname="Output" dstnodeid="71" dstpinname="Initial Yaw" linkstyle="VHV">
-   <LINKPOINT x="7875" y="1395">
-   </LINKPOINT>
-   <LINKPOINT x="7875" y="1395">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="82">
    <BOUNDS type="Node" left="4860" top="15" width="100" height="100">
    </BOUNDS>
@@ -688,4 +644,62 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="95" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8655" top="1095" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8655" top="1095" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4.76">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="71" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden">
+   <BOUNDS type="Node" left="7635" top="1440" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Interest" slicecount="3" visible="1" values="0.777400264631424,-0.185509149964974,0.137069725485883">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" visible="1" values="-2.59">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="4.76">
+   </PIN>
+   <PIN pinname="Initial Longitude" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Projection" dstnodeid="44" dstpinname="Input Node" linkstyle="VHV">
+   <LINKPOINT x="8010" y="1883">
+   </LINKPOINT>
+   <LINKPOINT x="9030" y="1883">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="71" srcpinname="View" dstnodeid="43" dstpinname="Input Node" linkstyle="VHV">
+   <LINKPOINT x="7815" y="1898">
+   </LINKPOINT>
+   <LINKPOINT x="7755" y="1898">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Y Output Value" dstnodeid="71" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="81" srcpinname="Output" dstnodeid="71" dstpinname="Initial Longitude">
+   </LINK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="66">
+   <BOUNDS type="Node" left="5985" top="2580" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="66" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 3" linkstyle="VHV">
+   <LINKPOINT x="5985" y="2970">
+   </LINKPOINT>
+   <LINKPOINT x="4965" y="2970">
+   </LINKPOINT>
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

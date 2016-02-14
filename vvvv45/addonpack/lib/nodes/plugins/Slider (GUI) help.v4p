@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.3.dtd" >
-   <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\Slider (GUI) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\Slider (GUI) help.v4p" locked="0">
    <BOUNDS height="13245" left="60" top="825" type="Window" width="11805">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="32" nodename="RENDERER (EX9)">
@@ -49,7 +49,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="2">
    </PIN>
@@ -325,7 +325,7 @@
    </PIN>
    <PIN pinname="Slider Speed" visible="1">
    </PIN>
-   <PIN pinname="Mouse" visible="1">
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Slider Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
@@ -464,30 +464,6 @@
    </NODE>
    <LINK dstnodeid="5" dstpinname="Set Value" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="33">
-   <BOUNDS type="Node" left="2385" top="10155" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="33" srcpinname="Layer" dstnodeid="30" dstpinname="Layer 2">
-   </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="34">
-   <BOUNDS type="Node" left="6780" top="3330" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="34" srcpinname="Mouse" dstnodeid="5" dstpinname="Mouse">
-   </LINK>
-   <LINK srcnodeid="34" srcpinname="Mouse" dstnodeid="33" dstpinname="Mouse" hiddenwhenlocked="1" linkstyle="Bezier">
-   <LINKPOINT x="6210" y="6865">
-   </LINKPOINT>
-   <LINKPOINT x="2985" y="6890">
-   </LINKPOINT>
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="35" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="5565" top="4980" width="0" height="0">
    </BOUNDS>
@@ -536,4 +512,28 @@
    </NODE>
    <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Is Long Slider">
    </LINK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="2385" top="10155" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Layer" dstnodeid="30" dstpinname="Layer 2">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="6900" top="3330" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Device" dstnodeid="5" dstpinname="Mouse">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

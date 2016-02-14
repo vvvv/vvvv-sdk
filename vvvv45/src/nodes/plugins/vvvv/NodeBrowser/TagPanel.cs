@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using VVVV.Core;
-using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -432,33 +426,57 @@ namespace VVVV.Nodes.NodeBrowser
             if (FTags.Count == 0)
                 return nodeInfos;
             else
+            {
+                var regex = new Regex(@"\[(.+)\]");
                 return nodeInfos.Where((nodeInfo) =>
-                                       {
-                                           var displayName = NodeInfoToDisplayName(nodeInfo);
-                                           displayName = displayName.ToLower();
-                                           displayName = displayName.Replace('é', 'e');
-                                           bool containsAll = true;
-                                           string t = "";
-                                           foreach (string tag in FTags)
                                            {
-                                               t = tag.ToLower();
-                                               if (displayName.Contains(t))
+                                               var displayName = NodeInfoToDisplayName(nodeInfo);
+                                               //bezier hack
+                                               displayName = displayName.Replace('é', 'e');
+
+                                               //make all tags ToUpperFirst so they can be found
+                                               var match = regex.Match(displayName);
+                                               var upperedTags = match.Value.TrimStart('[').TrimEnd(']').Split(',').Select(x => x.Trim().ToUpperFirstInvariant());
+                                               displayName = regex.Replace(displayName, string.Join(", ", upperedTags));
+
+                                               var lowerDisplayName = displayName.ToLower();
+                                               bool containsAll = true;
+                                               string t = "";
+                                               foreach (string tag in FTags)
                                                {
-                                                   if (!AndTags)
+                                                   t = tag.ToLower().ToUpperFirstInvariant();
+
+                                                   var found = false;
+                                                   if (t.Length > 1)
+                                                   {
+                                                       //first char matches case-sensitive, all later chars match insensitive
+                                                       var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
+                                                       var rex = new Regex(pattern);
+                                                       var matches = rex.Match(displayName);
+                                                       found = matches.Length > 0;
+                                                   }
+                                                   else
+                                                       found = displayName.IndexOf(t[0]) >= 0;
+
+                                                   if (found)
+                                                   {
+                                                       if (!AndTags)
+                                                           break;
+                                                   }
+                                                   else
+                                                       containsAll = false;
+
+                                                   if ((AndTags) && (!containsAll))
                                                        break;
                                                }
+
+                                               //todo: remove OR-tags case or refine it 
+                                               if (((AndTags) && (containsAll)) || ((!AndTags) && (lowerDisplayName.Contains(t.ToLower()))))
+                                                   return true;
                                                else
-                                               {
-                                                   containsAll = false;
-                                                   break;
-                                               }
-                                           }
-                                           
-                                           if (((AndTags) && (containsAll)) || ((!AndTags) && (displayName.Contains(t))))
-                                               return true;
-                                           else
-                                               return false;
-                                       });
+                                                   return false;
+                                           });
+            }
         }
         
         private bool IsAvailableInActivePatch(INodeInfo nodeInfo)
@@ -545,10 +563,40 @@ namespace VVVV.Nodes.NodeBrowser
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
 
+        private int Weight(int lastWeight, string text, string tag)
+        {
+            var pos = text.IndexOf(tag);
+            if (pos > -1)
+            {
+                //do the following finegrained check only for tags found before the category/version/tags
+                if (pos < text.IndexOf(" ("))
+                {
+                    //see if the tag is a complete subword in the nodename, like "Editor" in "PointEditorState"
+                    //if so, that counts more
+                    //it counts even more if that tag is also the last word in a nodename, like "Editor" in "PointEditor"
+                    //so check if there is either: 
+                    //- no character following
+                    //- or at least two characters following where the first isUpper, the second isLower 
+                    if (text.Length >= pos + tag.Length)
+                        return (text[pos + tag.Length] == ' ') ? Math.Min(pos, 1) : pos;
+                    else if (text.Length >= pos + tag.Length + 1)
+                    {
+                        var nextChar = pos + tag.Length;
+                        return (char.IsUpper(text[nextChar]) && char.IsLower(text[nextChar + 1])) ? Math.Min(pos, 1) : pos;
+                    }
+                }
+
+                //otherwise the simply the position of the tag is the pos
+                return Math.Min(lastWeight, pos);
+            }            
+            else
+                return lastWeight;
+        }
+
         private int SortNodeInfo(INodeInfo n1, INodeInfo n2)
         {
-            var s1 = NodeInfoToDisplayName(n1);
-            var s2 = NodeInfoToDisplayName(n2);
+            var s1 = NodeInfoToDisplayName(n1).ToLower();
+            var s2 = NodeInfoToDisplayName(n2).ToLower();
             
             //Workaround: Following code assumes s1 and s2 are either a filename
             //or include an opening parenthesis. Since node info rework there're
@@ -565,10 +613,9 @@ namespace VVVV.Nodes.NodeBrowser
             foreach (string tag in FTags)
             {
                 t = tag.TrimStart(new char[1]{'.'});
-                if (s1.ToLower().IndexOf(t) > -1)
-                    w1 = Math.Min(w1, s1.ToLower().IndexOf(t));
-                if (s2.ToLower().IndexOf(t) > -1)
-                    w2 = Math.Min(w2, s2.ToLower().IndexOf(t));
+
+                w1 = Weight(w1, s1, t);
+                w2 = Weight(w2, s2, t);
             }
             
             if (w1 != w2)
