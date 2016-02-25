@@ -505,7 +505,15 @@ namespace VVVV.Nodes.Texture.HTML
         private bool FIsLoading;
         public bool IsLoading
         {
-            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => !t.IsValid); }
+            get
+            {
+                if (FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid))
+                    return true;
+                lock (FTextures)
+                {
+                    return FTextures.Any(t => !t.IsValid);
+                }
+            }
         }
 
         private bool FLoaded;
@@ -627,11 +635,14 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal EX9.Texture GetTexture(Device device)
         {
-            var texture = FTextures.FirstOrDefault(t => t.Device == device);
-            if (texture != null)
-                return texture.LastCompleteTexture;
-            else
-                return null;
+            lock (FTextures)
+            {
+                var texture = FTextures.FirstOrDefault(t => t.Device == device);
+                if (texture != null)
+                    return texture.LastCompleteTexture;
+                else
+                    return null;
+            }
         }
 
         internal void DestroyResources(Device device)
