@@ -566,6 +566,8 @@ namespace VVVV.Nodes.Texture.HTML
                     UpdateDocumentSize();
                 }
                 FLoaded = true;
+                // HACK: Re-apply zooming level :/ - https://vvvv.org/forum/htmltexture-bug-with-zoomlevel
+                FBrowserHost.SetZoomLevel(ZoomLevel);
             }
             else
                 // Reset computed values like document size or DOM
