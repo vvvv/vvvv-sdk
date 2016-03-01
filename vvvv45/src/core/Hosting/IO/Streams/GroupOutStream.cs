@@ -5,7 +5,7 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class GroupOutStream<T> : IInStream<IOutStream<T>>, IFlushable, IDisposable
+    class GroupOutStream<T> : IInStream<IOutStream<T>>, IIOMultiPin, IFlushable, IDisposable
     {
         private readonly MemoryIOStream<IOutStream<T>> FStreams = new MemoryIOStream<IOutStream<T>>(2);
         private readonly List<IIOContainer> FIOContainers = new List<IIOContainer>();
@@ -94,6 +94,22 @@ namespace VVVV.Hosting.IO.Streams
             get
             {
                 return FStreams.IsChanged;
+            }
+        }
+
+        public IIOContainer BaseContainer
+        {
+            get
+            {
+                return FCountSpread as IIOContainer;
+            }
+        }
+
+        public IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return FIOContainers.ToArray();
             }
         }
 
