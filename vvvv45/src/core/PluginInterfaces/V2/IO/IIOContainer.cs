@@ -31,6 +31,8 @@ namespace VVVV.PluginInterfaces.V2
         /// Gets the io factory which was used to create this container.
         /// </summary>
         IIOFactory Factory { get; }
+
+        IIOContainer[] AssociatedContainers { get; }
     }
     
     [ComVisible(false)]

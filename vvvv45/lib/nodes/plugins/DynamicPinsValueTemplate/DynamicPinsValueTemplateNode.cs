@@ -32,6 +32,12 @@ namespace VVVV.Nodes
 		[Config("Output Count", DefaultValue = 1, MinValue = 0)]
         public IDiffSpread<int> FOutputCountIn;
 		
+		[Output("Input Is Connected")]
+		public ISpread<bool> FInputIsConnected;
+		
+		[Output("Output Is Connected")]
+		public ISpread<bool> FOutputIsConnected;
+		
 		[Import]
         public IIOFactory FIOFactory;
 		#endregion fields & pins
@@ -62,18 +68,36 @@ namespace VVVV.Nodes
 		
 		private void HandleOutputCountChanged(IDiffSpread<int> sender)
 		{
-			HandlePinCountChanged(sender, FOutputs, (i) => new OutputAttribute(string.Format("Output {0}", i)));
+			//add an offset to pin order to keep the static output pins on the left
+			HandlePinCountChanged(sender, FOutputs, (i) => 
+			{ 
+				var attribute = new OutputAttribute(string.Format("Output {0}", i));
+				attribute.Order = i+2; 
+				return attribute;
+			});
 		}
 		#endregion
 		
 		// Called when data for any output pin is requested.
 		public void Evaluate(int SpreadMax)
 		{
+			FInputIsConnected.SliceCount = FInputs.SliceCount;
+			FOutputIsConnected.SliceCount = FOutputs.SliceCount;
 			for (int i = 0; i < FInputs.CombineWith(FOutputs); i++)
 			{
-				var inputSpread = FInputs[i].IOObject;
-				var outputSpread = FOutputs[i].IOObject;
-				outputSpread.AssignFrom(inputSpread);
+				if (i<FInputs.SliceCount)
+					FInputIsConnected[i] = FInputs[i].GetPluginIO().IsConnected;
+				
+				if (i<FOutputs.SliceCount)
+				{
+					FOutputIsConnected[i] = FOutputs[i].GetPluginIO().IsConnected;
+					
+					//assign input spread to output spread
+					//in case there are more inputs than outputs don't warp and overwrite
+					var inputSpread = FInputs[i].IOObject;
+					var outputSpread = FOutputs[i].IOObject;
+					outputSpread.AssignFrom(inputSpread);
+				}
 			}
 		}
 	}

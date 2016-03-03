@@ -11,13 +11,13 @@ namespace VVVV.Hosting.Pins.Input
     {
         public class InputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            private readonly IIOContainer<IInStream<T>> FDataContainer;
-            private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
+            internal readonly IIOContainer<IInStream<T>> FDataContainer;
+            internal readonly IIOContainer<IInStream<int>> FBinSizeContainer;
             private readonly IInStream<T> FDataStream;
             private readonly IInStream<int> FBinSizeStream;
             private readonly IPluginIO FDataIO;
             private bool FOwnsBinSizeContainer;
-            
+
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
                 : this(ioFactory, attribute, false)
             {
@@ -107,7 +107,23 @@ namespace VVVV.Hosting.Pins.Input
         }
         
         private readonly InputBinSpreadStream FStream;
-        
+
+        public override IIOContainer BaseContainer
+        {
+            get
+            {
+                return FStream.FDataContainer;
+            }
+        }
+
+        public override IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return new IIOContainer[]{ FStream.FBinSizeContainer };
+            }
+        }
+
         public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute)
             : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute))
         {
