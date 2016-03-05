@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.100.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\WindowSize (Windows) help.v4p" scrollx="135" scrolly="30">
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\SetWindowSize (Windows) help.v4p" scrollx="135" scrolly="30">
    <BOUNDS type="Window" left="3105" top="1080" width="9000" height="7365">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|WindowSize (Windows)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SetWindowSize (Windows)|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="600" width="3015" height="345">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets size of the window.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets the size of the window.|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -39,13 +39,13 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3150" top="1740" width="600" height="240">
+   <BOUNDS type="Box" left="3255" top="1740" width="630" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="3150" top="1740" width="0" height="0">
+   <BOUNDS type="Node" left="3255" top="1740" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="420">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
+   <PIN pinname="Units" slicecount="1" values="px">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -57,13 +57,13 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3990" top="1725" width="630" height="240">
+   <BOUNDS type="Box" left="3990" top="1740" width="675" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="3990" top="1725" width="0" height="0">
+   <BOUNDS type="Node" left="3990" top="1740" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="420">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
+   <PIN pinname="Units" slicecount="1" values="px">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -74,22 +74,6 @@
    <PIN pinname="X Input Value" slicecount="1" values="420">
    </PIN>
    </NODE>
-   <NODE systemname="WindowSize (Windows)" filename="plugins\ValueWindowResizeTest\ValueWindowResizeTest.csproj" nodename="WindowSize (Windows)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2520" top="2460" width="2265" height="270">
-   </BOUNDS>
-   <PIN pinname="Set" slicecount="1" visible="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="8" srcpinname="Window Handle" dstnodeid="4" dstpinname="WindowHandle" linkstyle="Bezier">
-   <LINKPOINT x="1385" y="4800">
-   </LINKPOINT>
-   <LINKPOINT x="1480" y="1770">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Width">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
    <BOUNDS type="Node" left="1785" top="3225" width="1470" height="270">
    </BOUNDS>
@@ -119,9 +103,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3135" top="1440" width="555" height="270">
+   <BOUNDS type="Node" left="3240" top="1440" width="555" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3135" top="1440" width="555" height="270">
+   <BOUNDS type="Box" left="3240" top="1440" width="555" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Width">
    </PIN>
@@ -176,8 +160,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Set">
-   </LINK>
    <PACK Name="addonpack" Version="34.100.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
@@ -222,4 +204,24 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="SetWindowSize (Windows)" filename="%VVVV%\addonpack\lib\nodes\plugins\SetWindowSize.dll" nodename="SetWindowSize (Windows)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="2520" top="2460" width="2265" height="270">
+   </BOUNDS>
+   <PIN pinname="Set" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Width" visible="1" slicecount="1" values="420">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Window Handle" dstnodeid="4" dstpinname="WindowHandle" linkstyle="Bezier">
+   <LINKPOINT x="1385" y="4800">
+   </LINKPOINT>
+   <LINKPOINT x="1480" y="1770">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Width">
+   </LINK>
    </PATCH>

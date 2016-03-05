@@ -1,7 +1,7 @@
 #region licence/info
 
 //////project name
-//WindowSize
+//SetWindowSize (Windows)
 
 //////description
 //Sets size of the window.
@@ -34,9 +34,9 @@ using VVVV.Utils.Win32;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "WindowSize", Category = "Windows", Help = "Sets size of the window.", Tags = "resize, dimensions, resolution", AutoEvaluate = true)]
+    [PluginInfo(Name = "SetWindowSize", Category = "Windows", Help = "Sets the size of the window.", AutoEvaluate = true)]
     #endregion PluginInfo
-    public class WindowSize : IPluginEvaluate
+    public class SetWindowSize : IPluginEvaluate
     {
         #region fields & pins
         [Input("WindowHandle", DefaultValue = 1.0)]
