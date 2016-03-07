@@ -34,12 +34,12 @@ using VVVV.Utils.Win32;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "SetWindowSize", Category = "Windows", Help = "Sets the size of the window.", AutoEvaluate = true)]
+    [PluginInfo(Name = "SetWindowSize", Category = "Windows", Help = "Sets the client size of a given window handle in pixels.", AutoEvaluate = true)]
     #endregion PluginInfo
     public class SetWindowSize : IPluginEvaluate
     {
         #region fields & pins
-        [Input("WindowHandle", DefaultValue = 1.0)]
+        [Input("Handle", DefaultValue = 1.0)]
         public ISpread<int> FHandle;
 
         [Input("Width", DefaultValue = 420)]
@@ -48,8 +48,8 @@ namespace VVVV.Nodes
         [Input("Height", DefaultValue = 42)]
         public ISpread<int> FHeight;
 
-        [Input("Set", DefaultValue = 1.0)]
-        public IDiffSpread<bool> FSet;
+        [Input("Apply", DefaultValue = 0.0, IsBang = true)]
+        public IDiffSpread<bool> FApply;
         #endregion fields & pins
 
         [DllImport("User32.dll")]
@@ -60,7 +60,7 @@ namespace VVVV.Nodes
         {
             for (int i = 0; i < SpreadMax; i++)
             {
-                if (FSet[i])
+                if (FApply[i])
                 {
                     IntPtr hWnd = (IntPtr) FHandle[i];
 
