@@ -53,7 +53,6 @@ For more information, please refer to <http://unlicense.org/>
 using System;
 using System.ComponentModel.Composition;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 using VVVV.PluginInterfaces.V2;
@@ -237,27 +236,23 @@ namespace VVVV.Nodes
           int major = data.Dequeue();
           int minor = data.Dequeue();
           // Read the name, of the Version
-          StringBuilder name = new StringBuilder();
-          while(data.Count >= 2){
-            byte lsb = (byte)(data.Dequeue() & 0x7F);
-            byte msb = (byte)((data.Dequeue() & 0x7F) << 7);
-            byte[] both = {(byte)(lsb|msb)};
-            if(lsb!=0 || msb!=0)
-              name.Append(Encoding.ASCII.GetString(both));
-          }
-          string the_name = major+"."+minor;
-          if(name.Length>0) the_name += " "+name.ToString();
+          string name = FirmataUtils.GetStringFromBytes(data);
+          string the_name = major + "." + minor;
+          if (name.Length > 0) the_name += " " + name.ToString();
 
           FFirmwareMajorVersion[0] = major;
           FFirmwareMinorVersion[0] = minor;
           FFirmwareName[0] = name.ToString();
           FFirmwareVersion[0] = the_name;
-          break;
+        break;
+        
+        /// Handle String Data            
         case Command.STRING_DATA:
-          string message = Encoding.ASCII.GetString(data.ToArray());
+          string message = FirmataUtils.GetStringFromBytes(data);
           StringOut.Add(message);
           StringOut.Flush(true); // Signal change, regardless of the message
           break;
+        
         /// Handle I2C replies
         case Command.I2C_REPLY:
           try {

@@ -51,6 +51,7 @@ For more information, please refer to <http://unlicense.org/>
 
 #region usings
 
+using System.Text;
 using System;
 using System.Collections.Generic;
 
@@ -129,6 +130,25 @@ namespace Firmata
       LSB = (byte)( value & 0x7F );
       MSB = (byte)((value >> 7) & 0x7F);
     }
+
+    /// <summary>
+	/// Get the string that was sent using the 7-bit messages of the firmata protocol
+	/// </summary>
+	public static string GetStringFromBytes(Queue<byte> data)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+
+        while (data.Count >=2)
+		{
+			byte lsb = (byte)(data.Dequeue() & 0x7F);
+			byte msb = (byte)((data.Dequeue() & 0x7F) << 7);
+			byte[] both = { (byte)(lsb | msb) };
+			if (lsb != 0 || msb != 0)
+				stringBuilder.Append(Encoding.ASCII.GetString(both));
+		}
+
+		return stringBuilder.ToString();
+	}
 
     /// <summary>
     /// Send an array of boolean values indicating the state of each individual
