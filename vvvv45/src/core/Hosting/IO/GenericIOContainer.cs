@@ -20,7 +20,10 @@ namespace VVVV.Hosting.IO
             // We need to construct with runtime type here, as compiletime type might be too simple (cast exceptions later).
             var ioHandlerType = typeof(GenericIOContainer<>).MakeGenericType(ioObject.GetType());
             var containers = ioObject as IIOMultiPin;
-            return (IIOContainer)Activator.CreateInstance(ioHandlerType, context, factory, containers.BaseContainer, ioObject, containers.AssociatedContainers, syncAction, flushAction);
+            if (containers == null)
+                return (IIOContainer)Activator.CreateInstance(ioHandlerType, context, factory, null, ioObject, null, syncAction, flushAction);
+            else
+                return (IIOContainer)Activator.CreateInstance(ioHandlerType, context, factory, containers.BaseContainer, ioObject, containers.AssociatedContainers, syncAction, flushAction);
         }
     }
     
