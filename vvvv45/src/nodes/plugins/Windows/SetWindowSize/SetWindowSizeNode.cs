@@ -31,7 +31,7 @@ namespace VVVV.Nodes
         [DllImport("User32.dll")]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
-        [DllImport("user32.dll")]
+        [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
         //called when data for any output pin is requested
@@ -41,12 +41,11 @@ namespace VVVV.Nodes
             {
                 if (FApply[i])
                 {
-                    IntPtr hWnd = (IntPtr) FHandle[i];
+                    IntPtr hWnd = (IntPtr)FHandle[i];
                     RECT rcClient, rcWindow;
 
                     if (IsWindow(hWnd))
                     {
-
                         User32.GetClientRect(hWnd, out rcClient);
                         User32.GetWindowRect(hWnd, out rcWindow);
 
