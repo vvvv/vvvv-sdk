@@ -148,7 +148,7 @@ namespace VVVV.Hosting.IO
                 {
                     var t = context.IOType;
                     var container = factory.CreateIOContainer(context.ReplaceIOType(typeof(ITransformIn)));
-                    var stream = Activator.CreateInstance(typeof(TransformInput), container.RawIOObject) as IOutStream;
+                    var stream = Activator.CreateInstance(typeof(TransformInput), container.RawIOObject) as IInStream;
 
                     return IOContainer.Create(context, stream, container);
                 });
