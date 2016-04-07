@@ -119,6 +119,7 @@ float4x4(
 // PIXELSHADERS:
 // -------------------------------------------------------------------------------------------------------------------------------------
 
+float Far <string uiname="Z CutOff";> = 100;
 float4 BorderColor: COLOR <string uiname="Border Color";>;
 bool FrontOnly <string uiname="Frontproject Only";> = 1;
 float4 PS(float4 TexC: TEXCOORD0, VS_OUTPUT input): COLOR
@@ -145,7 +146,7 @@ float4 PS(float4 TexC: TEXCOORD0, VS_OUTPUT input): COLOR
 		col = 0;
     
     // below: kill all color outside of original texture.
-    if( TexC.x < 0 || TexC.y < 0 || TexC.x > 1 || TexC.y > 1 )
+    if( TexC.x < 0 || TexC.y < 0 || TexC.x > 1 || TexC.y > 1 || TexC.z > Far)
     {
     	col = BorderColor;
     }
