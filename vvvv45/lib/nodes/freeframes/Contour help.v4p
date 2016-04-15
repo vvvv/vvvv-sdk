@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33alpha12.1.dtd" >
-   <PATCH nodename="Y:\freeframe\Contour\Contour help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\freeframes\Contour help.v4p">
    <BOUNDS height="11835" left="1170" top="1350" type="Window" width="12540">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="32" nodename="Contour.dll">
+   <NODE componentmode="InAWindow" id="32" nodename="Contour (FreeFrame DShow9)">
    <BOUNDS height="100" left="6465" top="5955" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="X" visible="1">
@@ -35,7 +35,7 @@
    </PIN>
    <PIN pinname="Orientation" visible="1">
    </PIN>
-   <PIN pinname="ID" visible="1">
+   <PIN pinname="Contours ID" visible="1">
    </PIN>
    <PIN pinname="Invert" slicecount="1" values="0">
    </PIN>
@@ -62,7 +62,7 @@
    <PIN pinname="Texture" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="30" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="30" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="5505" top="9225" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4695" left="9675" top="8130" type="Window" width="6120">
@@ -71,19 +71,31 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="Projection" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Visualisation">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <NODE id="29" nodename="VideoTexture (EX9.Texture VMR9)">
+   <NODE id="29" nodename="VIDEOTEXTURE (EX9.TEXTURE VMR9)">
    <BOUNDS height="0" left="5370" top="7470" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Video" visible="1">
    </PIN>
    <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
    </PIN>
    </NODE>
    <LINK dstnodeid="29" dstpinname="Video" linkstyle="Bezier" srcnodeid="32" srcpinname="Video Output">
@@ -110,7 +122,7 @@
    <PIN pinname="XYZ" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="30" dstpinname="View Transform" srcnodeid="27" srcpinname="Transform Out">
+   <LINK dstnodeid="30" dstpinname="View" srcnodeid="27" srcpinname="Transform Out">
    </LINK>
    <NODE id="26" nodename="Transform (Transform 2d)">
    <BOUNDS height="0" left="6915" top="7470" type="Node" width="0">
@@ -142,7 +154,7 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="25" dstpinname="Input" linkstyle="VHV" srcnodeid="32" srcpinname="ID">
+   <LINK dstnodeid="25" dstpinname="Input" linkstyle="VHV" srcnodeid="32" srcpinname="Contours ID">
    <LINKPOINT x="8085" y="6660">
    </LINKPOINT>
    <LINKPOINT x="8355" y="6660">
@@ -192,7 +204,7 @@
    <LINKPOINT x="6270" y="8325">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="22" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="9660" top="6720" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9765" top="8130" type="Window" width="215">
@@ -204,7 +216,7 @@
    <PIN pinname="Rows" slicecount="1" values="5">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="32" srcpinname="ID">
+   <LINK dstnodeid="22" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="32" srcpinname="Contours ID">
    <LINKPOINT x="8085" y="6660">
    </LINKPOINT>
    <LINKPOINT x="10710" y="6660">
@@ -226,7 +238,7 @@
    <PIN pinname="Device" pintype="Configuration" slicecount="1" values="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="20" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="20" nodename="RENDERER (EX9)">
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
@@ -237,7 +249,17 @@
    </BOUNDS>
    <BOUNDS height="1800" left="5700" top="2940" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="19" nodename="HSL (Color Join)">
@@ -372,7 +394,7 @@
    </LINK>
    <LINK dstnodeid="14" dstpinname="Z" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="11" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8010" top="540" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10560" top="9735" type="Window" width="215">
@@ -447,7 +469,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10680" top="24090" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Contour - FreeFrame DShow9|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Contour (FreeFrame DShow9)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -502,7 +524,7 @@
    </NODE>
    <LINK dstnodeid="32" dstpinname="Video Input" linkstyle="Bezier" srcnodeid="21" srcpinname="Video">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="9585" top="5100" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10290" top="7695" type="Window" width="215">
@@ -550,7 +572,7 @@
    <PIN pinname="Viewport Matrix Transformation" visible="1">
    </PIN>
    </NODE>
-   <NODE id="2" nodename="Point (GDI)">
+   <NODE id="2" nodename="POINT (GDI)">
    <BOUNDS height="0" left="8850" top="8895" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -561,7 +583,7 @@
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Pixel">
    </PIN>
-   <PIN pinname="Color" visible="1">
+   <PIN pinname="Pen Color" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Layers" srcnodeid="2" srcpinname="Layer">
@@ -606,6 +628,10 @@
    <LINKPOINT x="9945" y="8325">
    </LINKPOINT>
    </LINK>
-   <LINK dstnodeid="2" dstpinname="Color" srcnodeid="0" srcpinname="Output">
+   <LINK dstnodeid="2" dstpinname="Pen Color" srcnodeid="0" srcpinname="Output">
    </LINK>
+   <PACK Name="ImagePack" Version="0.2.0">
+   </PACK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>
