@@ -11,6 +11,14 @@ namespace VVVV.Nodes.Texture.HTML
 {
     public class WebClient : CefClient
     {
+        public class RequestContextHandler : CefRequestContextHandler
+        {
+            protected override CefCookieManager GetCookieManager()
+            {
+                return null;
+            }
+        }
+
         class RenderHandler : CefRenderHandler
         {
             private readonly HTMLTextureRenderer FRenderer;

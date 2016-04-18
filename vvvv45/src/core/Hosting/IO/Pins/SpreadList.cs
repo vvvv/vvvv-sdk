@@ -10,7 +10,7 @@ namespace VVVV.Hosting.Pins
 	/// base class for spread lists
 	/// </summary>
 	[ComVisible(false)]
-	abstract class SpreadList<TSpread> : Spread<TSpread>, IDisposable
+	abstract class SpreadList<TSpread> : Spread<TSpread>, VVVV.Hosting.IO.IIOMultiPin, IDisposable 
 	    where TSpread : class, ISynchronizable, IFlushable
 	{
 	    class SpreadListStream : MemoryIOStream<TSpread>
@@ -42,8 +42,24 @@ namespace VVVV.Hosting.Pins
 		protected int FOffsetCounter;
 		protected static int FInstanceCounter = 1;
         private bool FForceOnNextFlush;
-		
-		public SpreadList(IIOFactory factory, IOAttribute attribute)
+
+        public IIOContainer BaseContainer
+        {
+            get
+            {
+                return FCountSpread as IIOContainer;
+            }
+        }
+
+        public IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return FIOContainers.ToArray();
+            }
+        }
+
+        public SpreadList(IIOFactory factory, IOAttribute attribute)
 		    : base(new SpreadListStream())
 		{
 			//store fields

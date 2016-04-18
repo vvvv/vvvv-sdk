@@ -3,11 +3,10 @@ using System.Diagnostics;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils;
 using VVVV.Utils.Streams;
-using System.Collections.Generic;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimInStream<T> : MemoryIOStream<IInStream<T>>, IDisposable
+    class MultiDimInStream<T> : MemoryIOStream<IInStream<T>>, IIOMultiPin, IDisposable
     {
         class InnerStream : IInStream<T>
         {
@@ -165,7 +164,23 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IIOContainer<IInStream<int>> FBinSizeContainer;
         private readonly IInStream<T> FDataStream;
         private readonly IntInStream FBinSizeStream;
-        
+
+        public IIOContainer BaseContainer
+        {
+            get
+            {
+                return FDataContainer;
+            }
+        }
+
+        public IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return new IIOContainer[]{ FBinSizeContainer };
+            }
+        }
+
         public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
         {
             FDataContainer = factory.CreateIOContainer<IInStream<T>>(attribute, false);

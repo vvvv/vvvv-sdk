@@ -35,6 +35,7 @@ namespace VVVV.Nodes.Texture.HTML
         private volatile bool FEnabled;
         private readonly WebClient FWebClient;
         private CefBrowser FBrowser;
+        private CefRequestContext FRequestContext;
         private CefBrowserHost FBrowserHost;
         private string FUrl;
         private string FHtml;
@@ -75,7 +76,10 @@ namespace VVVV.Nodes.Texture.HTML
 
             FWebClient = new WebClient(this);
             // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
-            CefBrowserHost.CreateBrowser(windowInfo, FWebClient, settings);
+            // We need to maintain different request contexts in order to have different zoom levels
+            // See https://bitbucket.org/chromiumembedded/cef/issues/1314
+            FRequestContext = CefRequestContext.CreateContext(new WebClient.RequestContextHandler());
+            CefBrowserHost.CreateBrowser(windowInfo, FWebClient, settings, FRequestContext);
             // Block until browser is created
             FBrowserAttachedEvent.WaitOne();
         }
@@ -102,6 +106,7 @@ namespace VVVV.Nodes.Texture.HTML
             FBrowserDetachedEvent.WaitOne();
             FBrowserAttachedEvent.Dispose();
             FBrowserDetachedEvent.Dispose();
+            FRequestContext.Dispose();
             if (FMouseSubscription != null)
             {
                 FMouseSubscription.Dispose();
@@ -505,7 +510,15 @@ namespace VVVV.Nodes.Texture.HTML
         private bool FIsLoading;
         public bool IsLoading
         {
-            get { return FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid) || FTextures.Any(t => !t.IsValid); }
+            get
+            {
+                if (FIsLoading || !FDomIsValid || (IsAutoSize && !FDocumentSizeIsValid))
+                    return true;
+                lock (FTextures)
+                {
+                    return FTextures.Any(t => !t.IsValid);
+                }
+            }
         }
 
         private bool FLoaded;
@@ -558,6 +571,8 @@ namespace VVVV.Nodes.Texture.HTML
                     UpdateDocumentSize();
                 }
                 FLoaded = true;
+                // HACK: Re-apply zooming level :/ - https://vvvv.org/forum/htmltexture-bug-with-zoomlevel
+                FBrowserHost.SetZoomLevel(ZoomLevel);
             }
             else
                 // Reset computed values like document size or DOM
@@ -627,11 +642,14 @@ namespace VVVV.Nodes.Texture.HTML
 
         internal EX9.Texture GetTexture(Device device)
         {
-            var texture = FTextures.FirstOrDefault(t => t.Device == device);
-            if (texture != null)
-                return texture.LastCompleteTexture;
-            else
-                return null;
+            lock (FTextures)
+            {
+                var texture = FTextures.FirstOrDefault(t => t.Device == device);
+                if (texture != null)
+                    return texture.LastCompleteTexture;
+                else
+                    return null;
+            }
         }
 
         internal void DestroyResources(Device device)

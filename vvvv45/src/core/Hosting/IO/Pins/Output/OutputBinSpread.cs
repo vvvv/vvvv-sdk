@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
+using VVVV.PluginInterfaces.V1;
 
 namespace VVVV.Hosting.Pins.Output
 {
@@ -10,12 +11,12 @@ namespace VVVV.Hosting.Pins.Output
     {
         public class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            private readonly IIOContainer<IOutStream<T>> FDataContainer;
-            private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
+            internal readonly IIOContainer<IOutStream<T>> FDataContainer;
+            internal readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
             private readonly IOutStream<T> FDataStream;
             private readonly IOutStream<int> FBinSizeStream;
             private bool FOwnsBinSizeContainer;
-            
+
             public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute)
                 : this(ioFactory, attribute, () => ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false))
             {
@@ -111,7 +112,23 @@ namespace VVVV.Hosting.Pins.Output
         }
         
         private readonly OutputBinSpreadStream FStream;
-        
+
+        public override IIOContainer BaseContainer
+        {
+            get
+            {
+                return FStream.FDataContainer;
+            }
+        }
+
+        public override IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return new IIOContainer[] { FStream.FBinSizeContainer };
+            }
+        }
+
         public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute)
             : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute))
         {
