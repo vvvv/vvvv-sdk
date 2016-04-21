@@ -80,7 +80,7 @@ namespace VVVV.Nodes.Texture.HTML
                 return false;
             }
 
-            protected override void OnScrollOffsetChanged(CefBrowser browser)
+            protected override void OnScrollOffsetChanged(CefBrowser browser, double x, double y)
             {
                 // Do not report the change as long as the renderer is busy loading content
                 if (!FRenderer.IsLoading)
@@ -189,7 +189,7 @@ namespace VVVV.Nodes.Texture.HTML
                 FRenderer = renderer;
             }
 
-            protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
+            protected override bool OnBeforePopup(CefBrowser browser, CefFrame frame, string targetUrl, string targetFrameName, CefWindowOpenDisposition targetDisposition, bool userGesture, CefPopupFeatures popupFeatures, CefWindowInfo windowInfo, ref CefClient client, CefBrowserSettings settings, ref bool noJavascriptAccess)
             {
                 FRenderer.LoadUrl(targetUrl);
                 return true;

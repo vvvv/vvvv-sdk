@@ -19,7 +19,7 @@ namespace VVVV.Nodes.Texture.HTML
 
             var cefSettings = new CefSettings();
             cefSettings.WindowlessRenderingEnabled = true;
-            cefSettings.PackLoadingDisabled = true;
+            cefSettings.PackLoadingDisabled = false;
             cefSettings.MultiThreadedMessageLoop = true;
             cefSettings.BrowserSubprocessPath = Assembly.GetExecutingAssembly().Location;
             cefSettings.CommandLineArgsDisabled = false;
