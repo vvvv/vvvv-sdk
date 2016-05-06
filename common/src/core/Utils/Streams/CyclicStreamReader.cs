@@ -16,16 +16,21 @@ namespace VVVV.Utils.Streams
 		
 		internal CyclicStreamReader(IInStream<T> stream)
 		{
-		    if (stream.Length == 0)
-		    {
-		        FReader = StreamUtils.GetEmptyStream<T>().GetReader();
-		    }
-		    else
-		    {
-		        FReader = stream.GetReader();
-		    }
-			Eos = stream.Length == 0;
-			Length = stream.Length;
+            var streamLength = Length = stream.Length;
+            switch (streamLength)
+            {
+                case 0:
+		            FReader = StreamUtils.GetEmptyStream<T>().GetReader();
+                    break;
+                case 1:
+                    using (var reader = stream.GetReader())
+                        Current = reader.Read();
+                    break;
+                default:
+		            FReader = stream.GetReader();
+                    break;
+            }
+			Eos = streamLength == 0;
 		}
 		
 		public bool Eos
@@ -68,12 +73,16 @@ namespace VVVV.Utils.Streams
 		
 		public T Read(int stride = 1)
 		{
-			var result = FReader.Read(stride);
-			if (FReader.Eos)
-			{
-				FReader.Position %= FReader.Length;
-			}
-			return result;
+            if (FReader != null)
+            {
+                var result = FReader.Read(stride);
+                if (FReader.Eos)
+                {
+                    FReader.Position %= FReader.Length;
+                }
+                return result;
+            }
+            return Current;
 		}
 		
 		public int Read(T[] buffer, int index, int length, int stride = 1)
@@ -84,12 +93,10 @@ namespace VVVV.Utils.Streams
 			{
 				case 1:
 					// Special treatment for streams of length one
-					if (FReader.Eos) FReader.Reset();
-					
 					if (index == 0 && length == buffer.Length)
-						buffer.Init(FReader.Read(stride)); // Slightly faster
+						buffer.Init(Current); // Slightly faster
 					else
-						buffer.Fill(index, length, FReader.Read(stride));
+						buffer.Fill(index, length, Current);
 					break;
 				default:
 					int numSlicesRead = 0;
@@ -143,15 +150,19 @@ namespace VVVV.Utils.Streams
 		
 		public void Dispose()
 		{
-			FReader.Dispose();
-            FReader = null;
+            if (FReader != null)
+            {
+                FReader.Dispose();
+                FReader = null;
+            }
 		}
 		
 		public bool MoveNext()
 		{
             if (!Eos)
             {
-                Current = Read();
+                if (FReader != null)
+                    Current = Read();
                 return true;
             }
             return false;
@@ -159,7 +170,8 @@ namespace VVVV.Utils.Streams
 		
 		public void Reset()
 		{
-			FReader.Reset();
+            if (FReader != null)
+			    FReader.Reset();
 		}
 	}
 }

@@ -211,51 +211,68 @@ namespace VVVV.Hosting.IO.Streams
             
             if (IsChanged)
             {
-                int dataLength = FDataStream.Length;
-                int binSizeLength = FBinSizeStream.Length;
-                int binSizeSum = 0;
-                
-                foreach (var binSize in FBinSizeStream)
-                {
-                    binSizeSum += SpreadUtils.NormalizeBinSize(dataLength, binSize);
-                }
-                
-                int binTimes = SpreadUtils.DivByBinSize(dataLength, binSizeSum);
-                binTimes = binTimes > 0 ? binTimes : 1;
-                Length = binTimes * binSizeLength;
+                var dataLength = FDataStream.Length;
+                var binSizeLength = FBinSizeStream.Length;
 
-                var binSizeBuffer = MemoryPool<int>.GetArray();
-                try
+                if (binSizeLength == 1)
                 {
-                    using (var binSizeReader = FBinSizeStream.GetCyclicReader())
+                    var binSize = SpreadUtils.NormalizeBinSize(dataLength, FBinSizeStream.GetValue(0));
+                    var length = Length = dataLength != 1 ? GetLength(dataLength, binSizeLength, binSize) : 1;
+                    var offsetIntoDataStream = 0;
+                    for (int i = 0; i < length; i++)
                     {
-                        var numSlicesToWrite = Length;
-                        var offsetIntoDataStream = 0;
-                        while (numSlicesToWrite > 0)
-                        {
-                            var numSlicesToRead = Math.Min(numSlicesToWrite, binSizeBuffer.Length);
-                            binSizeReader.Read(binSizeBuffer, 0, numSlicesToRead);
-                            var offset = Length - numSlicesToWrite;
-                            for (int i = offset; i < offset + numSlicesToRead; i++)
-                            {
-                                var binSize = SpreadUtils.NormalizeBinSize(dataLength, binSizeBuffer[i - offset]);
-                                var innerStream = this[i] as InnerStream;
-                                // Inner stream will use cyclic reader when offset + length > length of data stream.
-                                innerStream.Offset = offsetIntoDataStream;
-                                innerStream.Length = binSize;
-                                offsetIntoDataStream += binSize;
-                            }
-                            numSlicesToWrite -= numSlicesToRead;
-                        }
+                        var innerStream = this[i] as InnerStream;
+                        innerStream.Offset = offsetIntoDataStream;
+                        innerStream.Length = binSize;
+                        offsetIntoDataStream += binSize;
                     }
                 }
-                finally
+                else
                 {
-                    MemoryPool<int>.PutArray(binSizeBuffer);
+                    var binSizeSum = 0;
+                    for (int i = 0; i < binSizeLength; i++)
+                        binSizeSum += SpreadUtils.NormalizeBinSize(dataLength, FBinSizeStream.GetValue(i));
+                    var length = Length = GetLength(dataLength, binSizeLength, binSizeSum);
+                    var binSizeBuffer = MemoryPool<int>.GetArray();
+                    try
+                    {
+                        using (var binSizeReader = FBinSizeStream.GetCyclicReader())
+                        {
+                            var numSlicesToWrite = length;
+                            var offsetIntoDataStream = 0;
+                            while (numSlicesToWrite > 0)
+                            {
+                                var numSlicesToRead = Math.Min(numSlicesToWrite, binSizeBuffer.Length);
+                                binSizeReader.Read(binSizeBuffer, 0, numSlicesToRead);
+                                var offset = length - numSlicesToWrite;
+                                for (int i = offset; i < offset + numSlicesToRead; i++)
+                                {
+                                    var binSize = SpreadUtils.NormalizeBinSize(dataLength, binSizeBuffer[i - offset]);
+                                    var innerStream = this[i] as InnerStream;
+                                    // Inner stream will use cyclic reader when offset + length > length of data stream.
+                                    innerStream.Offset = offsetIntoDataStream;
+                                    innerStream.Length = binSize;
+                                    offsetIntoDataStream += binSize;
+                                }
+                                numSlicesToWrite -= numSlicesToRead;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        MemoryPool<int>.PutArray(binSizeBuffer);
+                    }
                 }
             }
 
             return base.Sync();
+        }
+
+        private static int GetLength(int dataLength, int binSizeLength, int binSizeSum)
+        {
+            var binTimes = SpreadUtils.DivByBinSize(dataLength, binSizeSum);
+            binTimes = binTimes > 0 ? binTimes : 1;
+            return binTimes * binSizeLength;
         }
     }
 }
