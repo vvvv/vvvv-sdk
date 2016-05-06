@@ -54,7 +54,7 @@ namespace VVVV.Nodes.Raw
 			//ResizeAndDispose will adjust the spread length and thereby call
 			//the given constructor function for new slices and Dispose on old
 			//slices.
-			FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+			FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryComStream());
 			FKeyGens.SliceCount = spreadMax;
 			
 			if (FPass.IsChanged || FKeyLength.IsChanged || FKeyIterations.IsChanged || FKeySalt.IsChanged)
