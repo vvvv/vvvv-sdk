@@ -136,18 +136,13 @@ namespace VVVV.Hosting.IO.Streams
             IsChanged = true;
         }
         
-        public int Length
-        {
-            get
-            {
-                return *FPLength;
-            }
-        }
+        public int Length => *FPLength;
         
         public bool Sync()
         {
-            IsChanged = FValidateFunc();
-            return IsChanged;
+            if (FValidateFunc != null)
+                return IsChanged = FValidateFunc();
+            return true;
         }
         
         public bool IsChanged
@@ -157,18 +152,10 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         public abstract object Clone();
-        
         public abstract IStreamReader<T> GetReader();
-        
-        public IEnumerator<T> GetEnumerator()
-        {
-            return GetReader();
-        }
-        
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public abstract T GetValue(int index);
+        public IEnumerator<T> GetEnumerator() => GetReader();
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
     
     unsafe class DoubleInStream : UnmanagedInStream<double>
@@ -224,15 +211,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<double> GetReader()
-        {
-            return new DoubleInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new DoubleInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<double> GetReader() => new DoubleInStreamReader(this, *FPPData);
+        public override double GetValue(int index) => (*FPPData)[index];
+        public override object Clone() => new DoubleInStream(FPLength, FPPData, FValidateFunc);
     }
     
     unsafe class FloatInStream : UnmanagedInStream<float>
@@ -279,15 +260,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<float> GetReader()
-        {
-            return new FloatInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new FloatInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<float> GetReader() => new FloatInStreamReader(this, *FPPData);
+        public override float GetValue(int index) => (float)(*FPPData)[index];
+        public override object Clone() => new FloatInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class ByteInStream : UnmanagedInStream<byte>
@@ -334,15 +309,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
 
-        public override IStreamReader<byte> GetReader()
-        {
-            return new ByteInStreamReader(this, *FPPData);
-        }
-
-        public override object Clone()
-        {
-            return new ByteInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<byte> GetReader() => new ByteInStreamReader(this, *FPPData);
+        public override byte GetValue(int index) => (byte)Math.Round((*FPPData)[index]);
+        public override object Clone() => new ByteInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class SByteInStream : UnmanagedInStream<sbyte>
@@ -389,15 +358,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
 
-        public override IStreamReader<sbyte> GetReader()
-        {
-            return new SByteInStreamReader(this, *FPPData);
-        }
-
-        public override object Clone()
-        {
-            return new SByteInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<sbyte> GetReader() => new SByteInStreamReader(this, *FPPData);
+        public override sbyte GetValue(int index) => (sbyte)Math.Round((*FPPData)[index]);
+        public override object Clone() => new SByteInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class IntInStream : UnmanagedInStream<int>
@@ -444,15 +407,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<int> GetReader()
-        {
-            return new IntInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new IntInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<int> GetReader() => new IntInStreamReader(this, *FPPData);
+        public override int GetValue(int index) => (int)Math.Round((*FPPData)[index]);
+        public override object Clone() => new IntInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class LongInStream : UnmanagedInStream<long>
@@ -499,15 +456,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
 
-        public override IStreamReader<long> GetReader()
-        {
-            return new LongInStreamReader(this, *FPPData);
-        }
-
-        public override object Clone()
-        {
-            return new LongInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<long> GetReader() => new LongInStreamReader(this, *FPPData);
+        public override long GetValue(int index) => (long)Math.Round((*FPPData)[index]);
+        public override object Clone() => new LongInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class ULongInStream : UnmanagedInStream<ulong>
@@ -554,15 +505,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
 
-        public override IStreamReader<ulong> GetReader()
-        {
-            return new ULongInStreamReader(this, *FPPData);
-        }
-
-        public override object Clone()
-        {
-            return new ULongInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<ulong> GetReader() => new ULongInStreamReader(this, *FPPData);
+        public override ulong GetValue(int index) => (ulong)Math.Round((*FPPData)[index]);
+        public override object Clone() => new ULongInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class UIntInStream : UnmanagedInStream<uint>
@@ -609,15 +554,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<uint> GetReader()
-        {
-            return new UIntInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new UIntInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<uint> GetReader() => new UIntInStreamReader(this, *FPPData);
+        public override uint GetValue(int index) => (uint)Math.Round((*FPPData)[index]);
+        public override object Clone() => new UIntInStream(FPLength, FPPData, FValidateFunc);
     }
     
     
@@ -665,15 +604,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<bool> GetReader()
-        {
-            return new BoolInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new BoolInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<bool> GetReader() => new BoolInStreamReader(this, *FPPData);
+        public override bool GetValue(int index) => (*FPPData)[index] >= 0.5;
+        public override object Clone() => new BoolInStream(FPLength, FPPData, FValidateFunc);
     }
     
     unsafe class ColorInStream : UnmanagedInStream<RGBAColor>
@@ -720,15 +653,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<RGBAColor> GetReader()
-        {
-            return new ColorInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new ColorInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<RGBAColor> GetReader() => new ColorInStreamReader(this, *FPPData);
+        public override RGBAColor GetValue(int index) => (*FPPData)[index];
+        public override object Clone() => new ColorInStream(FPLength, FPPData, FValidateFunc);
     }
     
     unsafe class SlimDXColorInStream : UnmanagedInStream<Color4>
@@ -779,15 +706,13 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<Color4> GetReader()
+        public override IStreamReader<Color4> GetReader() => new SlimDXColorInStreamReader(this, *FPPData);
+        public override Color4 GetValue(int index)
         {
-            return new SlimDXColorInStreamReader(this, *FPPData);
+            RGBAColor* src = (*FPPData) + index;
+            return new Color4((float)src->A, (float)src->R, (float)src->G, (float)src->B);
         }
-        
-        public override object Clone()
-        {
-            return new SlimDXColorInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override object Clone() => new SlimDXColorInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class MatrixInStream : UnmanagedInStream<Matrix>
@@ -834,15 +759,9 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<Matrix> GetReader()
-        {
-            return new MatrixInStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new MatrixInStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<Matrix> GetReader() => new MatrixInStreamReader(this, *FPPData);
+        public override Matrix GetValue(int index) => (*FPPData)[index];
+        public override object Clone() => new MatrixInStream(FPLength, FPPData, FValidateFunc);
     }
 
     unsafe class Matrix4x4InStream : UnmanagedInStream<Matrix4x4>
@@ -889,14 +808,8 @@ namespace VVVV.Hosting.IO.Streams
             FPPData = ppData;
         }
         
-        public override IStreamReader<Matrix4x4> GetReader()
-        {
-            return new Matrix4x4InStreamReader(this, *FPPData);
-        }
-        
-        public override object Clone()
-        {
-            return new Matrix4x4InStream(FPLength, FPPData, FValidateFunc);
-        }
+        public override IStreamReader<Matrix4x4> GetReader() => new Matrix4x4InStreamReader(this, *FPPData);
+        public override Matrix4x4 GetValue(int index) => ((*FPPData)[index]).ToMatrix4x4();
+        public override object Clone() => new Matrix4x4InStream(FPLength, FPPData, FValidateFunc);
     }
 }

@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Devices
             if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) GlobalEnumManager.UpdatePortList();
 
             FPorts.Resize(spreadMax, CreatePort, DestroyPort);
-            DataOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+            DataOut.ResizeAndDispose(spreadMax, () => new MemoryComStream());
 
             for (int i = 0; i < spreadMax; i++)
             {

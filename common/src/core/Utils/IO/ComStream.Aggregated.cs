@@ -5,7 +5,7 @@ using System.Text;
 
 namespace System.IO
 {
-    public class AggregatedStream : Stream
+    public class AggregatedStream : ComStream
     {
         private readonly List<Tuple<long, Stream>> cache = new List<Tuple<long,Stream>>();
         private long length;

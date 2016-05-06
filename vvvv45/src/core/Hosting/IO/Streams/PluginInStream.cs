@@ -14,6 +14,7 @@ using VVVV.Utils.Reflection;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
+using com = System.Runtime.InteropServices.ComTypes;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -563,30 +564,34 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    class RawInStream : IInStream<System.IO.Stream>
+    class RawInStream : IInStream<Stream>
     {
-        class RawInStreamReader : IStreamReader<System.IO.Stream>
+        public static readonly Stream EmptyStream = new MemoryStream(Array.Empty<byte>(), writable: false);
+
+        class RawInStreamReader : IStreamReader<Stream>
         {
             private readonly RawInStream FRawInStream;
+            private readonly IRawIn FRawIn;
 
             public RawInStreamReader(RawInStream stream)
             {
                 FRawInStream = stream;
+                FRawIn = stream.FRawIn;
             }
 
             public Stream Read(int stride = 1)
             {
-                VVVV.Utils.Win32.IStream stream;
-                FRawInStream.FRawIn.GetData(Position, out stream);
+                com.IStream comStream;
+                FRawIn.GetData(Position, out comStream);
                 Position += stride;
-                if (stream != null)
+                if (comStream != null)
                 {
-                    var result = new ComStream(stream);
-                    result.Position = 0;
-                    return result;
+                    var stream = comStream as Stream;
+                    if (stream != null)
+                        return stream;
+                    return new ComAdapterStream(comStream);
                 }
-                else
-                    return new MemoryStream(0);
+                return EmptyStream;
             }
 
             public int Read(Stream[] buffer, int offset, int length, int stride = 1)

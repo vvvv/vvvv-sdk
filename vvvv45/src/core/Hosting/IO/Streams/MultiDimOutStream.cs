@@ -9,7 +9,7 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IIOContainer<IOutStream<T>> FDataContainer;
         private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
         private readonly IOutStream<T> FDataStream;
-        private readonly IOutStream<int> FBinSizeStream;
+        private readonly IntOutStream FBinSizeStream;
 
         public IIOContainer BaseContainer
         {
@@ -32,7 +32,7 @@ namespace VVVV.Hosting.IO.Streams
             FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
             FBinSizeContainer = ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
             FDataStream = FDataContainer.IOObject;
-            FBinSizeStream = FBinSizeContainer.IOObject;
+            FBinSizeStream = (IntOutStream)FBinSizeContainer.IOObject;
             Length = 1;
         }
         
@@ -48,17 +48,16 @@ namespace VVVV.Hosting.IO.Streams
             var binSizeBuffer = MemoryPool<int>.GetArray();
             try
             {
-                FBinSizeStream.Length = Length;
+                var length = FBinSizeStream.Length = Length;
 
                 int dataStreamLength = 0;
                 using (var binSizeWriter = FBinSizeStream.GetWriter())
                 {
                     var numSlicesBuffered = 0;
-                    for (int i = 0; i < Length; i++)
+                    for (int i = 0; i < length; i++)
                     {
-                        var stream = Buffer[i];
-                        binSizeBuffer[numSlicesBuffered++] = stream.Length;
-                        dataStreamLength += stream.Length;
+                        var innerStream = Buffer[i];
+                        dataStreamLength += binSizeBuffer[numSlicesBuffered++] = innerStream.Length;
                         if (numSlicesBuffered == binSizeBuffer.Length)
                         {
                             binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
@@ -66,9 +65,7 @@ namespace VVVV.Hosting.IO.Streams
                         }
                     }
                     if (numSlicesBuffered > 0)
-                    {
                         binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
-                    }
                 }
 
                 FDataStream.Length = dataStreamLength;
@@ -76,15 +73,16 @@ namespace VVVV.Hosting.IO.Streams
                 {
                     bool anyChanged = force || IsChanged;
                     var numSlicesBuffered = 0;
-                    for (int i = 0; i < Length; i++)
+                    for (int i = 0; i < length; i++)
                     {
-                        var stream = Buffer[i];
-                        anyChanged |= stream.IsChanged;
+                        var innerStream = Buffer[i];
+                        var innerStreamLength = innerStream.Length;
+                        anyChanged |= innerStream.IsChanged;
                         if (anyChanged)
                         {
-                            using (var reader = stream.GetReader())
+                            using (var reader = innerStream.GetReader())
                             {
-                                switch (reader.Length)
+                                switch (innerStreamLength)
                                 {
                                     case 0:
                                         break;
@@ -102,17 +100,15 @@ namespace VVVV.Hosting.IO.Streams
                                 }
                             }
                             // Reset the changed flags
-                            var flushable = stream as IFlushable;
+                            var flushable = innerStream as IFlushable;
                             if (flushable != null)
                                 flushable.Flush(force);
                         }
                         else
-                            dataWriter.Position += stream.Length;
+                            dataWriter.Position += innerStreamLength;
                     }
                     if (numSlicesBuffered > 0)
-                    {
                         dataWriter.Write(buffer, 0, numSlicesBuffered);
-                    }
                 }
             }
             finally

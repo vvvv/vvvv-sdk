@@ -9,12 +9,17 @@ namespace VVVV.PluginInterfaces.V2
 	{
 		public static int NormalizeBinSize(int sliceCount, int binSize)
 		{
-            if (sliceCount == 0) return 0;
-			if (binSize < 0)
-			{
-				return DivByBinSize(sliceCount, Math.Abs(binSize));
-			}
-			return binSize;
+            // Standard case first
+            if (sliceCount > 0)
+            {
+                if (binSize == -1)
+                    return sliceCount;
+                if (binSize < 0)
+                    return DivByBinSize(sliceCount, Math.Abs(binSize));
+                else
+                    return binSize;
+            }
+            return 0;
 		}
 		
 		public static int DivByBinSize(int sliceCount, int binSize)

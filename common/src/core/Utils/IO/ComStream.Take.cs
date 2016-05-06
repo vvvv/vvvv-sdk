@@ -7,13 +7,13 @@ using VVVV.Utils.VMath;
 
 namespace System.IO
 {
-    public class SkipStream : Stream
+    public class TakeStream : ComStream
     {
         private readonly Stream stream;
         private readonly long count;
         private long position;
 
-        public SkipStream(Stream stream, long count)
+        public TakeStream(Stream stream, long count)
         {
             Debug.Assert(count >= 0);
             this.stream = stream;
@@ -42,7 +42,7 @@ namespace System.IO
 
         public override long Length
         {
-            get { return Math.Max(this.stream.Length - this.count, 0); }
+            get { return Math.Min(this.count, this.stream.Length); }
         }
 
         public override long Position
@@ -53,9 +53,10 @@ namespace System.IO
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            this.stream.Position = this.position + this.count;
-            var bytesRead = this.stream.Read(buffer, offset, count);
-            this.Position += bytesRead;
+            this.stream.Position = this.position;
+            var newCount = VMath.Clamp(count, 0, (int)(this.Length - this.position));
+            var bytesRead = this.stream.Read(buffer, offset, newCount);
+            this.position += bytesRead;
             return bytesRead;
         }
 
