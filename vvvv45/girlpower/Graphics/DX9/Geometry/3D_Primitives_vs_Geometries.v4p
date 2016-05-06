@@ -1,0 +1,605 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Primitives_vs_Geometries.v4p" systemname="10_3D_Primitives_vs_Geometries" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\10_3D_Primitives_vs_Geometries.v4p" scrollx="0" scrolly="15">
+   <BOUNDS type="Window" left="2895" top="1860" width="17190" height="12315">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="240" width="1185" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="240" width="4350" height="435">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives vs. Geometries|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE systemname="Teapot (EX9.Geometry)" nodename="Teapot (EX9.Geometry)" componentmode="Hidden" id="95">
+   <BOUNDS type="Node" left="6300" top="3255" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Sphere (DX9)" nodename="Sphere (DX9)" componentmode="Hidden" id="96">
+   <BOUNDS type="Node" left="585" top="3795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Resolution Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="97">
+   <BOUNDS type="Node" left="585" top="4440" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="4440" width="2355" height="2250">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4635" top="3825" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="96" srcpinname="Layer" dstnodeid="97" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="98" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2175" top="3285" width="315" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2175" top="3285" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="96" dstpinname="Resolution X">
+   </LINK>
+   <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="96" dstpinname="Resolution Y">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="106">
+   <BOUNDS type="Node" left="6150" top="4440" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6150" top="4440" width="2355" height="2250">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4635" top="3825" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="107">
+   <BOUNDS type="Node" left="9435" top="4440" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9435" top="4440" width="2355" height="2250">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4635" top="3825" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="114" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13995" top="3315" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13995" top="3315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.16">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE systemname="ColladaFile (EX9.Geometry)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="ColladaFile (EX9.Geometry)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="9600" top="2115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="COLLADA Model" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\..\lib\assets\geometries\astroBoy_walk.dae">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Coordinate system of source" slicecount="1" values="RightHanded">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mesh (EX9.Geometry Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Mesh (EX9.Geometry Collada)" componentmode="Hidden" id="120">
+   <BOUNDS type="Node" left="9600" top="2700" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="COLLADA Model" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="TextureFileName" visible="1">
+   </PIN>
+   <PIN pinname="Transforms" visible="1">
+   </PIN>
+   <PIN pinname="Time" slicecount="1" values="0.0181">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="119" srcpinname="COLLADA Model" dstnodeid="120" dstpinname="COLLADA Model">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="121" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11940" top="2880" width="795" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11940" top="2880" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0.08,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="122">
+   <BOUNDS type="Node" left="10695" top="3360" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="120" srcpinname="TextureFileName" dstnodeid="122" dstpinname="Filename">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="123" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12855" top="3315" width="510" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12855" top="3315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="125" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9900" top="3105" width="645" height="585">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9900" top="3105" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="-0.7,-0.23,0.92">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="126" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4035" top="5010" width="345" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4035" top="5010" width="1095" height="960">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="vs.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="36">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="127" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="585" top="1185" width="345" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="1185" width="1800" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|DX9 Primitives|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="128" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6075" top="1215" width="345" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6075" top="1215" width="1485" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Geometries">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="129" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9435" top="1215" width="345" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9435" top="1215" width="1485" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Meshes">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="130" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="7125" width="5670" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="7125" width="3495" height="3285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives in the DX9 category combine a 3d geometry and a drawing effect (ie. shader) in one node. They are always only drawn with constant shading, no lighting.&cr;&lf;&cr;&lf;These nodes return a &apos;Layer&apos; which can be directly plugged in into the Renderer, or the Group.&cr;&lf;&cr;&lf;Primitives can be colored (see the &apos;Color&apos; pin) and textured (see the &apos;Texture&apos; pin).&cr;&lf;&cr;&lf;DX9 nodes internally use the direct3d fixed function pipeline (to whom this may mean something).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="131" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="7125" width="5670" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="7125" width="2595" height="2355">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Geometries from the EX9.Geometry category are only 3d meshes, they need an Effect (from the EX9.Effect category) to be drawn.&cr;&lf;&cr;&lf;Effects are containers for user-programmable vertex- and pixelshader, which in turn represent the two steps in which drawing is performed.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="133" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5715" top="3180" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5715" top="3180" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="134" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5715" top="3735" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5715" top="3735" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden" id="99">
+   <BOUNDS type="Node" left="6150" top="3795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="95" srcpinname="Mesh" dstnodeid="99" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="99" srcpinname="Layer" dstnodeid="106" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="135" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9435" top="7125" width="5670" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9435" top="7125" width="2700" height="540">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Meshes can be loaded from different formats like Collada and XFile.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5730" top="7095" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5730" top="7095" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="143" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5730" top="8160" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5730" top="8160" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="144" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="10605" width="1560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="10605" width="1560" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Primitives overview:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="145">
+   <BOUNDS type="Node" left="600" top="10905" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="600" top="10905" width="2580" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="3D_Primitives_Overview.v4p">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="147" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="9510" width="1560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="9510" width="1650" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Geometries overview:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="146">
+   <BOUNDS type="Node" left="6135" top="9795" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="9795" width="2580" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="3D_Geometry_Overview.v4p">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="149" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="10170" width="1560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="10170" width="1290" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Built-in shaders:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="148">
+   <BOUNDS type="Node" left="6135" top="10455" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="10455" width="2580" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\Shader\Shading_Overview.v4p">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="150" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="3720" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="165" top="3720" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="151" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="7095" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="150" top="7095" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="152" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="9600" top="1680" width="2400" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9600" top="1680" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\lib\assets\geometries\astroBoy_walk.dae">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="|COLLADA Files (*.dae)||*.dae|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="152" srcpinname="Output String" dstnodeid="119" dstpinname="Filename">
+   </LINK>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="153" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="11145" width="4695" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="11145" width="4830" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/tutorial-of-effects-and-shaders">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="154" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6135" top="10875" width="1560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6135" top="10875" width="1830" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Effects/Shaders Tutorial|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="159" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13425" top="3315" width="495" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13425" top="3315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="162">
+   <BOUNDS type="Node" left="13080" top="3795" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13080" top="3795">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="162" srcpinname="View" dstnodeid="107" dstpinname="View" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="162" srcpinname="Projection" dstnodeid="107" dstpinname="Projection" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial InterestXYZ">
+   </LINK>
+   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Longitude">
+   </LINK>
+   <LINK srcnodeid="159" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Latitude">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="165" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10545" top="2085" width="255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10545" top="2085" width="4950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Note, that for this particular mesh, the &apos;Coordinate System of Source&apos; config pin (see Inspektor) should be set to &apos;RightHanded&apos;.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="168" systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden">
+   <BOUNDS type="Node" left="9435" top="3855" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Light Direction XYZ" slicecount="1" visible="1" values="-0.00999999977648258">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="122" srcpinname="Texture Out" dstnodeid="168" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Mesh" dstnodeid="168" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="168" srcpinname="Layer" dstnodeid="107" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Transforms" dstnodeid="168" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="168" dstpinname="Light Direction XYZ">
+   </LINK>
+   </PATCH>

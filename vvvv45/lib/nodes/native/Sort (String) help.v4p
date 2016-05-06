@@ -1,0 +1,105 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Sort (String) help.v4p">
+   <BOUNDS height="9360" left="1830" top="1305" type="Window" width="3405">
+   </BOUNDS>
+   <NODE id="4" nodename="Sort (String)">
+   <BOUNDS height="0" left="2025" top="2880" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Sort Key" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Reverse Sorting" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Alphabetic Sorting" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="2010" top="1410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="20" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="English">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="300" top="3435" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5320" top="4962" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="5385" left="300" top="3435" type="Box" width="1785">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="20.00000">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="Length (String)">
+   <BOUNDS height="0" left="2220" top="2070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Sort Key" srcnodeid="1" srcpinname="Count">
+   </LINK>
+   <NODE id="0" nodename="I (Spreads)">
+   <BOUNDS height="0" left="2025" top="990" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Max" slicecount="1">
+   </PIN>
+   <PIN pinname="Min" slicecount="1">
+   </PIN>
+   <PIN pinname="Integer" visible="1">
+   </PIN>
+   <PIN pinname="[ From .." slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname=".. To [" slicecount="1" values="21.00000">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="2775">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sort the input spread by the given key|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sort - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
