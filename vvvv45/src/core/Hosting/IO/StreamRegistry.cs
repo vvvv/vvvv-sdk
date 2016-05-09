@@ -834,7 +834,10 @@ namespace VVVV.Hosting.IO
         
         static private Func<bool> GetValidateFunc(IPluginFastIn pluginFastIn, bool autoValidate)
         {
-            if (autoValidate) return null;
+            if (autoValidate)
+            {
+                return () => { return true; };
+            }
             // Fast value pins always return false for PinIsChanged, we therefor need to return true here manually.
             return () => { pluginFastIn.Validate(); return true; };
         }
