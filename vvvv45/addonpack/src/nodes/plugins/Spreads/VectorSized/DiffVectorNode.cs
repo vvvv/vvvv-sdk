@@ -50,7 +50,7 @@ namespace VVVV.Nodes
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
 					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
 					
-					FOutput.Length = Math.Max(spread.ItemCount-(spread.Count*vecSize),0);
+					FOutput.Length = Math.Max(spread.ItemCount-(spread.NonEmptyBinCount*vecSize),0);
 					FOutBin.Length = spread.Count;
 					FOffset.Length = spread.Count * vecSize;
 					using (var offWriter = FOffset.GetWriter())
@@ -62,19 +62,19 @@ namespace VVVV.Nodes
 						{
 							if (spread[b].Length>0)
 							{
-							for (int v = 0; v < vecSize; v++)
-							{
-								dataWriter.Position = incr+v;
-								double[] column = spread.GetBinColumn(b,v).ToArray();
-								for (int s=0; s<column.Length-1;s++)
-								{
-									dataWriter.Write(column[s+1]-column[s],vecSize);
-								}
-							}
-							incr+=spread[b].Length-vecSize;
-							binWriter.Write((spread[b].Length/vecSize)-1,1);
+							    for (int v = 0; v < vecSize; v++)
+							    {
+								    dataWriter.Position = incr+v;
+								    var column = spread.GetBinColumn(b,v);
+								    for (int s=0; s<column.Count-1;s++)
+								    {
+									    dataWriter.Write(column[s+1]-column[s],vecSize);
+								    }
+							    }
+							    incr+=spread[b].Length-vecSize;
+							    binWriter.Write((spread[b].Length/vecSize)-1,1);
 							
-							offWriter.Write(spread.GetBinRow(b,0).ToArray(),0,vecSize);
+							    offWriter.Write(spread[b],0,vecSize);
 							}
 							else
 							{
