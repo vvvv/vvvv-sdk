@@ -171,7 +171,7 @@ namespace System.IO
                 this.source.Read(buffer, count, readCountPtr);
             else
             {
-                var tmp = new byte[count - offset];
+                var tmp = new byte[count];
                 this.source.Read(tmp, count, readCountPtr);
                 for (int i = 0; i < readCount; i++)
                     buffer[offset + i] = tmp[i];
@@ -198,7 +198,7 @@ namespace System.IO
                 this.source.Write(buffer, count, IntPtr.Zero);
             else
             {
-                var tmp = new byte[count - offset];
+                var tmp = new byte[count];
                 for (int i = 0; i < tmp.Length; i++)
                     tmp[i] = buffer[offset + i];
                 this.source.Write(tmp, count, IntPtr.Zero);
