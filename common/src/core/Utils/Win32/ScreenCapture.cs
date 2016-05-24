@@ -52,10 +52,13 @@ namespace VVVV.Utils.Win32
                 g.CopyFromScreen(left, top, 0, 0, new Size(width, height));
 
                 //draw cursor
-                var x = Cursor.Position.X - windowRect.left - cdX - Cursor.Current.HotSpot.X;
-                var y = Cursor.Position.Y - windowRect.top - cdY - cdC - Cursor.Current.HotSpot.Y;
-                var rect = new Rectangle(new Point(x, y), Cursor.Current.Size);
-                Cursor.Current.Draw(g, rect);
+                if (Cursor.Current != null)
+                {
+                    var x = Cursor.Position.X - windowRect.left - cdX - Cursor.Current.HotSpot.X;
+                    var y = Cursor.Position.Y - windowRect.top - cdY - cdC - Cursor.Current.HotSpot.Y;
+                    var rect = new Rectangle(new Point(x, y), Cursor.Current.Size);
+                    Cursor.Current.Draw(g, rect);
+                }
             }
 
             return bmp;
