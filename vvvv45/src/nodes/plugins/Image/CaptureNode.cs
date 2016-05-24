@@ -13,6 +13,7 @@ using VVVV.Utils.Imaging;
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 #endregion usings
 
 namespace VVVV.Nodes.Capture
@@ -52,6 +53,9 @@ namespace VVVV.Nodes.Capture
 
         [Input("Auto Filename", IsSingle = true)]
         public ISpread<bool> FAutoFilename;
+
+        [Input("Auto Open", IsSingle = true)]
+        public ISpread<bool> FAutoOpen;
 
         [Output("Frame Count", IsSingle = true)]
         public ISpread<int> FFrameCountOut;
@@ -121,7 +125,10 @@ namespace VVVV.Nodes.Capture
                     FFrames = FFrames.SkipLast(freeCount).ToList();
 
                     //then try saving the captured stuff
-                    FCaptureState = CaptureState.Writing;
+                    if (FFrames.Count > 0)
+                        FCaptureState = CaptureState.Writing;
+                    else
+                        FCaptureState = CaptureState.Idle;
                 }
             }
             else if (FCaptureState == CaptureState.Writing)
@@ -159,6 +166,9 @@ namespace VVVV.Nodes.Capture
 
             var fileStream = new FileStream(filename, FileMode.OpenOrCreate);
             FGIF.Save(fileStream);
+
+            if (FAutoOpen[0])
+                Process.Start(filename);
 
             fileStream.Dispose();
             FGIF.Clear();
