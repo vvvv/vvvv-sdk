@@ -28,7 +28,7 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
-using VL.Core;
+using NuGetAssemblyLoader;
 
 namespace VVVV.Hosting
 {
@@ -106,7 +106,7 @@ namespace VVVV.Hosting
             //add repository paths from commandline
             //from commandline
             var repoArg = "/package-repositories";
-            var packageRepositories = AssemblyProbing.ParseCommandLine(repoArg);
+            var packageRepositories = AssemblyLoader.ParseCommandLine(repoArg);
 
             //from args.txt
             var argsFile = Path.Combine(ExePath, "args.txt");
@@ -120,10 +120,10 @@ namespace VVVV.Hosting
                 packageRepositories = packageRepositories.Union(repoPaths).ToArray();
             }
 
-            AssemblyProbing.AddPackageRepositories(packageRepositories);
+            AssemblyLoader.AddPackageRepositories(packageRepositories);
 
             //the built-in one
-            AssemblyProbing.AddPackageRepository(PacksPath);
+            AssemblyLoader.AddPackageRepository(PacksPath);
             
 
             // Set name to vvvv thread for easier debugging.
@@ -299,7 +299,7 @@ namespace VVVV.Hosting
 
         private void LoadFactoriesFromPackages(AggregateCatalog catalog)
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
@@ -314,7 +314,7 @@ namespace VVVV.Hosting
 
         private void LoadNodesFromPackages()
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check if the package contains a legacy package
