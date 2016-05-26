@@ -123,7 +123,8 @@ namespace VVVV.Hosting
             AssemblyLoader.AddPackageRepositories(packageRepositories);
 
             //the built-in one
-            AssemblyLoader.AddPackageRepository(PacksPath);
+            if (Directory.Exists(PacksPath))
+                AssemblyLoader.AddPackageRepository(PacksPath);
             
 
             // Set name to vvvv thread for easier debugging.
