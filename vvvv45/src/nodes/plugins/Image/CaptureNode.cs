@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using System.Windows.Forms;
 #endregion usings
 
 namespace VVVV.Nodes.Capture
@@ -54,9 +55,12 @@ namespace VVVV.Nodes.Capture
         [Input("Auto Filename", IsSingle = true)]
         public ISpread<bool> FAutoFilename;
 
+        [Input("Report Progress", IsSingle = true)]
+        public ISpread<bool> FReportProgress;
+
         [Input("Auto Open", IsSingle = true)]
         public ISpread<bool> FAutoOpen;
-
+        
         [Output("Frame Count", IsSingle = true)]
         public ISpread<int> FFrameCountOut;
 
@@ -75,8 +79,23 @@ namespace VVVV.Nodes.Capture
         ScreenCapture FScreenCapture = new ScreenCapture();
         List<Frame> FFrames = new List<Frame>();
 
+        IntPtr FHandleToCapture;
+        string FCurrentFilename;
+
         Gif FGIF = new Gif();
+        Form FProgressBar = new Form();
+        Label FProgressLabel = new Label();
         #endregion fields & pins
+
+        public CaptureNode()
+        {
+            FProgressBar.FormBorderStyle = FormBorderStyle.None;
+            FProgressBar.Size = new Size(0, 0);
+
+            FProgressLabel.Padding = new Padding(4);
+            FProgressLabel.AutoSize = true;
+            FProgressLabel.Parent = FProgressBar;            
+        }
 
         //called when data for any output pin is requested
         public async void Evaluate(int SpreadMax)
@@ -86,7 +105,11 @@ namespace VVVV.Nodes.Capture
                 case CaptureState.Idle:
                     {
                         if (FCapture[0])
+                        {
                             FCaptureState = CaptureState.Capturing;
+                            int p = unchecked((int)FInput[0]);
+                            FHandleToCapture = new IntPtr(p);
+                        }
                         break;
                     }
                 case CaptureState.Capturing:
@@ -107,10 +130,7 @@ namespace VVVV.Nodes.Capture
             {
                 try
                 {
-                    int p = unchecked((int)FInput[0]);
-                    IntPtr handle = new IntPtr(p);
-
-                    var img = FScreenCapture.CaptureWindow(handle);
+                    var img = FScreenCapture.CaptureWindow(FHandleToCapture);
                     var delay = FHDEHost.FrameTime - FLastFrameTime;
 
                     FFrames.Add(new Frame() { Image = img, Delay = (float)delay });
@@ -135,30 +155,65 @@ namespace VVVV.Nodes.Capture
             {
                 if (!FWriting[0])
                 {
+                    FCurrentFilename = FFilename[0];
+                    if (FAutoFilename[0])
+                    {
+                        var path = Path.GetDirectoryName(FCurrentFilename);
+                        FCurrentFilename = Path.GetFileNameWithoutExtension(FCurrentFilename);
+                        var now = DateTime.Now;
+                        FCurrentFilename += "_" + now.ToShortDateString() + "-" + now.ToLongTimeString().Replace(":", ".");
+                        FCurrentFilename = Path.Combine(path, FCurrentFilename + ".gif");
+                        //FLogger.Log(LogType.Debug, filename);
+                    }
+
                     FWriting[0] = true;
-                    await Task.Run(() => SaveFileAsync());
+                    await Task.Run(() => SaveFileAsync(FCurrentFilename));
                     FWriting[0] = false;
                     FCaptureState = CaptureState.Idle;
+                    FProgressBar.Hide();
                 }
             }
+
+            if (FReportProgress[0])
+                ReportProgress();
 
             FLastFrameTime = FHDEHost.FrameTime;
             FFrameCountOut[0] = FFrames.Count;
         }
 
-        async void SaveFileAsync()
+        void ReportProgress()
         {
-            var filename = FFilename[0];
-            if (FAutoFilename[0])
+            switch (FCaptureState)
             {
-                var path = Path.GetDirectoryName(filename);
-                filename = Path.GetFileNameWithoutExtension(filename);
-                var now = DateTime.Now;
-                filename += "_" + now.ToShortDateString() + "-" + now.ToLongTimeString().Replace(":", ".");
-                filename = Path.Combine(path, filename + ".gif");
-                //FLogger.Log(LogType.Debug, filename);
+                case CaptureState.Idle: FProgressBar.Hide(); break;
+                case CaptureState.Capturing:
+                    {
+                        if (!FProgressBar.Visible)
+                        {
+                            RECT windowRect;
+                            User32.GetWindowRect(FHandleToCapture, out windowRect);
+                            FProgressLabel.BackColor = Color.LightGreen;
+
+                            FProgressBar.Show();
+                            FProgressBar.SetDesktopLocation(windowRect.Left, windowRect.Bottom + 10);
+                        }
+
+                        FProgressLabel.Text = "Frame Count: " + FFrames.Count.ToString();
+                        break;
+                    }
+                case CaptureState.Writing:
+                    {
+                        FProgressLabel.Text = "Writing File: " + FCurrentFilename;
+                        FProgressLabel.BackColor = Color.LightSalmon;
+                        break;
+                    }
             }
 
+            FProgressBar.ClientSize = new Size(FProgressLabel.Size.Width, FProgressLabel.Size.Height - 4);
+        }
+
+        async void SaveFileAsync(string filename)
+        {
             foreach (var frame in FFrames)
                 FGIF.AddFrame(frame.Image, Math.Round(FDelay[0] * 100)); //gif cannot handle arbitrary framedelays, use userinput here
 
