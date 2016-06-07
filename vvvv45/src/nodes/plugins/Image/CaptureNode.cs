@@ -185,7 +185,7 @@ namespace VVVV.Nodes.Capture
         {
             switch (FCaptureState)
             {
-                case CaptureState.Idle: FProgressBar.Hide(); break;
+                case CaptureState.Idle: FProgressBar.Hide(); return;
                 case CaptureState.Capturing:
                     {
                         if (!FProgressBar.Visible)
