@@ -1,0 +1,205 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.2.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\__upld\Shortcut\Shortcut (File Create) help.v4p">
+   <BOUNDS height="6255" left="12330" top="2760" type="Window" width="8385">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="420" left="270" top="210" type="Box" width="3705">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Shortcut (File Create)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="210" top="720" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="300" left="210" top="720" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|create a shortcut (link) to a file or folder|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="855" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13530" top="8835" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="255" left="855" top="2415" type="Box" width="3075">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Source">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="3" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="0" left="3315" top="2100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input 2" slicecount="1" values="vvvv.exe">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
+   <BOUNDS height="0" left="5595" top="2460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="UserDesktop">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="1" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="0" left="5595" top="2775" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input 2" slicecount="1" values="ShortcutToVVVV">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input 1" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="SystemFolder (File)" systemname="SystemFolder (File)">
+   <BOUNDS height="0" left="3315" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Folder" slicecount="1" values="Application">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input 1" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2580" top="3090" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13830" top="9135" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2580" top="3090" type="Box" width="3615">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Destination">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input String" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="435" top="4545" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="435" top="4545" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="7005" top="5655" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Done">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6720" top="5325" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="270" left="6720" top="5325" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|2010, woei|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="465" top="5445" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="240" left="465" top="5445" type="Box" width="690">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="6525" top="3075" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="900" left="6525" top="3075" type="Box" width="720">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Save">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="bin\Shortcut.dll" id="15" nodename="Shortcut (File Create)" systemname="Shortcut (File Create)">
+   <BOUNDS height="270" left="870" top="3945" type="Node" width="3495">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Do" visible="1">
+   </PIN>
+   <PIN pinname="Destination" visible="1">
+   </PIN>
+   <PIN pinname="Done" visible="1">
+   </PIN>
+   <PIN pinname="Save" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Source" srcnodeid="6" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Destination" srcnodeid="11" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="15" srcpinname="Done">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Save" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InAWindow" filename="bin\Shortcut.dll" id="24" nodename="Shortcut (File Resolve)" systemname="Shortcut (File Resolve)">
+   <BOUNDS height="100" left="1365" top="5430" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

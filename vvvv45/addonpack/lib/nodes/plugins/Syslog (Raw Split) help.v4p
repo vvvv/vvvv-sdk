@@ -1,0 +1,1049 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.0.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" systemname="Syslog (Raw Split) help" filename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" locked="0">
+   <BOUNDS type="Window" left="210" top="285" width="21780" height="12315">
+   </BOUNDS>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3900" top="5460" width="495" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3900" top="5460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="514">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="4444">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Port|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="UDP (Network Client)" filename="" nodename="UDP (Network Client)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="2025" top="6015" width="1935" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Remote Port">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1410" top="1560" width="585" height="540">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1410" top="1560" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="log">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2025" top="1560" width="2430" height="555">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2025" top="1560" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values="|logging is easy|,|everything you know is wrong|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Message">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="12" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="3255" top="3405" width="930" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3255" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="2" visible="1" values="User,Mail">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Facility">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="13" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="4485" top="3405" width="1080" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4485" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="2" visible="1" values="Alert,Critical">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Severity">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3270" top="4965" width="1125" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3270" top="4965" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="127.0.0.1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="192.168.1.1">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="IP">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Host|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="0" dstpinname="Remote Host">
+   </LINK>
+   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="40" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="3645" top="2565" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="4260" top="2190" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4260" top="2190" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="1,1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Prevent from doubles" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="48" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="3255" top="2985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Ord Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="49" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="4485" top="2985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Ord Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="48" dstpinname="Ord Value" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="3650" y="2980">
+   </LINKPOINT>
+   <LINKPOINT x="3295" y="2840">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="49" dstpinname="Ord Value" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="3755" y="2965">
+   </LINKPOINT>
+   <LINKPOINT x="4420" y="2825">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="53" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="120" top="510" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="120" top="510" type="Box" width="3420">
+   </BOUNDS>
+   <BOUNDS height="160" left="9960" top="47160" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|create a syslog message or log directly to tty|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="52" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="120" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="160" left="9960" top="47160" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Syslog">
+   </PIN>
+   <BOUNDS height="390" left="120" top="135" type="Box" width="3465">
+   </BOUNDS>
+   </NODE>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <NODE systemname="Syslog (Raw Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Syslog.dll" nodename="Syslog (Raw Join)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="2025" top="4440" width="12420" height="270">
+   </BOUNDS>
+   <PIN pinname="Tag" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="2025" top="4440">
+   </BOUNDS>
+   <PIN pinname="Message" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Facility" visible="1">
+   </PIN>
+   <PIN pinname="Level" visible="1">
+   </PIN>
+   <PIN pinname="Severity" visible="1">
+   </PIN>
+   <PIN pinname="Hostname" slicecount="1" values="sebl">
+   </PIN>
+   <PIN pinname="Structured Data Name" visible="1">
+   </PIN>
+   <PIN pinname="Structured Data Name Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Structured Data Value Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Process ID" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Message ID" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="19" dstpinname="Facility">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="19" dstpinname="Level">
+   </LINK>
+   <NODE componentmode="Hidden" id="31" nodename="UDP (Network Server)" systemname="UDP (Network Server)" filename="" hiddenwhenlocked="0">
+   <BOUNDS height="100" left="525" top="6720" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Queue Mode" slicecount="1" values="Spread">
+   </PIN>
+   <BOUNDS type="Box" left="525" top="6720">
+   </BOUNDS>
+   <PIN pinname="Local Port" visible="1">
+   </PIN>
+   <PIN pinname="Queue Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Delimiter" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Local Port" hiddenwhenlocked="0" linkstyle="Bezier">
+   <LINKPOINT x="5430" y="7155">
+   </LINKPOINT>
+   <LINKPOINT x="795" y="6225">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="59" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="2385" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2385" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Facility">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="2" values="Kernel,Daemons">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="60" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="4245" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4245" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Level">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="2" values="Emergency,Error">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="62" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="525" top="9540" width="1770" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="525" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Message">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="|logging is easy|">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="1215" top="7095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Queue Count" dstnodeid="63" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="65" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="5070" top="4875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="66" systemname="IOBox (String)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="5070" top="5220" width="14385" height="660">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5070" top="5220" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="65" srcpinname="Output" dstnodeid="66" dstpinname="Input String" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="69" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="10665" top="3405" width="825" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10665" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" values="name1,name2,name3,more">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Structured Data Name|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Output String" dstnodeid="19" dstpinname="Structured Data">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="70" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14385" top="3405" width="285" height="705">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14385" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" values="3,1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Structured Data Bin Size|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Structured Data Bin Size">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="19" dstpinname="Severity">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="74" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="5730" top="3405" width="1080" height="705">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5730" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values=",customHost">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hostname">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="74" srcpinname="Output String" dstnodeid="19" dstpinname="Hostname">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="76" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6960" top="3405" width="780" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6960" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values="vvvv,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="AppName">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="76" srcpinname="Output String" dstnodeid="19" dstpinname="AppName">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Enum" dstnodeid="12" dstpinname="Input Enum">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Enum" dstnodeid="13" dstpinname="Input Enum">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Output String" dstnodeid="19" dstpinname="Structured Data Name">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Structured Data Name Bin Size" linkstyle="VHV">
+   <LINKPOINT x="14635" y="4298">
+   </LINKPOINT>
+   <LINKPOINT x="11720" y="4283">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Structured Data Value Bin Size" linkstyle="VHV">
+   <LINKPOINT x="14635" y="4298">
+   </LINKPOINT>
+   <LINKPOINT x="14195" y="4283">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="77" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="12375" top="3405" width="825" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12375" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" values="value1,value2,value3,data">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Structured Data Value|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="77" srcpinname="Output String" dstnodeid="19" dstpinname="Structured Data Value" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="19" dstpinname="Message">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="79" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="7965" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7965" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hostname">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="SBB2">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="80" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="9810" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9810" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="AppName">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="vvvv">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="81" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="11670" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11670" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Process ID|">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="8032">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="82" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="13515" top="9540" width="1350" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13515" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Message ID|">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="83" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="15375" top="9540" width="5460" height="1560">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15375" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Structured Data Name|">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="2" values="|name1 = value1,name2 = value2,name3 = value3|,|more = data|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="87" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="20925" top="9540" width="555" height="1635">
+   </BOUNDS>
+   <BOUNDS type="Node" left="20925" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Bin Size|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="95">
+   <BOUNDS type="Node" left="810" top="2175" width="645" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="96" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="810" top="1560" width="585" height="540">
+   </BOUNDS>
+   <BOUNDS type="Node" left="810" top="1560" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="log">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="95" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="96" srcpinname="Y Output Value" dstnodeid="95" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Output" dstnodeid="40" dstpinname="Enabled" linkstyle="VHV">
+   <LINKPOINT x="870" y="2488">
+   </LINKPOINT>
+   <LINKPOINT x="3645" y="2493">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="OR (Boolean Spectral)" nodename="OR (Boolean Spectral)" componentmode="Hidden" id="97">
+   <BOUNDS type="Node" left="810" top="3975" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="95" srcpinname="Output" dstnodeid="97" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="97" srcpinname="Output" dstnodeid="0" dstpinname="Do Send">
+   </LINK>
+   <NODE systemname="PID (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PID (VVVV)" componentmode="Hidden" id="98">
+   <BOUNDS type="Node" left="8205" top="2100" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Process ID" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8205" top="2100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="99" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10665" top="2775" width="3960" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10665" top="2775" width="5460" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|key-value-pairs for custom data that has to be logged|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="15375" top="8700" width="7440" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="8" values="value1,value2,value3,secondValue">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="4" values="name1,name2,name3,secondName">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" visible="-1" pintype="Input" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Intersperse String" visible="1" slicecount="1" values="=">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="102" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="22755" top="8355" width="315" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="22755" top="8355" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="=">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="107">
+   <BOUNDS type="Node" left="8205" top="2505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="98" srcpinname="Process ID" dstnodeid="107" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="108" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="8205" top="3405" width="780" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8205" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" visible="1" values="6212,6212">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Process ID|">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="108" srcpinname="Output String" dstnodeid="19" dstpinname="Process ID">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Output" dstnodeid="108" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="109" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="9435" top="3405" width="780" height="720">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9435" top="3405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" visible="1" values="demo,">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Message ID|">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="109" srcpinname="Output String" dstnodeid="19" dstpinname="Message ID">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="110" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="23535" top="510" width="5640" height="149370">
+   </BOUNDS>
+   <BOUNDS type="Box" left="23535" top="510" width="7995" height="142635">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|6.  Syslog Message Format&cr;&lf;&cr;&lf;   The syslog message has the following ABNF [RFC5234] definition:&cr;&lf;&cr;&lf;      SYSLOG-MSG      = HEADER SP STRUCTURED-DATA [SP MSG]&cr;&lf;&cr;&lf;      HEADER          = PRI VERSION SP TIMESTAMP SP HOSTNAME&cr;&lf;                        SP APP-NAME SP PROCID SP MSGID&cr;&lf;      PRI             = &quot;&lt;&quot; PRIVAL &quot;&gt;&quot;&cr;&lf;      PRIVAL          = 1*3DIGIT ; range 0 .. 191&cr;&lf;      VERSION         = NONZERO-DIGIT 0*2DIGIT&cr;&lf;      HOSTNAME        = NILVALUE / 1*255PRINTUSASCII&cr;&lf;&cr;&lf;      APP-NAME        = NILVALUE / 1*48PRINTUSASCII&cr;&lf;      PROCID          = NILVALUE / 1*128PRINTUSASCII&cr;&lf;      MSGID           = NILVALUE / 1*32PRINTUSASCII&cr;&lf;&cr;&lf;      TIMESTAMP       = NILVALUE / FULL-DATE &quot;T&quot; FULL-TIME&cr;&lf;      FULL-DATE       = DATE-FULLYEAR &quot;-&quot; DATE-MONTH &quot;-&quot; DATE-MDAY&cr;&lf;      DATE-FULLYEAR   = 4DIGIT&cr;&lf;      DATE-MONTH      = 2DIGIT  ; 01-12&cr;&lf;      DATE-MDAY       = 2DIGIT  ; 01-28, 01-29, 01-30, 01-31 based on&cr;&lf;                                ; month/year&cr;&lf;      FULL-TIME       = PARTIAL-TIME TIME-OFFSET&cr;&lf;      PARTIAL-TIME    = TIME-HOUR &quot;:&quot; TIME-MINUTE &quot;:&quot; TIME-SECOND&cr;&lf;                        [TIME-SECFRAC]&cr;&lf;      TIME-HOUR       = 2DIGIT  ; 00-23&cr;&lf;      TIME-MINUTE     = 2DIGIT  ; 00-59&cr;&lf;      TIME-SECOND     = 2DIGIT  ; 00-59&cr;&lf;      TIME-SECFRAC    = &quot;.&quot; 1*6DIGIT&cr;&lf;      TIME-OFFSET     = &quot;Z&quot; / TIME-NUMOFFSET&cr;&lf;      TIME-NUMOFFSET  = (&quot;+&quot; / &quot;-&quot;) TIME-HOUR &quot;:&quot; TIME-MINUTE&cr;&lf;&cr;&lf;&cr;&lf;      STRUCTURED-DATA = NILVALUE / 1*SD-ELEMENT&cr;&lf;      SD-ELEMENT      = &quot;[&quot; SD-ID *(SP SD-PARAM) &quot;]&quot;&cr;&lf;      SD-PARAM        = PARAM-NAME &quot;=&quot; %d34 PARAM-VALUE %d34&cr;&lf;      SD-ID           = SD-NAME&cr;&lf;      PARAM-NAME      = SD-NAME&cr;&lf;      PARAM-VALUE     = UTF-8-STRING ; characters &apos;&quot;&apos;, &apos;\&apos; and&cr;&lf;                                     ; &apos;]&apos; MUST be escaped.&cr;&lf;      SD-NAME         = 1*32PRINTUSASCII&cr;&lf;                        ; except &apos;=&apos;, SP, &apos;]&apos;, %d34 (&quot;)&cr;&lf;&cr;&lf;      MSG             = MSG-ANY / MSG-UTF8&cr;&lf;      MSG-ANY         = *OCTET ; not starting with BOM&cr;&lf;      MSG-UTF8        = BOM UTF-8-STRING&cr;&lf;      BOM             = %xEF.BB.BF&cr;&lf;      UTF-8-STRING    = *OCTET ; UTF-8 string as specified&cr;&lf;                        ; in RFC 3629&cr;&lf;&cr;&lf;      OCTET           = %d00-255&cr;&lf;      SP              = %d32&cr;&lf;      PRINTUSASCII    = %d33-126&cr;&lf;      NONZERO-DIGIT   = %d49-57&cr;&lf;      DIGIT           = %d48 / NONZERO-DIGIT&cr;&lf;      NILVALUE        = &quot;-&quot;&cr;&lf;&cr;&lf;6.1.  Message Length&cr;&lf;&cr;&lf;   Syslog message size limits are dictated by the syslog transport&cr;&lf;   mapping in use.  There is no upper limit per se.  Each transport&cr;&lf;   mapping defines the minimum maximum required message length support,&cr;&lf;   and the minimum maximum MUST be at least 480 octets in length.&cr;&lf;&cr;&lf;   Any transport receiver MUST be able to accept messages of up to and&cr;&lf;   including 480 octets in length.  All transport receiver&cr;&lf;   implementations SHOULD be able to accept messages of up to and&cr;&lf;   including 2048 octets in length.  Transport receivers MAY receive&cr;&lf;   messages larger than 2048 octets in length.  If a transport receiver&cr;&lf;   receives a message with a length larger than it supports, the&cr;&lf;   transport receiver SHOULD truncate the payload.  Alternatively, it&cr;&lf;   MAY discard the message.&cr;&lf;&cr;&lf;   If a transport receiver truncates messages, the truncation MUST occur&cr;&lf;   at the end of the message.  After truncation, the message MAY contain&cr;&lf;   invalid UTF-8 encoding or invalid STRUCTURED-DATA.  The transport&cr;&lf;   receiver MAY discard the message or MAY try to process as much as&cr;&lf;   possible in this case.&cr;&lf;&cr;&lf;6.2.  HEADER&cr;&lf;&cr;&lf;   The character set used in the HEADER MUST be seven-bit ASCII in an&cr;&lf;   eight-bit field as described in [RFC5234].  These are the ASCII codes&cr;&lf;   as defined in &quot;USA Standard Code for Information Interchange&quot;&cr;&lf;   [ANSI.X3-4.1968].&cr;&lf;&cr;&lf;   The header format is designed to provide some interoperability with&cr;&lf;   older BSD-based syslog.  For details on this, see Appendix A.1.&cr;&lf;&cr;&lf;6.2.1.  PRI&cr;&lf;&cr;&lf;   The PRI part MUST have three, four, or five characters and will be&cr;&lf;   bound with angle brackets as the first and last characters.  The PRI&cr;&lf;   part starts with a leading &quot;&lt;&quot; (&apos;less-than&apos; character, %d60),&cr;&lf;   followed by a number, which is followed by a &quot;&gt;&quot; (&apos;greater-than&apos;&cr;&lf;&cr;&lf;   character, %d62).  The number contained within these angle brackets&cr;&lf;   is known as the Priority value (PRIVAL) and represents both the&cr;&lf;   Facility and Severity.  The Priority value consists of one, two, or&cr;&lf;   three decimal integers (ABNF DIGITS) using values of %d48 (for &quot;0&quot;)&cr;&lf;   through %d57 (for &quot;9&quot;).&cr;&lf;&cr;&lf;   Facility and Severity values are not normative but often used.  They&cr;&lf;   are described in the following tables for purely informational&cr;&lf;   purposes.  Facility values MUST be in the range of 0 to 23 inclusive.&cr;&lf;&cr;&lf;          Numerical             Facility&cr;&lf;             Code&cr;&lf;&cr;&lf;              0             kernel messages&cr;&lf;              1             user-level messages&cr;&lf;              2             mail system&cr;&lf;              3             system daemons&cr;&lf;              4             security/authorization messages&cr;&lf;              5             messages generated internally by syslogd&cr;&lf;              6             line printer subsystem&cr;&lf;              7             network news subsystem&cr;&lf;              8             UUCP subsystem&cr;&lf;              9             clock daemon&cr;&lf;             10             security/authorization messages&cr;&lf;             11             FTP daemon&cr;&lf;             12             NTP subsystem&cr;&lf;             13             log audit&cr;&lf;             14             log alert&cr;&lf;             15             clock daemon (note 2)&cr;&lf;             16             local use 0  (local0)&cr;&lf;             17             local use 1  (local1)&cr;&lf;             18             local use 2  (local2)&cr;&lf;             19             local use 3  (local3)&cr;&lf;             20             local use 4  (local4)&cr;&lf;             21             local use 5  (local5)&cr;&lf;             22             local use 6  (local6)&cr;&lf;             23             local use 7  (local7)&cr;&lf;&cr;&lf;              Table 1.  Syslog Message Facilities&cr;&lf;&cr;&lf;   Each message Priority also has a decimal Severity level indicator.&cr;&lf;   These are described in the following table along with their numerical&cr;&lf;   values.  Severity values MUST be in the range of 0 to 7 inclusive.&cr;&lf;&cr;&lf;&cr;&lf;           Numerical         Severity&cr;&lf;             Code&cr;&lf;&cr;&lf;              0       Emergency: system is unusable&cr;&lf;              1       Alert: action must be taken immediately&cr;&lf;              2       Critical: critical conditions&cr;&lf;              3       Error: error conditions&cr;&lf;              4       Warning: warning conditions&cr;&lf;              5       Notice: normal but significant condition&cr;&lf;              6       Informational: informational messages&cr;&lf;              7       Debug: debug-level messages&cr;&lf;&cr;&lf;              Table 2. Syslog Message Severities&cr;&lf;&cr;&lf;   The Priority value is calculated by first multiplying the Facility&cr;&lf;   number by 8 and then adding the numerical value of the Severity.  For&cr;&lf;   example, a kernel message (Facility=0) with a Severity of Emergency&cr;&lf;   (Severity=0) would have a Priority value of 0.  Also, a &quot;local use 4&quot;&cr;&lf;   message (Facility=20) with a Severity of Notice (Severity=5) would&cr;&lf;   have a Priority value of 165.  In the PRI of a syslog message, these&cr;&lf;   values would be placed between the angle brackets as &lt;0&gt; and &lt;165&gt;&cr;&lf;   respectively.  The only time a value of &quot;0&quot; follows the &quot;&lt;&quot; is for&cr;&lf;   the Priority value of &quot;0&quot;.  Otherwise, leading &quot;0&quot;s MUST NOT be used.&cr;&lf;&cr;&lf;6.2.2.  VERSION&cr;&lf;&cr;&lf;   The VERSION field denotes the version of the syslog protocol&cr;&lf;   specification.  The version number MUST be incremented for any new&cr;&lf;   syslog protocol specification that changes any part of the HEADER&cr;&lf;   format.  Changes include the addition or removal of fields, or a&cr;&lf;   change of syntax or semantics of existing fields.  This document uses&cr;&lf;   a VERSION value of &quot;1&quot;.  The VERSION values are IANA-assigned&cr;&lf;   (Section 9.1) via the Standards Action method as described in&cr;&lf;   [RFC5226].&cr;&lf;&cr;&lf;6.2.3.  TIMESTAMP&cr;&lf;&cr;&lf;   The TIMESTAMP field is a formalized timestamp derived from [RFC3339].&cr;&lf;&cr;&lf;   Whereas [RFC3339] makes allowances for multiple syntaxes, this&cr;&lf;   document imposes further restrictions.  The TIMESTAMP value MUST&cr;&lf;   follow these restrictions:&cr;&lf;&cr;&lf;   o  The &quot;T&quot; and &quot;Z&quot; characters in this syntax MUST be upper case.&cr;&lf;&cr;&lf;   o  Usage of the &quot;T&quot; character is REQUIRED.&cr;&lf;&cr;&lf;   o  Leap seconds MUST NOT be used.&cr;&lf;&cr;&lf;   The originator SHOULD include TIME-SECFRAC if its clock accuracy and&cr;&lf;   performance permit.  The &quot;timeQuality&quot; SD-ID described in Section 7.1&cr;&lf;   allows the originator to specify the accuracy and trustworthiness of&cr;&lf;   the timestamp.&cr;&lf;&cr;&lf;   A syslog application MUST use the NILVALUE as TIMESTAMP if the syslog&cr;&lf;   application is incapable of obtaining system time.&cr;&lf;&cr;&lf;6.2.3.1.  Examples&cr;&lf;&cr;&lf;   Example 1&cr;&lf;&cr;&lf;        1985-04-12T23:20:50.52Z&cr;&lf;&cr;&lf;   This represents 20 minutes and 50.52 seconds after the 23rd hour of&cr;&lf;   12 April 1985 in UTC.&cr;&lf;&cr;&lf;   Example 2&cr;&lf;&cr;&lf;        1985-04-12T19:20:50.52-04:00&cr;&lf;&cr;&lf;   This represents the same time as in example 1, but expressed in US&cr;&lf;   Eastern Standard Time (observing daylight savings time).&cr;&lf;&cr;&lf;   Example 3&cr;&lf;&cr;&lf;        2003-10-11T22:14:15.003Z&cr;&lf;&cr;&lf;   This represents 11 October 2003 at 10:14:15pm, 3 milliseconds into&cr;&lf;   the next second.  The timestamp is in UTC.  The timestamp provides&cr;&lf;   millisecond resolution.  The creator may have actually had a better&cr;&lf;   resolution, but providing just three digits for the fractional part&cr;&lf;   of a second does not tell us.&cr;&lf;&cr;&lf;   Example 4&cr;&lf;&cr;&lf;         2003-08-24T05:14:15.000003-07:00&cr;&lf;&cr;&lf;   This represents 24 August 2003 at 05:14:15am, 3 microseconds into the&cr;&lf;   next second.  The microsecond resolution is indicated by the&cr;&lf;   additional digits in TIME-SECFRAC.  The timestamp indicates that its&cr;&lf;   local time is -7 hours from UTC.  This timestamp might be created in&cr;&lf;   the US Pacific time zone during daylight savings time.&cr;&lf;&cr;&lf;&cr;&lf;   Example 5 - An Invalid TIMESTAMP&cr;&lf;&cr;&lf;         2003-08-24T05:14:15.000000003-07:00&cr;&lf;&cr;&lf;   This example is nearly the same as Example 4, but it is specifying&cr;&lf;   TIME-SECFRAC in nanoseconds.  This results in TIME-SECFRAC being&cr;&lf;   longer than the allowed 6 digits, which invalidates it.&cr;&lf;&cr;&lf;6.2.4.  HOSTNAME&cr;&lf;&cr;&lf;   The HOSTNAME field identifies the machine that originally sent the&cr;&lf;   syslog message.&cr;&lf;&cr;&lf;   The HOSTNAME field SHOULD contain the hostname and the domain name of&cr;&lf;   the originator in the format specified in STD 13 [RFC1034].  This&cr;&lf;   format is called a Fully Qualified Domain Name (FQDN) in this&cr;&lf;   document.&cr;&lf;&cr;&lf;   In practice, not all syslog applications are able to provide an FQDN.&cr;&lf;   As such, other values MAY also be present in HOSTNAME.  This document&cr;&lf;   makes provisions for using other values in such situations.  A syslog&cr;&lf;   application SHOULD provide the most specific available value first.&cr;&lf;   The order of preference for the contents of the HOSTNAME field is as&cr;&lf;   follows:&cr;&lf;&cr;&lf;   1.  FQDN&cr;&lf;&cr;&lf;   2.  Static IP address&cr;&lf;&cr;&lf;   3.  hostname&cr;&lf;&cr;&lf;   4.  Dynamic IP address&cr;&lf;&cr;&lf;   5.  the NILVALUE&cr;&lf;&cr;&lf;   If an IPv4 address is used, it MUST be in the format of the dotted&cr;&lf;   decimal notation as used in STD 13 [RFC1035].  If an IPv6 address is&cr;&lf;   used, a valid textual representation as described in [RFC4291],&cr;&lf;   Section 2.2, MUST be used.&cr;&lf;&cr;&lf;   Syslog applications SHOULD consistently use the same value in the&cr;&lf;   HOSTNAME field for as long as possible.&cr;&lf;&cr;&lf;   The NILVALUE SHOULD only be used when the syslog application has no&cr;&lf;   way to obtain its real hostname.  This situation is considered highly&cr;&lf;   unlikely.&cr;&lf;&cr;&lf;6.2.5.  APP-NAME&cr;&lf;&cr;&lf;   The APP-NAME field SHOULD identify the device or application that&cr;&lf;   originated the message.  It is a string without further semantics.&cr;&lf;   It is intended for filtering messages on a relay or collector.&cr;&lf;&cr;&lf;   The NILVALUE MAY be used when the syslog application has no idea of&cr;&lf;   its APP-NAME or cannot provide that information.  It may be that a&cr;&lf;   device is unable to provide that information either because of a&cr;&lf;   local policy decision, or because the information is not available,&cr;&lf;   or not applicable, on the device.&cr;&lf;&cr;&lf;   This field MAY be operator-assigned.&cr;&lf;&cr;&lf;6.2.6.  PROCID&cr;&lf;&cr;&lf;   PROCID is a value that is included in the message, having no&cr;&lf;   interoperable meaning, except that a change in the value indicates&cr;&lf;   there has been a discontinuity in syslog reporting.  The field does&cr;&lf;   not have any specific syntax or semantics; the value is&cr;&lf;   implementation-dependent and/or operator-assigned.  The NILVALUE MAY&cr;&lf;   be used when no value is provided.&cr;&lf;&cr;&lf;   The PROCID field is often used to provide the process name or process&cr;&lf;   ID associated with a syslog system.  The NILVALUE might be used when&cr;&lf;   a process ID is not available.  On an embedded system without any&cr;&lf;   operating system process ID, PROCID might be a reboot ID.&cr;&lf;&cr;&lf;   PROCID can enable log analyzers to detect discontinuities in syslog&cr;&lf;   reporting by detecting a change in the syslog process ID.  However,&cr;&lf;   PROCID is not a reliable identification of a restarted process since&cr;&lf;   the restarted syslog process might be assigned the same process ID as&cr;&lf;   the previous syslog process.&cr;&lf;&cr;&lf;   PROCID can also be used to identify which messages belong to a group&cr;&lf;   of messages.  For example, an SMTP mail transfer agent might put its&cr;&lf;   SMTP transaction ID into PROCID, which would allow the collector or&cr;&lf;   relay to group messages based on the SMTP transaction.&cr;&lf;&cr;&lf;6.2.7.  MSGID&cr;&lf;&cr;&lf;   The MSGID SHOULD identify the type of message.  For example, a&cr;&lf;   firewall might use the MSGID &quot;TCPIN&quot; for incoming TCP traffic and the&cr;&lf;   MSGID &quot;TCPOUT&quot; for outgoing TCP traffic.  Messages with the same&cr;&lf;   MSGID should reflect events of the same semantics.  The MSGID itself&cr;&lf;   is a string without further semantics.  It is intended for filtering&cr;&lf;   messages on a relay or collector.&cr;&lf;&cr;&lf;&cr;&lf;   The NILVALUE SHOULD be used when the syslog application does not, or&cr;&lf;   cannot, provide any value.&cr;&lf;&cr;&lf;   This field MAY be operator-assigned.&cr;&lf;&cr;&lf;6.3.  STRUCTURED-DATA&cr;&lf;&cr;&lf;   STRUCTURED-DATA provides a mechanism to express information in a well&cr;&lf;   defined, easily parseable and interpretable data format.  There are&cr;&lf;   multiple usage scenarios.  For example, it may express meta-&cr;&lf;   information about the syslog message or application-specific&cr;&lf;   information such as traffic counters or IP addresses.&cr;&lf;&cr;&lf;   STRUCTURED-DATA can contain zero, one, or multiple structured data&cr;&lf;   elements, which are referred to as &quot;SD-ELEMENT&quot; in this document.&cr;&lf;&cr;&lf;   In case of zero structured data elements, the STRUCTURED-DATA field&cr;&lf;   MUST contain the NILVALUE.&cr;&lf;&cr;&lf;   The character set used in STRUCTURED-DATA MUST be seven-bit ASCII in&cr;&lf;   an eight-bit field as described in [RFC5234].  These are the ASCII&cr;&lf;   codes as defined in &quot;USA Standard Code for Information Interchange&quot;&cr;&lf;   [ANSI.X3-4.1968].  An exception is the PARAM-VALUE field (see&cr;&lf;   Section 6.3.3), in which UTF-8 encoding MUST be used.&cr;&lf;&cr;&lf;   A collector MAY ignore malformed STRUCTURED-DATA elements.  A relay&cr;&lf;   MUST forward malformed STRUCTURED-DATA without any alteration.&cr;&lf;&cr;&lf;6.3.1.  SD-ELEMENT&cr;&lf;&cr;&lf;   An SD-ELEMENT consists of a name and parameter name-value pairs.  The&cr;&lf;   name is referred to as SD-ID.  The name-value pairs are referred to&cr;&lf;   as &quot;SD-PARAM&quot;.&cr;&lf;&cr;&lf;6.3.2.  SD-ID&cr;&lf;&cr;&lf;   SD-IDs are case-sensitive and uniquely identify the type and purpose&cr;&lf;   of the SD-ELEMENT.  The same SD-ID MUST NOT exist more than once in a&cr;&lf;   message.&cr;&lf;&cr;&lf;   There are two formats for SD-ID names:&cr;&lf;&cr;&lf;   o  Names that do not contain an at-sign (&quot;@&quot;, ABNF %d64) are reserved&cr;&lf;      to be assigned by IETF Review as described in BCP26 [RFC5226].&cr;&lf;      Currently, these are the names defined in Section 7.  Names of&cr;&lf;      this format are only valid if they are first registered with the&cr;&lf;      IANA.  Registered names MUST NOT contain an at-sign (&apos;@&apos;, ABNF&cr;&lf;&cr;&lf;      %d64), an equal-sign (&apos;=&apos;, ABNF %d61), a closing brace (&apos;]&apos;, ABNF&cr;&lf;      %d93), a quote-character (&apos;&quot;&apos;, ABNF %d34), whitespace, or control&cr;&lf;      characters (ASCII code 127 and codes 32 or less).&cr;&lf;&cr;&lf;   o  Anyone can define additional SD-IDs using names in the format&cr;&lf;      name@&lt;private enterprise number&gt;, e.g., &quot;ourSDID@32473&quot;.  The&cr;&lf;      format of the part preceding the at-sign is not specified;&cr;&lf;      however, these names MUST be printable US-ASCII strings, and MUST&cr;&lf;      NOT contain an at-sign (&apos;@&apos;, ABNF %d64), an equal-sign (&apos;=&apos;, ABNF&cr;&lf;      %d61), a closing brace (&apos;]&apos;, ABNF %d93), a quote-character (&apos;&quot;&apos;,&cr;&lf;      ABNF %d34), whitespace, or control characters.  The part following&cr;&lf;      the at-sign MUST be a private enterprise number as specified in&cr;&lf;      Section 7.2.2.  Please note that throughout this document the&cr;&lf;      value of 32473 is used for all private enterprise numbers.  This&cr;&lf;      value has been reserved by IANA to be used as an example number in&cr;&lf;      documentation.  Implementors will need to use their own private&cr;&lf;      enterprise number for the enterpriseId parameter, and when&cr;&lf;      creating locally extensible SD-ID names.&cr;&lf;&cr;&lf;6.3.3.  SD-PARAM&cr;&lf;&cr;&lf;   Each SD-PARAM consists of a name, referred to as PARAM-NAME, and a&cr;&lf;   value, referred to as PARAM-VALUE.&cr;&lf;&cr;&lf;   PARAM-NAME is case-sensitive.  IANA controls all PARAM-NAMEs, with&cr;&lf;   the exception of those in SD-IDs whose names contain an at-sign.  The&cr;&lf;   PARAM-NAME scope is within a specific SD-ID.  Thus, equally named&cr;&lf;   PARAM-NAME values contained in two different SD-IDs are not the same.&cr;&lf;&cr;&lf;   To support international characters, the PARAM-VALUE field MUST be&cr;&lf;   encoded using UTF-8.  A syslog application MAY issue any valid UTF-8&cr;&lf;   sequence.  A syslog application MUST accept any valid UTF-8 sequence&cr;&lf;   in the &quot;shortest form&quot;.  It MUST NOT fail if control characters are&cr;&lf;   present in PARAM-VALUE.  The syslog application MAY modify messages&cr;&lf;   containing control characters (e.g., by changing an octet with value&cr;&lf;   0 (USASCII NUL) to the four characters &quot;#000&quot;).  For the reasons&cr;&lf;   outlined in UNICODE TR36 [UNICODE-TR36], section 3.1, an originator&cr;&lf;   MUST encode messages in the &quot;shortest form&quot; and a collector or relay&cr;&lf;   MUST NOT interpret messages in the &quot;non-shortest form&quot;.&cr;&lf;&cr;&lf;   Inside PARAM-VALUE, the characters &apos;&quot;&apos; (ABNF %d34), &apos;\&apos; (ABNF %d92),&cr;&lf;   and &apos;]&apos; (ABNF %d93) MUST be escaped.  This is necessary to avoid&cr;&lf;   parsing errors.  Escaping &apos;]&apos; would not strictly be necessary but is&cr;&lf;   REQUIRED by this specification to avoid syslog application&cr;&lf;   implementation errors.  Each of these three characters MUST be&cr;&lf;   escaped as &apos;\&quot;&apos;, &apos;\\&apos;, and &apos;\]&apos; respectively.  The backslash is used&cr;&lf;&cr;&lf;   for control character escaping for consistency with its use for&cr;&lf;   escaping in other parts of the syslog message as well as in&cr;&lf;   traditional syslog.&cr;&lf;&cr;&lf;   A backslash (&apos;\&apos;) followed by none of the three described characters&cr;&lf;   is considered an invalid escape sequence.  In this case, the&cr;&lf;   backslash MUST be treated as a regular backslash and the following&cr;&lf;   character as a regular character.  Thus, the invalid sequence MUST&cr;&lf;   not be altered.&cr;&lf;&cr;&lf;   An SD-PARAM MAY be repeated multiple times inside an SD-ELEMENT.&cr;&lf;&cr;&lf;6.3.4.  Change Control&cr;&lf;&cr;&lf;   Once SD-IDs and PARAM-NAMEs are defined, syntax and semantics of&cr;&lf;   these objects MUST NOT be altered.  Should a change to an existing&cr;&lf;   object be desired, a new SD-ID or PARAM-NAME MUST be created and the&cr;&lf;   old one remain unchanged.  OPTIONAL PARAM-NAMEs MAY be added to an&cr;&lf;   existing SD-ID.&cr;&lf;&cr;&lf;6.3.5.  Examples&cr;&lf;&cr;&lf;   All examples in this section show only the structured data part of&cr;&lf;   the message.  Examples should be considered to be on one line.  They&cr;&lf;   are wrapped on multiple lines in this document for readability&cr;&lf;   purposes.  A description is given after each example.&cr;&lf;&cr;&lf;   Example 1 - Valid&cr;&lf;&cr;&lf;           [exampleSDID@32473 iut=&quot;3&quot; eventSource=&quot;Application&quot;&cr;&lf;           eventID=&quot;1011&quot;]&cr;&lf;&cr;&lf;   This example is a structured data element with a non-IANA controlled&cr;&lf;   SD-ID of type &quot;exampleSDID@32473&quot;, which has three parameters.&cr;&lf;&cr;&lf;   Example 2 - Valid&cr;&lf;&cr;&lf;           [exampleSDID@32473 iut=&quot;3&quot; eventSource=&quot;Application&quot;&cr;&lf;           eventID=&quot;1011&quot;][examplePriority@32473 class=&quot;high&quot;]&cr;&lf;&cr;&lf;   This is the same example as in 1, but with a second structured data&cr;&lf;   element.  Please note that the structured data element immediately&cr;&lf;   follows the first one (there is no SP between them).&cr;&lf;&cr;&lf;   Example 3 - Invalid&cr;&lf;&cr;&lf;           [exampleSDID@32473 iut=&quot;3&quot; eventSource=&quot;Application&quot;&cr;&lf;           eventID=&quot;1011&quot;] [examplePriority@32473 class=&quot;high&quot;]&cr;&lf;&cr;&lf;   This is nearly the same example as 2, but it has a subtle error --&cr;&lf;   there is an SP character between the two structured data elements&cr;&lf;   (&quot;]SP[&quot;).  This is invalid.  It will cause the STRUCTURED-DATA field&cr;&lf;   to end after the first element.  The second element will be&cr;&lf;   interpreted as part of the MSG field.&cr;&lf;&cr;&lf;   Example 4 - Invalid&cr;&lf;&cr;&lf;           [ exampleSDID@32473 iut=&quot;3&quot; eventSource=&quot;Application&quot;&cr;&lf;           eventID=&quot;1011&quot;][examplePriority@32473 class=&quot;high&quot;]&cr;&lf;&cr;&lf;   This example is nearly the same as 2.  It has another subtle error --&cr;&lf;   the SP character occurs after the initial bracket.  A structured data&cr;&lf;   element SD-ID MUST immediately follow the beginning bracket, so the&cr;&lf;   SP character invalidates the STRUCTURED-DATA.  A syslog application&cr;&lf;   MAY discard this message.&cr;&lf;&cr;&lf;   Example 5 - Valid&cr;&lf;&cr;&lf;           [sigSig ver=&quot;1&quot; rsID=&quot;1234&quot; ... signature=&quot;...&quot;]&cr;&lf;&cr;&lf;   Example 5 is a valid example.  It shows a hypothetical IANA-assigned&cr;&lf;   SD-ID.  The ellipses denote missing content, which has been left out&cr;&lf;   of this example for brevity.&cr;&lf;&cr;&lf;6.4.  MSG&cr;&lf;&cr;&lf;   The MSG part contains a free-form message that provides information&cr;&lf;   about the event.&cr;&lf;&cr;&lf;   The character set used in MSG SHOULD be UNICODE, encoded using UTF-8&cr;&lf;   as specified in [RFC3629].  If the syslog application cannot encode&cr;&lf;   the MSG in Unicode, it MAY use any other encoding.&cr;&lf;&cr;&lf;   The syslog application SHOULD avoid octet values below 32 (the&cr;&lf;   traditional US-ASCII control character range except DEL).  These&cr;&lf;   values are legal, but a syslog application MAY modify these&cr;&lf;   characters upon reception.  For example, it might change them into an&cr;&lf;   escape sequence (e.g., value 0 may be changed to &quot;\0&quot;).  A syslog&cr;&lf;   application SHOULD NOT modify any other octet values.&cr;&lf;&cr;&lf;   If a syslog application encodes MSG in UTF-8, the string MUST start&cr;&lf;   with the Unicode byte order mask (BOM), which for UTF-8 is ABNF&cr;&lf;   %xEF.BB.BF.  The syslog application MUST encode in the &quot;shortest&cr;&lf;   form&quot; and MAY use any valid UTF-8 sequence.&cr;&lf;&cr;&lf;   If a syslog application is processing an MSG starting with a BOM and&cr;&lf;   the MSG contains UTF-8 that is not shortest form, the MSG MUST NOT be&cr;&lf;   interpreted as being encoded in UTF-8, for the reasons outlined in&cr;&lf;   [UNICODE-TR36], Section 3.1.  Guidance about this is given in&cr;&lf;   Appendix A.8.&cr;&lf;&cr;&lf;   Also, according to UNICODE TR36 [UNICODE-TR36], a syslog application&cr;&lf;   MUST NOT interpret messages in the &quot;non-shortest form&quot;.  It MUST NOT&cr;&lf;   interpret invalid UTF-8 sequences.&cr;&lf;&cr;&lf;6.5.  Examples&cr;&lf;&cr;&lf;   The following are examples of valid syslog messages.  A description&cr;&lf;   of each example can be found below it.  The examples are based on&cr;&lf;   similar examples from [RFC3164] and may be familiar to readers.  The&cr;&lf;   otherwise-unprintable Unicode BOM is represented as &quot;BOM&quot; in the&cr;&lf;   examples.&cr;&lf;&cr;&lf;   Example 1 - with no STRUCTURED-DATA&cr;&lf;&cr;&lf;        &lt;34&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com su - ID47&cr;&lf;        - BOM&apos;su root&apos; failed for lonvick on /dev/pts/8&cr;&lf;&cr;&lf;   In this example, the VERSION is 1 and the Facility has the value of&cr;&lf;   4.  The Severity is 2.  The message was created on 11 October 2003 at&cr;&lf;   10:14:15pm UTC, 3 milliseconds into the next second.  The message&cr;&lf;   originated from a host that identifies itself as&cr;&lf;   &quot;mymachine.example.com&quot;.  The APP-NAME is &quot;su&quot; and the PROCID is&cr;&lf;   unknown.  The MSGID is &quot;ID47&quot;.  The MSG is &quot;&apos;su root&apos; failed for&cr;&lf;   lonvick...&quot;, encoded in UTF-8.  The encoding is defined by the BOM.&cr;&lf;   There is no STRUCTURED-DATA present in the message; this is indicated&cr;&lf;   by &quot;-&quot; in the STRUCTURED-DATA field.&cr;&lf;&cr;&lf;   Example 2 - with no STRUCTURED-DATA&cr;&lf;&cr;&lf;         &lt;165&gt;1 2003-08-24T05:14:15.000003-07:00 192.0.2.1&cr;&lf;         myproc 8710 - - %% It&apos;s time to make the do-nuts.&cr;&lf;&cr;&lf;   In this example, the VERSION is again 1.  The Facility is 20, the&cr;&lf;   Severity 5.  The message was created on 24 August 2003 at 5:14:15am,&cr;&lf;   with a -7 hour offset from UTC, 3 microseconds into the next second.&cr;&lf;   The HOSTNAME is &quot;192.0.2.1&quot;, so the syslog application did not know&cr;&lf;   its FQDN and used one of its IPv4 addresses instead.  The APP-NAME is&cr;&lf;   &quot;myproc&quot; and the PROCID is &quot;8710&quot; (for example, this could be the&cr;&lf;   UNIX PID).  There is no STRUCTURED-DATA present in the message; this&cr;&lf;   is indicated by &quot;-&quot; in the STRUCTURED-DATA field.  There is no&cr;&lf;   specific MSGID and this is indicated by the &quot;-&quot; in the MSGID field.&cr;&lf;&cr;&lf;   The message is &quot;%% It&apos;s time to make the do-nuts.&quot;.  As the Unicode&cr;&lf;   BOM is missing, the syslog application does not know the encoding of&cr;&lf;   the MSG part.&cr;&lf;&cr;&lf;   Example 3 - with STRUCTURED-DATA&cr;&lf;&cr;&lf;           &lt;165&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com&cr;&lf;           evntslog - ID47 [exampleSDID@32473 iut=&quot;3&quot; eventSource=&cr;&lf;           &quot;Application&quot; eventID=&quot;1011&quot;] BOMAn application&cr;&lf;           event log entry...&cr;&lf;&cr;&lf;   This example is modeled after Example 1.  However, this time it&cr;&lf;   contains STRUCTURED-DATA, a single element with the value&cr;&lf;   &quot;[exampleSDID@32473 iut=&quot;3&quot; eventSource=&quot;Application&quot;&cr;&lf;   eventID=&quot;1011&quot;]&quot;.  The MSG itself is &quot;An application event log&cr;&lf;   entry...&quot;  The BOM at the beginning of MSG indicates UTF-8 encoding.&cr;&lf;&cr;&lf;   Example 4 - STRUCTURED-DATA Only&cr;&lf;&cr;&lf;           &lt;165&gt;1 2003-10-11T22:14:15.003Z mymachine.example.com&cr;&lf;           evntslog - ID47 [exampleSDID@32473 iut=&quot;3&quot; eventSource=&cr;&lf;           &quot;Application&quot; eventID=&quot;1011&quot;][examplePriority@32473&cr;&lf;           class=&quot;high&quot;]&cr;&lf;&cr;&lf;   This example shows a message with only STRUCTURED-DATA and no MSG&cr;&lf;   part.  This is a valid message.&cr;&lf;&cr;&lf;7.  Structured Data IDs&cr;&lf;&cr;&lf;   This section defines the initial IANA-registered SD-IDs.  See&cr;&lf;   Section 6.3 for a definition of structured data elements.  All SD-IDs&cr;&lf;   defined here are OPTIONAL.&cr;&lf;&cr;&lf;   In some of the following, a maximum length is quantified for the&cr;&lf;   parameter values.  In each of those cases, the syslog application&cr;&lf;   MUST be prepared to receive the number of defined characters in any&cr;&lf;   valid UTF-8 code point.  Since each character may be up to 6 octets,&cr;&lf;   it is RECOMMENDED that each syslog application be prepared to receive&cr;&lf;   up to 6 octets per character.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Courier New|">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="111" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="18435" top="540" width="2175" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="18435" top="540" width="2505" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|comprehensive documentation &gt;&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="116" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5070" top="6255" width="9885" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5070" top="6255" width="14040" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;0&gt;1 2014-06-05T01:23:45.038+02:00 horstname - 7935 - [vvvv@44444 name1=&quot;value1&quot; name2=&quot;value2&quot; name3=&quot;value3&quot;][sebl@44444 secondName=&quot;secondValue&quot;] message with 2 SD|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" id="117">
+   <BOUNDS type="Node" left="4020" top="7635" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="Syslog (Raw Split)" componentmode="Hidden" id="118" systemname="Syslog (Raw Split)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Syslog.dll">
+   <BOUNDS type="Node" left="525" top="8280" width="20475" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="8280" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Raw In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Structured Data Value" visible="1">
+   </PIN>
+   <PIN pinname="Timestamp" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Message" dstnodeid="62" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Hostname" dstnodeid="79" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="AppName" dstnodeid="80" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Process ID" dstnodeid="81" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Message ID" dstnodeid="82" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Structured Data Name" dstnodeid="101" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Structured Data Value Bin Size" dstnodeid="87" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="4245" top="8985" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="119" srcpinname="String Value" dstnodeid="60" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Severity" dstnodeid="119" dstpinname="Enum">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="120">
+   <BOUNDS type="Node" left="2385" top="8985" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="120" srcpinname="String Value" dstnodeid="59" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Facility" dstnodeid="120" dstpinname="Enum">
+   </LINK>
+   <NODE id="104" systemname="Add (String Spectral)" nodename="Add (String Spectral)" componentmode="Hidden">
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <BOUNDS type="Node" left="15375" top="9195" width="7830" height="270">
+   </BOUNDS>
+   <PIN pinname="Intersperse" slicecount="1" visible="-1" pintype="Input" values="None">
+   </PIN>
+   <PIN pinname="Intersperse String" visible="1" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Structured Data Value Bin Size" dstnodeid="104" dstpinname="Bin Size" linkstyle="VHV">
+   <LINKPOINT x="19680" y="9075">
+   </LINKPOINT>
+   <LINKPOINT x="18660" y="9075">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="104" srcpinname="Output" dstnodeid="83" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Output" dstnodeid="104" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="123" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="23145" top="8835" width="285" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="23145" top="8835" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|, |">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="123" srcpinname="Output String" dstnodeid="104" dstpinname="Intersperse String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Structured Data Value" dstnodeid="101" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="102" srcpinname="Output String" dstnodeid="101" dstpinname="Intersperse String">
+   </LINK>
+   <NODE systemname="Cons (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Raw)" componentmode="Hidden" id="124">
+   <BOUNDS type="Node" left="525" top="7875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="S+H (Raw)" nodename="S+H (Raw)" componentmode="Hidden" id="125">
+   <BOUNDS type="Node" left="525" top="7440" width="1140" height="270">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="125" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="63" srcpinname="Inverse Output" dstnodeid="125" dstpinname="Set">
+   </LINK>
+   <NODE systemname="Select (Node)" filename="%VVVV%\lib\nodes\modules\Node\Select (Node).v4p" nodename="Select (Node)" componentmode="Hidden" id="126">
+   <BOUNDS type="Node" left="2010" top="5010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Select" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="126" srcpinname="Output" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Output" dstnodeid="126" dstpinname="Select">
+   <LINKPOINT x="847" y="3166">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="124" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="127" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6105" top="9540" width="1785" height="1650">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6105" top="9540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hostname">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="SBB2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Timestamp" dstnodeid="127" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="118" dstpinname="Raw In">
+   </LINK>
+   <LINK srcnodeid="117" srcpinname="Output" dstnodeid="124" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="116" srcpinname="Output String" dstnodeid="117" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="118" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="126" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="65" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   </PATCH>

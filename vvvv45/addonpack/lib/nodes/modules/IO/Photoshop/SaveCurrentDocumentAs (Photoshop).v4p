@@ -1,0 +1,361 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SaveCurrentDocumentAs (Photoshop).v4p" systemname="SaveCurrentDocumentAsPSD" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\SaveCurrentDocumentAsPSD.v4p" scrollx="0" scrolly="15">
+   <BOUNDS type="Window" left="870" top="300" width="15900" height="9195">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" id="13">
+   <BOUNDS type="Node" left="10080" top="5325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\">
+   </PIN>
+   <PIN pinname="To" visible="1" slicecount="1" values="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Photoshop\VVVVSavedThis.psd">
+   </PIN>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="12" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="13155" top="4755" width="1020" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13155" top="4755" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="&lt;FILE&gt;">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output String" dstnodeid="13" dstpinname="From">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13080" top="600" width="570" height="615">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13080" top="600" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="8310" top="7755" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8310" top="7755" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="10785" top="600" width="1020" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10785" top="600" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Directory">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="11910" top="600" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11910" top="600" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10065" top="3480" width="4485" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10065" top="3480" width="2805" height="1575">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|// Define a file&cr;&lf;var file = new File(&quot;&lt;FILE&gt;&quot;);&cr;&lf;&cr;&lf;// Save Active Document&cr;&lf;app.activeDocument.saveAs(file,format, true, Extension.LOWERCASE);|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="10785" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="57" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="57" dstpinname="Input 2">
+   </LINK>
+   <NODE id="5" systemname="AsRaw (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (Photoshop).v4p" componentmode="Hidden" nodename="AsRaw (Photoshop)">
+   <BOUNDS type="Window" left="13005" top="1125" width="11130" height="6300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8295" top="7260" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8295" top="7260" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Content Type" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Command" visible="1" slicecount="1" values="|&quot;file folder: &quot; + app.activeDocument.path;|">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="4" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Send">
+   </LINK>
+   <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="5880" top="1470" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values=".a.jpg">
+   </PIN>
+   <PIN pinname="Regular Expression" slicecount="1" values="^.*\.(.*?)$">
+   </PIN>
+   <PIN pinname="Match 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="67" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="72" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6075" top="2490" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6075" top="2490" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="psd">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="EQ (String)" nodename="EQ (String)" componentmode="Hidden" id="70">
+   <BOUNDS type="Node" left="5880" top="2865" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Output String" dstnodeid="70" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="77">
+   <BOUNDS type="Node" left="12060" top="7575" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12060" top="7575" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Error">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="78">
+   <BOUNDS type="Node" left="12060" top="6960" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="Output" dstnodeid="78" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="78" srcpinname="Output" dstnodeid="77" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="79" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="12315" top="6525" width="2880" height="285">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12315" top="6525" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|This format is currently not supported.|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Output String" dstnodeid="78" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="80">
+   <BOUNDS type="Node" left="8280" top="6330" width="600" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="81">
+   <BOUNDS type="Node" left="5895" top="5490" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="82">
+   <BOUNDS type="Node" left="6660" top="3450" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6660" top="3450" width="3270" height="1590">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|// Define options for PSD format&cr;&lf;var format = new PhotoshopSaveOptions();&cr;&lf;format.layers = true;&cr;&lf;format.embedColorProfile = true;&cr;&lf;format.annotations = true;&cr;&lf;format.alphaChannels = true;&cr;&lf;format.spotColors = true;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="82" srcpinname="Output String" dstnodeid="81" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Output" dstnodeid="81" dstpinname="Switch">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="83" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6270" top="4725" width="285" height="375">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6270" top="4725" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="83" srcpinname="Output String" dstnodeid="81" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="81" srcpinname="Output" dstnodeid="80" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="80" srcpinname="Output" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output String" dstnodeid="13" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Output" dstnodeid="80" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="84" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6600" top="3150" width="1545" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6600" top="3150" width="1545" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|File Format Options|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="85" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="720" top="1470" width="3600" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="720" top="1470" width="3705" height="1965">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This module tells Photoshop to save the current document. At the moment this module supports only .psd file format.&cr;&lf;&cr;&lf;Other formats can be easily added, just place  another &apos;File Format Option&apos; string to the switch.&cr;&lf;&cr;&lf;For more information about the File Format Options in Photoshop, check the &apos;saveAs&apos; method of the &apos;Document&apos; class in the Scripting Reference:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="86">
+   <BOUNDS type="Node" left="735" top="3570" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="735" top="3570" width="3180" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://www.adobe.com/devnet/photoshop/scripting.html">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Creates a command for Photoshop to save its current active Document as..." tags="psd, command">
+   </INFO>
+   <LINK srcnodeid="67" srcpinname="Match 1" dstnodeid="70" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Encode (String File)" filename="..\..\..\..\..\..\Anton-work\Adobe Photoshop vs vvvv\Patches\plugins\FileStringEncode\FileStringEncode.csproj" nodename="Encode (String File)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="10800" top="2310" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="URI Kind" slicecount="1" values="Absolute">
+   </PIN>
+   <PIN pinname="Path" visible="1" slicecount="1" values="|C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\|">
+   </PIN>
+   <PIN pinname="Base Path" visible="1" slicecount="1" values="..\vvv">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="64" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="64" srcpinname="Output" dstnodeid="13" dstpinname="To">
+   </LINK>
+   </PATCH>
