@@ -10,7 +10,7 @@ using VVVV.Utils.Win32;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "SetWindowSize", Category = "Windows", Help = "Sets the client size of a given window handle in pixels.", AutoEvaluate = true)]
+    [PluginInfo(Name = "SetWindowBounds", Category = "Windows", Help = "Sets the client size and position of a given window handle in pixels.", AutoEvaluate = true)]
     #endregion PluginInfo
     public class SetWindowBounds : IPluginEvaluate
     {
@@ -31,16 +31,15 @@ namespace VVVV.Nodes
         public ISpread<int> FHeight;
 
         [Input("Set Position", DefaultValue = 0.0, IsBang = true)]
-        public IDiffSpread<bool> FSetPosition;
+        public ISpread<bool> FSetPosition;
 
         [Input("Set Size", DefaultValue = 0.0, IsBang = true)]
-        public IDiffSpread<bool> FSetSize;
+        public ISpread<bool> FSetSize;
 
         #endregion fields & pins
 
         private IntPtr hWnd;
-        private RECT rcClient, rcWindow;
-        private int paddingX, paddingY;
+        private RECT client, window;
 
         [DllImport("User32.dll")]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
@@ -51,44 +50,40 @@ namespace VVVV.Nodes
         public SetWindowBounds()
         {
             hWnd = System.IntPtr.Zero;
-            rcClient = new RECT();
-            rcWindow = new RECT();
-
-            paddingX = 0;
-            paddingY = 0;
+            client = new RECT();
+            window = new RECT();
         }
 
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-            
-
             for (int i = 0; i < SpreadMax; i++)
             {
-
                 if (FSetSize[i] || FSetPosition[i])
                 {
                     hWnd = (IntPtr)FHandle[i];
 
-                    User32.GetClientRect(hWnd, out rcClient);
-                    User32.GetWindowRect(hWnd, out rcWindow);
-
-                    paddingX = rcWindow.Right - rcWindow.Left - rcClient.Right;
-                    paddingY = rcWindow.Bottom - rcWindow.Top - rcClient.Bottom;
+                    User32.GetClientRect(hWnd, out client);
+                    User32.GetWindowRect(hWnd, out window); 
                 }
 
-                if (FSetSize[i])
+                if (FSetSize[i] && IsWindow (hWnd))
                 {
-                    MoveWindow(hWnd, rcWindow.Left, rcWindow.Top, FWidth[i] + paddingX, FHeight[i] + paddingY, true);
+                    var paddingX = window.Right - window.Left - client.Right;
+                    var paddingY = window.Bottom - window.Top - client.Bottom;
+
+                    MoveWindow(hWnd, window.Left, window.Top, FWidth[i] + paddingX, FHeight[i] + paddingY, true);
                 }
 
-                if (FSetPosition[i])
+                if (FSetPosition[i] && IsWindow(hWnd))
                 {
-                   MoveWindow(hWnd, FXPos[i]+ paddingX, FYPos[i]+ paddingY, rcClient.Width, rcClient.Height, true);
+                    MoveWindow(hWnd, FXPos[i] - client.Left, FYPos[i] - client.Top, window.Width, window.Height, true);
                 }
 
             }
+
+
 
         }
 
