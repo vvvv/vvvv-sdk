@@ -45,6 +45,12 @@ namespace VVVV.Nodes
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
         [DllImport("User32.dll")]
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("User32.dll")]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
         public SetWindowBounds()
@@ -64,8 +70,8 @@ namespace VVVV.Nodes
                 {
                     hWnd = (IntPtr)FHandle[i];
 
-                    User32.GetClientRect(hWnd, out client);
-                    User32.GetWindowRect(hWnd, out window); 
+                    GetClientRect(hWnd, out client);
+                    GetWindowRect(hWnd, out window); 
                 }
 
                 if (FSetSize[i] && IsWindow (hWnd))
