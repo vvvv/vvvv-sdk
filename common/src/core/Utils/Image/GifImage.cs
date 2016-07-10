@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -24,14 +25,13 @@ namespace VVVV.Utils.Imaging
             GraphicControlExtensionBlockIdentifier = 0xf921;
 
         const long SourceGlobalColorInfoPosition = 10,
-            SourceGraphicControlExtensionPosition = 781,
             SourceGraphicControlExtensionLength = 8,
-            SourceImageBlockPosition = 789,
             SourceImageBlockHeaderLength = 11,
-            SourceColorBlockPosition = 13,
-            SourceColorBlockLength = 768;
+            SourceColorBlockPosition = 13;
 
-        const string ApplicationIdentification = "NETSCAPE2.0",
+        long SourceColorBlockLength, SourceGraphicControlExtensionPosition, SourceImageBlockPosition;
+
+        const string ApplicationIdentification = "VVVV",
             FileType = "GIF",
             FileVersion = "89a";
         #endregion
@@ -122,23 +122,74 @@ namespace VVVV.Utils.Imaging
             Frames.Clear();
         }
 
-        public void Save(Stream OutStream)
+        public void Save(Stream OutStream, PaletteType paletteType, DitherType ditherType, int colorCount)
         {
             using (var Writer = new BinaryWriter(OutStream))
             {
-                for (int i = 0; i < Count; ++i)
-                {
-                    var Frame = Frames[i];
+                //Header
+                Writer.Write(FileType.ToCharArray());
+                Writer.Write(FileVersion.ToCharArray());
 
+                //Logical Screen Descriptor
+                var w = Frames[0].Image.Width;
+                var h = Frames[0].Image.Height;
+                Writer.Write((short)(DefaultWidth == 0 ? w : DefaultWidth)); // Initial Logical Width
+                Writer.Write((short)(DefaultHeight == 0 ? h : DefaultHeight)); // Initial Logical Height
+                
+                byte gctInfo = 0;
+                if (paletteType != PaletteType.Optimal) //use a global colortable
+                {
                     using (var gifStream = new MemoryStream())
                     {
-                        Frame.Image.Save(gifStream, ImageFormat.Gif);
+                        var bitmap = new Bitmap(Frames[0].Image);
+                        bitmap.ChangeTo8bppIndexed(paletteType, ditherType, colorCount);
+                        bitmap.Save(gifStream, ImageFormat.Gif);
 
-                        // Steal the global color table info
-                        if (i == 0) InitHeader(gifStream, Writer, Frame.Image.Width, Frame.Image.Height);
+                        gifStream.Position = SourceGlobalColorInfoPosition;
+                        gctInfo = (byte)gifStream.ReadByte();
+                        var bv = new BitVector32(gctInfo);
+                        var sizeSection = BitVector32.CreateSection(7);
+                        SourceColorBlockLength = (1 << (bv[sizeSection] + 1)) * 3;
+                        SourceGraphicControlExtensionPosition = SourceColorBlockLength + 13;
+                        SourceImageBlockPosition = SourceGraphicControlExtensionPosition;
 
-                        WriteGraphicControlBlock(gifStream, Writer, Frame.Delay);
-                        WriteImageBlock(gifStream, Writer, i != 0, Frame.XOffset, Frame.YOffset, Frame.Image.Width, Frame.Image.Height);
+                        Writer.Write(gctInfo); // Global Color Table Info
+                        Writer.Write((byte)0); // Background Color Index
+                        Writer.Write((byte)0); // Pixel aspect ratio
+
+                        WriteColorTable(gifStream, Writer);
+                    }
+                }
+                else //local colortables will be used for each frame
+                {
+                    Writer.Write(gctInfo); // Global Color Table Info
+                    Writer.Write((byte)0); // Background Color Index
+                    Writer.Write((byte)0); // Pixel aspect ratio
+                }
+
+                // App Extension Header
+                unchecked { Writer.Write((short)ApplicationExtensionBlockIdentifier); };
+                Writer.Write((byte)ApplicationBlockSize);
+                Writer.Write(ApplicationIdentification.ToCharArray());
+                Writer.Write((byte)0); // Application block length
+                Writer.Write((byte)0); // terminator
+
+                //individual frames
+                for (int i = 0; i < Count; ++i)
+                {
+                    var frame = Frames[i];
+                    {
+                        using (var gifStream = new MemoryStream())
+                        {
+                            var bitmap = new Bitmap(frame.Image);
+                            if (bitmap.ChangeTo8bppIndexed(paletteType, ditherType, colorCount) == 0)
+                                bitmap.Save(gifStream, ImageFormat.Gif);
+                            else
+                                frame.Image.Save(gifStream, ImageFormat.Gif);
+
+                            WriteGraphicControlBlock(gifStream, Writer, frame.Delay);
+                            WriteImageBlock(gifStream, Writer, paletteType == PaletteType.Optimal, frame.XOffset, frame.YOffset, bitmap.Width, bitmap.Height);
+                        }
                     }
                 }
 
@@ -148,55 +199,33 @@ namespace VVVV.Utils.Imaging
         }
 
         #region Write
-        void InitHeader(Stream sourceGif, BinaryWriter Writer, int w, int h)
-        {
-            // File Header
-            Writer.Write(FileType.ToCharArray());
-            Writer.Write(FileVersion.ToCharArray());
-
-            Writer.Write((short)(DefaultWidth == 0 ? w : DefaultWidth)); // Initial Logical Width
-            Writer.Write((short)(DefaultHeight == 0 ? h : DefaultHeight)); // Initial Logical Height
-
-            sourceGif.Position = SourceGlobalColorInfoPosition;
-            Writer.Write((byte)sourceGif.ReadByte()); // Global Color Table Info
-            Writer.Write((byte)0); // Background Color Index
-            Writer.Write((byte)0); // Pixel aspect ratio
-            WriteColorTable(sourceGif, Writer);
-
-            // App Extension Header
-            unchecked { Writer.Write((short)ApplicationExtensionBlockIdentifier); };
-            Writer.Write((byte)ApplicationBlockSize);
-            Writer.Write(ApplicationIdentification.ToCharArray());
-            Writer.Write((byte)3); // Application block length
-            Writer.Write((byte)1);
-            Writer.Write((short)Repeat); // Repeat count for images.
-            Writer.Write((byte)0); // terminator
-        }
-
         void WriteColorTable(Stream sourceGif, BinaryWriter Writer)
         {
             sourceGif.Position = SourceColorBlockPosition; // Locating the image color table
-            var colorTable = new byte[SourceColorBlockLength];
+            var colorTable = new byte[SourceColorBlockLength]; 
             sourceGif.Read(colorTable, 0, colorTable.Length);
             Writer.Write(colorTable, 0, colorTable.Length);
         }
 
         void WriteGraphicControlBlock(Stream sourceGif, BinaryWriter Writer, double frameDelay)
         {
-            sourceGif.Position = SourceGraphicControlExtensionPosition; // Locating the source GCE
-            var blockhead = new byte[SourceGraphicControlExtensionLength];
-            sourceGif.Read(blockhead, 0, blockhead.Length); // Reading source GCE
-
             unchecked { Writer.Write((short)GraphicControlExtensionBlockIdentifier); }; // Identifier
             Writer.Write((byte)GraphicControlExtensionBlockSize); // Block Size
-            Writer.Write((byte)(blockhead[3] & 0xf7 | 0x08)); // Setting disposal flag
+            Writer.Write((byte)(0 & 0xf7 | 0x08)); // Setting disposal flag
             Writer.Write((short)(frameDelay)); // Setting frame delay
-            Writer.Write((byte)blockhead[6]); // Transparent color index
+            Writer.Write((byte)0); // (byte)blockhead[6]); // Transparent color index
             Writer.Write((byte)0); // Terminator
         }
 
         void WriteImageBlock(Stream sourceGif, BinaryWriter Writer, bool includeColorTable, int x, int y, int w, int h)
         {
+            sourceGif.Position = SourceGlobalColorInfoPosition;
+            var gctInfo = (byte)sourceGif.ReadByte();
+            var bv = new BitVector32(gctInfo);
+            var sizeSection = BitVector32.CreateSection(7);
+            SourceColorBlockLength = (1 << (bv[sizeSection] + 1)) * 3;
+            SourceImageBlockPosition = SourceColorBlockLength + 13;
+
             sourceGif.Position = SourceImageBlockPosition; // Locating the image block
             var header = new byte[SourceImageBlockHeaderLength];
             sourceGif.Read(header, 0, header.Length);
@@ -206,13 +235,13 @@ namespace VVVV.Utils.Imaging
             Writer.Write((short)w); // Width
             Writer.Write((short)h); // Height
 
-            if (includeColorTable) // If first frame, use global color table - else use local
+            if (includeColorTable)
             {
-                sourceGif.Position = SourceGlobalColorInfoPosition;
-                Writer.Write((byte)(sourceGif.ReadByte() & 0x3f | 0x80)); // Enabling local color table
+                Writer.Write((byte)(gctInfo & 0x3f | 0x80)); // Enabling local color table
                 WriteColorTable(sourceGif, Writer);
             }
-            else Writer.Write((byte)(header[9] & 0x07 | 0x07)); // Disabling local color table
+            else
+                Writer.Write((byte)0); // (header[9] & 0x07 | 0x07)); // Disabling local color table
 
             Writer.Write((byte)header[10]); // LZW Min Code Size
 
