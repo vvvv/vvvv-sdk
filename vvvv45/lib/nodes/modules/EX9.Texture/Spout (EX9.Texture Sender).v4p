@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\grayarea\Spout (DX9 Sender).v4p" systemname="Spout (DX9 Sender)" filename="C:\Users\joreg\Documents\repos\grayarea\Spout (DX9 Sender).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\modules\EX9\Spout (DX9 Sender).v4p" systemname="Spout (DX9 Sender)" filename="C:\Users\joreg\Documents\repos\grayarea\Spout (DX9 Sender).v4p">
    <NODE systemname="Info (EX9.Texture)" filename="" nodename="Info (EX9.Texture)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="4329" top="2136" width="100" height="100">
    </BOUNDS>
@@ -20,22 +20,6 @@
    <PIN pinname="Levels" visible="1">
    </PIN>
    <PIN pinname="Format" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
-   <BOUNDS type="Node" left="3534" top="2583" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3534" top="2583" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
-   <BOUNDS type="Node" left="2565" top="2565" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2565" top="2565" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="4">
@@ -61,7 +45,7 @@
    </PIN>
    </NODE>
    <NODE id="16" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Share Name|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Sender Name|">
    </PIN>
    <PIN pinname="Input String" slicecount="1" values="vvvvideo">
    </PIN>
@@ -90,15 +74,11 @@
    </NODE>
    <LINK srcnodeid="19" srcpinname="Output Node" dstnodeid="0" dstpinname="Texture">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Width" dstnodeid="3" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Height" dstnodeid="1" dstpinname="Y Input Value">
-   </LINK>
    <LINK srcnodeid="0" srcpinname="Format Description" dstnodeid="5" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Shared Handle" dstnodeid="4" dstpinname="Y Input Value">
    </LINK>
-   <BOUNDS type="Window" left="10395" top="495" width="11970" height="8220">
+   <BOUNDS type="Window" left="9975" top="5745" width="11970" height="8220">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7764" top="3996" width="2745" height="270">
@@ -132,6 +112,8 @@
    <PIN pinname="Epsilon" visible="-1" pintype="Input" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Input 1">
@@ -234,107 +216,93 @@
    </NODE>
    <PACK Name="CV" Version="0.2.0">
    </PACK>
-   <PACK Name="addonpack" Version="34.1.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <INFO author="vvvv group" description="Sends a texture to Spout" tags="">
    </INFO>
-   <NODE systemname="Writer (Raw SharedMemory)" nodename="Writer (Raw SharedMemory)" componentmode="Hidden" id="36">
-   <BOUNDS type="Node" left="1095" top="6795" width="100" height="100">
+   <NODE systemname="SpoutSender (System)" filename="%VVVV%\lib\nodes\modules\EX9\plugins\VVVVSpoutSender\VVVVSpoutSender.csproj" nodename="SpoutSender (System)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="555" top="6855" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Shared Memory Name" visible="1">
+   <PIN pinname="Sender Name" visible="1">
    </PIN>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   <PIN pinname="Width" visible="1">
    </PIN>
-   <PIN pinname="Size in Bytes" visible="1">
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
    </PIN>
    <PIN pinname="Write" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="36" dstpinname="Shared Memory Name">
-   </LINK>
-   <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="1440" top="6165" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="38" srcpinname="Count" dstnodeid="36" dstpinname="Size in Bytes">
-   </LINK>
-   <NODE systemname="Change (Raw)" nodename="Change (Raw)" componentmode="Hidden" id="39" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
-   <BOUNDS type="Node" left="2175" top="5865" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="OnChange" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="2100" top="6420" width="100" height="100">
+   <NODE id="40" systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden">
+   <BOUNDS type="Node" left="1620" top="3765" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="16" srcpinname="Changed" dstnodeid="40" dstpinname="Input 1">
    </LINK>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="44" dstpinname="Sender Name">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Width" dstnodeid="44" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Height" dstnodeid="44" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Shared Handle" dstnodeid="44" dstpinname="Handle">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Input 4">
+   </LINK>
+   <NODE id="39" systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" filename="">
+   <BOUNDS type="Node" left="1905" top="3060" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
    <LINK srcnodeid="39" srcpinname="OnChange" dstnodeid="40" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="36" dstpinname="Write">
+   <LINK srcnodeid="0" srcpinname="Width" dstnodeid="39" dstpinname="Input">
    </LINK>
-   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="41">
-   <BOUNDS type="Node" left="1095" top="4095" width="100" height="100">
+   <NODE id="46" systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" filename="">
+   <BOUNDS type="Node" left="2655" top="3060" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Height" dstnodeid="46" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="OnChange" dstnodeid="40" dstpinname="Input 3">
+   </LINK>
+   <NODE systemname="AND (Boolean)" nodename="AND (Boolean)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="1635" top="6345" width="100" height="100">
+   </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Input 3" visible="1">
+   <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <BOUNDS type="Box" left="1095" top="4095">
-   </BOUNDS>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Width" dstnodeid="41" dstpinname="Input 2">
+   <LINK srcnodeid="40" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Shared Handle" dstnodeid="41" dstpinname="Input 1">
+   <LINK srcnodeid="23" srcpinname="Inverse Output" dstnodeid="47" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="0" srcpinname="Height" dstnodeid="41" dstpinname="Input 3">
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="44" dstpinname="Write">
    </LINK>
-   <NODE systemname="AsRaw (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsRaw (Value)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="1095" top="4590" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Format" slicecount="1" values="UInt32">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="1095" top="4590">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="42" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="36" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="38" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="39" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Input 3">
-   </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
+   <NODE id="43" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
    <BOUNDS type="Node" left="435" top="300" width="2955" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="435" top="300" width="2955" height="270">
@@ -348,4 +316,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <PACK Name="ImagePack" Version="0.2.0">
+   </PACK>
    </PATCH>

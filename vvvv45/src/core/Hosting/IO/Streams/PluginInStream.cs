@@ -566,8 +566,6 @@ namespace VVVV.Hosting.IO.Streams
 
     class RawInStream : IInStream<Stream>
     {
-        public static readonly Stream EmptyStream = new MemoryStream(Array.Empty<byte>(), writable: false);
-
         class RawInStreamReader : IStreamReader<Stream>
         {
             private readonly RawInStream FRawInStream;
@@ -591,7 +589,7 @@ namespace VVVV.Hosting.IO.Streams
                         return stream;
                     return new ComAdapterStream(comStream);
                 }
-                return EmptyStream;
+                return EmptyComStream.Instance;
             }
 
             public int Read(Stream[] buffer, int offset, int length, int stride = 1)

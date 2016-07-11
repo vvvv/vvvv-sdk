@@ -26,6 +26,12 @@ namespace VVVV.Utils.Win32
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("user32")]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32")]
+        public static extern int GetSystemMetrics(int nIndex);
+
+        [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ScreenToClient(IntPtr hWnd, ref Point lpPoint);
 
