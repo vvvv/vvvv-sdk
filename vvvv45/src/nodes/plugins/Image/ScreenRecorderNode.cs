@@ -134,6 +134,7 @@ namespace VVVV.Nodes.Capture
         {
             FProgressBar.FormBorderStyle = FormBorderStyle.None;
             FProgressBar.Size = new Size(0, 0);
+            FProgressBar.TopMost = true;
 
             FProgressLabel.Padding = new Padding(4);
             FProgressLabel.AutoSize = true;
