@@ -27,11 +27,37 @@ namespace VVVV.Nodes.Capture
         public float Delay;
     }
 
+    public enum GifDitherType
+    {
+        None = 0,
+        Solid = 1,
+        Ordered4x4 = 2,
+        Ordered8x8 = 3,
+        Ordered16x16 = 4,
+        Spiral4x4 = 5,
+        Spiral8x8 = 6,
+        DualSpiral4x4 = 7,
+        DualSpiral8x8 = 8,
+        ErrorDiffusion = 9,
+    }
+    public enum GifPaletteType
+    {
+        Optimal = 1,
+        FixedBW = 2,
+        FixedHalftone8 = 3,
+        FixedHalftone27 = 4,
+        FixedHalftone64 = 5,
+        FixedHalftone125 = 6,
+        FixedHalftone216 = 7,
+        FixedHalftone252 = 8,
+        FixedHalftone256 = 9
+    }
+
     #region PluginInfo
-    [PluginInfo(Name = "Capture",
+    [PluginInfo(Name = "ScreenRecorder",
                 Category = "System",
                 Help = "Captures a window to an animated GIF",
-                Tags = "gif",
+                Tags = "gif, capture",
                 AutoEvaluate = true)]
     #endregion PluginInfo	
     public class CaptureNode : IPluginEvaluate
@@ -43,11 +69,20 @@ namespace VVVV.Nodes.Capture
         [Input("Frame Count", IsSingle = true, MinValue = -1, DefaultValue = -1)]
         public ISpread<int> FFrameCount;
 
-        [Input("Capture", IsSingle = true)]
-        public ISpread<bool> FCapture;
+        [Input("Record", IsSingle = true)]
+        public IDiffSpread<bool> FRecord;
 
         [Input("Delay in Milliseconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
         public ISpread<double> FDelay;
+
+        [Input("Palette Type", IsSingle = true, DefaultEnumEntry = "Optimal")]
+        public ISpread<GifPaletteType> FPaletteType;
+
+        [Input("Color Count", IsSingle = true, MinValue = 1, MaxValue = 256, DefaultValue = 256)]
+        public ISpread<int> FColorCount;
+
+        [Input("Dither Type", IsSingle = true, DefaultEnumEntry = "ErrorDiffusion")]
+        public ISpread<GifDitherType> FDitherType;
 
         [Input("Filename", StringType = StringType.Filename, IsSingle = true)]
         public ISpread<string> FFilename;
@@ -104,7 +139,8 @@ namespace VVVV.Nodes.Capture
             {
                 case CaptureState.Idle:
                     {
-                        if (FCapture[0])
+                        if (FRecord[0])
+                            if (FFrameCount[0] < 0 || (FFrameCount[0] > 0 && FRecord.IsChanged))
                         {
                             FCaptureState = CaptureState.Capturing;
                             int p = unchecked((int)FInput[0]);
@@ -117,7 +153,7 @@ namespace VVVV.Nodes.Capture
                         if (FFrameCount[0] < 0)
                         {
                             //write file when capture stops
-                            if (!FCapture[0])
+                            if (!FRecord[0])
                                 FCaptureState = CaptureState.Writing;
                         }
                         else if (FFrames.Count >= FFrameCount[0])
@@ -167,7 +203,7 @@ namespace VVVV.Nodes.Capture
                     }
 
                     FWriting[0] = true;
-                    await Task.Run(() => SaveFileAsync(FCurrentFilename));
+                    await Task.Run(() => SaveGIFAsync(FCurrentFilename));
                     FWriting[0] = false;
                     FCaptureState = CaptureState.Idle;
                     FProgressBar.Hide();
@@ -212,15 +248,15 @@ namespace VVVV.Nodes.Capture
             FProgressBar.ClientSize = new Size(FProgressLabel.Size.Width, FProgressLabel.Size.Height - 4);
         }
 
-        async void SaveFileAsync(string filename)
+        async void SaveGIFAsync(string filename)
         {
             foreach (var frame in FFrames)
                 FGIF.AddFrame(frame.Image, Math.Round(FDelay[0] * 100)); //gif cannot handle arbitrary framedelays, use userinput here
 
-            FFrames.Clear();
-
             var fileStream = new FileStream(filename, FileMode.OpenOrCreate);
-            FGIF.Save(fileStream);
+            FGIF.Save(fileStream, (PaletteType)FPaletteType[0], (DitherType)FDitherType[0], FColorCount[0]);
+
+            FFrames.Clear();
 
             if (FAutoOpen[0])
                 Process.Start(filename);
