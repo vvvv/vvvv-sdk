@@ -31,7 +31,8 @@ namespace VVVV.Utils.Imaging
 
         long SourceColorBlockLength, SourceGraphicControlExtensionPosition, SourceImageBlockPosition;
 
-        const string ApplicationIdentification = "VVVV",
+        const string NetscapeIdentification = "NETSCAPE2.0",
+            VVVVIdentification = "vvvv50.....",
             FileType = "GIF",
             FileVersion = "89a";
         #endregion
@@ -166,12 +167,22 @@ namespace VVVV.Utils.Imaging
                     Writer.Write((byte)0); // Background Color Index
                     Writer.Write((byte)0); // Pixel aspect ratio
                 }
-
-                // App Extension Header
+                
+                //Netscape extension for looping animations
                 unchecked { Writer.Write((short)ApplicationExtensionBlockIdentifier); };
                 Writer.Write((byte)ApplicationBlockSize);
-                Writer.Write(ApplicationIdentification.ToCharArray());
-                Writer.Write((byte)0); // Application block length
+                Writer.Write(NetscapeIdentification.ToCharArray());
+                Writer.Write((byte)3); // Application block length
+                Writer.Write((byte)1);
+                Writer.Write((short)Repeat); // Repeat count for images.
+                Writer.Write((byte)0); // terminator
+
+                // vvvv Extension Header
+                unchecked { Writer.Write((short)ApplicationExtensionBlockIdentifier); };
+                Writer.Write((byte)ApplicationBlockSize);
+                Writer.Write(VVVVIdentification.ToCharArray());
+                Writer.Write((byte)1); // Application block length
+                Writer.Write((byte)0); // dummy
                 Writer.Write((byte)0); // terminator
 
                 //individual frames

@@ -55,12 +55,12 @@ namespace VVVV.Nodes.Capture
 
     #region PluginInfo
     [PluginInfo(Name = "ScreenRecorder",
-                Category = "System",
+                Category = "Windows",
                 Help = "Captures a window to an animated GIF",
                 Tags = "gif, capture",
                 AutoEvaluate = true)]
     #endregion PluginInfo	
-    public class CaptureNode : IPluginEvaluate
+    public class CaptureNode : IPluginEvaluate, IDisposable
     {
         #region fields & pins
         [Input("Handle", IsSingle = true)]
@@ -73,7 +73,7 @@ namespace VVVV.Nodes.Capture
         public IDiffSpread<bool> FRecord;
 
         [Input("Delay in Milliseconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
-        public ISpread<double> FDelay;
+        public ISpread<float> FDelay;
 
         [Input("Palette Type", IsSingle = true, DefaultEnumEntry = "Optimal")]
         public ISpread<GifPaletteType> FPaletteType;
@@ -95,12 +95,18 @@ namespace VVVV.Nodes.Capture
 
         [Input("Auto Open", IsSingle = true)]
         public ISpread<bool> FAutoOpen;
-        
-        [Output("Frame Count", IsSingle = true)]
+
+        [Output("Recording")]
+        public ISpread<bool> FIsRecording;
+
+        [Output("Frame Count")]
         public ISpread<int> FFrameCountOut;
 
-        [Output("Saving File", IsSingle = true)]
-        public ISpread<bool> FWriting;
+        [Output("Saving File")]
+        public ISpread<bool> FIsWriting;
+
+        [Output("Last Saved File", StringType = StringType.Filename)]
+        public ISpread<string> FLastFile;
 
         [Import()]
         public ILogger FLogger;
@@ -115,6 +121,8 @@ namespace VVVV.Nodes.Capture
         List<Frame> FFrames = new List<Frame>();
 
         IntPtr FHandleToCapture;
+        int FFramesToCapture;
+        float FDelayTimeToCapture;
         string FCurrentFilename;
 
         Gif FGIF = new Gif();
@@ -126,10 +134,17 @@ namespace VVVV.Nodes.Capture
         {
             FProgressBar.FormBorderStyle = FormBorderStyle.None;
             FProgressBar.Size = new Size(0, 0);
+            FProgressBar.TopMost = true;
 
             FProgressLabel.Padding = new Padding(4);
             FProgressLabel.AutoSize = true;
             FProgressLabel.Parent = FProgressBar;            
+        }
+
+        public void Dispose()
+        {
+            FProgressLabel.Dispose();
+            FProgressBar.Dispose();
         }
 
         //called when data for any output pin is requested
@@ -141,22 +156,29 @@ namespace VVVV.Nodes.Capture
                     {
                         if (FRecord[0])
                             if (FFrameCount[0] < 0 || (FFrameCount[0] > 0 && FRecord.IsChanged))
-                        {
-                            FCaptureState = CaptureState.Capturing;
-                            int p = unchecked((int)FInput[0]);
-                            FHandleToCapture = new IntPtr(p);
-                        }
+                            {
+                                int p = unchecked((int)FInput[0]);
+                                FHandleToCapture = new IntPtr(p);
+                                
+                                if (FHandleToCapture != IntPtr.Zero)
+                                {
+                                    FCaptureState = CaptureState.Capturing;
+                                    FFramesToCapture = FFrameCount[0];
+                                    FDelayTimeToCapture = FDelay[0];
+                                    FIsRecording[0] = true;
+                                }                                
+                            }
                         break;
                     }
                 case CaptureState.Capturing:
                     {
-                        if (FFrameCount[0] < 0)
+                        if (FFramesToCapture < 0)
                         {
                             //write file when capture stops
                             if (!FRecord[0])
                                 FCaptureState = CaptureState.Writing;
                         }
-                        else if (FFrames.Count >= FFrameCount[0])
+                        else if (FFrames.Count >= FFramesToCapture)
                             FCaptureState = CaptureState.Writing;
                         break;
                     }
@@ -189,11 +211,13 @@ namespace VVVV.Nodes.Capture
             }
             else if (FCaptureState == CaptureState.Writing)
             {
-                if (!FWriting[0])
+                if (!FIsWriting[0])
                 {
+                    FIsRecording[0] = false;
                     FCurrentFilename = FFilename[0];
                     if (FAutoFilename[0])
                     {
+                        FCurrentFilename += Path.HasExtension(FCurrentFilename) ? "" : "\\"; //add trailing slash if this is supposed to be a path
                         var path = Path.GetDirectoryName(FCurrentFilename);
                         FCurrentFilename = Path.GetFileNameWithoutExtension(FCurrentFilename);
                         var now = DateTime.Now;
@@ -202,9 +226,10 @@ namespace VVVV.Nodes.Capture
                         //FLogger.Log(LogType.Debug, filename);
                     }
 
-                    FWriting[0] = true;
+                    FIsWriting[0] = true;
                     await Task.Run(() => SaveGIFAsync(FCurrentFilename));
-                    FWriting[0] = false;
+                    FLastFile[0] = FCurrentFilename;
+                    FIsWriting[0] = false;
                     FCaptureState = CaptureState.Idle;
                     FProgressBar.Hide();
                 }
@@ -251,18 +276,26 @@ namespace VVVV.Nodes.Capture
         async void SaveGIFAsync(string filename)
         {
             foreach (var frame in FFrames)
-                FGIF.AddFrame(frame.Image, Math.Round(FDelay[0] * 100)); //gif cannot handle arbitrary framedelays, use userinput here
+                FGIF.AddFrame(frame.Image, Math.Round(FDelayTimeToCapture * 100)); //gif cannot handle arbitrary framedelays, use userinput here
 
-            var fileStream = new FileStream(filename, FileMode.OpenOrCreate);
-            FGIF.Save(fileStream, (PaletteType)FPaletteType[0], (DitherType)FDitherType[0], FColorCount[0]);
+            try
+            {
+                var fileStream = new FileStream(filename, FileMode.OpenOrCreate);
+                FGIF.Save(fileStream, (PaletteType)FPaletteType[0], (DitherType)FDitherType[0], FColorCount[0]);
+                fileStream.Dispose();
 
-            FFrames.Clear();
-
-            if (FAutoOpen[0])
-                Process.Start(filename);
-
-            fileStream.Dispose();
-            FGIF.Clear();
+                if (FAutoOpen[0])
+                    Process.Start(filename);
+            }
+            catch
+            {
+                //silently fail
+            }
+            finally
+            {
+                FFrames.Clear();
+                FGIF.Clear();
+            }
         }
     }
 }
