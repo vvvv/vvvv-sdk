@@ -221,7 +221,7 @@ namespace VVVV.Nodes.Capture
                         var path = Path.GetDirectoryName(FCurrentFilename);
                         FCurrentFilename = Path.GetFileNameWithoutExtension(FCurrentFilename);
                         var now = DateTime.Now;
-                        FCurrentFilename += "_" + now.ToShortDateString() + "-" + now.ToLongTimeString().Replace(":", ".");
+                        FCurrentFilename += "_" + now.ToString("dd.MM.yyyy-HH.mm.ss");
                         FCurrentFilename = Path.Combine(path, FCurrentFilename + ".gif");
                         //FLogger.Log(LogType.Debug, filename);
                     }
