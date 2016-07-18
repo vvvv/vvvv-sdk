@@ -567,7 +567,7 @@
    </PIN>
    <PIN pinname="Auto Filename" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Auto Open" slicecount="1" values="1">
+   <PIN pinname="Auto Open" slicecount="1" values="1" visible="1">
    </PIN>
    <PIN pinname="Report Progress" slicecount="1" values="1">
    </PIN>
@@ -637,5 +637,25 @@
    <LINK srcnodeid="49" srcpinname="Up Edge" dstnodeid="50" dstpinname="Update">
    </LINK>
    <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Delay in Seconds">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="51" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12240" top="4305" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12240" top="4305" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Auto Open|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Auto Open">
    </LINK>
    </PATCH>
