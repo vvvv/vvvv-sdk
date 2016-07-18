@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\plugins\ScreenRecorder (Windows) help.v4p">
    <BOUNDS type="Window" left="4140" top="1800" width="11580" height="11190">
    </BOUNDS>
@@ -187,9 +187,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5070" top="3360" width="2970" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5070" top="3360" width="2160" height="270">
+   <BOUNDS type="Box" left="5070" top="3360" width="2505" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in ms|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in seconds|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -643,6 +643,8 @@
    </PIN>
    <PIN pinname="Last Saved File" visible="1">
    </PIN>
+   <PIN pinname="Delay in Seconds" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Frame Count" dstnodeid="19" dstpinname="Y Input Value">
    </LINK>
@@ -688,4 +690,6 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Delay in Seconds">
+   </LINK>
    </PATCH>

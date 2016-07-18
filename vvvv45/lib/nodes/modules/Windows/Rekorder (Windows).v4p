@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\modules\Windows\Rekorder (Windows).v4p" systemname="Rekorder (System)" filename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\modules\System\Rekorder (System).v4p" scrollx="0" scrolly="15">
    <NODE systemname="Toggle (Animation)" nodename="Toggle (Animation)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="3675" top="4485" width="100" height="100">
@@ -98,12 +98,12 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="FPS">
    </PIN>
    </NODE>
-   <NODE systemname="MainLoop (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
+   <NODE systemname="MAINLOOP (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
    <BOUNDS type="Node" left="3225" top="8265" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Maximum background fpsS" slicecount="1" visible="1" values="30">
+   <PIN pinname="Maximum Background FPS" slicecount="1" visible="1" values="30">
    </PIN>
-   <PIN pinname="Maximum forground fps" visible="1" slicecount="1" values="120">
+   <PIN pinname="Maximum Foreground FPS" visible="1" slicecount="1" values="120">
    </PIN>
    <PIN pinname="Time Mode" slicecount="1" visible="1" values="Raw">
    </PIN>
@@ -210,7 +210,7 @@
    </PACK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="-6" dstpinname="Maximum forground fps">
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="-6" dstpinname="Maximum Foreground FPS">
    </LINK>
    <LINK srcnodeid="17" srcpinname="Enum" dstnodeid="-6" dstpinname="Time Mode">
    </LINK>
@@ -285,7 +285,7 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" values="0.04">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Frame delay in Milliseconds|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Delay in Seconds|">
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
@@ -595,6 +595,8 @@
    </PIN>
    <PIN pinname="Filename" visible="1" slicecount="1" values="..\..\..\..\..\..\..\..\..\Desktop\">
    </PIN>
+   <PIN pinname="Delay in Seconds" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Output" dstnodeid="8" dstpinname="Handle">
    </LINK>
@@ -633,5 +635,7 @@
    <LINK srcnodeid="50" srcpinname="TopMost Window Handle" dstnodeid="21" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="49" srcpinname="Up Edge" dstnodeid="50" dstpinname="Update">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Delay in Seconds">
    </LINK>
    </PATCH>

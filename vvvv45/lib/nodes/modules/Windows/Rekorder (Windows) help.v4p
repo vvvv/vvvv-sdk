@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\modules\Windows\Rekorder (Windows) help.v4p">
    <BOUNDS type="Window" left="2880" top="4095" width="11805" height="8910">
    </BOUNDS>
@@ -165,6 +165,8 @@
    </BOUNDS>
    <PIN pinname="FPS" visible="1">
    </PIN>
+   <PIN pinname="Delay in Seconds" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="0" dstpinname="Window Caption">
    </LINK>
@@ -275,9 +277,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6045" top="3555" width="2970" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6045" top="3555" width="2115" height="270">
+   <BOUNDS type="Box" left="6045" top="3555" width="2535" height="255">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in ms|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in seconds|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -287,7 +289,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="8490" top="3765" width="100" height="100">
+   <BOUNDS type="Node" left="8940" top="3765" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
    </PIN>
@@ -295,9 +297,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8490" top="4230" width="795" height="240">
+   <BOUNDS type="Box" left="8940" top="4230" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8490" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="8940" top="4230" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -307,9 +309,9 @@
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="25" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9330" top="4215" width="510" height="270">
+   <BOUNDS type="Node" left="9780" top="4215" width="510" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9330" top="4215" width="1125" height="495">
+   <BOUNDS type="Box" left="9780" top="4215" width="1125" height="495">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; actual fps when playing|">
    </PIN>
@@ -412,4 +414,6 @@
    <PIN pinname="Size" slicecount="1" values="8">
    </PIN>
    </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Delay in Seconds">
+   </LINK>
    </PATCH>

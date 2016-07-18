@@ -72,7 +72,7 @@ namespace VVVV.Nodes.Capture
         [Input("Record", IsSingle = true)]
         public IDiffSpread<bool> FRecord;
 
-        [Input("Delay in Milliseconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
+        [Input("Delay in Seconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
         public ISpread<float> FDelay;
 
         [Input("Palette Type", IsSingle = true, DefaultEnumEntry = "Optimal")]
