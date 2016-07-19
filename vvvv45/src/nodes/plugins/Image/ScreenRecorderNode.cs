@@ -264,7 +264,7 @@ namespace VVVV.Nodes.Capture
                     }
                 case CaptureState.Writing:
                     {
-                        FProgressLabel.Text = "Writing File: " + FCurrentFilename;
+                        FProgressLabel.Text = FFrames.Count.ToString() + " frames. Writing File: " + FCurrentFilename;
                         FProgressLabel.BackColor = Color.LightSalmon;
                         break;
                     }
