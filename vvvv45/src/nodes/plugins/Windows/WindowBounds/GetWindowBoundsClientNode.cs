@@ -1,4 +1,4 @@
-#region usings
+﻿#region usings
 using System;
 using System.Runtime.InteropServices;
 
@@ -12,16 +12,16 @@ using SlimDX;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "GetWindowBounds", Category = "Windows", Help = "Returns position and the size of a window in pixels.", AutoEvaluate = false)]
+    [PluginInfo(Name = "GetWindowBounds", Category = "Windows ClientArea", Help = "Returns position and the size of a window's client area (without borders, shadows etc.) in pixels.", AutoEvaluate = false)]
     #endregion PluginInfo
-    public class GetWindowBounds : IPluginEvaluate
+    public class GetWindowBoundsClient : IPluginEvaluate
     {
         #region fields & pins
         [Input("Handle", DefaultValue = 1.0)]
         public ISpread<int> FHandle;
 
         [Output("Position")]
-        public ISpread<Vector2> FPosition; 
+        public ISpread<Vector2> FPosition;
 
         [Output("Size")]
         public ISpread<Vector2> FSize;
@@ -33,12 +33,15 @@ namespace VVVV.Nodes
         private RECT window;
 
         [DllImport("User32.dll")]
+        public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("User32.dll")]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
         [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
-        public GetWindowBounds()
+        public GetWindowBoundsClient()
         {
             hWnd = System.IntPtr.Zero;
             client = new RECT();
@@ -60,10 +63,15 @@ namespace VVVV.Nodes
 
                     if (IsWindow(hWnd))
                     {
+                        GetClientRect(hWnd, out client);
                         GetWindowRect(hWnd, out window);
 
-                        FPosition[i] = new Vector2(window.Left, window.Top);
-                        FSize[i] = new Vector2 (window.Width, window.Height);
+                        var paddingX = window.Right - window.Left - client.Right;
+                        var paddingY = window.Bottom - window.Top - client.Bottom;
+                        
+                        FPosition[i] = new Vector2(window.Left + paddingX / 2, window.Top);
+
+                        FSize[i] = new Vector2(client.Right, client.Bottom);
                     }
                 }
 
