@@ -66,6 +66,9 @@ namespace VVVV.Nodes.Capture
         [Input("Handle", IsSingle = true)]
         public ISpread<uint> FInput;
 
+        [Input("Show Cursor", IsSingle = true, DefaultBoolean = true)]
+        public ISpread<bool> FShowCursor;
+
         [Input("Frame Count", IsSingle = true, MinValue = -1, DefaultValue = -1)]
         public ISpread<int> FFrameCount;
 
@@ -188,7 +191,7 @@ namespace VVVV.Nodes.Capture
             {
                 try
                 {
-                    var img = FScreenCapture.CaptureWindow(FHandleToCapture);
+                    var img = FScreenCapture.CaptureWindow(FHandleToCapture, FShowCursor[0]);
                     var delay = FHDEHost.FrameTime - FLastFrameTime;
 
                     FFrames.Add(new Frame() { Image = img, Delay = (float)delay });
