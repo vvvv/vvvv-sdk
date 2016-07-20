@@ -118,7 +118,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class DynamicEnumInStream : EnumInStream<EnumEntry>
+    class DynamicEnumInStream : EnumInStream<EnumEntry>, IEnumChangedListener
     {
         private readonly string FEnumName;
         
@@ -126,25 +126,34 @@ namespace VVVV.Hosting.IO.Streams
             : base(enumIn)
         {
             FEnumName = enumName;
+            enumIn.SetEnumChangedListener(this);
         }
         
         public override bool Sync()
         {
             IsChanged = FAutoValidate ? FEnumIn.PinIsChanged : FEnumIn.Validate();
             if (IsChanged)
+                DoSync();
+            return IsChanged;
+        }
+
+        private void DoSync()
+        {
+            Length = FEnumIn.SliceCount;
+            using (var writer = GetWriter())
             {
-                Length = FEnumIn.SliceCount;
-                using (var writer = GetWriter())
+                for (int i = 0; i < Length; i++)
                 {
-                    for (int i = 0; i < Length; i++)
-                    {
-                        int ord;
-                        FEnumIn.GetOrd(i, out ord);
-                        writer.Write(new EnumEntry(FEnumName, ord));
-                    }
+                    int ord;
+                    FEnumIn.GetOrd(i, out ord);
+                    writer.Write(new EnumEntry(FEnumName, ord));
                 }
             }
-            return IsChanged;
+        }
+
+        void IEnumChangedListener.EnumChangedCB(string name, string defaultEntry, string[] entries)
+        {
+            DoSync();
         }
     }
 
