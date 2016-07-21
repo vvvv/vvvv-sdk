@@ -131,6 +131,7 @@ namespace VVVV.Nodes.Capture
         Gif FGIF = new Gif();
         Form FProgressBar = new Form();
         Label FProgressLabel = new Label();
+        double FCurrentTime;
         #endregion fields & pins
 
         public CaptureNode()
@@ -169,6 +170,10 @@ namespace VVVV.Nodes.Capture
                                     FFramesToCapture = FFrameCount[0];
                                     FDelayTimeToCapture = FDelay[0];
                                     FIsRecording[0] = true;
+                                    FCurrentTime = FHDEHost.FrameTime;
+
+                                    //initialize TimeProvider
+                                    FHDEHost.SetFrameTimeProvider(_ => FCurrentTime);
                                 }                                
                             }
                         break;
@@ -195,6 +200,9 @@ namespace VVVV.Nodes.Capture
                     var delay = FHDEHost.FrameTime - FLastFrameTime;
 
                     FFrames.Add(new Frame() { Image = img, Delay = (float)delay });
+
+                    //advance frame time (will be taken into account for next frame captured)
+                    FCurrentTime += FDelayTimeToCapture;
                 }
                 catch (Exception e)
                 {
@@ -216,7 +224,10 @@ namespace VVVV.Nodes.Capture
             {
                 if (!FIsWriting[0])
                 {
-                    FIsRecording[0] = false;
+                    //reset TimeProvider
+                    FHDEHost.SetFrameTimeProvider((ITimeProvider)null);
+
+                    //compute filename
                     FCurrentFilename = FFilename[0];
                     if (FAutoFilename[0])
                     {
@@ -229,10 +240,14 @@ namespace VVVV.Nodes.Capture
                         //FLogger.Log(LogType.Debug, filename);
                     }
 
+                    FIsRecording[0] = false;
                     FIsWriting[0] = true;
+
+                    //write the file
                     await Task.Run(() => SaveGIFAsync(FCurrentFilename));
                     FLastFile[0] = FCurrentFilename;
                     FIsWriting[0] = false;
+
                     FCaptureState = CaptureState.Idle;
                     FProgressBar.Hide();
                 }

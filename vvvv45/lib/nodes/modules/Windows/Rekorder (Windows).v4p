@@ -79,7 +79,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="4965" top="6315" width="100" height="100">
+   <BOUNDS type="Node" left="5115" top="6315" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="0.04">
    </PIN>
@@ -96,56 +96,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="FPS">
-   </PIN>
-   </NODE>
-   <NODE systemname="MAINLOOP (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
-   <BOUNDS type="Node" left="3225" top="8265" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Maximum Background FPS" slicecount="1" visible="1" values="30">
-   </PIN>
-   <PIN pinname="Maximum Foreground FPS" visible="1" slicecount="1" values="120">
-   </PIN>
-   <PIN pinname="Time Mode" slicecount="1" visible="1" values="Raw">
-   </PIN>
-   </NODE>
-   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="3225" top="7410" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" slicecount="1" values="120">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="3225" top="6810" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="3930" top="7410" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 1" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="3930" top="7830" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="19">
@@ -182,14 +132,6 @@
    </NODE>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="21" dstpinname="Switch">
    </LINK>
-   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="14" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="14" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="16" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="17" dstpinname="Ord Value">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Up Edge" dstnodeid="0" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="1" srcpinname="Device" dstnodeid="2" dstpinname="Keyboard">
@@ -210,10 +152,6 @@
    </PACK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="-6" dstpinname="Maximum Foreground FPS">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Enum" dstnodeid="-6" dstpinname="Time Mode">
-   </LINK>
    <NODE systemname="HandleFromCaption (Windows)" nodename="HandleFromCaption (Windows)" componentmode="Hidden" id="27">
    <BOUNDS type="Node" left="1875" top="1530" width="100" height="100">
    </BOUNDS>
@@ -473,7 +411,7 @@
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="|All Files (*.*)||*.*|">
+   <PIN pinname="File Mask" slicecount="1" values="|All Files (*.gif)||*.gif|">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
@@ -567,7 +505,7 @@
    </PIN>
    <PIN pinname="Auto Filename" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Auto Open" slicecount="1" visible="1" values="1">
+   <PIN pinname="Auto Open" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Report Progress" slicecount="1" values="1">
    </PIN>
@@ -614,8 +552,6 @@
    </LINK>
    <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Frame Count">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Recording" dstnodeid="15" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="8" srcpinname="Recording" dstnodeid="35" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="37" srcpinname="Output Enum" dstnodeid="8" dstpinname="Palette Type">
@@ -645,7 +581,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="12240" top="4305" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -657,9 +593,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Auto Open|">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Auto Open">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3555" top="990" width="480" height="480">
    </BOUNDS>
@@ -679,5 +615,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Show Cursor">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Auto Open">
    </LINK>
    </PATCH>
