@@ -12,6 +12,8 @@ using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Reflection;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -19,10 +21,23 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Tetrahedralize", Category = "3d", Author="digitalWannabe", Credits = "Hang Si,Weierstrass Institute for Applied Analysis and Stochastics (WIAS),lichterloh",Help = "Tetrahedral Mesh Generator and 3D Delaunay Triangulator", Tags = "TetGen, Mesh, 3D Delaunay")]
 	#endregion PluginInfo
-	public unsafe class C3dTetrahedralizeNode : IPluginEvaluate, IDisposable
-	{
-		#region fields & pins
-		[Input("Vertex ", BinVisibility = PinVisibility.OnlyInspector)]
+	public unsafe class C3dTetrahedralizeNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+    {
+
+        
+    public void OnImportsSatisfied()
+    {
+            var platform = IntPtr.Size == 4 ? "x86" : "x64";
+            var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var pathToBinFolder = Path.Combine(pathToThisAssembly, "dependencies", platform);
+            var envPath = Environment.GetEnvironmentVariable("PATH");
+            envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
+            Environment.SetEnvironmentVariable("PATH", envPath);
+        }
+
+
+    #region fields & pins
+    [Input("Vertex ", BinVisibility = PinVisibility.OnlyInspector)]
 		public ISpread<ISpread<Vector3D>> FVec;
 		
 		[Input("Polygons", DefaultValue = 1.0, BinVisibility = PinVisibility.OnlyInspector)]

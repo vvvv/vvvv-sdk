@@ -3,7 +3,7 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Reflection.AssemblyCopyright("Copyright © vvvv group. All rights reserved.")]
-[assembly: System.Reflection.AssemblyConfiguration("Debug")]
+[assembly: System.Reflection.AssemblyConfiguration("Release")]
 [assembly: System.Reflection.AssemblyCompany("vvvv group")]
 [assembly: System.Reflection.AssemblyDescription("The VVVV Core Library")]
 [assembly: System.Reflection.AssemblyProduct("vvvv")]
@@ -18,7 +18,7 @@ internal sealed partial class ThisAssembly {
     
     internal const string AssemblyCopyright = "Copyright © vvvv group. All rights reserved.";
     
-    internal const string AssemblyConfiguration = "Debug";
+    internal const string AssemblyConfiguration = "Release";
     
     internal const string AssemblyCompany = "vvvv group";
     
