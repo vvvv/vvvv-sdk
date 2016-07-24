@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="..\..\Default.Plugin.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{78DA780D-5736-4134-9BF7-D32B9D4B6545}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.Nodes</RootNamespace>
+    <AssemblyName>2dTriangle</AssemblyName>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SlimDX" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.Codeplex" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Triangle">
+      <HintPath>dependencies\Triangle.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Core" />
+    <Reference Include="VVVV.PluginInterfaces" />
+    <Reference Include="VVVV.Utils" />
+    <Reference Include="VVVV.Utils3rdParty" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C2dTriangleNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
