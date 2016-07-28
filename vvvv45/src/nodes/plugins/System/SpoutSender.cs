@@ -6,106 +6,127 @@ using System.IO.MemoryMappedFiles;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-//adapted from: https://github.com/joreg/SpoutCSharp
+//adapted from: https://github.com/ItayGal2/SpoutCSharp
+//with help from: Lynn Jarvis - http://spout.zeal.co
 
 namespace Spout
 {
-    public class SpoutSender: IDisposable
+    public class SpoutSender : IDisposable
     {
-        protected const string SenderNamesMMF = "SpoutSenderNames";
-        protected const string ActiveSenderMMF = "";
-        protected const int SpoutWaitTimeout = 100;
-        public const int MaxSenders = 10;
-        public const int SenderNameLength = 256;
+        const string CSenderNamesHandle = "SpoutSenderNames";
+        const int CMaxSenders = 10;
+        const int CSenderNameLength = 256;
+        const string CActiveSenderHandle = "ActiveSenderName";
+        const int CSpoutWaitTimeout = 100;
 
-        protected TextureDesc FTextureDesc;
-        protected string FSenderName;
-    	protected MemoryMappedFile FSharedMemory;
-        protected MemoryMappedViewStream FSharedMemoryVS;
+        MemoryMappedFile FSenderDescriptionMap;
+        MemoryMappedFile FActiveSenderMap;
+        MemoryMappedFile FSenderNamesMap;
+
+        string FSenderName;
+        TextureDesc FTextureDesc;
 
         public SpoutSender(string senderName, uint sharedHandle, uint width, uint height, uint format, uint usage)
         {
             FSenderName = senderName;
-            FTextureDesc = new TextureDesc(sharedHandle, width, height, format, usage, new byte[256]);
+            FTextureDesc = new TextureDesc(sharedHandle, width, height, format, usage, new byte[256], 0);
         }
 
         public void Dispose()
         {
             RemoveNameFromSendersList(FSenderName);
-        	
-        	if (FSharedMemoryVS != null)
-                FSharedMemoryVS.Dispose();
-            if (FSharedMemory != null)
-                FSharedMemory.Dispose();
+
+            if (FSenderDescriptionMap != null)
+                FSenderDescriptionMap.Dispose();
+
+            if (FActiveSenderMap != null)
+                FActiveSenderMap.Dispose();
+
+            if (FSenderNamesMap != null)
+                FSenderNamesMap.Dispose();
         }
 
         public bool Initialize()
         {
+            var len = CSenderNameLength * CMaxSenders;
+            FSenderNamesMap = MemoryMappedFile.CreateOrOpen(CSenderNamesHandle, len);
+
+            //add sendername to list of senders
             if (AddNameToSendersList(FSenderName))
             {
-    			FSharedMemory = MemoryMappedFile.CreateNew(FSenderName, 280);
-    			FSharedMemoryVS = FSharedMemory.CreateViewStream();
-                var nameBytes = Encoding.Unicode.GetBytes(FSenderName);
-                Array.Copy(nameBytes, 0, FTextureDesc.Description, 0, nameBytes.Length);
+                //write sender description
                 var desc = FTextureDesc.ToByteArray();
-                FSharedMemoryVS.Write(desc, 0, desc.Length);
-            	return true;
+                FSenderDescriptionMap = MemoryMappedFile.CreateNew(FSenderName, desc.Length);
+                using (var vs = FSenderDescriptionMap.CreateViewStream())
+                    vs.Write(desc, 0, desc.Length);
+
+                //If we are the only sender, create a new ActiveSenderName map.
+                //This is a separate shared memory containing just a sender name
+                //that receivers can use to retrieve the current active Sender.
+                FActiveSenderMap = MemoryMappedFile.CreateOrOpen(CActiveSenderHandle, CSenderNameLength);
+                using (var vs = FActiveSenderMap.CreateViewStream())
+                {
+                    var firstByte = vs.ReadByte();
+                    if (firstByte == 0) //no active sender yet
+                    {
+                        vs.Position = 0;
+                        vs.Write(GetNameBytes(FSenderName), 0, CSenderNameLength);
+                    }
+                }
+
+                return true;
             }
-        	return false;
+            return false;
         }
 
-        public static bool AddNameToSendersList(string name)
+        bool AddNameToSendersList(string name)
         {
-            bool createdNew;
-            var mutex = new Mutex(true, SenderNamesMMF + "_mutex", out createdNew);
-            if (mutex == null)
-                return false;
             var success = false;
-            try
+
+            var senders = GetSenderNames();
+            if (!senders.Contains(name))
             {
-                if (mutex.WaitOne(SpoutWaitTimeout))
-                {
-                    success = true;
-                }
-                else
-                {
-                    success = false;
-                }
+                senders.Add(name);
+                WriteSenderNamesToMemoryMap(senders);
+                success = true;
             }
-            catch (AbandonedMutexException e)
-            {
-                success = true;    
-            }
-            finally
-            {
-                if (success)
-                {
-                    List<string> senders = GetSenderNames();
-                    if (senders.Contains(name))
-                    {
-                        success = false;
-                    }
-                    else
-                    {
-                        senders.Add(name);
-                        WriteSenderNamesToMMF(senders);
-                    }
-                }
-                mutex.ReleaseMutex();
-                mutex.Dispose();
-            }
+
             return success;
         }
 
-        public static void RemoveNameFromSendersList(string name)
+        void RemoveNameFromSendersList(string name)
+        {
+            var senders = GetSenderNames();
+            if (senders.Contains(name))
+            {
+                senders.Remove(name);
+                WriteSenderNamesToMemoryMap(senders);
+            }
+        }
+
+        void WriteSenderNamesToMemoryMap(List<string> senders)
         {
             bool createdNew;
-            var mutex = new Mutex(true, SenderNamesMMF + "_mutex", out createdNew);
+            var mutex = new Mutex(true, CSenderNamesHandle + "_mutex", out createdNew);
             if (mutex == null)
                 return;
+
             try
             {
-                mutex.WaitOne(SpoutWaitTimeout);
+                mutex.WaitOne(CSpoutWaitTimeout);
+                using (var vs = FSenderNamesMap.CreateViewStream())
+                {
+                    for (int i = 0; i < CMaxSenders; i++)
+                    {
+                        byte[] bytes;
+                        if (i < senders.Count)
+                            bytes = GetNameBytes(senders[i]);
+                        else
+                            bytes = new byte[CSenderNameLength];
+
+                        vs.Write(bytes, 0, bytes.Length);
+                    }
+                }
             }
             catch (AbandonedMutexException e)
             {
@@ -113,83 +134,57 @@ namespace Spout
             }
             finally
             {
-                var senders = GetSenderNames();
-                if (senders.Contains(name))
-                {
-                    senders.Remove(name);
-                    WriteSenderNamesToMMF(senders);
-                }
                 mutex.ReleaseMutex();
                 mutex.Dispose();
             }
         }
 
-        static void WriteSenderNamesToMMF(List<string> senders)
-        {
-            var len = SenderNameLength * MaxSenders;
-            using (var mmf = MemoryMappedFile.CreateOrOpen(SenderNamesMMF, len))
-        	{
-        		using (var mmfVS = mmf.CreateViewStream())
-        		{
-		            var count = 0;
-		            for (int i = 0; i < senders.Count; i++)
-		            {
-		                var nameBytes = GetNameBytes(senders[i]);
-		                mmfVS.Write(nameBytes, 0, nameBytes.Length);
-		                count += nameBytes.Length;
-		            }
-		            var b = new byte[len - count];
-		            mmfVS.Write(b, 0, b.Length);
-        		}
-        	}
-        }
-
         public static List<string> GetSenderNames()
         {
-        	var namesList = new List<string>();
-		    var name = new StringBuilder();
-            var len = MaxSenders * SenderNameLength;
-            
-        	//Read the memory mapped file in to a byte array and close this shit.
-        	using (var mmf = MemoryMappedFile.CreateOrOpen(SenderNamesMMF, len))
-        	{
-        		using (var mmfVS = mmf.CreateViewStream())
-        		{
-		            var b = new byte[len];
-		            mmfVS.Read(b, 0, len);
+            var namesList = new List<string>();
+            var name = new StringBuilder();
+            var len = CMaxSenders * CSenderNameLength;
 
-		            //split into strings searching for the nulls 
-		            for (int i = 0; i < len; i++)
-		            {
-		                if (b[i] == 0)
-		                {
-		                    if (name.Length == 0)
-		                    {
-		                        i += SenderNameLength - (i % SenderNameLength) - 1;
-		                        continue;
-		                    }
-		                    namesList.Add(name.ToString());
-		                    name.Clear();
-		                }
-		                else
-		                    name.Append((char)b[i]);
-		            }
-         		}
-        	}
-        	
-        	return namesList;
+            //Read the memory mapped file in to a byte array
+            using (var mmf = MemoryMappedFile.CreateOrOpen(CSenderNamesHandle, len))
+            {
+                using (var vs = mmf.CreateViewStream())
+                {
+                    var b = new byte[len];
+                    vs.Read(b, 0, len);
+
+                    //split into strings searching for the nulls 
+                    for (int i = 0; i < len; i++)
+                    {
+                        if (b[i] == 0)
+                        {
+                            if (name.Length == 0)
+                            {
+                                i += CSenderNameLength - (i % CSenderNameLength) - 1;
+                                continue;
+                            }
+                            namesList.Add(name.ToString());
+                            name.Clear();
+                        }
+                        else
+                            name.Append((char)b[i]);
+                    }
+                }
+            }
+
+            return namesList;
         }
 
-        protected static byte[] GetNameBytes(string name)
+        byte[] GetNameBytes(string name)
         {
-            var b = new byte[SenderNameLength];
+            var b = new byte[CSenderNameLength];
             var nameBytes = Encoding.ASCII.GetBytes(name);
             Array.Copy(nameBytes, b, nameBytes.Length);
             return b;
         }
     }
-	
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct TextureDesc
     {
         public uint SharedHandle;
@@ -198,8 +193,9 @@ namespace Spout
         public uint Format;
         public uint Usage;
         public byte[] Description;
+        public uint PartnerId;
 
-        public TextureDesc(uint sharedHandle, uint width, uint height, uint format, uint usage, byte[] description)
+        public TextureDesc(uint sharedHandle, uint width, uint height, uint format, uint usage, byte[] description, uint partnerId)
         {
             SharedHandle = sharedHandle;
             Width = width;
@@ -207,9 +203,10 @@ namespace Spout
             Format = format;
             Usage = usage;
             Description = description;
+            PartnerId = partnerId;
         }
 
-        public TextureDesc(System.IO.MemoryMappedFiles.MemoryMappedViewStream mmvs)
+        public TextureDesc(MemoryMappedViewStream mmvs)
         {
             var br = new BinaryReader(mmvs);
             SharedHandle = br.ReadUInt32();
@@ -218,21 +215,23 @@ namespace Spout
             Format = br.ReadUInt32();
             Usage = br.ReadUInt32();
             Description = br.ReadBytes(256);
+            PartnerId = br.ReadUInt32();
         }
 
         public byte[] ToByteArray()
         {
             var b = new byte[280];
-            var ms = new MemoryStream(b);
-            var bw = new BinaryWriter(ms);
-            bw.Write(SharedHandle);
-            bw.Write(Width);
-            bw.Write(Height);
-            bw.Write(Format);
-            bw.Write(Usage);
-            bw.Write(Description,0, Description.Length);
-            bw.Dispose();
-            ms.Dispose();
+            using (var ms = new MemoryStream(b))
+            using (var bw = new BinaryWriter(ms))
+            {
+                bw.Write(SharedHandle);
+                bw.Write(Width);
+                bw.Write(Height);
+                bw.Write(Format);
+                bw.Write(Usage);
+                bw.Write(Description, 0, Description.Length);
+                bw.Write(PartnerId);
+            }
             return b;
         }
     }

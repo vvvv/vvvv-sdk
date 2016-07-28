@@ -16,8 +16,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "SpoutSender", 
 				Category = "System", 
 				Help = "Adds/Removes spout sender infos to the list of SpoutSenderNames", 
-				Tags = "share",
-				Credits = "https://github.com/ItayGal2/SpoutCSharp",
+				Credits = "https://github.com/ItayGal2/SpoutCSharp and Lynn Jarvis of http://spout.zeal.co",
 				AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class VVVVSpoutSenderNode: IPluginEvaluate, IDisposable
@@ -62,10 +61,12 @@ namespace VVVV.Nodes
 			{
 				if (FWrite[i])
 				{
+                    //if there was an existing one dispose it
 					if ((i < FSpoutSender.Length) && (FSpoutSender[i] != null))
 						FSpoutSender[i].Dispose();
 					
-					FSpoutSender[i] = new SpoutSender(FSenderName[i], FHandle[i], FWidth[i], FHeight[i], 0, 1); 
+                    //create the spoutsender
+					FSpoutSender[i] = new SpoutSender(FSenderName[i], FHandle[i], FWidth[i], FHeight[i], 21, 0); 
 					var succ = FSpoutSender[i].Initialize();
 					FLogger.Log(LogType.Debug, "Writing Spout sender " + (succ ? "succeeded!" : "failed!"));
 				}
@@ -88,9 +89,8 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "SpoutSenderNames", 
 				Category = "System", 
-				Help = "Show the list of SpoutSenderNames currently registered", 
-				Tags = "share",
-				Credits = "https://github.com/ItayGal2/SpoutCSharp")]
+				Help = "Shows the list of SpoutSenderNames currently registered", 
+				Credits = "https://github.com/ItayGal2/SpoutCSharp and Lynn Jarvis of http://spout.zeal.co")]
 	#endregion PluginInfo
 	public class VVVVSpoutSenderListNode: IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
