@@ -60,7 +60,7 @@ namespace Spout
                 using (var vs = FSenderDescriptionMap.CreateViewStream())
                     vs.Write(desc, 0, desc.Length);
 
-                //If we are the only sender, create a new ActiveSenderName map.
+                //If we are the first/only sender, create a new ActiveSenderName map.
                 //This is a separate shared memory containing just a sender name
                 //that receivers can use to retrieve the current active Sender.
                 FActiveSenderMap = MemoryMappedFile.CreateOrOpen(CActiveSenderHandle, CSenderNameLength);
@@ -121,7 +121,7 @@ namespace Spout
                         byte[] bytes;
                         if (i < senders.Count)
                             bytes = GetNameBytes(senders[i]);
-                        else
+                        else //fill with 0s
                             bytes = new byte[CSenderNameLength];
 
                         vs.Write(bytes, 0, bytes.Length);
