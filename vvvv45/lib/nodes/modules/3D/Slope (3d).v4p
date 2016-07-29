@@ -1,0 +1,105 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Slope (3d).v4p" systemname="Slope (3d)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\3D\Slope (3d).v4p">
+   <BOUNDS type="Window" left="7755" top="885" width="4980" height="5175">
+   </BOUNDS>
+   <INFO author="vvvv group" description="Returns the slope of the line defined by two 3d points" tags="point, line">
+   </INFO>
+   <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1740" top="2190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="2" values="-167.898966535433,-39.6570209973753">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="2" values="-187.703875035564,-39.2308109431598">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2265" top="825" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2265" top="825" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="XYZ2" encoded="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1305" top="825" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1305" top="825" width="795" height="720">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="XYZ1" encoded="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Polar (3d Vector)" nodename="Polar (3d Vector)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="1740" top="2715" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Angle" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="12" dstpinname="XYZ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1740" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="3300" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Pitch" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Pitch" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2610" top="3300" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2610" top="3300" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Yaw" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Yaw" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

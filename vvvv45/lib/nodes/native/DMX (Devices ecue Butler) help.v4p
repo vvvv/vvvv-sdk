@@ -1,0 +1,125 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha17.dtd" >
+   <PATCH nodename="X:\help\DMX (Devices ecue Butler) help.v4p">
+   <BOUNDS height="6405" left="11445" top="3330" type="Window" width="6645">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="135" type="Node" width="1140">
+   </BOUNDS>
+   <BOUNDS height="465" left="180" top="135" type="Box" width="3735">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DMX (Devices ecue Butler)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="630" type="Node" width="3345">
+   </BOUNDS>
+   <BOUNDS height="270" left="195" top="630" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sends DMX values to ecue Butler devices|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="DMX (Devices ecue Butler)">
+   <BOUNDS height="0" left="1185" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="DMX Values" visible="1">
+   </PIN>
+   <PIN pinname="Device Name" visible="1">
+   </PIN>
+   <PIN pinname="Device IP" slicecount="1" visible="1" values="192.168.123.1">
+   </PIN>
+   <PIN pinname="Device Status" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="450" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13455" top="6570" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="450" top="1155" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="DMX Values" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="0" left="540" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14115" top="7830" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="540" top="2550" type="Box" width="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="5" srcpinname="Device Name">
+   <LINKPOINT x="1395" y="2505">
+   </LINKPOINT>
+   <LINKPOINT x="2115" y="2505">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2265" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14415" top="8130" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2265" top="2550" type="Box" width="1110">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" linkstyle="VHV" srcnodeid="5" srcpinname="Device IP">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3525" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16155" top="8100" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="3525" top="2550" type="Box" width="1155">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="5" srcpinname="Device Status">
+   <LINKPOINT x="1755" y="2310">
+   </LINKPOINT>
+   <LINKPOINT x="4650" y="2310">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="1950" left="270" top="3285" type="Node" width="6180">
+   </BOUNDS>
+   <BOUNDS height="2985" left="270" top="3285" type="Box" width="6315">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|fast facts:&cr;&lf;&cr;&lf;for every specified IP/Butler the node assumes 2 DMX Universes&cr;&lf;if the incoming value spread has less than 512*2*Butlercount slices it will be wrapped&cr;&lf;&cr;&lf;the node can only be used once per running vvvv instance&cr;&lf;it also cannot be used togther with DMX (Devices ecue Texture)&cr;&lf;this is due to limitations of the EcueDeviceDriverDll.dll&cr;&lf;&cr;&lf;up to now only approx. 127 Butlers can be addressed |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
