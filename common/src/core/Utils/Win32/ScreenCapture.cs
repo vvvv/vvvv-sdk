@@ -24,8 +24,9 @@ namespace VVVV.Utils.Win32
         /// </summary>
         /// <param name="handle">The handle to the window. 
         /// (In windows forms, this is obtained by the Handle property)</param>
+        /// <param name="addCursor">Render the cursor into the image</param>
         /// <returns></returns>
-        public Image CaptureWindow(IntPtr handle)
+        public Image CaptureWindow(IntPtr handle, bool addCursor = true)
         {
             // get the size
             RECT windowRect;
@@ -52,7 +53,7 @@ namespace VVVV.Utils.Win32
                 g.CopyFromScreen(left, top, 0, 0, new Size(width, height));
 
                 //draw cursor
-                if (Cursor.Current != null)
+                if (addCursor && Cursor.Current != null)
                 {
                     var x = Cursor.Position.X - windowRect.Left - cdX - Cursor.Current.HotSpot.X;
                     var y = Cursor.Position.Y - windowRect.Top - cdY - cdC - Cursor.Current.HotSpot.Y;

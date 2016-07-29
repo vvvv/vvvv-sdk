@@ -66,13 +66,16 @@ namespace VVVV.Nodes.Capture
         [Input("Handle", IsSingle = true)]
         public ISpread<uint> FInput;
 
+        [Input("Show Cursor", IsSingle = true, DefaultBoolean = true)]
+        public ISpread<bool> FShowCursor;
+
         [Input("Frame Count", IsSingle = true, MinValue = -1, DefaultValue = -1)]
         public ISpread<int> FFrameCount;
 
         [Input("Record", IsSingle = true)]
         public IDiffSpread<bool> FRecord;
 
-        [Input("Delay in Milliseconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
+        [Input("Delay in Seconds", IsSingle = true, MinValue = 0.01, MaxValue = 1, DefaultValue = 0.02)]
         public ISpread<float> FDelay;
 
         [Input("Palette Type", IsSingle = true, DefaultEnumEntry = "Optimal")]
@@ -128,6 +131,7 @@ namespace VVVV.Nodes.Capture
         Gif FGIF = new Gif();
         Form FProgressBar = new Form();
         Label FProgressLabel = new Label();
+        double FCurrentTime;
         #endregion fields & pins
 
         public CaptureNode()
@@ -166,6 +170,10 @@ namespace VVVV.Nodes.Capture
                                     FFramesToCapture = FFrameCount[0];
                                     FDelayTimeToCapture = FDelay[0];
                                     FIsRecording[0] = true;
+                                    FCurrentTime = FHDEHost.FrameTime;
+
+                                    //initialize TimeProvider
+                                    FHDEHost.SetFrameTimeProvider(_ => FCurrentTime);
                                 }                                
                             }
                         break;
@@ -188,10 +196,13 @@ namespace VVVV.Nodes.Capture
             {
                 try
                 {
-                    var img = FScreenCapture.CaptureWindow(FHandleToCapture);
+                    var img = FScreenCapture.CaptureWindow(FHandleToCapture, FShowCursor[0]);
                     var delay = FHDEHost.FrameTime - FLastFrameTime;
 
                     FFrames.Add(new Frame() { Image = img, Delay = (float)delay });
+
+                    //advance frame time (will be taken into account for next frame captured)
+                    FCurrentTime += FDelayTimeToCapture;
                 }
                 catch (Exception e)
                 {
@@ -213,7 +224,10 @@ namespace VVVV.Nodes.Capture
             {
                 if (!FIsWriting[0])
                 {
-                    FIsRecording[0] = false;
+                    //reset TimeProvider
+                    FHDEHost.SetFrameTimeProvider((ITimeProvider)null);
+
+                    //compute filename
                     FCurrentFilename = FFilename[0];
                     if (FAutoFilename[0])
                     {
@@ -221,15 +235,19 @@ namespace VVVV.Nodes.Capture
                         var path = Path.GetDirectoryName(FCurrentFilename);
                         FCurrentFilename = Path.GetFileNameWithoutExtension(FCurrentFilename);
                         var now = DateTime.Now;
-                        FCurrentFilename += "_" + now.ToShortDateString() + "-" + now.ToLongTimeString().Replace(":", ".");
+                        FCurrentFilename += "_" + now.ToString("dd.MM.yyyy-HH.mm.ss");
                         FCurrentFilename = Path.Combine(path, FCurrentFilename + ".gif");
                         //FLogger.Log(LogType.Debug, filename);
                     }
 
+                    FIsRecording[0] = false;
                     FIsWriting[0] = true;
+
+                    //write the file
                     await Task.Run(() => SaveGIFAsync(FCurrentFilename));
                     FLastFile[0] = FCurrentFilename;
                     FIsWriting[0] = false;
+
                     FCaptureState = CaptureState.Idle;
                     FProgressBar.Hide();
                 }
@@ -264,7 +282,7 @@ namespace VVVV.Nodes.Capture
                     }
                 case CaptureState.Writing:
                     {
-                        FProgressLabel.Text = "Writing File: " + FCurrentFilename;
+                        FProgressLabel.Text = FFrames.Count.ToString() + " frames. Writing File: " + FCurrentFilename;
                         FProgressLabel.BackColor = Color.LightSalmon;
                         break;
                     }

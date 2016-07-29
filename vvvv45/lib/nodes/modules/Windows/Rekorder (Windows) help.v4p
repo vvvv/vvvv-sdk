@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\modules\Windows\Rekorder (Windows) help.v4p">
    <BOUNDS type="Window" left="2880" top="4095" width="11805" height="8910">
    </BOUNDS>
@@ -53,9 +53,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4905" top="2265" width="555" height="240">
+   <BOUNDS type="Box" left="5010" top="2715" width="555" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4905" top="2265" width="0" height="0">
+   <BOUNDS type="Node" left="5010" top="2715" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-1">
    </PIN>
@@ -67,9 +67,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5130" top="3570" width="795" height="240">
+   <BOUNDS type="Box" left="5130" top="4020" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="5130" top="3570" width="0" height="0">
+   <BOUNDS type="Node" left="5130" top="4020" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.04">
    </PIN>
@@ -97,9 +97,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4980" top="2565" width="480" height="480">
+   <BOUNDS type="Box" left="5085" top="3015" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="4980" top="2565" width="0" height="0">
+   <BOUNDS type="Node" left="5085" top="3015" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -113,9 +113,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4890" top="7095" width="795" height="240">
+   <BOUNDS type="Box" left="4935" top="7095" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="4890" top="7095" width="0" height="0">
+   <BOUNDS type="Node" left="4935" top="7095" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -164,6 +164,10 @@
    <BOUNDS type="Window" left="11010" top="3090" width="14505" height="10785">
    </BOUNDS>
    <PIN pinname="FPS" visible="1">
+   </PIN>
+   <PIN pinname="Delay in Seconds" visible="1">
+   </PIN>
+   <PIN pinname="Show Cursor" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="0" dstpinname="Window Caption">
@@ -245,9 +249,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5550" top="2550" width="855" height="270">
+   <BOUNDS type="Node" left="5655" top="3000" width="855" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5550" top="2550" width="5490" height="690">
+   <BOUNDS type="Box" left="5655" top="3000" width="5490" height="690">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Record:&cr;&lf;- with &quot;Number of frames to capture&quot; = -1 this is a toggle, otherwise a bang&cr;&lf;- the file is saved automatically when recording ends&cr;&lf;|">
    </PIN>
@@ -259,9 +263,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5550" top="2265" width="3435" height="270">
+   <BOUNDS type="Node" left="5655" top="2715" width="3435" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5550" top="2265" width="3435" height="270">
+   <BOUNDS type="Box" left="5655" top="2715" width="3435" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Number of frames to capture, -1 for endless|">
    </PIN>
@@ -273,11 +277,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="6045" top="3555" width="2970" height="270">
+   <BOUNDS type="Node" left="6045" top="4005" width="2970" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6045" top="3555" width="2115" height="270">
+   <BOUNDS type="Box" left="6045" top="4005" width="2535" height="255">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in ms|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Delay between frame in seconds|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -287,7 +291,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="8490" top="3765" width="100" height="100">
+   <BOUNDS type="Node" left="8940" top="4215" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
    </PIN>
@@ -295,9 +299,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="25" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8490" top="4230" width="795" height="240">
+   <BOUNDS type="Box" left="8940" top="4680" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8490" top="4230" width="0" height="0">
+   <BOUNDS type="Node" left="8940" top="4680" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -307,9 +311,9 @@
    <LINK srcnodeid="26" srcpinname="Output" dstnodeid="25" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9330" top="4215" width="510" height="270">
+   <BOUNDS type="Node" left="9780" top="4665" width="510" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="9330" top="4215" width="1125" height="495">
+   <BOUNDS type="Box" left="9780" top="4665" width="1125" height="495">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; actual fps when playing|">
    </PIN>
@@ -337,9 +341,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="5745" top="7065" width="7815" height="270">
+   <BOUNDS type="Node" left="5790" top="7065" width="7815" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5745" top="7065" width="2805" height="750">
+   <BOUNDS type="Box" left="5790" top="7065" width="2805" height="750">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Progress: 0..1 when recording a fixed number of frames otherwise the number of already recorded frames|">
    </PIN>
@@ -410,6 +414,40 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Delay in Seconds">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4845" top="2070" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4845" top="2070" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Show Cursor">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5445" top="2205" width="1200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5445" top="2205" width="1200" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Show Cursor|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>
