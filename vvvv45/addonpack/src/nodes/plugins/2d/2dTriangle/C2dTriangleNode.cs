@@ -10,8 +10,8 @@ using VVVV.Utils.VMath;
 using VVVV.Core.Logging;
 
 using TriangleNet.Geometry;
-//using TriangleNet.
 using TriangleNet.Meshing;
+using TriangleNet.Smoothing;
 #endregion usings
 
 namespace VVVV.Nodes
@@ -25,11 +25,14 @@ namespace VVVV.Nodes
 		[Input("Input ", DefaultValue = 1.0, BinVisibility = PinVisibility.Hidden)]
 		public ISpread<ISpread<Vector2D>> FInput;
 		
-		[Input("Vertices", DefaultValue = 0.0, MinValue=0, BinVisibility = PinVisibility.Hidden)]
+		[Input("Vertices", DefaultValue = 1.0, MinValue=0, BinVisibility = PinVisibility.Hidden)]
 		public ISpread<ISpread<int>> Fvert;
 		
 		[Input("Is Hole", BinVisibility = PinVisibility.Hidden)]
 		public ISpread<ISpread<bool>> FIsH;
+		
+		[Input("Boundary Marker", DefaultValue = 1.0, BinVisibility = PinVisibility.Hidden)]
+		public ISpread<ISpread<int>> FBmark;
 		
 		[Input("Conforming Delaunay", DefaultValue = 1.0)]
 		public ISpread<bool> FConDel;
@@ -49,6 +52,13 @@ namespace VVVV.Nodes
 		[Input("Steiner Points", DefaultValue = 0.0, MinValue=0)]
 		public ISpread<int> FSteiner;
 		
+		[Input("Smoothing", DefaultValue = 0.0)]
+		public ISpread<bool> FSmooth;
+		
+		[Input("Smoothing Limit", DefaultValue = 10.0, MinValue =1.0)]
+		public ISpread<int> FSmoothLimit;
+		
+		
 		[Input("Generate Mesh", DefaultValue = 0.0, IsBang=true)]
 		public ISpread<bool> FCal;
 	
@@ -56,14 +66,14 @@ namespace VVVV.Nodes
 		[Output("Output ", BinVisibility = PinVisibility.Hidden)]
 		public ISpread<ISpread<Vector2D>> FOutput;
 		
-//		[Output("Index")]
-//		public ISpread<ISpread<int> FIndices;
-		
 //		[Output("Triangles")]
 //		public ISpread<ISpread<ITriangle> FTriangles;
 		
-		[Output("Vertex Type", BinVisibility = PinVisibility.Hidden)]
-		public ISpread<ISpread<int>> FVType;
+		[Output("Boundary Marker", BinVisibility = PinVisibility.Hidden)]
+		public ISpread<ISpread<int>> FVmark;
+		
+//		[Output("Polygon Marker")]
+//		public ISpread<ISpread<int>> FPmark;
 		
 
 		[Import()]
@@ -76,20 +86,18 @@ namespace VVVV.Nodes
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
 		{
-//			FOutput.SliceCount = SpreadMax;
-			SpreadMax = SpreadUtils.SpreadMax(Fvert,FInput,FIsH,FMaxAngle,FMinAngle,FMaxArea,FConDel,FSplit,FSteiner);
-			FOutput.SliceCount = SpreadMax;
-			FVType.SliceCount = SpreadMax;
 
-            int boundaryMarker = 1;
+			SpreadMax = SpreadUtils.SpreadMax(Fvert,FInput,FIsH,FMaxAngle,FMinAngle,FMaxArea,FConDel,FSplit,FSteiner,FBmark,FSmooth,FSmoothLimit);
+			FOutput.SliceCount = SpreadMax;
+			FVmark.SliceCount = SpreadMax;
+			
+
 			int index = 0;
-			//, SegmentSplitting = FSplit[0] };
+
 			
 			for (int meshID=0;meshID<SpreadMax;meshID++){
-			
-			
+				
             var polygon = new Polygon();
-//            var vcs = new Vertex[SpreadMax];
 			
 			for (int contourID=0;contourID<Fvert[meshID].SliceCount;contourID++){
 				
@@ -107,52 +115,46 @@ namespace VVVV.Nodes
 
             for (int i = 0; i < vertexcount; i++)
             {
-                vcsSpread[i] = new Vertex(FInput[meshID][index+i].x, FInput[meshID][index+i].y, boundaryMarker);
+                vcsSpread[i] = new Vertex(FInput[meshID][index+i].x, FInput[meshID][index+i].y, FBmark[meshID][index+i]);
             }
 				
 			index+=vertexcount;
-            //if changed!!!
-            // Add the outer box contour with boundary marker 1.
-            polygon.Add(new Contour(vcsSpread, boundaryMarker), FIsH[meshID][contourID]);
 
-      //      options.ConformingDelaunay = FConDel[0];//new ConstraintOptions() { ConformingDelaunay = , SegmentSplitting = FSplit[0] };
-    //        quality = new QualityOptions() { MinimumAngle = FMinAngle[0], MaximumAngle = FMaxAngle[0], MaximumArea = FMaxArea[0], SteinerPoints = FSteiner[0] };
+            polygon.Add(new Contour(vcsSpread, contourID+1), FIsH[meshID][contourID]);
 			}
+				
+			
             // Triangulate the polygon
 			var options = new ConstraintOptions() { ConformingDelaunay = FConDel[meshID], SegmentSplitting = FSplit[meshID] };
+			if (FSmooth[meshID])options = new ConstraintOptions() { ConformingDelaunay = true, SegmentSplitting = FSplit[meshID] };	
+			
 			var quality = new QualityOptions() { MinimumAngle = FMinAngle[meshID], MaximumAngle = FMaxAngle[meshID], MaximumArea = FMaxArea[meshID], SteinerPoints = FSteiner[meshID] };
             
 			if (FCal[0]){	
 			var mesh = polygon.Triangulate(options, quality);
 //			mesh.Refine(quality,options);
+//			mesh.Renumber();
+			// Do some smoothing.
+            if (FSmooth[meshID]) (new SimpleSmoother()).Smooth(mesh, FSmoothLimit[meshID]);
 			
+            int triangleCount = mesh.Triangles.Count;
 			
-            int SliceOut = mesh.Triangles.Count;
-            FOutput[meshID].SliceCount = SliceOut*3;
-//			FIndices.SliceCount = SliceOut*3;
-			FVType[meshID].SliceCount = SliceOut*3;
-            var vertices = mesh.Vertices.ToSpread();
-			
+			int SliceOut = triangleCount*3;
+            FOutput[meshID].SliceCount = SliceOut;
+			FVmark[meshID].SliceCount = SliceOut;
+            var vertices = mesh.Vertices.ToSpread();		
 			var triangles = mesh.Triangles.ToSpread();
-		//	vertices[0].
+				
 			
 			
-			
-//			FOutput = vertices.ToSpread();
-			
-            for (int i = 0; i < SliceOut; i++)
+            for (int i = 0; i < triangleCount; i++)
             {
             	FOutput[meshID][i*3] = new Vector2D(triangles[i].GetVertex(0).X,triangles[i].GetVertex(0).Y);
             	FOutput[meshID][i*3+1] = new Vector2D(triangles[i].GetVertex(1).X,triangles[i].GetVertex(1).Y);
             	FOutput[meshID][i*3+2] = new Vector2D(triangles[i].GetVertex(2).X,triangles[i].GetVertex(2).Y);
-//            	Vector2D vec = new Vector2D(vertices[i].X,vertices[i].Y);
-//                FOutput[i] = vec;
-//            	FIndices[i*3] =   3*i+triangles[i].GetVertexID(0);
-//            	FIndices[i*3+1] = 3*i+triangles[i].GetVertexID(1);
-//            	FIndices[i*3+2] = 3*i+triangles[i].GetVertexID(2);
-            	FVType[meshID][i*3] = (int)triangles[i].GetVertex(0).Type;
-            	FVType[meshID][i*3+1] = (int)triangles[i].GetVertex(1).Type;
-            	FVType[meshID][i*3+2] = (int)triangles[i].GetVertex(2).Type;
+            	FVmark[meshID][i*3] = (int)triangles[i].GetVertex(0).Label;
+            	FVmark[meshID][i*3+1] = (int)triangles[i].GetVertex(1).Label;
+            	FVmark[meshID][i*3+2] = (int)triangles[i].GetVertex(2).Label;        	
             }
 			}
             
