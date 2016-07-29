@@ -12,7 +12,7 @@ using SlimDX;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "GetWindowBounds", Category = "Windows", Help = "Returns position and the size of a window in pixels.", AutoEvaluate = false)]
+    [PluginInfo(Name = "GetWindowBounds", Category = "Windows", Help = "Returns the size and position of a given window in pixels including its border and titlebar.", AutoEvaluate = false)]
     #endregion PluginInfo
     public class GetWindowBounds : IPluginEvaluate
     {
@@ -21,16 +21,14 @@ namespace VVVV.Nodes
         public ISpread<int> FHandle;
 
         [Output("Position")]
-        public ISpread<Vector2> FPosition; 
+        public ISpread<Vector2> FPosition;
 
         [Output("Size")]
         public ISpread<Vector2> FSize;
 
         #endregion fields & pins
 
-        private IntPtr hWnd;
-        private RECT client;
-        private RECT window;
+        #region USER32 functions import
 
         [DllImport("User32.dll")]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
@@ -38,13 +36,7 @@ namespace VVVV.Nodes
         [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
-        public GetWindowBounds()
-        {
-            hWnd = System.IntPtr.Zero;
-            client = new RECT();
-            window = new RECT();
-        }
-
+        #endregion USER32 functions import
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
@@ -56,14 +48,15 @@ namespace VVVV.Nodes
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    hWnd = (IntPtr)FHandle[i];
+                    IntPtr hWnd = (IntPtr)FHandle[i];
 
                     if (IsWindow(hWnd))
                     {
+                        RECT window;
                         GetWindowRect(hWnd, out window);
 
                         FPosition[i] = new Vector2(window.Left, window.Top);
-                        FSize[i] = new Vector2 (window.Width, window.Height);
+                        FSize[i] = new Vector2(window.Width, window.Height);
                     }
                 }
 

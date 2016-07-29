@@ -12,7 +12,7 @@ using SlimDX;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "GetWindowBounds", Category = "Windows ClientArea", Help = "Returns position and the size of a window's client area (without borders, shadows etc.) in pixels.", AutoEvaluate = false)]
+    [PluginInfo(Name = "GetWindowBounds", Category = "Windows ClientArea", Help = "Returns the size and position of a window's client area (ie. without border and titlebar) in pixels.", AutoEvaluate = false)]
     #endregion PluginInfo
     public class GetWindowBoundsClient : IPluginEvaluate
     {
@@ -28,9 +28,7 @@ namespace VVVV.Nodes
 
         #endregion fields & pins
 
-        private IntPtr hWnd;
-        private RECT client;
-        private RECT window;
+        #region USER32 functions import
 
         [DllImport("User32.dll")]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
@@ -41,13 +39,14 @@ namespace VVVV.Nodes
         [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
-        public GetWindowBoundsClient()
-        {
-            hWnd = System.IntPtr.Zero;
-            client = new RECT();
-            window = new RECT();
-        }
+        [DllImport("User32.dll")]
+        public static extern int GetSystemMetrics(int index);
 
+        const int CXFRAME = 0x20;       // Border X
+        const int CYFRAME = 0x21;       // Border Y
+        const int CYSMCAPTION = 0x33;   // Caption
+
+        #endregion USER32 functions import
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
@@ -59,18 +58,19 @@ namespace VVVV.Nodes
             {
                 for (int i = 0; i < SpreadMax; i++)
                 {
-                    hWnd = (IntPtr)FHandle[i];
+                    IntPtr hWnd = (IntPtr)FHandle[i];
 
                     if (IsWindow(hWnd))
                     {
+                        RECT client, window;
                         GetClientRect(hWnd, out client);
                         GetWindowRect(hWnd, out window);
 
-                        var paddingX = window.Right - window.Left - client.Right;
-                        var paddingY = window.Bottom - window.Top - client.Bottom;
-                        
-                        FPosition[i] = new Vector2(window.Left + paddingX / 2, window.Top);
+                        var borderX = GetSystemMetrics(CXFRAME);
+                        var borderY = GetSystemMetrics(CYFRAME);
+                        var titleBarSize = GetSystemMetrics(CYSMCAPTION);
 
+                        FPosition[i] = new Vector2(window.Left + borderX, window.Top + borderY + titleBarSize);
                         FSize[i] = new Vector2(client.Right, client.Bottom);
                     }
                 }

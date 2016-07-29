@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\SetWindowBounds (Windows) help.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="0" top="0" width="8340" height="7710">
+   <BOUNDS type="Window" left="0" top="0" width="8340" height="9825">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -17,9 +17,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="600" width="5100" height="600">
+   <BOUNDS type="Box" left="225" top="600" width="4170" height="525">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets the client size and position of a given window handle in pixels.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets the size and position of a given window in pixels including its border and titlebar.|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -31,7 +31,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="2340" top="4785" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="8685" top="0" width="3900" height="6300">
+   <BOUNDS type="Window" left="8145" top="0" width="3900" height="6300">
    </BOUNDS>
    <PIN pinname="Window Handle" visible="1" pintype="Output">
    </PIN>
@@ -69,9 +69,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="4455" top="2835" width="360" height="270">
+   <BOUNDS type="Node" left="3810" top="2835" width="360" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4455" top="2835" width="690" height="285">
+   <BOUNDS type="Box" left="3810" top="2835" width="690" height="285">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Apply|">
    </PIN>
@@ -125,7 +125,7 @@
    </PIN>
    </NODE>
    <NODE systemname="SetWindowBounds (Windows)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SetWindowBounds (Windows)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="3030" top="3375" width="1335" height="270">
+   <BOUNDS type="Node" left="2385" top="3375" width="1335" height="270">
    </BOUNDS>
    <PIN pinname="Set" slicecount="1" visible="1" values="1">
    </PIN>
@@ -149,17 +149,17 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="36" srcpinname="Window Handle" dstnodeid="25" dstpinname="Handle" linkstyle="Bezier">
-   <LINKPOINT x="1370" y="5470">
+   <LINKPOINT x="1155" y="5470">
    </LINKPOINT>
-   <LINKPOINT x="1795" y="2705">
+   <LINKPOINT x="1365" y="2705">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2715" top="1920" width="795" height="480">
+   <BOUNDS type="Box" left="2070" top="1920" width="795" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="2715" top="1920" width="0" height="0">
+   <BOUNDS type="Node" left="2070" top="1920" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="542,30">
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="545,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="px">
    </PIN>
@@ -177,9 +177,9 @@
    <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="25" dstpinname="PositionXY">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3675" top="1920" width="690" height="495">
+   <BOUNDS type="Box" left="3030" top="1920" width="690" height="495">
    </BOUNDS>
-   <BOUNDS type="Node" left="3675" top="1920" width="0" height="0">
+   <BOUNDS type="Node" left="3030" top="1920" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="260,420">
    </PIN>
@@ -203,9 +203,9 @@
    <LINK srcnodeid="45" srcpinname="Changed" dstnodeid="25" dstpinname="Set Size" hiddenwhenlocked="0">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2700" top="1620" width="720" height="270">
+   <BOUNDS type="Node" left="2055" top="1620" width="720" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2700" top="1620" width="720" height="270">
+   <BOUNDS type="Box" left="2055" top="1620" width="720" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Position">
    </PIN>
@@ -217,9 +217,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3645" top="1620" width="720" height="270">
+   <BOUNDS type="Node" left="3000" top="1620" width="720" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3645" top="1620" width="720" height="270">
+   <BOUNDS type="Box" left="3000" top="1620" width="720" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Size">
    </PIN>
@@ -229,5 +229,87 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="255" top="6405" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="6405" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="HandleFromCaption (Windows)" nodename="HandleFromCaption (Windows)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="300" top="8625" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="HandleFromPoint (Windows)" nodename="HandleFromPoint (Windows)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="300" top="8235" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="7260" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="7260" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|GetWindowBounds (Windows)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="7635" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="7635" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|GetWindowBounds (Windows  ClientArea)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="6870" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="6870" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|SetWindowBounds (Windows ClientArea)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetWindowBounds (Windows ClientArea)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SetWindowBounds (Windows ClientArea)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="300" top="6855" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="6855">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="GetWindowBounds (Windows)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetWindowBounds (Windows)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="300" top="7245" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="7245">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="GetWindowBounds (Windows ClientArea)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetWindowBounds (Windows ClientArea)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="300" top="7635" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="7635">
+   </BOUNDS>
    </NODE>
    </PATCH>

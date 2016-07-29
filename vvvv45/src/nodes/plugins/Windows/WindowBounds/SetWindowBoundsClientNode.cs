@@ -12,7 +12,7 @@ using SlimDX;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "SetWindowBounds", Category = "Windows ClientArea", Help = "Sets position and the size of a window's client area (inner area without borders, shadows etc.) in pixels.", AutoEvaluate = true)]
+    [PluginInfo(Name = "SetWindowBounds", Category = "Windows ClientArea", Help = "Sets the size and position of a window's client area (ie. without border and titlebar) in pixels.", AutoEvaluate = true)]
     #endregion PluginInfo
     public class SetWindowBoundsClient : IPluginEvaluate
     {
@@ -34,8 +34,7 @@ namespace VVVV.Nodes
 
         #endregion fields & pins
 
-        private IntPtr hWnd;
-        private RECT client, window;
+        #region USER32 functions import
 
         [DllImport("User32.dll")]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
@@ -49,6 +48,15 @@ namespace VVVV.Nodes
         [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
+        [DllImport("User32.dll")]
+        public static extern int GetSystemMetrics(int index);
+
+        const int CXFRAME = 0x20;       // Border X
+        const int CYFRAME = 0x21;       // Border Y
+        const int CYSMCAPTION = 0x33;   // Caption
+
+        #endregion USER32 functions import
+
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
@@ -56,22 +64,24 @@ namespace VVVV.Nodes
             {
                 if (FSetSize[i] || FSetPosition[i])
                 {
-                    hWnd = (IntPtr)FHandle[i];
+                    IntPtr hWnd = (IntPtr)FHandle[i];
 
+                    RECT client, window;
                     GetClientRect(hWnd, out client);
                     GetWindowRect(hWnd, out window);
 
-                    var paddingX = window.Right - window.Left - client.Right;
-                    var paddingY = window.Bottom - window.Top - client.Bottom;
+                    var borderX = GetSystemMetrics(CXFRAME);
+                    var borderY = GetSystemMetrics(CYFRAME);
+                    var titleBarSize = GetSystemMetrics(CYSMCAPTION);
 
                     if (FSetSize[i] && IsWindow(hWnd))
                     {
-                        MoveWindow(hWnd, window.Left, window.Top, (int)FSize[i].X + paddingX, (int)FSize[i].Y + paddingY, true);
+                        MoveWindow(hWnd, window.Left, window.Top, (int)FSize[i].X + borderX * 2, (int)FSize[i].Y + borderY * 2 + titleBarSize, true);
                     }
 
                     if (FSetPosition[i] && IsWindow(hWnd))
                     {
-                        MoveWindow(hWnd, (int)FPos[i].X - paddingX/2, (int)FPos[i].Y, window.Width, window.Height, true);
+                        MoveWindow(hWnd, (int)FPos[i].X - borderX, (int)FPos[i].Y - borderY - titleBarSize, window.Width, window.Height, true);
                     }
 
                 }

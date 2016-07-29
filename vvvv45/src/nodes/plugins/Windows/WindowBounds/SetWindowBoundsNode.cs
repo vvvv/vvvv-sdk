@@ -12,7 +12,7 @@ using SlimDX;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "SetWindowBounds", Category = "Windows", Help = "Sets position and the size of a window in pixels.", AutoEvaluate = true)]
+    [PluginInfo(Name = "SetWindowBounds", Category = "Windows", Help = "Sets the size and position of a given window in pixels including its border and titlebar.", AutoEvaluate = true)]
     #endregion PluginInfo
     public class SetWindowBounds : IPluginEvaluate
     {
@@ -34,8 +34,7 @@ namespace VVVV.Nodes
 
         #endregion fields & pins
 
-        private IntPtr hWnd;
-        private RECT client, window;
+        #region USER32 functions import
 
         [DllImport("User32.dll")]
         public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
@@ -46,6 +45,8 @@ namespace VVVV.Nodes
         [DllImport("User32.dll")]
         public static extern bool IsWindow(IntPtr hWnd);
 
+        #endregion USER32 functions import
+
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
@@ -53,10 +54,11 @@ namespace VVVV.Nodes
             {
                 if (FSetSize[i] || FSetPosition[i])
                 {
-                    hWnd = (IntPtr)FHandle[i];
+                    IntPtr hWnd = (IntPtr)FHandle[i];
 
+                    RECT window;
                     GetWindowRect(hWnd, out window);
-                    
+
                     if (FSetSize[i] && IsWindow(hWnd))
                     {
                         MoveWindow(hWnd, window.Left, window.Top, (int)FSize[i].X, (int)FSize[i].Y, true);
