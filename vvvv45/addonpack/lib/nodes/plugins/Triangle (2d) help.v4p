@@ -25,9 +25,9 @@
    </PIN>
    </NODE>
    <NODE nodename="Triangle (2d)" componentmode="Hidden" id="0" systemname="Triangle (2d)" filename="2dTriangle.csproj">
-   <BOUNDS type="Node" left="6210" top="7404" width="0" height="0">
+   <BOUNDS type="Node" left="6210" top="7824" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="6210" top="7404" width="0" height="0">
+   <BOUNDS type="Box" left="6210" top="7824" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input XY" visible="1" slicecount="8" values="0.5,0,3.06151588455594E-017,0.5,-0.5,6.12303176911189E-017,-9.18454765366783E-017,-0.5">
    </PIN>
@@ -58,6 +58,8 @@
    <PIN pinname="Smoothing Limit" visible="1">
    </PIN>
    <PIN pinname="Polygon Marker" visible="1">
+   </PIN>
+   <PIN pinname="Output  Bin Size" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
@@ -194,14 +196,6 @@
    </NODE>
    <LINK srcnodeid="10" srcpinname="Vertex Buffer" dstnodeid="13" dstpinname="Vertex Buffer">
    </LINK>
-   <NODE systemname="Count (2d)" filename="%VVVV%\lib\nodes\modules\2D\Count (2D).v4p" nodename="Count (2d)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="6216" top="7890" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="3456" top="2766" width="100" height="100">
    </BOUNDS>
@@ -247,8 +241,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Spread Count">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Output XY" dstnodeid="14" dstpinname="Input">
    </LINK>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="6036" top="8502" width="100" height="100">
@@ -471,9 +463,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9216" top="6558" width="480" height="480">
+   <BOUNDS type="Box" left="9216" top="6978" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="9216" top="6558" width="0" height="0">
+   <BOUNDS type="Node" left="9216" top="6978" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -491,9 +483,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="42" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9744" top="6672" width="1482" height="228">
+   <BOUNDS type="Node" left="9744" top="7092" width="1482" height="228">
    </BOUNDS>
-   <BOUNDS type="Box" left="9744" top="6672" width="1482" height="228">
+   <BOUNDS type="Box" left="9744" top="7092" width="1482" height="228">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- GENERATE MESH|">
    </PIN>
@@ -505,7 +497,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="41">
-   <BOUNDS type="Node" left="9204" top="7134" width="100" height="100">
+   <BOUNDS type="Node" left="9204" top="7554" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Simulate" visible="1">
    </PIN>
@@ -712,8 +704,6 @@
    </LINK>
    <LINK srcnodeid="67" srcpinname="Output" dstnodeid="65" dstpinname=".. To [">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Count" dstnodeid="19" dstpinname=".. To [">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="69" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8286" top="4830" width="480" height="480">
    </BOUNDS>
@@ -737,9 +727,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="70" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8820" top="4818" width="1440" height="228">
    </BOUNDS>
-   <BOUNDS type="Box" left="8820" top="4818" width="2328" height="762">
+   <BOUNDS type="Box" left="8820" top="4818" width="2328" height="1236">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Smoothing ON/OFF&cr;&lf;Note when smoothing is ON, conforming delaunay is set to true internally|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Smoothing ON/OFF&cr;&lf;Note when smoothing is ON, conforming delaunay is set to true internally.&cr;&lf;Also: Vertices wich should not move MUST have a boundary mark greater than 0.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -749,9 +739,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="71" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8466" top="5694" width="798" height="240">
+   <BOUNDS type="Box" left="8544" top="6096" width="798" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8466" top="5694" width="0" height="0">
+   <BOUNDS type="Node" left="8544" top="6096" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
    </PIN>
@@ -765,11 +755,11 @@
    <LINK srcnodeid="71" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Smoothing Limit">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="72" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="9312" top="5694" width="1242" height="228">
+   <BOUNDS type="Node" left="9390" top="6096" width="1242" height="228">
    </BOUNDS>
-   <BOUNDS type="Box" left="9312" top="5694" width="1932" height="708">
+   <BOUNDS type="Box" left="9390" top="6096" width="2016" height="750">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Smoothing Limit&cr;&lf;Set how often the smoother should iterate over the mesh/rebuild it.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Smoothing Limit&cr;&lf;Set how often the smoother should iterate over the mesh/rebuild it.&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -859,5 +849,7 @@
    <LINK srcnodeid="86" srcpinname="Transform Out" dstnodeid="9" dstpinname="Aspect Ratio">
    </LINK>
    <LINK srcnodeid="37" srcpinname="Enum" dstnodeid="11" dstpinname="Fill Mode">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output  Bin Size" dstnodeid="19" dstpinname=".. To [">
    </LINK>
    </PATCH>
