@@ -408,7 +408,7 @@ namespace VVVV.Nodes.Input
                     position = new Point(args.X / virtualScreenSize.Width, args.Y / virtualScreenSize.Height);
                     break;
                 case MouseMode.MoveRelative:
-                    position = new Point(VMath.Clamp(args.X + position.X, 0, virtualScreenSize.Width - 1), VMath.Clamp(args.Y + position.Y, 0, virtualScreenSize.Height - 1));
+                    position = new Point(args.X + position.X, args.Y + position.Y);
                     break;
                 case MouseMode.VirtualDesktop:
                     position = new Point(args.X, args.Y);
