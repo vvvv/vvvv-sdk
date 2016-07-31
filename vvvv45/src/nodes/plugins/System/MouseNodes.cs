@@ -408,7 +408,14 @@ namespace VVVV.Nodes.Input
                     position = new Point(args.X / virtualScreenSize.Width, args.Y / virtualScreenSize.Height);
                     break;
                 case MouseMode.MoveRelative:
-                    position = new Point(args.X + position.X, args.Y + position.Y);
+
+                    // this will keep mouse relative coordinates proportional
+                    // so a distance traveled on X axis == same distance traveled on Y axis
+                    var minAsp = Math.Min(virtualScreenSize.Width, virtualScreenSize.Height);
+                    var screenAspW = virtualScreenSize.Width / minAsp;
+                    var screenAspH = virtualScreenSize.Height / minAsp;
+
+                    position = new Point(args.X * screenAspW + position.X, args.Y * screenAspH + position.Y);
                     break;
                 case MouseMode.VirtualDesktop:
                     position = new Point(args.X, args.Y);
