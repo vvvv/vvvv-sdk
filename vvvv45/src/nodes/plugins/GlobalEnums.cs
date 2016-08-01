@@ -108,7 +108,7 @@ namespace VVVV.Nodes
             EnumManager.UpdateEnum("CursorType", "Pointer", new string[] { "Pointer", "Vert", "Hor", "Left Bottom", "Right Bottom", "Left Top", "Right Top" });
 
             //Point Type
-            EnumManager.UpdateEnum("PointType", "Circle", new string[] { "Circle", "Rectangle", "Diamond"});
+            EnumManager.UpdateEnum("PointType", "Circle", new string[] { "Rectangle", "Triangle", "Circle"});
 
         }
 		public void Shutdown()
