@@ -21,11 +21,10 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "Tetrahedralize", Category = "3d", Author="digitalWannabe", Credits = "Hang Si,Weierstrass Institute for Applied Analysis and Stochastics (WIAS),lichterloh",Help = "Tetrahedral Mesh Generator and 3D Delaunay Triangulator", Tags = "TetGen, Mesh, 3D Delaunay")]
 	#endregion PluginInfo
-	public unsafe class C3dTetrahedralizeNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
+	public unsafe class C3dTetrahedralizeNode : IPluginEvaluate, IDisposable
     {
 
-        
-    public void OnImportsSatisfied()
+    static C3dTetrahedralizeNode()
     {
             var platform = IntPtr.Size == 4 ? "x86" : "x64";
             var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
