@@ -124,6 +124,8 @@ namespace VVVV.Hosting
 
             //the built-in one
             AssemblyProbing.AddPackageRepository(PacksPath);
+            //the one where the user is supposed to install packages
+            AssemblyProbing.AddPackageRepository(UserPacksPatch);
             
 
             // Set name to vvvv thread for easier debugging.
@@ -722,7 +724,8 @@ namespace VVVV.Hosting
             private set;
         }
 
-        public string PacksPath => Path.Combine(ExePath, "packs");
+        public string PacksPath => Path.Combine(ExePath, "lib", "packs");
+        public string UserPacksPatch => Path.Combine(ExePath, "packs");
         
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
