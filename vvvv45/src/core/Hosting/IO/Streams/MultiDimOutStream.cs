@@ -4,13 +4,29 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO.Streams
 {
-    class MultiDimOutStream<T> : MemoryIOStream<IInStream<T>>, IDisposable
+    class MultiDimOutStream<T> : MemoryIOStream<IInStream<T>>, IIOMultiPin, IDisposable
     {
         private readonly IIOContainer<IOutStream<T>> FDataContainer;
         private readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
         private readonly IOutStream<T> FDataStream;
         private readonly IOutStream<int> FBinSizeStream;
-        
+
+        public IIOContainer BaseContainer
+        {
+            get
+            {
+                return FDataContainer;
+            }
+        }
+
+        public IIOContainer[] AssociatedContainers
+        {
+            get
+            {
+                return new IIOContainer[]{ FBinSizeContainer };
+            }
+        }
+
         public MultiDimOutStream(IIOFactory ioFactory, OutputAttribute attribute)
         {
             FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);

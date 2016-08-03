@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\native\Billboard (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Billboard (Transform) help.v4p">
    <BOUNDS height="12585" left="1425" top="720" type="Window" width="11115">
    </BOUNDS>
    <NODE componentmode="Hidden" id="30" nodename="Group (EX9)" hiddenwhenlocked="1">
@@ -484,30 +484,10 @@
    </NODE>
    <LINK dstnodeid="19" dstpinname="Y" srcnodeid="0" srcpinname="Output" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="31" srcpinname="View" dstnodeid="9" dstpinname="View" hiddenwhenlocked="1">
-   </LINK>
-   <NODE id="31" componentmode="Hidden" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" hiddenwhenlocked="1">
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <BOUNDS type="Node" height="0" left="6090" top="10335" width="0">
-   </BOUNDS>
-   <BOUNDS type="Box" height="3600" left="6090" top="10335" width="4800">
-   </BOUNDS>
-   <BOUNDS type="Window" height="6000" left="8985" top="7740" width="9000">
-   </BOUNDS>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Far Plane" slicecount="1" values="200">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="30">
-   </PIN>
-   </NODE>
    <NODE id="9" componentmode="InAWindow" nodename="RENDERER (EX9)" hiddenwhenlocked="1">
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
@@ -536,8 +516,6 @@
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Projection" dstnodeid="9" dstpinname="Projection" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="12" srcpinname="Transform Out" dstnodeid="9" dstpinname="Aspect Ratio" hiddenwhenlocked="1">
    </LINK>
    <NODE id="12" componentmode="Hidden" nodename="AspectRatio (Transform)" hiddenwhenlocked="1">
@@ -612,6 +590,28 @@
    </LINK>
    <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="23" dstpinname="Transform">
    </LINK>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <LINK srcnodeid="31" srcpinname="View" dstnodeid="9" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <NODE id="31" componentmode="Hidden" nodename="Camera (Transform Softimage)" hiddenwhenlocked="1" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="6090" top="10335" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="6090" top="10335" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" height="6000" left="8985" top="7740" width="9000">
+   </BOUNDS>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="200">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Projection" dstnodeid="9" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
    </PATCH>

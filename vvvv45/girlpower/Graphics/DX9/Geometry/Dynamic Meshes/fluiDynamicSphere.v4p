@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\fluiDynamicSphere.v4p" componentmode="InAWindow">
-   <BOUNDS height="6120" left="2250" top="450" type="Window" width="10620">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\fluiDynamicSphere.v4p" componentmode="InAWindow" scrollx="0" scrolly="0">
+   <BOUNDS height="6555" left="6165" top="0" type="Window" width="10230">
    </BOUNDS>
    <NODE id="104" nodename="VertexBuffer (EX9.Geometry Split)">
    <BOUNDS height="270" left="990" top="7365" type="Node" width="1095">
@@ -30,7 +30,7 @@
    <PIN pinname="Texture Coordinate 0 XY" visible="1">
    </PIN>
    </NODE>
-   <NODE id="103" nodename="VertexBuffer (EX9.Geometry Join)">
+   <NODE id="103" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="975" top="12135" type="Node" width="1095">
    </BOUNDS>
    <PIN pinname="PositionXYZ" visible="1">
@@ -59,8 +59,10 @@
    </PIN>
    <PIN pinname="Enable Diffuse Color" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="102" nodename="Mesh (EX9.Geometry Join)">
+   <NODE id="102" nodename="Mesh (EX9.Geometry Join)" systemname="MESH (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="975" top="12900" type="Node" width="1080">
    </BOUNDS>
    <PIN pinname="VertexBuffer" visible="1">
@@ -74,6 +76,8 @@
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
    <PIN pinname="Apply" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="101" nodename="Mesh (EX9.Geometry Split)">
@@ -154,62 +158,16 @@
    </LINK>
    <LINK dstnodeid="99" dstpinname="Resolution Y" srcnodeid="98" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="97" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Distortion" visible="1">
-   </PIN>
-   <BOUNDS height="0" left="3870" top="16755" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="15420" left="1995" top="1260" type="Window" width="20565">
-   </BOUNDS>
-   <BOUNDS height="3600" left="3870" top="16755" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Inverse Rotation" visible="1">
-   </PIN>
-   <PIN pinname="Inverse View" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Interest" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="33">
-   </PIN>
-   <PIN pinname="Position" visible="1">
-   </PIN>
-   <PIN pinname="Near Plane" slicecount="1" values="0.01">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="95" dstpinname="Source" linkstyle="VHV" srcnodeid="96" srcpinname="Transform Out">
-   <LINKPOINT x="3900" y="16125">
-   </LINKPOINT>
-   <LINKPOINT x="4500" y="16125">
-   </LINKPOINT>
-   </LINK>
    <NODE id="96" nodename="AspectRatio (Transform)">
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <BOUNDS height="0" left="3870" top="15795" type="Node" width="0">
+   <BOUNDS height="0" left="3540" top="17970" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Aspect Height" slicecount="1" visible="1" values="9">
    </PIN>
    <PIN pinname="Aspect Width" slicecount="1" visible="1" values="16">
    </PIN>
    </NODE>
-   <NODE id="95" nodename="Inverse (Transform)">
-   <PIN pinname="Source" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <BOUNDS height="0" left="3870" top="16275" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="97" dstpinname="Distortion" srcnodeid="95" srcpinname="Transform Out">
-   </LINK>
    <NODE id="94" nodename="Cartesian (3d)">
    <BOUNDS height="270" left="990" top="10500" type="Node" width="810">
    </BOUNDS>
@@ -645,7 +603,7 @@
    <NODE componentmode="InAWindow" id="59" nodename="RENDERER (EX9)" stayontop="0">
    <BOUNDS height="0" left="1905" top="17985" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="6270" left="2250" top="6570" type="Window" width="10620">
+   <BOUNDS height="6570" left="0" top="0" type="Window" width="6375">
    </BOUNDS>
    <BOUNDS height="1800" left="1905" top="17985" type="Box" width="2400">
    </BOUNDS>
@@ -669,13 +627,15 @@
    </PIN>
    <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="59" dstpinname="Layers" srcnodeid="100" srcpinname="Layer">
    </LINK>
    <NODE id="58" nodename="Transform (Transform 3d)">
-   <BOUNDS height="0" left="3870" top="17355" type="Node" width="0">
+   <BOUNDS height="0" left="3180" top="17445" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
@@ -684,8 +644,6 @@
    <PIN pinname="Yaw" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="58" dstpinname="Transform In" srcnodeid="97" srcpinname="View Projection">
-   </LINK>
    <LINK dstnodeid="84" dstpinname="Input 2" linkstyle="Bezier" srcnodeid="68" srcpinname="Output">
    <LINKPOINT x="19695" y="14610">
    </LINKPOINT>
@@ -824,7 +782,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="51" nodename="FrameDelay (Animation)">
+   <NODE id="51" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="8130" top="14505" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -893,9 +851,9 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="58" dstpinname="Yaw" linkstyle="Bezier" srcnodeid="47" srcpinname="Position Out">
-   <LINKPOINT x="7935" y="16395">
+   <LINKPOINT x="7705" y="16425">
    </LINKPOINT>
-   <LINKPOINT x="5505" y="16395">
+   <LINKPOINT x="5045" y="16455">
    </LINKPOINT>
    </LINK>
    <LINK dstnodeid="47" dstpinname="Go To Position" srcnodeid="51" srcpinname="Output 1">
@@ -924,7 +882,7 @@
    <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
-   <NODE id="44" nodename="FrameDelay (Animation)">
+   <NODE id="44" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="6540" top="10230" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -1594,20 +1552,24 @@
    </NODE>
    <LINK dstnodeid="100" dstpinname="Layer 3" srcnodeid="6" srcpinname="Layer">
    </LINK>
-   <NODE id="5" nodename="S (VALUE)">
+   <NODE id="5" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="21405" top="6075" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Send String" slicecount="1" values="QPressed">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="4" nodename="R (VALUE)">
+   <NODE id="4" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="4185" top="14820" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Receive String" slicecount="1" values="QPressed">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Enabled" srcnodeid="4" srcpinname="Input Value">
@@ -1803,5 +1765,77 @@
    <LINK srcnodeid="116" srcpinname="XYZ" dstnodeid="60" dstpinname="XYZ">
    </LINK>
    <LINK srcnodeid="116" srcpinname="XYZ" dstnodeid="42" dstpinname="Light Position XYZ">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Actual Backbuffer Width" dstnodeid="96" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="59" srcpinname="Actual Backbuffer Height" dstnodeid="96" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="96" srcpinname="Transform Out" dstnodeid="59" dstpinname="Aspect Ratio">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="118" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3255" top="16515" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3255" top="16515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="119" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3735" top="16515" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3735" top="16515" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="97" nodename="Camera (Transform Softimage)" systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Distortion" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="2715" top="16875" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="15420" left="1995" top="1260" type="Window" width="20565">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2715" top="16875" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Inverse Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Inverse View" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Interest" visible="1">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="33">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.01">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Y Output Value" dstnodeid="97" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="119" srcpinname="Y Output Value" dstnodeid="97" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="97" srcpinname="View Projection" dstnodeid="58" dstpinname="Transform In">
    </LINK>
    </PATCH>

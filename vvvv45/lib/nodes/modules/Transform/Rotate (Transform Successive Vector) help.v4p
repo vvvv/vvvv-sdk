@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\vvvv\alpha\vvvv_45alpha31.5_x86\lib\nodes\modules\Transform\Rotate (Transform Successive Vector) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\Transform\Rotate (Transform Successive Vector) help.v4p" componentmode="InAWindow">
    <BOUNDS height="9420" left="825" top="600" type="Window" width="7335">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="16" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
-   <BOUNDS height="0" left="3150" top="8430" type="Node" width="0">
+   <BOUNDS height="0" left="2925" top="8400" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5535" left="8175" top="600" type="Window" width="5295">
    </BOUNDS>
-   <BOUNDS height="1800" left="3150" top="8430" type="Box" width="2400">
+   <BOUNDS height="1800" left="2925" top="8400" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -150,28 +150,14 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="Coordinate System" srcnodeid="2" srcpinname="Output Enum">
    </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="22">
-   <BOUNDS type="Node" left="4110" top="7920" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="View" dstnodeid="16" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Projection" dstnodeid="16" dstpinname="Projection">
-   </LINK>
    <NODE systemname="Box (EX9.Geometry)" nodename="Box (EX9.Geometry)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="2550" top="6735" width="100" height="100">
+   <BOUNDS type="Node" left="2550" top="6195" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="3150" top="7380" width="100" height="100">
+   <BOUNDS type="Node" left="3150" top="6840" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
@@ -259,26 +245,16 @@
    </PIN>
    </NODE>
    <NODE nodename="Group (EX9)" id="36" systemname="Group (EX9)">
-   <BOUNDS type="Node" left="3150" top="7995" width="0" height="0">
+   <BOUNDS type="Node" left="2925" top="7965" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="3150" top="7995" width="2400" height="1800">
+   <BOUNDS type="Box" left="2925" top="7965" width="2400" height="1800">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="36" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
-   </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="1275" top="7380" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="36" dstpinname="Layer 1">
    </LINK>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="36" dstpinname="Layer 2">
    </LINK>
@@ -308,8 +284,6 @@
    <PIN pinname="Left Button" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="39" srcpinname="Device" dstnodeid="37" dstpinname="Mouse">
-   </LINK>
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="40">
    <BOUNDS type="Node" left="3435" top="1710" width="100" height="100">
    </BOUNDS>
@@ -337,5 +311,79 @@
    <LINK srcnodeid="40" srcpinname="X" dstnodeid="42" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Output" dstnodeid="26" dstpinname="Y">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4035" top="7440" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4035" top="7440" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4485" top="7440" width="360" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4485" top="7440" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4905" top="7440" width="390" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4905" top="7440" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="3885" top="7890" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="View" dstnodeid="16" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Projection" dstnodeid="16" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Initial FOV">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="1395" top="6840" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="36" dstpinname="Layer 1">
    </LINK>
    </PATCH>

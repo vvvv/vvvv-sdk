@@ -1,0 +1,71 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\GridPoints (2d) help.v4p">
+   <BOUNDS type="Window" left="6405" top="6495" width="9000" height="6000">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GridPoints (2d)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="GridPoints (2d)" componentmode="Hidden" id="0" systemname="GridPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p">
+   <BOUNDS type="Node" left="1500" top="2340" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1500" top="2340" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="DrawVertexID (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\DrawVertexID (EX9).v4p" nodename="DrawVertexID (EX9)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1515" top="3585" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="0.35">
+   </PIN>
+   </NODE>
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1515" top="2970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="XY" dstnodeid="5" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="4" dstpinname="InputXYZ">
+   </LINK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="6">
+   <BOUNDS type="Node" left="1515" top="4125" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1515" top="4125" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1470" top="1860" width="6240" height="5085">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
+   </LINK>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
+   </PATCH>

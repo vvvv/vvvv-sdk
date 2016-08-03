@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Keyboard-Mouse-Touch\Mouse-Simulation.v4p" systemname="Mouse-Simulating" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Mouse-Simulating.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Keyboard-Mouse-Touch\Mouse-Simulation.v4p" systemname="Mouse-Simulating" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\IO\Mouse-Simulating.v4p" locked="0">
    <BOUNDS type="Window" left="450" top="600" width="11775" height="11985">
    </BOUNDS>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -51,7 +51,7 @@
    </BOUNDS>
    <BOUNDS height="7500" left="765" top="3360" type="Box" width="4005">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Trigger (Animation) bangs its output pin at random times (between Minimum and Maximum Interval).&cr;&lf;&cr;&lf;Random (Value) responds to this bang by returning a random value which is used as a &apos;Random Seed&apos; of the RandomSpread (Spreads) returning two random values in the range (-1..1). These are used as XY position of the mouse.&cr;&lf;&cr;&lf;Newton (Animation) smoothes the changes in these values, so that the mouse is moving and not jumping.&cr;&lf;&cr;&lf;If the two values coming from the &apos;Velocity Out&apos; pin of the Newton (Animation) are equal 0 AND the random value from step 2 is bigger than 50, then a left mouse click is triggered.&cr;&lf;&cr;&lf;If the random value from step two is bigger than 50, the position of the mouse wheel is increased, if it is smaller then decreased.&cr;&lf;&cr;&lf;MouseStates (Mouse Join) creates a virtual mouse (the Mouse datatype).&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) takes the URL of the website and the Mouse, it navigates the website and renders it as a texture.&cr;&lf;&cr;&lf;This texture is applied to a FullscreenQuad (DX9) which is rendered to a window.&cr;&lf;&cr;&lf;The Mouse is also used to move the Cursor (DX9) drawn on top of the FullscreenQuad, just as a visual aid.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Trigger (Animation) bangs its output pin at random times (between Minimum and Maximum Interval).&cr;&lf;&cr;&lf;Random (Value) responds to this bang by returning a random value which is used as a &apos;Random Seed&apos; of the RandomSpread (Spreads) returning two random values in the range (-1..1). These are used as XY position of the mouse.&cr;&lf;&cr;&lf;Newton (Animation) smoothes the changes in these values, so that the mouse is moving and not jumping.&cr;&lf;&cr;&lf;If the two values coming from the &apos;Velocity Out&apos; pin of the Newton (Animation) are equal 0 AND the random value from step 2 is bigger than 50, then a left mouse click is triggered.&cr;&lf;&cr;&lf;If the random value from step two is bigger than 50, the position of the mouse wheel is increased, if it is smaller then decreased.&cr;&lf;&cr;&lf;MouseStates (Mouse Join) creates a virtual mouse (the Mouse datatype).&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) takes the URL of the website and the Mouse, it navigates the website and renders it as a texture.&cr;&lf;&cr;&lf;This texture is applied to a FullscreenQuad (DX9) which is rendered to a window.&cr;&lf;&cr;&lf;The Mouse is also used to move the Quad (DX9) drawn on top of the FullscreenQuad, just as a visual aid.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -63,7 +63,7 @@
    </PIN>
    </NODE>
    <NODE systemname="HTMLTexture (EX9.Texture URL)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture URL)" componentmode="Hidden" id="214">
-   <BOUNDS type="Node" left="5910" top="8865" width="1800" height="270">
+   <BOUNDS type="Node" left="5730" top="8730" width="1800" height="270">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -73,9 +73,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="215">
-   <BOUNDS type="Node" left="5880" top="10935" width="100" height="100">
+   <BOUNDS type="Node" left="5700" top="10800" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="5880" top="10935" width="2400" height="1800">
+   <BOUNDS type="Box" left="5700" top="10800" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="12225" top="600" width="7785" height="6180">
    </BOUNDS>
@@ -83,7 +83,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="216">
-   <BOUNDS type="Node" left="5910" top="9405" width="1365" height="270">
+   <BOUNDS type="Node" left="5730" top="9270" width="1365" height="270">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -93,28 +93,16 @@
    <LINK srcnodeid="214" srcpinname="Output" dstnodeid="216" dstpinname="Texture">
    </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="220">
-   <BOUNDS type="Node" left="5895" top="10440" width="2865" height="270">
+   <BOUNDS type="Node" left="5715" top="10305" width="2865" height="270">
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="216" srcpinname="Layer" dstnodeid="220" dstpinname="Layer 1">
-   </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="221">
-   <BOUNDS type="Node" left="7275" top="9975" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="221" srcpinname="Layer" dstnodeid="220" dstpinname="Layer 2">
    </LINK>
    <LINK srcnodeid="220" srcpinname="Layer" dstnodeid="215" dstpinname="Layers">
    </LINK>
@@ -349,15 +337,15 @@
    <LINK srcnodeid="242" srcpinname="Output" dstnodeid="238" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="251" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="7635" top="9600" width="435" height="300">
+   <BOUNDS type="Box" left="8940" top="9225" width="435" height="300">
    </BOUNDS>
-   <BOUNDS type="Node" left="7635" top="9600" width="0" height="0">
+   <BOUNDS type="Node" left="8940" top="9225" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" values="|1.00000,0.20657,0.00000,1.00000|">
    </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="251" srcpinname="Color Output" dstnodeid="221" dstpinname="Color">
-   </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="259">
    <BOUNDS type="Node" left="9090" top="3600" width="100" height="100">
    </BOUNDS>
@@ -409,9 +397,9 @@
    <LINK srcnodeid="262" srcpinname="Output" dstnodeid="263" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="270" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="5910" top="8445" width="2400" height="240">
+   <BOUNDS type="Box" left="5730" top="8310" width="2400" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="5910" top="8445" width="0" height="0">
+   <BOUNDS type="Node" left="5730" top="8310" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/propaganda">
    </PIN>
@@ -442,8 +430,6 @@
    </LINK>
    <LINK srcnodeid="225" srcpinname="Position Out" dstnodeid="217" dstpinname="PositionXY">
    </LINK>
-   <LINK srcnodeid="217" srcpinname="Mouse" dstnodeid="221" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="217" srcpinname="Mouse" dstnodeid="214" dstpinname="Mouse Event">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="273" systemname="IOBox (Enumerations)">
@@ -454,7 +440,7 @@
    <PIN pinname="Input Enum" slicecount="1" values="Unlimited">
    </PIN>
    </NODE>
-   <NODE systemname="Counter (Animation)" nodename="Counter (Animation)" componentmode="Hidden" id="274">
+   <NODE systemname="Counter (Animation Legacy)" nodename="Counter (Animation)" componentmode="Hidden" id="274">
    <BOUNDS type="Node" left="9090" top="4920" width="100" height="100">
    </BOUNDS>
    </NODE>
@@ -571,9 +557,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="282" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5445" top="8805" type="Node" width="315">
+   <BOUNDS height="270" left="5265" top="8670" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5445" top="8805" type="Box" width="405">
+   <BOUNDS height="390" left="5265" top="8670" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="6.">
    </PIN>
@@ -707,9 +693,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="294" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6825" top="9915" type="Node" width="315">
+   <BOUNDS height="270" left="6645" top="9780" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6825" top="9915" type="Box" width="405">
+   <BOUNDS height="390" left="6645" top="9780" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
@@ -770,4 +756,46 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="298">
+   <BOUNDS type="Node" left="7110" top="9825" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="299">
+   <BOUNDS type="Node" left="8025" top="9240" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateXY" visible="1">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="299" srcpinname="Transform Out" dstnodeid="298" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="222" srcpinname="Output" dstnodeid="299" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="298" srcpinname="Layer" dstnodeid="220" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="251" srcpinname="Color Output" dstnodeid="298" dstpinname="Color">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="300">
+   <BOUNDS type="Node" left="8385" top="8790" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8385" top="8790" width="480" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.03">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="300" srcpinname="Y Output Value" dstnodeid="299" dstpinname="ScaleXY">
+   </LINK>
    </PATCH>

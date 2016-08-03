@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using VVVV.PluginInterfaces.V1;
-using VVVV.PluginInterfaces.V2;
-using VVVV.Utils.Win32;
 
 namespace VVVV.PluginInterfaces.V2
 {

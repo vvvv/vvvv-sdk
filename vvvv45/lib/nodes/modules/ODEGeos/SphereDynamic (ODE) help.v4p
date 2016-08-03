@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\SphereDynamic (ODE) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\ODEGeos\SphereDynamic (ODE) help.v4p" componentmode="InAWindow">
    <BOUNDS height="11565" left="60" top="60" type="Window" width="12720">
    </BOUNDS>
    <NODE id="32" nodename="World (ODE)">
@@ -8,14 +8,14 @@
    <PIN pinname="Gravity XYZ" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="31" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="31" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="120" top="6225" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4500" left="12645" top="150" type="Window" width="6000">
    </BOUNDS>
    <BOUNDS height="4695" left="120" top="6225" type="Box" width="7005">
    </BOUNDS>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Depth Buffer">
    </PIN>
@@ -23,11 +23,19 @@
    </PIN>
    <PIN pinname="Render Pass">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="29" nodename="DrawFixed (EX9.Effect)">
@@ -58,7 +66,7 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="27" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5505" top="3810" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="1725" top="1050" type="Window" width="215">
@@ -78,7 +86,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="0" id="26" managers="" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="26" managers="" nodename="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" pintype="Output" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" pintype="Input" slicecount="3" visible="1" values="0,-20,0">
@@ -155,13 +163,13 @@
    </PIN>
    </NODE>
    <NODE id="24" nodename="GlobalRenderState (EX9)">
-   <BOUNDS height="270" left="7785" top="8910" type="Node" width="1455">
+   <BOUNDS height="270" left="7785" top="9690" type="Node" width="1455">
    </BOUNDS>
    <PIN pinname="Render State" visible="1">
    </PIN>
    </NODE>
    <NODE id="23" nodename="Fill (EX9.RenderState)">
-   <BOUNDS height="270" left="7785" top="8550" type="Node" width="450">
+   <BOUNDS height="270" left="7785" top="9330" type="Node" width="450">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -172,7 +180,7 @@
    </NODE>
    <LINK dstnodeid="24" dstpinname="Render State" srcnodeid="23" srcpinname="Render State Out">
    </LINK>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="22" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8910" top="4995" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7035" top="4260" type="Window" width="215">
@@ -237,7 +245,7 @@
    <LINK dstnodeid="28" dstpinname="Texture" srcnodeid="19" srcpinname="Texture Out">
    </LINK>
    <NODE id="17" nodename="Blend (EX9.RenderState)">
-   <BOUNDS height="270" left="7785" top="8175" type="Node" width="630">
+   <BOUNDS height="270" left="7785" top="8955" type="Node" width="630">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -408,19 +416,19 @@
    </NODE>
    <LINK dstnodeid="25" dstpinname="Color" srcnodeid="5" srcpinname="Color Output">
    </LINK>
-   <LINK dstnodeid="31" dstpinname="Projection Transform" srcnodeid="6" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="Projection" srcnodeid="6" srcpinname="Transform Out">
    </LINK>
    <NODE id="4" nodename="Translate (Transform)">
-   <BOUNDS height="0" left="7785" top="7440" type="Node" width="0">
+   <BOUNDS height="0" left="7785" top="8220" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="Y" slicecount="1" values="-18.86">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="View Transform" srcnodeid="4" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="View" srcnodeid="4" srcpinname="Transform Out">
    </LINK>
    <NODE id="0" nodename="Group (EX9)">
    <BOUNDS height="270" left="120" top="5850" type="Node" width="7005">
@@ -446,7 +454,7 @@
    </LINK>
    <LINK dstnodeid="0" dstpinname="Layer 3" srcnodeid="25" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="36" nodename="TransformODE (Transform)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE componentmode="Hidden" id="36" nodename="TransformODE (Transform)">
    <BOUNDS height="100" left="270" top="3810" type="Node" width="100">
    </BOUNDS>
    <BOUNDS left="270" top="3810" type="Box" width="4800" height="3600">
@@ -470,7 +478,7 @@
    </NODE>
    <LINK dstnodeid="36" dstpinname="TranslateX" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="37" nodename="TransformODE (Transform)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE componentmode="Hidden" id="37" nodename="TransformODE (Transform)">
    <BOUNDS height="100" left="3345" top="3870" type="Node" width="100">
    </BOUNDS>
    <BOUNDS left="3345" top="3870" type="Box" width="4800" height="3600">
@@ -496,7 +504,7 @@
    </NODE>
    <LINK dstnodeid="37" dstpinname="TranslateX" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" id="38" nodename="SphereStatic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE componentmode="Hidden" id="38" nodename="SphereStatic (ODE)">
    <BOUNDS height="100" left="270" top="4620" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="1365" top="5310" type="Window" width="9000">
@@ -522,7 +530,7 @@
    </LINK>
    <LINK dstnodeid="38" dstpinname="ODETransform In" srcnodeid="36" srcpinname="ODETransform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="39" nodename="SphereDynamic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE componentmode="Hidden" id="39" nodename="SphereDynamic (ODE)">
    <BOUNDS height="100" left="3330" top="4665" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="4035" top="5280" type="Window" width="9000">
@@ -558,7 +566,7 @@
    </LINK>
    <LINK dstnodeid="39" dstpinname="Init ODETransform In" srcnodeid="37" srcpinname="ODETransform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="40" nodename="PlaneStatic (ODE)" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE componentmode="Hidden" id="40" nodename="PlaneStatic (ODE)">
    <BOUNDS height="100" left="7200" top="4860" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="7830" top="5430" type="Window" width="9000">
@@ -574,7 +582,7 @@
    </NODE>
    <LINK dstnodeid="25" dstpinname="Transform" srcnodeid="40" srcpinname="Transform">
    </LINK>
-   <NODE id="41" nodename="TransformODE (Transform)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\modules\tonfilms\ODEGeos\">
+   <NODE id="41" nodename="TransformODE (Transform)" componentmode="Hidden">
    <BOUNDS height="100" left="7200" top="4260" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="6000" left="7980" top="4980" type="Window" width="9000">
@@ -590,12 +598,48 @@
    </NODE>
    <LINK dstnodeid="40" dstpinname="ODETransform In" srcnodeid="41" srcpinname="ODETransform Out">
    </LINK>
-   <NODE id="42" nodename="Camera (Transform Softimage)" componentmode="Hidden" path="C:\Dokumente und Einstellungen\greg\Desktop\Root\Dev\vvvv\vvvv45\lib\nodes\modules\Transform\">
-   <BOUNDS height="100" left="7785" top="7005" type="Node" width="100">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="46" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7935" top="7245" width="420" height="240">
    </BOUNDS>
-   <BOUNDS height="6000" left="8835" top="7590" type="Window" width="9000">
+   <BOUNDS type="Node" left="7935" top="7245" width="0" height="0">
    </BOUNDS>
-   <BOUNDS height="3600" left="7785" top="7005" type="Box" width="4800">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8370" top="7245" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8370" top="7245" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="17.53">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8820" top="7245" width="465" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8820" top="7245" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="43" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="7770" top="7620" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="6600" top="4425" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="7770" top="7620" type="Box" width="4800">
    </BOUNDS>
    <PIN pinname="View Projection" visible="1">
    </PIN>
@@ -605,7 +649,21 @@
    </PIN>
    <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
    </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Transform In" srcnodeid="42" srcpinname="View Projection">
+   <LINK srcnodeid="46" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Initial Pitch">
    </LINK>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="View Projection" dstnodeid="4" dstpinname="Transform In">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

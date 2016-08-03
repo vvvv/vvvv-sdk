@@ -50,7 +50,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Xilium.CefGlue">
+    <Reference Include="Xilium.CefGlue, Version=49.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\..\..\packages\VVVV.Cef.Xilium.CefGlue.3.2623.1397\lib\net40\Xilium.CefGlue.dll</HintPath>
       <HintPath>..\..\..\..\..\..\..\packages\VVVV.Cef.Xilium.CefGlue.3.2623.1397\lib\net40\Xilium.CefGlue.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -86,11 +87,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
-  <Import Project="..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets" Condition="Exists('..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets'))" />
   </Target>
+  <Import Project="..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets" Condition="Exists('..\..\..\..\..\..\..\packages\VVVV.Cef.Binaries.3.2623.1397\build\VVVV.Cef.Binaries.targets')" />
 </Project>

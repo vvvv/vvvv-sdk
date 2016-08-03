@@ -22,7 +22,7 @@ namespace VVVV.Nodes.Raw
 
         protected override Stream CopySlice(Stream slice)
         {
-            var copy = new MemoryStream((int)slice.Length);
+            var copy = new MemoryComStream((int)slice.Length);
             slice.Position = 0;
             slice.CopyTo(copy, buffer);
             return copy;

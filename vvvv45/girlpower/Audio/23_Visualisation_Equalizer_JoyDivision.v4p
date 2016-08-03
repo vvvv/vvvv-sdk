@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Audio\23_Visualisation_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Audio\23_Visualisation_Equalizer_JoyDivision.v4p" systemname="joyDivistion-meshAndLine" filename="C:\Work\Girlpower - next gen\Work\joyDivistion-meshAndLine.v4p">
    <BOUNDS type="Window" left="8295" top="0" width="15375" height="15990">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
@@ -158,16 +158,6 @@
    </LINK>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="33" dstpinname="BinSize" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="208">
-   <BOUNDS type="Node" left="9630" top="12405" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0.04">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="182" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Spread Count" hiddenwhenlocked="1">
    </LINK>
    <NODE id="221" systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
@@ -232,10 +222,6 @@
    <PIN pinname="Saturation" slicecount="1" values="0.79">
    </PIN>
    </NODE>
-   <LINK srcnodeid="208" srcpinname="View" dstnodeid="16" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="208" srcpinname="Projection" dstnodeid="16" dstpinname="Projection">
-   </LINK>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="232">
    <BOUNDS type="Node" left="7800" top="8295" width="100" height="100">
    </BOUNDS>
@@ -294,8 +280,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="250" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial Yaw">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="251" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="10650" top="11940" width="0" height="0">
    </BOUNDS>
@@ -308,8 +292,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="251" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Inital Distance">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="252" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="10035" top="11940" width="0" height="0">
    </BOUNDS>
@@ -322,8 +304,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="252" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial Pitch">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="256" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="12945" top="9135" width="0" height="0">
    </BOUNDS>
@@ -1397,5 +1377,45 @@
    <LINK srcnodeid="343" srcpinname="Output" dstnodeid="345" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="331" srcpinname="Left" dstnodeid="343" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="351" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11160" top="11955" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11160" top="11955" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE id="208" systemname="Camera (Transform Softimage)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden">
+   <BOUNDS type="Node" left="9630" top="12405" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.04">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="252" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="251" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="250" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial Yaw">
+   </LINK>
+   <LINK srcnodeid="208" srcpinname="Projection" dstnodeid="16" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="208" srcpinname="View" dstnodeid="16" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="351" srcpinname="Y Output Value" dstnodeid="208" dstpinname="Initial FOV">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.4.dtd" >
-   <PATCH nodename="D:\vvvv_dev\vvvv\AddonsCore\Nodes\Transform\Decompose\Decompose (Transform Vector) help.v4p" filename="C:\Dev\vvvv\vvvv45\plugins\Decompose (Transform Vector) help.v4p" systemname="Decompose (Transform Vector) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\Decompose (Transform Vector) help.v4p" filename="C:\Dev\vvvv\vvvv45\plugins\Decompose (Transform Vector) help.v4p" systemname="Decompose (Transform Vector) help">
    <BOUNDS height="11820" left="630" top="825" type="Window" width="9480">
    </BOUNDS>
    <NODE componentmode="InAWindow" hiddenwhenlocked="0" id="21" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -18,6 +18,12 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="20" nodename="Vertigo (Transform)" systemname="Vertigo (Transform)">
@@ -61,7 +67,7 @@
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="17" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="2010" top="9405" type="Node" width="2490">
    </BOUNDS>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -376,7 +382,21 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="Layer 3" hiddenwhenlocked="0" srcnodeid="33" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9\AxisAndGrid (DX9).v4p" hiddenwhenlocked="0" id="34" managers="" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)">
+   <LINK srcnodeid="31" srcpinname="TranslateXYZ" dstnodeid="5" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="ScaleXYZ" dstnodeid="6" dstpinname="Scale XYZ">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="RotateXYZ" dstnodeid="6" dstpinname="Rotate XYZ">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="TranslateXYZ" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="ScaleXYZ" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="RotateXYZ" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="31" dstpinname="Transform In">
+   </LINK>
+   <NODE componentmode="Hidden" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" hiddenwhenlocked="0" id="34" managers="" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)">
    <BOUNDS height="100" left="1560" top="8730" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="1560" top="8730" type="Box" width="4800">
@@ -396,18 +416,6 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Layer 1" hiddenwhenlocked="0" srcnodeid="34" srcpinname="Layer">
    </LINK>
-   <LINK srcnodeid="31" srcpinname="TranslateXYZ" dstnodeid="5" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="ScaleXYZ" dstnodeid="6" dstpinname="Scale XYZ">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="RotateXYZ" dstnodeid="6" dstpinname="Rotate XYZ">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="TranslateXYZ" dstnodeid="9" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="ScaleXYZ" dstnodeid="8" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="31" srcpinname="RotateXYZ" dstnodeid="7" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Transform Out" dstnodeid="31" dstpinname="Transform In">
-   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

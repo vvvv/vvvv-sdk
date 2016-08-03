@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-360">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" systemname="01_Know_Your_Meshes" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\01_Know_Your_Meshes.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="0" top="0" width="19860" height="15720">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="1">
    <BOUNDS type="Node" left="6585" top="10200" width="100" height="100">
@@ -49,9 +49,9 @@
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
@@ -92,20 +92,6 @@
    <PIN pinname="Resolution Y" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="8790" top="11415" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Initial Pitch" visible="1">
-   </PIN>
-   <PIN pinname="Initial Yaw" visible="1">
-   </PIN>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="9" srcpinname="Projection" dstnodeid="4" dstpinname="Projection">
-   </LINK>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Inital Distance">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9180" top="10905" width="465" height="240">
    </BOUNDS>
@@ -118,8 +104,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial Pitch">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8610" top="10905" width="495" height="240">
    </BOUNDS>
@@ -132,8 +116,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial Yaw">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9615" top="8325" width="390" height="240">
    </BOUNDS>
@@ -1276,8 +1258,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="View" dstnodeid="4" dstpinname="View">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="124" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="11070" top="6510" width="480" height="480">
    </BOUNDS>
@@ -1388,4 +1368,42 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="133" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10185" top="10890" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10185" top="10890" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="9" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden">
+   <BOUNDS type="Node" left="8790" top="11415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial Yaw" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="View" dstnodeid="4" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial Yaw">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial Pitch">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Projection" dstnodeid="4" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Initial FOV">
+   </LINK>
    </PATCH>

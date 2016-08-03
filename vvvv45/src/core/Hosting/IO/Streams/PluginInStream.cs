@@ -14,6 +14,7 @@ using VVVV.Utils.Reflection;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
+using com = System.Runtime.InteropServices.ComTypes;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -117,7 +118,7 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
     
-    class DynamicEnumInStream : EnumInStream<EnumEntry>
+    class DynamicEnumInStream : EnumInStream<EnumEntry>, IEnumChangedListener
     {
         private readonly string FEnumName;
         
@@ -125,25 +126,34 @@ namespace VVVV.Hosting.IO.Streams
             : base(enumIn)
         {
             FEnumName = enumName;
+            enumIn.SetEnumChangedListener(this);
         }
         
         public override bool Sync()
         {
             IsChanged = FAutoValidate ? FEnumIn.PinIsChanged : FEnumIn.Validate();
             if (IsChanged)
+                DoSync();
+            return IsChanged;
+        }
+
+        private void DoSync()
+        {
+            Length = FEnumIn.SliceCount;
+            using (var writer = GetWriter())
             {
-                Length = FEnumIn.SliceCount;
-                using (var writer = GetWriter())
+                for (int i = 0; i < Length; i++)
                 {
-                    for (int i = 0; i < Length; i++)
-                    {
-                        int ord;
-                        FEnumIn.GetOrd(i, out ord);
-                        writer.Write(new EnumEntry(FEnumName, ord));
-                    }
+                    int ord;
+                    FEnumIn.GetOrd(i, out ord);
+                    writer.Write(new EnumEntry(FEnumName, ord));
                 }
             }
-            return IsChanged;
+        }
+
+        void IEnumChangedListener.EnumChangedCB(string name, string defaultEntry, string[] entries)
+        {
+            DoSync();
         }
     }
 
@@ -563,30 +573,32 @@ namespace VVVV.Hosting.IO.Streams
         }
     }
 
-    class RawInStream : IInStream<System.IO.Stream>
+    class RawInStream : IInStream<Stream>
     {
-        class RawInStreamReader : IStreamReader<System.IO.Stream>
+        class RawInStreamReader : IStreamReader<Stream>
         {
             private readonly RawInStream FRawInStream;
+            private readonly IRawIn FRawIn;
 
             public RawInStreamReader(RawInStream stream)
             {
                 FRawInStream = stream;
+                FRawIn = stream.FRawIn;
             }
 
             public Stream Read(int stride = 1)
             {
-                VVVV.Utils.Win32.IStream stream;
-                FRawInStream.FRawIn.GetData(Position, out stream);
+                com.IStream comStream;
+                FRawIn.GetData(Position, out comStream);
                 Position += stride;
-                if (stream != null)
+                if (comStream != null)
                 {
-                    var result = new ComStream(stream);
-                    result.Position = 0;
-                    return result;
+                    var stream = comStream as Stream;
+                    if (stream != null)
+                        return stream;
+                    return new ComAdapterStream(comStream);
                 }
-                else
-                    return new MemoryStream(0);
+                return EmptyComStream.Instance;
             }
 
             public int Read(Stream[] buffer, int offset, int length, int stride = 1)

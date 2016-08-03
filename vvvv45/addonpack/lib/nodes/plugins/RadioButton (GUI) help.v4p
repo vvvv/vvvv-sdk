@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.6.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\RadioButton (GUI) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\RadioButton (GUI) help.v4p" locked="0">
    <BOUNDS height="13245" left="60" top="825" type="Window" width="11805">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="28" nodename="RENDERER (EX9)">
@@ -374,29 +374,13 @@
    </NODE>
    <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Set Value">
    </LINK>
-   <NODE systemname="Mouse (System Window)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="30">
+   <NODE systemname="Mouse (System Window Legacy2)" filename="%VVVV%\lib\nodes\modules\System\Mouse (System Window).v4p" nodename="Mouse (System Window)" componentmode="Hidden" id="30">
    <BOUNDS type="Node" left="5370" top="4515" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="30" srcpinname="Mouse" dstnodeid="15" dstpinname="Mouse">
-   </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="2400" top="9945" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Mouse" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="30" srcpinname="Mouse" dstnodeid="31" dstpinname="Mouse" linkstyle="Bezier" hiddenwhenlocked="1">
-   <LINKPOINT x="5330" y="7365">
-   </LINKPOINT>
-   <LINKPOINT x="2485" y="7365">
-   </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="3435" top="5055" width="0" height="0">
@@ -418,4 +402,18 @@
    </NODE>
    <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="15" dstpinname="CountXY">
    </LINK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="2415" top="10200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 2">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

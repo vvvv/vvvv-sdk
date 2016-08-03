@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\MultiScreen (EX9) help.v4p" scrollx="0" scrolly="-4332">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\MultiScreen (EX9) help.v4p" scrollx="0" scrolly="-4332">
    <BOUNDS height="12615" left="1950" top="3870" type="Window" width="13890">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="26" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
@@ -109,7 +109,7 @@
    <LINK dstnodeid="21" dstpinname="XYZ" srcnodeid="20" srcpinname="Output">
    </LINK>
    <NODE id="19" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
-   <BOUNDS height="0" left="2115" top="6435" type="Node" width="0">
+   <BOUNDS height="0" left="2205" top="6525" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Aspect Width" slicecount="1" values="4">
    </PIN>
@@ -382,27 +382,7 @@
    </LINK>
    <LINK dstnodeid="28" dstpinname="Screen Count X" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="Hidden" id="30" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="100" left="1260" top="6090" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="6000" left="4020" top="10710" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="1260" top="6090" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="10">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="26" dstpinname="View" srcnodeid="30" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="26" dstpinname="Projection" srcnodeid="30" srcpinname="Projection">
-   </LINK>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4605" top="6120" width="285" height="240">
@@ -573,5 +553,71 @@
    <LINK dstnodeid="27" dstpinname="Overlap X" srcnodeid="18" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="27" dstpinname="Screen Count X" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="38" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1725" top="5685" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1725" top="5685" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2145" top="5685" width="330" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2145" top="5685" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="40" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1230" top="5685" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1230" top="5685" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="30" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS height="100" left="1125" top="6060" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="4020" top="10710" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1125" top="6060" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Distortion" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="View" srcnodeid="30" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Projection" srcnodeid="30" srcpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Initial Pitch">
    </LINK>
    </PATCH>
