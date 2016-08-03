@@ -10,6 +10,8 @@ namespace VVVV.Utils.Imaging
 {
     //adapted from:
     //http://stackoverflow.com/questions/1196322/how-to-create-an-animated-gif-in-net
+    //gif file format specification:
+    //http://www.fileformat.info/format/gif/egff.htm
 
     /// <summary>
     /// Uses default .net GIF encoding and adds animation headers.

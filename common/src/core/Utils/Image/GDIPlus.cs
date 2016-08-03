@@ -36,7 +36,7 @@ namespace VVVV.Utils.Imaging
         FixedHalftone256 = 9
     }
 
-    public static class GdipEffect
+    public static class GDIPlus
     {
         [DllImport("gdiplus.dll", SetLastError = true, ExactSpelling = true, CharSet = CharSet.Unicode)]
         private static extern int GdipInitializePalette(ref GdiPalette Pal, int palettetype, int optimalColors,
