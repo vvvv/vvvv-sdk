@@ -42,8 +42,9 @@ namespace VVVV.Utils.Win32
             var cdC = User32.GetSystemMetrics(CYSMCAPTION);
 
             //windows with empty captions don't have a titlebar (like the VL editor)
-            StringBuilder sb = new StringBuilder();
-            User32.GetWindowText(handle, sb, 255);
+            var length = User32.GetWindowTextLength(handle);
+            var sb = new StringBuilder(length + 1);
+            User32.GetWindowText(handle, sb, sb.Capacity);
             if (sb.Length == 0)
                 cdC = 0;
 

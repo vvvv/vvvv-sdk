@@ -31,6 +31,9 @@ namespace VVVV.Utils.Win32
         [DllImport("user32")]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpWindowText, int nMaxCount);
 
+        [DllImport("user32", EntryPoint = "GetWindowTextLength", SetLastError = true)]
+        internal static extern int GetWindowTextLength(IntPtr hwnd);
+
         [DllImport("user32")]
         public static extern int GetSystemMetrics(int nIndex);
 
