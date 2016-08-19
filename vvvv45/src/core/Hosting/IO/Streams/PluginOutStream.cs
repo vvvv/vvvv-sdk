@@ -17,6 +17,7 @@ using System.Reactive.Subjects;
 using System.Drawing;
 using VVVV.Utils.Win32;
 using System.Windows.Forms;
+using com = System.Runtime.InteropServices.ComTypes;
 
 namespace VVVV.Hosting.IO.Streams
 {
@@ -301,7 +302,7 @@ namespace VVVV.Hosting.IO.Streams
         static Size FClientArea = new Size(short.MaxValue, short.MaxValue);
     }
 
-    class RawOutStream : IOutStream<System.IO.Stream>
+    class RawOutStream : IOutStream<Stream>
     {
         private readonly IRawOut FRawOut;
         private int FLength;
@@ -339,28 +340,36 @@ namespace VVVV.Hosting.IO.Streams
             }
         }
 
-        public IStreamWriter<System.IO.Stream> GetWriter()
+        public IStreamWriter<Stream> GetWriter()
         {
             FMarkPinAsChanged = true;
             return new Writer(this);
         }
 
-        class Writer : IStreamWriter<System.IO.Stream>
+        class Writer : IStreamWriter<Stream>
         {
-            private RawOutStream FRawOutStream;
+            private readonly RawOutStream FRawOutStream;
+            private readonly IRawOut FRawOut;
 
             public Writer(RawOutStream rawOutStream)
             {
-                this.FRawOutStream = rawOutStream;
+                FRawOutStream = rawOutStream;
+                FRawOut = rawOutStream.FRawOut;
             }
 
-            public void Write(System.IO.Stream value, int stride = 1)
+            public void Write(Stream value, int stride = 1)
             {
-                this.FRawOutStream.FRawOut.SetData(this.Position, value != null ? new ComIStream(value) : null);
+                if (value != null)
+                {
+                    var comStream = value as com.IStream ?? new AdapterComStream(value);
+                    FRawOut.SetData(Position, comStream);
+                }
+                else
+                    FRawOut.SetData(Position, null);
                 this.Position += stride;
             }
 
-            public int Write(System.IO.Stream[] buffer, int index, int length, int stride = 1)
+            public int Write(Stream[] buffer, int index, int length, int stride = 1)
             {
                 var numSlicesToWrite = StreamUtils.GetNumSlicesAhead(this, index, length, stride);
                 for (int i = index; i < index + numSlicesToWrite; i++)

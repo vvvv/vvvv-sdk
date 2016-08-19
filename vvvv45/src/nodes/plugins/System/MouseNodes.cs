@@ -408,7 +408,14 @@ namespace VVVV.Nodes.Input
                     position = new Point(args.X / virtualScreenSize.Width, args.Y / virtualScreenSize.Height);
                     break;
                 case MouseMode.MoveRelative:
-                    position = new Point(VMath.Clamp(args.X + position.X, 0, virtualScreenSize.Width - 1), VMath.Clamp(args.Y + position.Y, 0, virtualScreenSize.Height - 1));
+
+                    // this will keep mouse relative coordinates proportional
+                    // so a distance traveled on X axis == same distance traveled on Y axis
+                    var minAsp = Math.Min(virtualScreenSize.Width, virtualScreenSize.Height);
+                    var screenAspW = virtualScreenSize.Width / minAsp;
+                    var screenAspH = virtualScreenSize.Height / minAsp;
+
+                    position = new Point(args.X * screenAspW + position.X, args.Y * screenAspH + position.Y);
                     break;
                 case MouseMode.VirtualDesktop:
                     position = new Point(args.X, args.Y);
@@ -869,6 +876,10 @@ namespace VVVV.Nodes.Input
 
         [Output("Position")]
         public ISpread<Vector2D> PositionOut;
+        [Output("Position in Pixel", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Client Area", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> ClientAreaOut;
         [Output("Mouse Wheel")]
         public ISpread<int> MouseWheelOut;
         [Output("Left Button")]
@@ -895,6 +906,8 @@ namespace VVVV.Nodes.Input
         public void Evaluate(int spreadMax)
         {
             PositionOut.SliceCount = spreadMax;
+            PositionPixelOut.SliceCount = spreadMax;
+            ClientAreaOut.SliceCount = spreadMax;
             MouseWheelOut.SliceCount = spreadMax;
             FRawMouseWheel.SliceCount = spreadMax;
             LeftButtonOut.SliceCount = spreadMax;
@@ -909,6 +922,8 @@ namespace VVVV.Nodes.Input
                 {
                     // Reset states
                     PositionOut[slice] = Vector2D.Zero;
+                    PositionPixelOut[slice] = Vector2D.Zero;
+                    ClientAreaOut[slice] = Vector2D.Zero;
                     MouseWheelOut[slice] = 0;
                     FRawMouseWheel[slice] = 0;
                     LeftButtonOut[slice] = false;
@@ -946,6 +961,8 @@ namespace VVVV.Nodes.Input
                             break;
                         case MouseNotificationKind.MouseMove:
                             PositionOut[i] = n.Position.FromMousePoint(n.ClientArea);
+                            PositionPixelOut[i] = new Vector2D(n.Position.X, n.Position.Y);
+                            ClientAreaOut[i] = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
                             break;
                         case MouseNotificationKind.MouseWheel:
                             var mouseWheel = n as MouseWheelNotification;

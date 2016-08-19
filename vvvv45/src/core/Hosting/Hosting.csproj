@@ -13,6 +13,10 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
       <HintPath>..\..\..\..\common\src\thirdparty\ICSharpCode.NRefactory.dll</HintPath>
@@ -27,9 +31,9 @@
     <Reference Include="Nito.Async">
       <HintPath>..\..\..\..\common\src\thirdparty\Nito.Async.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Core, Version=2.10.1.766, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\NuGet.Core.2.10.1\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -71,8 +75,6 @@
     <Compile Include="Interfaces\EX9\IDXMeshPin.cs" />
     <Compile Include="Interfaces\IInternalMainLoopEvent.cs" />
     <Compile Include="Interfaces\IInternalMainLoopEventListener.cs" />
-    <Compile Include="IO\ComIStream.cs" />
-    <Compile Include="IO\ComStream.cs" />
     <Compile Include="IO\DynamicTypeWrapper.cs" />
     <Compile Include="IO\IIOMultiPin.cs" />
     <Compile Include="IO\PluginContainer.cs" />

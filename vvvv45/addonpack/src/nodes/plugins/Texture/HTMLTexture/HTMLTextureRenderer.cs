@@ -67,8 +67,11 @@ namespace VVVV.Nodes.Texture.HTML
 
             var settings = new CefBrowserSettings();
             settings.FileAccessFromFileUrls = CefState.Enabled;
+            settings.Plugins = CefState.Enabled;
+            settings.RemoteFonts = CefState.Enabled;
             settings.UniversalAccessFromFileUrls = CefState.Enabled;
             settings.WebGL = CefState.Enabled;
+            settings.WebSecurity = CefState.Disabled;
             settings.WindowlessFrameRate = frameRate;
 
             var windowInfo = CefWindowInfo.Create();
@@ -78,7 +81,11 @@ namespace VVVV.Nodes.Texture.HTML
             // See http://magpcss.org/ceforum/viewtopic.php?f=6&t=5901
             // We need to maintain different request contexts in order to have different zoom levels
             // See https://bitbucket.org/chromiumembedded/cef/issues/1314
-            FRequestContext = CefRequestContext.CreateContext(new WebClient.RequestContextHandler());
+            var rcSettings = new CefRequestContextSettings()
+            {
+                IgnoreCertificateErrors = true
+            };
+            FRequestContext = CefRequestContext.CreateContext(rcSettings, new WebClient.RequestContextHandler());
             CefBrowserHost.CreateBrowser(windowInfo, FWebClient, settings, FRequestContext);
             // Block until browser is created
             FBrowserAttachedEvent.WaitOne();

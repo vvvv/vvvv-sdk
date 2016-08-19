@@ -10,6 +10,7 @@ using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
+using com = System.Runtime.InteropServices.ComTypes;
 
 /// <summary>
 /// Version 1 of the VVVV PluginInterface.
@@ -978,12 +979,34 @@ namespace VVVV.PluginInterfaces.V1
 		/// </summary>
 		/// <param name="entryName">The exact name of the entry</param>
 		void SetDefaultEntry(string entryName);
+        /// <summary>
+        /// Registers the given listener on enum changes.
+        /// </summary>
+        /// <param name="listener">The listener to register.</param>
+        void SetEnumChangedListener(IEnumChangedListener listener);
 	}
 
-	/// <summary>
-	/// Interface to an OutputPin of type Enum.
-	/// </summary>
-	[Guid("C933059A-C46E-4149-966D-04D03B93A078"),
+
+    /// <summary>
+    /// Listener interface to be informed of enum changes on an enum pin.
+    /// </summary>
+    [Guid("FC915DF0-643F-4CFC-9132-BE9612575381"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IEnumChangedListener
+    {
+        /// <summary>
+        /// Raised whenever the enum changes.
+        /// </summary>
+        /// <param name="name">The name of the enum.</param>
+        /// <param name="defaultEntry">The new default value of the enum.</param>
+        /// <param name="entries">The new entries of the enum.</param>
+        void EnumChangedCB(string name, string defaultEntry, string[] entries);
+    }
+
+    /// <summary>
+    /// Interface to an OutputPin of type Enum.
+    /// </summary>
+    [Guid("C933059A-C46E-4149-966D-04D03B93A078"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IEnumOut: IPluginOut
 	{
@@ -1191,14 +1214,14 @@ namespace VVVV.PluginInterfaces.V1
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     unsafe public interface IRawIn : IPluginIn
     {
-        void GetData(int slice, out VVVV.Utils.Win32.IStream stream);
+        void GetData(int slice, out com.IStream stream);
     }
 
     [Guid("8943c8e5-4833-4ca2-baea-2e32e627ffcf"),
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     unsafe public interface IRawOut : IPluginOut
     {
-        void SetData(int slice, VVVV.Utils.Win32.IStream stream);
+        void SetData(int slice, com.IStream stream);
         /// <summary>
         /// Used to mark this pin as being changed compared to the last frame. 
         /// </summary>
@@ -1209,7 +1232,7 @@ namespace VVVV.PluginInterfaces.V1
         InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     unsafe public interface IRawData : IPluginIn
     {
-        void GetData(int slice, out VVVV.Utils.Win32.IStream stream);
+        void GetData(int slice, out com.IStream stream);
     }    
 
     #endregion node pins	

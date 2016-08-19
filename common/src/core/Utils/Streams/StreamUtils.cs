@@ -280,28 +280,36 @@ namespace VVVV.Utils.Streams
             outStream.Length = inStream.Length;
             
             using (var reader = inStream.GetReader())
+            using (var writer = outStream.GetWriter())
             {
-                using (var writer = outStream.GetWriter())
+                while (!reader.Eos)
                 {
-                    while (!reader.Eos)
-                    {
-                        int numSlicesRead = reader.Read(buffer, 0, buffer.Length);
-                        writer.Write(buffer, 0, numSlicesRead);
-                    }
+                    int numSlicesRead = reader.Read(buffer, 0, buffer.Length);
+                    writer.Write(buffer, 0, numSlicesRead);
                 }
             }
         }
         
         public static void AssignFrom<T>(this IOutStream<T> outStream, IInStream<T> inStream)
         {
-            var buffer = MemoryPool<T>.GetArray();
-            try
+            if (inStream.Length != 1)
             {
-                outStream.AssignFrom(inStream, buffer);
+                var buffer = MemoryPool<T>.GetArray();
+                try
+                {
+                    outStream.AssignFrom(inStream, buffer);
+                }
+                finally
+                {
+                    MemoryPool<T>.PutArray(buffer);
+                }
             }
-            finally
+            else
             {
-                MemoryPool<T>.PutArray(buffer);
+                outStream.Length = 1;
+                using (var reader = inStream.GetReader())
+                using (var writer = outStream.GetWriter())
+                    writer.Write(reader.Read());
             }
         }
 
