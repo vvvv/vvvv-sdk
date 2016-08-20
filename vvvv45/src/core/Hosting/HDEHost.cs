@@ -127,7 +127,7 @@ namespace VVVV.Hosting
                 AssemblyLoader.AddPackageRepository(PacksPath);
             //the one where the user is supposed to install packages
             if (Directory.Exists(UserPacksPatch))
-                AssemblyProbing.AddPackageRepository(UserPacksPatch);
+                AssemblyLoader.AddPackageRepository(UserPacksPatch);
             
 
             // Set name to vvvv thread for easier debugging.
