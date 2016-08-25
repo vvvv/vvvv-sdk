@@ -1,57 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<VLDOCUMENT Version="0.31.0.0">
-  <DEPENDENCIES>
-    <DEPENDENCY Name="mscorlib.dll.vlimport" Location="mscorlib.dll.vlimport" />
-    <DEPENDENCY Name="System.Core.dll.vlimport" Location="System.Core.dll.vlimport" />
-    <DEPENDENCY Name="System.Collections.Immutable.dll.vlimport" Location="System.Collections.Immutable.dll.vlimport" />
-    <DEPENDENCY Name="System.Interactive.dll.vlimport" Location="System.Interactive.dll.vlimport" />
-    <DEPENDENCY Name="System.Reactive.Linq.dll.vlimport" Location="System.Reactive.Linq.dll.vlimport" />
-    <DEPENDENCY Name="System.Drawing.dll.vlimport" Location="System.Drawing.dll.vlimport" />
-    <DEPENDENCY Name="System.Windows.Forms.dll.vlimport" Location="System.Windows.Forms.dll.vlimport" />
-    <DEPENDENCY Name="VVVV.Utils.dll.vlimport" Location="VVVV.Utils.dll.vlimport" />
-    <DEPENDENCY Name="VL.Lib.Basics.dll" Location="VL.Lib.Basics.dll" />
-    <DEPENDENCY Name="Basics.vl" Location="Basics.vl" />
-    <DEPENDENCY Name="VL.Lib.Integration.dll" Location="VL.Lib.Integration.dll" />
-    <DEPENDENCY Name="Integration.vl" Location="Integration.vl" />
-    <DEPENDENCY Name="VL.Core.dll" Location="VL.Core.dll" />
-    <DEPENDENCY Name="VL Forms.dll" Location="VL Forms.dll" />
-    <DEPENDENCY Name="VVVV.VL.Hosting.dll" Location="VVVV.VL.Hosting.dll" />
-    <DEPENDENCY Name="VL.Lang.dll" Location="VL.Lang.dll" />
-  </DEPENDENCIES>
-  <PATCHES>
-    <PATCH Name="ManageVL" Category="VVVV.VL" IsDatatype="true" IsClosed="true" IsMutable="true">
-      <BODY Name="TemplatePatch">
-        <LAYERS>
-          <LAYER Name="Create" />
-          <LAYER Name="Update" />
-        </LAYERS>
-        <INLETS>
-          <INLET Name="Reset Editor" Layer="Update">
-            <POSITION x="291" y="131" />
-          </INLET>
-        </INLETS>
-        <OUTLETS />
-        <CONSTS />
-        <REGIONS />
-        <NODES>
-          <OPERATION Name="ManageVLSession" Layer="Update">
-            <POSITION x="293" y="190" />
-            <NODEREF>
-              <OPERATIONNODE Name="ManageVLSession" />
-            </NODEREF>
-            <INPUTS>
-              <INPUT Name="Reset Editor" />
-            </INPUTS>
-            <OUTPUTS>
-              <OUPUT Name="Editor Control" />
-              <OUPUT Name="Session" />
-            </OUTPUTS>
-          </OPERATION>
-        </NODES>
-        <LINKS>
-          <Link source="Inlets/Reset Editor" sink="Nodes/ManageVLSession/Inputs/Reset Editor" />
-        </LINKS>
-      </BODY>
-    </PATCH>
-  </PATCHES>
-</VLDOCUMENT>
+<Document xmlns:p="property" Id="1" Version="0.38.1043.64077">
+  <p:NodeReference>
+    <Choice Kind="Document" />
+  </p:NodeReference>
+  <NugetDependency Id="2" Location="VL.CoreLib" Version="0.38.1043" />
+  <DocumentDependency Id="3" Location="Basics.vl" />
+  <NugetDependency Id="4" Location="VL.CoreLib.VVVV" Version="0.38.1043" />
+  <NugetDependency Id="5" Location="VL.Core" Version="0.38.1043" />
+  <PlatformDependency Id="6" Location="VL Forms.dll" />
+  <PlatformDependency Id="7" Location="VVVV.VL.Hosting.dll" />
+  <NugetDependency Id="8" Location="VL.Lang" Version="0.38.1043" />
+  <Patch Id="9">
+    <Canvas Id="10">
+      <Node Bounds="100,200" Id="11">
+        <p:NodeReference>
+          <Choice Kind="ClassDefinition" Name="Class" />
+        </p:NodeReference>
+        <Patch Id="12" Name="ManageVL" Category="VVVV.VL">
+          <Patch Id="13" Name="Create" IsFragment="true">
+            <p:Info />
+          </Patch>
+          <Patch Id="14" Name="Update" ParticipatingElements="17" IsFragment="true">
+            <Pin Id="15" Name="Reset Editor" Kind="InputPin" />
+            <p:Info />
+          </Patch>
+          <Canvas Id="16" Position="100,200">
+            <Node Bounds="293,190,91,13" Id="17">
+              <p:NodeReference>
+                <Choice Kind="OperationNode" Name="ManageVLSession" />
+              </p:NodeReference>
+              <Pin Id="18" Name="Reset Editor" Kind="InputPin" />
+            </Node>
+            <ControlPoint Id="19" Bounds="291,131" />
+          </Canvas>
+          <Link Id="20" Ids="15,19" IsHidden="true" />
+          <Link Id="21" Ids="19,18" />
+          <p:Info />
+        </Patch>
+      </Node>
+    </Canvas>
+  </Patch>
+</Document>
