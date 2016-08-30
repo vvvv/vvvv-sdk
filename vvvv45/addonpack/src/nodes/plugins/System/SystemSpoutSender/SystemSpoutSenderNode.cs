@@ -8,6 +8,8 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Core.Logging;
 
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Reflection;
 
 using Spout;
 
@@ -32,9 +34,21 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public unsafe class SystemSpoutSenderNode: IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
 	{
-		#region fields & pins
-		
-		[Config("Enable Controls", DefaultValue = 0)]   //TO DO: create pins dynamically?
+
+        static SystemSpoutSenderNode()
+        {
+            var platform = IntPtr.Size == 4 ? "x86" : "x64";
+            var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var pathToBinFolder = Path.Combine(pathToThisAssembly, "dependencies", platform);
+            var envPath = Environment.GetEnvironmentVariable("PATH");
+            envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
+            Environment.SetEnvironmentVariable("PATH", envPath);
+        }
+
+
+        #region fields & pins
+
+        [Config("Enable Controls", DefaultValue = 0)]   //TO DO: create pins dynamically?
         protected IDiffSpread<bool> FControl;
 		
 		[Input("Sender Name", DefaultString = "vvvvideo")]
