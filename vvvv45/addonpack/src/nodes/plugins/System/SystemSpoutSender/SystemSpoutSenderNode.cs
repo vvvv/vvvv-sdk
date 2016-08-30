@@ -92,7 +92,7 @@ namespace VVVV.Nodes
 		private static extern void InitializeControls(String sendername, int[] numControls,String[] names, int[] types, float[] floats, float[] toggles, float[] press, String[] text);
 		[System.Runtime.InteropServices.DllImport("SpoutControls4vvvv.dll")]
 		private static extern int CloseControls();
-		[System.Runtime.InteropServices.DllImport("SpoutControls4vvvv.dll", CallingConvention = CallingConvention.Cdecl)]
+		[System.Runtime.InteropServices.DllImport("SpoutControls4vvvv.dll")]
 		private static extern bool UpdateControls([In, Out] String[] text, [In, Out] float[] floats,  [In, Out] float[] toggles, [In, Out] float[] press, [In, Out] int[] numControls);
 		[System.Runtime.InteropServices.DllImport("SpoutControls4vvvv.dll")]
 		private static extern int ReleaseMemory([In, Out] float[] ptr);
