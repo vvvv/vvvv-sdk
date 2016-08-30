@@ -108,7 +108,7 @@ namespace VVVV.Nodes
 		#endregion fields & pins
 		
 		[System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
-        private static extern IntPtr tetCalculate(ref int size, IntPtr behaviour, IntPtr vertXYZ,IntPtr numPoly,IntPtr numVertices,IntPtr vertIndex,IntPtr numFHoles, IntPtr fHoleXYZ,IntPtr facetMarker, IntPtr HoleXYZ, IntPtr RegionXYZ, IntPtr RegionAttrib, IntPtr RegionVolConst, IntPtr binSizes, IntPtr fileName);
+        private static extern IntPtr tetCalculate(ref int size, String behaviour, double[] vertXYZ,int[] numPoly,int[] numVertices,int[] vertIndex,int[] numFHoles, double[] fHoleXYZ,int[] facetMarker, double[] HoleXYZ, double[] RegionXYZ, double[] RegionAttrib, double[] RegionVolConst, int[] binSizes, String fileName);
 		
 		[System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
 		private static extern int ReleaseMemory(IntPtr ptr);
@@ -229,42 +229,12 @@ namespace VVVV.Nodes
 			binSizes[5]=writeOut;
 			
 			
-			
 			if (FCal[0]){
-				
-				IntPtr BhvrPtr = NativeUtf8FromString(bhvr);
-				IntPtr FileNamePtr = NativeUtf8FromString(fileName);
-				
-				IntPtr Vptr = Marshal.AllocHGlobal(entriesXYZ*sizeof(double));
-				IntPtr Binptr = Marshal.AllocHGlobal(6*sizeof(int));
-				IntPtr nVptr = Marshal.AllocHGlobal(numVert*sizeof(int));
-				IntPtr VIptr = Marshal.AllocHGlobal(numIndices*sizeof(int));
-				IntPtr FHIptr = Marshal.AllocHGlobal(numFHolesXYZ*sizeof(double));
-				IntPtr FMptr = Marshal.AllocHGlobal(numFacets*sizeof(int));
-				IntPtr nPptr = Marshal.AllocHGlobal(numFacets*sizeof(int));
-				IntPtr FHptr = Marshal.AllocHGlobal(numFacets*sizeof(int));
-				IntPtr HIptr = Marshal.AllocHGlobal(sizeHI*sizeof(double));
-				IntPtr RIptr = Marshal.AllocHGlobal(sizeRI*sizeof(double));
-				IntPtr RAptr = Marshal.AllocHGlobal(sizeRA*sizeof(double));
-				IntPtr RVCptr = Marshal.AllocHGlobal(sizeRVC*sizeof(double));
 				
 				try
 				{			
 				
-				Marshal.Copy(V, 0, Vptr, entriesXYZ);
-				Marshal.Copy(binSizes, 0, Binptr, 6);
-				Marshal.Copy(nV, 0, nVptr, numVert);
-				Marshal.Copy(VI, 0, VIptr, numIndices);
-				Marshal.Copy(FfHI, 0, FHIptr, numFHolesXYZ);
-				Marshal.Copy(FM, 0, FMptr, numFacets);
-				Marshal.Copy(nP, 0, nPptr, numFacets);
-				Marshal.Copy(FfH, 0, FHptr, numFacets);
-				Marshal.Copy(HI, 0, HIptr, sizeHI);
-				Marshal.Copy(RI, 0, RIptr, sizeRI);
-				Marshal.Copy(RA, 0, RAptr, sizeRA);
-				Marshal.Copy(RVC, 0, RVCptr, sizeRVC);
-				
-				IntPtr tet = tetCalculate(ref size,BhvrPtr,Vptr,nPptr,nVptr,VIptr,FHptr,FHIptr,FMptr,HIptr,RIptr,RAptr,RVCptr,Binptr,FileNamePtr);
+				IntPtr tet = tetCalculate(ref size,bhvr,V,nP,nV,VI,FfH,FfHI,FM,HI,RI,RA,RVC,binSizes,fileName);
 				double[] tetArr = new double[size];
 				Marshal.Copy(tet, tetArr,0,size );
 					
@@ -298,21 +268,6 @@ namespace VVVV.Nodes
 						
 			finally
 			{
-			  
-				Marshal.FreeHGlobal(BhvrPtr);
-				Marshal.FreeHGlobal(Vptr);
-				Marshal.FreeHGlobal(Binptr);
-				Marshal.FreeHGlobal(nVptr);
-				Marshal.FreeHGlobal(VIptr);
-				Marshal.FreeHGlobal(FHIptr);
-				Marshal.FreeHGlobal(FMptr);
-				Marshal.FreeHGlobal(nPptr);
-				Marshal.FreeHGlobal(FHptr);
-				Marshal.FreeHGlobal(HIptr);
-				Marshal.FreeHGlobal(RIptr);
-				Marshal.FreeHGlobal(RAptr);
-				Marshal.FreeHGlobal(RVCptr);
-				Marshal.FreeHGlobal(FileNamePtr);
 				
 			}
 			}
