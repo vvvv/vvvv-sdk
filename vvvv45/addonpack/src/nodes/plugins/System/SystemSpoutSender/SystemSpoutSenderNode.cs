@@ -148,7 +148,7 @@ namespace VVVV.Nodes
 				for(int i=0;i<count;i++){
 					if (Enum.GetName(typeof(myEnum), Spread[i]) == "Float") retArr[0]++;
 					if (Enum.GetName(typeof(myEnum), Spread[i]) == "Toggle") retArr[1]++;
-					if (Enum.GetName(typeof(myEnum), Spread[i]) == "Bang") retArr[2]++;
+					if (Enum.GetName(typeof(myEnum), Spread[i]) == "Press") retArr[2]++;
 					if (Enum.GetName(typeof(myEnum), Spread[i]) == "Text") retArr[3]++;
 				}			
 			return retArr;
