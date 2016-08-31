@@ -78,9 +78,6 @@ namespace VVVV.Nodes
 		[Input("Toggle Defaults", BinVisibility = PinVisibility.OnlyInspector)]
 		public ISpread<ISpread<bool>> FToggle;
 		
-//		[Input("Bang Defaults")]//not needed
-//		public ISpread<ISpread<bool>> FPress;
-		
 		[Input("Text Defaults", BinVisibility = PinVisibility.OnlyInspector)]
 		public ISpread<ISpread<String>> FTxt;
 		
@@ -200,6 +197,7 @@ namespace VVVV.Nodes
 			FT.SliceCount=SpreadMax;
 			FP.SliceCount=SpreadMax;
 			FS.SliceCount=SpreadMax;
+
 			
 			//if sender count has changed
 			if (FSpoutSender.Length != SpreadMax)
@@ -238,6 +236,7 @@ namespace VVVV.Nodes
 					FT[i].SliceCount=controls[1];
 					FP[i].SliceCount=controls[2];
 					FS[i].SliceCount=controls[3];
+
 					
 					//copy spreads to arrays				
 					String[] names = new String[all];
