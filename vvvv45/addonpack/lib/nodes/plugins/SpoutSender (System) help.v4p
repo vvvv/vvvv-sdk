@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
-   <PATCH nodename="X:\_dev\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\SpoutSender (System) help.v4p" scrollx="6" scrolly="0">
-   <BOUNDS type="Window" left="6384" top="1182" width="10872" height="9960">
+   <PATCH nodename="X:\_dev\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\SpoutSender (System) help.v4p" scrollx="6" scrolly="-360" systemname="SpoutSender (System) help" filename="X:\_dev\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\SpoutSender (System) help.v4p">
+   <BOUNDS type="Window" left="6528" top="1692" width="10872" height="9960">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="228" top="228" width="5100" height="450">
@@ -24,6 +24,50 @@
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
    </NODE>
+   <NODE systemname="SpoutSender (System)" filename="SystemSpoutSender.dll" nodename="SpoutSender (System)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="2232" top="4776" width="2550" height="270">
+   </BOUNDS>
+   <PIN pinname="Control Type" visible="1">
+   </PIN>
+   <PIN pinname="Control Name" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Write" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Float" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Toggle" visible="1">
+   </PIN>
+   <PIN pinname="Press" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Sender Name" visible="1">
+   </PIN>
+   <PIN pinname="Bangs" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Text Defaults" visible="1">
+   </PIN>
+   <PIN pinname="Bang Defaults" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Float Defaults" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Toggle Defaults" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Enable Controls" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Toggle Defaults Bin Size" visible="1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Debug" visible="1">
+   </PIN>
+   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="19" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="3402" top="1812" width="1272" height="1242">
    </BOUNDS>
@@ -39,9 +83,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Control Type|">
    </PIN>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
    </NODE>
+   <LINK srcnodeid="19" srcpinname="Output Enum" dstnodeid="20" dstpinname="Control Type">
+   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
    <BOUNDS type="Box" left="2082" top="1824" width="1230" height="1260">
    </BOUNDS>
@@ -63,9 +107,9 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Control Name|">
    </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
    </NODE>
+   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="20" dstpinname="Control Name">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4848" top="2010" width="888" height="558">
    </BOUNDS>
@@ -138,6 +182,12 @@
    <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
    </PIN>
    </NODE>
+   <LINK srcnodeid="14" srcpinname="Width" dstnodeid="20" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Height" dstnodeid="20" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Shared Handle" dstnodeid="20" dstpinname="Handle">
+   </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
    <BOUNDS type="Node" left="5412" top="3654" width="100" height="100">
    </BOUNDS>
@@ -156,12 +206,14 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Write">
    </PIN>
    </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Write">
+   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
    <BOUNDS type="Box" left="1374" top="4584" width="768" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="1374" top="4584" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="testaaa">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="vvvvideo">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="vvvvideo">
    </PIN>
@@ -169,9 +221,13 @@
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="Output String" visible="1">
-   </PIN>
    </NODE>
+   <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="20" dstpinname="Sender Name">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="20" dstpinname="Text Defaults">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Float Defaults">
+   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="6018" top="2040" width="480" height="480">
    </BOUNDS>
@@ -195,9 +251,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
    </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Toggle Defaults">
+   </LINK>
    <PACK Name="addonpack" Version="34.1.0">
    </PACK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="21">
@@ -315,7 +371,7 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Text" visible="1" slicecount="1" values="||">
+   <PIN pinname="Text" visible="1">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
@@ -323,9 +379,11 @@
    </PIN>
    <PIN pinname="Brush Color" visible="1" slicecount="1" values="|1.00000,0.00000,0.00000,1.00000|">
    </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="0">
+   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="20" srcpinname="Text" dstnodeid="32" dstpinname="Text">
+   </LINK>
    <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="2100" top="7188" width="100" height="100">
    </BOUNDS>
@@ -343,13 +401,15 @@
    <NODE systemname="Unzip (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (Value)" componentmode="Hidden" id="36">
    <BOUNDS type="Node" left="2004" top="5424" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="2" values="0,0">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    <PIN pinname="Output 2" visible="1">
    </PIN>
    </NODE>
+   <LINK srcnodeid="20" srcpinname="Float" dstnodeid="36" dstpinname="Input">
+   </LINK>
    <LINK srcnodeid="36" srcpinname="Output 1" dstnodeid="24" dstpinname="Period">
    </LINK>
    <LINK srcnodeid="36" srcpinname="Output 2" dstnodeid="29" dstpinname="XYZ">
@@ -357,12 +417,16 @@
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="37">
    <BOUNDS type="Node" left="3060" top="5304" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="37" srcpinname="Output" dstnodeid="24" dstpinname="Pause">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Press" dstnodeid="32" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Toggle" dstnodeid="37" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="13" srcpinname="Texture Out" dstnodeid="14" dstpinname="Texture">
    <LINKPOINT x="882" y="9302">
@@ -371,63 +435,5 @@
    </LINKPOINT>
    <LINKPOINT x="1638" y="3598">
    </LINKPOINT>
-   </LINK>
-   <NODE systemname="SpoutSender (System)" filename="X:\_dev\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\SystemSpoutSender.dll" nodename="SpoutSender (System)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="2730" top="4848" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Sender Name" visible="1">
-   </PIN>
-   <PIN pinname="Width" visible="1">
-   </PIN>
-   <PIN pinname="Height" visible="1">
-   </PIN>
-   <PIN pinname="Handle" visible="1">
-   </PIN>
-   <PIN pinname="Control Name" visible="1">
-   </PIN>
-   <PIN pinname="Control Type" visible="1">
-   </PIN>
-   <PIN pinname="Float Defaults" visible="1">
-   </PIN>
-   <PIN pinname="Text Defaults" visible="1">
-   </PIN>
-   <PIN pinname="Toggle Defaults" visible="1">
-   </PIN>
-   <PIN pinname="Write" visible="1">
-   </PIN>
-   <PIN pinname="Float" visible="1">
-   </PIN>
-   <PIN pinname="Toggle" visible="1">
-   </PIN>
-   <PIN pinname="Press" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="38" dstpinname="Sender Name">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Width" dstnodeid="38" dstpinname="Width">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Height" dstnodeid="38" dstpinname="Height">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Shared Handle" dstnodeid="38" dstpinname="Handle">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="38" dstpinname="Control Name">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Output Enum" dstnodeid="38" dstpinname="Control Type">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Float Defaults">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="38" dstpinname="Text Defaults">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Toggle Defaults">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Write">
-   <LINKPOINT x="4062" y="5409">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="38" srcpinname="Float" dstnodeid="36" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="38" srcpinname="Toggle" dstnodeid="37" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="38" srcpinname="Press" dstnodeid="32" dstpinname="Enabled">
    </LINK>
    </PATCH>
