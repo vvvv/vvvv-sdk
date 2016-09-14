@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Audio\10_Input_Overview.v4p" systemname="AudioInput_Basics" filename="C:\Work\girlpower - next gen\Audio\AudioInput_Basics.v4p">
-   <BOUNDS type="Window" left="225" top="240" width="15150" height="10605">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Audio\10_Input_Overview.v4p" systemname="AudioInput_Basics" filename="C:\Work\girlpower - next gen\Audio\AudioInput_Basics.v4p">
+   <BOUNDS type="Window" left="225" top="240" width="12870" height="11955">
    </BOUNDS>
    <NODE componentmode="InABox" id="59" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -118,10 +118,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE systemname="AudioRecordSelector (System)" nodename="AudioRecordSelector (System)" componentmode="Hidden" id="93">
-   <BOUNDS type="Node" left="12705" top="2325" width="100" height="100">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="AudioIn (DShow9)" nodename="AudioIn (DShow9)" componentmode="Hidden" id="95">
    <BOUNDS type="Node" left="8250" top="2310" width="100" height="100">
    </BOUNDS>
@@ -152,18 +148,6 @@
    </NODE>
    <LINK srcnodeid="96" srcpinname="Y Output Value" dstnodeid="95" dstpinname="Enabled">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="98" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="12705" top="1650" width="1020" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="12705" top="1650" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="Stereomix">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Device">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="98" srcpinname="Output Enum" dstnodeid="93" dstpinname="Device">
-   </LINK>
    <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="6975" top="3885" width="100" height="100">
    </BOUNDS>
@@ -190,7 +174,7 @@
    </NODE>
    <LINK srcnodeid="110" srcpinname="Y Output Value" dstnodeid="109" dstpinname="Spread Count">
    </LINK>
-   <NODE systemname="Line (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="111">
+   <NODE systemname="Line (EX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="111">
    <BOUNDS type="Node" left="7365" top="5805" width="100" height="100">
    </BOUNDS>
    <PIN pinname="VerticesXYZ" visible="1">
@@ -259,11 +243,11 @@
    <LINK srcnodeid="115" srcpinname="Y Output Value" dstnodeid="109" dstpinname="Width">
    </LINK>
    <NODE id="97" nodename="IOBox (Enumerations)" componentmode="InABox" systemname="IOBox (Enumerations)" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Box" left="9255" top="1635" width="2370" height="240">
+   <BOUNDS type="Box" left="9255" top="1635" width="2505" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="9255" top="1635" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" pintype="Input" visible="1" values="|Microphone (Logitech USB Headse|">
+   <PIN pinname="Input Enum" slicecount="1" pintype="Input" visible="1" values="|Microphone (Conexant 20671 SmartAudio HD)|">
    </PIN>
    <BOUNDS type="Window" left="0" top="0" width="0" height="0">
    </BOUNDS>
@@ -424,54 +408,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="134" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="12210" top="2235" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="390" left="12210" top="2235" type="Box" width="405">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="141" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="5700" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="1305" left="675" top="5700" type="Box" width="4065">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|If the AudioRecordSelector (System) is red for you, don&apos;t worry, it&apos;s ok, you are on Win7/8 machine. &cr;&lf;&cr;&lf;This node is from the XP world, where you have to choose a Device first in order to use AudioIn.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="210" top="5700" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="390" left="210" top="5700" type="Box" width="405">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="143" systemname="IOBox (String)">
    <BOUNDS type="Node" left="9300" top="3870" width="7875" height="270">
    </BOUNDS>
@@ -503,9 +439,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="146" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="2220" top="8970" type="Node" width="315">
+   <BOUNDS height="270" left="2220" top="7770" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="300" left="2220" top="8970" type="Box" width="345">
+   <BOUNDS height="300" left="2220" top="7770" type="Box" width="345">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
    </PIN>
@@ -519,9 +455,9 @@
    </PIN>
    </NODE>
    <NODE systemname="AudioIn (Bass Asio)" filename="%VVVV%\addonpack\lib\nodes\plugins\BassSound.dll" nodename="AudioIn (Bass Asio)" componentmode="Hidden" id="145">
-   <BOUNDS type="Node" left="855" top="8985" width="1170" height="270">
+   <BOUNDS type="Node" left="855" top="7785" width="1170" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="855" top="8985">
+   <BOUNDS type="Box" left="855" top="7785">
    </BOUNDS>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
@@ -557,9 +493,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="151" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="750" top="7605" type="Node" width="945">
+   <BOUNDS height="270" left="750" top="6405" type="Node" width="945">
    </BOUNDS>
-   <BOUNDS height="405" left="750" top="7605" type="Box" width="1650">
+   <BOUNDS height="405" left="750" top="6405" type="Box" width="1650">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Bass">
    </PIN>
@@ -571,9 +507,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="153" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="810" top="8115" type="Node" width="7425">
+   <BOUNDS height="270" left="810" top="6915" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="285" left="810" top="8115" type="Box" width="1935">
+   <BOUNDS height="285" left="810" top="6915" type="Box" width="1935">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="See:">
    </PIN>
@@ -584,22 +520,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="152" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="345" top="8040" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="390" left="345" top="8040" type="Box" width="405">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
    <NODE id="90" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
@@ -641,9 +561,9 @@
    </PIN>
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
    </PIN>
-   <BOUNDS height="100" left="840" top="8490" type="Node" width="100">
+   <BOUNDS height="100" left="840" top="7290" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="270" left="840" top="8490" type="Box" width="2385">
+   <BOUNDS height="270" left="840" top="7290" type="Box" width="2385">
    </BOUNDS>
    <PIN encoded="0" pinname="Mask">
    </PIN>
@@ -652,6 +572,104 @@
    <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="11_Asio.v4p">
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
+   <NODE id="157" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="735" top="5880" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="735" top="5880" width="3735" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="------------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="161" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="825" top="8220" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="1380" left="825" top="8220" type="Box" width="3660">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The BASS system is a series of plugins maintained by user vux. Nodes of this category are coming with the addonpack.&cr;&lf;&cr;&lf;Red nodes? The Bass is missing in 64bit builds.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="160" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="825" top="9750" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="735" left="825" top="9750" type="Box" width="3105">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note that the BASS library is free ony for non-commercial use. Check their website for more information about licensing.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="159" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
+   </PIN>
+   <PIN pinname="Content Type">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <BOUNDS height="100" left="825" top="10530" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="825" top="10530" type="Box" width="2355">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Mask">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="http://www.un4seen.com/bass.html">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="158" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="825" top="9540" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="825" top="9540" width="3660" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="162" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="825" top="10905" width="1875" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="825" top="10905" width="3660" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>
