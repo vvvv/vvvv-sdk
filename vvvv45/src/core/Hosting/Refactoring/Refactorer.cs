@@ -59,9 +59,10 @@ namespace VVVV.Hosting
 			y /= selectedNodes.Length;
 			var selectionCenter = new Point (x, y);
 			var selectionSize = new Size((maxX - minX) + CBorder * 2, (maxY - minY) + CBorder * 2);
-			
-			//create new nodinfo for subpatch
-			var patchPath = Path.GetDirectoryName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
+
+            var basePatchPath = hdeHost.ActivePatchWindow.Node.NodeInfo.Filename;
+            //create new nodinfo for subpatch
+            var patchPath = Path.GetDirectoryName(basePatchPath);
 			if (!Path.IsPathRooted(patchPath))
 				patchPath = hdeHost.ExePath;
 			var patchName = GetUniquePatchName(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename);
@@ -356,7 +357,7 @@ namespace VVVV.Hosting
 			var windowB = nodeMsg.AddBounds(BoundsType.Window);
 			windowB.Rectangle = new Rectangle(-1, -1, selectionSize.Width, selectionSize.Height);
 			
-			hdeHost.SendXMLSnippet(hdeHost.ActivePatchWindow.Node.NodeInfo.Filename, patch.ToString(), true);
+			hdeHost.SendXMLSnippet(basePatchPath, patch.ToString(), true);
 		}
 		//FLogger.Log(LogType.Debug, "hi tty!");
 		
