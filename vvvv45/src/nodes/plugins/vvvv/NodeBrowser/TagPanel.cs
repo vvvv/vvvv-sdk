@@ -444,11 +444,16 @@ namespace VVVV.Nodes.NodeBrowser
                                                string t = "";
                                                foreach (string tag in FTags)
                                                {
-                                                   t = tag.ToLower().ToUpperFirstInvariant();
+                                                   t = tag.ToLower();
 
                                                    var found = false;
-                                                   if (t.Length > 1)
+                                                   if (FSwizzles.Contains(t))
                                                    {
+                                                       found = displayName.ToLower().Contains(t);
+                                                   }
+                                                   else if (t.Length > 1)
+                                                   {
+                                                       t = t.ToUpperFirstInvariant();
                                                        //first char matches case-sensitive, all later chars match insensitive
                                                        var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
                                                        var rex = new Regex(pattern);
@@ -562,12 +567,18 @@ namespace VVVV.Nodes.NodeBrowser
         }
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
+        private readonly string[] FSwizzles = new string[8]{"xy", "xyz", "xz", "yz", "xyw", "xyzw", "xzw", "yzw"};
 
         private int Weight(int lastWeight, string text, string tag)
         {
             var pos = text.IndexOf(tag);
             if (pos > -1)
             {
+                //the following won't work well for swizzles, like: xyZ, Xyz
+                //so simply exclude those
+                if (FSwizzles.Contains(tag.ToLower()))
+                    return Math.Min(lastWeight, pos);
+
                 //do the following finegrained check only for tags found before the category/version/tags
                 if (pos < text.IndexOf(" ("))
                 {
@@ -586,7 +597,7 @@ namespace VVVV.Nodes.NodeBrowser
                     }
                 }
 
-                //otherwise the simply the position of the tag is the pos
+                //otherwise simply the position of the tag is the pos
                 return Math.Min(lastWeight, pos);
             }            
             else
