@@ -451,6 +451,10 @@ namespace VVVV.Nodes.NodeBrowser
                                                    {
                                                        found = displayName.ToLower().Contains(t);
                                                    }
+                                                   else if (FSingleCharNodes.Contains(t))
+                                                   {
+                                                       found = displayName.ToLower().StartsWith(t);
+                                                   }
                                                    else if (t.Length > 1)
                                                    {
                                                        t = t.ToUpperFirstInvariant();
@@ -568,6 +572,7 @@ namespace VVVV.Nodes.NodeBrowser
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
         private readonly string[] FSwizzles = new string[8]{"xy", "xyz", "xz", "yz", "xyw", "xyzw", "xzw", "yzw"};
+        private readonly string[] FSingleCharNodes = new string[3] { "i", "s", "r" };
 
         private int Weight(int lastWeight, string text, string tag)
         {
@@ -577,6 +582,9 @@ namespace VVVV.Nodes.NodeBrowser
                 //the following won't work well for swizzles, like: xyZ, Xyz
                 //so simply exclude those
                 if (FSwizzles.Contains(tag.ToLower()))
+                    return Math.Min(lastWeight, pos);
+
+                if (FSingleCharNodes.Contains(tag.ToLower()))
                     return Math.Min(lastWeight, pos);
 
                 //do the following finegrained check only for tags found before the category/version/tags
