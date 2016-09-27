@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Color\Resample (Color).v4p">
-   <BOUNDS height="6000" left="8355" top="5715" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Color\Resample (Color).v4p">
+   <BOUNDS height="6000" left="7950" top="8415" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (Color)" systemname="IOBox (Color)">
    <BOUNDS height="0" left="1050" top="555" type="Node" width="0">
@@ -11,9 +11,9 @@
    </BOUNDS>
    <PIN pinname="Color Output" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="spread">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
-   <PIN pinname="Color Input" slicecount="1" values="|0.23088,0.26000,0.00000,1.00000|">
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,0.00000|">
    </PIN>
    </NODE>
    <NODE id="11" nodename="RESAMPLE (SPREADS)" systemname="Resample (Spreads)">
@@ -153,12 +153,12 @@
    </PIN>
    <PIN pinname="Color Input" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="spread">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
    </NODE>
    <LINK dstnodeid="5" dstpinname="Color Input" srcnodeid="6" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7335" top="555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="12675" top="6135" type="Window" width="215">
@@ -167,9 +167,11 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="count">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Spread Count|">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="400">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Spread Count" srcnodeid="4" srcpinname="Y Output Value">
@@ -189,9 +191,9 @@
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="mode">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mode">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Spline">
+   <PIN pinname="Input Enum" slicecount="1" values="Repeat">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
@@ -202,7 +204,7 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Mode" srcnodeid="3" srcpinname="Output Enum">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3585" top="555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13155" top="8130" type="Window" width="215">
@@ -211,10 +213,14 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|cyclic spread|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cyclic Spread|">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="Hidden">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4860" top="555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13800" top="8100" type="Window" width="215">
@@ -223,7 +229,9 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|hermite tension|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Hermite Tension|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
@@ -232,7 +240,7 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="Hermite Tension" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6150" top="555" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="13890" top="8160" type="Window" width="215">
@@ -241,7 +249,9 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|hermite bias|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Hermite Bias|">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Hermite Bias" srcnodeid="0" srcpinname="Y Output Value">
@@ -262,6 +272,8 @@
    </LINK>
    <LINK dstnodeid="7" dstpinname="Cyclic Spread" srcnodeid="2" srcpinname="Y Output Value">
    </LINK>
-   <INFO author="vvvv group" description="interpolate within a color spread operating in a HSL color room (with cyclic Hue)" tags="hsl, cyclic, interpolate, smooth, transition">
+   <INFO author="vvvv group" description="Interpolate within a color spread operating in HSL color room (with cyclic Hue)" tags="hsl, cyclic, interpolate, smooth, transition">
    </INFO>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>
