@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.105.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Animation\Damper (Animation Jump).v4p">
    <BOUNDS height="6000" left="9030" top="8235" type="Window" width="9000">
    </BOUNDS>
@@ -7,7 +7,7 @@
    </BOUNDS>
    <PIN pinname="Type" slicecount="1" values="Damping">
    </PIN>
-   <PIN pinname="Go To Position" visible="1">
+   <PIN pinname="Go To Position" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Position Out" visible="1">
    </PIN>
@@ -38,28 +38,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="12" nodename="S+H (Animation)" systemname="S+H (Animation)">
-   <BOUNDS height="0" left="1980" top="2775" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Set" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="11" nodename="OR (Boolean)" systemname="OR (Boolean)">
-   <BOUNDS height="0" left="3345" top="2190" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="12" dstpinname="Set" srcnodeid="11" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" id="10" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="1980" top="2190" type="Node" width="0">
    </BOUNDS>
@@ -72,8 +50,6 @@
    <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="10" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="14" dstpinname="Go" srcnodeid="13" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -142,27 +118,11 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="14" dstpinname="Go To Position" srcnodeid="12" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Input 1" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Cyclic" srcnodeid="6" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="Hidden" id="5" nodename="Change (Animation)" systemname="Change (Animation)">
-   <BOUNDS height="0" left="2340" top="1395" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="OnChange" visible="1">
-   </PIN>
-   <PIN pinname="Bang On Create" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="8" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="5" srcpinname="OnChange">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Position In" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
@@ -230,8 +190,6 @@
    </NODE>
    <LINK dstnodeid="13" dstpinname="Input" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="11" dstpinname="Input 2" srcnodeid="1" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="10" dstpinname="Switch" srcnodeid="1" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" id="0" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
@@ -256,6 +214,8 @@
    </LINK>
    <INFO author="vvvv group" description="Just like the lovely Damper (Animation) but additionally allows you to jump to values directly." tags="filter, discontinuous, break">
    </INFO>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="14" dstpinname="Go To Position">
+   </LINK>
    </PATCH>
