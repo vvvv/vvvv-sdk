@@ -8,6 +8,39 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes.Generic
 {
+    public class UnoptimizedSelectForTestsOnly<T> : IPluginEvaluate
+    {
+        [Input("Input")]
+        protected ISpread<T> FInput;
+        [Input("Select", CheckIfChanged = true)]
+        protected ISpread<int> FSelect;
+        [Output("Output")]
+        protected ISpread<T> FOutput;
+        [Output("Former Slice")]
+        protected ISpread<int> FFormerSlice;
+
+        public void Evaluate(int spreadMax)
+        {
+            int sMax = Math.Max(FInput.SliceCount, FSelect.SliceCount);
+
+            FOutput.SliceCount = 0;
+            FFormerSlice.SliceCount = 0;
+
+            for (int i = 0; i < sMax; i++)
+            {
+                for (int s = 0; s < FSelect[i]; s++)
+                {
+                    if (s == 0)
+                    {
+                        FOutput.SliceCount++;
+                    }
+                    FOutput[FOutput.SliceCount - 1] = FInput[i];
+                    FFormerSlice.Add(i);
+                }
+            }
+        }
+    }
+
     public class Select<T> : IPluginEvaluate
     {
         [Input("Input")]
