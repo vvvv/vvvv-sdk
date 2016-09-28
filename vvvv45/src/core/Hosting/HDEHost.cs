@@ -36,7 +36,7 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     [ComVisible(false)]
     class HDEHost : IInternalHDEHost, IHDEHost,
-    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener
+    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener, IEnumListener
     {
         public const string ENV_VVVV = "VVVV45";
         
@@ -198,6 +198,7 @@ namespace VVVV.Hosting
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
             FVVVVHost.AddComponentModeListener(this);
+            FVVVVHost.AddEnumListener(this);
 
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
@@ -571,7 +572,16 @@ namespace VVVV.Hosting
                 WindowRemoved(this, args);
             }
         }
-        
+
+        public event EnumEventHandler EnumChanged;
+        protected virtual void OnEnumChanged(EnumEventArgs args)
+        {
+            if (EnumChanged != null)
+            {
+                EnumChanged(this, args);
+            }
+        }
+
         public INode Root
         {
             get
@@ -927,6 +937,11 @@ namespace VVVV.Hosting
 
         public void SetFrameTimeProvider(Func<double, double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
         public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
+
+        public void EnumChangeCB(string enumName)
+        {
+            OnEnumChanged(new EnumEventArgs(enumName));
+        }
 
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
     }
