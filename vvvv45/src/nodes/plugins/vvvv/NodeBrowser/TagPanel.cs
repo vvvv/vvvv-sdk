@@ -464,7 +464,7 @@ namespace VVVV.Nodes.NodeBrowser
                                                        var matches = rex.Match(displayName);
                                                        found = matches.Length > 0;
                                                    }
-                                                   else
+                                                   else if (t.Length > 0)
                                                        found = displayName.IndexOf(t[0]) >= 0;
 
                                                    if (found)
@@ -536,8 +536,8 @@ namespace VVVV.Nodes.NodeBrowser
             FSelectionList.Clear();
 
             var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
-            if (!FShowInternal)
-                nodeInfos = nodeInfos.Except(nodeInfos.Where(ni => ni.Version.Contains("Internal")));
+            if (FShowInternal)
+                nodeInfos = nodeInfos.Except(nodeInfos.Where(ni => !ni.Version.Contains("Internal")));
             
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
