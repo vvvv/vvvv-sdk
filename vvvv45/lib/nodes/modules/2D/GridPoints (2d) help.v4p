@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\GridPoints (2d) help.v4p">
-   <BOUNDS type="Window" left="6405" top="6495" width="9000" height="6000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\2D\GridPoints (2d) help.v4p">
+   <BOUNDS type="Window" left="6510" top="1935" width="6330" height="8535">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -24,48 +24,214 @@
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
    </NODE>
-   <NODE nodename="GridPoints (2d)" componentmode="Hidden" id="0" systemname="GridPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p">
-   <BOUNDS type="Node" left="1500" top="2340" width="0" height="0">
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="23">
+   <BOUNDS type="Node" left="1635" top="6540" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1500" top="2340" width="0" height="0">
+   <BOUNDS type="Box" left="1635" top="6540" width="2400" height="1800">
    </BOUNDS>
-   <PIN pinname="XY" visible="1">
+   <BOUNDS type="Window" left="465" top="1935" width="6240" height="5085">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <NODE systemname="DrawVertexID (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\DrawVertexID (EX9).v4p" nodename="DrawVertexID (EX9)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="1515" top="3585" width="100" height="100">
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="3420" top="6510" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="InputXYZ" visible="1">
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Actual Backbuffer Width" dstnodeid="19" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Actual Backbuffer Height" dstnodeid="19" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Transform Out" dstnodeid="23" dstpinname="Aspect Ratio">
+   </LINK>
+   <NODE systemname="Camera (Transform 2d)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform 2d).v4p" nodename="Camera (Transform 2d)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="2520" top="6015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Longitude" visible="1" slicecount="1" values="0.641423695118465">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="2.29">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="View" dstnodeid="23" dstpinname="View">
+   </LINK>
+   <NODE systemname="Point (DX9 2d)" filename="%VVVV%\lib\nodes\modules\EX9\Point (DX9 2d).v4p" nodename="Point (DX9 2d)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="1815" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1" slicecount="18" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Scale" slicecount="1" values="0.35">
+   <PIN pinname="SizeXY" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="1515" top="2970" width="100" height="100">
+   <NODE systemname="PointID (EX9 2d)" filename="%VVVV%\lib\nodes\modules\EX9\PointID (EX9 2d).v4p" nodename="PointID (EX9 2d)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="2970" top="4710" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1">
+   <PIN pinname="InputXYZ" visible="1">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <BOUNDS type="Window" left="9870" top="3285" width="10035" height="8970">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1" slicecount="24" values="-0.5,0.5,-0.5,0.5,0.5,-0.5,-0.5,-0.5,-0.5,0.5,-0.5,-0.5,-0.5,0.5,0.5,0.5,0.5,0.5,-0.5,-0.5,0.5,0.5,-0.5,0.5">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="XY" dstnodeid="5" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="4" dstpinname="InputXYZ">
-   </LINK>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="6">
-   <BOUNDS type="Node" left="1515" top="4125" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1515" top="4125" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="1470" top="1860" width="6240" height="5085">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="0.08">
+   </PIN>
+   <PIN pinname="OffsetXYZ" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1" slicecount="18" values="-0.5,0.5,0,0.5,0.5,0.5,-0.5,0,0,-0.5,0.5,0,0.5,0.5,0.5,-0.5,0,0">
+   </PIN>
+   <PIN pinname="OffsetXY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="26" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2490" top="1575" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2490" top="1575" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="3,3">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3300" top="3975" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3300" top="3975" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.05,-0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="24" dstpinname="OffsetXY">
    </LINK>
-   <PACK Name="addonpack" Version="34.100.0">
-   </PACK>
+   <NODE id="14" systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Layer 3" slicecount="1" visible="1" pintype="Input" values="||">
+   </PIN>
+   <PIN pinname="Layer 2" slicecount="1" visible="1" pintype="Input" values="||">
+   </PIN>
+   <PIN pinname="Layer 1" slicecount="1" visible="1" pintype="Input" values="||">
+   </PIN>
+   <BOUNDS type="Node" left="1650" top="5520" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" pintype="Configuration" values="3">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="0" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 3">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="23" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Grid (EX9 Test)" filename="%VVVV%\lib\nodes\modules\EX9\Grid (EX9 Test).v4p" nodename="Grid (EX9 Test)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="360" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.50139,0.50139,0.50139,1.00000|">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Line Width" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="345" top="4245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Render State Out" dstnodeid="30" dstpinname="Render State">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 1">
+   </LINK>
+   <NODE nodename="GridPoints (2d)" componentmode="Hidden" id="31" systemname="GridPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p">
+   <BOUNDS type="Node" left="1830" top="2265" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1830" top="2265" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5925" top="4350" width="8205" height="8700">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="XY" dstnodeid="24" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="XY" dstnodeid="17" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="31" dstpinname="ResolutionXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1995" top="4050" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1995" top="4050" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.05,0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="0.05,0.05">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="17" dstpinname="SizeXY">
+   </LINK>
    </PATCH>
