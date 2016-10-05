@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\3D\GridPoints (3d) help.v4p">
-   <BOUNDS type="Window" left="6870" top="2490" width="9000" height="9150">
+   <BOUNDS type="Window" left="6870" top="2490" width="8130" height="7560">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -175,6 +175,8 @@
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
+   <PIN pinname="SizeXY" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 2">
    </LINK>
@@ -191,5 +193,41 @@
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="8" dstpinname="Initial Longitude">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Period">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3735" top="3690" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3735" top="3690" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.02,-0.02">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="6" dstpinname="OffsetXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2355" top="3780" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2355" top="3780" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.033,0.033">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="17" dstpinname="SizeXY">
    </LINK>
    </PATCH>
