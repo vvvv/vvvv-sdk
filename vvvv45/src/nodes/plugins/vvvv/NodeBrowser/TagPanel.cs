@@ -537,8 +537,10 @@ namespace VVVV.Nodes.NodeBrowser
 
             var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
             if (FShowInternal)
-                nodeInfos = nodeInfos.Except(nodeInfos.Where(ni => !ni.Version.Contains("Internal")));
-            
+                nodeInfos = nodeInfos.Where(ni => ni.Version.Contains("Internal"));
+            else
+                nodeInfos = nodeInfos.Where(ni => !ni.Version.Contains("Internal"));
+
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
             FCurrentPatchWindowNodeInfo = currentPatchWindow != null ? currentPatchWindow.Node.NodeInfo : null;
