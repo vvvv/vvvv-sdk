@@ -1,6 +1,6 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Switch (Node Input) help.v4p">
-   <BOUNDS height="5490" left="2325" top="6120" type="Window" width="11520">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.105.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Switch (Node Input) help.v4p">
+   <BOUNDS height="5775" left="2325" top="6120" type="Window" width="11625">
    </BOUNDS>
    <NODE id="20" nodename="Quad (DX9)">
    <BOUNDS height="0" left="1470" top="4605" type="Node" width="0">
@@ -128,7 +128,7 @@
    <PIN pinname="Y" visible="1">
    </PIN>
    </NODE>
-   <NODE id="12" nodename="RandomSpread (Spreads)">
+   <NODE id="12" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="5310" top="1905" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -158,12 +158,12 @@
    <LINKPOINT x="2220" y="3195">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="120" top="2355" type="Node" width="0">
+   <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="495" top="2400" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6330" top="8715" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="390" left="120" top="2355" type="Box" width="450">
+   <BOUNDS height="390" left="495" top="2400" type="Box" width="450">
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -177,12 +177,12 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="19" dstpinname="Switch" linkstyle="PolyLine" srcnodeid="10" srcpinname="Y Output Value">
-   <LINKPOINT x="540" y="3030">
+   <LINKPOINT x="790" y="3060">
    </LINKPOINT>
-   <LINKPOINT x="1665" y="3030">
+   <LINKPOINT x="1790" y="3045">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="9" nodename="Renderer (EX9)">
+   <NODE componentmode="InABox" id="9" nodename="RENDERER (EX9)">
    <BOUNDS height="0" left="7440" top="450" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4500" left="6510" top="10185" type="Window" width="6000">
@@ -190,6 +190,16 @@
    <BOUNDS height="3660" left="7440" top="450" type="Box" width="3645">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="8" nodename="UniformScale (Transform)">
@@ -212,17 +222,19 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="TogEdge (Animation)">
+   <NODE id="6" nodename="TOGEDGE (ANIMATION)">
    <BOUNDS height="0" left="495" top="1455" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Up Edge" visible="1">
    </PIN>
+   <PIN pinname="Bang On Create" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Input" srcnodeid="7" srcpinname="Output">
    </LINK>
-   <NODE id="5" nodename="Counter (Animation)">
+   <NODE id="5" nodename="Counter (Animation Legacy)">
    <BOUNDS height="0" left="495" top="1905" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Up" visible="1">
@@ -305,7 +317,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="9600" top="42660" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch - Node Input|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch (Node Input)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -322,4 +334,6 @@
    <LINKPOINT x="7200" y="480">
    </LINKPOINT>
    </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>
