@@ -641,13 +641,8 @@ namespace VVVV.Hosting
             FVVVVHost.GetEnumEntry(EnumName, Index, out entryName);
             return entryName;
         }
-        
-        public double GetCurrentTime()
-        {
-            double currentTime;
-            FVVVVHost.GetCurrentTime(out currentTime);
-            return currentTime;
-        }
+
+        public double GetCurrentTime() => FrameTime;
         
         public double FrameTime
         {
@@ -658,7 +653,7 @@ namespace VVVV.Hosting
                 return currentTime;
             }
         }
-        
+
         public double RealTime
         {
             get
