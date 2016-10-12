@@ -1,13 +1,13 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\PointID (EX9 2d) help.v4p">
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\PointID (DX9 2d) help.v4p">
    <BOUNDS type="Window" left="870" top="2370" width="10515" height="8025">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
    </BOUNDS>
-   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   <BOUNDS type="Box" left="225" top="225" width="2550" height="420">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|PointID (EX9 2d)|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|PointID (DX9 2d)|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -22,26 +22,6 @@
    <PIN pinname="Input String" slicecount="1" visible="0" values="|Draws vertex IDs.|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
-   </PIN>
-   </NODE>
-   <NODE nodename="PointID (EX9 2d)" componentmode="Hidden" id="0" systemname="PointID (EX9 2d)" filename="%VVVV%\lib\nodes\modules\EX9\PointID (EX9 2d).v4p">
-   <BOUNDS type="Node" left="5130" top="4635" width="3675" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5130" top="4635" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Size" visible="1">
-   </PIN>
-   <PIN pinname="OffsetXY" visible="1">
-   </PIN>
-   <PIN pinname="Color" visible="1">
-   </PIN>
-   <PIN pinname="Projection Space" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="RandomPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (2d).v4p" nodename="RandomPoints (2d)" componentmode="Hidden" id="4">
@@ -72,8 +52,6 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Count">
    </LINK>
-   <LINK srcnodeid="4" srcpinname="XY" dstnodeid="0" dstpinname="XY">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="6">
    <BOUNDS type="Node" left="4440" top="6480" width="100" height="100">
    </BOUNDS>
@@ -101,13 +79,11 @@
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="8" dstpinname="Layer 2">
-   </LINK>
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
@@ -122,8 +98,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Size">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="6570" top="3915" width="690" height="465">
    </BOUNDS>
@@ -142,8 +116,6 @@
    <PIN pinname="X Input Value" slicecount="2" values="0,0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="OffsetXY">
-   </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="11" systemname="IOBox (Color)">
    <BOUNDS type="Box" left="7305" top="3915" width="480" height="465">
    </BOUNDS>
@@ -152,8 +124,6 @@
    <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.00000,0.15633,1.00000|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Color Output" dstnodeid="0" dstpinname="Color">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8025" top="2835" width="480" height="480">
    </BOUNDS>
@@ -174,8 +144,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Projection Space">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8745" top="3915" width="480" height="480">
    </BOUNDS>
@@ -192,8 +160,6 @@
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8715" top="3630" width="690" height="270">
    </BOUNDS>
@@ -379,5 +345,39 @@
    <LINK srcnodeid="4" srcpinname="XY" dstnodeid="27" dstpinname="XY">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Projection Space">
+   </LINK>
+   <NODE nodename="PointID (DX9 2d)" componentmode="Hidden" id="0" systemname="PointID (DX9 2d)" filename="%VVVV%\lib\nodes\modules\EX9\PointID (DX9 2d).v4p">
+   <BOUNDS type="Node" left="5130" top="4635" width="3675" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5130" top="4635" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Size" visible="1">
+   </PIN>
+   <PIN pinname="OffsetXY" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Projection Space" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="XY" dstnodeid="0" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="8" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Size">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="OffsetXY">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Color Output" dstnodeid="0" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Projection Space">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Enabled">
    </LINK>
    </PATCH>
