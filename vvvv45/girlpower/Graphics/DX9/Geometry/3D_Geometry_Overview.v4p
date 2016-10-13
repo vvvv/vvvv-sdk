@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Geometry_Overview.v4p" systemname="Geometry_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Geometry_Overview.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Geometry_Overview.v4p" systemname="Geometry_Overview" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\The Next Generation\Graphics\Geometry_Overview.v4p" scrollx="5265" scrolly="0">
    <BOUNDS type="Window" left="0" top="0" width="15495" height="11370">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="24">
@@ -447,9 +447,15 @@
    </BOUNDS>
    <PIN pinname="Mesh" visible="1">
    </PIN>
-   <PIN pinname="PositionXYZ" visible="1">
+   <PIN pinname="PositionXYZ" visible="1" slicecount="3" values="0,0,0">
    </PIN>
-   <PIN pinname="Level" slicecount="1" values="0.99">
+   <PIN pinname="Level" slicecount="1" visible="1" values="0.99">
+   </PIN>
+   <PIN pinname="Mass" visible="1">
+   </PIN>
+   <PIN pinname="Grid Size" visible="1">
+   </PIN>
+   <PIN pinname="Smooth Mesh" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="124">
@@ -487,6 +493,8 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="127" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="17085" top="4470" width="285" height="240">
@@ -500,6 +508,8 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="128" systemname="IOBox (Value Advanced)">
@@ -526,6 +536,8 @@
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="130" systemname="IOBox (Value Advanced)">
@@ -636,6 +648,16 @@
    <PIN pinname="Input String" slicecount="1" values="..\Shader\Shading_PointAndDirectional_Lighting.v4p">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <LINK srcnodeid="124" srcpinname="Output" dstnodeid="121" dstpinname="PositionXYZ">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Mesh" dstnodeid="122" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Mass">
+   </LINK>
+   <LINK srcnodeid="127" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Grid Size">
+   </LINK>
+   <LINK srcnodeid="129" srcpinname="Y Output Value" dstnodeid="121" dstpinname="Level">
+   </LINK>
    </PATCH>
