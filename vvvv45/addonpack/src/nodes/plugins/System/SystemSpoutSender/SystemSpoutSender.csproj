@@ -8,6 +8,9 @@
     <AssemblyName>SystemSpoutSender</AssemblyName>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDX">
       <HintPath>..\..\..\..\..\..\lib\core\SlimDX.dll</HintPath>
