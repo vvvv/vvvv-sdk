@@ -162,46 +162,33 @@ namespace VVVV.HDE.CodeEditor
         
         public bool DeleteMe()
         {
-            // Save the current SynchronizationContext. ShowDialog method changes the
-            // current SynchronizationContext. Later RunWorkerCompleted callbacks from
-            // BackgroundWorker objects do not return to the GUI (vvvv) thread.
-            var syncContext = SynchronizationContext.Current;
-            
-            try 
+            // Check if opened document needs to be saved.
+            var doc = FEditor.TextDocument;
+            if (doc != null && doc.IsDirty)
             {
-                // Check if opened document needs to be saved.
-                var doc = FEditor.TextDocument;
-                if (doc != null && doc.IsDirty)
+                var saveDialog = new SaveDialog(doc.LocalPath);
+                if (saveDialog.ShowDialog(this) == DialogResult.OK)
                 {
-                    var saveDialog = new SaveDialog(doc.LocalPath);
-                    if (saveDialog.ShowDialog(this) == DialogResult.OK)
-                    {
-                        var result = saveDialog.SaveOptionResult;
+                    var result = saveDialog.SaveOptionResult;
                         
-                        switch (result)
-                        {
-                            case SaveOption.Save:
-                                doc.Save();
-                                break;
-                            case SaveOption.DontSave:
-                                // Do nothing
-                                break;
-                            default:
-                                // Cancel
-                                return false;
-                        }
-                    }
-                    else
+                    switch (result)
                     {
-                        // Cancel
-                        return false;
+                        case SaveOption.Save:
+                            doc.Save();
+                            break;
+                        case SaveOption.DontSave:
+                            // Do nothing
+                            break;
+                        default:
+                            // Cancel
+                            return false;
                     }
                 }
-            } 
-            finally 
-            {
-                // Resore the old SynchronizationContext.
-                SynchronizationContext.SetSynchronizationContext(syncContext);
+                else
+                {
+                    // Cancel
+                    return false;
+                }
             }
             
             return true;
