@@ -38,6 +38,59 @@ namespace VVVV.Hosting
     class HDEHost : IInternalHDEHost, IHDEHost,
     IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener, IEnumListener
     {
+        #region SynchronizationContext hack
+        // See issue described here: http://stackoverflow.com/questions/32439669/hosting-net-and-winforms-synchronizationcontexts-is-reset-when-showdialog-of
+        class MySynchronizationContext : SynchronizationContext
+        {
+            private SynchronizationContext context = new WindowsFormsSynchronizationContext();
+
+            public override SynchronizationContext CreateCopy()
+            {
+                return context.CreateCopy();
+            }
+
+            public override bool Equals(object obj)
+            {
+                return context.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return context.GetHashCode();
+            }
+
+            public override void OperationCompleted()
+            {
+                context.OperationCompleted();
+            }
+
+            public override void OperationStarted()
+            {
+                context.OperationStarted();
+            }
+
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                context.Post(d, state);
+            }
+
+            public override void Send(SendOrPostCallback d, object state)
+            {
+                context.Send(d, state);
+            }
+
+            public override string ToString()
+            {
+                return "Wrapped";
+            }
+
+            public override int Wait(IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout)
+            {
+                return context.Wait(waitHandles, waitAll, millisecondsTimeout);
+            }
+        }
+        #endregion
+
         public const string ENV_VVVV = "VVVV45";
         
         const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
@@ -132,19 +185,10 @@ namespace VVVV.Hosting
 
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
-            
+
             // Create a windows forms sync context (FileSystemWatcher runs asynchronously).
-            var context = SynchronizationContext.Current;
-            if (context == null)
-            {
-                // We need to create a user control to get a sync context.
-                var control = new UserControl();
-                context = SynchronizationContext.Current;
-                control.Dispose();
-                
-                Debug.Assert(context != null, "SynchronizationContext not set.");
-            }
-            
+            SynchronizationContext.SetSynchronizationContext(new MySynchronizationContext());
+
             // Register at least one ICommandHistory for top level element ISolution
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
