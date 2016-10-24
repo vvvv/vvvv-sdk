@@ -78,7 +78,7 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         private readonly Action<int> FSetDstLengthAction;
-        private int FLength;
+        protected int FLength;
         
         public UnmanagedOutStream(Action<int> setDstLengthAction)
         {
@@ -94,10 +94,9 @@ namespace VVVV.Hosting.IO.Streams
             }
             set
             {
-                if (value != FLength || (value > 0 && BackingStore == IntPtr.Zero))
+                if (value != FLength)
                 {
                     FSetDstLengthAction(value);
-                    Debug.Assert(value == 0 || BackingStore != IntPtr.Zero);
                     FLength = value;
                 }
             }
@@ -114,8 +113,6 @@ namespace VVVV.Hosting.IO.Streams
         }
         
         public abstract IStreamWriter<T> GetWriter();
-
-        protected abstract IntPtr BackingStore { get; }
     }
     
     unsafe class DoubleOutStream : UnmanagedOutStream<double>
@@ -174,8 +171,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new DoubleOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
     
     unsafe class FloatOutStream : UnmanagedOutStream<float>
@@ -225,8 +220,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new FloatOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class ByteOutStream : UnmanagedOutStream<byte>
@@ -276,8 +269,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new ByteOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class SByteOutStream : UnmanagedOutStream<sbyte>
@@ -327,8 +318,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new SByteOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class IntOutStream : UnmanagedOutStream<int>
@@ -378,8 +367,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new IntOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
     
     unsafe class UIntOutStream : UnmanagedOutStream<uint>
@@ -429,8 +416,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new UIntOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class LongOutStream : UnmanagedOutStream<long>
@@ -480,8 +465,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new LongOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class ULongOutStream : UnmanagedOutStream<ulong>
@@ -531,8 +514,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new ULongOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class BoolOutStream : UnmanagedOutStream<bool>
@@ -582,8 +563,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new BoolOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
     
     unsafe class ColorOutStream : UnmanagedOutStream<RGBAColor>
@@ -633,8 +612,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new ColorOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
     
     unsafe class SlimDXColorOutStream : UnmanagedOutStream<Color4>
@@ -692,8 +669,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new SlimDXColorOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class MatrixOutStream : UnmanagedOutStream<Matrix>
@@ -743,8 +718,6 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new MatrixOutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 
     unsafe class Matrix4x4OutStream : UnmanagedOutStream<Matrix4x4>
@@ -794,7 +767,5 @@ namespace VVVV.Hosting.IO.Streams
         {
             return new Matrix4x4OutWriter(this, *FPPDst);
         }
-
-        protected override IntPtr BackingStore => new IntPtr(*FPPDst);
     }
 }
