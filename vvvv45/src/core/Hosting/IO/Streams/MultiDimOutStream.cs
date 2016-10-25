@@ -11,26 +11,13 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IOutStream<T> FDataStream;
         private readonly IOutStream<int> FBinSizeStream;
 
-        public IIOContainer BaseContainer
-        {
-            get
-            {
-                return FDataContainer;
-            }
-        }
-
-        public IIOContainer[] AssociatedContainers
-        {
-            get
-            {
-                return new IIOContainer[]{ FBinSizeContainer };
-            }
-        }
+        public IIOContainer BaseContainer => FDataContainer;
+        public IIOContainer[] AssociatedContainers => new IIOContainer[]{ FBinSizeContainer };
 
         public MultiDimOutStream(IIOFactory ioFactory, OutputAttribute attribute)
         {
-            FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
-            FBinSizeContainer = ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false);
+            FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute.DecreaseBinSizeWrapCount(), false);
+            FBinSizeContainer = ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(FDataContainer), false);
             FDataStream = FDataContainer.IOObject;
             FBinSizeStream = FBinSizeContainer.IOObject;
             Length = 1;
@@ -56,9 +43,9 @@ namespace VVVV.Hosting.IO.Streams
                     var numSlicesBuffered = 0;
                     for (int i = 0; i < Length; i++)
                     {
-                        var stream = Buffer[i];
-                        binSizeBuffer[numSlicesBuffered++] = stream.Length;
-                        dataStreamLength += stream.Length;
+                        var length = Buffer[i]?.Length ?? 0;
+                        binSizeBuffer[numSlicesBuffered++] = length;
+                        dataStreamLength += length;
                         if (numSlicesBuffered == binSizeBuffer.Length)
                         {
                             binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
@@ -79,35 +66,38 @@ namespace VVVV.Hosting.IO.Streams
                     for (int i = 0; i < Length; i++)
                     {
                         var stream = Buffer[i];
-                        anyChanged |= stream.IsChanged;
-                        if (anyChanged)
+                        if (stream != null)
                         {
-                            using (var reader = stream.GetReader())
+                            anyChanged |= stream.IsChanged;
+                            if (anyChanged)
                             {
-                                switch (reader.Length)
+                                using (var reader = stream.GetReader())
                                 {
-                                    case 0:
-                                        break;
-                                    case 1:
-                                        buffer[numSlicesBuffered++] = reader.Read();
-                                        WriteIfBufferIsFull(dataWriter, buffer, ref numSlicesBuffered);
-                                        break;
-                                    default:
-                                        while (!reader.Eos)
-                                        {
-                                            numSlicesBuffered += reader.Read(buffer, numSlicesBuffered, buffer.Length - numSlicesBuffered);
+                                    switch (reader.Length)
+                                    {
+                                        case 0:
+                                            break;
+                                        case 1:
+                                            buffer[numSlicesBuffered++] = reader.Read();
                                             WriteIfBufferIsFull(dataWriter, buffer, ref numSlicesBuffered);
-                                        }
-                                        break;
+                                            break;
+                                        default:
+                                            while (!reader.Eos)
+                                            {
+                                                numSlicesBuffered += reader.Read(buffer, numSlicesBuffered, buffer.Length - numSlicesBuffered);
+                                                WriteIfBufferIsFull(dataWriter, buffer, ref numSlicesBuffered);
+                                            }
+                                            break;
+                                    }
                                 }
+                                // Reset the changed flags
+                                var flushable = stream as IFlushable;
+                                if (flushable != null)
+                                    flushable.Flush(force);
                             }
-                            // Reset the changed flags
-                            var flushable = stream as IFlushable;
-                            if (flushable != null)
-                                flushable.Flush(force);
+                            else
+                                dataWriter.Position += stream.Length;
                         }
-                        else
-                            dataWriter.Position += stream.Length;
                     }
                     if (numSlicesBuffered > 0)
                     {

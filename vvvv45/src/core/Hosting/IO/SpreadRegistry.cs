@@ -22,7 +22,7 @@ namespace VVVV.Hosting.IO
                               ISpread spread = null;
                               if (t.IsGenericType && t.GetGenericArguments().Length == 1)
                               {
-                                  if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
+                                  if (attribute.IsBinSizeEnabled && typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
                                   {
                                       var spreadType = attribute.CheckIfChanged
                                           ? typeof(DiffInputBinSpread<>).MakeGenericType(t.GetGenericArguments().First())
@@ -72,7 +72,7 @@ namespace VVVV.Hosting.IO
                               
                               if (t.IsGenericType && t.GetGenericArguments().Length == 1)
                               {
-                                  if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
+                                  if (attribute.IsBinSizeEnabled && typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
                                   {
                                       var spreadType = typeof(DiffInputBinSpread<>).MakeGenericType(t.GetGenericArguments().First());
                                       
@@ -112,7 +112,7 @@ namespace VVVV.Hosting.IO
                                var t = context.DataType;
                                if (t.IsGenericType && t.GetGenericArguments().Length == 1)
                                {
-                                   if (typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
+                                   if (attribute.IsBinSizeEnabled && typeof(ISpread<>).MakeGenericType(t.GetGenericArguments().First()).IsAssignableFrom(t))
                                    {
                                        var spreadType = typeof(OutputBinSpread<>).MakeGenericType(t.GetGenericArguments().First());
                                        

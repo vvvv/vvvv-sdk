@@ -11,23 +11,33 @@ namespace VVVV.Hosting.Pins.Output
     {
         public class OutputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            internal readonly IIOContainer<IOutStream<T>> FDataContainer;
+            internal readonly IIOContainer FDataContainer;
             internal readonly IIOContainer<IOutStream<int>> FBinSizeContainer;
             private readonly IOutStream<T> FDataStream;
             private readonly IOutStream<int> FBinSizeStream;
             private bool FOwnsBinSizeContainer;
 
             public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute)
-                : this(ioFactory, attribute, () => ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(), false))
+                : this(ioFactory, attribute, c => ioFactory.CreateIOContainer<IOutStream<int>>(attribute.GetBinSizeOutputAttribute(c), false))
             {
                 FOwnsBinSizeContainer = true;
             }
 
-            public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute, Func<IIOContainer<IOutStream<int>>> binSizeIOContainerFactory)
+            public OutputBinSpreadStream(IIOFactory ioFactory, OutputAttribute attribute, Func<IIOContainer, IIOContainer<IOutStream<int>>> binSizeIOContainerFactory)
             {
-                FDataContainer = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false);
-                FBinSizeContainer = binSizeIOContainerFactory();
-                FDataStream = FDataContainer.IOObject;
+                if (attribute.IsBinSizeEnabled)
+                {
+                    var container = ioFactory.CreateIOContainer<ISpread<T>>(attribute.DecreaseBinSizeWrapCount(), false); // Ask for a spread, otherwise we lose track of bin size wrapping
+                    FDataContainer = container;
+                    FDataStream = container.IOObject.Stream;
+                }
+                else
+                {
+                    var container = ioFactory.CreateIOContainer<IOutStream<T>>(attribute, false); // No need for another indirection, access the node output directly
+                    FDataContainer = container;
+                    FDataStream = container.IOObject;
+                }
+                FBinSizeContainer = binSizeIOContainerFactory(FDataContainer);
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 Length = 1;
             }
@@ -53,9 +63,9 @@ namespace VVVV.Hosting.Pins.Output
                         var numSlicesBuffered = 0;
                         for (int i = 0; i < Length; i++)
                         {
-                            var stream = Buffer[i].Stream;
-                            binSizeBuffer[numSlicesBuffered++] = stream.Length;
-                            dataStreamLength += stream.Length;
+                            var length = Buffer[i]?.Stream.Length ?? 0;
+                            binSizeBuffer[numSlicesBuffered++] = length;
+                            dataStreamLength += length;
                             if (numSlicesBuffered == binSizeBuffer.Length)
                             {
                                 binSizeWriter.Write(binSizeBuffer, 0, numSlicesBuffered);
@@ -75,26 +85,29 @@ namespace VVVV.Hosting.Pins.Output
                         for (int i = 0; i < Length; i++)
                         {
                             var spread = Buffer[i];
-                            anyChanged |= spread.IsChanged;
-                            if (anyChanged)
+                            if (spread != null)
                             {
-                                var stream = spread.Stream;
-                                switch (stream.Length)
+                                anyChanged |= spread.IsChanged;
+                                if (anyChanged)
                                 {
-                                    case 0:
-                                        break;
-                                    case 1:
-                                        dataWriter.Write(stream.Buffer[0]);
-                                        break;
-                                    default:
-                                        dataWriter.Write(stream.Buffer, 0, stream.Length);
-                                        break;
+                                    var stream = spread.Stream;
+                                    switch (stream.Length)
+                                    {
+                                        case 0:
+                                            break;
+                                        case 1:
+                                            dataWriter.Write(stream.Buffer[0]);
+                                            break;
+                                        default:
+                                            dataWriter.Write(stream.Buffer, 0, stream.Length);
+                                            break;
+                                    }
+                                    // Reset the changed flags
+                                    stream.Flush(force);
                                 }
-                                // Reset the changed flags
-                                stream.Flush(force);
+                                else
+                                    dataWriter.Position += spread.SliceCount;
                             }
-                            else
-                                dataWriter.Position += spread.SliceCount;
                         }
                     }
                 }
@@ -136,7 +149,7 @@ namespace VVVV.Hosting.Pins.Output
         }
 
         public OutputBinSpread(IIOFactory ioFactory, OutputAttribute attribute, IIOContainer<IOutStream<int>> binSizeIOContainer)
-            : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute, () => binSizeIOContainer))
+            : this(ioFactory, attribute, new OutputBinSpreadStream(ioFactory, attribute, _ => binSizeIOContainer))
         {
 
         }

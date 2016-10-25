@@ -10,7 +10,7 @@ namespace VVVV.Hosting.Pins
 	/// base class for spread lists
 	/// </summary>
 	[ComVisible(false)]
-	abstract class SpreadList<TSpread> : Spread<TSpread>, VVVV.Hosting.IO.IIOMultiPin, IDisposable 
+	abstract class SpreadList<TSpread> : Spread<TSpread>, IIOMultiPin, IDisposable 
 	    where TSpread : class, ISynchronizable, IFlushable
 	{
 	    class SpreadListStream : MemoryIOStream<TSpread>
