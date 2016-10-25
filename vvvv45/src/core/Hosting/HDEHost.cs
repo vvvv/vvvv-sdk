@@ -29,6 +29,7 @@ using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
 using NuGetAssemblyLoader;
+using Nito.Async;
 
 namespace VVVV.Hosting
 {
@@ -42,7 +43,13 @@ namespace VVVV.Hosting
         // See issue described here: http://stackoverflow.com/questions/32439669/hosting-net-and-winforms-synchronizationcontexts-is-reset-when-showdialog-of
         class MySynchronizationContext : SynchronizationContext
         {
-            private SynchronizationContext context = new WindowsFormsSynchronizationContext();
+            private readonly SynchronizationContext context = new WindowsFormsSynchronizationContext();
+
+            static MySynchronizationContext()
+            {
+                // This tells the GenericSynchronizingObject class implementing ISynchronizeInvoke used by our file watchers that an invoke is indeed required
+                SynchronizationContextRegister.Register(typeof(MySynchronizationContext), SynchronizationContextProperties.Standard);
+            }
 
             public override SynchronizationContext CreateCopy()
             {
