@@ -1,0 +1,343 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.101.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor Internal).v4p" systemname="Initialize (PolygonEditor Internal)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\Initialize (PolygonEditor Internal).v4p">
+   <BOUNDS type="Window" left="11670" top="2865" width="15075" height="10170">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="840" top="7965" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="840" top="7965" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Data|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Unzip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (2d Bin)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="660" top="2145" width="2730" height="270">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Output 1 Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="525" top="2790" width="5685" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="2790" width="2595" height="1815">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Unzip:&cr;&lf;Like NormalizeBinSize, but outputs both of the inputs with Normalized Bin Size&cr;&lf;&cr;&lf;all the other bin sizes will be adjusted in Polygon (PolygonEditor Join) at the latest.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="imagepack" Version="0.1.0">
+   </PACK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
+   <BOUNDS type="Node" left="10125" top="630" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10125" top="630" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Force Shape Mode|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Quantize (PolygonEditor Internal)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Quantize (PolygonEditor Internal).v4p" nodename="Quantize (PolygonEditor Internal)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="825" top="6615" width="7560" height="270">
+   </BOUNDS>
+   <PIN pinname="VerticesXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Vertex Tagged" visible="1" slicecount="1" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="ShapeMode" visible="1">
+   </PIN>
+   <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Enable" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Stepsize" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="7560" top="1050" width="13485" height="8325">
+   </BOUNDS>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output 1XY" dstnodeid="29" dstpinname="VerticesXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="11685" top="630" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11685" top="630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.01,0.01">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Stepsize">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Stepsize">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10905" top="4095" width="12810" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10905" top="4095" width="2880" height="1125">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Force Shape Mode needs to be considered here. Otherwise, when a polygon is added, it will always output shape mode false on the first frame, and then consider Force Shape Mode.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10905" top="5430" width="10200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10905" top="5430" width="2835" height="990">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Quantize needs to be done here. Otherwise, when a polygon is added, it&apos;s vertices are not quantized until the polygon is dragged at least once.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
+   <BOUNDS type="Node" left="13020" top="630" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13020" top="630" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Quantization">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Enable">
+   </LINK>
+   <NODE systemname="Polygon (PolygonEditor Join)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Join).v4p" nodename="Polygon (PolygonEditor Join)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="840" top="7305" width="7560" height="270">
+   </BOUNDS>
+   <PIN pinname="pointsXY" visible="1">
+   </PIN>
+   <PIN pinname="#pointsInShapes" visible="1">
+   </PIN>
+   <PIN pinname="isSelected" visible="1">
+   </PIN>
+   <PIN pinname="data output" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="8130" top="1530" width="19035" height="13380">
+   </BOUNDS>
+   <PIN pinname="shapesZIndex" visible="1">
+   </PIN>
+   <PIN pinname="Data Output" visible="1">
+   </PIN>
+   <PIN pinname="Shape Selected" visible="1">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Shape Vertex Count" visible="1">
+   </PIN>
+   <PIN pinname="Shape Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Shape Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Mouseover" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Mouseover" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
+   </PIN>
+   <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Tagged" visible="1">
+   </PIN>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="ShapeMode" visible="1">
+   </PIN>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="11" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="VerticesXY" dstnodeid="9" dstpinname="VerticesXY" linkstyle="VHV">
+   <LINKPOINT x="855" y="7095">
+   </LINKPOINT>
+   <LINKPOINT x="855" y="7095">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Vertex Tagged" dstnodeid="9" dstpinname="Vertex Tagged" linkstyle="VHV">
+   <LINKPOINT x="2310" y="7088">
+   </LINKPOINT>
+   <LINKPOINT x="1965" y="7088">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Vertex Bin Size" dstnodeid="9" dstpinname="Vertex Bin Size" linkstyle="VHV">
+   <LINKPOINT x="3870" y="7095">
+   </LINKPOINT>
+   <LINKPOINT x="4065" y="7095">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Z-Index" dstnodeid="9" dstpinname="Z-Index" linkstyle="VHV">
+   <LINKPOINT x="5325" y="7095">
+   </LINKPOINT>
+   <LINKPOINT x="5160" y="7095">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="ShapeMode" dstnodeid="9" dstpinname="ShapeMode" linkstyle="VHV">
+   <LINKPOINT x="6825" y="7080">
+   </LINKPOINT>
+   <LINKPOINT x="6255" y="7080">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Rotation" dstnodeid="9" dstpinname="Rotation" linkstyle="VHV">
+   <LINKPOINT x="8325" y="7080">
+   </LINKPOINT>
+   <LINKPOINT x="7335" y="7080">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Polygon (PolygonEditor Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Split).v4p" nodename="Polygon (PolygonEditor Split)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="660" top="1125" width="7380" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13395" top="1830" width="14820" height="11310">
+   </BOUNDS>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Shape Mode" visible="1">
+   </PIN>
+   <PIN pinname="Rotation" visible="1">
+   </PIN>
+   <PIN pinname="Mouseover" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Tagged" visible="1">
+   </PIN>
+   <PIN pinname="Sort After Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Sort By Z-Index" visible="1">
+   </PIN>
+   <PIN pinname="Tagged" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="VerticesXY" dstnodeid="14" dstpinname="InputXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="38" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="675" top="705" width="795" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="675" top="705" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Vertex Bin Size" dstnodeid="14" dstpinname="Input Bin Size">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Vertex Tagged" dstnodeid="29" dstpinname="Vertex Tagged">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Z-Index" dstnodeid="29" dstpinname="Z-Index">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Rotation" dstnodeid="29" dstpinname="Rotation">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output 1 Bin Size" dstnodeid="29" dstpinname="Vertex Bin Size">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8235" top="855" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8235" top="855" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="5130" top="6075" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Shape Mode" dstnodeid="43" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Output" dstnodeid="29" dstpinname="ShapeMode">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Sort By Z-Index">
+   </LINK>
+   <INFO author="dominikKoller" description="" tags="">
+   </INFO>
+   <LINK srcnodeid="37" srcpinname="Tagged" dstnodeid="29" dstpinname="Tagged">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Tagged" dstnodeid="9" dstpinname="Tagged">
+   </LINK>
+   </PATCH>

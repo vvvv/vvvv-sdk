@@ -1,0 +1,149 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\SwizzleData.v4p" systemname="SwizzleData" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\ASCIITable\SwizzleData.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="570" top="900" width="3750" height="4215">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="0">
+   <BOUNDS type="Node" left="2250" top="315" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2250" top="315" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Unzip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (String)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2265" top="900" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2265" top="900">
+   </BOUNDS>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   <PIN pinname="Output 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1245" top="2985" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1245" top="2985" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="5" values=",,,,">
+   </PIN>
+   </NODE>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1245" top="2430" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="645" values="NUL,NUL,00000000,0,null,SOH,SOH,00000001,1,|start of header|,STX,STX,00000010,2,|start of text|,ETX,ETX,00000011,3,|end of text|,EOT,EOT,00000100,4,|end of transmission|,ENQ,ENQ,00000101,5,enquiry,ACK,ACK,00000110,6,acknowledge,BEL,BEL,00000111,7,bell,BS,BS,00001000,8,backspace,HT,HT,00001001,9,|horizontal tab|,LF,LF,00001010,10,|line feed|,VT,VT,00001011,11,|vertical tab|,FF,FF,00001100,12,|form feed|,CR,CR,00001101,13,|carriage return|,SO,SO,00001110,14,|shift out|,SI,SI,00001111,15,|shift in|,DLE,DLE,00010000,16,|data link escape|,DC1,DC1,00010001,17,|device control 1|,DC2,DC2,00010010,18,|device control 2|,DC3,DC3,00010011,19,|device control 3|,DC4,DC4,00010100,20,|device control 4|,NAK,NAK,00010101,21,|negative acknowledge|,SYN,SYN,00010110,22,synchronize,ETB,ETB,00010111,23,|end of trans. block|,CAN,CAN,00011000,24,cancel,EM,EM,00011001,25,|end of medium|,SUB,SUB,00011010,26,substitute,ESC,ESC,00011011,27,escape,FS,FS,00011100,28,|file separator|,GS,GS,00011101,29,|group separator|,RS,RS,00011110,30,|record separator|,US,US,00011111,31,|unit separator|,Space,Space,00100000,32,space,!,!,00100001,33,|exclamation mark|,&quot;,&quot;,00100010,34,|double quote|,#,#,00100011,35,number,$,$,00100100,36,dollar,%,%,00100101,37,percent,&amp;,&amp;,00100110,38,ampersand,&apos;,&apos;,00100111,39,|single quote|,(,(,00101000,40,|left parenthesis|,),),00101001,41,|right parenthesis|,*,*,00101010,42,asterisk,+,+,00101011,43,plus,|,|,|,|,00101100,44,comma,-,-,00101101,45,minus,.,.,00101110,46,period,/,/,00101111,47,slash,0,0,00110000,48,zero,1,1,00110001,49,one,2,2,00110010,50,two,3,3,00110011,51,three,4,4,00110100,52,four,5,5,00110101,53,five,6,6,00110110,54,six,7,7,00110111,55,seven,8,8,00111000,56,eight,9,9,00111001,57,nine,:,:,00111010,58,colon,;,;,00111011,59,semicolon,&lt;,&lt;,00111100,60,|less than|,=,=,00111101,61,|equality sign|,&gt;,&gt;,00111110,62,|greater than|,?,?,00111111,63,|question mark|,@,@,01000000,64,|at sign|,A,A,01000001,65,,B,B,01000010,66,,C,C,01000011,67,,D,D,01000100,68,,E,E,01000101,69,,F,F,01000110,70,,G,G,01000111,71,,H,H,01001000,72,,I,I,01001001,73,,J,J,01001010,74,,K,K,01001011,75,,L,L,01001100,76,,M,M,01001101,77,,N,N,01001110,78,,O,O,01001111,79,,P,P,01010000,80,,Q,Q,01010001,81,,R,R,01010010,82,,S,S,01010011,83,,T,T,01010100,84,,U,U,01010101,85,,V,V,01010110,86,,W,W,01010111,87,,X,X,01011000,88,,Y,Y,01011001,89,,Z,Z,01011010,90,,[,[,01011011,91,|left square bracket|,\,\,01011100,92,backslash,],],01011101,93,|right square bracket|,^,^,01011110,94,|caret / circumflex|,_,_,01011111,95,underscore,`,`,01100000,96,|grave / accent|,a,a,01100001,97,,b,b,01100010,98,,c,c,01100011,99,,d,d,01100100,100,,e,e,01100101,101,,f,f,01100110,102,,g,g,01100111,103,,h,h,01101000,104,,i,i,01101001,105,,j,j,01101010,106,,k,k,01101011,107,,l,l,01101100,108,,m,m,01101101,109,,n,n,01101110,110,,o,o,01101111,111,,p,p,01110000,112,,q,q,01110001,113,,r,r,01110010,114,,s,s,01110011,115,,t,t,01110100,116,,u,u,01110101,117,,v,v,01110110,118,,w,w,01110111,119,,x,x,01111000,120,,y,y,01111001,121,,z,z,01111010,122,,{,{,01111011,123,|left curly bracket|,||||,||||,01111100,124,|vertical bar|,},},01111101,125,|right curly bracket|,~,~,01111110,126,tilde,DEL,DEL,01111111,127,delete,,,,,">
+   </PIN>
+   <PIN pinname="Input 3" visible="1" slicecount="645" values="0,NUL,00000000,00,null,1,SOH,00000001,01,|start of header|,2,STX,00000010,02,|start of text|,3,ETX,00000011,03,|end of text|,4,EOT,00000100,04,|end of transmission|,5,ENQ,00000101,05,enquiry,6,ACK,00000110,06,acknowledge,7,BEL,00000111,07,bell,8,BS,00001000,08,backspace,9,HT,00001001,09,|horizontal tab|,10,LF,00001010,0A,|line feed|,11,VT,00001011,0B,|vertical tab|,12,FF,00001100,0C,|form feed|,13,CR,00001101,0D,|carriage return|,14,SO,00001110,0E,|shift out|,15,SI,00001111,0F,|shift in|,16,DLE,00010000,10,|data link escape|,17,DC1,00010001,11,|device control 1|,18,DC2,00010010,12,|device control 2|,19,DC3,00010011,13,|device control 3|,20,DC4,00010100,14,|device control 4|,21,NAK,00010101,15,|negative acknowledge|,22,SYN,00010110,16,synchronize,23,ETB,00010111,17,|end of trans. block|,24,CAN,00011000,18,cancel,25,EM,00011001,19,|end of medium|,26,SUB,00011010,1A,substitute,27,ESC,00011011,1B,escape,28,FS,00011100,1C,|file separator|,29,GS,00011101,1D,|group separator|,30,RS,00011110,1E,|record separator|,31,US,00011111,1F,|unit separator|,32,Space,00100000,20,space,33,!,00100001,21,|exclamation mark|,34,&quot;,00100010,22,|double quote|,35,#,00100011,23,number,36,$,00100100,24,dollar,37,%,00100101,25,percent,38,&amp;,00100110,26,ampersand,39,&apos;,00100111,27,|single quote|,40,(,00101000,28,|left parenthesis|,41,),00101001,29,|right parenthesis|,42,*,00101010,2A,asterisk,43,+,00101011,2B,plus,44,|,|,00101100,2C,comma,45,-,00101101,2D,minus,46,.,00101110,2E,period,47,/,00101111,2F,slash,48,0,00110000,30,zero,49,1,00110001,31,one,50,2,00110010,32,two,51,3,00110011,33,three,52,4,00110100,34,four,53,5,00110101,35,five,54,6,00110110,36,six,55,7,00110111,37,seven,56,8,00111000,38,eight,57,9,00111001,39,nine,58,:,00111010,3A,colon,59,;,00111011,3B,semicolon,60,&lt;,00111100,3C,|less than|,61,=,00111101,3D,|equality sign|,62,&gt;,00111110,3E,|greater than|,63,?,00111111,3F,|question mark|,64,@,01000000,40,|at sign|,65,A,01000001,41,,66,B,01000010,42,,67,C,01000011,43,,68,D,01000100,44,,69,E,01000101,45,,70,F,01000110,46,,71,G,01000111,47,,72,H,01001000,48,,73,I,01001001,49,,74,J,01001010,4A,,75,K,01001011,4B,,76,L,01001100,4C,,77,M,01001101,4D,,78,N,01001110,4E,,79,O,01001111,4F,,80,P,01010000,50,,81,Q,01010001,51,,82,R,01010010,52,,83,S,01010011,53,,84,T,01010100,54,,85,U,01010101,55,,86,V,01010110,56,,87,W,01010111,57,,88,X,01011000,58,,89,Y,01011001,59,,90,Z,01011010,5A,,91,[,01011011,5B,|left square bracket|,92,\,01011100,5C,backslash,93,],01011101,5D,|right square bracket|,94,^,01011110,5E,|caret / circumflex|,95,_,01011111,5F,underscore,96,`,01100000,60,|grave / accent|,97,a,01100001,61,,98,b,01100010,62,,99,c,01100011,63,,100,d,01100100,64,,101,e,01100101,65,,102,f,01100110,66,,103,g,01100111,67,,104,h,01101000,68,,105,i,01101001,69,,106,j,01101010,6A,,107,k,01101011,6B,,108,l,01101100,6C,,109,m,01101101,6D,,110,n,01101110,6E,,111,o,01101111,6F,,112,p,01110000,70,,113,q,01110001,71,,114,r,01110010,72,,115,s,01110011,73,,116,t,01110100,74,,117,u,01110101,75,,118,v,01110110,76,,119,w,01110111,77,,120,x,01111000,78,,121,y,01111001,79,,122,z,01111010,7A,,123,{,01111011,7B,|left curly bracket|,124,||||,01111100,7C,|vertical bar|,125,},01111101,7D,|right curly bracket|,126,~,01111110,7E,tilde,127,DEL,01111111,7F,delete,,,,,">
+   </PIN>
+   <PIN pinname="Switch" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="645" values="0,00,00000000,NUL,null,1,01,00000001,SOH,|start of header|,2,02,00000010,STX,|start of text|,3,03,00000011,ETX,|end of text|,4,04,00000100,EOT,|end of transmission|,5,05,00000101,ENQ,enquiry,6,06,00000110,ACK,acknowledge,7,07,00000111,BEL,bell,8,08,00001000,BS,backspace,9,09,00001001,HT,|horizontal tab|,10,0A,00001010,LF,|line feed|,11,0B,00001011,VT,|vertical tab|,12,0C,00001100,FF,|form feed|,13,0D,00001101,CR,|carriage return|,14,0E,00001110,SO,|shift out|,15,0F,00001111,SI,|shift in|,16,10,00010000,DLE,|data link escape|,17,11,00010001,DC1,|device control 1|,18,12,00010010,DC2,|device control 2|,19,13,00010011,DC3,|device control 3|,20,14,00010100,DC4,|device control 4|,21,15,00010101,NAK,|negative acknowledge|,22,16,00010110,SYN,synchronize,23,17,00010111,ETB,|end of trans. block|,24,18,00011000,CAN,cancel,25,19,00011001,EM,|end of medium|,26,1A,00011010,SUB,substitute,27,1B,00011011,ESC,escape,28,1C,00011100,FS,|file separator|,29,1D,00011101,GS,|group separator|,30,1E,00011110,RS,|record separator|,31,1F,00011111,US,|unit separator|,32,20,00100000,Space,space,33,21,00100001,!,|exclamation mark|,34,22,00100010,&quot;,|double quote|,35,23,00100011,#,number,36,24,00100100,$,dollar,37,25,00100101,%,percent,38,26,00100110,&amp;,ampersand,39,27,00100111,&apos;,|single quote|,40,28,00101000,(,|left parenthesis|,41,29,00101001,),|right parenthesis|,42,2A,00101010,*,asterisk,43,2B,00101011,+,plus,44,2C,00101100,|,|,comma,45,2D,00101101,-,minus,46,2E,00101110,.,period,47,2F,00101111,/,slash,48,30,00110000,0,zero,49,31,00110001,1,one,50,32,00110010,2,two,51,33,00110011,3,three,52,34,00110100,4,four,53,35,00110101,5,five,54,36,00110110,6,six,55,37,00110111,7,seven,56,38,00111000,8,eight,57,39,00111001,9,nine,58,3A,00111010,:,colon,59,3B,00111011,;,semicolon,60,3C,00111100,&lt;,|less than|,61,3D,00111101,=,|equality sign|,62,3E,00111110,&gt;,|greater than|,63,3F,00111111,?,|question mark|,64,40,01000000,@,|at sign|,65,41,01000001,A,,66,42,01000010,B,,67,43,01000011,C,,68,44,01000100,D,,69,45,01000101,E,,70,46,01000110,F,,71,47,01000111,G,,72,48,01001000,H,,73,49,01001001,I,,74,4A,01001010,J,,75,4B,01001011,K,,76,4C,01001100,L,,77,4D,01001101,M,,78,4E,01001110,N,,79,4F,01001111,O,,80,50,01010000,P,,81,51,01010001,Q,,82,52,01010010,R,,83,53,01010011,S,,84,54,01010100,T,,85,55,01010101,U,,86,56,01010110,V,,87,57,01010111,W,,88,58,01011000,X,,89,59,01011001,Y,,90,5A,01011010,Z,,91,5B,01011011,[,|left square bracket|,92,5C,01011100,\,backslash,93,5D,01011101,],|right square bracket|,94,5E,01011110,^,|caret / circumflex|,95,5F,01011111,_,underscore,96,60,01100000,`,|grave / accent|,97,61,01100001,a,,98,62,01100010,b,,99,63,01100011,c,,100,64,01100100,d,,101,65,01100101,e,,102,66,01100110,f,,103,67,01100111,g,,104,68,01101000,h,,105,69,01101001,i,,106,6A,01101010,j,,107,6B,01101011,k,,108,6C,01101100,l,,109,6D,01101101,m,,110,6E,01101110,n,,111,6F,01101111,o,,112,70,01110000,p,,113,71,01110001,q,,114,72,01110010,r,,115,73,01110011,s,,116,74,01110100,t,,117,75,01110101,u,,118,76,01110110,v,,119,77,01110111,w,,120,78,01111000,x,,121,79,01111001,y,,122,7A,01111010,z,,123,7B,01111011,{,|left curly bracket|,124,7C,01111100,||||,|vertical bar|,125,7D,01111101,},|right curly bracket|,126,7E,01111110,~,tilde,127,7F,01111111,DEL,delete,,,,,">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="3" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1230" top="345" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1230" top="345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Switch">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Switch">
+   </LINK>
+   <NODE systemname="Zip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (String)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="2910" top="1590" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="1590">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Zip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (String)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2415" top="1590" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2415" top="1590">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="129" values="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="129" values="NUL,SOH,STX,ETX,EOT,ENQ,ACK,BEL,BS,HT,LF,VT,FF,CR,SO,SI,DLE,DC1,DC2,DC3,DC4,NAK,SYN,ETB,CAN,EM,SUB,ESC,FS,GS,RS,US,Space,!,&quot;,#,$,%,&amp;,&apos;,(,),*,+,|,|,-,.,/,0,1,2,3,4,5,6,7,8,9,:,;,&lt;,=,&gt;,?,@,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,[,\,],^,_,`,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,{,||||,},~,DEL,">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Zip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (String)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="1920" top="1590" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1920" top="1590">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output 1" dstnodeid="11" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 4" dstnodeid="11" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 4" dstnodeid="10" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 2" dstnodeid="10" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 4" dstnodeid="12" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output 2" dstnodeid="12" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Output" dstnodeid="4" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="4" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="4" dstpinname="Input 3">
+   </LINK>
+   </PATCH>

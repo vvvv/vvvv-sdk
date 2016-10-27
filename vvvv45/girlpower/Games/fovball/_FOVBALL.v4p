@@ -1,0 +1,469 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\fovball\_FOVBALL.v4p">
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="24" nodename="panzer.v4p" systemname="panzer" filename="%VVVV%\girlpower\( fovball )\panzer.v4p">
+   <BOUNDS height="100" left="990" top="9330" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="990" top="9330" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <PIN pinname="Transform" slicecount="4" visible="1" values=",,,">
+   </PIN>
+   <PIN pinname="color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="23" nodename="steer.v4p" systemname="steer" filename="%VVVV%\girlpower\( fovball )\steer.v4p">
+   <BOUNDS height="270" left="3015" top="6720" type="Node" width="1080">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3015" top="6720" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="run" visible="1">
+   </PIN>
+   <PIN pinname="steer" visible="1">
+   </PIN>
+   <PIN pinname="reset" visible="1">
+   </PIN>
+   <PIN pinname="v" visible="1">
+   </PIN>
+   <PIN pinname="p" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Transform" srcnodeid="23" srcpinname="Transform">
+   </LINK>
+   <NODE id="22" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
+   <BOUNDS height="0" left="1365" top="3855" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.57">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="-0.07">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
+   <BOUNDS height="0" left="3510" top="3855" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="-0.48">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="1680" top="7140" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="7245" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="750" left="1680" top="7140" type="Box" width="945">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="4" values="|0.93600,0.06365,0.00000,1.00000|,|0.00000,0.64800,0.04666,1.00000|,|0.00000,0.55600,0.49373,1.00000|,|0.75600,0.42336,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="color" srcnodeid="20" srcpinname="Color Output">
+   </LINK>
+   <NODE id="19" nodename="LinearFilter (Animation)" systemname="LinearFilter (Animation)">
+   <BOUNDS height="0" left="1350" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Go To Position" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <NODE id="18" nodename="Newton (Animation)" systemname="Newton (Animation)">
+   <BOUNDS height="0" left="3510" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Go To Position" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <NODE id="17" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="1380" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.19">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Random Seed" srcnodeid="17" srcpinname="Cycles">
+   </LINK>
+   <LINK dstnodeid="22" dstpinname="Random Seed" srcnodeid="17" srcpinname="Cycles">
+   </LINK>
+   <NODE componentmode="InABox" id="16" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3645" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10800" top="2370" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3645" top="2925" type="Box" width="615">
+   </BOUNDS>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|panzer count|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Spread Count" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Spread Count" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="15" nodename="OnOpen (VVVV)" systemname="OnOpen (VVVV)">
+   <BOUNDS height="0" left="5235" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="OR (Boolean)" systemname="OR (Boolean)">
+   <BOUNDS height="0" left="5235" top="6195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5625" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17400" top="4140" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1290" left="5625" top="4575" type="Box" width="1185">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="reset">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8490" top="5400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="17700" top="4440" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="840" left="8490" top="5400" type="Box" width="990">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0,0,0,0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="shoot">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="8" nodename="explode.v4p" systemname="explode" filename="%VVVV%\girlpower\( fovball )\explode.v4p">
+   <BOUNDS height="270" left="3030" top="9330" type="Node" width="960">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3030" top="9330" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <PIN pinname="panzer" visible="1">
+   </PIN>
+   <PIN pinname="bullet" visible="1">
+   </PIN>
+   <PIN pinname="panzer count" visible="1">
+   </PIN>
+   <PIN pinname="number bullets per panzer" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="panzer" srcnodeid="23" srcpinname="p">
+   </LINK>
+   <NODE componentmode="InAWindow" id="7" nodename="bullet.v4p" systemname="bullet" filename="%VVVV%\girlpower\( fovball )\bullet.v4p">
+   <BOUNDS height="270" left="3315" top="8520" type="Node" width="1065">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3315" top="8520" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <PIN pinname="v0" visible="1">
+   </PIN>
+   <PIN pinname="p0" visible="1">
+   </PIN>
+   <PIN pinname="FIRE" visible="1">
+   </PIN>
+   <PIN pinname="speed" slicecount="1" values="-25">
+   </PIN>
+   <PIN pinname="color" visible="1">
+   </PIN>
+   <PIN pinname="number bullets per panzer" visible="1">
+   </PIN>
+   <PIN pinname="p" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="v0" srcnodeid="23" srcpinname="v">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="p0" srcnodeid="23" srcpinname="p">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="color" srcnodeid="20" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="bullet" srcnodeid="7" srcpinname="p">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="panzer count" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4785" top="7350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13185" top="8850" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="585" left="4785" top="7350" type="Box" width="1290">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|number bullets per panzer|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="number bullets per panzer" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="number bullets per panzer" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InAWindow" id="5" nodename="environment.v4p" systemname="environment" filename="%VVVV%\girlpower\( fovball )\environment.v4p">
+   <BOUNDS height="100" left="2490" top="10515" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2490" top="10515" type="Box" width="4800">
+   </BOUNDS>
+   <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
+   </BOUNDS>
+   <PIN pinname="manual camera" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="23" dstpinname="reset" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
+   <BOUNDS height="0" left="5445" top="3855" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="15" srcpinname="Bang">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="915" left="2415" top="1530" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="675" left="2415" top="1530" type="Box" width="5010">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|PRESS Y,X,C,V TO SHOOT !|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="18">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="3345" top="6270" type="Node" width="885">
+   </BOUNDS>
+   <BOUNDS height="390" left="3345" top="6270" type="Box" width="1080">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="autopilot">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="1695" top="705" type="Node" width="975">
+   </BOUNDS>
+   <BOUNDS height="675" left="1695" top="705" type="Box" width="6150">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|FOVBALL for vvvv33beta9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="23">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="15" srcpinname="Bang">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="4" srcpinname="Output 1">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 3" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="run" srcnodeid="19" srcpinname="Position Out">
+   </LINK>
+   <NODE id="0" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="270" left="3570" top="10005" type="Node" width="1200">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="24" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 3" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="steer" srcnodeid="18" srcpinname="Position Out">
+   </LINK>
+   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="8490" top="4575" width="870" height="270">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 3" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8490" top="4575">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="30" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="9285" top="3450" width="1005" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9285" top="3450" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="DownOnly">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="7" dstpinname="FIRE">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="8490" top="2925" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8490" top="2925">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="8490" top="3855" width="870" height="270">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Key Match" slicecount="1" values="|y, x, c, v|">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="C" visible="1">
+   </PIN>
+   <PIN pinname="V" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8490" top="3855">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y" dstnodeid="29" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="X" dstnodeid="29" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="C" dstnodeid="29" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="V" dstnodeid="29" dstpinname="Input 4">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="Output Enum" dstnodeid="28" dstpinname="Key Mode">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Device" dstnodeid="28" dstpinname="Keyboard">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   </PATCH>
