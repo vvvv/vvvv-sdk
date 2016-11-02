@@ -11,7 +11,7 @@ namespace VVVV.Hosting.Pins.Input
     {
         public class InputBinSpreadStream : BinSpreadStream, IDisposable
         {
-            internal readonly IIOContainer<IInStream<T>> FDataContainer;
+            internal readonly IIOContainer FDataContainer;
             internal readonly IIOContainer<IInStream<int>> FBinSizeContainer;
             private readonly IInStream<T> FDataStream;
             private readonly IInStream<int> FBinSizeStream;
@@ -24,19 +24,31 @@ namespace VVVV.Hosting.Pins.Input
             }
 
             public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged)
-                : this(ioFactory, attribute, checkIfChanged, () => ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false))
+                : this(ioFactory, attribute, checkIfChanged, (c) => ioFactory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(c), false))
             {
                 FOwnsBinSizeContainer = true;
             }
 
-            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
+            public InputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, bool checkIfChanged, Func<IIOContainer, IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
             {
                 // Don't do this, as spread max won't get computed for this pin
-                //                attribute.AutoValidate = false;
+                // attribute.AutoValidate = false;
                 attribute.CheckIfChanged = checkIfChanged;
-                FDataContainer = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false);
-                FBinSizeContainer = binSizeIOContainerFactory();
-                FDataStream = FDataContainer.IOObject;
+
+                if (attribute.IsBinSizeEnabled)
+                {
+                    var container = ioFactory.CreateIOContainer<ISpread<T>>(attribute.DecreaseBinSizeWrapCount(), false); // Ask for a spread, otherwise we lose track of bin size wrapping
+                    FDataContainer = container;
+                    FDataStream = container.IOObject.Stream;
+                }
+                else
+                {
+                    var container = ioFactory.CreateIOContainer<IInStream<T>>(attribute, false); // No need for another indirection, access the node input directly
+                    FDataContainer = container;
+                    FDataStream = container.IOObject;
+                }
+
+                FBinSizeContainer = binSizeIOContainerFactory(FDataContainer);
                 FBinSizeStream = FBinSizeContainer.IOObject;
                 FDataIO = FDataContainer.GetPluginIO();
             }
@@ -131,7 +143,7 @@ namespace VVVV.Hosting.Pins.Input
         }
 
         public InputBinSpread(IIOFactory ioFactory, InputAttribute attribute, IIOContainer<IInStream<int>> binSizeIOContainer)
-            : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute, false, () => binSizeIOContainer))
+            : this(ioFactory, attribute, new InputBinSpreadStream(ioFactory, attribute, false, _ => binSizeIOContainer))
         {
 
         }

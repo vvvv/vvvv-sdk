@@ -10,7 +10,7 @@ namespace VVVV.Hosting.Pins
 	/// base class for spread lists
 	/// </summary>
 	[ComVisible(false)]
-	abstract class SpreadList<TSpread> : Spread<TSpread>, VVVV.Hosting.IO.IIOMultiPin, IDisposable 
+	abstract class SpreadList<TSpread> : Spread<TSpread>, IIOMultiPin, IDisposable 
 	    where TSpread : class, ISynchronizable, IFlushable
 	{
 	    class SpreadListStream : MemoryIOStream<TSpread>
@@ -101,7 +101,9 @@ namespace VVVV.Hosting.Pins
 			{
 				var attribute = CreateAttribute(i + 1);
 				attribute.IsPinGroup = false;
-				attribute.Order = FAttribute.Order + FOffsetCounter * 1000 + i;
+                var order = FAttribute.Order + FOffsetCounter * 1000 + 2 * i;
+                attribute.Order = order;
+                attribute.BinOrder = order + 1;
 				var io = FFactory.CreateIOContainer<TSpread>(attribute, false);
 				FIOContainers.Add(io);
 			}

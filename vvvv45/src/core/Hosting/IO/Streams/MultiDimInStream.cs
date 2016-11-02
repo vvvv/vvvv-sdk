@@ -165,26 +165,13 @@ namespace VVVV.Hosting.IO.Streams
         private readonly IInStream<T> FDataStream;
         private readonly IntInStream FBinSizeStream;
 
-        public IIOContainer BaseContainer
-        {
-            get
-            {
-                return FDataContainer;
-            }
-        }
-
-        public IIOContainer[] AssociatedContainers
-        {
-            get
-            {
-                return new IIOContainer[]{ FBinSizeContainer };
-            }
-        }
+        public IIOContainer BaseContainer => FDataContainer;
+        public IIOContainer[] AssociatedContainers => new IIOContainer[]{ FBinSizeContainer };
 
         public MultiDimInStream(IIOFactory factory, InputAttribute attribute)
         {
-            FDataContainer = factory.CreateIOContainer<IInStream<T>>(attribute, false);
-            FBinSizeContainer = factory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(), false);
+            FDataContainer = factory.CreateIOContainer<IInStream<T>>(attribute.DecreaseBinSizeWrapCount(), false);
+            FBinSizeContainer = factory.CreateIOContainer<IInStream<int>>(attribute.GetBinSizeInputAttribute(FDataContainer), false);
             FDataStream = FDataContainer.IOObject;
             FBinSizeStream = (IntInStream)FBinSizeContainer.IOObject;
         }
