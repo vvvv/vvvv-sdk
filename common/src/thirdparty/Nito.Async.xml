@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Nito.Async</name>
+  </assembly>
+  <members>
+    <member name="T:Nito.Async.AsyncResultEventArgs`1">
+      <summary>
+            Provides data for the asynchronous event handlers that have one result.
+            </summary>
+      <typeparam name="T">The type of the result of the asynchronous operation.</typeparam>
+    </member>
+    <member name="M:Nito.Async.AsyncResultEventArgs`1.#ctor(System.Exception)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.AsyncResultEventArgs`1" /> class indicating an unsuccessful operation.
+            </summary>
+      <param name="error">The error that occurred.</param>
+    </member>
+    <member name="M:Nito.Async.AsyncResultEventArgs`1.#ctor(`0)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.AsyncResultEventArgs`1" /> class indicating a successful completion.
+            </summary>
+      <param name="result">The result of the asynchronous operation.</param>
+    </member>
+    <member name="M:Nito.Async.AsyncResultEventArgs`1.#ctor(`0,System.Exception,System.Boolean,System.Object)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.AsyncResultEventArgs`1" /> class.
+            </summary>
+      <param name="result">The result of the asynchronous operation.</param>
+      <param name="error">Any error that occurred. Null if no error.</param>
+      <param name="cancelled">Whether the operation was cancelled.</param>
+      <param name="userState">The optional user-defined state object.</param>
+    </member>
+    <member name="P:Nito.Async.AsyncResultEventArgs`1.Result">
+      <summary>
+            Gets the result of the asynchronous operation. This property may only be read if <see cref="P:System.ComponentModel.AsyncCompletedEventArgs.Error" /> is null.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.AsyncTimeoutTimer">
+      <summary>
+            Obsolete. Provides asynchronous timeout notifications.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.AsyncTimeoutTimer.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.AsyncTimeoutTimer" /> class.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.AsyncTimeoutTimer.Cancel">
+      <summary>
+            Cancels a timeout.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.AsyncTimeoutTimer.Dispose">
+      <summary>
+            Frees all system resources for the timer. This method will <see cref="M:Nito.Async.AsyncTimeoutTimer.Cancel" /> the timer if it is active.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.AsyncTimeoutTimer.Reset">
+      <summary>
+            Re-starts the current timeout. See <see cref="M:Nito.Async.AsyncTimeoutTimer.Set(System.TimeSpan)" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.AsyncTimeoutTimer.Set(System.TimeSpan)">
+      <summary>
+            Starts a timeout.
+            </summary>
+      <param name="when">The timeout value.</param>
+    </member>
+    <member name="E:Nito.Async.AsyncTimeoutTimer.Timeout">
+      <summary>
+            Notifies that a timeout has occurred.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.GenericSynchronizingObject">
+      <summary>
+            Allows objects that use <see cref="T:System.ComponentModel.ISynchronizeInvoke" /> (usually using a property named SynchronizingObject) to synchronize to a generic <see cref="T:System.Threading.SynchronizationContext" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.GenericSynchronizingObject.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.GenericSynchronizingObject" /> class, binding to <see cref="P:System.Threading.SynchronizationContext.Current">SynchronizationContext.Current</see>.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.GenericSynchronizingObject.BeginInvoke(System.Delegate,System.Object[])">
+      <summary>
+            Starts the invocation of a delegate synchronized by the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that created this <see cref="T:Nito.Async.GenericSynchronizingObject" />. A corresponding call to <see cref="M:Nito.Async.GenericSynchronizingObject.EndInvoke(System.IAsyncResult)" /> is not required.
+            </summary>
+      <param name="method">The delegate to run.</param>
+      <param name="args">The arguments to pass to <paramref name="method" />.</param>
+      <returns>An <see cref="T:System.IAsyncResult" /> that can be used to detect completion of the delegate.</returns>
+    </member>
+    <member name="M:Nito.Async.GenericSynchronizingObject.EndInvoke(System.IAsyncResult)">
+      <summary>
+            Waits for the invocation of a delegate to complete, and returns the result of the delegate. This may only be called once for a given <see cref="T:System.IAsyncResult" /> object.
+            </summary>
+      <param name="result">The <see cref="T:System.IAsyncResult" /> returned from a call to <see cref="M:Nito.Async.GenericSynchronizingObject.BeginInvoke(System.Delegate,System.Object[])" />.</param>
+      <returns>The result of the delegate.</returns>
+    </member>
+    <member name="M:Nito.Async.GenericSynchronizingObject.Invoke(System.Delegate,System.Object[])">
+      <summary>
+            Synchronously invokes a delegate synchronized with the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that created this <see cref="T:Nito.Async.GenericSynchronizingObject" />.
+            </summary>
+      <param name="method">The delegate to invoke.</param>
+      <param name="args">The parameters for <paramref name="method" />.</param>
+      <returns>The result of the delegate.</returns>
+    </member>
+    <member name="P:Nito.Async.GenericSynchronizingObject.InvokeRequired">
+      <summary>
+            Gets a value indicating whether the current thread must invoke a delegate.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.Sync">
+      <summary>
+            Provides utility methods for implementing asynchronous operations.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAction(System.Action)">
+      <summary>
+            Returns an <see cref="T:System.Action" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAction``1(System.Action{``0})">
+      <summary>
+            Returns an <see cref="T:System.Action`1" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <typeparam name="T">The type of the parameter to the callback.</typeparam>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAction``2(System.Action{``0,``1})">
+      <summary>
+            Returns an <see cref="T:System.Action`2" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <typeparam name="T1">The type of the first parameter to the callback.</typeparam>
+      <typeparam name="T2">The type of the second parameter to the callback.</typeparam>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAction``3(System.Action{``0,``1,``2})">
+      <summary>
+            Returns an <see cref="T:System.Action`3" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <typeparam name="T1">The type of the first parameter to the callback.</typeparam>
+      <typeparam name="T2">The type of the second parameter to the callback.</typeparam>
+      <typeparam name="T3">The type of the third parameter to the callback.</typeparam>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAction``4(System.Action{``0,``1,``2,``3})">
+      <summary>
+            Returns an <see cref="T:System.Action`4" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <typeparam name="T1">The type of the first parameter to the callback.</typeparam>
+      <typeparam name="T2">The type of the second parameter to the callback.</typeparam>
+      <typeparam name="T3">The type of the third parameter to the callback.</typeparam>
+      <typeparam name="T4">The type of the fourth parameter to the callback.</typeparam>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeAsyncCallback(System.AsyncCallback)">
+      <summary>
+            Returns an <see cref="T:System.AsyncCallback" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeTimerCallback(System.Threading.TimerCallback)">
+      <summary>
+            Returns an <see cref="T:System.Threading.TimerCallback" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeWaitCallback(System.Threading.WaitCallback)">
+      <summary>
+            Returns an <see cref="T:System.Threading.WaitCallback" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="M:Nito.Async.Sync.SynchronizeWaitOrTimerCallback(System.Threading.WaitOrTimerCallback)">
+      <summary>
+            Returns an <see cref="T:System.Threading.WaitOrTimerCallback" /> that asynchronously executes in the <see cref="T:System.Threading.SynchronizationContext" /> of the thread that called this method.
+            </summary>
+      <param name="callback">The callback to wrap.</param>
+      <returns>A synchronized callback.</returns>
+    </member>
+    <member name="T:Nito.Async.ActionDispatcher">
+      <summary>
+            A thread-safe queue of actions. Provides an event-based message loop when <see cref="M:Nito.Async.ActionDispatcher.Run" />, along with a synchronization context for the executed actions.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcher.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.ActionDispatcher" /> class with an empty action queue.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.ActionDispatcher.Current">
+      <summary>
+            Gets the currently active action queue. For executing actions, this is their own action queue; for other threads, this is null.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcher.Dispose">
+      <summary>
+            Releases all resources.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcher.QueueAction(System.Action)">
+      <summary>
+            Queues an action to an action dispatcher.
+            </summary>
+      <param name="action">The action to execute.</param>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcher.QueueExit">
+      <summary>
+            Queues an exit action, causing <see cref="M:Nito.Async.ActionDispatcher.Run" /> to return.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcher.Run">
+      <summary>
+            Executes the action queue.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.ActionDispatcherSynchronizationContext">
+      <summary>
+            Provides a synchronization context for a thread running an <see cref="T:Nito.Async.ActionDispatcher" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcherSynchronizationContext.#ctor(Nito.Async.ActionDispatcher)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.ActionDispatcherSynchronizationContext" /> class by using the specified <see cref="T:Nito.Async.ActionDispatcher" />.
+            </summary>
+      <param name="actionDispatcher">The action queue to associate with this <see cref="T:Nito.Async.ActionDispatcherSynchronizationContext" />.</param>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcherSynchronizationContext.CreateCopy">
+      <summary>
+            Creates a copy of this <see cref="T:Nito.Async.ActionDispatcherSynchronizationContext" />.
+            </summary>
+      <returns>The copy of this synchronization context.</returns>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcherSynchronizationContext.Post(System.Threading.SendOrPostCallback,System.Object)">
+      <summary>
+            Invokes the callback in the synchronization context asynchronously. The callback is placed in the action queue.
+            </summary>
+      <param name="d">The delegate to call.</param>
+      <param name="state">The object passed to the delegate.</param>
+    </member>
+    <member name="M:Nito.Async.ActionDispatcherSynchronizationContext.Send(System.Threading.SendOrPostCallback,System.Object)">
+      <summary>
+            Invokes the callback in the synchronization context synchronously. The callback is placed in the action queue.
+            </summary>
+      <param name="d">The delegate to call.</param>
+      <param name="state">The object passed to the delegate.</param>
+    </member>
+    <member name="M:Nito.Async.Sync.InvokeAndCallback(System.Action,System.Action{System.ComponentModel.AsyncCompletedEventArgs},System.Object)">
+      <summary>
+            Runs <paramref name="action" /> followed by <paramref name="callback" /> with arguments indicating success. If <paramref name="action" />
+            raises an exception, <paramref name="callback" /> is invoked with arguments indicating the error.
+            </summary>
+      <param name="action">The action to perform.</param>
+      <param name="callback">The callback to indicate success or error.</param>
+      <param name="state">The user state to include in the arguments to the callback. May be null.</param>
+    </member>
+    <member name="M:Nito.Async.Sync.InvokeAndCallback``1(System.Func{``0},System.Action{Nito.Async.AsyncResultEventArgs{``0}},System.Object)">
+      <summary>
+            Runs <paramref name="action" /> followed by <paramref name="callback" /> with arguments indicating success,
+            including its return value. If <paramref name="action" /> raises an exception, <paramref name="callback" />
+            is invoked with arguments indicating the error.
+            </summary>
+      <param name="action">The action to perform.</param>
+      <param name="callback">The callback to indicate success or error.</param>
+      <param name="state">The user state to include in the arguments to the callback. May be null.</param>
+      <typeparam name="T">The type of the result of the action.</typeparam>
+    </member>
+    <member name="T:Nito.Async.CallbackContext">
+      <summary>
+            Provides a context to which delegates may be bound.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.CallbackContext" /> class.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind(System.Action)">
+      <summary>
+            Binds a delegate to this context, and returns the bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind``1(System.Func{``0})">
+      <summary>
+            Binds a delegate to this context, and returns the bound, valid delegate.
+            </summary>
+      <param name="func">The contained delegate.</param>
+      <typeparam name="T">The return value of the contained and bound delegates.</typeparam>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Dispose">
+      <summary>
+            Invalidates all delegates bound to this context.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.CallbackContext.Invalidated">
+      <summary>
+            Gets a value indicating whether all delegates previously bound to this context have been invalidated. Returns false if there is at least one delegate that is valid.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Reset">
+      <summary>
+            Resets a context. This invalidates all delegates currently bound to this context.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind(System.Action,System.ComponentModel.ISynchronizeInvoke)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizingObject">The object to use for synchronizing the delegate if necessary.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind(System.Action,System.Threading.SynchronizationContext)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate if necessary.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind``1(System.Func{``0},System.ComponentModel.ISynchronizeInvoke)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="func">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizingObject">The object to use for synchronizing the delegate if necessary.</param>
+      <typeparam name="T">The return value of the contained and bound delegates.</typeparam>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind``1(System.Func{``0},System.Threading.SynchronizationContext)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="func">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate.</param>
+      <typeparam name="T">The return value of the contained and bound delegates.</typeparam>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="T:Nito.Async.Timer">
+      <summary>
+            Represents a timer that uses <see cref="T:System.Threading.SynchronizationContext" /> to synchronize with its creating thread.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Timer.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.Timer" /> class, binding to <see cref="P:System.Threading.SynchronizationContext.Current">SynchronizationContext.Current</see>.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.Timer.AutoReset">
+      <summary>
+            Gets or sets a value indicating whether the timer should become enabled again by default when <see cref="E:Nito.Async.Timer.Elapsed" /> returns.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Timer.Cancel">
+      <summary>
+            Cancels any pending timeouts.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Timer.Dispose">
+      <summary>
+            Frees all resources used by this timer.
+            </summary>
+    </member>
+    <member name="E:Nito.Async.Timer.Elapsed">
+      <summary>
+            Occurs when the timer's wait time has elapsed.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.Timer.Enabled">
+      <summary>
+            Gets or sets a value indicating whether a timer is enabled.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.Timer.Interval">
+      <summary>
+            Gets or sets a value indicating the approximate time the timer will wait before invoking <see cref="E:Nito.Async.Timer.Elapsed" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Timer.Restart">
+      <summary>
+            Disables and then enables the timer, restarting the wait time.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.Timer.SetPeriodic(System.TimeSpan)">
+      <summary>
+            Sets the timer to periodically wait for an interval.
+            </summary>
+      <param name="period">The period to wait.</param>
+    </member>
+    <member name="M:Nito.Async.Timer.SetSingleShot(System.TimeSpan)">
+      <summary>
+            Sets the timer to wait for an interval.
+            </summary>
+      <param name="interval">The interval to wait.</param>
+    </member>
+    <member name="T:Nito.Async.ActionThread">
+      <summary>
+            A thread that executes actions when commanded and provides its own <see cref="T:System.Threading.SynchronizationContext" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.ActionThread" /> class, creating a child thread waiting for commands.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.Dispose">
+      <summary>
+            Requests this <see cref="T:Nito.Async.ActionThread" /> to exit, blocks the calling thread until this <see cref="T:Nito.Async.ActionThread" /> exits, and then cleans up all resources.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.Do(System.Action)">
+      <summary>
+            Queues work for the <see cref="T:Nito.Async.ActionThread" /> to do.
+            </summary>
+      <param name="action">The work to do. This delegate may not throw an exception.</param>
+    </member>
+    <member name="M:Nito.Async.ActionThread.DoGet``1(System.Func{``0})">
+      <summary>
+            Queues work for the <see cref="T:Nito.Async.ActionThread" /> to do, and blocks the calling thread until it is complete.
+            </summary>
+      <param name="action">The work to do. This delegate may not throw an exception.</param>
+      <typeparam name="T">The type of object retrieved by the delegate.</typeparam>
+      <returns>The return value of the delegate.</returns>
+    </member>
+    <member name="M:Nito.Async.ActionThread.DoSynchronously(System.Action)">
+      <summary>
+            Queues work for the <see cref="T:Nito.Async.ActionThread" /> to do, and blocks the calling thread until it is complete.
+            </summary>
+      <param name="action">The work to do. This delegate may not throw an exception.</param>
+    </member>
+    <member name="M:Nito.Async.ActionThread.DoSynchronously(System.Action,System.TimeSpan)">
+      <summary>
+            Queues work for the <see cref="T:Nito.Async.ActionThread" /> to do, and blocks the calling thread until it is complete or until the specified time has elapsed.
+            </summary>
+      <param name="action">The work to do. This delegate may not throw an exception.</param>
+      <param name="timeout">The time to wait for <paramref name="action" /> to execute.</param>
+      <returns>
+        <c>true</c> if <paramref name="action" /> executed completely; <c>false</c> if there was a timeout.</returns>
+    </member>
+    <member name="P:Nito.Async.ActionThread.IsAlive">
+      <summary>
+            Gets a value indicating whether this <see cref="T:Nito.Async.ActionThread" /> is still alive (has started but not yet exited).
+            </summary>
+    </member>
+    <member name="P:Nito.Async.ActionThread.IsBackground">
+      <summary>
+            Gets or sets a value indicating whether this <see cref="T:Nito.Async.ActionThread" /> is a background thread. This property may not be accessed after a <see cref="Overload:Nito.Async.ActionThread.Join" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.Join">
+      <summary>
+            Requests this <see cref="T:Nito.Async.ActionThread" /> to exit and then blocks the calling thread until this <see cref="T:Nito.Async.ActionThread" /> exits.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.Join(System.TimeSpan)">
+      <summary>
+            Requests this <see cref="T:Nito.Async.ActionThread" /> to exit and then blocks the calling thread until either this <see cref="T:Nito.Async.ActionThread" /> exits or a timeout occurs.
+            </summary>
+      <param name="timeout">The length of time to wait for this <see cref="T:Nito.Async.ActionThread" /> to exit.</param>
+      <returns>
+        <c>true</c> if this <see cref="T:Nito.Async.ActionThread" /> exited cleanly; <c>false</c> if the timout occurred.</returns>
+    </member>
+    <member name="P:Nito.Async.ActionThread.ManagedThreadId">
+      <summary>
+            Gets a unique identifier for this <see cref="T:Nito.Async.ActionThread" />.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.ActionThread.Name">
+      <summary>
+            Gets or sets the name of this <see cref="T:Nito.Async.ActionThread" />. This property may only be set once, before the thread is started.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.ActionThread.Priority">
+      <summary>
+            Gets or sets a value indicating the scheduling priority of this <see cref="T:Nito.Async.ActionThread" />. This property may not be accessed after a <see cref="Overload:Nito.Async.ActionThread.Join" />.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ActionThread.Start">
+      <summary>
+            Starts this <see cref="T:Nito.Async.ActionThread" /> running. A thread may not be started more than once.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.AsyncBind(System.Action,System.Threading.SynchronizationContext)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns an asynchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate if necessary.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.AsyncBind(System.Action,System.Threading.SynchronizationContext,System.Boolean)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns an asynchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate if necessary.</param>
+      <param name="checkSynchronizationContextVerification">Whether to verify that <paramref name="synchronizationContext" /> does support <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind(System.Action,System.Threading.SynchronizationContext,System.Boolean)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="action">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate if necessary.</param>
+      <param name="checkSynchronizationContextVerification">Whether to verify that <paramref name="synchronizationContext" /> does support <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />.</param>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="M:Nito.Async.CallbackContext.Bind``1(System.Func{``0},System.Threading.SynchronizationContext,System.Boolean)">
+      <summary>
+            Synchronizes a delegate and then binds it to this context, and returns a synchronous, synchronized, bound, valid delegate.
+            </summary>
+      <param name="func">The contained delegate. This delegate should not raise exceptions.</param>
+      <param name="synchronizationContext">The object to use for synchronizing the delegate.</param>
+      <param name="checkSynchronizationContextVerification">Whether to verify that <paramref name="synchronizationContext" /> does support <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />.</param>
+      <typeparam name="T">The return value of the contained and bound delegates.</typeparam>
+      <returns>A valid delegate bound to the current context.</returns>
+    </member>
+    <member name="T:Nito.Async.ScopedSynchronizationContext">
+      <summary>
+            Replaces <see cref="P:System.Threading.SynchronizationContext.Current">SynchronizationContext.Current</see> temporarily, restoring the previous synchronization context when disposed.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.ScopedSynchronizationContext.#ctor(System.Threading.SynchronizationContext)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Nito.Async.ScopedSynchronizationContext" /> class, replacing the current synchronization context with <paramref name="replacementContext" />.
+            </summary>
+      <param name="replacementContext">The context to temporarily install as the current synchronization context. This may ne null.</param>
+    </member>
+    <member name="M:Nito.Async.ScopedSynchronizationContext.Dispose">
+      <summary>
+            Restores <see cref="P:Nito.Async.ScopedSynchronizationContext.PreviousContext" /> as the current synchronization context.
+            </summary>
+    </member>
+    <member name="P:Nito.Async.ScopedSynchronizationContext.PreviousContext">
+      <summary>
+            Gets the previous synchronization context. This was the value of <see cref="P:System.Threading.SynchronizationContext.Current" /> at the time this object was initialized. This may be null.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.SynchronizationContextProperties">
+      <summary>
+            Flags that identify differences in behavior in various <see cref="T:System.Threading.SynchronizationContext" /> implementations.
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.None">
+      <summary>
+            The <see cref="T:System.Threading.SynchronizationContext" /> makes no guarantees about any of the properties in <see cref="T:Nito.Async.SynchronizationContextProperties" />.
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.NonReentrantPost">
+      <summary>
+        <see cref="M:System.Threading.SynchronizationContext.Post(System.Threading.SendOrPostCallback,System.Object)" /> is guaranteed to be non-reentrant (if called from a thread that is not the <see cref="T:System.Threading.SynchronizationContext" />'s specific associated thread, if any).
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.NonReentrantSend">
+      <summary>
+        <see cref="M:System.Threading.SynchronizationContext.Send(System.Threading.SendOrPostCallback,System.Object)" /> is guaranteed to be non-reentrant (if called from a thread that is not the <see cref="T:System.Threading.SynchronizationContext" />'s specific associated thread, if any).
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.Synchronized">
+      <summary>
+            Delegates queued to the <see cref="T:System.Threading.SynchronizationContext" /> are guaranteed to execute one at a time.
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.Sequential">
+      <summary>
+            Delegates queued to the <see cref="T:System.Threading.SynchronizationContext" /> are guaranteed to execute in order. Any <see cref="T:System.Threading.SynchronizationContext" /> claiming to be <see cref="F:Nito.Async.SynchronizationContextProperties.Sequential" /> should also claim to be <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />.
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.SpecificAssociatedThread">
+      <summary>
+            The <see cref="T:System.Threading.SynchronizationContext" /> has exactly one managed thread associated with it. Any <see cref="T:System.Threading.SynchronizationContext" /> specifying <see cref="F:Nito.Async.SynchronizationContextProperties.SpecificAssociatedThread" /> should also specify <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />.
+            </summary>
+    </member>
+    <member name="F:Nito.Async.SynchronizationContextProperties.Standard">
+      <summary>
+            The <see cref="T:System.Threading.SynchronizationContext" /> makes the standard guarantees (<see cref="F:Nito.Async.SynchronizationContextProperties.NonReentrantPost" />, <see cref="F:Nito.Async.SynchronizationContextProperties.NonReentrantSend" />, <see cref="F:Nito.Async.SynchronizationContextProperties.Synchronized" />, <see cref="F:Nito.Async.SynchronizationContextProperties.Sequential" />, and <see cref="F:Nito.Async.SynchronizationContextProperties.SpecificAssociatedThread" />). This is defined as a constant because most custom synchronization contexts do make these guarantees.
+            </summary>
+    </member>
+    <member name="T:Nito.Async.SynchronizationContextRegister">
+      <summary>
+            A global register of <see cref="T:Nito.Async.SynchronizationContextProperties" /> flags for <see cref="T:System.Threading.SynchronizationContext" /> types.
+            </summary>
+    </member>
+    <member name="M:Nito.Async.SynchronizationContextRegister.Lookup(System.Type)">
+      <summary>
+            Looks up the guarantees for a <see cref="T:System.Threading.SynchronizationContext" /> type.
+            </summary>
+      <param name="synchronizationContextType">The type derived from <see cref="T:System.Threading.SynchronizationContext" /> to test.</param>
+      <returns>The properties guaranteed by <paramref name="synchronizationContextType" />.</returns>
+    </member>
+    <member name="M:Nito.Async.SynchronizationContextRegister.Register(System.Type,Nito.Async.SynchronizationContextProperties)">
+      <summary>
+            Registers a <see cref="T:System.Threading.SynchronizationContext" /> type claiming to provide certain guarantees.
+            </summary>
+      <param name="synchronizationContextType">The type derived from <see cref="T:System.Threading.SynchronizationContext" />.</param>
+      <param name="properties">The guarantees provided by this type.</param>
+    </member>
+    <member name="M:Nito.Async.SynchronizationContextRegister.Verify(Nito.Async.SynchronizationContextProperties)">
+      <summary>
+            Verifies that <see cref="P:System.Threading.SynchronizationContext.Current" /> satisfies the guarantees required by the calling code.
+            </summary>
+      <param name="properties">The guarantees required by the calling code.</param>
+    </member>
+    <member name="M:Nito.Async.SynchronizationContextRegister.Verify(System.Type,Nito.Async.SynchronizationContextProperties)">
+      <summary>
+            Verifies that a <see cref="T:System.Threading.SynchronizationContext" /> satisfies the guarantees required by the calling code.
+            </summary>
+      <param name="synchronizationContextType">The type derived from <see cref="T:System.Threading.SynchronizationContext" /> to test.</param>
+      <param name="properties">The guarantees required by the calling code.</param>
+    </member>
+  </members>
+</doc>
