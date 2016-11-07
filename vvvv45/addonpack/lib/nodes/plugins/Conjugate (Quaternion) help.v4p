@@ -1,0 +1,83 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\Quaternion\Conjugate (Quaternion) help.v4p" filename="C:\Users\vux\Desktop\QuadTimer.v4p" systemname="QuadTimer">
+   <BOUNDS height="5835" left="6255" top="3060" type="Window" width="4455">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="90" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1080" left="90" top="495" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Returns the conjugate of a quaternion|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="90" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="90" top="120" type="Box" width="5235">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Conjugate (Quaternion)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="Conjugate (Quaternion)" filename="%VVVV%\myplugins\lib\nodes\plugins\Quaternion\VVVV.Nodes.Quaternion.dll" nodename="Conjugate (Quaternion)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="1080" top="2655" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="InputXYZW" visible="1">
+   </PIN>
+   <PIN pinname="OutputXYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="1095" top="1260" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1095" top="1260" width="795" height="960">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="0.4,0.6,0.8,1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="17" dstpinname="InputXYZW">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="1080" top="3420" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1080" top="3420" width="795" height="960">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0, 1|" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="OutputXYZW" dstnodeid="19" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

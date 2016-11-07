@@ -1,0 +1,109 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SubscribeEvent (Photoshop).v4p" systemname="SubscribeEvent (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\SubscribeEvent (Photoshop).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="3060" top="1770" width="5550" height="6345">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1335" top="750" width="2220" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1335" top="750" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="17" visible="1" values="imageChanged,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle,idle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Event">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4350" top="405" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4350" top="405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="16" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="690" top="4860" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="690" top="4860" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Event" filename="Event.v4p" nodename="Event.v4p" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="681" top="2779" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="0" top="1095" width="11245" height="5530">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10560" top="7260" width="11235" height="5775">
+   </BOUNDS>
+   <PIN pinname="EventType" visible="1">
+   </PIN>
+   <PIN pinname="Receive - Enum" visible="1" slicecount="17" values="generatorMenuChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged,foregroundColorChanged">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="660" top="1170" width="1785" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="660" top="1170" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="networkEventSubscribe">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Output String" dstnodeid="22" dstpinname="EventType">
+   </LINK>
+   <NODE id="17" systemname="AsRaw (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (Photoshop).v4p" componentmode="Hidden" nodename="AsRaw (Photoshop)">
+   <BOUNDS type="Node" left="675" top="4365" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="675" top="4365" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="13005" top="1125" width="11130" height="7635">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Content Type" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Command" visible="1">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output Enum" dstnodeid="22" dstpinname="Event">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   </PATCH>
