@@ -87,7 +87,8 @@ namespace VVVV.Hosting
 			} 
 			catch (Exception e)
 			{
-				System.Windows.Forms.MessageBox.Show(e.Message);
+                //for debugging
+				//System.Windows.Forms.MessageBox.Show(e.Message);
 			}
 			
 			//create new subpatch
