@@ -32,8 +32,11 @@ namespace VVVV.Nodes
 		
 		[Output("Nodes")]
 		protected ISpread<string> FNodes;
-		
-		[Import]
+
+        [Output("Collected Paths")]
+        protected ISpread<string> FCollectedPaths;
+
+        [Import]
 		protected NodeCollection NodeCollection;
 		
 		[Import]
@@ -70,6 +73,33 @@ namespace VVVV.Nodes
 				select nodeInfo.Systemname;
 			
 			FNodes.AssignFrom(nodeInfos);
+            FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir));
 		}
-	}	
+	}
+
+    #region PluginInfo
+    [PluginInfo(Name = "NodePaths", Category = "VVVV",
+                Help = "Returns a list of all collected search paths.",
+                Tags = "")]
+    #endregion PluginInfo
+    public class NodePathsNode : IPluginEvaluate
+    {
+        #region fields & pins
+        [Input("Update")]
+        protected ISpread<bool> FUpdate;
+
+        [Output("Search Paths")]
+        protected ISpread<string> FCollectedPaths;
+
+        [Import]
+        protected NodeCollection NodeCollection;
+        #endregion fields & pins
+
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
+        {
+            if (FUpdate[0])
+                FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir).Distinct());
+        }
+    }
 }
