@@ -1092,7 +1092,9 @@ namespace VVVV.Nodes.Input
                         // And remove it from our internal list once it unsubscribes
                         return () => newState.Observers.Remove(observer);
                     });
-                    MouseOut[i] = new Mouse(notifications);
+                    // We explicitly turn off the single subscription so all consumers will observer the same state changes happended in this frame,
+                    // independently of when thy actually subscribe during this frame.
+                    MouseOut[i] = new Mouse(notifications, injectMouseClicks: true, keepSingleSubscription: false);
                 }
             }
         }
