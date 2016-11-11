@@ -1,0 +1,139 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core.dll" #>
+<#@ Assembly Name="System.Xml.dll" #>
+<#@ Assembly Name="System.Xml.Linq.dll" #>
+<#@ Assembly Name="System.Windows.Forms.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#   
+   var primitiveTypes = new[] { "Boolean", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double" };
+   var vvvvTypes = new[] { "int", "float", "double" };
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Runtime.InteropServices;
+using VVVV.Utils;
+using VVVV.Utils.Streams;
+
+namespace System.IO
+{
+    public static partial class SystemIOExtensions
+    {
+        public static byte[] ReadValue(this BinaryReader reader, int fieldSize, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                return reader.ReadBytes(fieldSize);
+            else
+            {
+                byte[] bytes = new byte[fieldSize];
+                for (int i = fieldSize - 1; i > -1; i--)
+                    bytes[i] = reader.ReadByte();
+                return bytes;
+            }
+        }
+
+        public static int ReadValues(this BinaryReader reader, byte[] buffer, int fieldSize, ByteOrder byteOrder)
+        {
+            var bytesRead = reader.Read(buffer, 0, buffer.Length);
+            if (byteOrder == ByteOrder.BigEndian && fieldSize > 1)
+            {
+                for (int i = 0; i < bytesRead; i += fieldSize)
+                    for (int j = 0; j < fieldSize / 2; j++)
+                          buffer.Swap(i + j, i + fieldSize - j - 1);
+            }
+            return bytesRead;
+        }
+
+        public static void WriteValue(this BinaryWriter writer, byte[] value, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                writer.Write(value);
+            else
+            {
+                for (int i = value.Length - 1; i > -1; i--)
+                    writer.Write(value[i]);
+            }
+        }
+
+        public static void WriteValues(this BinaryWriter writer, byte[] values, int fieldSize, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                writer.Write(values);
+            else
+            {
+                for (int i = 0; i < values.Length; i += fieldSize)
+                  for (int j = i + fieldSize - 1; j >= i; j--)
+                      writer.Write(values[j]);
+            }
+        }
+
+<# foreach (var primitiveType in primitiveTypes) { #>
+        public static <#= primitiveType #> Read<#= primitiveType #>(this BinaryReader reader, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                return (<#= primitiveType #>)reader.Read<#= primitiveType #>();
+            else
+                return BitConverter.To<#= primitiveType #>(reader.ReadValue(sizeof(<#= primitiveType #>), ByteOrder.BigEndian), 0);
+        }
+
+        public static int Read(this BinaryReader reader, <#= primitiveType #>[] buffer, int offset, int count, ByteOrder byteOrder = ByteOrder.LittleEndian)
+        {
+            var byteBuffer = new byte[count * sizeof(<#= primitiveType #>)];
+            var itemsRead = reader.ReadValues(byteBuffer, sizeof(<#= primitiveType #>), byteOrder);
+            Buffer.BlockCopy(byteBuffer, 0, buffer, offset, itemsRead);
+            return itemsRead / sizeof(<#= primitiveType #>);
+        }
+
+        public static <#= primitiveType #>[] Read<#= primitiveType #>s(this BinaryReader reader, int count, ByteOrder byteOrder = ByteOrder.LittleEndian)
+        {
+            var byteBuffer = new byte[count * sizeof(<#= primitiveType #>)];
+            var itemsRead = reader.ReadValues(byteBuffer, sizeof(<#= primitiveType #>), byteOrder);
+            var resultBuffer = new <#= primitiveType #>[itemsRead / sizeof(<#= primitiveType #>)];
+            Buffer.BlockCopy(byteBuffer, 0, resultBuffer, 0, resultBuffer.Length * sizeof(<#= primitiveType #>));
+            return resultBuffer;
+        }
+
+        public static void Write(this BinaryWriter writer, <#= primitiveType #> value, ByteOrder byteOrder)
+        {
+            if (byteOrder == ByteOrder.LittleEndian)
+                writer.Write(value);
+            else
+                writer.WriteValue(BitConverter.GetBytes(value), byteOrder);
+        }
+
+        public static void Write(this BinaryWriter writer, <#= primitiveType #>[] buffer, int offset, int count, ByteOrder byteOrder = ByteOrder.LittleEndian)
+        {
+            var byteBuffer = new byte[count * sizeof(<#= primitiveType #>)];
+            Buffer.BlockCopy(buffer, offset, byteBuffer, 0, byteBuffer.Length);
+            writer.WriteValues(byteBuffer, sizeof(<#= primitiveType #>), byteOrder);
+        }
+
+<# } #>
+    }
+}
+ 
+<#+  
+  // Insert any template procedures here
+  void getWeatherDataCodeGen(string Input) {
+	System.Xml.Linq.XDocument XmlDoc = System.Xml.Linq.XDocument.Parse(Input);
+	
+	
+	var Tables = from c in XmlDoc.Descendants("Table") 
+	   			 select new {Name = c.Attribute("name").Value, Table = c};
+
+    foreach (var aTable in Tables) {
+	#>
+	 System.Console.Write(GetDataForTable("<#= aTable.Name #>"));
+	<#+
+	}
+	
+  }
+#>

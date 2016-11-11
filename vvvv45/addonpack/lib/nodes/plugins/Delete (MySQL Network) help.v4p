@@ -1,0 +1,375 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
+   <PATCH nodename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Delete (MySQL Network) help.v4p" locked="0" systemname="Delete (MySQL Network) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Delete (MySQL Network) help.v4p">
+   <BOUNDS height="8700" left="7605" top="480" type="Window" width="7410">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="465" top="705" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="990" left="465" top="705" type="Box" width="4500">
+   </BOUNDS>
+   <BOUNDS height="160" left="8835" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Execute an update statement on a MySQL database .&cr;&lf;Note: nothing in the where fields means ALL records will be deleted! |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="465" top="270" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="465" top="270" type="Box" width="4320">
+   </BOUNDS>
+   <BOUNDS height="160" left="8835" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Delete - MySQL Network|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="Database (MySQL Network)" filename="%VVVV%\addonpack\lib\nodes\plugins\MySQLNodes.dll" nodename="Database (MySQL Network)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="525" top="3600" width="5340" height="270">
+   </BOUNDS>
+   <PIN pinname="Connection String" slicecount="1" visible="1" values="Server=text;Uid=text;Pwd=text;Database=text;Port=0">
+   </PIN>
+   <PIN pinname="Connect" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Connection" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="525" top="3600">
+   </BOUNDS>
+   <PIN pinname="Is Connected" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5805" top="4050" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5805" top="4050" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Is Connected|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2280" top="5505" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2280" top="5505" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="user">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Table">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4020" top="5505" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4020" top="5505" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="1=0">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Where">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5760" top="4965" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5760" top="4965" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="SendQuery">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="525" top="7215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="525" top="7215" width="1950" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Statement">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="|SELECT * FROM user|">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3120" top="7215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3120" top="7215" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Is Connected" dstnodeid="39" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3165" top="4050" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3165" top="4050" width="1815" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Status" dstnodeid="27" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="53" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5802" top="1890" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5802" top="1890" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Connect">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="52" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1017" top="1890" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1017" top="1890" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="14790" top="7320" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Server">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="localhost">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="51" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1947" top="1890" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="1947" top="1890" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="15420" top="7395" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Username">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="root">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2907" top="1890" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2907" top="1890" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="16080" top="7455" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Password">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="3867" top="1890" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3867" top="1890" type="Box" width="870">
+   </BOUNDS>
+   <BOUNDS height="160" left="18150" top="7155" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Database">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="mysql">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="48" nodename="Add (String)" systemname="Add (String)">
+   <BOUNDS height="270" left="525" top="3045" type="Node" width="5310">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" encoded="0" values="Server=">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" encoded="0" values=";Uid=">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" encoded="0" values=";Pwd=">
+   </PIN>
+   <PIN pinname="Input 6" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 7" slicecount="1" encoded="0" values=";Database=">
+   </PIN>
+   <PIN pinname="Input 8" visible="1">
+   </PIN>
+   <PIN pinname="Input 9" slicecount="1" encoded="0" values=";Port=">
+   </PIN>
+   <PIN pinname="Input 10" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Input 2" srcnodeid="52" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Input 4" srcnodeid="51" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Input 6" srcnodeid="50" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Input 8" srcnodeid="49" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="47" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4797" top="1890" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4797" top="1890" type="Box" width="720">
+   </BOUNDS>
+   <BOUNDS height="160" left="21675" top="8715" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Port">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="3306">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="46" nodename="AsString (Value)" systemname="AsString (Value)">
+   <BOUNDS height="0" left="4797" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (MinInt .. MaxInt)|">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Input" srcnodeid="47" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Input 10" srcnodeid="46" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="44" dstpinname="Connection String">
+   </LINK>
+   <LINK srcnodeid="53" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Connect">
+   </LINK>
+   <NODE systemname="Delete (MySQL Network)" filename="%VVVV%\addonpack\lib\nodes\plugins\MySQLNodes.dll" nodename="Delete (MySQL Network)" componentmode="Hidden" id="45">
+   <BOUNDS type="Node" left="525" top="6540" width="5280" height="270">
+   </BOUNDS>
+   <PIN pinname="Connection" visible="1">
+   </PIN>
+   <PIN pinname="Tables">
+   </PIN>
+   <PIN pinname="SendQuery">
+   </PIN>
+   <PIN pinname="Field Names">
+   </PIN>
+   <PIN pinname="Dataset Column Names" visible="1">
+   </PIN>
+   <PIN pinname="Host" visible="1">
+   </PIN>
+   <PIN pinname=" User" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="525" top="6540">
+   </BOUNDS>
+   <PIN pinname="User" visible="1">
+   </PIN>
+   <PIN pinname="Table" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Connection" dstnodeid="45" dstpinname="Connection">
+   </LINK>
+   <LINK srcnodeid="34" srcpinname="Output String" dstnodeid="45" dstpinname="Where">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="45" dstpinname="SendQuery">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Statement" dstnodeid="31" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Status" dstnodeid="30" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output String" dstnodeid="45" dstpinname="Table">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="54" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5745" top="7215" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5745" top="7215" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Rows Affected|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Rows Affected" dstnodeid="54" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

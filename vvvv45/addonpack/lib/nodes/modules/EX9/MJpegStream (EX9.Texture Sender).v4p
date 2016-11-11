@@ -1,0 +1,217 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvveb_lib-0.1\MJpegStream (EX9.Texture Sender).v4p" systemname="MJpegStream (EX9.Texture Sender)" filename="C:\Users\joreg\Desktop\vvvvs\vvvveb_lib-0.1\MJpegStream (EX9.Texture Sender).v4p">
+   <BOUNDS height="8400" left="19245" top="4995" type="Window" width="8340">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="15" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6060" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7725" top="6075" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6060" top="735" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="2800">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="9999999">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Local Port|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="510" top="1635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1980" left="510" top="1635" type="Box" width="3735">
+   </BOUNDS>
+   <BOUNDS height="160" left="12615" top="5655" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|HTTP/1.0 200 OK&cr;&lf;Expires: 0&cr;&lf;Pragma: no-cache&cr;&lf;Content-Type: multipart/x-mixed-replace; boundary=--myboundary&cr;&lf;&cr;&lf;--myboundary&cr;&lf;Content-Type: image/jpeg&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="4740" top="2370" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Change" visible="1">
+   </PIN>
+   <PIN pinname="Pause" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6945" top="735" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6945" top="735" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="6420" top="1515" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Enable">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="150" top="3885" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output String" dstnodeid="17" dstpinname="Input">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename="+ (Raw)" systemname="+ (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="135" top="4980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="8" dstpinname="Input 1">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename="AsRaw (EX9.Texture)" systemname="AsRaw (EX9.Texture)">
+   <BOUNDS height="0" left="345" top="4605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Format" slicecount="1" visible="1" values="JPG">
+   </PIN>
+   <PIN pinname="Read" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="8" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="18" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1035" top="3960" width="585" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1035" top="3960" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPG">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="9" dstpinname="File Format">
+   </LINK>
+   <NODE id="14" nodename="TCP (Network Server)" systemname="TCP (Network Server)">
+   <BOUNDS height="0" left="5430" top="7050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Local Port" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Local Port" srcnodeid="15" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Enable" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <PACK Name="ImagePack" Version="0.2.0">
+   </PACK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <PACK Name="CV" Version="0.2.0">
+   </PACK>
+   <NODE systemname="Divide (Value)" nodename="Divide (Value)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="4740" top="1110" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4935" top="735" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4935" top="735" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="30">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="FPS">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="30">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="20" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Change" dstnodeid="14" dstpinname="Do Send">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="7" dstpinname="Period">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="22" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="345" top="735" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="345" top="735" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Texture">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output Node" dstnodeid="9" dstpinname="Texture">
+   </LINK>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="6945" top="1680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="7" dstpinname="Pause">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Change" dstnodeid="9" dstpinname="Read">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="14" dstpinname="Input">
+   </LINK>
+   <INFO author="vvvv group, henrik" description="Streams a DX9 texture as MJpg" tags="texture">
+   </INFO>
+   </PATCH>

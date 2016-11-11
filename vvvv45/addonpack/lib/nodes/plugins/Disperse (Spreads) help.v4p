@@ -1,0 +1,197 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
+   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\Disperse\Disperse (Spreads) help.v4p">
+   <BOUNDS height="6975" left="1125" top="1125" type="Window" width="4005">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="165" top="150" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="435" left="165" top="150" type="Box" width="3510">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Disperse (Spreads) help|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="645" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Pause" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="5" nodename=":PLUGINS:\Disperse.dll">
+   <BOUNDS height="270" left="645" top="3765" type="Node" width="2580">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Gamma" visible="1">
+   </PIN>
+   <BOUNDS left="645" top="3765" type="Box">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="660" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1770" left="660" top="4110" type="Box" width="1830">
+   </BOUNDS>
+   <BOUNDS height="160" left="4260" top="3930" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="240" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1470" left="240" top="2235" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="4560" top="4230" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Columns" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="675" type="Node" width="4230">
+   </BOUNDS>
+   <BOUNDS height="885" left="180" top="675" type="Box" width="3375">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|sequentially increases the slices of the spread from 0 to 1 along the input&cr;&lf;the gamma input biases the constraint between the slices to start to increase|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2775" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="585" left="2775" top="2790" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="4080" top="3255" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="4,3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Spread Count|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Spread Count" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1290" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="630" left="1290" top="2820" type="Box" width="690">
+   </BOUNDS>
+   <BOUNDS height="160" left="4380" top="3555" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="2.13000011444092,1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Gamma">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Gamma" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="woei" description="Disperse (Spreads) help" tags="Disperse Spreads Morph">
+   </INFO>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="90" top="6105" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="90" top="6105" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="PeakSpread (Spreads)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="900" top="6135" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="2940" top="6105" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2940" top="6105" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|2009, w.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>

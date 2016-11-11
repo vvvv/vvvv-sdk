@@ -1,0 +1,253 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\Transform\Camera (Transform Orbit) help.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="11085" height="8190">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="150" width="3390" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Camera (Transform Orbit)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="150" top="850" width="5000" height="500">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="850" width="945" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="dottore">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE nodename="Camera (Transform Orbit)" componentmode="Hidden" id="0" systemname="Camera (Transform Orbit)" filename="Camera (Transform Orbit).v4p">
+   <BOUNDS type="Node" left="4780" top="4970" width="3510" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4780" top="4970" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="1035" top="1515" width="18435" height="13380">
+   </BOUNDS>
+   <PIN pinname="Near Plane" visible="-1" pintype="Input" slicecount="1" values="0.05">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.03">
+   </PIN>
+   <PIN pinname="Initial FOV" slicecount="1" values="0.2">
+   </PIN>
+   <PIN pinname="Orbit Movement Velocity" slicecount="1" values="0.02">
+   </PIN>
+   </NODE>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="8" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="5775" top="6630" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="195" top="1410" width="375" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="195" top="1410" width="4725" height="1980">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|MOUSE:&cr;&lf;- left mouse: orbit around the target&cr;&lf;- right mouse: dolly &cr;&lf;- middle mouse: pan&cr;&lf;&cr;&lf;KEYBOARD:&cr;&lf;- Press &quot;r&quot; and hold for a moment to reset the viewport&cr;&lf;- &quot;Ctrl&quot;+mouse wheel: change FOV&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5505" top="5385" width="375" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5505" top="5385" width="2640" height="585">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Connect View and Projection to the Renderer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7080" top="2190" width="825" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7080" top="2190" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Orbit Movement Velocity|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Orbit Movement Velocity" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7860" top="2970" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7860" top="2970" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="FilterTime">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="0" dstpinname="FilterTime" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8925" top="2940" width="4200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8925" top="2940" width="1470" height="330">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Camera Damper|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8145" top="2160" width="4200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8145" top="2160" width="2310" height="570">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Orbit mode: you can add a constant orbit velocity|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="195" top="3510" width="375" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="195" top="3510" width="4725" height="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Hidden Pins:&cr;&lf;- movement and rotation speed control&cr;&lf;- perspective near and far planes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <INFO author="dottore" description="orbit camera transform module help" tags="camera">
+   </INFO>
+   <NODE systemname="Renderer (EX9)" filename="" nodename="Renderer (EX9)" componentmode="InAWindow" id="16">
+   <BOUNDS type="Node" left="1335" top="7110" width="4500" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1335" top="7110" width="6000" height="4500">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11085" top="0" width="9915" height="8055">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mouse State" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard State" visible="1">
+   </PIN>
+   <PIN pinname="Depth Buffer Mode">
+   </PIN>
+   <PIN pinname="Depth Buffer Format">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Actual BackBuffer SizeXY" visible="1">
+   </PIN>
+   <PIN pinname="Show Cursor">
+   </PIN>
+   <PIN pinname="VSync">
+   </PIN>
+   <PIN pinname="AA Samples per Pixel">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="16" dstpinname="Aspect Ratio" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Projection" dstnodeid="16" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="View" dstnodeid="16" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Actual Backbuffer Width" dstnodeid="8" dstpinname="Aspect Width" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Actual Backbuffer Height" dstnodeid="8" dstpinname="Aspect Height" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="180" top="525" width="2400" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="180" top="525" width="2400" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|orbit camera transform module|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.100.0">
+   </PACK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="37">
+   <BOUNDS type="Node" left="1335" top="6465" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
+   </LINK>
+   </PATCH>

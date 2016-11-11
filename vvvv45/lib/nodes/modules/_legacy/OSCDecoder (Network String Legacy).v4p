@@ -1,0 +1,181 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\OSCDecoder (Network String Legacy).v4p" systemname="OSCDecoder (Network String Legacy)" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\_legacy\OSCDecoder (Network String Legacy).v4p">
+   <BOUNDS type="Window" left="9090" top="9690" width="7560" height="4845">
+   </BOUNDS>
+   <NODE systemname="OSCDecoder (Network)" nodename="OSCDecoder (Network)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1200" top="2025" width="3765" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="2" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="3045" top="450" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3045" top="450" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="Last">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Match Rule|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output Enum" dstnodeid="0" dstpinname="Match Rule">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4902" top="450" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4902" top="450" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Address">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output String" dstnodeid="0" dstpinname="Address">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1200" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1200" top="3090" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Arguments">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Arguments" dstnodeid="4" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2235" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2235" top="3090" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="TypeTags">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="TypeTags" dstnodeid="5" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3240" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3240" top="3090" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="TimeTags">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="TimeTags" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4245" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4245" top="3090" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Match Count|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Match Count" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="8" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="5220" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5220" top="3090" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Bin Sizes|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Bin Sizes" dstnodeid="8" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6270" top="3090" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6270" top="3090" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="OnReceive">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="OnReceive" dstnodeid="9" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="1200" top="450" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1200" top="450" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="1200" top="1305" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="iso-8859-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output String" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="12" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="5790" top="825" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5790" top="825" width="1290" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|System Default|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Encoding">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="11" dstpinname="Encoding">
+   </LINK>
+   <INFO author="vvvv group" description="Decodes an OSC packet into its arguments" tags="">
+   </INFO>
+   </PATCH>

@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\Default.Plugin.Project.settings" />
+  <PropertyGroup>
+    <ProjectGuid>{DCBD6A7E-AFA0-4A4F-941E-F80471714701}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VVVV.TodoMap</RootNamespace>
+    <AssemblyName>VVVV.Nodes.TodoMap</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Sanford.Multimedia.Midi">
+      <HintPath>..\..\..\..\..\..\..\packages\Sanford.Multimedia.Midi.6.0.0.1\lib\net20\Sanford.Multimedia.Midi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex">
+      <HintPath>..\..\..\..\..\..\..\packages\VVVV.System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataTypes\TodoVariableDataType.cs" />
+    <Compile Include="Lib\Engine\Filters\TodoCategoryFilter.cs" />
+    <Compile Include="Lib\Engine\IO\AbstractTodoInput.cs" />
+    <Compile Include="Lib\Engine\ITodoClock.cs" />
+    <Compile Include="Lib\Engine\Mappers\TodoTweenMapper.cs" />
+    <Compile Include="Lib\Engine\Mappers\TodoTweenMapper_Delegate.cs" />
+    <Compile Include="Lib\Engine\TodoCategory.cs" />
+    <Compile Include="Lib\Engine\TodoEngine.cs" />
+    <Compile Include="Lib\Engine\TodoVariable.cs" />
+    <Compile Include="Lib\Enums\Enums.cs" />
+    <Compile Include="Lib\Modules\AbstractTodoDevice.cs" />
+    <Compile Include="Lib\Modules\Internal\TodoVVVVClock.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiDevice.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiDeviceManager.cs" />
+    <Compile Include="Lib\Modules\Midi\TodoMidiInput.cs" />
+    <Compile Include="Lib\Modules\Osc\TodoOscDevice.cs" />
+    <Compile Include="Lib\Modules\Osc\TodoOscInput.cs" />
+    <Compile Include="Lib\Persist\TodoPresetWrapper.cs" />
+    <Compile Include="Lib\Persist\TodoXmlUnwrapper.cs" />
+    <Compile Include="Lib\Persist\TodoXmlWrapper.cs" />
+    <Compile Include="Lib\Utils\BoolExtension.cs" />
+    <Compile Include="Lib\Utils\TodoLogger.cs" />
+    <Compile Include="Lib\Utils\UsbDetector.cs" />
+    <Compile Include="Modules\AdvancedSequencer.cs" />
+    <Compile Include="Modules\Hde\TodoHdeEnumVariable.cs" />
+    <Compile Include="Modules\Hde\TodoHdeVariable.cs" />
+    <Compile Include="Modules\Lib\Engine\TimeValuePair.cs" />
+    <Compile Include="Modules\Lib\Engine\Track.cs" />
+    <Compile Include="Modules\Lib\Xml\Serialization\TrackSerializer.cs" />
+    <Compile Include="Modules\OscTree\TodoOscTreeController.cs" />
+    <Compile Include="Nodes\Clock\TodoGetMidiClock.cs" />
+    <Compile Include="Nodes\Controllers\TodoExposedNodeController.cs" />
+    <Compile Include="Nodes\FeedBack\SendCustomFeedBackNode.cs" />
+    <Compile Include="Nodes\Presets\TodoLoadPresetNode.cs" />
+    <Compile Include="Nodes\Presets\TodoSavePresetNode.cs" />
+    <Compile Include="Nodes\TodoMapNode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Nodes\TodoMapNode_ctrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Nodes\TodoMapNode_ctrl.Designer.cs">
+      <DependentUpon>TodoMapNode_ctrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Nodes\Variables\TodoCreateOscMappingNode.cs" />
+    <Compile Include="Nodes\Variables\TodoDeleteMappingNode.cs" />
+    <Compile Include="Nodes\Variables\TodoDeleteVariableNode.cs" />
+    <Compile Include="Nodes\Variables\TodoGetMappingInfo.cs" />
+    <Compile Include="Nodes\Variables\TodoGetValueNode.cs" />
+    <Compile Include="Nodes\Variables\TodoListVariablesNode.cs" />
+    <Compile Include="Nodes\Variables\TodoSetValueNode.cs" />
+    <Compile Include="Nodes\Variables\TodoUpdateVariableNode.cs" />
+    <Compile Include="Nodes\Variables\TodoValueChangedNode.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\Controls\ListViewEx.cs" />
+    <Compile Include="UI\Controls\VariableFilterCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\VariableFilterCtrl.Designer.cs">
+      <DependentUpon>VariableFilterCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Osc\TodoOscManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\Osc\TodoOscManager.Designer.cs">
+      <DependentUpon>TodoOscManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoDeviceManagerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoDeviceManagerCtrl.Designer.cs">
+      <DependentUpon>TodoDeviceManagerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoLoggerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoLoggerCtrl.Designer.cs">
+      <DependentUpon>TodoLoggerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoMappingManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoMappingManager.Designer.cs">
+      <DependentUpon>TodoMappingManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TodoTreeView.Designer.cs">
+      <DependentUpon>TodoTreeView.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nodes\TodoMapNode_ctrl.resx">
+      <DependentUpon>TodoMapNode_ctrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Controls\VariableFilterCtrl.resx">
+      <DependentUpon>VariableFilterCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\Osc\TodoOscManager.resx">
+      <DependentUpon>TodoOscManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\TodoDeviceManagerCtrl.resx">
+      <DependentUpon>TodoDeviceManagerCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\TodoLoggerCtrl.resx">
+      <DependentUpon>TodoLoggerCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\TodoMappingManager.resx">
+      <DependentUpon>TodoMappingManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core %28core\Core%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\src\core\PluginInterfaces\PluginInterfaces.csproj">
+      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
+      <Name>PluginInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\src\core\Utils3rdParty\Utils3rdParty.csproj">
+      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
+      <Name>Utils3rdParty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
