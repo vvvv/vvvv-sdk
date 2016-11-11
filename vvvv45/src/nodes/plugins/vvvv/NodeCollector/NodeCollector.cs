@@ -99,7 +99,7 @@ namespace VVVV.Nodes
         public void Evaluate(int SpreadMax)
         {
             if (FUpdate[0])
-                FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir).Distinct());
+                FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir).Distinct().OrderBy(d => d));
         }
     }
 }
