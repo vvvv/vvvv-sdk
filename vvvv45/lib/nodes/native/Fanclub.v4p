@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Fanclub.v4p" systemname="vvvv-htmlsend" filename="C:\Work\Anton-work\vvvv-irc\vvvv-htmlsend.v4p" scrollx="0" scrolly="-432">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Fanclub.v4p" systemname="vvvv-htmlsend" filename="C:\Work\Anton-work\vvvv-irc\vvvv-htmlsend.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="8460" top="675" width="12315" height="13620">
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
@@ -387,7 +387,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6825" top="1920" width="795" height="240">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="vvvvuser">
+   <PIN pinname="Input String" slicecount="1" values="vvvvan">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -395,9 +395,9 @@
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="343">
    <BOUNDS type="Node" left="8220" top="1920" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="8220" top="1920" width="795" height="240">
+   <BOUNDS type="Box" left="8220" top="1920" width="1275" height="255">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="irc.freenode.org">
+   <PIN pinname="Input String" slicecount="1" values="irc.freenode.net">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -405,7 +405,7 @@
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="344">
    <BOUNDS type="Node" left="9570" top="1920" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="9570" top="1920" width="720" height="240">
+   <BOUNDS type="Box" left="9570" top="1920" width="1005" height="240">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="##sandbox">
    </PIN>
@@ -652,23 +652,9 @@
    <PIN pinname="IsConnected" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="332" srcpinname="Buddylist" dstnodeid="409" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="92" srcpinname="Output" dstnodeid="409" dstpinname="To - Input">
-   </LINK>
-   <LINK srcnodeid="98" srcpinname="Output" dstnodeid="409" dstpinname="To 1">
-   </LINK>
    <LINK srcnodeid="409" srcpinname="Output" dstnodeid="375" dstpinname="HTML">
    </LINK>
-   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="409" dstpinname="Input 1 1">
-   </LINK>
-   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="409" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="409" dstpinname="Input 3">
-   </LINK>
    <LINK srcnodeid="61" srcpinname="Content" dstnodeid="409" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="332" srcpinname="Connected" dstnodeid="409" dstpinname="Switch">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="414" systemname="IOBox (String)">
    <BOUNDS type="Box" left="10950" top="2310" width="795" height="240">
@@ -680,6 +666,8 @@
    <PIN pinname="File Mask" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="408" srcpinname="Output 5" dstnodeid="414" dstpinname="Input String">
@@ -708,20 +696,6 @@
    </LINK>
    <LINK srcnodeid="408" srcpinname="Output 6" dstnodeid="332" dstpinname="Input">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="419" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="10950" top="2595" width="720" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10950" top="2595" width="720" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="Connect">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="332" srcpinname="Buddylist" dstnodeid="409" dstpinname="Buddies">
    </LINK>
    <LINK srcnodeid="370" srcpinname="Output" dstnodeid="409" dstpinname="Server">
@@ -777,11 +751,11 @@
    <LINK srcnodeid="422" srcpinname="Down Edge" dstnodeid="306" dstpinname="Input 3">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="423">
-   <BOUNDS type="Box" left="10950" top="3210" width="480" height="480">
+   <BOUNDS type="Box" left="10950" top="3480" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="10950" top="3210" width="0" height="0">
+   <BOUNDS type="Node" left="10950" top="3480" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -791,25 +765,11 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="423" srcpinname="Y Output Value" dstnodeid="383" dstpinname="Input 2">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="424">
-   <BOUNDS type="Node" left="10950" top="2895" width="720" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10950" top="2895" width="720" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="Connect">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="425">
    <BOUNDS type="Node" left="3600" top="915" width="100" height="100">
    </BOUNDS>
@@ -967,5 +927,17 @@
    <LINK srcnodeid="62" srcpinname="Output String" dstnodeid="375" dstpinname="Base Url" hiddenwhenlocked="1">
    <LINKPOINT x="1845" y="12465">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="AsValue (String)" nodename="AsValue (String)" componentmode="Hidden" id="436">
+   <BOUNDS type="Node" left="10950" top="2850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="414" srcpinname="Output String" dstnodeid="436" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="436" srcpinname="Output" dstnodeid="423" dstpinname="Y Input Value">
    </LINK>
    </PATCH>
