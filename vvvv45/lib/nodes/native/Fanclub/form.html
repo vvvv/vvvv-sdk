@@ -2,7 +2,7 @@
 <header>
   <link href="irc.css" rel="stylesheet">
   <script>
-    function  connect()
+    function connect()
     {
       var f = document.connection;
 
@@ -11,21 +11,34 @@
       document.getElementById('Nickname').innerHTML = f.Nickname.value;
       document.getElementById('Password').innerHTML = f.Password.value;
       document.getElementById('Connect').innerHTML = 1;
+
+      focusTextfield();
     }
-  
-    function scroll()
+
+    function onload()
     {
+      //scroll messages
       var elem = document.getElementById('messages');
       elem.scrollTop = elem.scrollHeight;
+
+      focusTextfield();
     }
 
     function  messageForm()
     {
       document.getElementById('Message').innerHTML = document.message.Message.value;
+      focusTextfield();
     }
+
+    function focusTextfield()
+    {
+      //set focus to the message textfield
+      document.getElementById('MessageField').focus();
+    }
+
 </script>
 </header>
-<body onLoad = "scroll()">
+<body onLoad = "onload()">
   <div class="container">
     <div class = "header">
       <form action="javascript:connect()" name="connection">
@@ -68,7 +81,7 @@
 
     <div class = "sendForm">
         <form action="javascript:messageForm()" name = "message">
-          <input type="text" name="Message">
+          <input type="text" name="Message" id = "MessageField">
           <button>Send</button>
         </form>
         <div class = "rightSpace">
