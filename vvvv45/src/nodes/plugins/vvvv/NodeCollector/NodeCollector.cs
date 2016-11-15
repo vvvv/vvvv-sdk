@@ -32,8 +32,11 @@ namespace VVVV.Nodes
 		
 		[Output("Nodes")]
 		protected ISpread<string> FNodes;
-		
-		[Import]
+
+        [Output("Collected Paths")]
+        protected ISpread<string> FCollectedPaths;
+
+        [Import]
 		protected NodeCollection NodeCollection;
 		
 		[Import]
@@ -70,6 +73,51 @@ namespace VVVV.Nodes
 				select nodeInfo.Systemname;
 			
 			FNodes.AssignFrom(nodeInfos);
+            FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir));
 		}
-	}	
+	}
+
+    #region PluginInfo
+    [PluginInfo(Name = "NodeInfos", Category = "VVVV",
+                Help = "Returns a list of all authors and search paths.",
+                Tags = "")]
+    #endregion PluginInfo
+    public class NodeInfosNode : IPluginEvaluate
+    {
+        #region fields & pins
+        [Input("Update")]
+        protected ISpread<bool> FUpdate;
+
+        [Output("Search Paths")]
+        protected ISpread<string> FCollectedPaths;
+
+        [Output("Authors")]
+        protected ISpread<string> FAuthors;
+
+        [Import]
+        protected NodeCollection NodeCollection;
+        #endregion fields & pins
+
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
+        {
+            if (FUpdate[0])
+            {
+                var authors = NodeCollection.NodeInfoFactory.NodeInfos.SelectMany(ni => ni.Author.Split(',', '&')).Select(a => a.Trim());
+                authors = authors.Where(a => !string.IsNullOrEmpty(a) && a != "unknown" && a != "vvvv group");
+
+                var weightedAuthors = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                foreach (var author in authors)
+                    if (weightedAuthors.ContainsKey(author))
+                        weightedAuthors[author] = weightedAuthors[author] + 1;
+                    else
+                        weightedAuthors[author] = 0;
+
+                FAuthors.AssignFrom(weightedAuthors.OrderBy(a => a.Value).Select(kv => kv.Key).Reverse());
+
+                FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir).Distinct().OrderBy(d => d));
+            }
+                
+        }
+    }
 }
