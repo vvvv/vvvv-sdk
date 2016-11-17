@@ -78,11 +78,11 @@ namespace VVVV.Nodes
 	}
 
     #region PluginInfo
-    [PluginInfo(Name = "NodePaths", Category = "VVVV",
-                Help = "Returns a list of all collected search paths.",
+    [PluginInfo(Name = "NodeInfos", Category = "VVVV",
+                Help = "Returns a list of all authors and search paths.",
                 Tags = "")]
     #endregion PluginInfo
-    public class NodePathsNode : IPluginEvaluate
+    public class NodeInfosNode : IPluginEvaluate
     {
         #region fields & pins
         [Input("Update")]
@@ -90,6 +90,9 @@ namespace VVVV.Nodes
 
         [Output("Search Paths")]
         protected ISpread<string> FCollectedPaths;
+
+        [Output("Authors")]
+        protected ISpread<string> FAuthors;
 
         [Import]
         protected NodeCollection NodeCollection;
@@ -99,7 +102,22 @@ namespace VVVV.Nodes
         public void Evaluate(int SpreadMax)
         {
             if (FUpdate[0])
+            {
+                var authors = NodeCollection.NodeInfoFactory.NodeInfos.SelectMany(ni => ni.Author.Split(',', '&')).Select(a => a.Trim());
+                authors = authors.Where(a => !string.IsNullOrEmpty(a) && a != "unknown" && a != "vvvv group");
+
+                var weightedAuthors = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                foreach (var author in authors)
+                    if (weightedAuthors.ContainsKey(author))
+                        weightedAuthors[author] = weightedAuthors[author] + 1;
+                    else
+                        weightedAuthors[author] = 0;
+
+                FAuthors.AssignFrom(weightedAuthors.OrderBy(a => a.Value).Select(kv => kv.Key).Reverse());
+
                 FCollectedPaths.AssignFrom(NodeCollection.Paths.Select(sp => sp.Dir).Distinct().OrderBy(d => d));
+            }
+                
         }
     }
 }
