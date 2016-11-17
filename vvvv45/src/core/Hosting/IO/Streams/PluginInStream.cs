@@ -324,11 +324,13 @@ namespace VVVV.Hosting.IO.Streams
             {
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
+
                 FNodeIn.GetUpStreamSlices(out FLength, out FUpStreamSlices);
                 // Check fastest way first: TUpstream == T 
                 var wrapper = usI as DynamicTypeWrapper;
                 if (wrapper != null)
                     usI = wrapper.Value;
+
                 FUpstreamStream = usI as MemoryIOStream<T>;
                 if (FUpstreamStream == null)
                 {

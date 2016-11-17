@@ -1,5 +1,5 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Switch (String Output) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.105.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Switch (String Output) help.v4p">
    <BOUNDS height="4470" left="2475" top="1620" type="Window" width="10110">
    </BOUNDS>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
@@ -13,7 +13,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="13" nodename="Switch (Value Input)">
@@ -21,9 +21,9 @@
    </BOUNDS>
    </NODE>
    <NODE id="12" nodename="Frac (Value)">
-   <BOUNDS height="0" left="2205" top="1650" type="Node" width="0">
+   <BOUNDS height="270" left="1800" top="1725" type="Node" width="435">
    </BOUNDS>
-   <PIN pinname="Input" slicecount="1" visible="1">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Whole Part" visible="1">
    </PIN>
@@ -33,7 +33,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Period" slicecount="1" values="10.00000">
+   <PIN pinname="Period" slicecount="1" values="10">
    </PIN>
    </NODE>
    <NODE id="10" nodename="Map (Value)">
@@ -43,18 +43,14 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="3.00000">
+   <PIN pinname="Destination Maximum" slicecount="1" values="3">
    </PIN>
    </NODE>
    <LINK dstnodeid="10" dstpinname="Input" srcnodeid="11" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="12" dstpinname="Input" linkstyle="VHV" srcnodeid="10" srcpinname="Output">
-   <LINKPOINT x="1830" y="1590">
-   </LINKPOINT>
-   <LINKPOINT x="2235" y="1590">
-   </LINKPOINT>
+   <LINK dstnodeid="12" dstpinname="Input" linkstyle="PolyLine" srcnodeid="10" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="1920" top="2190" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3960" top="7350" type="Window" width="215">
@@ -66,11 +62,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="12" srcpinname="Whole Part">
-   <LINKPOINT x="2235" y="2055">
-   </LINKPOINT>
-   <LINKPOINT x="2685" y="2055">
-   </LINKPOINT>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="12" srcpinname="Whole Part">
    </LINK>
    <NODE id="8" nodename="Switch (String Output)">
    <BOUNDS height="0" left="2670" top="2610" type="Node" width="0">
@@ -81,7 +73,7 @@
    </PIN>
    <PIN pinname="Output 2" visible="1">
    </PIN>
-   <PIN pinname="Output Count" slicecount="1" values="3.00000">
+   <PIN pinname="Output Count" slicecount="1" values="3">
    </PIN>
    <PIN pinname="Output 3" visible="1">
    </PIN>
@@ -151,10 +143,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="8" srcpinname="Output 2">
-   <LINKPOINT x="2985" y="3120">
-   </LINKPOINT>
-   <LINKPOINT x="5100" y="3120">
-   </LINKPOINT>
    </LINK>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="0" left="5145" top="3255" type="Node" width="0">
@@ -173,10 +161,6 @@
    </BOUNDS>
    </NODE>
    <LINK dstnodeid="2" dstpinname="Input String" linkstyle="PolyLine" srcnodeid="8" srcpinname="Output 3">
-   <LINKPOINT x="3255" y="2985">
-   </LINKPOINT>
-   <LINKPOINT x="7410" y="2985">
-   </LINKPOINT>
    </LINK>
    <LINK dstnodeid="8" dstpinname="Switch" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
@@ -191,7 +175,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
@@ -205,7 +189,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)">
@@ -215,13 +199,15 @@
    </BOUNDS>
    <BOUNDS height="160" left="9780" top="43560" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch - String Output|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch (String Output)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

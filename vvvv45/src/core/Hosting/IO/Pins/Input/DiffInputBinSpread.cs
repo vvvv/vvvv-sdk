@@ -14,13 +14,11 @@ namespace VVVV.Hosting.Pins.Input
             public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute)
                 : base(ioFactory, attribute, true)
             {
-                
             }
-            
-            public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, Func<IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
-            	: base(ioFactory, attribute, true, binSizeIOContainerFactory)
+
+            public DiffInputBinSpreadStream(IIOFactory ioFactory, InputAttribute attribute, Func<IIOContainer, IIOContainer<IInStream<int>>> binSizeIOContainerFactory)
+                : base(ioFactory, attribute, true, binSizeIOContainerFactory)
             {
-            	
             }
         }
         
@@ -30,12 +28,10 @@ namespace VVVV.Hosting.Pins.Input
         }
         
         public DiffInputBinSpread(IIOFactory ioFactory, InputAttribute attribute, IIOContainer<IInStream<int>> binSizeIOContainer)
-        	: base(ioFactory, attribute, new DiffInputBinSpreadStream(ioFactory, attribute, () => binSizeIOContainer))
+        	: base(ioFactory, attribute, new DiffInputBinSpreadStream(ioFactory, attribute, _ => binSizeIOContainer))
         {
-        	       	
-        } 
-       
-        
+        }
+
         public override bool Sync()
         {
             var isChanged = base.Sync();

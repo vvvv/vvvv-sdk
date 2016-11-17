@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" scrollx="0" scrolly="-1299">
-   <BOUNDS type="Window" left="-165" top="0" width="17340" height="11700">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" scrollx="0" scrolly="-1299">
+   <BOUNDS type="Window" left="1005" top="1665" width="17340" height="11700">
    </BOUNDS>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="990" left="675" top="3750" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example the TUIOCursor (Network Split) receives TUIO messages over UDP.&cr;&lf;&cr;&lf;See also:|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example the TUIOCursor (Network Split 2d) receives TUIO messages over UDP.&cr;&lf;&cr;&lf;See also:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -251,7 +251,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5895" top="9885" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="14295" top="0" width="5745" height="5595">
+   <BOUNDS type="Window" left="20205" top="1365" width="5745" height="5595">
    </BOUNDS>
    <PIN pinname="Background Color" slicecount="1" values="|0.14012,0.14012,0.14012,1.00000|">
    </PIN>
@@ -329,7 +329,7 @@
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
+   <PIN pinname="Layer 2" visible="1">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -881,7 +881,7 @@
    <LINK srcnodeid="208" srcpinname="Inverse Output" dstnodeid="207" dstpinname="Select">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="209" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="13530" top="2205" width="1365" height="510">
+   <BOUNDS type="Box" left="13530" top="2205" width="1530" height="495">
    </BOUNDS>
    <BOUNDS type="Node" left="13530" top="2205" width="0" height="0">
    </BOUNDS>
@@ -899,9 +899,9 @@
    <LINK srcnodeid="207" srcpinname="Output" dstnodeid="209" dstpinname="Input String">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="210" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="15015" top="2190" width="2565" height="480">
+   <BOUNDS type="Node" left="15165" top="2190" width="2565" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="15015" top="2190" width="1530" height="750">
+   <BOUNDS type="Box" left="15165" top="2190" width="1530" height="750">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; your local IP&cr;&lf;(use it as target IP with TUIO sender)|">
    </PIN>
@@ -1131,7 +1131,7 @@
    </BOUNDS>
    <BOUNDS height="525" left="675" top="5670" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, there can be only one UDP Server node listening on a particular port.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Note, there can be only one UDP Server node listening to a particular port.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1220,6 +1220,36 @@
    </NODE>
    <LINK srcnodeid="214" srcpinname="Cursor ID" dstnodeid="215" dstpinname="Input 2">
    </LINK>
-   <PACK Name="ImagePack" Version="0.2.0">
-   </PACK>
+   <NODE componentmode="InABox" id="227" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7575" top="765" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="7575" top="765" type="Box" width="285">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="228" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="285" top="5685" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="285" top="5685" type="Box" width="285">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
    </PATCH>

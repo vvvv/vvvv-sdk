@@ -876,6 +876,10 @@ namespace VVVV.Nodes.Input
 
         [Output("Position")]
         public ISpread<Vector2D> PositionOut;
+        [Output("Position in Pixel", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Client Area", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> ClientAreaOut;
         [Output("Mouse Wheel")]
         public ISpread<int> MouseWheelOut;
         [Output("Left Button")]
@@ -902,6 +906,8 @@ namespace VVVV.Nodes.Input
         public void Evaluate(int spreadMax)
         {
             PositionOut.SliceCount = spreadMax;
+            PositionPixelOut.SliceCount = spreadMax;
+            ClientAreaOut.SliceCount = spreadMax;
             MouseWheelOut.SliceCount = spreadMax;
             FRawMouseWheel.SliceCount = spreadMax;
             LeftButtonOut.SliceCount = spreadMax;
@@ -916,6 +922,8 @@ namespace VVVV.Nodes.Input
                 {
                     // Reset states
                     PositionOut[slice] = Vector2D.Zero;
+                    PositionPixelOut[slice] = Vector2D.Zero;
+                    ClientAreaOut[slice] = Vector2D.Zero;
                     MouseWheelOut[slice] = 0;
                     FRawMouseWheel[slice] = 0;
                     LeftButtonOut[slice] = false;
@@ -953,6 +961,8 @@ namespace VVVV.Nodes.Input
                             break;
                         case MouseNotificationKind.MouseMove:
                             PositionOut[i] = n.Position.FromMousePoint(n.ClientArea);
+                            PositionPixelOut[i] = new Vector2D(n.Position.X, n.Position.Y);
+                            ClientAreaOut[i] = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
                             break;
                         case MouseNotificationKind.MouseWheel:
                             var mouseWheel = n as MouseWheelNotification;
@@ -1082,7 +1092,9 @@ namespace VVVV.Nodes.Input
                         // And remove it from our internal list once it unsubscribes
                         return () => newState.Observers.Remove(observer);
                     });
-                    MouseOut[i] = new Mouse(notifications);
+                    // We explicitly turn off the single subscription so all consumers will observer the same state changes happended in this frame,
+                    // independently of when thy actually subscribe during this frame.
+                    MouseOut[i] = new Mouse(notifications, injectMouseClicks: true, keepSingleSubscription: false);
                 }
             }
         }

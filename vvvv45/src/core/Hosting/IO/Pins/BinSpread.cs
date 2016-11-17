@@ -9,7 +9,7 @@ namespace VVVV.Hosting.Pins
 	/// Base class of 2d spreads.
 	/// </summary>
 	[ComVisible(false)]
-	public abstract class BinSpread<T> : Spread<ISpread<T>>, VVVV.Hosting.IO.IIOMultiPin
+	public abstract class BinSpread<T> : Spread<ISpread<T>>, IIOMultiPin
 	{
 		public class BinSpreadStream : MemoryIOStream<ISpread<T>>
 		{

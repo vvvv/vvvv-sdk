@@ -9,12 +9,12 @@ namespace VVVV.Utils.IO
 {
     public class Mouse
     {
-        public static readonly Mouse Empty = new Mouse(Observable.Never<MouseNotification>(), false);
+        public static readonly Mouse Empty = new Mouse(Observable.Never<MouseNotification>(), false, false);
 
         public readonly IObservable<MouseNotification> MouseNotifications;
         private MouseButtons FPressedButtons;
 
-        public Mouse(IObservable<MouseNotification> mouseNotifications, bool injectMouseClicks = true)
+        public Mouse(IObservable<MouseNotification> mouseNotifications, bool injectMouseClicks = true, bool keepSingleSubscription = true)
         {
             mouseNotifications = mouseNotifications
                 .Do(n =>
@@ -35,7 +35,9 @@ namespace VVVV.Utils.IO
                     });
             if (injectMouseClicks)
                 mouseNotifications = InjectMouseClicks(mouseNotifications);
-            MouseNotifications = mouseNotifications.Publish().RefCount();
+            if (keepSingleSubscription)
+                mouseNotifications = mouseNotifications.Publish().RefCount();
+            MouseNotifications = mouseNotifications;
         }
 
         /// <summary>
@@ -48,8 +50,6 @@ namespace VVVV.Utils.IO
 
         private static IObservable<MouseNotification> InjectMouseClicks(IObservable<MouseNotification> notifications)
         {
-            // Keep only a single subscription
-            notifications = notifications.Publish().RefCount();
             // A mouse down followed by a mouse up in the same area with the same button is considered a single click.
             // Each subsequnt mouse down in the same area in a specific time interval with the same button produces
             // another click with an increased click count.

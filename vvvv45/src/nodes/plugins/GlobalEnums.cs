@@ -10,7 +10,7 @@ namespace VVVV.Nodes
 	// Source:
 	// https://github.com/adobe-photoshop/generator-core/wiki/Photoshop-Kevlar-API-Additions-for-Generator
 	//
-	
+
 	public enum PhotoshopEvents
 	{
 		imageChanged,
@@ -84,8 +84,9 @@ namespace VVVV.Nodes
 		
 		public void Start()
 		{
-			//Photoshop
-			EnumManager.UpdateEnum("PhotoshopEvents", "documentChanged", Enum.GetNames(typeof(PhotoshopEvents)));
+
+            //Photoshop
+            EnumManager.UpdateEnum("PhotoshopEvents", "documentChanged", Enum.GetNames(typeof(PhotoshopEvents)));
 			EnumManager.UpdateEnum("PhotoshopImageFormat", "JPEG", Enum.GetNames(typeof(PhotoshopImageFormat)));
 			
 			//RS232
@@ -106,6 +107,8 @@ namespace VVVV.Nodes
             //Cursor Type
             EnumManager.UpdateEnum("CursorType", "Pointer", new string[] { "Pointer", "Vert", "Hor", "Left Bottom", "Right Bottom", "Left Top", "Right Top" });
 
+            //Point Type
+            EnumManager.UpdateEnum("PointType", "Circle", new string[] { "Rectangle", "Triangle", "Circle"});
 
         }
 		public void Shutdown()

@@ -41,7 +41,19 @@ namespace VVVV.PluginInterfaces.V2
     		Window = window;
     	}
     }
-    
+
+    [ComVisible(false)]
+    public class EnumEventArgs : EventArgs
+    {
+        string FEnumName;
+        public string EnumName => FEnumName;
+
+        public EnumEventArgs(string enumName)
+        {
+            FEnumName = enumName;
+        }
+    }
+
     [ComVisible(false)]
     public class ComponentModeEventArgs : EventArgs
     {
@@ -104,7 +116,10 @@ namespace VVVV.PluginInterfaces.V2
 	
 	[ComVisible(false)]
 	public delegate void ComponentModeEventHandler(object sender, ComponentModeEventArgs args);
-    
+
+    [ComVisible(false)]
+    public delegate void EnumEventHandler(object sender, EnumEventArgs args);
+
     /// <summary>
 	/// The interface to be implemented by a program to host IHDEPlugins.
 	/// </summary>
@@ -145,11 +160,12 @@ namespace VVVV.PluginInterfaces.V2
 	    event WindowEventHandler WindowRemoved;
 	    event ComponentModeEventHandler BeforeComponentModeChange;
 	    event ComponentModeEventHandler AfterComponentModeChange;
-	    
-	    /// <summary>
-	    /// The currently selected patch window.
-	    /// </summary>
-	    IWindow2 ActivePatchWindow
+        event EnumEventHandler EnumChanged;
+
+        /// <summary>
+        /// The currently selected patch window.
+        /// </summary>
+        IWindow2 ActivePatchWindow
 	    {
 	    	get;
 	    }

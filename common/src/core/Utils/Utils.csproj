@@ -11,6 +11,8 @@
     <DocumentationFile>$(OutputPath)\VVVV.Utils.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -55,7 +57,7 @@
     <Compile Include="Application\AppInfo.cs" />
     <Compile Include="Collections\EqualityComparers.cs" />
     <Compile Include="Collections\IListExtensions.cs" />
-    <Compile Include="Image\GDIPEffects.cs" />
+    <Compile Include="Image\GDIPlus.cs" />
     <Compile Include="Image\GifImage.cs" />
     <Compile Include="IO\ComStream.Empty.cs" />
     <Compile Include="IO\ComStream.Memory.cs" />
@@ -195,4 +197,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets'))" />
+  </Target>
 </Project>

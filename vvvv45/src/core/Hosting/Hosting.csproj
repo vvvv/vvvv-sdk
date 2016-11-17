@@ -31,9 +31,9 @@
     <Reference Include="Nito.Async">
       <HintPath>..\..\..\..\common\src\thirdparty\Nito.Async.dll</HintPath>
     </Reference>
-    <Reference Include="NuGet.Core, Version=2.11.1.812, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="NuGet.Core, Version=2.10.1.766, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\NuGet.Core.2.11.1\lib\net40-Client\NuGet.Core.dll</HintPath>
+      <HintPath>..\..\..\..\packages\NuGet.Core.2.10.1\lib\net40-Client\NuGet.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -60,10 +60,6 @@
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="VL.Bootstrap, Version=0.38.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\VL.Bootstrap.0.38.179-g5f39d4314c\lib\net46\VL.Bootstrap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExposedNodeService.cs" />
@@ -80,7 +76,6 @@
     <Compile Include="Interfaces\IInternalMainLoopEvent.cs" />
     <Compile Include="Interfaces\IInternalMainLoopEventListener.cs" />
     <Compile Include="IO\DynamicTypeWrapper.cs" />
-    <Compile Include="IO\IIOMultiPin.cs" />
     <Compile Include="IO\PluginContainer.cs" />
     <Compile Include="IO\PointerRegistry.cs" />
     <Compile Include="IO\Pointers\ColorInput.cs" />
@@ -181,6 +176,10 @@
       <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
       <Name>Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\external\NuGetAssemblyLoader\src\NuGetAssemblyLoader.csproj">
+      <Project>{c39e8f1a-d00b-4068-b558-856b8b8bdbac}</Project>
+      <Name>NuGetAssemblyLoader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PluginInterfaces\PluginInterfaces.csproj">
       <Project>{837c740a-485c-424c-8c38-086ed3dc73cb}</Project>
       <Name>PluginInterfaces</Name>
@@ -198,6 +197,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props'))" />
     <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets'))" />
   </Target>
   <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" />
+  <Import Project="..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('..\..\..\..\..\public-vl\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" />
 </Project>

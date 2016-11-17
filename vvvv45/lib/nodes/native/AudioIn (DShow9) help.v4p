@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\AudioIn (DShow9) help.v4p">
-   <BOUNDS height="10470" left="15930" top="4620" type="Window" width="9390">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\AudioIn (DShow9) help.v4p">
+   <BOUNDS height="8385" left="6240" top="735" type="Window" width="6165">
    </BOUNDS>
    <NODE id="7" nodename="AudioIn (DShow9)">
    <BOUNDS height="0" left="1140" top="1800" type="Node" width="0">
@@ -42,22 +42,6 @@
    <BOUNDS height="240" left="1140" top="3375" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="4" nodename="AudioMixer (System)">
-   <BOUNDS height="0" left="3855" top="2580" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Line" slicecount="1" values="|Volume Control|">
-   </PIN>
-   <PIN pinname="Device" slicecount="1" values="(nil)">
-   </PIN>
-   <PIN pinname="Volume" slicecount="1" values="0.8">
-   </PIN>
-   </NODE>
-   <NODE id="3" nodename="AudioRecordSelector (System)">
-   <BOUNDS height="0" left="3855" top="3075" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Device" slicecount="1" values="|Wave Out Mix|">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Audio" srcnodeid="7" srcpinname="Audio">
@@ -196,28 +180,12 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="1050" top="6255" type="Node" width="7425">
-   </BOUNDS>
-   <BOUNDS height="1305" left="1050" top="6255" type="Box" width="4065">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|If the AudioRecordSelector (System) is red for you, don&apos;t worry, it&apos;s ok, you are on Win7/8 machine. &cr;&lf;&cr;&lf;This node is from the XP world, where you have to choose a Device first in order to use AudioIn.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="12" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="2115" top="1305" width="1590" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="2115" top="1305" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|Microphone (Logitech USB Headse|">
+   <PIN pinname="Input Enum" slicecount="1" values="|Microphone (Conexant 20671 SmartAudio HD)|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -225,9 +193,9 @@
    <LINK srcnodeid="12" srcpinname="Output Enum" dstnodeid="7" dstpinname="Driver">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1125" top="7680" width="5000" height="450">
+   <BOUNDS type="Node" left="1125" top="6330" width="5000" height="450">
    </BOUNDS>
-   <BOUNDS type="Box" left="1125" top="7680" width="1350" height="390">
+   <BOUNDS type="Box" left="1125" top="6330" width="1350" height="390">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
    </PIN>
@@ -239,13 +207,15 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="20">
-   <BOUNDS type="Node" left="1125" top="8280" width="100" height="100">
+   <BOUNDS type="Node" left="1125" top="6930" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="1125" top="8280" width="2850" height="240">
+   <BOUNDS type="Box" left="1125" top="6930" width="2850" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\10_Input_Overview.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\10_Input_Overview.v4p">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
    </PATCH>

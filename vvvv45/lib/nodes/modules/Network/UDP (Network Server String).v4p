@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p" systemname="UDP (Network Server String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p">
-   <BOUNDS type="Window" left="9900" top="5100" width="7095" height="5880">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p" systemname="UDP (Network Server String)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\UDP (Network Server String).v4p">
+   <BOUNDS type="Window" left="6765" top="5250" width="7215" height="5880">
    </BOUNDS>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="9" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="4530" top="1200" width="0" height="0">
@@ -64,8 +64,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Enable">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1884" top="1200" width="0" height="0">
    </BOUNDS>
@@ -88,8 +86,6 @@
    <PIN pinname="Maximum" slicecount="1" values="65535">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Local Port">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="4038" top="2220" width="0" height="0">
    </BOUNDS>
@@ -108,8 +104,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Buffer Size">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
    <BOUNDS type="Node" left="5106" top="2220" width="0" height="0">
    </BOUNDS>
@@ -122,8 +116,6 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="2" dstpinname="Queue Mode">
-   </LINK>
    <NODE systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" id="18">
    <BOUNDS type="Node" left="3360" top="2262" width="100" height="100">
    </BOUNDS>
@@ -132,8 +124,6 @@
    <PIN pinname="Encoding" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="2" dstpinname="Delimiter">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="18" dstpinname="Encoding">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
@@ -189,6 +179,8 @@
    </PIN>
    <PIN pinname="Queue Count" visible="1">
    </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Enable">
    </LINK>
@@ -204,4 +196,24 @@
    </LINK>
    <LINK srcnodeid="21" srcpinname="Queue Count" dstnodeid="20" dstpinname="Y Input Value">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="5115" top="3975" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5115" top="3975" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Status">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Status" dstnodeid="22" dstpinname="Input String">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

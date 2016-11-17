@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 
 namespace VVVV.Utils.Win32
@@ -39,6 +40,10 @@ namespace VVVV.Utils.Win32
             var cdX = User32.GetSystemMetrics(CXFRAME);
             var cdY = User32.GetSystemMetrics(CYFRAME);
             var cdC = User32.GetSystemMetrics(CYSMCAPTION);
+
+            //windows with empty captions don't have a titlebar (like the VL editor)
+            if (User32.GetWindowTextLength(handle) == 0)
+                cdC = 0;
 
             var left = windowRect.Left + cdX;
             var top = windowRect.Top + cdY + cdC;

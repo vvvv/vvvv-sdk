@@ -55,7 +55,7 @@ namespace System.Windows.Forms
 
         public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs)
         {
-            return new KeyDownNotification(eventArgs.KeyCode);
+            return new KeyDownNotification(eventArgs);
         }
 
         public static KeyUpNotification ToKeyUpNotification(this KeyEventArgs eventArgs)

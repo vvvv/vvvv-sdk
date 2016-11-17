@@ -28,7 +28,8 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
-using VL.Core;
+using NuGetAssemblyLoader;
+using Nito.Async;
 
 namespace VVVV.Hosting
 {
@@ -36,8 +37,67 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     [ComVisible(false)]
     class HDEHost : IInternalHDEHost, IHDEHost,
-    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener
+    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener, IEnumListener
     {
+        #region SynchronizationContext hack
+        // See issue described here: http://stackoverflow.com/questions/32439669/hosting-net-and-winforms-synchronizationcontexts-is-reset-when-showdialog-of
+        class MySynchronizationContext : SynchronizationContext
+        {
+            private readonly SynchronizationContext context = new WindowsFormsSynchronizationContext();
+
+            static MySynchronizationContext()
+            {
+                // This tells the GenericSynchronizingObject class implementing ISynchronizeInvoke used by our file watchers that an invoke is indeed required
+                SynchronizationContextRegister.Register(typeof(MySynchronizationContext), SynchronizationContextProperties.Standard);
+            }
+
+            public override SynchronizationContext CreateCopy()
+            {
+                return context.CreateCopy();
+            }
+
+            public override bool Equals(object obj)
+            {
+                return context.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return context.GetHashCode();
+            }
+
+            public override void OperationCompleted()
+            {
+                context.OperationCompleted();
+            }
+
+            public override void OperationStarted()
+            {
+                context.OperationStarted();
+            }
+
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                context.Post(d, state);
+            }
+
+            public override void Send(SendOrPostCallback d, object state)
+            {
+                context.Send(d, state);
+            }
+
+            public override string ToString()
+            {
+                return "Wrapped";
+            }
+
+            public override int Wait(IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout)
+            {
+                return context.Wait(waitHandles, waitAll, millisecondsTimeout);
+            }
+        }
+        #endregion
+
         public const string ENV_VVVV = "VVVV45";
         
         const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
@@ -106,7 +166,7 @@ namespace VVVV.Hosting
             //add repository paths from commandline
             //from commandline
             var repoArg = "/package-repositories";
-            var packageRepositories = AssemblyProbing.ParseCommandLine(repoArg);
+            var packageRepositories = AssemblyLoader.ParseCommandLine(repoArg);
 
             //from args.txt
             var argsFile = Path.Combine(ExePath, "args.txt");
@@ -120,27 +180,22 @@ namespace VVVV.Hosting
                 packageRepositories = packageRepositories.Union(repoPaths).ToArray();
             }
 
-            AssemblyProbing.AddPackageRepositories(packageRepositories);
+            AssemblyLoader.AddPackageRepositories(packageRepositories);
 
             //the built-in one
-            AssemblyProbing.AddPackageRepository(PacksPath);
+            if (Directory.Exists(PacksPath))
+                AssemblyLoader.AddPackageRepository(PacksPath);
+            //the one where the user is supposed to install packages
+            if (Directory.Exists(UserPacksPatch))
+                AssemblyLoader.AddPackageRepository(UserPacksPatch);
             
 
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
-            
+
             // Create a windows forms sync context (FileSystemWatcher runs asynchronously).
-            var context = SynchronizationContext.Current;
-            if (context == null)
-            {
-                // We need to create a user control to get a sync context.
-                var control = new UserControl();
-                context = SynchronizationContext.Current;
-                control.Dispose();
-                
-                Debug.Assert(context != null, "SynchronizationContext not set.");
-            }
-            
+            SynchronizationContext.SetSynchronizationContext(new MySynchronizationContext());
+
             // Register at least one ICommandHistory for top level element ISolution
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
@@ -194,6 +249,7 @@ namespace VVVV.Hosting
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
             FVVVVHost.AddComponentModeListener(this);
+            FVVVVHost.AddEnumListener(this);
 
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
@@ -299,7 +355,7 @@ namespace VVVV.Hosting
 
         private void LoadFactoriesFromPackages(AggregateCatalog catalog)
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
@@ -314,7 +370,7 @@ namespace VVVV.Hosting
 
         private void LoadNodesFromPackages()
         {
-            foreach (var package in AssemblyProbing.Repository.GetPackages())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
                 var packagePath = package.GetPathOfPackage();
                 //check if the package contains a legacy package
@@ -567,7 +623,16 @@ namespace VVVV.Hosting
                 WindowRemoved(this, args);
             }
         }
-        
+
+        public event EnumEventHandler EnumChanged;
+        protected virtual void OnEnumChanged(EnumEventArgs args)
+        {
+            if (EnumChanged != null)
+            {
+                EnumChanged(this, args);
+            }
+        }
+
         public INode Root
         {
             get
@@ -627,13 +692,8 @@ namespace VVVV.Hosting
             FVVVVHost.GetEnumEntry(EnumName, Index, out entryName);
             return entryName;
         }
-        
-        public double GetCurrentTime()
-        {
-            double currentTime;
-            FVVVVHost.GetCurrentTime(out currentTime);
-            return currentTime;
-        }
+
+        public double GetCurrentTime() => FrameTime;
         
         public double FrameTime
         {
@@ -644,7 +704,7 @@ namespace VVVV.Hosting
                 return currentTime;
             }
         }
-        
+
         public double RealTime
         {
             get
@@ -722,7 +782,8 @@ namespace VVVV.Hosting
             private set;
         }
 
-        public string PacksPath => Path.Combine(ExePath, "packs");
+        public string PacksPath => Path.Combine(ExePath, "lib", "packs");
+        public string UserPacksPatch => Path.Combine(ExePath, "packs");
         
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
@@ -922,6 +983,11 @@ namespace VVVV.Hosting
 
         public void SetFrameTimeProvider(Func<double, double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
         public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
+
+        public void EnumChangeCB(string enumName)
+        {
+            OnEnumChanged(new EnumEventArgs(enumName));
+        }
 
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
     }

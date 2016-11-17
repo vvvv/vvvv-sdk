@@ -48,7 +48,7 @@ namespace System
 
         public static bool Contains(this string source, string value, StringComparison comparisonType)
         {
-            return source.IndexOf(value, comparisonType) >= 0;
+            return source != null && source.IndexOf(value, comparisonType) >= 0;
         }
 
         public static string ToEnvironmentNewLine(this string value)
