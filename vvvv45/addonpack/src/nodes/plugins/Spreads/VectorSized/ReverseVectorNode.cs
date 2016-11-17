@@ -56,9 +56,9 @@ namespace VVVV.Nodes
 						{
 							if (FReverse[b])
 							{
-								for (int r = (spread[b].Length/vecSize)-1; r>=0; r--)
+								for (int r =spread[b].Length-vecSize; r>=0; r-=vecSize)
 								{
-									dataWriter.Write(spread.GetBinRow(b,r).ToArray(), 0, vecSize);
+									dataWriter.Write(spread[b], r, vecSize);
 								}
 							}
 							else

@@ -50,11 +50,12 @@ namespace VVVV.Nodes
 						FOutput.Length=0;
 					else
 					{
-					FOutput.Length = spread.Count*vecSize;
-					using (var dataWriter = FOutput.GetWriter())
-						for (int b = 0; b < spread.Count; b++)
-							for (int v = 0; v < vecSize; v++)
-								dataWriter.Write(spread.GetBinColumn(b,v).Aggregate((work,next) => work*next),1);
+					    FOutput.Length = spread.Count*vecSize;
+                        using (var dataWriter = FOutput.GetWriter())
+                            for (int b = 0; b < spread.Count; b++)
+                                if (spread[b].Length > 0)
+                                    for (int v = 0; v < vecSize; v++)
+                                        dataWriter.Write(spread.GetBinColumn(b, v).DefaultIfEmpty(1).Aggregate((work, next) => work * next), 1);
 					}
 				}
 				else
