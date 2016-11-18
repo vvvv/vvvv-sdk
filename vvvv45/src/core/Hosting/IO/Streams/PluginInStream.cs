@@ -477,7 +477,8 @@ namespace VVVV.Hosting.IO.Streams
         private readonly bool FAutoValidate;
         private readonly Spread<Subscription<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription<Mouse, MouseNotification>>();
         private readonly Spread<int> FRawMouseWheels = new Spread<int>();
-        
+        private readonly Spread<int> FRawMouseHWheels = new Spread<int>();
+
         public MouseToMouseStateInStream(IIOFactory factory, INodeIn nodeIn)
         {
             FFactory = factory;
@@ -507,6 +508,7 @@ namespace VVVV.Hosting.IO.Streams
                 Length = FNodeIn.SliceCount;
 
                 FRawMouseWheels.SliceCount = Length;
+                FRawMouseHWheels.SliceCount = Length;
                 FSubscriptions.ResizeAndDispose(
                     Length,
                     slice =>
@@ -524,20 +526,26 @@ namespace VVVV.Hosting.IO.Streams
                                 {
                                     case MouseNotificationKind.MouseDown:
                                         var downNotification = n as MouseButtonNotification;
-                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons | downNotification.Buttons, mouseState.MouseWheel);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons | downNotification.Buttons, mouseState.MouseWheel, mouseState.MouseHorizontalWheel);
                                         break;
                                     case MouseNotificationKind.MouseUp:
                                         var upNotification = n as MouseButtonNotification;
-                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons & ~upNotification.Buttons, mouseState.MouseWheel);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons & ~upNotification.Buttons, mouseState.MouseWheel, mouseState.MouseHorizontalWheel);
                                         break;
                                     case MouseNotificationKind.MouseMove:
-                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel, mouseState.MouseHorizontalWheel);
                                         break;
                                     case MouseNotificationKind.MouseWheel:
                                         var wheelNotification = n as MouseWheelNotification;
                                         FRawMouseWheels[slice] += wheelNotification.WheelDelta;
                                         var wheel = (int)Math.Round((float)FRawMouseWheels[slice] / Const.WHEEL_DELTA);
-                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, wheel);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, wheel, mouseState.MouseHorizontalWheel);
+                                        break;
+                                    case MouseNotificationKind.MouseHorizontalWheel:
+                                        var hwheelNotification = n as MouseHorizontalWheelNotification;
+                                        FRawMouseHWheels[slice] += hwheelNotification.WheelDelta;
+                                        var hwheel = (int)Math.Round((float)FRawMouseHWheels[slice] / Const.WHEEL_DELTA);
+                                        mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel, hwheel);
                                         break;
                                 }
                                 SetMouseState(slice, ref mouseState);
