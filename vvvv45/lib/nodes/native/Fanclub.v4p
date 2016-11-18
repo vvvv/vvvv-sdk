@@ -1,15 +1,15 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Fanclub.v4p" systemname="vvvv-htmlsend" filename="C:\Work\Anton-work\vvvv-irc\vvvv-htmlsend.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="8460" top="675" width="12315" height="13620">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Fanclub.v4p" systemname="vvvv-htmlsend" filename="C:\Work\Anton-work\vvvv-irc\vvvv-htmlsend.v4p" scrollx="0" scrolly="-1080">
+   <BOUNDS type="Window" left="8475" top="735" width="12315" height="13620">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="34.1.0">
    </PACK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="38">
    <BOUNDS type="Node" left="1890" top="15900" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="1890" top="15900" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="225" top="675" width="8430" height="7140">
+   <BOUNDS type="Window" left="240" top="615" width="8430" height="7140">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -122,6 +122,8 @@
    <BOUNDS type="Node" left="2115" top="14655" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="66" srcpinname="Layer" dstnodeid="65" dstpinname="Layer 2">
@@ -351,11 +353,11 @@
    </PIN>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Nickname" visible="1">
+   <PIN pinname="Nickname" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Server" visible="1" slicecount="1" values="irc.freenode.org">
    </PIN>
-   <PIN pinname="Channel" visible="1">
+   <PIN pinname="Channel" visible="1" slicecount="1" values="#vvvv">
    </PIN>
    <PIN pinname="Password" visible="1" slicecount="1" values="||">
    </PIN>
@@ -364,6 +366,8 @@
    <PIN pinname="Error" visible="1">
    </PIN>
    <PIN pinname="Buddylist" visible="1">
+   </PIN>
+   <PIN pinname="Port" visible="1" slicecount="1" values="6667">
    </PIN>
    </NODE>
    <LINK srcnodeid="332" srcpinname="Speaker" dstnodeid="95" dstpinname="Input">
@@ -412,58 +416,6 @@
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="AvoidEmpty (String)" filename="AvoidEmpty (String).v4p" componentmode="Hidden" id="369" nodename="AvoidEmpty (String).v4p">
-   <BOUNDS type="Node" left="5790" top="2895" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="5790" top="2895" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Default" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="332" dstpinname="Nickname">
-   </LINK>
-   <NODE systemname="AvoidEmpty (String)" filename="AvoidEmpty (String).v4p" componentmode="Hidden" id="370" nodename="AvoidEmpty (String).v4p">
-   <BOUNDS type="Node" left="7185" top="2895" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7185" top="2895" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Default" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="332" dstpinname="Server">
-   </LINK>
-   <LINK srcnodeid="343" srcpinname="Output String" dstnodeid="370" dstpinname="Default">
-   </LINK>
-   <NODE systemname="AvoidEmpty (String)" filename="AvoidEmpty (String).v4p" componentmode="Hidden" id="371" nodename="AvoidEmpty (String).v4p">
-   <BOUNDS type="Node" left="8505" top="2850" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8505" top="2850" width="4800" height="3600">
-   </BOUNDS>
-   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Default" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="344" srcpinname="Output String" dstnodeid="371" dstpinname="Default">
-   </LINK>
-   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="332" dstpinname="Channel">
-   </LINK>
    <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.exe" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="375">
    <BOUNDS type="Node" left="2235" top="13620" width="100" height="100">
    </BOUNDS>
@@ -474,6 +426,8 @@
    <PIN pinname="Execute" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Loaded" visible="1">
+   </PIN>
+   <PIN pinname="Is Loading" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="375" srcpinname="Output" dstnodeid="39" dstpinname="Texture">
@@ -501,13 +455,11 @@
    <NODE systemname="Change (String)" nodename="Change (String)" componentmode="Hidden" id="378">
    <BOUNDS type="Node" left="8505" top="3540" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="378" dstpinname="Input">
-   </LINK>
    <NODE systemname="Change (String)" nodename="Change (String)" componentmode="Hidden" id="379">
    <BOUNDS type="Node" left="7350" top="3570" width="100" height="100">
    </BOUNDS>
@@ -516,8 +468,6 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="379" dstpinname="Input">
-   </LINK>
    <NODE systemname="Change (String)" nodename="Change (String)" componentmode="Hidden" id="380">
    <BOUNDS type="Node" left="6510" top="3555" width="100" height="100">
    </BOUNDS>
@@ -526,8 +476,6 @@
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="380" dstpinname="Input">
-   </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="381">
    <BOUNDS type="Node" left="7005" top="4110" width="100" height="100">
    </BOUNDS>
@@ -593,7 +541,7 @@
    </BOUNDS>
    <PIN pinname="Send String" slicecount="1" values="Data">
    </PIN>
-   <PIN pinname="Input Value" visible="1">
+   <PIN pinname="Input Value" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE systemname="R (String)" nodename="R (String)" componentmode="Hidden" id="407">
@@ -626,36 +574,6 @@
    </NODE>
    <LINK srcnodeid="407" srcpinname="Input Value" dstnodeid="408" dstpinname="Input">
    </LINK>
-   <NODE systemname="UpdateHTML" filename="UpdateHTML.v4p" nodename="UpdateHTML.v4p" componentmode="Hidden" id="409">
-   <BOUNDS type="Node" left="2230" top="10109" width="5940" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="615" top="2829" width="6870" height="14560">
-   </BOUNDS>
-   <BOUNDS type="Window" left="7020" top="2910" width="13245" height="14550">
-   </BOUNDS>
-   <PIN pinname="To">
-   </PIN>
-   <PIN pinname="Error" visible="1">
-   </PIN>
-   <PIN pinname="Speaker" visible="1">
-   </PIN>
-   <PIN pinname="Message" visible="1">
-   </PIN>
-   <PIN pinname="Buddies" visible="1">
-   </PIN>
-   <PIN pinname="Server" visible="1">
-   </PIN>
-   <PIN pinname="Channel" visible="1">
-   </PIN>
-   <PIN pinname="Nickname" visible="1">
-   </PIN>
-   <PIN pinname="IsConnected" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="409" srcpinname="Output" dstnodeid="375" dstpinname="HTML">
-   </LINK>
-   <LINK srcnodeid="61" srcpinname="Content" dstnodeid="409" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="414" systemname="IOBox (String)">
    <BOUNDS type="Box" left="10950" top="2310" width="795" height="240">
    </BOUNDS>
@@ -672,8 +590,6 @@
    </NODE>
    <LINK srcnodeid="408" srcpinname="Output 5" dstnodeid="414" dstpinname="Input String">
    </LINK>
-   <LINK srcnodeid="332" srcpinname="Error" dstnodeid="409" dstpinname="Error">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="418" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4410" top="5655" width="525" height="270">
    </BOUNDS>
@@ -688,36 +604,18 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="408" srcpinname="Output 3" dstnodeid="369" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="408" srcpinname="Output 2" dstnodeid="371" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="408" srcpinname="Output 1" dstnodeid="370" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="408" srcpinname="Output 6" dstnodeid="332" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="332" srcpinname="Buddylist" dstnodeid="409" dstpinname="Buddies">
-   </LINK>
-   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="409" dstpinname="Server">
-   </LINK>
-   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="409" dstpinname="Channel">
-   </LINK>
-   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="409" dstpinname="Nickname">
-   </LINK>
-   <LINK srcnodeid="332" srcpinname="Connected" dstnodeid="409" dstpinname="IsConnected">
    </LINK>
    <LINK srcnodeid="311" srcpinname="Value" dstnodeid="318" dstpinname="Input 1">
    </LINK>
    <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="420">
-   <BOUNDS type="Node" left="3780" top="14175" width="100" height="100">
+   <BOUNDS type="Node" left="4230" top="14595" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="375" srcpinname="Loaded" dstnodeid="420" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="421">
    <BOUNDS type="Node" left="5685" top="11655" width="100" height="100">
    </BOUNDS>
@@ -731,9 +629,9 @@
    <LINK srcnodeid="61" srcpinname="Success" dstnodeid="421" dstpinname="Set">
    </LINK>
    <LINK srcnodeid="420" srcpinname="Output 1" dstnodeid="421" dstpinname="Reset" linkstyle="Bezier">
-   <LINKPOINT x="6015" y="15445">
+   <LINKPOINT x="6315" y="15725">
    </LINKPOINT>
-   <LINKPOINT x="8460" y="10490">
+   <LINKPOINT x="8610" y="10630">
    </LINKPOINT>
    </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="422">
@@ -767,9 +665,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="423" srcpinname="Y Output Value" dstnodeid="383" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="425">
    <BOUNDS type="Node" left="3600" top="915" width="100" height="100">
    </BOUNDS>
@@ -826,8 +724,6 @@
    </LINK>
    <LINK srcnodeid="342" srcpinname="Output String" dstnodeid="428" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="428" srcpinname="Output" dstnodeid="369" dstpinname="Default">
-   </LINK>
    <NODE systemname="Reverse (String)" nodename="Reverse (String)" componentmode="Hidden" id="429">
    <BOUNDS type="Node" left="2970" top="9525" width="100" height="100">
    </BOUNDS>
@@ -838,8 +734,6 @@
    </NODE>
    <LINK srcnodeid="92" srcpinname="Output" dstnodeid="429" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="429" srcpinname="Output" dstnodeid="409" dstpinname="Speaker">
-   </LINK>
    <NODE systemname="Reverse (String)" nodename="Reverse (String)" componentmode="Hidden" id="430">
    <BOUNDS type="Node" left="3840" top="9555" width="100" height="100">
    </BOUNDS>
@@ -849,8 +743,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="98" srcpinname="Output" dstnodeid="430" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="430" srcpinname="Output" dstnodeid="409" dstpinname="Message">
    </LINK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="431">
    <BOUNDS type="Node" left="4395" top="6615" width="360" height="270">
@@ -883,18 +775,6 @@
    <LINK srcnodeid="379" srcpinname="OnChange" dstnodeid="432" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="432" srcpinname="Output" dstnodeid="431" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="HoldString" filename="HoldString.v4p" nodename="HoldString.v4p" componentmode="Hidden" id="433">
-   <BOUNDS type="Node" left="5175" top="18045" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="318" srcpinname="Output 1" dstnodeid="433" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="433" srcpinname="Output" dstnodeid="406" dstpinname="Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="434">
    <BOUNDS type="Box" left="9045" top="1050" width="795" height="240">
@@ -939,5 +819,153 @@
    <LINK srcnodeid="414" srcpinname="Output String" dstnodeid="436" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="436" srcpinname="Output" dstnodeid="423" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="437">
+   <BOUNDS type="Node" left="8610" top="7350" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="437" srcpinname="Device" dstnodeid="66" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="438">
+   <BOUNDS type="Node" left="3555" top="14130" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Down Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="375" srcpinname="Is Loading" dstnodeid="438" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="438" srcpinname="Down Edge" dstnodeid="420" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="UpdateHTML" filename="Fanclub\UpdateHTML.v4p" nodename="Fanclub\UpdateHTML.v4p" componentmode="InAWindow" id="439">
+   <BOUNDS type="Node" left="8640" top="12225" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="AvoidEmpty (String)" filename="Fanclub\AvoidEmpty (String).v4p" componentmode="Hidden" id="369" nodename="AvoidEmpty (String)">
+   <BOUNDS type="Node" left="5790" top="2895" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5790" top="2895" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Default" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="332" dstpinname="Nickname">
+   </LINK>
+   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="380" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="408" srcpinname="Output 3" dstnodeid="369" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="428" srcpinname="Output" dstnodeid="369" dstpinname="Default">
+   </LINK>
+   <NODE systemname="AvoidEmpty (String)" filename="Fanclub\AvoidEmpty (String).v4p" componentmode="Hidden" id="370" nodename="AvoidEmpty (String)">
+   <BOUNDS type="Node" left="7185" top="2895" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7185" top="2895" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Default" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="332" dstpinname="Server">
+   </LINK>
+   <LINK srcnodeid="343" srcpinname="Output String" dstnodeid="370" dstpinname="Default">
+   </LINK>
+   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="379" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="408" srcpinname="Output 1" dstnodeid="370" dstpinname="Input">
+   </LINK>
+   <NODE systemname="AvoidEmpty (String)" filename="Fanclub\AvoidEmpty (String).v4p" componentmode="Hidden" id="371" nodename="AvoidEmpty (String)">
+   <BOUNDS type="Node" left="8505" top="2850" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8505" top="2850" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="17580" top="4125" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Default" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="344" srcpinname="Output String" dstnodeid="371" dstpinname="Default">
+   </LINK>
+   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="332" dstpinname="Channel">
+   </LINK>
+   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="378" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="408" srcpinname="Output 2" dstnodeid="371" dstpinname="Input">
+   </LINK>
+   <NODE systemname="UpdateHTML" filename="Fanclub\UpdateHTML.v4p" nodename="Fanclub\UpdateHTML.v4p" componentmode="Hidden" id="409">
+   <BOUNDS type="Node" left="2230" top="10109" width="5940" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="615" top="2829" width="6870" height="14560">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7020" top="2910" width="13245" height="14550">
+   </BOUNDS>
+   <PIN pinname="To">
+   </PIN>
+   <PIN pinname="Error" visible="1">
+   </PIN>
+   <PIN pinname="Speaker" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   <PIN pinname="Buddies" visible="1">
+   </PIN>
+   <PIN pinname="Server" visible="1">
+   </PIN>
+   <PIN pinname="Channel" visible="1">
+   </PIN>
+   <PIN pinname="Nickname" visible="1">
+   </PIN>
+   <PIN pinname="IsConnected" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="409" srcpinname="Output" dstnodeid="375" dstpinname="HTML">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Content" dstnodeid="409" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="332" srcpinname="Error" dstnodeid="409" dstpinname="Error">
+   </LINK>
+   <LINK srcnodeid="332" srcpinname="Buddylist" dstnodeid="409" dstpinname="Buddies">
+   </LINK>
+   <LINK srcnodeid="332" srcpinname="Connected" dstnodeid="409" dstpinname="IsConnected">
+   </LINK>
+   <LINK srcnodeid="429" srcpinname="Output" dstnodeid="409" dstpinname="Speaker">
+   </LINK>
+   <LINK srcnodeid="430" srcpinname="Output" dstnodeid="409" dstpinname="Message">
+   </LINK>
+   <LINK srcnodeid="369" srcpinname="Output" dstnodeid="409" dstpinname="Nickname">
+   </LINK>
+   <LINK srcnodeid="370" srcpinname="Output" dstnodeid="409" dstpinname="Server">
+   </LINK>
+   <LINK srcnodeid="371" srcpinname="Output" dstnodeid="409" dstpinname="Channel">
+   </LINK>
+   <NODE systemname="HoldString" filename="Fanclub\HoldString.v4p" nodename="Fanclub\HoldString.v4p" componentmode="Hidden" id="433">
+   <BOUNDS type="Node" left="5175" top="18045" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="318" srcpinname="Output 1" dstnodeid="433" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="433" srcpinname="Output" dstnodeid="406" dstpinname="Input Value">
    </LINK>
    </PATCH>
