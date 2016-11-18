@@ -44,18 +44,18 @@ namespace VVVV.Nodes
 				if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 				{
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
-					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin); 
-					
-					if (spread.ItemCount==0)
-						FOutput.Length=0;
-					else
-					{
-						FOutput.Length = spread.Count*vecSize;
-						using (var dataWriter = FOutput.GetWriter())
-							for (int b = 0; b < spread.Count; b++)
-								for (int v = 0; v < vecSize; v++)
-									dataWriter.Write(spread.GetBinColumn(b,v).Average(),1);
-					}
+					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
+
+                    if (spread.ItemCount == 0)
+                        FOutput.Length = 0;
+                    else
+                    {
+                        FOutput.Length = spread.Count * vecSize;
+                        using (var dataWriter = FOutput.GetWriter())
+                            for (int b = 0; b < spread.Count; b++)
+                                for (int v = 0; v < vecSize; v++)
+                                    dataWriter.Write(spread.GetBinColumn(b, v).DefaultIfEmpty(0).Average(), 1);
+                    }
 				}
 				else
 					FOutput.Length = 0;
