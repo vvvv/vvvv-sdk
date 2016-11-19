@@ -11,6 +11,21 @@ namespace VVVV.Utils.IO
     /// </summary>
     public struct MouseState : IEquatable<MouseState>
     {
+        public static MouseState Create(double x, double y, bool left, bool middle, bool right, bool xButton1, bool xButton2, int mouseWheel)
+        {
+            var buttons = MouseButtons.None;
+            if (left)
+                buttons |= MouseButtons.Left;
+            if (middle)
+                buttons |= MouseButtons.Middle;
+            if (right)
+                buttons |= MouseButtons.Right;
+            if (xButton1)
+                buttons |= MouseButtons.XButton1;
+            if (xButton2)
+                buttons |= MouseButtons.XButton2;
+            return new MouseState(x, y, buttons, mouseWheel);
+        }
         public static MouseState Create(double x, double y, bool left, bool middle, bool right, bool xButton1, bool xButton2, int mouseWheel, int mouseHWheel)
         {
             var buttons = MouseButtons.None;
@@ -52,6 +67,14 @@ namespace VVVV.Utils.IO
         /// </summary>
         public int MouseHorizontalWheel;
 
+        public MouseState(double x, double y, MouseButtons buttons, int mouseWheel)
+        {
+            X = x;
+            Y = y;
+            Buttons = buttons;
+            MouseWheel = mouseWheel;
+            MouseHorizontalWheel = 0;
+        }
         public MouseState(double x, double y, MouseButtons buttons, int mouseWheel, int mouseHWheel)
         {
             X = x;
