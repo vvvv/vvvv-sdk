@@ -45,7 +45,7 @@ namespace VVVV.PluginInterfaces.V2
         internal SearchPath(string nodelist, string dir, IAddonFactory factory, bool recursive, bool isuserdefined, ILogger logger, INodeInfoFactory nodeInfoFactory)
         {
             Nodelist = nodelist;
-            Dir = dir;
+            Dir = Path.GetFullPath(dir);
             Factory = factory;
             RefCount = 1;
             Recursive = recursive;
