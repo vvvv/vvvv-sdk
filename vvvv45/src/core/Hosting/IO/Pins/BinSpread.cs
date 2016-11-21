@@ -9,7 +9,7 @@ namespace VVVV.Hosting.Pins
 	/// Base class of 2d spreads.
 	/// </summary>
 	[ComVisible(false)]
-	public abstract class BinSpread<T> : Spread<ISpread<T>>
+	public abstract class BinSpread<T> : Spread<ISpread<T>>, IIOMultiPin
 	{
 		public class BinSpreadStream : MemoryIOStream<ISpread<T>>
 		{
@@ -38,8 +38,12 @@ namespace VVVV.Hosting.Pins
 		}
 		
 		protected readonly IIOFactory FIOFactory;
-		
-		public BinSpread(IIOFactory ioFactory, IOAttribute attribute, BinSpreadStream stream)
+
+        public abstract IIOContainer BaseContainer { get; }
+
+        public abstract IIOContainer[] AssociatedContainers { get; }
+
+        public BinSpread(IIOFactory ioFactory, IOAttribute attribute, BinSpreadStream stream)
 			: base(stream)
 		{
 			FIOFactory = ioFactory;

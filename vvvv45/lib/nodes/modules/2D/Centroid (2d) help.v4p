@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Centroid (2d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Centroid (2d) help.v4p">
    <BOUNDS type="Window" left="4440" top="5325" width="11085" height="10140">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -85,7 +85,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
@@ -160,7 +160,7 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="3420" top="2550" width="100" height="100">
@@ -207,20 +207,6 @@
    <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Spread Count">
    </LINK>
    <LINK srcnodeid="16" srcpinname="Output" dstnodeid="5" dstpinname="Y">
-   </LINK>
-   <NODE systemname="DrawVertexID (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\DrawVertexID (EX9).v4p" nodename="DrawVertexID (EX9)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="6705" top="7275" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="InputXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Scale" slicecount="1" values="0.12">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="10" srcpinname="XYZ" dstnodeid="17" dstpinname="InputXYZ">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="8" dstpinname="Layer 3">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="1170" width="4575" height="270">
@@ -385,5 +371,25 @@
    <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Bin Size">
    </LINK>
    <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="9" dstpinname="BinSize">
+   </LINK>
+   <NODE systemname="PointID (DX9 3d)" filename="%VVVV%\lib\nodes\modules\EX9\PointID (DX9 3d).v4p" nodename="PointID (DX9 3d)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="6705" top="7275" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="0.12">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="0.15">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="XYZ" dstnodeid="17" dstpinname="InputXYZ">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Layer" dstnodeid="8" dstpinname="Layer 3">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="XYZ" dstnodeid="17" dstpinname="XYZ">
    </LINK>
    </PATCH>

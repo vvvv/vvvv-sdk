@@ -215,6 +215,14 @@ namespace VVVV.Hosting.IO
                 set;
             }
 
+            public IIOContainer[] AssociatedContainers
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
             public void Dispose()
             {
                 // Do nothing

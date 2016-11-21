@@ -10,7 +10,7 @@ namespace VVVV.Nodes
 	// Source:
 	// https://github.com/adobe-photoshop/generator-core/wiki/Photoshop-Kevlar-API-Additions-for-Generator
 	//
-	
+
 	public enum PhotoshopEvents
 	{
 		imageChanged,
@@ -45,8 +45,28 @@ namespace VVVV.Nodes
 		Blue,
 		Alpha
 	}
-	
-	[Startable]
+
+    public enum FirmataPinMode
+    {
+        Input,
+        Output,
+        Analog,
+        PWM,
+        Servo,
+        Shift,
+        I2C
+    }
+
+    public enum FirmataI2CReadMode
+    {
+        READ_ONCE = 0x08, // B00001000
+
+        READ_CONTINUOUSLY = 0x10, // B00010000
+
+        STOP_READING = 0x18  // B00011000
+    }
+
+    [Startable]
 	public class GlobalEnumManager : IStartable
 	{
 		
@@ -64,17 +84,33 @@ namespace VVVV.Nodes
 		
 		public void Start()
 		{
-			//Photoshop
-			EnumManager.UpdateEnum("PhotoshopEvents", "documentChanged", Enum.GetNames(typeof(PhotoshopEvents)));
+
+            //Photoshop
+            EnumManager.UpdateEnum("PhotoshopEvents", "documentChanged", Enum.GetNames(typeof(PhotoshopEvents)));
 			EnumManager.UpdateEnum("PhotoshopImageFormat", "JPEG", Enum.GetNames(typeof(PhotoshopImageFormat)));
 			
 			//RS232
 			UpdatePortList();
-			
-			//Color Channels
-			EnumManager.UpdateEnum("ColorChannels", "Red", Enum.GetNames(typeof(ColorChannels)));
-			
-		}
+
+            //Firmata Pin Modes
+            EnumManager.UpdateEnum("FirmataPinModes", "Input", new string[] { "Input", "Output", "Analog In", "PWM", "Servo", "Shift", "I2C" });
+
+            //Firmata I2C Read Modes
+            EnumManager.UpdateEnum("FirmataI2CReadModes", "READ_ONCE", Enum.GetNames(typeof(FirmataI2CReadMode)));
+
+            //Firmata I2C Address Modes
+            EnumManager.UpdateEnum("FirmataI2CAddressModes", "7 bit", new string[] {"7 bit", "10 bit"});
+
+            //Color Channels
+            EnumManager.UpdateEnum("ColorChannels", "Red", Enum.GetNames(typeof(ColorChannels)));
+
+            //Cursor Type
+            EnumManager.UpdateEnum("CursorType", "Pointer", new string[] { "Pointer", "Vert", "Hor", "Left Bottom", "Right Bottom", "Left Top", "Right Top" });
+
+            //Point Type
+            EnumManager.UpdateEnum("PointType", "Circle", new string[] { "Rectangle", "Triangle", "Circle"});
+
+        }
 		public void Shutdown()
 		{
 		}

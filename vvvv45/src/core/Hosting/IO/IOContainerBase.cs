@@ -116,11 +116,12 @@ namespace VVVV.Hosting.IO
     [ComVisible(false)]
     public abstract class IOContainerBase : IIOContainer
     {
-        public IOContainerBase(IOBuildContext context, IIOFactory factory, IIOContainer baseContainer, object rawIOObject)
+        public IOContainerBase(IOBuildContext context, IIOFactory factory, IIOContainer baseContainer, object rawIOObject, IIOContainer[] associatedContainers)
         {
             Factory = factory;
             BaseContainer = baseContainer;
             RawIOObject = rawIOObject;
+            AssociatedContainers = associatedContainers;
             if (context.SubscribeToIOEvents)
             {
                 Factory.Disposing += HandleFactoryDisposing;
@@ -128,13 +129,13 @@ namespace VVVV.Hosting.IO
         }
 
         public IOContainerBase(IOBuildContext context, IIOContainer baseContainer, object rawIOObject)
-            : this(context, baseContainer.Factory, baseContainer, rawIOObject)
+            : this(context, baseContainer.Factory, baseContainer, rawIOObject, null)
         {
             
         }
         
         public IOContainerBase(IOBuildContext context, IIOFactory factory, object rawIOObject)
-            : this(context, factory, null, rawIOObject)
+            : this(context, factory, null, rawIOObject, null)
         {
             
         }
@@ -156,11 +157,22 @@ namespace VVVV.Hosting.IO
             get;
             private set;
         }
+
+        public IIOContainer[] AssociatedContainers
+        {
+            get;
+            private set;
+        }
         
         public virtual void Dispose()
         {
             Factory.Disposing -= HandleFactoryDisposing;
-            if (BaseContainer != null)
+            /*
+            AdditionalContainers are null except for GenericIOContainers
+            on multi pin types, which handle all their pin disposing internally already
+            so only call BaseContainer.Dispose on single pin types
+            */
+            if (BaseContainer != null && AssociatedContainers == null)
             {
                 BaseContainer.Dispose();
             }

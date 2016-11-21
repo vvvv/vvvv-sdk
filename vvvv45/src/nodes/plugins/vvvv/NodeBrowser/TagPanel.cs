@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using VVVV.Core;
-using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.Nodes.NodeBrowser
 {
@@ -34,12 +28,13 @@ namespace VVVV.Nodes.NodeBrowser
         private List<string> FTags;
         private Point FLastMouseHoverLocation = new Point(0, 0);
         private int FNodeFilter;
+        private bool FShowInternal;
 
         private List<INodeInfo> FSelectionList = new List<INodeInfo>();
         private List<string> FRTFSelectionList = new List<string>();
         private readonly Regex FVVVVGroupRegex = new Regex(@"vvvv\s+group", RegexOptions.IgnoreCase | RegexOptions.Multiline);
         
-        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "SPREADS", "4D", "3D", "2D", "VALUE" });
+        private List<string> FCategoryPriorities = new List<string>(new string[] { "DSHOW9", "OCTONION", "QUATERNION", "FLASH", "GDI", "TTY", "SVG", "TRANSFORM", "COLOR", "DX9", "EX9.GEOMETRY", "EX9.TEXTURE", "EX9", "DX11.LAYER", "DX11.GEOMETRY", "EX9.TEXTUREFX", "EX9.TEXTURE", "DX11", "RAW", "STRING", "FILE", "ANIMATION", "4D", "3D", "2D", "SPREADS", "VALUE" });
         
         private NodeBrowserPluginNode FNodeBrowser;
         public NodeBrowserPluginNode NodeBrowser
@@ -431,33 +426,66 @@ namespace VVVV.Nodes.NodeBrowser
             if (FTags.Count == 0)
                 return nodeInfos;
             else
+            {
+                var regex = new Regex(@"\[(.+)\]");
                 return nodeInfos.Where((nodeInfo) =>
-                                       {
-                                           var displayName = NodeInfoToDisplayName(nodeInfo);
-                                           displayName = displayName.ToLower();
-                                           displayName = displayName.Replace('é', 'e');
-                                           bool containsAll = true;
-                                           string t = "";
-                                           foreach (string tag in FTags)
                                            {
-                                               t = tag.ToLower();
-                                               if (displayName.Contains(t))
+                                               var displayName = NodeInfoToDisplayName(nodeInfo);
+                                               //bezier hack
+                                               displayName = displayName.Replace('é', 'e');
+
+                                               //make all tags ToUpperFirst so they can be found
+                                               var match = regex.Match(displayName);
+                                               var upperedTags = match.Value.TrimStart('[').TrimEnd(']').Split(',').Select(x => x.Trim().ToUpperFirstInvariant());
+                                               displayName = regex.Replace(displayName, string.Join(", ", upperedTags));
+
+                                               var lowerDisplayName = displayName.ToLower();
+                                               bool containsAll = true;
+                                               string t = "";
+                                               foreach (string tag in FTags)
                                                {
-                                                   if (!AndTags)
+                                                   t = tag.ToLower();
+
+                                                   var found = false;
+                                                   if (FSwizzles.Contains(t))
+                                                   {
+                                                       found = displayName.ToLower().Contains(t);
+                                                   }
+                                                   else if (FSingleCharNodes.Contains(t))
+                                                   {
+                                                       found = displayName.ToLower().StartsWith(t);
+                                                   }
+                                                   else if (t.Length > 1)
+                                                   {
+                                                       t = t.ToUpperFirstInvariant();
+                                                       //first char matches case-sensitive, all later chars match insensitive
+                                                       var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
+                                                       var rex = new Regex(pattern);
+                                                       var matches = rex.Match(displayName);
+                                                       found = matches.Length > 0;
+                                                   }
+                                                   else if (t.Length > 0)
+                                                       found = displayName.IndexOf(t[0]) >= 0;
+
+                                                   if (found)
+                                                   {
+                                                       if (!AndTags)
+                                                           break;
+                                                   }
+                                                   else
+                                                       containsAll = false;
+
+                                                   if ((AndTags) && (!containsAll))
                                                        break;
                                                }
+
+                                               //todo: remove OR-tags case or refine it 
+                                               if (((AndTags) && (containsAll)) || ((!AndTags) && (lowerDisplayName.Contains(t.ToLower()))))
+                                                   return true;
                                                else
-                                               {
-                                                   containsAll = false;
-                                                   break;
-                                               }
-                                           }
-                                           
-                                           if (((AndTags) && (containsAll)) || ((!AndTags) && (displayName.Contains(t))))
-                                               return true;
-                                           else
-                                               return false;
-                                       });
+                                                   return false;
+                                           });
+            }
         }
         
         private bool IsAvailableInActivePatch(INodeInfo nodeInfo)
@@ -508,7 +536,11 @@ namespace VVVV.Nodes.NodeBrowser
             FSelectionList.Clear();
 
             var nodeInfos = NodeBrowser.NodeInfoFactory.NodeInfos.Where(ni => ni.Ignore == false && NodeBrowser.CategoryFilter.CategoryVisible(ni.Category));
-            
+            if (FShowInternal)
+                nodeInfos = nodeInfos.Where(ni => ni.Version.Contains("Internal"));
+            else
+                nodeInfos = nodeInfos.Where(ni => !ni.Version.Contains("Internal"));
+
             // Cache current patch window nodeinfo and current dir
             var currentPatchWindow = NodeBrowser.CurrentPatchWindow;
             FCurrentPatchWindowNodeInfo = currentPatchWindow != null ? currentPatchWindow.Node.NodeInfo : null;
@@ -541,10 +573,51 @@ namespace VVVV.Nodes.NodeBrowser
         }
         
         private readonly Regex FCatRegExp = new Regex(@"\((.*)\)(.*)$");
+        private readonly string[] FSwizzles = new string[8]{"xy", "xyz", "xz", "yz", "xyw", "xyzw", "xzw", "yzw"};
+        private readonly string[] FSingleCharNodes = new string[3] { "i", "s", "r" };
+
+        private int Weight(int lastWeight, string text, string tag)
+        {
+            var pos = text.IndexOf(tag);
+            if (pos > -1)
+            {
+                //the following won't work well for swizzles, like: xyZ, Xyz
+                //so simply exclude those
+                if (FSwizzles.Contains(tag.ToLower()))
+                    return Math.Min(lastWeight, pos);
+
+                if (FSingleCharNodes.Contains(tag.ToLower()))
+                    return Math.Min(lastWeight, pos);
+
+                //do the following finegrained check only for tags found before the category/version/tags
+                if (pos < text.IndexOf(" ("))
+                {
+                    //see if the tag is a complete subword in the nodename, like "Editor" in "PointEditorState"
+                    //if so, that counts more
+                    //it counts even more if that tag is also the last word in a nodename, like "Editor" in "PointEditor"
+                    //so check if there is either: 
+                    //- no character following
+                    //- or at least two characters following where the first isUpper, the second isLower 
+                    if (text.Length >= pos + tag.Length)
+                        return (text[pos + tag.Length] == ' ') ? Math.Min(pos, 1) : pos;
+                    else if (text.Length >= pos + tag.Length + 1)
+                    {
+                        var nextChar = pos + tag.Length;
+                        return (char.IsUpper(text[nextChar]) && char.IsLower(text[nextChar + 1])) ? Math.Min(pos, 1) : pos;
+                    }
+                }
+
+                //otherwise simply the position of the tag is the pos
+                return Math.Min(lastWeight, pos);
+            }            
+            else
+                return lastWeight;
+        }
+
         private int SortNodeInfo(INodeInfo n1, INodeInfo n2)
         {
-            var s1 = NodeInfoToDisplayName(n1);
-            var s2 = NodeInfoToDisplayName(n2);
+            var s1 = NodeInfoToDisplayName(n1).ToLower();
+            var s2 = NodeInfoToDisplayName(n2).ToLower();
             
             //Workaround: Following code assumes s1 and s2 are either a filename
             //or include an opening parenthesis. Since node info rework there're
@@ -561,10 +634,9 @@ namespace VVVV.Nodes.NodeBrowser
             foreach (string tag in FTags)
             {
                 t = tag.TrimStart(new char[1]{'.'});
-                if (s1.ToLower().IndexOf(t) > -1)
-                    w1 = Math.Min(w1, s1.ToLower().IndexOf(t));
-                if (s2.ToLower().IndexOf(t) > -1)
-                    w2 = Math.Min(w2, s2.ToLower().IndexOf(t));
+
+                w1 = Weight(w1, s1, t);
+                w2 = Weight(w2, s2, t);
             }
             
             if (w1 != w2)
@@ -689,6 +761,8 @@ namespace VVVV.Nodes.NodeBrowser
 
         public void Redraw()
         {
+            FShowInternal = false;
+
             string query = TagsTextBox.Text.ToLower();
             query += (char) 160;
             FTags = query.Split(new char[1]{' '}).ToList();
@@ -744,7 +818,12 @@ namespace VVVV.Nodes.NodeBrowser
                 FNodeFilter = -2;
                 FTags.Remove(".");
             }
-            
+            else if (FTags.Contains("i"))
+            {
+                FShowInternal = true;
+                FTags.Remove("i");
+            }
+
             //clean up the list
             FTags[FTags.Count-1] = FTags[FTags.Count-1].Trim((char) 160);
             while (FTags.Contains(" "))

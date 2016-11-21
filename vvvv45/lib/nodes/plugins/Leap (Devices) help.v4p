@@ -1,17 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Leap (Devices) help.v4p" systemname="Leap (Devices) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Leap (Devices) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\Leap (Devices) help.v4p" systemname="Leap (Devices) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Leap (Devices) help.v4p">
    <BOUNDS type="Window" left="210" top="270" width="8880" height="13425">
    </BOUNDS>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="3495" top="10200" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="8.43">
-   </PIN>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="1035" top="9675" width="4575" height="270">
    </BOUNDS>
@@ -58,16 +48,6 @@
    </NODE>
    <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 1">
    </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="1215" top="8805" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="-540" top="1110" width="11280" height="9465">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1215" top="8805">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Translate (Transform Vector)" nodename="Translate (Transform Vector)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="3000" top="7485" width="825" height="270">
    </BOUNDS>
@@ -150,7 +130,7 @@
    </NODE>
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="5" dstpinname="Direction">
    </LINK>
-   <NODE systemname="Line (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="37">
+   <NODE systemname="Line (EX9 Legacy)" filename="%VVVV%\lib\nodes\modules\EX9\Line (EX9).v4p" nodename="Line (EX9)" componentmode="Hidden" id="37">
    <BOUNDS type="Node" left="4050" top="8640" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
@@ -209,7 +189,7 @@
    <LINK srcnodeid="40" srcpinname="Output" dstnodeid="37" dstpinname="To">
    </LINK>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="4200" top="11220" width="100" height="100">
+   <BOUNDS type="Node" left="4500" top="11205" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Aspect Height" visible="1" slicecount="1" values="892">
    </PIN>
@@ -230,12 +210,10 @@
    </NODE>
    <LINK srcnodeid="51" srcpinname="Output" dstnodeid="20" dstpinname="Direction">
    </LINK>
-   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 2">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="53">
-   <BOUNDS type="Node" left="1020" top="10635" width="3240" height="270">
+   <BOUNDS type="Node" left="1050" top="11235" width="3240" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1020" top="10635" width="2400" height="1800">
+   <BOUNDS type="Box" left="1050" top="11235" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="9150" top="300" width="10845" height="8640">
    </BOUNDS>
@@ -243,18 +221,18 @@
    </PIN>
    <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Projection" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="View" slicecount="1" values="||">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="2" srcpinname="Projection" dstnodeid="53" dstpinname="Projection">
-   </LINK>
    <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
    </LINK>
    <LINK srcnodeid="53" srcpinname="Actual Backbuffer Width" dstnodeid="42" dstpinname="Aspect Width">
    </LINK>
    <LINK srcnodeid="42" srcpinname="Transform Out" dstnodeid="53" dstpinname="Aspect Ratio">
-   <LINKPOINT x="4621" y="10575">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="2" srcpinname="View" dstnodeid="53" dstpinname="View">
    </LINK>
    <LINK srcnodeid="53" srcpinname="Actual Backbuffer Height" dstnodeid="42" dstpinname="Aspect Height">
    </LINK>
@@ -432,7 +410,7 @@
    <LINKPOINT x="2340" y="5835">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Leap (Devices)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="Leap (Devices)" componentmode="Hidden" id="64">
+   <NODE systemname="Leap (Devices Legacy)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="Leap (Devices)" componentmode="Hidden" id="64">
    <BOUNDS type="Node" left="615" top="1965" width="7155" height="270">
    </BOUNDS>
    <PIN pinname="Finger ID" visible="1" pintype="Output">
@@ -466,28 +444,88 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="CircleGesture (Devices Leap)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="CircleGesture (Devices Leap)" componentmode="Hidden" id="66">
+   <NODE systemname="CircleGesture (Leap Legacy)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="CircleGesture (Devices Leap)" componentmode="Hidden" id="66">
    <BOUNDS type="Node" left="855" top="12285" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="855" top="12285">
    </BOUNDS>
    </NODE>
-   <NODE systemname="SwipeGesture (Devices Leap)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="SwipeGesture (Devices Leap)" componentmode="Hidden" id="67">
+   <NODE systemname="SwipeGesture (Leap Legacy)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="SwipeGesture (Devices Leap)" componentmode="Hidden" id="67">
    <BOUNDS type="Node" left="2220" top="12285" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="2220" top="12285">
    </BOUNDS>
    </NODE>
-   <NODE systemname="KeyTabGesture (Devices Leap)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="KeyTabGesture (Devices Leap)" componentmode="Hidden" id="68">
+   <NODE systemname="KeyTabGesture (Leap Legacy)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="KeyTabGesture (Devices Leap)" componentmode="Hidden" id="68">
    <BOUNDS type="Node" left="3600" top="12285" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="3600" top="12285">
    </BOUNDS>
    </NODE>
-   <NODE systemname="ScreenTabGesture (Devices Leap)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="ScreenTabGesture (Devices Leap)" componentmode="Hidden" id="69">
+   <NODE systemname="ScreenTabGesture (Leap Legacy)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.Devices.Leap.dll" nodename="ScreenTabGesture (Devices Leap)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="5070" top="12285" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="5070" top="12285">
    </BOUNDS>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="71" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4065" top="10350" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4065" top="10350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="8.43">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="72" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4530" top="10350" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4530" top="10350" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="3525" top="10800" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" visible="1" values="8.43">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Projection" dstnodeid="53" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="View" dstnodeid="53" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="71" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Initial FOV">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1215" top="8805" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="-540" top="1110" width="11280" height="9465">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1215" top="8805">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="4" dstpinname="Layer 2">
+   </LINK>
    </PATCH>

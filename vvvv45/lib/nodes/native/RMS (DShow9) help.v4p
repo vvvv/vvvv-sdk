@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\RMS (DShow9) help.v4p">
-   <BOUNDS height="11475" left="360" top="375" type="Window" width="10770">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\RMS (DShow9) help.v4p">
+   <BOUNDS height="11475" left="1455" top="735" type="Window" width="10770">
    </BOUNDS>
    <NODE id="20" nodename="AudioIn (DShow9)">
    <BOUNDS height="0" left="915" top="915" type="Node" width="0">
@@ -9,7 +9,7 @@
    </PIN>
    <PIN pinname="Sample Rate" slicecount="1" values="22050">
    </PIN>
-   <PIN pinname="Driver" slicecount="1" values="|Microphone (Logitech USB Headse|">
+   <PIN pinname="Driver" slicecount="1" values="|Microphone (Conexant 20671 SmartAudio HD)|">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
@@ -60,12 +60,6 @@
    </NODE>
    <LINK dstnodeid="18" dstpinname="Y Input Value" srcnodeid="19" srcpinname="RMS">
    </LINK>
-   <NODE id="17" nodename="AudioRecordSelector (System)">
-   <BOUNDS height="0" left="5760" top="1170" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Device" slicecount="1" visible="1" values="|Stereo Mix|">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="16" nodename="Renderer (GDI)">
    <BOUNDS height="0" left="465" top="5115" type="Node" width="0">
    </BOUNDS>
@@ -156,24 +150,6 @@
    <LINKPOINT x="4605" y="2685">
    </LINKPOINT>
    </LINK>
-   <NODE componentmode="InABox" id="11" nodename="IOBox (Enumerations)">
-   <BOUNDS height="0" left="5760" top="660" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="1647" top="3100" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="315" left="5760" top="660" type="Box" width="2025">
-   </BOUNDS>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Microphone">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Show SliceIndex" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="17" dstpinname="Device" srcnodeid="11" srcpinname="Output Enum">
-   </LINK>
    <NODE componentmode="InABox" id="10" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6345" top="3435" type="Node" width="0">
    </BOUNDS>
@@ -198,20 +174,6 @@
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="0" values="|draw something|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
-   <BOUNDS height="255" left="5730" top="315" type="Node" width="2460">
-   </BOUNDS>
-   <BOUNDS height="255" left="5730" top="315" type="Box" width="2970">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|select the source of the audio input|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -290,10 +252,12 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="-6" nodename="MainLoop (VVVV)">
+   <NODE id="-6" nodename="MainLoop (VVVV)" systemname="MAINLOOP (VVVV)">
    <BOUNDS height="0" left="7530" top="1725" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum forground fps" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Increase Timing Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
@@ -381,7 +345,9 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\19_Analysis_Basics.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\19_Analysis_Basics.v4p">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
    </PATCH>

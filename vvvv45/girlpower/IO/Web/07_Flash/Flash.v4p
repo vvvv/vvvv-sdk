@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\07_Flash\Flash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\07_Transparent Flash\TransparentFlash.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="11355" height="9045">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\07_Flash\Flash.v4p" systemname="TransparentFlash" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\07_Transparent Flash\TransparentFlash.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="0" top="0" width="11355" height="7485">
    </BOUNDS>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="6465" top="4005" width="100" height="100">
@@ -21,9 +21,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="5">
-   <BOUNDS type="Node" left="7125" top="1245" width="100" height="100">
+   <BOUNDS type="Node" left="7095" top="1245" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="7125" top="1245" width="480" height="480">
+   <BOUNDS type="Box" left="7095" top="1245" width="480" height="480">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
@@ -103,9 +103,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="45" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="750" top="5895" type="Node" width="7425">
+   <BOUNDS height="270" left="750" top="4395" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="2205" left="750" top="5895" type="Box" width="3990">
+   <BOUNDS height="2205" left="750" top="4395" type="Box" width="3990">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This is a HTML document with the embedded flash movie. Just open it in your default webbrowser or check its code.&cr;&lf;&cr;&lf;HTMLTexture (EX9.Texture URL) uses the chromium engine to render html documents and returns them as textures.&cr;&lf;&cr;&lf;The texture is then applied to a simple Quad (DX9) uniformly scaled to fill the whole renderer.&cr;&lf;&cr;&lf;|">
    </PIN>
@@ -119,9 +119,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="44" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="5865" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="4365" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="5865" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="4365" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -181,9 +181,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="50" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="7560" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="6060" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="7560" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="6060" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -201,7 +201,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="6465" top="5310" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="12375" top="1215" width="6045" height="4965">
+   <BOUNDS type="Window" left="11265" top="0" width="6045" height="4965">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -211,25 +211,15 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Background Color" slicecount="1" values="|0.99816,0.90399,0.00000,1.00000|">
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.98704,0.27633,0.00000,1.00000|">
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="7" dstpinname="Texture">
    </LINK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="56">
-   <BOUNDS type="Node" left="9150" top="3915" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.83987,0.83987,0.83987,1.00000|">
-   </PIN>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="6450" top="4650" width="540" height="270">
    </BOUNDS>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 1" visible="1">
    </PIN>
@@ -242,12 +232,10 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Layer" dstnodeid="52" dstpinname="Layers">
    </LINK>
-   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 3">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="67" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7455" top="1905" width="360" height="240">
+   <BOUNDS type="Box" left="7395" top="1905" width="360" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7455" top="1905" width="0" height="0">
+   <BOUNDS type="Node" left="7395" top="1905" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="550">
    </PIN>
@@ -263,9 +251,9 @@
    <LINK srcnodeid="67" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Width">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="68" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7920" top="1905" width="465" height="240">
+   <BOUNDS type="Box" left="7860" top="1905" width="465" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7920" top="1905" width="0" height="0">
+   <BOUNDS type="Node" left="7860" top="1905" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="400">
    </PIN>
@@ -281,7 +269,7 @@
    <LINK srcnodeid="68" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Height">
    </LINK>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="55">
-   <BOUNDS type="Node" left="9135" top="435" width="100" height="100">
+   <BOUNDS type="Node" left="8580" top="1365" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1">
    </PIN>
@@ -290,16 +278,14 @@
    <PIN pinname="PositionXY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="55" srcpinname="Device" dstnodeid="56" dstpinname="Mouse">
-   </LINK>
    <LINK srcnodeid="55" srcpinname="Device" dstnodeid="4" dstpinname="Mouse Event">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="76" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7080" top="960" width="615" height="270">
+   <BOUNDS type="Node" left="7050" top="960" width="615" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7080" top="960" width="615" height="270">
+   <BOUNDS type="Box" left="7050" top="960" width="615" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Reload">
    </PIN>
@@ -310,8 +296,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 2">
-   </LINK>
    <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="4" dstpinname="Url">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="83" systemname="IOBox (String)">
@@ -328,102 +312,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="84" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="750" top="5385" width="390" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="750" top="5385" width="4050" height="285">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------------">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="85" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1095" top="2445" width="15225" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1095" top="2445" width="3690" height="2610">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Known problems:&cr;&lf;&cr;&lf;1. Mouse interaction is not always working right.&cr;&lf;&cr;&lf;2. Use of semi-transparent Flash movies as textures with alpha-channel is broken (in the underlying library).&cr;&lf;&cr;&lf;If you encounter these problems, stick to the old beta32.1 version for now and check the &apos;IO\Web\07_Transparent Flash&apos; example from its &apos;girlpower&apos; directory.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="86" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="750" top="2385" type="Node" width="315">
-   </BOUNDS>
-   <BOUNDS height="600" left="750" top="2385" type="Box" width="285">
-   </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="!">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="23">
-   </PIN>
-   </NODE>
-   <NODE id="87" systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="1095" top="5100" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="1095" top="5100" width="3000" height="240">
-   </BOUNDS>
-   <PIN pinname="String Type" slicecount="1" pintype="Configuration" values="Filename">
-   </PIN>
-   <PIN pinname="Input String" slicecount="1" pintype="Input" visible="1" values="http://vvvv.org/blog/vvvv45beta32.1">
-   </PIN>
-   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
-   </PIN>
-   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
-   </PIN>
-   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
-   </PIN>
-   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
-   </PIN>
-   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Output String" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="88" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="330" top="6705" type="Node" width="315">
+   <BOUNDS height="270" left="330" top="5205" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="330" top="6705" type="Box" width="405">
+   <BOUNDS height="390" left="330" top="5205" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -596,6 +488,114 @@
    <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="7980" top="4020" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.83987,0.83987,0.83987,1.00000|">
+   </PIN>
+   <PIN pinname="Cursor Type" slicecount="1" values="Pointer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Layer" dstnodeid="57" dstpinname="Layer 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="97" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7890" top="4695" width="2355" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7890" top="4695" width="2355" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Renderer&apos;s Background Color|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="102" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="750" top="2400" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="345" left="750" top="2400" type="Box" width="915">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Setup:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="104" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="750" top="2760" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="720" left="750" top="2760" type="Box" width="3525">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Download and install &quot;Flash Player for Opera and Chromium based applications – PPAPI&quot; from Adobe Labs:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="105" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="Default" slicecount="1" values="file.foo">
+   </PIN>
+   <PIN pinname="Content Type">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <BOUNDS height="100" left="750" top="3540" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="255" left="750" top="3540" type="Box" width="4005">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Mask">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="|all foos||*.foo;*.bar|">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="http://labs.adobe.com/downloads/flashplayer.html">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="107" systemname="IOBox (Color)">
+   <BOUNDS type="Box" left="7365" top="4650" width="435" height="405">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7365" top="4650" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1" slicecount="1" values="|1.00000,0.17518,0.12602,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="107" srcpinname="Color Output" dstnodeid="52" dstpinname="Background Color">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="108" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="750" top="3855" width="390" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="3855" width="4050" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="----------------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>

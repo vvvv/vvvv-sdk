@@ -28,6 +28,8 @@ using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
 using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
+using NuGetAssemblyLoader;
+using Nito.Async;
 
 namespace VVVV.Hosting
 {
@@ -35,8 +37,67 @@ namespace VVVV.Hosting
     [Export(typeof(IHDEHost))]
     [ComVisible(false)]
     class HDEHost : IInternalHDEHost, IHDEHost,
-    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener
+    IMouseClickListener, INodeSelectionListener, IWindowListener, IComponentModeListener, IWindowSelectionListener, IEnumListener
     {
+        #region SynchronizationContext hack
+        // See issue described here: http://stackoverflow.com/questions/32439669/hosting-net-and-winforms-synchronizationcontexts-is-reset-when-showdialog-of
+        class MySynchronizationContext : SynchronizationContext
+        {
+            private readonly SynchronizationContext context = new WindowsFormsSynchronizationContext();
+
+            static MySynchronizationContext()
+            {
+                // This tells the GenericSynchronizingObject class implementing ISynchronizeInvoke used by our file watchers that an invoke is indeed required
+                SynchronizationContextRegister.Register(typeof(MySynchronizationContext), SynchronizationContextProperties.Standard);
+            }
+
+            public override SynchronizationContext CreateCopy()
+            {
+                return context.CreateCopy();
+            }
+
+            public override bool Equals(object obj)
+            {
+                return context.Equals(obj);
+            }
+
+            public override int GetHashCode()
+            {
+                return context.GetHashCode();
+            }
+
+            public override void OperationCompleted()
+            {
+                context.OperationCompleted();
+            }
+
+            public override void OperationStarted()
+            {
+                context.OperationStarted();
+            }
+
+            public override void Post(SendOrPostCallback d, object state)
+            {
+                context.Post(d, state);
+            }
+
+            public override void Send(SendOrPostCallback d, object state)
+            {
+                context.Send(d, state);
+            }
+
+            public override string ToString()
+            {
+                return "Wrapped";
+            }
+
+            public override int Wait(IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout)
+            {
+                return context.Wait(waitHandles, waitAll, millisecondsTimeout);
+            }
+        }
+        #endregion
+
         public const string ENV_VVVV = "VVVV45";
         
         const string WINDOW_SWITCHER = "WindowSwitcher (VVVV)";
@@ -99,26 +160,49 @@ namespace VVVV.Hosting
         
         public HDEHost()
         {
-            //AppDomain.CurrentDomain.AssemblyResolve += ResolveAssemblyCB;
-            
-            //set vvvv.exe path
+            // Set vvvv.exe path
             ExePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName((typeof(HDEHost).Assembly.Location)), @"..\.."));
+
+            //add repository paths from commandline
+            //from commandline
+            var repoArg = "/package-repositories";
+            var packageRepositories = AssemblyLoader.ParseCommandLine(repoArg);
+
+            //from args.txt
+            var argsFile = Path.Combine(ExePath, "args.txt");
+            if (File.Exists(argsFile))
+            {
+                var args = File.ReadAllText(argsFile);
+                var repoPaths = args.Split(new string[] { "\r", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(l => l.StartsWith(repoArg))
+                        .SelectMany(r => r.Substring(repoArg.Length + 1).Trim('"').Split(';'));
+
+                packageRepositories = packageRepositories.Union(repoPaths).ToArray();
+            }
+
+            //make relative paths absolute
+            for (int i = 0; i < packageRepositories.Length; i++)
+            {
+                if (Path.IsPathRooted(packageRepositories[i]))
+                    packageRepositories[i] = Path.Combine(ExePath, packageRepositories[i]);
+            }
+
+            AssemblyLoader.AddPackageRepositories(packageRepositories);
+
+            //the built-in one
+            if (Directory.Exists(PacksPath))
+                AssemblyLoader.AddPackageRepository(PacksPath);
+            //the one where the user is supposed to install packages
+            if (Directory.Exists(UserPacksPatch))
+                AssemblyLoader.AddPackageRepository(UserPacksPatch);
             
+
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
-            
+
             // Create a windows forms sync context (FileSystemWatcher runs asynchronously).
-            var context = SynchronizationContext.Current;
-            if (context == null)
-            {
-                // We need to create a user control to get a sync context.
-                var control = new UserControl();
-                context = SynchronizationContext.Current;
-                control.Dispose();
-                
-                Debug.Assert(context != null, "SynchronizationContext not set.");
-            }
-            
+            SynchronizationContext.SetSynchronizationContext(new MySynchronizationContext());
+
             // Register at least one ICommandHistory for top level element ISolution
             var mappingRegistry = new MappingRegistry();
             mappingRegistry.RegisterMapping<ISolution, ICommandHistory, CommandHistory>(MapInstantiation.PerInstanceAndItsChilds);
@@ -158,35 +242,36 @@ namespace VVVV.Hosting
             // Used for Windows Forms message loop
             FIsRunning = true;
 
-        	//set blackbox mode?
-        	this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
-        	
+            //set blackbox mode?
+            this.IsBlackBoxMode = vvvvHost.IsBlackBoxMode;
+
             // Set VVVV45 to this running vvvv.exe
             Environment.SetEnvironmentVariable(ENV_VVVV, Path.GetFullPath(Shell.CallerPath.ConcatPath("..").ConcatPath("..")));
-            
+
             FVVVVHost = vvvvHost;
             NodeInfoFactory = new ProxyNodeInfoFactory(vvvvHost.NodeInfoFactory);
-            
+
             FVVVVHost.AddMouseClickListener(this);
             FVVVVHost.AddNodeSelectionListener(this);
             FVVVVHost.AddWindowListener(this);
             FVVVVHost.AddWindowSelectionListener(this);
             FVVVVHost.AddComponentModeListener(this);
-            
+            FVVVVHost.AddEnumListener(this);
+
             NodeInfoFactory.NodeInfoUpdated += factory_NodeInfoUpdated;
 
             // Route log messages to vvvv
             Logger.AddLogger(new VVVVLogger(FVVVVHost));
-            
+
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
-            
+
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
-            
+
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
             KommunikatorHost = kommunikatorHost;
-            
+
             //do not add the entire directory for faster startup
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
@@ -196,46 +281,39 @@ namespace VVVV.Hosting
             if (Directory.Exists(factoriesPath))
                 catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
 
+            //register custom assembly resolvers which look also in the PACK_NAME/core and PACK_NAME/core/[x86|x64] folders
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
-            var packsDirInfo = new DirectoryInfo(Path.Combine(ExePath, "packs"));
-            if (packsDirInfo.Exists)
-                LoadPackFactories(packsDirInfo, catalog);
-            // Are we inside of our repository?
-            var internalPacksDirInfo = default(DirectoryInfo);
-            if (Directory.Exists(Path.Combine(ExePath, "src")))
-            {
-                internalPacksDirInfo = new DirectoryInfo(Path.Combine(ExePath, @"..\..\vvvv45\packs"));
-                if (internalPacksDirInfo.Exists)
-                    LoadPackFactories(internalPacksDirInfo, catalog);
-            }
+            var packsPath = Path.Combine(ExePath, "packs");
+            if (Directory.Exists(packsPath))
+                LoadFactoriesFromLegacyPackages(packsPath, catalog);
+            //new package loading system
+            LoadFactoriesFromPackages(catalog);
 
             Container = new CompositionContainer(catalog);
             Container.ComposeParts(this);
-            
-            //NodeCollection.AddJob(Shell.CallerPath.Remove(Shell.CallerPath.LastIndexOf(@"bin\managed")));
+
             PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\VVVV.Nodes.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\Kommunikator.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeBrowser.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\NodeCollector.dll"));
-//            PluginFactory.AddFile(ExePath.ConcatPath(@"lib\nodes\plugins\WindowSwitcher.dll"));
-            
+
             //Get node infos from core plugins here to avoid looping all node infos
             var windowSwitcherNodeInfo = GetNodeInfo(WINDOW_SWITCHER);
             var kommunikatorNodeInfo = GetNodeInfo(KOMMUNIKATOR);
             var nodeBrowserNodeInfo = GetNodeInfo(NODE_BROWSER);
-            
+
             foreach (var factory in AddonFactories)
                 if (factory is PatchFactory)
                     NodeCollection.Add(string.Empty, ExePath.ConcatPath(@"lib\nodes\native\"), factory, true, false);
-            
+
             //now instantiate a NodeBrowser, a Kommunikator and a WindowSwitcher
             FWindowSwitcher = PluginFactory.CreatePlugin(windowSwitcherNodeInfo, null);
             FKommunikator = PluginFactory.CreatePlugin(kommunikatorNodeInfo, null);
             FNodeBrowser = PluginFactory.CreatePlugin(nodeBrowserNodeInfo, null);
-            
+
             this.IsBoygroupClient = FVVVVHost.IsBoygroupClient;
-            if(IsBoygroupClient)
+            if (IsBoygroupClient)
             {
                 this.BoygroupServerIP = FVVVVHost.BoygroupServerIP;
             }
@@ -255,17 +333,16 @@ namespace VVVV.Hosting
             {
                 throw new Exception("Could not parse clockport, make sure you have the right syntax, e.g. '/clockport 3344' ");
             }
-            
+
             //start time server of client
             FNetTimeSync = IsBoygroupClient ? new UDPTimeClient(BoygroupServerIP, clockport) : new UDPTimeServer(clockport);
             FNetTimeSync.Start();
 
             //now that all basics are set up, see if there are any node search paths to add
             //from the installed packs
-            if (packsDirInfo.Exists)
-                LoadPackNodes(packsDirInfo);
-            if (internalPacksDirInfo != null && internalPacksDirInfo.Exists)
-                LoadPackNodes(internalPacksDirInfo);
+            if (Directory.Exists(packsPath))
+                LoadNodesFromLegacyPackages(packsPath);
+            LoadNodesFromPackages();
         }
 
         bool IsSendingMessages()
@@ -283,36 +360,67 @@ namespace VVVV.Hosting
             return false;
         }
 
-        private void LoadPackNodes(DirectoryInfo packsDirInfo)
+        private void LoadFactoriesFromPackages(AggregateCatalog catalog)
         {
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
-                var packDir = packDirInfo.FullName;
-                var nodesDirInfo = new DirectoryInfo(Path.Combine(packDir, "nodes"));
-                if (nodesDirInfo.Exists)
-                    NodeCollection.AddJob(nodesDirInfo.FullName, true);
+                var packagePath = package.GetPathOfPackage();
+                //check for new nuget package format (skip packages without a version.info file - see http://vvvv.org/blog/patch-conversions-pack-versioning)
+                var versionInfoPath = Path.Combine(packagePath, "version.info");
+                if (File.Exists(versionInfoPath))
+                {
+                    foreach (var assembly in package.GetCompatibleAssemblyFiles())
+                        catalog.Catalogs.Add(new AssemblyCatalog(assembly.SourcePath));
+                }
             }
         }
 
-        private void LoadPackFactories(DirectoryInfo packsDirInfo, AggregateCatalog catalog)
+        private void LoadNodesFromPackages()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-            foreach (var packDirInfo in packsDirInfo.GetDirectories())
+            foreach (var package in AssemblyLoader.Repository.GetPackages())
             {
-                var packDir = packDirInfo.FullName;
-                var coreDirInfo = new DirectoryInfo(Path.Combine(packDir, "core"));
-                if (coreDirInfo.Exists)
+                var packagePath = package.GetPathOfPackage();
+                //check if the package contains a legacy package
+                var vvvvPath = Path.Combine(packagePath, "vvvv");
+                if (Directory.Exists(vvvvPath))
+                    LoadNodesFromLegacyPackage(vvvvPath);
+            }
+        }
+
+        private void LoadNodesFromLegacyPackages(string packsPath)
+        {
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+                LoadNodesFromLegacyPackage(packPath);
+        }
+
+        private void LoadNodesFromLegacyPackage(string packagePath)
+        {
+            var nodesPath = Path.Combine(packagePath, "nodes");
+            if (Directory.Exists(nodesPath))
+                NodeCollection.AddJob(nodesPath, true);
+        }
+
+        private void LoadFactoriesFromLegacyPackages(string packsPath, AggregateCatalog catalog)
+        {
+            foreach (var packPath in Directory.EnumerateDirectories(packsPath))
+            {
+                var corePath = Path.Combine(packPath, "core");
+                if (Directory.Exists(corePath))
                 {
-                    FAssemblySearchPaths.Add(coreDirInfo.FullName);
+                    FAssemblySearchPaths.Add(corePath);
+                    Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + corePath);
                     var platformDir = IntPtr.Size == 4 ? "x86" : "x64";
-                    var platformDependentCorDirInfo = new DirectoryInfo(Path.Combine(coreDirInfo.FullName, platformDir));
-                    if (platformDependentCorDirInfo.Exists)
-                        FAssemblySearchPaths.Add(platformDependentCorDirInfo.FullName);
+                    var platformPath = Path.Combine(corePath, platformDir);
+                    if (Directory.Exists(platformPath))
+                    {
+                        FAssemblySearchPaths.Add(platformPath);
+                        Environment.SetEnvironmentVariable("PATH", Environment.GetEnvironmentVariable("PATH") + ";" + platformPath);
+                    }
                 }
-                var factoriesDirInfo = new DirectoryInfo(Path.Combine(packDir, "factories"));
-                if (factoriesDirInfo.Exists)
-                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesDirInfo.FullName));
+                var factoriesPath = Path.Combine(packPath, "factories");
+                if (Directory.Exists(factoriesPath))
+                    catalog.Catalogs.Add(new DirectoryCatalog(factoriesPath));
+
                 // We look for nodes later
             }
         }
@@ -522,7 +630,16 @@ namespace VVVV.Hosting
                 WindowRemoved(this, args);
             }
         }
-        
+
+        public event EnumEventHandler EnumChanged;
+        protected virtual void OnEnumChanged(EnumEventArgs args)
+        {
+            if (EnumChanged != null)
+            {
+                EnumChanged(this, args);
+            }
+        }
+
         public INode Root
         {
             get
@@ -582,13 +699,8 @@ namespace VVVV.Hosting
             FVVVVHost.GetEnumEntry(EnumName, Index, out entryName);
             return entryName;
         }
-        
-        public double GetCurrentTime()
-        {
-            double currentTime;
-            FVVVVHost.GetCurrentTime(out currentTime);
-            return currentTime;
-        }
+
+        public double GetCurrentTime() => FrameTime;
         
         public double FrameTime
         {
@@ -599,7 +711,7 @@ namespace VVVV.Hosting
                 return currentTime;
             }
         }
-        
+
         public double RealTime
         {
             get
@@ -676,6 +788,9 @@ namespace VVVV.Hosting
             get;
             private set;
         }
+
+        public string PacksPath => Path.Combine(ExePath, "lib", "packs");
+        public string UserPacksPatch => Path.Combine(ExePath, "packs");
         
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
@@ -860,5 +975,27 @@ namespace VVVV.Hosting
         {
             set {FVVVVHost.FiftyEditor = value;}
         }
+
+        class DummyTimeProvider : ITimeProvider
+        {
+            private Func<double, double> timeProvider;
+
+            public DummyTimeProvider(Func<double, double> timeProvider)
+            {
+                this.timeProvider = timeProvider;
+            }
+
+            public double GetTime(double originalNewFrameTime) => timeProvider(originalNewFrameTime);
+        }
+
+        public void SetFrameTimeProvider(Func<double, double> timeProvider) => FVVVVHost.SetTimeProvider(new DummyTimeProvider(timeProvider));
+        public void SetFrameTimeProvider(ITimeProvider timeProvider) => FVVVVHost.SetTimeProvider(timeProvider);
+
+        public void EnumChangeCB(string enumName)
+        {
+            OnEnumChanged(new EnumEventArgs(enumName));
+        }
+
+        public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
     }
 }

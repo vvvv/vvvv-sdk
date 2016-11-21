@@ -359,7 +359,11 @@ namespace VVVV.Nodes
 	    {
 	        try
 	        {
-	            doc.Write(FFilenameIn[slice]);
+                var newFileName = FFilenameIn[slice];
+
+                Directory.CreateDirectory(Path.GetDirectoryName(newFileName));
+
+                doc.Write(newFileName);
 	            FSuccess[slice] = true;
 	        }
 	        catch(Exception e)

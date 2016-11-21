@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 using VVVV.PluginInterfaces.V1;
@@ -283,7 +284,7 @@ namespace VVVV.PluginInterfaces.V2
             get;
             set;
         }
-        
+
         /// <summary>
         /// The pins dimension count. Valid values: 1, 2, 3 or 4.
         /// </summary>
@@ -292,7 +293,22 @@ namespace VVVV.PluginInterfaces.V2
             get;
             set;
         }
-        
+
+        /// <summary>
+        /// The position of the bin size used in ISpread&lt;ISpread&lt;T&gt;&gt; implementations.
+        /// </summary>
+        public int BinOrder
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Tells the hosting code how many dimensions from a multi dimensional spread should be wrapped with a bin size pin.
+        /// By default all dimensions will be wrapped.
+        /// </summary>
+        public int BinSizeWrapCount { get; set; } = int.MaxValue;
+
         public abstract object Clone();
         
         protected object Clone(IOAttribute clonedInstance)
@@ -300,6 +316,8 @@ namespace VVVV.PluginInterfaces.V2
             clonedInstance.AllowDefault = AllowDefault;
             clonedInstance.AllowRecomposition = AllowRecomposition;
             clonedInstance.AsInt = AsInt;
+            clonedInstance.BinOrder = BinOrder;
+            clonedInstance.BinSizeWrapCount = BinSizeWrapCount;
             clonedInstance.DefaultColor = DefaultColor;
             clonedInstance.DefaultEnumEntry = DefaultEnumEntry;
             clonedInstance.DefaultString = DefaultString;
@@ -326,6 +344,32 @@ namespace VVVV.PluginInterfaces.V2
             clonedInstance.Visibility = Visibility;
             
             return clonedInstance;
+        }
+
+        protected string GetBinSizeName(string name, IIOContainer dataContainer)
+        {
+            var result = $"{name} Bin Size";
+            var binSizeCount = GetBinSizePinCount(dataContainer);
+            for (int i = 0; i < binSizeCount; i++)
+                result = $"Bin Size of {result}";
+            return result;
+        }
+
+        int GetBinSizePinCount(IIOContainer container)
+        {
+            var multiPin = container.RawIOObject as IIOMultiPin;
+            if (multiPin != null && multiPin.AssociatedContainers.Length == 1)
+                return GetBinSizePinCount(multiPin.AssociatedContainers[0]) + 1;
+            return 0;
+        }
+
+        public bool IsBinSizeEnabled => BinSizeWrapCount > 0;
+
+        public IOAttribute DecreaseBinSizeWrapCount()
+        {
+            var result = Clone() as IOAttribute;
+            result.BinSizeWrapCount--;
+            return result;
         }
     }
 }

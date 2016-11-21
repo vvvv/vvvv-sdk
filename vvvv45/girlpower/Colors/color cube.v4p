@@ -1,49 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Colors\color cube.v4p">
-   <BOUNDS height="5790" left="1905" top="165" type="Window" width="10710">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Colors\color cube.v4p">
+   <BOUNDS height="7410" left="1905" top="165" type="Window" width="10710">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="26" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS height="0" left="6000" top="2295" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="12600" left="795" top="300" type="Window" width="15510">
-   </BOUNDS>
-   <BOUNDS height="3600" left="6000" top="2295" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Rotation" visible="1">
-   </PIN>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inverse View" visible="1">
-   </PIN>
-   <PIN pinname="Inverse Interest" visible="1">
-   </PIN>
-   <PIN pinname="Distortion" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Position" visible="1">
-   </PIN>
-   <PIN pinname="Interest" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" id="25" nodename=":MODULES:\vvvv group\EX9\AxisAndGrid (DX9).v4p" systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p">
-   <BOUNDS height="0" left="285" top="3555" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6690" left="1020" top="1110" type="Window" width="10290">
-   </BOUNDS>
-   <BOUNDS height="3600" left="285" top="3555" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Draw Mode" slicecount="1" values="WireFrame">
-   </PIN>
-   <PIN pinname="layer" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="24" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
    <BOUNDS height="0" left="4710" top="2400" type="Node" width="0">
    </BOUNDS>
@@ -329,13 +287,13 @@
    <NODE componentmode="InAWindow" hiddenwhenlocked="1" id="6" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="5025" top="4980" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="5655" left="1890" top="5955" type="Window" width="10710">
+   <BOUNDS height="5610" left="1890" top="7500" type="Window" width="10710">
    </BOUNDS>
    <BOUNDS height="1800" left="5025" top="4980" type="Box" width="2400">
    </BOUNDS>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -349,11 +307,13 @@
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="6" dstpinname="View" hiddenwhenlocked="1" srcnodeid="26" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="6" dstpinname="Projection" hiddenwhenlocked="1" srcnodeid="26" srcpinname="Projection">
-   </LINK>
    <NODE hiddenwhenlocked="1" id="5" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="270" left="5025" top="4470" type="Node" width="600">
    </BOUNDS>
@@ -361,7 +321,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Layer 1" visible="1">
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer 2" visible="1">
    </PIN>
@@ -383,7 +343,7 @@
    </PIN>
    <PIN pinname="Sampler State" visible="1">
    </PIN>
-   <PIN pinname="Texture Transform" visible="1">
+   <PIN pinname="Texture Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform" slicecount="1" visible="1" values="||">
    </PIN>
@@ -398,8 +358,6 @@
    </LINK>
    <LINK dstnodeid="4" dstpinname="Texture" srcnodeid="7" srcpinname="Texture Out">
    </LINK>
-   <LINK dstnodeid="4" dstpinname="Texture Transform" srcnodeid="26" srcpinname="Inverse Rotation">
-   </LINK>
    <NODE id="3" nodename=":EFFECTS:\CubeTexture.fx" systemname="CubeTexture (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\CubeTexture.fx">
    <BOUNDS height="0" left="4365" top="3165" type="Node" width="0">
    </BOUNDS>
@@ -411,7 +369,7 @@
    </PIN>
    <PIN pinname="Sampler State" visible="1">
    </PIN>
-   <PIN pinname="Texture Transform" visible="1">
+   <PIN pinname="Texture Transform" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
@@ -430,29 +388,13 @@
    </LINK>
    <LINK dstnodeid="3" dstpinname="Mesh" srcnodeid="8" srcpinname="Mesh">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Texture Transform" srcnodeid="26" srcpinname="Inverse View">
-   </LINK>
    <LINK dstnodeid="3" dstpinname="Texture" srcnodeid="7" srcpinname="Texture Out">
-   </LINK>
-   <LINK dstnodeid="5" dstpinname="Layer 1" hiddenwhenlocked="1" srcnodeid="25" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="5" dstpinname="Layer 2" hiddenwhenlocked="1" srcnodeid="22" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="5" dstpinname="Layer 3" hiddenwhenlocked="1" srcnodeid="3" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="5" dstpinname="Layer 4" hiddenwhenlocked="1" srcnodeid="4" srcpinname="Layer">
-   </LINK>
-   <NODE id="2" nodename="Scale (Transform)" systemname="Scale (Transform)">
-   <BOUNDS height="0" left="6015" top="1830" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="X" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Y" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="26" dstpinname="Distortion" srcnodeid="2" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="0" left="7635" top="3660" type="Node" width="0">
@@ -481,5 +423,123 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="3" dstpinname="Technique" srcnodeid="0" srcpinname="Output Enum">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6060" top="1875" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6060" top="1875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6555" top="1875" width="420" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6555" top="1875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="29" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7005" top="1875" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7005" top="1875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="6885" top="4980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Width" dstnodeid="32" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Height" dstnodeid="32" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Transform Out" dstnodeid="6" dstpinname="Aspect Ratio">
+   </LINK>
+   <NODE id="26" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <PIN pinname="Distortion" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" visible="1" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Initial Pitch" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="100" left="6000" top="2295" width="100">
+   </BOUNDS>
+   <BOUNDS type="Window" height="12600" left="795" top="300" width="15510">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="6000" top="2295" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Rotation" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Inverse View" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Interest" visible="1">
+   </PIN>
+   <PIN pinname="Position" visible="1">
+   </PIN>
+   <PIN pinname="Interest" visible="1">
+   </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial FOV">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Inverse View" dstnodeid="3" dstpinname="Texture Transform">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Projection" dstnodeid="6" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="View" dstnodeid="6" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Initial Latitude">
+   </LINK>
+   <NODE componentmode="Hidden" id="25" nodename="AxisAndGrid (DX9)" systemname="AxisAndGrid (DX9)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p">
+   <BOUNDS height="100" left="285" top="3555" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6690" left="1020" top="1110" type="Window" width="10290">
+   </BOUNDS>
+   <BOUNDS height="3600" left="285" top="3555" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Draw Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   <PIN pinname="layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Layer 1" hiddenwhenlocked="1" srcnodeid="25" srcpinname="Layer">
    </LINK>
    </PATCH>

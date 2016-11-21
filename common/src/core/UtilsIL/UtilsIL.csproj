@@ -14,6 +14,8 @@
     <DocumentationFile>$(OutputPath)\VVVV.UtilsIL.xml</DocumentationFile>
     <NoWarn>1591 1587</NoWarn>
     <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -29,6 +31,10 @@
     <Compile Include="Memory.il" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.generated.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="UtilsIL.nuspec" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -59,7 +65,7 @@
     <PropertyGroup>
       <ILDasmPath>$(FrameworkSdkPath)bin\NetFX 4.0 Tools\ildasm.exe</ILDasmPath>
       <ILDasmPath Condition="$(FrameworkSdkPath.Contains('v8.1A'))">$(FrameworkSdkPath)bin\NetFX 4.5.1 Tools\ildasm.exe</ILDasmPath>
-		<ILDasmPath Condition="$(FrameworkSdkPath.Contains('v10.0A'))">$(FrameworkSdkPath)bin\NetFX 4.6 Tools\ildasm.exe</ILDasmPath>
+      <ILDasmPath Condition="$(FrameworkSdkPath.Contains('v10.0A'))">$(FrameworkSdkPath)bin\NetFX 4.6 Tools\ildasm.exe</ILDasmPath>
       <ILDasm>"$(ILDasmPath)" /nobar /linenum /output:"$(ILFile)" @(IntermediateAssembly->'"%(FullPath)"', ' ')</ILDasm>
     </PropertyGroup>
     <Exec Command="$(ILDasm)" />
@@ -138,4 +144,11 @@
   </Target>
   -->
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Import Project="..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets'))" />
+  </Target>
 </Project>

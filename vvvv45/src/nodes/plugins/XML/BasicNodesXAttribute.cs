@@ -177,7 +177,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XAttributeBufferNode : BufferNode<XAttribute> {}
+	public class XAttributeBufferNode : BufferNode<XAttribute>
+    {
+        public XAttributeBufferNode() : base(XAttributeCopier.Default) { }
+    }
     
     [PluginInfo(Name = "Queue",
 	            Category = "XElement",
@@ -186,7 +189,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XAttributeQueueNode : QueueNode<XAttribute> {}
+	public class XAttributeQueueNode : QueueNode<XAttribute>
+    {
+        public XAttributeQueueNode() : base(XAttributeCopier.Default) { }
+    }
 	
 	[PluginInfo(Name = "RingBuffer",
 	            Category = "XElement",
@@ -195,7 +201,10 @@ namespace VVVV.Nodes
 	            Tags = "generic, spreadop, collection",
 	            AutoEvaluate = true
 	           )]
-	public class XAttributeRingBufferNode : RingBufferNode<XAttribute> {}
+	public class XAttributeRingBufferNode : RingBufferNode<XAttribute>
+    {
+        public XAttributeRingBufferNode() : base(XAttributeCopier.Default) { }
+    }
     
 	[PluginInfo(Name = "Store", 
 	            Category = "XElement",

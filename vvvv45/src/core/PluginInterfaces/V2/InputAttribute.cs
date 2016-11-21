@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 namespace VVVV.PluginInterfaces.V2
 {
     [ComVisible(false)]
-    public sealed class InputAttribute : IOAttribute
+    public class InputAttribute : IOAttribute
     {
         public static readonly int DefaultBinSize = -1;
         public static readonly string DefaultBinName = " Bin Size";
@@ -42,15 +42,6 @@ namespace VVVV.PluginInterfaces.V2
         /// The visibility of the bin size pin in the patch and inspektor.
         /// </summary>
         public PinVisibility BinVisibility
-        {
-            get;
-            set;
-        }
-        
-        /// <summary>
-        /// The position of the bin size used in ISpread&lt;ISpread&lt;T&gt;&gt; implementations.
-        /// </summary>
-        public int BinOrder
         {
             get;
             set;
@@ -97,14 +88,14 @@ namespace VVVV.PluginInterfaces.V2
         {
             return "Input";
         }
-        
-        public InputAttribute GetBinSizeInputAttribute()
+
+        public InputAttribute GetBinSizeInputAttribute(IIOContainer dataContainer)
         {
-            return new InputAttribute(BinName == DefaultBinName ? string.Format("{0} Bin Size", Name) : BinName)
+            return new InputAttribute(BinName == DefaultBinName ? GetBinSizeName(Name, dataContainer) : BinName)
             {
                 DefaultValue = BinSize,
                 // Don't do this, as spread max won't get computed for this pin
-//                AutoValidate = false,
+                // AutoValidate = false,
                 Order = BinOrder,
                 Visibility = BinVisibility,
                 CheckIfChanged = true

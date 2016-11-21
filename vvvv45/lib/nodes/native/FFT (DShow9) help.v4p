@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha30.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\FFT (DShow9) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta34.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\FFT (DShow9) help.v4p">
    <BOUNDS height="13560" left="6075" top="1965" type="Window" width="9945">
    </BOUNDS>
    <NODE id="28" nodename="FFT (DSHOW9)">
@@ -38,16 +38,12 @@
    <LINKPOINT x="2100" y="1950">
    </LINKPOINT>
    </LINK>
-   <NODE id="-6" nodename="MainLoop (VVVV)">
+   <NODE id="-6" nodename="MainLoop (VVVV)" systemname="MAINLOOP (VVVV)">
    <BOUNDS height="0" left="4635" top="1290" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum forground fps" slicecount="1" values="30">
    </PIN>
-   </NODE>
-   <NODE id="25" nodename="AudioRecordSelector (System)">
-   <BOUNDS height="0" left="4635" top="2760" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
+   <PIN pinname="Increase Timing Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
@@ -214,20 +210,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="14" nodename="IOBox (Enumerations)">
-   <BOUNDS height="0" left="4635" top="2205" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="13245" top="4260" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="255" left="4635" top="2205" type="Box" width="1080">
-   </BOUNDS>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="Stereomix">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="25" dstpinname="Device" srcnodeid="14" srcpinname="Output Enum">
-   </LINK>
    <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
    <BOUNDS height="270" left="120" top="4215" type="Node" width="1095">
    </BOUNDS>
@@ -324,7 +306,7 @@
    </LINK>
    <LINK srcnodeid="34" srcpinname="Output" dstnodeid="31" dstpinname="XY">
    </LINK>
-   <NODE id="35" nodename="FrameDelay (Animation)">
+   <NODE id="35" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="7995" top="3375" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -397,7 +379,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\19_Analysis_Basics.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\19_Analysis_Basics.v4p">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="41">
@@ -407,7 +389,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\20_Analysis_FFT.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\20_Analysis_FFT.v4p">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="40">
@@ -417,7 +399,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\21_Visualisation_Equalizer_Bars.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\21_Visualisation_Equalizer_Bars.v4p">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="39">
@@ -427,7 +409,7 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\22_Visualisation_Equalizer_Stripes.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\22_Visualisation_Equalizer_Stripes.v4p">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="44">
@@ -437,7 +419,9 @@
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="|..\..\..\girlpower\Audio\23_Visualisation_Equalizer_JoyDivision.v4p|">
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\23_Visualisation_Equalizer_JoyDivision.v4p">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
    </PATCH>

@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.10.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Strings\08_TTY_ASCII_Art-Renderer.v4p" systemname="TTY_ASCII_Art-Renderer" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Strings\TTY_ASCII_Art-Renderer.v4p" scrollx="855" scrolly="1290">
    <BOUNDS type="Window" left="2415" top="9015" width="16425" height="5070">
    </BOUNDS>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <INFO author="" description="" tags="">
    </INFO>
@@ -133,9 +133,9 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View" visible="1">
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
    </PIN>
@@ -170,24 +170,6 @@
    <PIN pinname="Reset" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="277">
-   <BOUNDS type="Node" left="6780" top="2760" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="1.96">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="277" srcpinname="View" dstnodeid="237" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="277" srcpinname="Projection" dstnodeid="237" dstpinname="Projection">
-   </LINK>
    <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="278">
    <BOUNDS type="Node" left="5445" top="1425" width="100" height="100">
    </BOUNDS>
@@ -1157,5 +1139,39 @@
    <LINK srcnodeid="373" srcpinname="Output" dstnodeid="375" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="373" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="277">
+   <BOUNDS type="Node" left="6780" top="2880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="1.96">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial FOV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="277" srcpinname="View" dstnodeid="237" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="277" srcpinname="Projection" dstnodeid="237" dstpinname="Projection">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="416" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7605" top="2505" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7605" top="2505" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="416" srcpinname="Y Output Value" dstnodeid="277" dstpinname="Initial FOV">
    </LINK>
    </PATCH>

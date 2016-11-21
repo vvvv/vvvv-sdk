@@ -1,5 +1,5 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Switch (String Input) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.105.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Switch (String Input) help.v4p">
    <BOUNDS height="5040" left="1980" top="3195" type="Window" width="8925">
    </BOUNDS>
    <NODE componentmode="InABox" hiddenwhenlocked="1" id="17" nodename="IOBox (String)">
@@ -133,13 +133,13 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="6" nodename="Switch (String Input)">
    <BOUNDS height="0" left="3375" top="3030" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="10.00000">
+   <PIN pinname="Input Count" slicecount="1" values="10">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -163,7 +163,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Switch" slicecount="1" visible="1">
+   <PIN pinname="Switch" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="17" srcpinname="Output String">
@@ -237,19 +237,19 @@
    </BOUNDS>
    <BOUNDS height="435" left="2355" top="3915" type="Box" width="1080">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1">
+   <PIN pinname="Input String" visible="1">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Input String" srcnodeid="6" srcpinname="Output">
    </LINK>
    <NODE id="3" nodename="Frac (Value)">
-   <BOUNDS height="0" left="540" top="1980" type="Node" width="0">
+   <BOUNDS height="0" left="135" top="2070" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" slicecount="1" visible="1">
+   <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Whole Part" visible="1">
    </PIN>
@@ -259,7 +259,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Period" slicecount="1" values="10.00000">
+   <PIN pinname="Period" slicecount="1" values="10">
    </PIN>
    </NODE>
    <NODE id="1" nodename="Map (Value)">
@@ -269,18 +269,14 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Destination Maximum" slicecount="1" values="9.00000">
+   <PIN pinname="Destination Maximum" slicecount="1" values="9">
    </PIN>
    </NODE>
    <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Input" linkstyle="VHV" srcnodeid="1" srcpinname="Output">
-   <LINKPOINT x="195" y="885">
-   </LINKPOINT>
-   <LINKPOINT x="600" y="885">
-   </LINKPOINT>
+   <LINK dstnodeid="3" dstpinname="Input" linkstyle="PolyLine" srcnodeid="1" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="255" top="2520" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3960" top="7350" type="Window" width="215">
@@ -292,11 +288,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="3" srcpinname="Whole Part">
-   <LINKPOINT x="570" y="2385">
-   </LINKPOINT>
-   <LINKPOINT x="1020" y="2385">
-   </LINKPOINT>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="3" srcpinname="Whole Part">
    </LINK>
    <LINK dstnodeid="6" dstpinname="Switch" linkstyle="VHV" srcnodeid="0" srcpinname="Y Output Value">
    <LINKPOINT x="1020" y="2895">
@@ -315,7 +307,7 @@
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
@@ -325,13 +317,15 @@
    </BOUNDS>
    <BOUNDS height="160" left="9540" top="44730" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch - String Input|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Switch (String Input)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Size" slicecount="1" values="12.00000">
+   <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

@@ -11,7 +11,7 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Devices
 {
-    [PluginInfo(Name = "RS232", Category = "Devices", AutoEvaluate = true)]
+    [PluginInfo(Name = "RS232", Category = "Devices", AutoEvaluate = true, Tags = "serial, port")]
     public class Rs232Node : IDisposable, IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         [Input("Input")]
@@ -84,7 +84,7 @@ namespace VVVV.Nodes.Devices
             if (UpdatePortListIn.IsChanged && UpdatePortListIn[0]) GlobalEnumManager.UpdatePortList();
 
             FPorts.Resize(spreadMax, CreatePort, DestroyPort);
-            DataOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+            DataOut.ResizeAndDispose(spreadMax, () => new MemoryComStream());
 
             for (int i = 0; i < spreadMax; i++)
             {

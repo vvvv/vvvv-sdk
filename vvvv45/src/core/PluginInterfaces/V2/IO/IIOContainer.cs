@@ -31,6 +31,8 @@ namespace VVVV.PluginInterfaces.V2
         /// Gets the io factory which was used to create this container.
         /// </summary>
         IIOFactory Factory { get; }
+
+        IIOContainer[] AssociatedContainers { get; }
     }
     
     [ComVisible(false)]
@@ -44,7 +46,17 @@ namespace VVVV.PluginInterfaces.V2
             get;
         }
     }
-    
+
+    /// <summary>
+    /// Implemented by spreads and streams which either use a bin size pin or are a pin group.
+    /// </summary>
+    [ComVisible(false)]
+    public interface IIOMultiPin
+    {
+        IIOContainer BaseContainer { get; }
+        IIOContainer[] AssociatedContainers { get; }
+    }
+
     [ComVisible(false)]
     public static class IOContainerExtensions
     {

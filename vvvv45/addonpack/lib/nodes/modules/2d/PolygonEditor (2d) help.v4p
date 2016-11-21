@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
    <BOUNDS type="Window" left="5790" top="600" width="17730" height="9255">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="5955" top="555" width="100" height="100">
@@ -850,32 +850,6 @@
    </NODE>
    <PACK Name="imagepack" Version="0.1.0">
    </PACK>
-   <NODE systemname="Cursor (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="512">
-   <BOUNDS type="Node" left="7500" top="4890" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Window" left="9465" top="3570" width="19335" height="13830">
-   </BOUNDS>
-   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Cursor Type" visible="1">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="1.5">
-   </PIN>
-   <PIN pinname="Selection" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <BOUNDS type="Box" left="7500" top="4890">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="512" dstpinname="Cursor Type" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Device" dstnodeid="512" dstpinname="Mouse" linkstyle="PolyLine">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="513">
    <BOUNDS type="Node" left="5445" top="5535" width="1230" height="270">
    </BOUNDS>
@@ -883,12 +857,10 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Layer 2" visible="1">
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="513" srcpinname="Layer" dstnodeid="8" dstpinname="Layers" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="508" srcpinname="Y Output Value" dstnodeid="399" dstpinname="Simulate">
    </LINK>
@@ -988,8 +960,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Selection Rect" dstnodeid="512" dstpinname="Selection">
-   </LINK>
    <NODE id="482" componentmode="Hidden" systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)">
    <BOUNDS type="Window" left="8670" top="3915" width="16935" height="9330">
    </BOUNDS>
@@ -1014,13 +984,13 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="482" dstpinname="Input">
    </LINK>
-   <NODE systemname="AsPolygonEditor (XElement)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\AsPolygonEditor (XElement).v4p" nodename="AsPolygonEditor (XElement)" componentmode="Hidden" id="530">
+   <NODE systemname="DeSerialize (PolygonEditor XElement)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\DeSerialize (PolygonEditor XElement).v4p" nodename="DeSerialize (PolygonEditor XElement)" componentmode="Hidden" id="530">
    <BOUNDS type="Node" left="645" top="7335" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="645" top="7335">
    </BOUNDS>
    </NODE>
-   <NODE systemname="AsXElement (PolygonEditor)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\AsXElement (PolygonEditor).v4p" nodename="AsXElement (PolygonEditor)" componentmode="Hidden" id="531">
+   <NODE systemname="Serialize (PolygonEditor XElement)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Serialize (PolygonEditor XElement).v4p" nodename="Serialize (PolygonEditor XElement)" componentmode="Hidden" id="531">
    <BOUNDS type="Node" left="645" top="6960" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="645" top="6960">
@@ -1068,4 +1038,32 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="512">
+   <BOUNDS type="Node" left="7500" top="4890" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9465" top="3570" width="19335" height="13830">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Cursor Type" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Selection" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <BOUNDS type="Box" left="7500" top="4890">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Cursor Type" dstnodeid="512" dstpinname="Cursor Type" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Selection Rect" dstnodeid="512" dstpinname="Selection">
+   </LINK>
    </PATCH>

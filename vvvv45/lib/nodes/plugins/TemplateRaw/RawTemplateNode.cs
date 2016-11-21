@@ -51,7 +51,11 @@ namespace VVVV.Nodes
 			//ResizeAndDispose will adjust the spread length and thereby call
 			//the given constructor function for new slices and Dispose on old
 			//slices.
-			FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryStream());
+			//Note: Using the standard .NET MemoryStream would also work, but
+			//since MemoryComStream delivered by VVVV.Utils implements the COM
+			//IStream interface directly we save a little bit of overhead.
+			//For details see https://vvvv.org/blog/raw-performance-speedup
+			FStreamOut.ResizeAndDispose(spreadMax, () => new MemoryComStream());
 			for (int i = 0; i < spreadMax; i++)
 			{
 				//get the input stream

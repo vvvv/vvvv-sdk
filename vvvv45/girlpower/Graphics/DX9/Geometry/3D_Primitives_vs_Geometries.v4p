@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Primitives_vs_Geometries.v4p" systemname="10_3D_Primitives_vs_Geometries" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\10_3D_Primitives_vs_Geometries.v4p">
-   <BOUNDS type="Window" left="0" top="0" width="15135" height="12315">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Geometry\3D_Primitives_vs_Geometries.v4p" systemname="10_3D_Primitives_vs_Geometries" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Graphics\DX9\01_Basics\10_3D_Primitives_vs_Geometries.v4p" scrollx="0" scrolly="15">
+   <BOUNDS type="Window" left="2895" top="1860" width="17190" height="12315">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
    <BOUNDS type="Node" left="555" top="240" width="1185" height="270">
@@ -64,20 +64,6 @@
    </LINK>
    <LINK srcnodeid="98" srcpinname="Y Output Value" dstnodeid="96" dstpinname="Resolution Y">
    </LINK>
-   <NODE systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden" id="100">
-   <BOUNDS type="Node" left="9435" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mesh" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Texture" visible="1">
-   </PIN>
-   <PIN pinname="Light Direction XYZ" visible="1" slicecount="3" values="-0.876400232315063,0.425779283046722,-0.225021332502365">
-   </PIN>
-   </NODE>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="106">
    <BOUNDS type="Node" left="6150" top="4440" width="100" height="100">
    </BOUNDS>
@@ -114,30 +100,36 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
    </NODE>
-   <LINK srcnodeid="100" srcpinname="Layer" dstnodeid="107" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="114" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13845" top="3285" width="795" height="240">
+   <BOUNDS type="Box" left="13995" top="3315" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13845" top="3285" width="0" height="0">
+   <BOUNDS type="Node" left="13995" top="3315" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="15.53">
+   <PIN pinname="Y Input Value" slicecount="1" values="0.16">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="2">
+   </PIN>
    </NODE>
    <NODE systemname="ColladaFile (EX9.Geometry)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="ColladaFile (EX9.Geometry)" componentmode="Hidden" id="119">
-   <BOUNDS type="Node" left="9615" top="2205" width="100" height="100">
+   <BOUNDS type="Node" left="9600" top="2115" width="100" height="100">
    </BOUNDS>
    <PIN pinname="COLLADA Model" visible="1">
    </PIN>
    <PIN pinname="Filename" slicecount="1" values="..\..\..\..\lib\assets\geometries\astroBoy_walk.dae">
    </PIN>
+   <PIN pinname="Reload" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Coordinate system of source" slicecount="1" values="RightHanded">
+   </PIN>
    </NODE>
    <NODE systemname="Mesh (EX9.Geometry Collada)" filename="%VVVV%\lib\nodes\plugins\ColladaLoader.dll" nodename="Mesh (EX9.Geometry Collada)" componentmode="Hidden" id="120">
-   <BOUNDS type="Node" left="9600" top="2625" width="100" height="100">
+   <BOUNDS type="Node" left="9600" top="2700" width="100" height="100">
    </BOUNDS>
    <PIN pinname="COLLADA Model" visible="1">
    </PIN>
@@ -145,17 +137,19 @@
    </PIN>
    <PIN pinname="TextureFileName" visible="1">
    </PIN>
+   <PIN pinname="Transforms" visible="1">
+   </PIN>
+   <PIN pinname="Time" slicecount="1" values="0.0181">
+   </PIN>
    </NODE>
    <LINK srcnodeid="119" srcpinname="COLLADA Model" dstnodeid="120" dstpinname="COLLADA Model">
    </LINK>
-   <LINK srcnodeid="120" srcpinname="Mesh" dstnodeid="100" dstpinname="Mesh">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="121" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12375" top="2850" width="795" height="720">
+   <BOUNDS type="Box" left="11940" top="2880" width="795" height="720">
    </BOUNDS>
-   <BOUNDS type="Node" left="12375" top="2850" width="0" height="0">
+   <BOUNDS type="Node" left="11940" top="2880" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" values="1.33,7.9,0">
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0.08,0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -169,7 +163,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="122">
-   <BOUNDS type="Node" left="10695" top="3375" width="100" height="100">
+   <BOUNDS type="Node" left="10695" top="3360" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
@@ -178,26 +172,28 @@
    </NODE>
    <LINK srcnodeid="120" srcpinname="TextureFileName" dstnodeid="122" dstpinname="Filename">
    </LINK>
-   <LINK srcnodeid="122" srcpinname="Texture Out" dstnodeid="100" dstpinname="Texture">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="123" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="13290" top="3285" width="510" height="240">
+   <BOUNDS type="Box" left="12855" top="3315" width="510" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="13290" top="3285" width="0" height="0">
+   <BOUNDS type="Node" left="12855" top="3315" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="-0.41">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="125" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9885" top="3060" width="645" height="600">
+   <BOUNDS type="Box" left="9900" top="3105" width="645" height="585">
    </BOUNDS>
-   <BOUNDS type="Node" left="9885" top="3060" width="0" height="0">
+   <BOUNDS type="Node" left="9900" top="3105" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="3" values="-0.876400232315063,0.425779283046722,-0.225021332502365">
+   <PIN pinname="Y Input Value" slicecount="3" values="-0.7,-0.23,0.92">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -207,9 +203,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Light Direction XYZ">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="126" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4035" top="5010" width="345" height="270">
    </BOUNDS>
@@ -303,9 +299,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="133" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5865" top="3180" type="Node" width="315">
+   <BOUNDS height="270" left="5715" top="3180" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5865" top="3180" type="Box" width="405">
+   <BOUNDS height="390" left="5715" top="3180" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -319,9 +315,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="134" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5700" top="3735" type="Node" width="315">
+   <BOUNDS height="270" left="5715" top="3735" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5700" top="3735" type="Box" width="405">
+   <BOUNDS height="390" left="5715" top="3735" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -360,26 +356,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="141">
-   <BOUNDS type="Node" left="12720" top="3795" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Initial Interest" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="12720" top="3795">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="141" srcpinname="View" dstnodeid="107" dstpinname="View" hiddenwhenlocked="0">
-   </LINK>
-   <LINK srcnodeid="141" srcpinname="Projection" dstnodeid="107" dstpinname="Projection" hiddenwhenlocked="0">
-   </LINK>
-   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="141" dstpinname="Inital Distance">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Y Output Value" dstnodeid="141" dstpinname="Initial Yaw">
-   </LINK>
-   <LINK srcnodeid="121" srcpinname="Y Output Value" dstnodeid="141" dstpinname="Initial Interest">
-   </LINK>
    <NODE componentmode="InABox" id="142" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="5730" top="7095" type="Node" width="315">
    </BOUNDS>
@@ -517,9 +493,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="152" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="9615" top="1800" width="2400" height="240">
+   <BOUNDS type="Box" left="9600" top="1680" width="2400" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9615" top="1800" width="0" height="0">
+   <BOUNDS type="Node" left="9600" top="1680" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" values="..\..\..\..\lib\assets\geometries\astroBoy_walk.dae">
    </PIN>
@@ -564,6 +540,66 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="159" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13425" top="3315" width="495" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13425" top="3315" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="162">
+   <BOUNDS type="Node" left="13080" top="3795" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13080" top="3795">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="162" srcpinname="View" dstnodeid="107" dstpinname="View" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="162" srcpinname="Projection" dstnodeid="107" dstpinname="Projection" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial InterestXYZ">
+   </LINK>
+   <LINK srcnodeid="114" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Longitude">
+   </LINK>
+   <LINK srcnodeid="159" srcpinname="Y Output Value" dstnodeid="162" dstpinname="Initial Latitude">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="165" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10545" top="2085" width="255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10545" top="2085" width="4950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Note, that for this particular mesh, the &apos;Coordinate System of Source&apos; config pin (see Inspektor) should be set to &apos;RightHanded&apos;.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="168" systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden">
+   <BOUNDS type="Node" left="9435" top="3855" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Light Direction XYZ" slicecount="1" visible="1" values="-0.00999999977648258">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="122" srcpinname="Texture Out" dstnodeid="168" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Mesh" dstnodeid="168" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="168" srcpinname="Layer" dstnodeid="107" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="120" srcpinname="Transforms" dstnodeid="168" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="168" dstpinname="Light Direction XYZ">
+   </LINK>
    </PATCH>

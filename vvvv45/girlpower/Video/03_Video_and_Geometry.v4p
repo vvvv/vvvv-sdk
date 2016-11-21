@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\03_Video_and_Geometry.v4p" systemname="03_Video_and_Geometry" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\03_Video_and_Geometry.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Video\03_Video_and_Geometry.v4p" systemname="03_Video_and_Geometry" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Video\03_Video_and_Geometry.v4p">
    <BOUNDS type="Window" left="300" top="1620" width="13770" height="9900">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="9">
    <BOUNDS type="Node" left="7575" top="7860" width="100" height="100">
@@ -63,9 +63,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="0" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9885" top="6735" width="540" height="240">
+   <BOUNDS type="Box" left="9750" top="6735" width="540" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9885" top="6735" width="0" height="0">
+   <BOUNDS type="Node" left="9750" top="6735" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2.95">
    </PIN>
@@ -556,28 +556,6 @@
    </NODE>
    <LINK srcnodeid="34" srcpinname="Texture Out" dstnodeid="24" dstpinname="Texture">
    </LINK>
-   <NODE systemname="Camera (Transform Softimage)" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="38" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
-   <BOUNDS type="Node" left="8520" top="7260" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Initial Pitch" slicecount="1" visible="1" values="-0.08">
-   </PIN>
-   <PIN pinname="Initial Yaw" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Initial Interest" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="38" srcpinname="View" dstnodeid="9" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="38" srcpinname="Projection" dstnodeid="9" dstpinname="Projection">
-   </LINK>
-   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Inital Distance">
-   </LINK>
-   <NODE systemname="AxisAndGrid (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="9060" top="5295" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="40">
    <BOUNDS type="Node" left="7590" top="5955" width="1815" height="270">
    </BOUNDS>
@@ -589,7 +567,7 @@
    </PIN>
    <PIN pinname="Layer Template Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Layer 3" visible="1">
+   <PIN pinname="Layer 3" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 1">
@@ -597,23 +575,23 @@
    <LINK srcnodeid="40" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8730" top="6735" width="465" height="240">
+   <BOUNDS type="Box" left="8700" top="6735" width="465" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8730" top="6735" width="0" height="0">
+   <BOUNDS type="Node" left="8700" top="6735" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="-1.11">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1.1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Yaw">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9285" top="6735" width="495" height="240">
+   <BOUNDS type="Box" left="9195" top="6735" width="495" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9285" top="6735" width="0" height="0">
+   <BOUNDS type="Node" left="9195" top="6735" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.05">
    </PIN>
@@ -621,9 +599,9 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Pitch">
-   </LINK>
    <NODE systemname="GouraudDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\GouraudDirectional.fx" nodename="GouraudDirectional (EX9.Effect)" componentmode="Hidden" id="45">
    <BOUNDS type="Node" left="8835" top="4605" width="100" height="100">
    </BOUNDS>
@@ -643,8 +621,6 @@
    <LINK srcnodeid="34" srcpinname="Texture Out" dstnodeid="45" dstpinname="Texture">
    </LINK>
    <LINK srcnodeid="45" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="39" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 3">
    </LINK>
    <NODE systemname="Transform (Transform 2d)" nodename="Transform (Transform 2d)" componentmode="Hidden" id="46">
    <BOUNDS type="Node" left="9690" top="3870" width="100" height="100">
@@ -721,9 +697,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Interest">
-   </LINK>
    <NODE id="44" systemname="Box (EX9.Geometry)" nodename="Box (EX9.Geometry)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="9000" top="3870" width="510" height="270">
    </BOUNDS>
@@ -774,4 +750,42 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <NODE id="38" systemname="Camera (Transform Softimage)" nodename="Camera (Transform Softimage)" componentmode="Hidden" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS type="Node" left="8520" top="7260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Initial Pitch" slicecount="1" visible="1" values="-0.08">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Initial Interest" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Initial InterestXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Initial Longitude" visible="1">
+   </PIN>
+   <PIN pinname="Initial Latitude" visible="1" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="View" dstnodeid="9" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Projection" dstnodeid="9" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Distance">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial InterestXYZ">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Longitude">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Initial Latitude">
+   </LINK>
+   <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="39">
+   <BOUNDS type="Node" left="8745" top="5490" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Layer" dstnodeid="40" dstpinname="Layer 3">
+   </LINK>
    </PATCH>

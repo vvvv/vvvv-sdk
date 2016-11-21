@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\3D\DeformByCurve (3D B-Spline) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.101.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\DeformByCurve (3D B-Spline) help.v4p" componentmode="InAWindow">
    <BOUNDS height="9195" left="1035" top="1845" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -23,7 +23,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|DeformByCurve - 3D B-Spline|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|DeformByCurve (3D B-Spline)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -32,7 +32,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="17" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="17" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="4860" top="7590" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5835" left="10725" top="2370" type="Window" width="6120">
@@ -41,13 +41,19 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="16" nodename="Vertigo (Transform)" systemname="Vertigo (Transform)">
@@ -62,7 +68,7 @@
    <PIN pinname="Dolly &amp; Size" slicecount="1" values="3.8">
    </PIN>
    </NODE>
-   <LINK dstnodeid="17" dstpinname="Projection Transform" srcnodeid="16" srcpinname="Transform Out">
+   <LINK dstnodeid="17" dstpinname="Projection" srcnodeid="16" srcpinname="Transform Out">
    </LINK>
    <NODE id="15" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
    <BOUNDS height="0" left="2730" top="6555" type="Node" width="0">
@@ -118,7 +124,7 @@
    </LINK>
    <LINK dstnodeid="17" dstpinname="Layers" srcnodeid="12" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="11" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4755" top="1020" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8145" top="6885" type="Window" width="215">
@@ -204,7 +210,7 @@
    </NODE>
    <LINK dstnodeid="5" dstpinname="Z" srcnodeid="7" srcpinname="Output Y">
    </LINK>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="4" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6345" top="2970" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8445" top="7185" type="Window" width="215">
@@ -234,7 +240,7 @@
    </LINK>
    <LINK dstnodeid="5" dstpinname="Y" srcnodeid="7" srcpinname="Output X">
    </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3165" top="2085" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="4770" top="4350" type="Window" width="215">
@@ -324,4 +330,24 @@
    </LINK>
    <LINK dstnodeid="21" dstpinname="Control XYZ" srcnodeid="0" srcpinname="Position Out">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="585" top="7215" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="585" top="7215" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AlignToPath (Transform)" filename="%VVVV%\lib\nodes\modules\Transform\AlignToPath (Transform).v4p" nodename="AlignToPath (Transform)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="660" top="7620" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

@@ -34,7 +34,7 @@ namespace VVVV.Nodes.Value
         public unsafe void Evaluate(int spreadMax)
         {
             spreadMax = StreamUtils.GetSpreadMax(FInputStreams, FFormats, FByteOrder);
-            FOutputStreams.ResizeAndDispose(spreadMax, () => new MemoryStream());
+            FOutputStreams.ResizeAndDispose(spreadMax, () => new MemoryComStream());
             var inputBuffer = MemoryPool<double>.GetArray();
             try
             {

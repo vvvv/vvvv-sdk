@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.1.dtd" >
-   <PATCH nodename="C:\_vvvv\public sources\_TRUNK vvvv\girlpower\Rollercoaster.v4p">
-   <BOUNDS height="7950" left="1290" top="5100" type="Window" width="7860">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Transformations\Rollercoaster.v4p">
+   <BOUNDS height="9660" left="225" top="255" type="Window" width="7860">
    </BOUNDS>
    <NODE id="15" nodename="MovingTriad (3d Vector)">
    <BOUNDS height="0" left="4350" top="2475" type="Node" width="0">
@@ -36,7 +36,7 @@
    <PIN pinname="Cyclic" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE id="13" nodename="RandomSpread (Spreads)">
+   <NODE id="13" nodename="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="4065" top="810" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -55,7 +55,7 @@
    <LINK dstnodeid="15" dstpinname="Acceleration XYZ" srcnodeid="14" srcpinname="Acceleration Out">
    </LINK>
    <NODE id="12" nodename="LFO (Animation)">
-   <BOUNDS height="0" left="4110" top="300" type="Node" width="0">
+   <BOUNDS height="0" left="4065" top="300" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Cycles" visible="1">
    </PIN>
@@ -84,16 +84,6 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Position XYZ" srcnodeid="14" srcpinname="Position Out">
    </LINK>
-   <NODE componentmode="Hidden" id="10" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" path="C:\_vvvv\public sources\_TRUNK vvvv\modules\vvvv group\Transform\">
-   <BOUNDS height="0" left="1965" top="3150" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="14235" left="675" top="2670" type="Window" width="15825">
-   </BOUNDS>
-   <BOUNDS height="3600" left="1965" top="3150" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="9" nodename="Scale (Transform)">
    <BOUNDS height="0" left="3750" top="3675" type="Node" width="0">
    </BOUNDS>
@@ -163,21 +153,19 @@
    <NODE id="5" nodename="Inverse (Transform)">
    <BOUNDS height="0" left="2265" top="4245" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Source" visible="1">
+   <PIN pinname="Source" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="5" dstpinname="Source" srcnodeid="10" srcpinname="View Projection">
-   </LINK>
    <LINK dstnodeid="6" dstpinname="Transform In" srcnodeid="5" srcpinname="Transform Out">
    </LINK>
    <NODE id="4" nodename="Blend (EX9.RenderState)">
-   <BOUNDS height="0" left="1080" top="5475" type="Node" width="0">
+   <BOUNDS height="0" left="4305" top="5025" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
-   <PIN pinname="Draw Mode" slicecount="1" values="Add">
+   <PIN pinname="Draw Mode" slicecount="1" visible="1" values="Add">
    </PIN>
    </NODE>
    <LINK dstnodeid="7" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
@@ -218,18 +206,28 @@
    </NODE>
    <LINK dstnodeid="2" dstpinname="Transform" srcnodeid="8" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InAWindow" id="1" nodename="Renderer (EX9)">
-   <BOUNDS height="0" left="690" top="7050" type="Node" width="0">
+   <NODE componentmode="InAWindow" id="1" nodename="RENDERER (EX9)">
+   <BOUNDS height="0" left="3945" top="7290" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="4860" left="1695" top="225" type="Window" width="6120">
+   <BOUNDS height="4860" left="7875" top="240" type="Window" width="6120">
    </BOUNDS>
-   <BOUNDS height="1800" left="690" top="7050" type="Box" width="2400">
+   <BOUNDS height="1800" left="3945" top="7290" type="Box" width="2400">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00391,0.00344,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <NODE id="0" nodename="Group (EX9)">
@@ -254,10 +252,56 @@
    </LINK>
    <LINK dstnodeid="1" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
    </LINK>
-   <LINK dstnodeid="1" dstpinname="Projection Transform" srcnodeid="10" srcpinname="View Projection">
-   </LINK>
    <LINK dstnodeid="3" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
    </LINK>
    <LINK dstnodeid="2" dstpinname="Render State" srcnodeid="4" srcpinname="Render State Out">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2865" top="3000" width="480" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2865" top="3000" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="15">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="10" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <BOUNDS height="100" left="2325" top="3420" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="14235" left="675" top="2670" type="Window" width="15825">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2325" top="3420" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Distance" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Source" srcnodeid="10" srcpinname="View Projection">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Projection" srcnodeid="10" srcpinname="View Projection">
+   <LINKPOINT x="1140" y="4200">
+   </LINKPOINT>
+   <LINKPOINT x="1155" y="6555">
+   </LINKPOINT>
+   <LINKPOINT x="5250" y="7095">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Initial Distance">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="4755" top="4635" width="570" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4755" top="4635" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Add">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="4" dstpinname="Draw Mode">
    </LINK>
    </PATCH>

@@ -6,7 +6,6 @@ using System.Xml.Linq;
 
 namespace VVVV.Nodes
 {
-
     [PluginInfo(Name = "FrameDelay",
 	            Category = "XElement",
                 Version = "Attribute",
@@ -15,12 +14,18 @@ namespace VVVV.Nodes
 	           )]
     public class XAttributeFrameDelayNode : FrameDelayNode<XAttribute>
     {
-        protected override XAttribute CloneSlice(XAttribute slice)
-        {
-            if (slice == null) return null;
-            return new XAttribute(slice);
-        }
+        public XAttributeFrameDelayNode() : base(XAttributeCopier.Default) { }
     }
 
+    class XAttributeCopier : Copier<XAttribute>
+    {
+        public static readonly XAttributeCopier Default = new XAttributeCopier();
+
+        public override XAttribute Copy(XAttribute value)
+        {
+            if (value == null) return null;
+            return new XAttribute(value);
+        }
+    }
 }
 

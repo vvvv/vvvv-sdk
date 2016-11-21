@@ -11,5 +11,8 @@ namespace VVVV.Nodes
            Tags = "append, remove, spreadop, collection",
            Author = "motzi"
     )]
-	public class SpreadsQueueStoreNode : QueueStore<double> {}
+	public class SpreadsQueueStoreNode : QueueStore<double>
+    {
+        public SpreadsQueueStoreNode() : base(Copier<double>.Immutable) { }
+    }
 }

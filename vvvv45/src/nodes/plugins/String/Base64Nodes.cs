@@ -51,7 +51,7 @@ namespace VVVV.Nodes.Text
         {
             if (!FInput.IsChanged) return;
 
-            FOutput.ResizeAndDispose(spreadMax, () => new MemoryStream());
+            FOutput.ResizeAndDispose(spreadMax, () => new MemoryComStream());
             for (int i = 0; i < spreadMax; i++)
             {
                 var outputArray = Convert.FromBase64String(FInput[i]);

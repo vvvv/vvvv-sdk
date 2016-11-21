@@ -27,30 +27,19 @@ namespace VVVV.Core.View
             
             public override void Click()
             {
-                // Save SynchronizationContext
-                var context = SynchronizationContext.Current;
-                
-                try
-                {
-                    var dialog = new ReferenceDialog();
+                var dialog = new ReferenceDialog();
                     
-                    if (dialog.ShowDialog() == DialogResult.OK)
-                    {
-                        var command = new CompoundCommand();
-                        foreach (var reference in dialog.References)
-                        {
-                            if (!FReferences.Contains(reference))
-                            {
-                                command.Append(Command.Add(FReferences, reference));
-                            }
-                        }
-                        CommandHistory.Insert(command);
-                    }
-                }
-                finally
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    // Restore SynchronizationContext
-                    SynchronizationContext.SetSynchronizationContext(context);
+                    var command = new CompoundCommand();
+                    foreach (var reference in dialog.References)
+                    {
+                        if (!FReferences.Contains(reference))
+                        {
+                            command.Append(Command.Add(FReferences, reference));
+                        }
+                    }
+                    CommandHistory.Insert(command);
                 }
             }
         }

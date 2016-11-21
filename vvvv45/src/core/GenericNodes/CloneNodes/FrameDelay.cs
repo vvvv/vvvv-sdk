@@ -27,6 +27,13 @@ namespace VVVV.Nodes.Generic
         [Import]
         protected IMainLoop FMainLoop;
 
+        readonly Copier<T> FCopier;
+
+        public FrameDelayNode(Copier<T> copier)
+        {
+            FCopier = copier;
+        }
+
         public void OnImportsSatisfied()
         {
             var inputAttribute = new InputAttribute("Input") { };
@@ -91,7 +98,7 @@ namespace VVVV.Nodes.Generic
                     defaultSpread.Sync();
                     // And write it to the output
                     var outputSpread = OutputContainers[i].IOObject;
-                    outputSpread.AssignFrom(CloneSpread(defaultSpread));
+                    outputSpread.AssignFrom(FCopier.CopySpread(defaultSpread));
                 }
             }
             else
@@ -112,23 +119,8 @@ namespace VVVV.Nodes.Generic
                 inputSpread.Sync();
                 // And cache the result for the next frame
                 var outputSpread = OutputContainers[i].IOObject;
-                outputSpread.AssignFrom(CloneSpread(inputSpread));
+                outputSpread.AssignFrom(FCopier.CopySpread(inputSpread));
             }
         }
-
-        protected virtual ISpread<T> CloneSpread(ISpread<T> spread)
-        {
-            var clonedSpread = new Spread<T>(spread.SliceCount);
-            var clonedBuffer = clonedSpread.Stream.Buffer;
-            var buffer = spread.Stream.Buffer;
-            for (int i = 0; i < spread.SliceCount; i++)
-            {
-                clonedBuffer[i] = CloneSlice(buffer[i]);
-            }
-            return clonedSpread;
-        }
-
-        protected abstract T CloneSlice(T slice);
     }
-
 }
