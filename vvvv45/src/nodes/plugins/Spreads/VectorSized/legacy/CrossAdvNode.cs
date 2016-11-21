@@ -139,7 +139,7 @@ namespace VVVV.Nodes
 					FPluginInfo.Category = "Spectral";
 					//the nodes version: optional. leave blank if not
 					//needed to distinguish two nodes of the same name and category
-					FPluginInfo.Version = "";
+					FPluginInfo.Version = "legacy";
 					
 					//the nodes author: your sign
 					FPluginInfo.Author = "woei";
