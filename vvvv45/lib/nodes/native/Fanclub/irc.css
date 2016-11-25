@@ -40,7 +40,7 @@ button {
 .connectionInfo
 {
   flex: 1;
-  font-size: 0.8em;
+  font-size: 12px;
   color: #848993;
   align-self: center;
 }
@@ -55,7 +55,7 @@ button {
 .connectionStatus
 {
   color: #abb2bf;
-  font-size: 0.7em;
+  font-size: 12px;
   align-self: center;
   margin-right: 1em;
 }
@@ -99,17 +99,26 @@ input[type="text"]:focus {
   position: absolute;
   padding: 1em;
   width: 300px;
-  font-size: 0.8em;
+  font-size: 12px;
   width: 100%;
   height: 3em;
 }
 
-.errorOverlay
+.connecting
 {
-  position:absolute;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(10, 10, 10, 0.3);
+  color: #ffffff;
+  position: absolute;
+  padding: 1em;
+  /*width: 300px;*/
+  font-size: 30px;
+  width: 100%;*/
+  height: 1em;
+}
+
+.connecting:empty
+{
+  display:none;
 }
 
 .error:empty
@@ -138,7 +147,7 @@ input[type="text"]:focus {
 
 .header label
 {
-  font-size: 0.7em;
+  font-size: 12px;
   width: 6em;
   display: inline-block;
 }
@@ -157,7 +166,7 @@ input
   padding: 4px;
   margin: 4px;
 
-  font-size: 0.9em;
+  font-size: 12px;
   margin-right: 1em;
   color: #888888;
   background-color: #161616;
@@ -175,6 +184,7 @@ input
 
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
 }
 
 .sendForm
@@ -201,21 +211,43 @@ input
   flex: 1;
   overflow-y: auto;
   min-height: 0px;
-  padding: 10px;
-
   line-height: 1.6em;
-  font-size: 0.7em;
-  background-color: #171c25;
-  padding: 10px;
+  font-size: 11px;
+  padding-left: 10px;
   color: #abb2bf;
   flex-shrink: 1;
   align-self: flex-start;
 }
 
+.darkContainer
+{
+  background-color: #171c25;
+  margin-bottom: 10px;
+}
+
 .buddyList > h3
 {
-  font-size: 1.5em;
+  font-size: 15px;
   margin: 0.1em 0em 0.5em;
+}
+
+.users
+{
+  color: #cb7e43;
+  max-height: 230px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.info
+{
+  font-size: 11px;
+  color: #848993;
+}
+
+.buddyList > a
+{
+  color: #aaaaaa;
 }
 
 .message
@@ -229,13 +261,13 @@ input
 {
   color: #cb7e43;
   /*font-weight: bold;*/
-  font-size: 0.75em;
+  font-size: 12px;
 }
 
 .text
 {
   color: #abb2bf;
-  font-size: 0.8em;
+  font-size: 12px;
   font-weight: normal;
   line-height: 1.4em;
   padding-top: 0.2em;

@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
-   <PATCH nodename="C:\Work\Anton-work\vvvv-irc\UpdateHTML.v4p" systemname="UpdateHTML" filename="C:\Work\Anton-work\vvvv-irc\UpdateHTML.v4p" scrollx="0" scrolly="-1299">
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Fanclub\UpdateHTML.v4p" systemname="UpdateHTML" filename="C:\Work\Anton-work\vvvv-irc\UpdateHTML.v4p" scrollx="960" scrolly="-1299">
    <NODE systemname="Add (String Spectral)" nodename="Add (String Spectral)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="2205" top="3375" width="100" height="100">
    </BOUNDS>
@@ -191,9 +191,9 @@
    </PIN>
    </NODE>
    <NODE systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="1515" top="12960" width="100" height="100">
+   <BOUNDS type="Node" left="1500" top="15300" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="|&lt;html&gt;&cr;&lf;&lt;header&gt;&cr;&lf;  &lt;link href=&quot;irc.css&quot; rel=&quot;stylesheet&quot;&gt;&cr;&lf;  &lt;script&gt;&cr;&lf;    function connect()&cr;&lf;    {&cr;&lf;      var f = document.connection;&cr;&lf;&cr;&lf;      document.getElementById(&apos;Server&apos;).innerHTML = f.Server.value;&cr;&lf;      document.getElementById(&apos;Channel&apos;).innerHTML = f.Channel.value;&cr;&lf;      document.getElementById(&apos;Nickname&apos;).innerHTML = f.Nickname.value;&cr;&lf;      document.getElementById(&apos;Password&apos;).innerHTML = f.Password.value;&cr;&lf;      document.getElementById(&apos;Connect&apos;).innerHTML = 1;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function onload()&cr;&lf;    {&cr;&lf;      //scroll messages&cr;&lf;      var elem = document.getElementById(&apos;messages&apos;);&cr;&lf;      elem.scrollTop = elem.scrollHeight;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function  messageForm()&cr;&lf;    {&cr;&lf;      document.getElementById(&apos;Message&apos;).innerHTML = document.message.Message.value;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function focusTextfield()&cr;&lf;    {&cr;&lf;      //set focus to the message textfield&cr;&lf;      document.getElementById(&apos;MessageField&apos;).focus();&cr;&lf;    }&cr;&lf;&cr;&lf;&lt;/script&gt;&cr;&lf;&lt;/header&gt;&cr;&lf;&lt;body onLoad = &quot;onload()&quot;&gt;&cr;&lf;  &lt;div class=&quot;container&quot;&gt;&cr;&lf;    &lt;div class = &quot;header&quot;&gt;&cr;&lf;      &lt;form action=&quot;javascript:connect()&quot; name=&quot;connection&quot;&gt;&cr;&lf;      &lt;div class=&quot;connection&quot;&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Server: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Server&quot; value =&quot;irc.freenode.net&quot; placeholder=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Channel: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Channel&quot; value =&quot;##sandbox&quot; placeholder=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;&quot;&gt;&lt;label&gt;Nickname: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Nickname&quot; value = &quot;vvvvan4028&quot; placeholder=&quot;Nickname&quot; &gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Password: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Password&quot; value = &quot;&quot; placeholder=&quot;(optional)&quot;&gt;&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;      &lt;div class = &quot;status&quot;&gt;&cr;&lf;        &lt;div class = &quot;connectionButton&quot;&gt;&lt;button&gt;Connect&lt;/button&gt;&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionBox green&quot;&gt;&lt;/div&gt;&lt;div class = &quot;connectionStatus&quot;&gt;Connected:&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionInfo&quot;&gt;irc.freenode.net, ##sandbox&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;    &lt;/form&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;    &lt;div class = &quot;main&quot;&gt;&cr;&lf;      &lt;div class = &quot;Error&quot;&gt;[error]&lt;/div&gt;&cr;&lf;          &lt;div class=&quot;messages&quot; id=&quot;messages&quot;&gt;&cr;&lf;&cr;&lf;            &cr;&lf; &cr;&lf;        &lt;/div&gt;&cr;&lf;          &lt;div class=&quot;buddylist&quot;&gt;&cr;&lf;            &lt;h3&gt;Users:&lt;/h3&gt;&cr;&lf;            &lt;div class = &quot;users&quot;&gt;&cr;&lf;              vvvvan4028&lt;br&gt;BlueCrab&lt;br&gt;PingChan&lt;br&gt;iorec&lt;br&gt;untone_&lt;br&gt;ChanServ&cr;&lf;            &lt;/div&gt;&cr;&lf;          &lt;h3&gt;Type:&lt;/h3&gt;&cr;&lf;            &lt;div class=&quot;info&quot;&gt;&cr;&lf;              @username to notify a user.&lt;br&gt;&cr;&lf;              @all to notify everybody.&cr;&lf;            &lt;/div&gt;&cr;&lf;            &lt;!-- &lt;a href=&quot;https://vvvv.org/documentation/howto-use-irc&quot;&gt;Click for more info.&lt;/a&gt; --&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;div class = &quot;sendForm&quot;&gt;&cr;&lf;        &lt;form action=&quot;javascript:messageForm()&quot; name = &quot;message&quot;&gt;&cr;&lf;          &lt;input type=&quot;text&quot; name=&quot;Message&quot; id = &quot;MessageField&quot;&gt;&cr;&lf;          &lt;button&gt;Send&lt;/button&gt;&cr;&lf;        &lt;/form&gt;&cr;&lf;        &lt;div class = &quot;rightSpace&quot;&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;&cr;&lf;  &lt;/div&gt;&cr;&lf;&cr;&lf;  &lt;div class=&quot;data&quot; id=&quot;data&quot;&gt;&cr;&lf;    &lt;div id=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Nickname&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Password&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Connect&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Message&quot;&gt;&lt;/div&gt;&cr;&lf;  &lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -203,9 +203,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="1875" top="12525" width="795" height="240">
+   <BOUNDS type="Box" left="1860" top="14865" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1875" top="12525" width="0" height="0">
+   <BOUNDS type="Node" left="1860" top="14865" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="1" values="[error]">
    </PIN>
@@ -400,16 +400,14 @@
    </LINK>
    <LINK srcnodeid="6" srcpinname="Output" dstnodeid="10" dstpinname="To">
    </LINK>
-   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="15" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="16" srcpinname="Output String" dstnodeid="15" dstpinname="From">
    </LINK>
    <NODE id="29" systemname="IOBox (String)" componentmode="InABox" nodename="IOBox (String)">
    <PIN pinname="Descriptive Name" slicecount="1" values="Error">
    </PIN>
-   <BOUNDS type="Box" left="9855" top="500" width="750" height="240">
+   <BOUNDS type="Box" left="11265" top="455" width="750" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9855" top="500" width="750" height="240">
+   <BOUNDS type="Node" left="11265" top="455" width="750" height="240">
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -417,13 +415,13 @@
    <NODE id="30" systemname="IOBox (String)" componentmode="InABox" nodename="IOBox (String)">
    <PIN pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
-   <BOUNDS type="Box" left="1515" top="13560" width="750" height="240">
+   <BOUNDS type="Box" left="1500" top="15900" width="750" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1515" top="13560" width="750" height="240">
+   <BOUNDS type="Node" left="1500" top="15900" width="750" height="240">
    </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="|&lt;html&gt;&cr;&lf;&lt;header&gt;&cr;&lf;  &lt;link href=&quot;irc.css&quot; rel=&quot;stylesheet&quot;&gt;&cr;&lf;  &lt;script&gt;&cr;&lf;    function connect()&cr;&lf;    {&cr;&lf;      var f = document.connection;&cr;&lf;&cr;&lf;      document.getElementById(&apos;Server&apos;).innerHTML = f.Server.value;&cr;&lf;      document.getElementById(&apos;Channel&apos;).innerHTML = f.Channel.value;&cr;&lf;      document.getElementById(&apos;Nickname&apos;).innerHTML = f.Nickname.value;&cr;&lf;      document.getElementById(&apos;Password&apos;).innerHTML = f.Password.value;&cr;&lf;      document.getElementById(&apos;Connect&apos;).innerHTML = 1;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function onload()&cr;&lf;    {&cr;&lf;      //scroll messages&cr;&lf;      var elem = document.getElementById(&apos;messages&apos;);&cr;&lf;      elem.scrollTop = elem.scrollHeight;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function  messageForm()&cr;&lf;    {&cr;&lf;      document.getElementById(&apos;Message&apos;).innerHTML = document.message.Message.value;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function focusTextfield()&cr;&lf;    {&cr;&lf;      //set focus to the message textfield&cr;&lf;      document.getElementById(&apos;MessageField&apos;).focus();&cr;&lf;    }&cr;&lf;&cr;&lf;&lt;/script&gt;&cr;&lf;&lt;/header&gt;&cr;&lf;&lt;body onLoad = &quot;onload()&quot;&gt;&cr;&lf;  &lt;div class=&quot;container&quot;&gt;&cr;&lf;    &lt;div class = &quot;header&quot;&gt;&cr;&lf;      &lt;form action=&quot;javascript:connect()&quot; name=&quot;connection&quot;&gt;&cr;&lf;      &lt;div class=&quot;connection&quot;&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Server: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Server&quot; value =&quot;irc.freenode.net&quot; placeholder=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Channel: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Channel&quot; value =&quot;##sandbox&quot; placeholder=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;&quot;&gt;&lt;label&gt;Nickname: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Nickname&quot; value = &quot;vvvvan4028&quot; placeholder=&quot;Nickname&quot; &gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Password: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Password&quot; value = &quot;&quot; placeholder=&quot;(optional)&quot;&gt;&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;      &lt;div class = &quot;status&quot;&gt;&cr;&lf;        &lt;div class = &quot;connectionButton&quot;&gt;&lt;button&gt;Connect&lt;/button&gt;&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionBox green&quot;&gt;&lt;/div&gt;&lt;div class = &quot;connectionStatus&quot;&gt;Connected:&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionInfo&quot;&gt;irc.freenode.net, ##sandbox&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;    &lt;/form&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;    &lt;div class = &quot;main&quot;&gt;&cr;&lf;      &lt;div class = &quot;Error&quot;&gt;[error]&lt;/div&gt;&cr;&lf;          &lt;div class=&quot;messages&quot; id=&quot;messages&quot;&gt;&cr;&lf;&cr;&lf;            &cr;&lf; &cr;&lf;        &lt;/div&gt;&cr;&lf;          &lt;div class=&quot;buddylist&quot;&gt;&cr;&lf;            &lt;h3&gt;Users:&lt;/h3&gt;&cr;&lf;            &lt;div class = &quot;users&quot;&gt;&cr;&lf;              vvvvan4028&lt;br&gt;BlueCrab&lt;br&gt;PingChan&lt;br&gt;iorec&lt;br&gt;untone_&lt;br&gt;ChanServ&cr;&lf;            &lt;/div&gt;&cr;&lf;          &lt;h3&gt;Type:&lt;/h3&gt;&cr;&lf;            &lt;div class=&quot;info&quot;&gt;&cr;&lf;              @username to notify a user.&lt;br&gt;&cr;&lf;              @all to notify everybody.&cr;&lf;            &lt;/div&gt;&cr;&lf;            &lt;!-- &lt;a href=&quot;https://vvvv.org/documentation/howto-use-irc&quot;&gt;Click for more info.&lt;/a&gt; --&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;div class = &quot;sendForm&quot;&gt;&cr;&lf;        &lt;form action=&quot;javascript:messageForm()&quot; name = &quot;message&quot;&gt;&cr;&lf;          &lt;input type=&quot;text&quot; name=&quot;Message&quot; id = &quot;MessageField&quot;&gt;&cr;&lf;          &lt;button&gt;Send&lt;/button&gt;&cr;&lf;        &lt;/form&gt;&cr;&lf;        &lt;div class = &quot;rightSpace&quot;&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;&cr;&lf;  &lt;/div&gt;&cr;&lf;&cr;&lf;  &lt;div class=&quot;data&quot; id=&quot;data&quot;&gt;&cr;&lf;    &lt;div id=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Nickname&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Password&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Connect&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Message&quot;&gt;&lt;/div&gt;&cr;&lf;  &lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;&cr;&lf;|">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
-   </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="20" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="20" dstpinname="From">
@@ -537,6 +535,8 @@
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Switch">
    </LINK>
@@ -554,38 +554,296 @@
    </LINK>
    <LINK srcnodeid="24" srcpinname="Output String" dstnodeid="22" dstpinname="Input 2">
    </LINK>
-   <BOUNDS type="Window" left="11475" top="6255" width="13245" height="14550">
+   <BOUNDS type="Window" left="7020" top="2910" width="13245" height="14550">
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <NODE systemname="Subtract (String)" nodename="Subtract (String)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="9855" top="1395" width="100" height="100">
+   <NODE id="41" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" left="1875" top="12540" width="1005" height="255">
    </BOUNDS>
-   <PIN pinname="Operand 1" visible="1" slicecount="1" values="none">
+   <BOUNDS type="Node" left="1875" top="12540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" pintype="Configuration" values="1">
    </PIN>
-   <PIN pinname="Operand 2" visible="1">
+   <PIN pinname="Input String" slicecount="1" visible="1" pintype="Input" values="[connecting]">
    </PIN>
-   <PIN pinname="Result" visible="1">
+   <PIN pinname="Default" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" pintype="Configuration" values="-1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" pintype="Configuration" values="ColsRowsPages">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Changed" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="39">
-   <BOUNDS type="Box" left="10065" top="1020" width="795" height="240">
+   <NODE id="42" systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="To" slicecount="2" visible="1" pintype="Input" values="Connected,green">
+   </PIN>
+   <BOUNDS type="Node" left="1500" top="13140" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Node" left="10065" top="1020" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="none">
+   <PIN pinname="Output" visible="1" pintype="Output">
    </PIN>
-   <PIN pinname="Default" slicecount="1" values="text">
+   <PIN pinname="Input" visible="1" slicecount="1" pintype="Input" values="|&lt;html&gt;&cr;&lf;&lt;header&gt;&cr;&lf;  &lt;link href=&quot;irc.css&quot; rel=&quot;stylesheet&quot;&gt;&cr;&lf;  &lt;script&gt;&cr;&lf;    function connect()&cr;&lf;    {&cr;&lf;      var f = document.connection;&cr;&lf;&cr;&lf;      document.getElementById(&apos;Server&apos;).innerHTML = f.Server.value;&cr;&lf;      document.getElementById(&apos;Channel&apos;).innerHTML = f.Channel.value;&cr;&lf;      document.getElementById(&apos;Nickname&apos;).innerHTML = f.Nickname.value;&cr;&lf;      document.getElementById(&apos;Password&apos;).innerHTML = f.Password.value;&cr;&lf;      document.getElementById(&apos;Connect&apos;).innerHTML = 1;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function onload()&cr;&lf;    {&cr;&lf;      //scroll messages&cr;&lf;      var elem = document.getElementById(&apos;messages&apos;);&cr;&lf;      elem.scrollTop = elem.scrollHeight;&cr;&lf;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function  messageForm()&cr;&lf;    {&cr;&lf;      document.getElementById(&apos;Message&apos;).innerHTML = document.message.Message.value;&cr;&lf;      focusTextfield();&cr;&lf;    }&cr;&lf;&cr;&lf;    function focusTextfield()&cr;&lf;    {&cr;&lf;      //set focus to the message textfield&cr;&lf;      document.getElementById(&apos;MessageField&apos;).focus();&cr;&lf;    }&cr;&lf;&cr;&lf;&lt;/script&gt;&cr;&lf;&lt;/header&gt;&cr;&lf;&lt;body onLoad = &quot;onload()&quot;&gt;&cr;&lf;  &lt;div class=&quot;container&quot;&gt;&cr;&lf;    &lt;div class = &quot;header&quot;&gt;&cr;&lf;      &lt;form action=&quot;javascript:connect()&quot; name=&quot;connection&quot;&gt;&cr;&lf;      &lt;div class=&quot;connection&quot;&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Server: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Server&quot; value =&quot;irc.freenode.net&quot; placeholder=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Channel: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Channel&quot; value =&quot;##sandbox&quot; placeholder=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;&quot;&gt;&lt;label&gt;Nickname: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Nickname&quot; value = &quot;vvvvan4028&quot; placeholder=&quot;Nickname&quot; &gt;&lt;/div&gt;&cr;&lf;        &lt;div class=&quot;hidden&quot;&gt;&lt;label&gt;Password: &lt;/label&gt;&lt;input type=&quot;text&quot; name=&quot;Password&quot; value = &quot;&quot; placeholder=&quot;(optional)&quot;&gt;&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;      &lt;div class = &quot;status&quot;&gt;&cr;&lf;        &lt;div class = &quot;connectionButton&quot;&gt;&lt;button&gt;Connect&lt;/button&gt;&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionBox [statusColor]&quot;&gt;&lt;/div&gt;&lt;div class = &quot;connectionStatus&quot;&gt;[status]:&lt;/div&gt;&cr;&lf;        &lt;div class = &quot;connectionInfo&quot;&gt;irc.freenode.net, ##sandbox&lt;/div&gt;&cr;&lf;      &lt;/div&gt;&cr;&lf;    &lt;/form&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;    &lt;div class = &quot;main&quot;&gt;&cr;&lf;      &lt;div class = &quot;Error&quot;&gt;[error]&lt;/div&gt;&cr;&lf;          &lt;div class=&quot;messages&quot; id=&quot;messages&quot;&gt;&cr;&lf;&cr;&lf;            &cr;&lf; &cr;&lf;        &lt;/div&gt;&cr;&lf;          &lt;div class=&quot;buddylist&quot;&gt;&cr;&lf;            &lt;h3&gt;Users:&lt;/h3&gt;&cr;&lf;            &lt;div class = &quot;users&quot;&gt;&cr;&lf;              vvvvan4028&lt;br&gt;BlueCrab&lt;br&gt;PingChan&lt;br&gt;iorec&lt;br&gt;untone_&lt;br&gt;ChanServ&cr;&lf;            &lt;/div&gt;&cr;&lf;          &lt;h3&gt;Type:&lt;/h3&gt;&cr;&lf;            &lt;div class=&quot;info&quot;&gt;&cr;&lf;              @username to notify a user.&lt;br&gt;&cr;&lf;              @all to notify everybody.&cr;&lf;            &lt;/div&gt;&cr;&lf;            &lt;!-- &lt;a href=&quot;https://vvvv.org/documentation/howto-use-irc&quot;&gt;Click for more info.&lt;/a&gt; --&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;    &lt;div class = &quot;sendForm&quot;&gt;&cr;&lf;        &lt;form action=&quot;javascript:messageForm()&quot; name = &quot;message&quot;&gt;&cr;&lf;          &lt;input type=&quot;text&quot; name=&quot;Message&quot; id = &quot;MessageField&quot;&gt;&cr;&lf;          &lt;button&gt;Send&lt;/button&gt;&cr;&lf;        &lt;/form&gt;&cr;&lf;        &lt;div class = &quot;rightSpace&quot;&gt;&cr;&lf;        &lt;/div&gt;&cr;&lf;    &lt;/div&gt;&cr;&lf;&cr;&lf;&cr;&lf;  &lt;/div&gt;&cr;&lf;&cr;&lf;  &lt;div class=&quot;data&quot; id=&quot;data&quot;&gt;&cr;&lf;    &lt;div id=&quot;Server&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Channel&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Nickname&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Password&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Connect&quot;&gt;&lt;/div&gt;&cr;&lf;    &lt;div id=&quot;Message&quot;&gt;&lt;/div&gt;&cr;&lf;  &lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;&cr;&lf;|">
    </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
+   <PIN pinname="From" visible="1" slicecount="1" pintype="Input" values="||">
    </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="39" srcpinname="Output String" dstnodeid="40" dstpinname="Operand 2">
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="42" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="40" dstpinname="Operand 1">
+   <LINK srcnodeid="41" srcpinname="Output String" dstnodeid="42" dstpinname="From">
    </LINK>
-   <LINK srcnodeid="40" srcpinname="Result" dstnodeid="15" dstpinname="To">
+   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="30" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Output" dstnodeid="15" dstpinname="Input">
+   </LINK>
+   <NODE id="44" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" left="7095" top="11820" width="915" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7095" top="11820" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" pintype="Input" values="Connecting">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" pintype="Configuration" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" pintype="Configuration" values="-1">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Changed" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="43" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" left="6285" top="11805" width="690" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6285" top="11805" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" pintype="Input" values="||">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" pintype="Configuration" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" pintype="Configuration" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Changed" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="45" systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Switch" visible="1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS type="Node" left="6015" top="12330" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input Count" pintype="Configuration" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="" pintype="Input" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Output" dstnodeid="42" dstpinname="To">
+   </LINK>
+   <NODE systemname="Length (String)" nodename="Length (String)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="11250" top="2250" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="47">
+   <BOUNDS type="Node" left="11265" top="2640" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Count" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="10965" top="3615" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="47" srcpinname="Output" dstnodeid="48" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="49">
+   <BOUNDS type="Node" left="10110" top="465" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10110" top="465" width="570" height="510">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Connecting">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="10290" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Output String" dstnodeid="45" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Output String" dstnodeid="45" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="45" dstpinname="Switch">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="10110" top="4095" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="49" srcpinname="Y Output Value" dstnodeid="51" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="51" srcpinname="Up Edge" dstnodeid="50" dstpinname="Set">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="10980" top="4125" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="52" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Up Edge" dstnodeid="50" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="46" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="15" dstpinname="To">
    </LINK>
    </PATCH>
