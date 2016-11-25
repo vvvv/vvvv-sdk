@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\aTemplate () test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p" scrollx="0" scrolly="390">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\VL.Template test.v4p" systemname="VL.Template test" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\VL.Template test.v4p">
    <BOUNDS type="Window" left="3420" top="5925" width="9525" height="7830">
    </BOUNDS>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="5">
@@ -98,4 +98,52 @@
    </LINK>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
+   <NODE systemname="Template (Value)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\Template.vl" nodename="Template (Value)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="645" top="2610" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
+   <BOUNDS type="Box" left="975" top="1230" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="975" top="1230" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Value">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Result" dstnodeid="5" dstpinname="Actual">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Expected">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
+   <BOUNDS type="Box" left="1500" top="3945" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1500" top="3945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enabled">
+   </LINK>
    </PATCH>

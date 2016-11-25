@@ -114,7 +114,7 @@ namespace VVVV.Core.Model.CS
                 where doc is CSDocument
                 select doc.LocalPath;
 
-            var assemblyLocation = GetFreshAssemblyLocation(LocalPath);
+            var assemblyLocation = GetFreshAssemblyLocation();
             var assemblyBaseDir = Path.GetDirectoryName(assemblyLocation);
 
             if (!Directory.Exists(assemblyBaseDir))

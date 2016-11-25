@@ -180,6 +180,13 @@ namespace VVVV.Hosting
                 packageRepositories = packageRepositories.Union(repoPaths).ToArray();
             }
 
+            //make relative paths absolute
+            for (int i = 0; i < packageRepositories.Length; i++)
+            {
+                if (Path.IsPathRooted(packageRepositories[i]))
+                    packageRepositories[i] = Path.Combine(ExePath, packageRepositories[i]);
+            }
+
             AssemblyLoader.AddPackageRepositories(packageRepositories);
 
             //the built-in one
