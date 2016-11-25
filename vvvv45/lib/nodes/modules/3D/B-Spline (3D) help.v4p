@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\3D\B-Spline (3D) help.v4p" scrollx="0" scrolly="-3336">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\B-Spline (3D) help.v4p" scrollx="0" scrolly="-3336">
    <BOUNDS height="10485" left="0" top="225" type="Window" width="10650">
    </BOUNDS>
    <NODE id="8" nodename="LFO (Animation)" systemname="LFO (Animation)">
@@ -610,13 +610,15 @@
    </NODE>
    <LINK srcnodeid="33" srcpinname="Layer" dstnodeid="37" dstpinname="Layer 4">
    </LINK>
-   <NODE nodename="B-Spline (3d)" componentmode="Hidden" id="67" systemname="B-Spline (3d)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p">
+   <NODE nodename="B-Spline (3d)" componentmode="Hidden" id="67" systemname="B-SPLINE (3D)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p">
    <BOUNDS type="Node" left="6420" top="3870" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="6420" top="3870" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Window" left="12510" top="2580" width="13185" height="9585">
    </BOUNDS>
+   <PIN pinname="OutputXYZ" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output" dstnodeid="67" dstpinname="Input">
    </LINK>
@@ -627,8 +629,6 @@
    <LINK srcnodeid="64" srcpinname="Y Output Value" dstnodeid="67" dstpinname="Show Helpers">
    </LINK>
    <LINK srcnodeid="38" srcpinname="PointsXYZ" dstnodeid="67" dstpinname="ControlXYZ">
-   </LINK>
-   <LINK srcnodeid="67" srcpinname="OuputXYZ" dstnodeid="42" dstpinname="XYZ">
    </LINK>
    <NODE componentmode="InABox" id="69" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="4665" top="8640" type="Node" width="7425">
@@ -656,4 +656,8 @@
    <PIN pinname="Input String" slicecount="1" values="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\girlpower\Curves\SamplingSplines.v4p">
    </PIN>
    </NODE>
+   <INFO author="" description="" tags="">
+   </INFO>
+   <LINK srcnodeid="67" srcpinname="OutputXYZ" dstnodeid="42" dstpinname="XYZ">
+   </LINK>
    </PATCH>

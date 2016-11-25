@@ -10,78 +10,22 @@ margin-right: 20px;
 padding-right: 20px;
 overflow-y: auto;
 overflow-x: hidden;
+-moz-hyphens: none;
+-ms-hyphens: none;
+-webkit-hyphens: none;
+hyphens: none;
+word-break:keep-all;
+overflow-y: hidden;
 }
-
-.box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-
-.box > * {
-  flex-shrink: 0;
-}
-
-.version
-{
-	font-size: 25px;
-	color: #ffffff;
-	flex: 1 1;
-}
-
-.architecture
-{
-	background-color: #3C5369;
-	color: #D3E8FF;
-	text-align: center;
-	padding: 10px;
-	border-right: 1px solid #6E859B;
-	font-size: 25px;
-}
-
-.alert
-{
-	color: #ffffff;
-	background-color: #723841;
-}
-
-.credits
-{
-		height: 130px;
-		overflow-y: auto;
-    text-align: center;
-    padding: 10px 30px;
-		border: 1px solid #6E859B;
-}
-
-.searchPaths
-{
-		height: 34px;
-		overflow-y: auto;
-    padding: 10px;
-		border: 1px solid #6E859B;
-    line-height: 1.3em;
-}
-
-.desc
-{
-	text-transform: uppercase;
-	font-size: 9px;
-	color: #8c9eb1;
-	border: none;
-	padding: 0px 0px 3px 0px;
-}
-
-.clear
-{
-	clear: both;
-}
-
 
 .container
 {
-	border: 1px solid #6E859B;
+	border-bottom: 1px solid #6E859B;
 	display: flex;
+  overflow-y: auto;
+  overflow-x: none;
+  align-items: stretch;
+  flex-direction: row;
 }
 
 .container div:first-child
@@ -94,22 +38,107 @@ overflow-x: hidden;
 	border-right: none;
 }
 
+.containerNoScroll
+{
+	/*border: 1px solid #6E859B;*/
+	display: flex;
+  border-bottom: 1px solid #6E859B;
+}
+
+a
+{
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover
+{
+  text-decoration: underline;
+}
+
+a:visited
+{
+  color: #8c9eb1;
+}
+
+
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  border: 1px solid #6E859B;
+}
+
+.box > * {
+  flex-shrink: 0;
+}
+
+.box div:last-child
+{
+  border-bottom: none;
+}
+
+.centerWrapper
+{
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  border-right: 1px solid #6E859B;
+}
+
+.centerContent
+{
+  padding: 10px;
+	font-size: 25px;
+  display: flex;
+}
+
+.version
+{
+  color: #ffffff;
+}
+
+.architecture
+{
+  color: #D3E8FF;
+}
+
+.colored
+{
+	background-color: #3C5369;
+  flex-grow: 0;
+}
+
+.alert
+{
+	color: #ffffff;
+	background-color: #723841;
+}
+
+.desc
+{
+	text-transform: uppercase;
+	font-size: 9px;
+	color: #8c9eb1;
+	border: none;
+	padding: 7px 0px 5px 0px;
+  /*margin: 10px 0px 0px 0px;*/
+}
+
+.clear
+{
+	clear: both;
+}
+
 .inline
 {
 	clear: both;
 }
 
-.data
-{
-	border-right: 1px solid #6E859B;
-	padding: 10px;
-	flex: 1 1;
-}
-
 .fixSize
 {
 	border-right: 1px solid #6E859B;
-	padding: 10px;
+	padding: 0px 10px 10px;
 	width: 80px;
 }
 
@@ -120,8 +149,84 @@ overflow-x: hidden;
 
 .longLine
 {
-	padding: 10px;
+	padding: 0px 10px 10px;
 	flex: 1 0;
+  overflow-y: auto;
+}
+
+.header
+{
+  overflow: hidden;
+}
+
+.network
+{
+  height: 65px;
+}
+
+.graphics
+{
+  height: 55px;
+}
+
+.ports
+{
+  height: 48px;
+}
+
+.path
+{
+  /*width: 372px;*/
+  border-right: 1px solid #6E859B;
+  overflow-x: auto;
+  float: left;
+  flex-grow: 1;
+}
+
+.packs
+{
+  float: right;
+  height: 63px;
+  width: 166px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.commandline
+{
+  height: 39px;
+  width: 540px;
+}
+
+.paths
+{
+  height: 52px;
+  width: 540px;
+}
+
+.credits
+{
+		height: 155px;
+		overflow-y: auto;
+    text-align: center;
+    padding: 0px 20px;
+    flex: 1;
+    overflow-x: hidden;
+}
+
+.searchPaths
+{
+		height: 39px;
+		overflow-y: auto;
+    padding: 0px 10px 10px;
+		border: 1px solid #6E859B;
+    border-top: none;
+}
+
+.graphiccard
+{
+  width: 330px;
+  flex-grow: 1;
 }
 
 .last
@@ -129,28 +234,34 @@ overflow-x: hidden;
 	border: none;
 }
 
-.boxRight
+.rightShort
 {
-	padding: 10px;
-	border: none;
-	border-left: 1px solid #6E859B;
-	width: 166px;
+  width: 90px;
+  flex-shrink: 1;
 }
 
-.boxLeft
+.leftShort
 {
-	padding: 10px;
-	border: none;
 	width: 90px;
-	border-right: 1px solid #6E859B;
+}
+
+.innerBox
+{
+	padding: 0px 10px 10px;
+}
+
+.borderLeft
+{
+  border-left: 1px solid #6E859B;
 }
 
 .OneThird
 {
-	padding: 10px;
+	padding: 0px 10px 10px;
 	border: none;
-	width: 33%;
+	flex: 1;
 	border-left: 1px solid #6E859B;
+  overflow-y: auto;
 }
 
 .first

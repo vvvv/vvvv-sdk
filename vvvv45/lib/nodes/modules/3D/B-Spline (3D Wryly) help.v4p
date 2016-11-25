@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\3D\B-Spline (3D Wryly) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\B-Spline (3D Wryly) help.v4p">
    <BOUNDS height="10320" left="15" top="225" type="Window" width="9810">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="22" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="22" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="4530" top="6990" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="5835" left="9930" top="210" type="Window" width="6120">
@@ -11,9 +11,9 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="2">
    </PIN>
@@ -22,6 +22,10 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.21357,0.21357,0.21357,1.00000|">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
    </PIN>
    </NODE>
    <NODE id="21" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
@@ -138,7 +142,7 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="11" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="11" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5640" top="1845" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7320" top="4755" type="Window" width="215">
@@ -182,7 +186,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4905" top="2535" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7665" top="5985" type="Window" width="215">
@@ -245,7 +249,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|B-Spline - 3D Wryly|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|B-Spline (3D Wryly)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -292,7 +296,7 @@
    </NODE>
    <LINK dstnodeid="1" dstpinname="Go To Position" srcnodeid="16" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="0" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7440" top="1065" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7946" top="1392" type="Window" width="215">
@@ -318,9 +322,9 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="22" dstpinname="Projection Transform" srcnodeid="19" srcpinname="Transform Out">
+   <LINK dstnodeid="22" dstpinname="Projection" srcnodeid="19" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="22" dstpinname="View Transform" srcnodeid="21" srcpinname="Transform Out">
+   <LINK dstnodeid="22" dstpinname="View" srcnodeid="21" srcpinname="Transform Out">
    </LINK>
    <LINK dstnodeid="18" dstpinname="Transform" srcnodeid="17" srcpinname="Transform Out">
    </LINK>
@@ -370,4 +374,6 @@
    </LINK>
    <LINK dstnodeid="15" dstpinname="Transform In" srcnodeid="25" srcpinname="Transform Out">
    </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
    </PATCH>

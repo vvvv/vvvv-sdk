@@ -20,13 +20,16 @@ namespace VVVV.Nodes.Generic
 		
 		int itemCount;
 		public int ItemCount { get { return itemCount; } }
-		
+
+        int nonEmptyBinCount;
+        public int NonEmptyBinCount { get { return nonEmptyBinCount; } }
+
 		public VecBinSpread(IInStream<T> input, int vectorSize, IInStream<int> bin, int spreadMax = 0)
 		{
 			vecSize = vectorSize;
 			buffer = new List<T[]>();
 			itemCount = 0;
-
+            nonEmptyBinCount = 0;
 			if (bin.Length > 0)
 			{
 				int sliceCount = (int)Math.Ceiling(input.Length/(double)vecSize);
@@ -40,8 +43,11 @@ namespace VVVV.Nodes.Generic
 							int curBin = SpreadUtils.NormalizeBinSize(sliceCount, binReader.Read())*vecSize;
 							itemCount += curBin;
 							T[] data = new T[curBin];
-							if (curBin>0)
-								dataReader.Read(data,0,curBin);
+                            if (curBin > 0)
+                            {
+                                dataReader.Read(data, 0, curBin);
+                                nonEmptyBinCount++;
+                            }
 							buffer.Add(data);
 							
 							spreadMax--;
@@ -65,7 +71,8 @@ namespace VVVV.Nodes.Generic
 			{
 				List<T> col = new List<T>(0);
 				for (int i = column; i < this[index].Length; i+=vecSize)
-					col.Add(buffer[index][i]);
+                    if (this[index].Length>i)
+					    col.Add(this[index][i]);
 				return col;
 			}
 		}

@@ -3,7 +3,8 @@ Please check the [vvvv sdk](http://vvvv.org/documentation/vvvv-sdk) page for ins
 
 LICENSING
 ---------
-The following parts of this repository are released under the [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html)
+The following parts of this repository are released under the [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html).
+As long as used in the context of vvvv alternatively the [LPGLv2.1](https://www.gnu.org/licenses/lgpl-2.1.html) applies.
 
 * Core      common\src\core\Core
 * GUI       common\src\gui

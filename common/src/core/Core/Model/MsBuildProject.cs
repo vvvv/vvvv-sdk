@@ -68,7 +68,7 @@ namespace VVVV.Core.Model
             : base(path)
         {
             // Try to find an assembly
-            AssemblyLocation = GetExistingAssemblyLocation(path);
+            AssemblyLocation = GetExistingAssemblyLocation();
             Load();
         }
         
@@ -405,12 +405,14 @@ namespace VVVV.Core.Model
             base.SaveTo(projectPath);
         }
 
-        protected static string GetFreshAssemblyLocation(string path)
-        {
-            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+        string GetAssemblyBaseDir() => Path.GetDirectoryName(LocalPath).ConcatPath("bin").ConcatPath("Dynamic");
+        string GetAssemblyName() => LocalPath.GetHashCode().ToString();
 
+        protected string GetFreshAssemblyLocation()
+        {
+            var assemblyBaseDir = GetAssemblyBaseDir();
             var i = 0;
-            var name = path.GetHashCode().ToString();
+            var name = GetAssemblyName();
             string assemblyLocation = null;
             while (true)
             {
@@ -423,13 +425,13 @@ namespace VVVV.Core.Model
         }
 
         public static readonly Regex DynamicRegExp = new Regex(@"(.*)\._dynamic_\.[0-9]+\.dll$");
-        protected static string GetExistingAssemblyLocation(string path)
+        string GetExistingAssemblyLocation()
         {
-            var assemblyBaseDir = Path.GetDirectoryName(path).ConcatPath("bin").ConcatPath("Dynamic");
+            var assemblyBaseDir = GetAssemblyBaseDir();
             if (Directory.Exists(assemblyBaseDir))
             {
                 var dirInfo = new DirectoryInfo(assemblyBaseDir);
-                return dirInfo.GetFiles("*.dll")
+                return dirInfo.GetFiles($"{GetAssemblyName()}*.dll")
                     .Where(fi => MsBuildProject.DynamicRegExp.Match(fi.FullName).Success)
                     .OrderBy(fi => fi.LastWriteTime)
                     .Select(fi => fi.FullName)

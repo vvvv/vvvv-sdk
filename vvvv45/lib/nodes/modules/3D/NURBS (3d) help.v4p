@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\3D\NURBS (3d) help.v4p" scrollx="0" scrolly="-1080">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\NURBS (3d) help.v4p" scrollx="0" scrolly="-1080">
    <BOUNDS type="Window" left="750" top="1290" width="11880" height="10530">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
@@ -294,7 +294,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="B-Spline (3d)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p" nodename="B-Spline (3d)" componentmode="Hidden" id="46">
+   <NODE systemname="B-SPLINE (3D)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p" nodename="B-Spline (3d)" componentmode="Hidden" id="46">
    <BOUNDS type="Node" left="765" top="8400" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="765" top="8400">
@@ -348,7 +348,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="B-Spline (3d)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p" nodename="B-Spline (3d)" componentmode="Hidden" id="40">
+   <NODE systemname="B-SPLINE (3D)" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D).v4p" nodename="B-Spline (3d)" componentmode="Hidden" id="40">
    <BOUNDS type="Node" left="765" top="7995" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="765" top="7995">
@@ -530,30 +530,6 @@
    <PIN pinname="Pause" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Orbit)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Orbit).v4p" nodename="Camera (Transform Orbit)" componentmode="Hidden" id="50">
-   <BOUNDS type="Node" left="9510" top="1575" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Camera State" visible="1">
-   </PIN>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="Initial Longitude" slicecount="1" visible="1" values="0.74">
-   </PIN>
-   <PIN pinname="Initial Latitude" slicecount="1" values="0.04">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="50" srcpinname="View" dstnodeid="30" dstpinname="View" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="50" srcpinname="Projection" dstnodeid="30" dstpinname="Projection" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="50" srcpinname="Camera State" dstnodeid="36" dstpinname="Camera State" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="50" dstpinname="Initial Longitude">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="55" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9690" top="570" width="765" height="240">
    </BOUNDS>
@@ -573,7 +549,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="10710" top="420" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -583,7 +559,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="54" dstpinname="Pause">
@@ -738,4 +714,28 @@
    <PIN pinname="Input String" slicecount="1" values="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\girlpower\Curves\SamplingSplines.v4p">
    </PIN>
    </NODE>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="50">
+   <BOUNDS type="Node" left="9510" top="1575" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Camera State" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Initial Longitude" slicecount="1" visible="1" values="0.74">
+   </PIN>
+   <PIN pinname="Initial Latitude" slicecount="1" values="0.04">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="View" dstnodeid="30" dstpinname="View" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Projection" dstnodeid="30" dstpinname="Projection" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="50" srcpinname="Camera State" dstnodeid="36" dstpinname="Camera State" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="54" srcpinname="Output" dstnodeid="50" dstpinname="Initial Longitude">
+   </LINK>
    </PATCH>
