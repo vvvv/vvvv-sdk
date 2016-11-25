@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Text;
 using System.Collections;
+using System.Linq;
+using VVVV.Utils.Linq;
 
 namespace VVVV.Nodes
 {
@@ -288,6 +290,9 @@ namespace VVVV.Nodes
                 FCountIn.GetValue(0, out CountIn);
                 FCountOrder.GetString(0, out CountOrder);
 
+                char[] invalidPathChars = Path.GetInvalidPathChars();
+                var n1 = ".." + Path.DirectorySeparatorChar;
+                var n2 = ".." + Path.AltDirectorySeparatorChar;
                 //Get all Serach Masks 
                 for (int i = 0; i < FMask.SliceCount; i++)
                 {
@@ -296,7 +301,10 @@ namespace VVVV.Nodes
                     
                     if(!String.IsNullOrEmpty(MaskSlice))
                     {
-                        Mask.Add(MaskSlice);
+                        //the remarks here explain several things that are not allowed for the searchPattern:
+                        //https://msdn.microsoft.com/en-us/library/ms143316(v=vs.110).aspx
+                        if (MaskSlice.None(c => invalidPathChars.Contains(c)) && !MaskSlice.EndsWith("..") && !MaskSlice.Contains(n1) && !MaskSlice.Contains(n2))
+                            Mask.Add(MaskSlice);
                     }
                 }
 
@@ -679,7 +687,7 @@ namespace VVVV.Nodes
                         Infos.Add(Info);
                     }
                 }
-                catch(UnauthorizedAccessException ex)
+                catch(Exception ex)
                 {
                     FStatus = ex.Message;
                 }
