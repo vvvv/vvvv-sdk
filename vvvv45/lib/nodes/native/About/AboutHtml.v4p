@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\About\AboutHtml.v4p" systemname="AboutHtml" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\About\AboutHtml.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="12855" top="945" width="11820" height="4350">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\About\AboutHtml.v4p" systemname="AboutHtml" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\About\AboutHtml.v4p" scrollx="2250" scrolly="0">
+   <BOUNDS type="Window" left="12855" top="945" width="14205" height="12795">
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
@@ -1940,8 +1940,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="336" srcpinname="Output" dstnodeid="266" dstpinname="To">
-   </LINK>
    <LINK srcnodeid="324" srcpinname="Output" dstnodeid="336" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="185" srcpinname="Output" dstnodeid="179" dstpinname="Input">
@@ -1967,5 +1965,19 @@
    <LINK srcnodeid="79" srcpinname="Output String" dstnodeid="324" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="72" srcpinname="Output String" dstnodeid="71" dstpinname="Input">
+   </LINK>
+   <NODE systemname="AvoidNIL (String)" filename="%VVVV%\lib\nodes\modules\String\AvoidNIL (String).v4p" nodename="AvoidNIL (String)" componentmode="Hidden" id="341">
+   <BOUNDS type="Node" left="13230" top="3780" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="336" srcpinname="Output" dstnodeid="341" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="341" srcpinname="Output" dstnodeid="266" dstpinname="To">
    </LINK>
    </PATCH>
