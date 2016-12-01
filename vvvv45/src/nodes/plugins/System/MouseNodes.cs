@@ -215,7 +215,8 @@ namespace VVVV.Nodes.Input
                     }
                     return n;
                 });
-            MouseOut[0] = new Mouse(mouseNotifications);
+            // Without the Publish().RefCount() the click injection breaks (issue #2365)
+            MouseOut[0] = new Mouse(mouseNotifications.Publish().RefCount());
 
             // Create a mouse states split node for us and connect our mouse out to its mouse in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "Mouse" && n.Version == "Split");
