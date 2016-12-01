@@ -243,6 +243,13 @@ namespace VVVV.Nodes
         		evaluate=true;
         	}
         }
+
+        int GetSpreadMax(int a, int b)
+        {
+            if (a <= 0) return 0;
+            else if (b <= 0) return 0;
+            else return Math.Max(a, b);
+        }
         
         //here we go, thats the method called by vvvv each frame
         //all data handling should be in here
@@ -250,12 +257,12 @@ namespace VVVV.Nodes
         {   
         	try
         	{
-        		int maxSlice=0;
+        		int maxSlice = FPrepend.SliceCount;
         		foreach (IStringIn p in FInList)
         		{
         			if (p.PinIsChanged)
         				evaluate=true;
-        			maxSlice = Math.Max(maxSlice, p.SliceCount);
+        			maxSlice = GetSpreadMax(maxSlice, p.SliceCount);
         		}
         		
         		if (evaluate || FPrepend.PinIsChanged)
@@ -288,8 +295,13 @@ namespace VVVV.Nodes
         						curPath="";
         					builder=Path.Combine(builder, curPath);
         				}
-						
+
+                        bool endsWithSeparator = builder.EndsWith(@"\"); // HACK .net doesn't recognize d: as path, only c:
+                        if (!endsWithSeparator)
+                            builder += @"\";
         				builder = Path.GetFullPath(builder);  // combines c:\foo\bar + ..\fighters -> c:\foo\figthers
+                        if (!endsWithSeparator)
+                            builder = builder.Remove(builder.Length - 1);
         				if (!(isRooted || prepend))           // but Path.GetFullPath needs a rooted path.     
         					builder = builder.Replace(root+"\\", string.Empty); //want it relative, subtract root again
         				FOutput.SetString(s, builder);
