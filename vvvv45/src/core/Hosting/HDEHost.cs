@@ -172,12 +172,19 @@ namespace VVVV.Hosting
             var argsFile = Path.Combine(ExePath, "args.txt");
             if (File.Exists(argsFile))
             {
-                var args = File.ReadAllText(argsFile);
-                var repoPaths = args.Split(new string[] { "\r", "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
-                        .Where(l => l.StartsWith(repoArg))
-                        .SelectMany(r => r.Substring(repoArg.Length + 1).Trim('"').Split(';'));
+                var args = File.ReadAllText(argsFile).Split(' ');
+                var sourcesIndex = Array.IndexOf(args, repoArg);
+                if (sourcesIndex >= 0 && args.Length > sourcesIndex + 1)
+                {
+                    var sourcesString = args[sourcesIndex + 1];
+                    var repoPaths = sourcesString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    for (int i = 0; i < repoPaths.Length; i++)
+                    {
+                        repoPaths[i] = repoPaths[i].Trim('"', '\\');
+                    }
 
-                packageRepositories = packageRepositories.Union(repoPaths).ToArray();
+                    packageRepositories = packageRepositories.Union(repoPaths).ToArray();
+                }
             }
 
             //make relative paths absolute
