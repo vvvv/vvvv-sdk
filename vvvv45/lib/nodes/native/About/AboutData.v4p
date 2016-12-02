@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\About\AboutData.v4p" systemname="AboutData" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\About\AboutData.v4p" scrollx="43800" scrolly="0">
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\About\AboutData.v4p" systemname="AboutData" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\About\AboutData.v4p" scrollx="1275" scrolly="3105">
    <BOUNDS type="Window" left="5940" top="2190" width="22860" height="7575">
    </BOUNDS>
    <PACK Name="addonpack" Version="34.101.0">
@@ -827,7 +827,7 @@
    <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="58">
    <BOUNDS type="Node" left="37560" top="1785" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="2" values="|DeviceID: VideoController1&cr;&lf;Name: AMD Radeon HD 7640G + HD 7600M Dual Graphics&cr;&lf;AdapterCompatibility: Advanced Micro Devices, Inc.&cr;&lf;VideoProcessor: AMD Radeon Graphics Processor (0x9903)&cr;&lf;AdapterRAM: 536870912&cr;&lf;InfFilename: oem36.inf&cr;&lf;InstalledDisplayDrivers: aticfx64.dll,aticfx64.dll,aticfx64.dll,amdxc64.dll,aticfx32,aticfx32,aticfx32,amdxc32,atiumd64.dll,atidxx64.dll,atidxx64.dll,atiumdag,atidxx32,atidxx32,atiumdva,atiumd6a.cap,atitmm64.dll&cr;&lf;Availability: 3&cr;&lf;Status: OK|,|DeviceID: VideoController2&cr;&lf;Name: AMD Radeon HD 7600M Series&cr;&lf;AdapterCompatibility: Advanced Micro Devices, Inc.&cr;&lf;VideoProcessor: AMD Radeon Graphics Processor (0x6840)&cr;&lf;AdapterRAM: 1073741824&cr;&lf;InfFilename: oem36.inf&cr;&lf;InstalledDisplayDrivers: aticfx64.dll,aticfx64.dll,aticfx64.dll,amdxc64.dll,aticfx32,aticfx32,aticfx32,amdxc32,atiumd64.dll,atidxx64.dll,atidxx64.dll,atiumdag,atidxx32,atidxx32,atiumdva,atiumd6a.cap,atitmm64.dll&cr;&lf;Availability: 3&cr;&lf;Status: OK|">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Regular Expression" slicecount="1" values="|Name: (.*?\n)|">
    </PIN>
@@ -855,7 +855,7 @@
    <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="38490" top="1800" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="2" values="|DeviceID: VideoController1&cr;&lf;Name: AMD Radeon HD 7640G + HD 7600M Dual Graphics&cr;&lf;AdapterCompatibility: Advanced Micro Devices, Inc.&cr;&lf;VideoProcessor: AMD Radeon Graphics Processor (0x9903)&cr;&lf;AdapterRAM: 536870912&cr;&lf;InfFilename: oem36.inf&cr;&lf;InstalledDisplayDrivers: aticfx64.dll,aticfx64.dll,aticfx64.dll,amdxc64.dll,aticfx32,aticfx32,aticfx32,amdxc32,atiumd64.dll,atidxx64.dll,atidxx64.dll,atiumdag,atidxx32,atidxx32,atiumdva,atiumd6a.cap,atitmm64.dll&cr;&lf;Availability: 3&cr;&lf;Status: OK|,|DeviceID: VideoController2&cr;&lf;Name: AMD Radeon HD 7600M Series&cr;&lf;AdapterCompatibility: Advanced Micro Devices, Inc.&cr;&lf;VideoProcessor: AMD Radeon Graphics Processor (0x6840)&cr;&lf;AdapterRAM: 1073741824&cr;&lf;InfFilename: oem36.inf&cr;&lf;InstalledDisplayDrivers: aticfx64.dll,aticfx64.dll,aticfx64.dll,amdxc64.dll,aticfx32,aticfx32,aticfx32,amdxc32,atiumd64.dll,atidxx64.dll,atidxx64.dll,atiumdag,atidxx32,atidxx32,atiumdva,atiumd6a.cap,atitmm64.dll&cr;&lf;Availability: 3&cr;&lf;Status: OK|">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Regular Expression" slicecount="1" values="|AdapterRAM: (.*?\n)|">
    </PIN>
@@ -935,25 +935,13 @@
    <NODE systemname="Unzip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (String)" componentmode="Hidden" id="49">
    <BOUNDS type="Node" left="34155" top="2730" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    <PIN pinname="Output 2" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="48">
-   <BOUNDS type="Node" left="34155" top="2325" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="2" values="1920,1200">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="SubType" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="48" srcpinname="Output" dstnodeid="49" dstpinname="Input">
-   </LINK>
    <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="47">
    <BOUNDS type="Node" left="34140" top="3270" width="100" height="100">
    </BOUNDS>
@@ -985,16 +973,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="46" srcpinname="Output String" dstnodeid="47" dstpinname="Intersperse String">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="45" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="34770" top="1935" width="2010" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="34770" top="1935" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="|Integer (MinInt .. MaxInt)|">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="45" srcpinname="Output Enum" dstnodeid="48" dstpinname="SubType">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
    <BOUNDS type="Box" left="34140" top="4770" width="795" height="240">
@@ -1083,7 +1061,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="37">
-   <BOUNDS type="Node" left="22440" top="2790" width="100" height="100">
+   <BOUNDS type="Node" left="22440" top="2865" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -1117,9 +1095,9 @@
    <LINK srcnodeid="38" srcpinname="Remainder" dstnodeid="37" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="21720" top="4560" width="795" height="240">
+   <BOUNDS type="Box" left="22470" top="4560" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="21720" top="4560" width="0" height="0">
+   <BOUNDS type="Node" left="22470" top="4560" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="text">
    </PIN>
@@ -1477,19 +1455,19 @@
    </BOUNDS>
    <PIN pinname="Refresh" visible="1">
    </PIN>
+   <PIN pinname="ResolutionXY" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="136" srcpinname="ResolutionXY" dstnodeid="48" dstpinname="Input">
-   </LINK>
    <NODE systemname="Info (System Device)" nodename="Info (System Device)" componentmode="Hidden" id="141" filename="%VVVV%\addonpack\lib\nodes\plugins\SystemNodes.dll">
    <BOUNDS type="Node" left="36435" top="900" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Refresh" visible="1">
    </PIN>
+   <PIN pinname="Graphics" visible="1">
+   </PIN>
+   <PIN pinname="Sound" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="141" srcpinname="Graphics" dstnodeid="58" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="141" srcpinname="Graphics" dstnodeid="56" dstpinname="Input">
-   </LINK>
    <NODE id="143" systemname="Processors (System)" nodename="Processors (System)" componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
    <BOUNDS type="Node" left="17415" top="1200" width="100" height="100">
    </BOUNDS>
@@ -1497,8 +1475,6 @@
    <LINK srcnodeid="143" srcpinname="Physical Processors" dstnodeid="72" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="143" srcpinname="Cores" dstnodeid="70" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Output" dstnodeid="33" dstpinname="Input String">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="147">
    <BOUNDS type="Box" left="9225" top="6885" width="795" height="240">
@@ -1787,9 +1763,9 @@
    <LINK srcnodeid="91" srcpinname="Output" dstnodeid="147" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="169">
-   <BOUNDS type="Box" left="23925" top="4650" width="795" height="240">
+   <BOUNDS type="Box" left="24480" top="4605" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="23925" top="4650" width="0" height="0">
+   <BOUNDS type="Node" left="24480" top="4605" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -1829,7 +1805,7 @@
    <LINK srcnodeid="81" srcpinname="Y Output Value" dstnodeid="170" dstpinname="Simulate">
    </LINK>
    <NODE systemname="NodeInfos (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="NodeInfos (VVVV)" componentmode="Hidden" id="171">
-   <BOUNDS type="Node" left="23910" top="1980" width="100" height="100">
+   <BOUNDS type="Node" left="24465" top="1935" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Search Paths" visible="1">
    </PIN>
@@ -1871,7 +1847,7 @@
    </PIN>
    <PIN pinname="Input 4" visible="1">
    </PIN>
-   <PIN pinname="Input 5" visible="1">
+   <PIN pinname="Input 5" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -1883,8 +1859,6 @@
    <LINK srcnodeid="119" srcpinname="Output" dstnodeid="173" dstpinname="Input 3">
    </LINK>
    <LINK srcnodeid="121" srcpinname="Output" dstnodeid="173" dstpinname="Input 4">
-   </LINK>
-   <LINK srcnodeid="123" srcpinname="Copyright" dstnodeid="173" dstpinname="Input 5">
    </LINK>
    <LINK srcnodeid="173" srcpinname="Output" dstnodeid="118" dstpinname="Input String">
    </LINK>
@@ -1927,5 +1901,57 @@
    <LINK srcnodeid="14" srcpinname="Entries" dstnodeid="155" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="155" srcpinname="Output" dstnodeid="13" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="Add (String Spectral)" nodename="Add (String Spectral)" componentmode="Hidden" id="180">
+   <BOUNDS type="Node" left="22455" top="3765" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" visible="1" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Intersperse String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Output" dstnodeid="180" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="182">
+   <BOUNDS type="Box" left="22980" top="3390" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="22980" top="3390" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="&lt;br&gt;">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="182" srcpinname="Output String" dstnodeid="180" dstpinname="Intersperse String">
+   </LINK>
+   <LINK srcnodeid="180" srcpinname="Output" dstnodeid="33" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Copyright" dstnodeid="173" dstpinname="Input 5">
+   </LINK>
+   <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="183">
+   <BOUNDS type="Node" left="34155" top="2190" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Characters before Comma" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="183" srcpinname="Output" dstnodeid="49" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="ResolutionXY" dstnodeid="183" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="141" srcpinname="Graphics" dstnodeid="58" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="141" srcpinname="Graphics" dstnodeid="56" dstpinname="Input">
    </LINK>
    </PATCH>
