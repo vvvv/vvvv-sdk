@@ -9,12 +9,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WebRenderer")]
+[assembly: AssemblyTitle("VVVV.Nodes.Texture.HTML")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WebRenderer")]
-[assembly: AssemblyCopyright("Copyright 2012")]
+[assembly: AssemblyCompany("vvvv group")]
+[assembly: AssemblyProduct("VVVV.Nodes.Texture.HTML")]
+[assembly: AssemblyCopyright("Copyright 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
