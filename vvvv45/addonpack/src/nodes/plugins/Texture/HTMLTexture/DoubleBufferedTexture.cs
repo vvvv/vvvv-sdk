@@ -7,6 +7,8 @@ using System.Text;
 
 namespace VVVV.Nodes.Texture.HTML
 {
+    using System.Diagnostics;
+    using System.Threading;
     using Texture = SlimDX.Direct3D9.Texture;
 
     class DoubleBufferedTexture : IDisposable
@@ -53,7 +55,7 @@ namespace VVVV.Nodes.Texture.HTML
             var size = GetDeviceSize(Device, Size);
             rect = Rectangle.Intersect(new Rectangle(0, 0, size.Width, size.Height), rect);
             if (rect == Rectangle.Empty) return;
-            var dataRect = IncompleteTexture.LockRectangle(0, rect, LockFlags.None);
+            var dataRect = IncompleteTexture.LockRectangle(0, rect, LockFlags.Discard | LockFlags.NoSystemLock);
             try
             {
                 var dataStream = dataRect.Data;
@@ -81,7 +83,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         private void UpdateTexture()
         {
-            if (!IsDegraded)
+            if (!IsDegraded && IsDirty)
             {
                 Device.UpdateTexture(IncompleteTexture, LastCompleteTexture);
                 IsDirty = false;

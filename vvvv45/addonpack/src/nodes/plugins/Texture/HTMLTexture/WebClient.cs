@@ -30,10 +30,7 @@ namespace VVVV.Nodes.Texture.HTML
 
             protected override bool GetRootScreenRect(CefBrowser browser, ref CefRectangle rect)
             {
-                rect.X = rect.Y = 0;
-                rect.Width = FRenderer.Size.Width;
-                rect.Height = FRenderer.Size.Height;
-                return true;
+                return false;
             }
 
             protected override bool GetViewRect(CefBrowser browser, ref CefRectangle rect)
@@ -68,7 +65,7 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 switch (type) {
                     case CefPaintElementType.View:
-                        FRenderer.Paint(dirtyRects, buffer, width * 4);
+                        FRenderer.Paint(dirtyRects, buffer, width * 4, width, height);
                         break;
                     case CefPaintElementType.Popup:
                         break;

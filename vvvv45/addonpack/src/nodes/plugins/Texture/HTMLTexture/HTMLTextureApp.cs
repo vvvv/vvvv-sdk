@@ -17,8 +17,10 @@ namespace VVVV.Nodes.Texture.HTML
         const string CmdAssemblySearchPathSwitch = "assembly-search-path";
 
         // Main entry point when called by CEF
+        [STAThread]
         public static int Main(string[] args)
         {
+            CefRuntime.EnableHighDpiSupport();
             CefRuntime.Load();
 
             var app = new HTMLTextureApp();
@@ -300,33 +302,7 @@ namespace VVVV.Nodes.Texture.HTML
             }
             if (string.IsNullOrEmpty(processType))
             {
-                // Taken from: https://bitbucket.org/chromiumembedded/cef/commits/e3c1d8632eb43c1c2793d71639f3f5695696a5e8
-                // If the PDF extension is enabled then cc Surfaces must be disabled for
-                // PDFs to render correctly.
-                // See https://bitbucket.org/chromiumembedded/cef/issues/1689 for details.
-                if (!commandLine.HasSwitch("disable-extensions") && !commandLine.HasSwitch("disable-pdf-extension"))
-                    commandLine.AppendSwitch("disable-surfaces");
-
-                // Use software rendering and compositing (disable GPU) for increased FPS
-                // and decreased CPU usage. This will also disable WebGL so remove these
-                // switches if you need that capability.
-                // See https://bitbucket.org/chromiumembedded/cef/issues/1257 for details.
-                if (!commandLine.HasSwitch("enable-gpu"))
-                {
-                    commandLine.AppendSwitch("disable-gpu");
-                    commandLine.AppendSwitch("disable-gpu-compositing");
-                }
-
-                // Synchronize the frame rate between all processes. This results in
-                // decreased CPU usage by avoiding the generation of extra frames that
-                // would otherwise be discarded. The frame rate can be set at browser
-                // creation time via CefBrowserSettings.windowless_frame_rate or changed
-                // dynamically using CefBrowserHost::SetWindowlessFrameRate. In cefclient
-                // it can be set via the command-line using `--off-screen-frame-rate=XX`.
-                // See https://bitbucket.org/chromiumembedded/cef/issues/1368 for details.
-                commandLine.AppendSwitch("enable-begin-frame-scheduling");
-
-                //commandLine.AppendSwitch("disable-smooth-scrolling");
+                commandLine.AppendSwitch("disable-smooth-scrolling");
                 commandLine.AppendSwitch("enable-system-flash");
             }
             base.OnBeforeCommandLineProcessing(processType, commandLine);

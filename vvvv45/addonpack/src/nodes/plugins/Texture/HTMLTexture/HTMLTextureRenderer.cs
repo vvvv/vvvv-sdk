@@ -588,7 +588,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
 
-        internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride)
+        internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride, int width, int height)
         {
             // Do nothing if disabled
             if (!FEnabled) return;

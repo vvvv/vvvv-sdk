@@ -24,8 +24,8 @@ namespace VVVV.Nodes.Texture.HTML
             cefSettings.BrowserSubprocessPath = Assembly.GetExecutingAssembly().Location;
             cefSettings.CommandLineArgsDisabled = false;
             cefSettings.IgnoreCertificateErrors = true;
-            // We do not meet the requirements - see cef_sandbox_win.h
-            cefSettings.NoSandbox = true;
+            //// We do not meet the requirements - see cef_sandbox_win.h
+            //cefSettings.NoSandbox = true;
 #if DEBUG
             cefSettings.LogSeverity = CefLogSeverity.Error;
             // Set to true to debug DOM / JavaScript
