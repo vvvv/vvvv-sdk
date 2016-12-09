@@ -1,0 +1,115 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
+   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\Crypto\MD5 (String) help.v4p">
+   <BOUNDS height="6030" left="2970" top="1665" type="Window" width="7545">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="6" nodename="Crypto.dll|VVVV.Nodes.MD5StringNode">
+   <BOUNDS height="0" left="3705" top="2940" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="4215" top="3990" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="3705" top="2940" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Hashes" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3690" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4155" top="2490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1050" left="3690" top="1605" type="Box" width="3225">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" values="|Hello, this node calculates the MD5 of a string|,|This node is also spreadable|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="645" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3960" top="6555" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="540" left="645" top="3840" type="Box" width="3105">
+   </BOUNDS>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hash">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="225" top="480" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="225" top="480" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="8505" top="14325" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the MD5 Hash of a string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="225" top="120" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="225" top="120" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="8505" top="14325" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MD5 - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4875" top="4530" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="4875" top="4530" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="1845" top="1455" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4905" top="4890" type="Node" width="1785">
+   </BOUNDS>
+   <BOUNDS height="270" left="4905" top="4890" type="Box" width="1785">
+   </BOUNDS>
+   <BOUNDS height="160" left="1845" top="1455" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="4" dstpinname="Input String">
+   </LINK>
+   </PATCH>

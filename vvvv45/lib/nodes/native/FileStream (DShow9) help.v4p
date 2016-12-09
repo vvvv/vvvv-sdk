@@ -1,0 +1,347 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\native\FileStream (DShow9) help.v4p">
+   <BOUNDS height="10170" left="12120" top="4620" type="Window" width="8580">
+   </BOUNDS>
+   <NODE id="7" nodename="FILESTREAM (DSHOW9)">
+   <BOUNDS height="0" left="525" top="1170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="file.avi" visible="1">
+   </PIN>
+   <PIN pinname="Play" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Do Seek" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="420" left="510" top="2910" type="Node" width="1560">
+   </BOUNDS>
+   <BOUNDS height="1530" left="510" top="2910" type="Box" width="4365">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the FileStream node should be capable of playing all files that you can play with your favourite media player.  &cr;&lf;&cr;&lf;when the &apos;Loop&apos; pin is set to 1 &apos;Start Time&apos; and &apos;End Time&apos; are beeing used. a loop will always run to the end time set when the loop started even if meanwhile a new end time was set. |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="VideoOut (DShow9)">
+   <BOUNDS height="0" left="2205" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="AudioOut (DShow9)">
+   <BOUNDS height="0" left="525" top="2250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Audio" srcnodeid="7" srcpinname="Audio">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Video" srcnodeid="7" srcpinname="Video">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="420" left="3690" top="2130" type="Node" width="4050">
+   </BOUNDS>
+   <BOUNDS height="270" left="3690" top="2130" type="Box" width="2865">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|be careful with the fullscreen pin!!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="270" left="15" top="390" type="Box" width="3555">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders an audio stream on the specified device|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4575">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="7440" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FileStream (DShow9)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Node" left="2565" top="810" width="2340" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2565" top="810" width="2520" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; choose a mediafile to be played|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="MidiOut (DShow9)" id="9">
+   <BOUNDS type="Node" left="1425" top="2250" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Midi" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Midi" dstnodeid="9" dstpinname="Midi">
+   </LINK>
+   <NODE systemname="FileStream2 (DShow9)" nodename="FileStream2 (DShow9)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="1170" top="4935" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="285" top="4980" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="4980" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileStream (DShow9 Boygroup)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Boygroup).v4p" nodename="FileStream (DShow9 Boygroup)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="1170" top="5670" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1170" top="5670">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2910" top="5670" width="2670" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="5670" width="2670" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; for synced playback in boygroups|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2910" top="4935" width="2265" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="4935" width="2265" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; for hickupfree file switching|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="6450" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="6450" width="1350" height="390">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Examples:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="12">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="645" top="7350" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="7350" width="3195" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\01_Playback_Overview.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="645" top="8190" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="8190" width="3195" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\08_Playback_Routing_5.1.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="645" top="8550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="8550" width="3210" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\09_Playback_Making_AudioPlaylist.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="15">
+   <BOUNDS type="Node" left="645" top="8925" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="8925" width="3225" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\21_Visualisation_Equalizer_Bars.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="645" top="7770" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="7770" width="3180" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Audio\02_Playback_Looping-Basics.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="22">
+   <BOUNDS type="Node" left="4695" top="7410" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="7410" width="3195" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\IO\Midi\05_PlayingMidiData.v4p">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="4695" top="7725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="7725" width="3180" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\IO\Midi\06_VisualizingMidi.v4p">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4695" top="7035" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="7035" width="585" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Midi:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2910" top="5295" width="2670" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="5295" width="2670" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; for synced playback in local setups|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="FileStream (DShow9 Local Master)" filename="%VVVV%\lib\nodes\modules\DShow9\FileStream (DShow9 Local Master).v4p" nodename="FileStream (DShow9 Local Master)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="1170" top="5295" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1170" top="5295">
+   </BOUNDS>
+   <PIN pinname="Master Port" slicecount="1" values="4446">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4695" top="8160" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="8160" width="720" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Video:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="630" top="6975" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="630" top="6975" width="750" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="Audio:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="10">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="28">
+   <BOUNDS type="Node" left="4695" top="8550" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4695" top="8550" width="2250" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\girlpower\Video">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="32.2.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1665" top="825" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1665" top="825" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="file.avi">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="file.avi">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="|All Streams (*.aif, *.avi, *.avs, *.mid, *.mka, *.mkv, *.mov, *.mpg, *.ogg, *.rm, *.wmv, *.mp3, *.wav, *.wma)||*.aif;*.aiff;*.avi;*.avs;*.mov;*.mpg;*.mka;*.mkv;*.mpeg;*.ogg;*.rm;*.wmv;*.mid;*.wma;*.mp3;*.wav||AVI (*.avi)||*.avi||AviSynth (*.avs)||*.avs||Quicktime (*.mov, *.aif)||*.mov;*.aif;*.aiff||Ogg Media (*.ogg)||*.ogg||Matroska (*.mka, *.mkv)||*.mka;*.mkv||RealMedia (*.rm)||*.rm||WindowsMedia (*.wmv, *.wma)||*.wmv;*.wma||MIDI (*.mid)||*.mid||MPEG (*.mpg, *.mpeg)||*.mpg;*.mpeg||MP3 (*.mp3)||*.mp3||Wave (*.wav)||*.wav|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="7" dstpinname="Filename">
+   </LINK>
+   </PATCH>
