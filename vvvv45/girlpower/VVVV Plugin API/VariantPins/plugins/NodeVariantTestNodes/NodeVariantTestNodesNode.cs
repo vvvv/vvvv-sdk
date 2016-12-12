@@ -13,6 +13,7 @@ using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
 
 using VVVV.Core.Logging;
+using System.Runtime.InteropServices.ComTypes;
 #endregion usings
 
 namespace VVVV.Nodes
