@@ -1,0 +1,237 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
+   <NODE systemname="DecryptMessage" filename="DecryptMessage.v4p" nodename="DecryptMessage.v4p" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="1515" top="8130" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Key" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Password" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="12960" top="2610" width="7320" height="7860">
+   </BOUNDS>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Decrypt" visible="1" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="7" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Reset">
+   </PIN>
+   <BOUNDS type="Box" left="7050" top="1350" width="600" height="570">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7050" top="1350" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="9" systemname="IOBox (String)" componentmode="InABox" nodename="IOBox (String)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Password">
+   </PIN>
+   <BOUNDS type="Box" left="4545" top="1500" width="780" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4545" top="1500" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="vvvvvv">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="vvvvvv">
+   </PIN>
+   </NODE>
+   <BOUNDS type="Window" left="6315" top="1230" width="8190" height="9840">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="27">
+   <BOUNDS type="Node" left="1695" top="1500" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1695" top="1500" width="1440" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="IP">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="localhost">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Remote Host|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="localhost">
+   </PIN>
+   </NODE>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="1515" top="2970" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="28" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1515" top="2565" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1515" top="2565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="PSData">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="29" srcpinname="Output String" dstnodeid="28" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="28" dstpinname="Input 3">
+   </LINK>
+   <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="35">
+   <BOUNDS type="Node" left="1500" top="4815" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive String" visible="1" slicecount="1" values="(nil)">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="38">
+   <BOUNDS type="Node" left="1830" top="4815" width="555" height="270">
+   </BOUNDS>
+   <PIN pinname="Enum" slicecount="1" visible="1" values="NodeSendChannels">
+   </PIN>
+   <PIN pinname="Receive" visible="1" slicecount="1" values="(nil)">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="39" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1830" top="4440" width="1650" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1830" top="4440" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="NodeSendChannels">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Output Enum" dstnodeid="38" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="2" dstpinname="Password">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="56" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3405" top="5220" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3405" top="5220" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="120">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="65" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1500" top="8895" width="1080" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1500" top="8895" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Response">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="65" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="90">
+   <BOUNDS type="Node" left="2850" top="7005" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="89">
+   <BOUNDS type="Node" left="2850" top="7455" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="90" srcpinname="Count" dstnodeid="89" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="89" srcpinname="Output" dstnodeid="2" dstpinname="Decrypt">
+   </LINK>
+   <INFO author="vvvv group" description="Receives responses from Photoshop." tags="psd">
+   </INFO>
+   <NODE systemname="CollectChunks" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" componentmode="Hidden" id="57">
+   <BOUNDS type="Node" left="1515" top="5895" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14880" top="2790" width="16905" height="13350">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Timeout" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1515" top="5895">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="57" dstpinname="Timeout">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="57" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="57" dstpinname="Reset">
+   </LINK>
+   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="90" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="91">
+   <BOUNDS type="Node" left="1500" top="3825" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="91" dstpinname="String Value">
+   </LINK>
+   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="38" dstpinname="Receive">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="92" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3675" top="8640" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3675" top="8640" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|On Data|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="89" srcpinname="Output" dstnodeid="92" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>
