@@ -15,6 +15,7 @@ namespace VVVV.Utils.IO
         MouseUp,
         MouseMove,
         MouseWheel,
+        MouseHorizontalWheel,
         MouseClick
     }
 
@@ -145,6 +146,32 @@ namespace VVVV.Utils.IO
             if (base.Equals(obj))
             {
                 var n = obj as MouseWheelNotification;
+                if (n != null)
+                    return n.WheelDelta == WheelDelta;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ WheelDelta.GetHashCode();
+        }
+    }
+    public class MouseHorizontalWheelNotification : MouseNotification
+    {
+        public readonly int WheelDelta;
+
+        public MouseHorizontalWheelNotification(Point position, Size clientArea, int wheelDelta)
+            : base(MouseNotificationKind.MouseHorizontalWheel, position, clientArea)
+        {
+            WheelDelta = wheelDelta;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                var n = obj as MouseHorizontalWheelNotification;
                 if (n != null)
                     return n.WheelDelta == WheelDelta;
             }
