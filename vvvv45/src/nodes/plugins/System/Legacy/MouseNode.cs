@@ -80,7 +80,7 @@ namespace VVVV.Nodes.Input
                 }
 
                 var buttons = Control.MouseButtons;
-                var mouseState = new MouseState(x, y, buttons, 0);
+                var mouseState = new MouseState(x, y, buttons, 0, 0);
                 if (mouseState != FLastMouseState)
                 {
                     var virtualScreenSize = SystemInformation.VirtualScreen.Size;
