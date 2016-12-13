@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Grow (2d).v4p" systemname="Grow (2d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Grow (2d).v4p">
-   <BOUNDS type="Window" left="16425" top="5520" width="7380" height="7275">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Grow (2d NonUniform).v4p" systemname="Grow (2d NonUniform)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\Grow (2d NonUniform).v4p">
+   <BOUNDS type="Window" left="14295" top="4380" width="7380" height="7275">
    </BOUNDS>
    <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="2715" top="1830" width="100" height="100">
@@ -44,26 +44,6 @@
    </NODE>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Input 1">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="4770" top="630" width="795" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="4770" top="630" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Factor">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="2430" top="4890" width="330" height="270">
    </BOUNDS>
@@ -131,8 +111,6 @@
    </PIN>
    <PIN pinname="Default" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="-1">
-   </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Bin Size">
    </LINK>
@@ -161,24 +139,12 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="98" values="0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61,0.66,0.61">
-   </PIN>
-   </NODE>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="12">
-   <BOUNDS type="Node" left="4140" top="3540" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Select" visible="1" slicecount="10" values="5,5,5,5,4,4,6,5,5,5">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="98" values="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0.81,0.81,0.81,0.81,0.81,0.81,0.81,0.81,0.81,0.81">
    </PIN>
    </NODE>
    <LINK srcnodeid="2" srcpinname="Output" dstnodeid="3" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="3" srcpinname="Output" dstnodeid="5" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="5" dstpinname="Input 1">
    </LINK>
@@ -186,44 +152,120 @@
    </INFO>
    <PACK Name="addonpack" Version="34.101.0">
    </PACK>
-   <LINK srcnodeid="12" srcpinname="Output" dstnodeid="3" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="4680" top="3075" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="12" dstpinname="Select">
-   </LINK>
    <PACK Name="CV" Version="0.2.0">
    </PACK>
-   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="3765" top="1815" width="100" height="100">
+   <NODE systemname="Select (Value Vector)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="4140" top="3540" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Select" visible="1" slicecount="10" values="5,5,5,5,4,4,6,5,5,5">
    </PIN>
-   <PIN pinname="Bin Size" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="10" values="1,1,1,1,1,1,1,1,1,0.81">
    </PIN>
    <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="12" srcpinname="Output" dstnodeid="3" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Vector Size">
+   </LINK>
+   <NODE id="15" systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Default" slicecount="1" pintype="Configuration" values="|1,1|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" pintype="Configuration" values="FactorXY">
+   </PIN>
+   <BOUNDS type="Node" left="4800" top="630" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4800" top="630" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" pintype="Configuration" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" pintype="Input" visible="1" values="1,1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" pintype="Configuration" values="2">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Value Type" pintype="Configuration" slicecount="1" values="Real">
+   </PIN>
+   <PIN pinname="Precision" pintype="Configuration" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Behavior" pintype="Configuration" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Minimum" pintype="Configuration" slicecount="1" values="-99999999">
+   </PIN>
+   <PIN pinname="Maximum" pintype="Configuration" slicecount="1" values="99999999">
+   </PIN>
+   <PIN pinname="Units" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Show Value" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" pintype="Configuration" slicecount="1" values="Endless">
+   </PIN>
+   <PIN pinname="Show Connections" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Background" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Sticky Slider" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Allow MouseOffset" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Constraints" pintype="Configuration" slicecount="1" values="scX">
+   </PIN>
+   <PIN pinname="Slider Alignment" pintype="Configuration" slicecount="1" values="Grid">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Output Value" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Changed" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="12" dstpinname="Input">
+   </LINK>
+   <NODE systemname="NormalizeBinSize (2d)" filename="%VVVV%\lib\nodes\modules\2D\NormalizeBinSize (2d).v4p" nodename="NormalizeBinSize (2d)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="4200" top="1860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
    </PIN>
    <PIN pinname="InputXY" visible="1">
    </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Input">
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Bin Size">
    </LINK>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Bin Size">
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="16" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="14" dstpinname="Input 1">
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="9" dstpinname="Select">
    </LINK>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="15" dstpinname="InputXY">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="9" dstpinname="Select">
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="12" dstpinname="Select">
    </LINK>
    </PATCH>

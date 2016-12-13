@@ -139,6 +139,19 @@ namespace VVVV.Nodes.Input
                                     return new MouseUpNotification(position, clientArea, MouseButtons.XButton1);
                                 else
                                     return new MouseUpNotification(position, clientArea, MouseButtons.XButton2);
+                            case WM.MOUSEHWHEEL:
+                                unchecked
+                                {
+                                    // Position is in screen coordinates
+                                    // https://msdn.microsoft.com/en-us/library/windows/desktop/ms645614(v=vs.85).aspx
+                                    if (User32.ScreenToClient(e.HWnd, ref position))
+                                    {
+                                        var wheel = wParam.HiWord();
+                                        return new MouseHorizontalWheelNotification(position, clientArea, wheel);
+                                    }
+                                    break;
+                                }
+
                         }
                     }
                     return null;
@@ -207,6 +220,8 @@ namespace VVVV.Nodes.Input
                                 return new MouseMoveNotification(cycleData.IncrementalPosition, n.ClientArea);
                             case MouseNotificationKind.MouseWheel:
                                 return new MouseWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseWheelNotification)n).WheelDelta);
+                            case MouseNotificationKind.MouseHorizontalWheel:
+                                return new MouseHorizontalWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseHorizontalWheelNotification)n).WheelDelta);
                             case MouseNotificationKind.MouseClick:
                                 return new MouseClickNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseClickNotification)n).Buttons, ((MouseClickNotification)n).ClickCount);
                             default:
@@ -553,6 +568,10 @@ namespace VVVV.Nodes.Input
             {
                 yield return new MouseWheelNotification(position, clientArea, args.WheelDelta);
             }
+            if ((buttonFlags & MouseButtonFlags.Hwheel) > 0)
+            {
+                yield return new MouseHorizontalWheelNotification(position, clientArea, args.WheelDelta);
+            }
         }
 
         static Rectangle GetBounds(Point pt)
@@ -613,6 +632,7 @@ namespace VVVV.Nodes.Input
         public ISpread<ISpread<MouseNotificationKind>> EventTypeIn;
         public ISpread<ISpread<Vector2D>> PositionIn;
         public ISpread<ISpread<int>> MouseWheelIn;
+        public ISpread<ISpread<int>> MouseHWheelIn;
         public ISpread<ISpread<int>> ClickCountIn;
         public ISpread<ISpread<bool>> LeftButtonIn;
         public ISpread<ISpread<bool>> MiddleButtonIn;
@@ -631,6 +651,7 @@ namespace VVVV.Nodes.Input
             EventTypeIn = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new InputAttribute("Event Type"));
             PositionIn = BinSizePin.CreateBinSizeSpread<Vector2D>(new InputAttribute("Position"));
             MouseWheelIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Mouse Wheel Delta"));
+            MouseHWheelIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Horizontal Mouse Wheel Delta"));
             ClickCountIn = BinSizePin.CreateBinSizeSpread<int>(new InputAttribute("Click Count") { DefaultValue = 1, MinValue = 1 });
             LeftButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Left Button"));
             MiddleButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Middle Button"));
@@ -675,6 +696,9 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseWheel:
                             notification = new MouseWheelNotification(position, MouseExtensions.ClientArea, MouseWheelIn[bin][i]);
                             break;
+                        case MouseNotificationKind.MouseHorizontalWheel:
+                            notification = new MouseHorizontalWheelNotification(position, MouseExtensions.ClientArea, MouseHWheelIn[bin][i]);
+                            break;
                         case MouseNotificationKind.MouseClick:
                             notification = new MouseClickNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1));
                             break;
@@ -710,6 +734,7 @@ namespace VVVV.Nodes.Input
         public ISpread<ISpread<MouseNotificationKind>> EventTypeOut;
         public ISpread<ISpread<Vector2D>> PositionOut;
         public ISpread<ISpread<int>> MouseWheelDeltaOut;
+        public ISpread<ISpread<int>> MouseHWheelDeltaOut;
         public ISpread<ISpread<int>> ClickCountOut;
         public ISpread<ISpread<bool>> LeftButtonOut;
         public ISpread<ISpread<bool>> MiddleButtonOut;
@@ -729,6 +754,7 @@ namespace VVVV.Nodes.Input
             EventTypeOut = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new OutputAttribute("Event Type"));
             PositionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position"));
             MouseWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Mouse Wheel Delta"));
+            MouseHWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Horizontal Mouse Wheel Delta"));
             ClickCountOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Click Count"));
             LeftButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Left Button"));
             MiddleButtonOut = BinSizePin.CreateBinSizeSpread<bool>(new OutputAttribute("Middle Button"));
@@ -774,6 +800,7 @@ namespace VVVV.Nodes.Input
             EventTypeOut.SliceCount = spreadMax;
             PositionOut.SliceCount = spreadMax;
             MouseWheelDeltaOut.SliceCount = spreadMax;
+            MouseHWheelDeltaOut.SliceCount = spreadMax;
             ClickCountOut.SliceCount = spreadMax;
             LeftButtonOut.SliceCount = spreadMax;
             MiddleButtonOut.SliceCount = spreadMax;
@@ -799,6 +826,7 @@ namespace VVVV.Nodes.Input
                 EventTypeOut[bin].SliceCount = notifications.Count;
                 PositionOut[bin].SliceCount = notifications.Count;
                 MouseWheelDeltaOut[bin].SliceCount = notifications.Count;
+                MouseHWheelDeltaOut[bin].SliceCount = notifications.Count;
                 ClickCountOut[bin].SliceCount = notifications.Count;
                 LeftButtonOut[bin].SliceCount = notifications.Count;
                 MiddleButtonOut[bin].SliceCount = notifications.Count;
@@ -817,6 +845,7 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseUp:
                             var mouseButton = n as MouseButtonNotification;
                             MouseWheelDeltaOut[bin][i] = 0;
+                            MouseHWheelDeltaOut[bin][i] = 0;
                             ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Left) > 0;
                             MiddleButtonOut[bin][i] = (mouseButton.Buttons & MouseButtons.Middle) > 0;
@@ -826,6 +855,7 @@ namespace VVVV.Nodes.Input
                             break;
                         case MouseNotificationKind.MouseMove:
                             MouseWheelDeltaOut[bin][i] = 0;
+                            MouseHWheelDeltaOut[bin][i] = 0;
                             ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = false;
                             MiddleButtonOut[bin][i] = false;
@@ -836,6 +866,18 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseWheel:
                             var mouseWheel = n as MouseWheelNotification;
                             MouseWheelDeltaOut[bin][i] = mouseWheel.WheelDelta;
+                            MouseHWheelDeltaOut[bin][i] = 0;
+                            ClickCountOut[bin][i] = 0;
+                            LeftButtonOut[bin][i] = false;
+                            MiddleButtonOut[bin][i] = false;
+                            RightButtonOut[bin][i] = false;
+                            X1ButtonOut[bin][i] = false;
+                            X2ButtonOut[bin][i] = false;
+                            break;
+                        case MouseNotificationKind.MouseHorizontalWheel:
+                            var mouseHWheel = n as MouseHorizontalWheelNotification;
+                            MouseHWheelDeltaOut[bin][i] = mouseHWheel.WheelDelta;
+                            MouseWheelDeltaOut[bin][i] = 0;
                             ClickCountOut[bin][i] = 0;
                             LeftButtonOut[bin][i] = false;
                             MiddleButtonOut[bin][i] = false;
@@ -846,6 +888,7 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseClick:
                             var mouseClick = n as MouseClickNotification;
                             MouseWheelDeltaOut[bin][i] = 0;
+                            MouseHWheelDeltaOut[bin][i] = 0;
                             ClickCountOut[bin][i] = mouseClick.ClickCount;
                             LeftButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.Left) > 0;
                             MiddleButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.Middle) > 0;
@@ -883,6 +926,8 @@ namespace VVVV.Nodes.Input
         public ISpread<Vector2D> ClientAreaOut;
         [Output("Mouse Wheel")]
         public ISpread<int> MouseWheelOut;
+        [Output("Horizontal Mouse Wheel")]
+        public ISpread<int> MouseHWheelOut;
         [Output("Left Button")]
         public ISpread<bool> LeftButtonOut;
         [Output("Middle Button")]
@@ -896,6 +941,7 @@ namespace VVVV.Nodes.Input
 
         private Spread<Subscription2<Mouse, MouseNotification>> FSubscriptions = new Spread<Subscription2<Mouse, MouseNotification>>();
         private Spread<int> FRawMouseWheel = new Spread<int>(1);
+        private Spread<int> FRawMouseHWheel = new Spread<int>(1);
 
         public void Dispose()
         {
@@ -911,6 +957,8 @@ namespace VVVV.Nodes.Input
             ClientAreaOut.SliceCount = spreadMax;
             MouseWheelOut.SliceCount = spreadMax;
             FRawMouseWheel.SliceCount = spreadMax;
+            MouseHWheelOut.SliceCount = spreadMax;
+            FRawMouseHWheel.SliceCount = spreadMax;
             LeftButtonOut.SliceCount = spreadMax;
             MiddleButtonOut.SliceCount = spreadMax;
             RightButtonOut.SliceCount = spreadMax;
@@ -927,6 +975,8 @@ namespace VVVV.Nodes.Input
                     ClientAreaOut[slice] = Vector2D.Zero;
                     MouseWheelOut[slice] = 0;
                     FRawMouseWheel[slice] = 0;
+                    MouseHWheelOut[slice] = 0;
+                    FRawMouseHWheel[slice] = 0;
                     LeftButtonOut[slice] = false;
                     MiddleButtonOut[slice] = false;
                     RightButtonOut[slice] = false;
@@ -970,6 +1020,11 @@ namespace VVVV.Nodes.Input
                             FRawMouseWheel[i] += mouseWheel.WheelDelta;
                             MouseWheelOut[i] = (int)Math.Round((float)FRawMouseWheel[i] / Const.WHEEL_DELTA);
                             break;
+                        case MouseNotificationKind.MouseHorizontalWheel:
+                            var mouseHWheel = n as MouseHorizontalWheelNotification;
+                            FRawMouseHWheel[i] += mouseHWheel.WheelDelta;
+                            MouseHWheelOut[i] = (int)Math.Round((float)FRawMouseHWheel[i] / Const.WHEEL_DELTA);
+                            break;
                         default:
                             break;
                     }
@@ -999,6 +1054,7 @@ namespace VVVV.Nodes.Input
             public static readonly MouseState Empty = new MouseState();
             public Point Position;
             public int MouseWheel;
+            public int MouseHWheel;
             public MouseButtons IsButtonPressed;
             public List<IObserver<MouseNotification>> Observers;
         }
@@ -1007,6 +1063,8 @@ namespace VVVV.Nodes.Input
         public IDiffSpread<Vector2D> PositionIn;
         [Input("Mouse Wheel")]
         public IDiffSpread<int> MouseWheelIn;
+        [Input("Horizontal Mouse Wheel")]
+        public IDiffSpread<int> MouseHWheelIn;
         [Input("Left Button")]
         public IDiffSpread<bool> LeftButtonIn;
         [Input("Middle Button")]
@@ -1033,6 +1091,9 @@ namespace VVVV.Nodes.Input
             var wheelDelta = newState.MouseWheel - oldState.MouseWheel;
             if (wheelDelta != 0)
                 yield return new MouseWheelNotification(newState.Position, MouseExtensions.ClientArea, wheelDelta * Const.WHEEL_DELTA);
+            var hwheelDelta = newState.MouseHWheel - oldState.MouseHWheel;
+            if (hwheelDelta != 0)
+                yield return new MouseHorizontalWheelNotification(newState.Position, MouseExtensions.ClientArea, hwheelDelta * Const.WHEEL_DELTA);
             if (newState.IsButtonPressed != oldState.IsButtonPressed)
             {
                 var newButton = newState.IsButtonPressed;
@@ -1068,6 +1129,7 @@ namespace VVVV.Nodes.Input
                 {
                     Position = PositionIn[i].ToMousePoint(),
                     MouseWheel = MouseWheelIn[i],
+                    MouseHWheel = MouseHWheelIn[i],
                     IsButtonPressed =
                         (LeftButtonIn[i] ? MouseButtons.Left : MouseButtons.None) |
                         (MiddleButtonIn[i] ? MouseButtons.Middle : MouseButtons.None) |
@@ -1127,6 +1189,9 @@ namespace VVVV.Nodes.Input
         [Input("Wheel Delta")]
         public ISpread<int> WheelDeltaIn;
 
+        [Input("Horizontal Wheel Delta")]
+        public ISpread<int> HWheelDeltaIn;
+
         [Input("Click Count", DefaultValue = 1)]
         public ISpread<int> ClickCountIn;
 
@@ -1168,6 +1233,9 @@ namespace VVVV.Nodes.Input
                                 case MouseNotificationKind.MouseWheel:
                                     var mouseWheel = n as MouseWheelNotification;
                                     return mouseWheel.WheelDelta == WheelDeltaIn[i];
+                                case MouseNotificationKind.MouseHorizontalWheel:
+                                    var mouseHWheel = n as MouseHorizontalWheelNotification;
+                                    return mouseHWheel.WheelDelta == HWheelDeltaIn[i];
                             }
                             // Mouse move
                             return true;

@@ -26,6 +26,21 @@ namespace VVVV.Utils.IO
                 buttons |= MouseButtons.XButton2;
             return new MouseState(x, y, buttons, mouseWheel);
         }
+        public static MouseState Create(double x, double y, bool left, bool middle, bool right, bool xButton1, bool xButton2, int mouseWheel, int mouseHWheel)
+        {
+            var buttons = MouseButtons.None;
+            if (left)
+                buttons |= MouseButtons.Left;
+            if (middle)
+                buttons |= MouseButtons.Middle;
+            if (right)
+                buttons |= MouseButtons.Right;
+            if (xButton1)
+                buttons |= MouseButtons.XButton1;
+            if (xButton2)
+                buttons |= MouseButtons.XButton2;
+            return new MouseState(x, y, buttons, mouseWheel, mouseHWheel);
+        }
 
         /// <summary>
         /// The x coordinate of the mouse.
@@ -46,13 +61,27 @@ namespace VVVV.Utils.IO
         /// The position of the mouse wheel.
         /// </summary>
         public int MouseWheel;
-        
+
+        /// <summary>
+        /// The position of the horizontal mouse wheel.
+        /// </summary>
+        public int MouseHorizontalWheel;
+
         public MouseState(double x, double y, MouseButtons buttons, int mouseWheel)
         {
             X = x;
             Y = y;
             Buttons = buttons;
             MouseWheel = mouseWheel;
+            MouseHorizontalWheel = 0;
+        }
+        public MouseState(double x, double y, MouseButtons buttons, int mouseWheel, int mouseHWheel)
+        {
+            X = x;
+            Y = y;
+            Buttons = buttons;
+            MouseWheel = mouseWheel;
+            MouseHorizontalWheel = mouseHWheel;
         }
         
         public Vector2D Position
@@ -118,13 +147,16 @@ namespace VVVV.Utils.IO
         public bool Equals(MouseState other)
         {
             // add comparisions for all members here
-            return this.X == other.X && this.Y == other.Y && this.Buttons == other.Buttons && this.MouseWheel == other.MouseWheel;
+            return this.X == other.X && this.Y == other.Y &&
+                this.Buttons == other.Buttons &&
+                this.MouseWheel == other.MouseWheel &&
+                this.MouseHorizontalWheel == other.MouseHorizontalWheel;
         }
         
         public override int GetHashCode()
         {
             // combine the hash codes of all members here (e.g. with XOR operator ^)
-            return X.GetHashCode() ^ Y.GetHashCode() ^ Buttons.GetHashCode() ^ MouseWheel.GetHashCode();
+            return X.GetHashCode() ^ Y.GetHashCode() ^ Buttons.GetHashCode() ^ MouseWheel.GetHashCode() ^ MouseHorizontalWheel.GetHashCode();
         }
         
         public static bool operator ==(MouseState left, MouseState right)

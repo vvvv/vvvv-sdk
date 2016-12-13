@@ -54,9 +54,9 @@ namespace VVVV.Core.Model
                     var directory = Path.GetDirectoryName(LocalPath);
                     var extension = Path.GetExtension(LocalPath);
                     FWatcher = new FileSystemWatcher(directory, $"*{extension}");
-                    FWatcher.NotifyFilter = NotifyFilters.LastWrite;
                     FWatcher.EnableRaisingEvents = true;
                     FWatcher.Changed += FWatcher_Changed;
+                    FWatcher.Renamed += FWatcher_Changed;
                 }
             }
             remove
@@ -65,6 +65,7 @@ namespace VVVV.Core.Model
                 if (FileChangedListenerCount == 0 && FWatcher != null)
                 {
                     FWatcher.Changed -= FWatcher_Changed;
+                    FWatcher.Renamed -= FWatcher_Changed;
                     FWatcher.Dispose();
                     FWatcher = null;
                 }
@@ -105,7 +106,8 @@ namespace VVVV.Core.Model
                     }
                     finally
                     {
-                        oldContent.Dispose();
+                        if (oldContent != ContentOnDisk)
+                            oldContent.Dispose();
                     }
                 }
             }
