@@ -1,0 +1,1857 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\WebInterface.v4p" scrollx="765" scrolly="2610">
+   <BOUNDS height="15540" left="8520" top="30" type="Window" width="13770">
+   </BOUNDS>
+   <NODE debug="0" id="121" nodename="XSLT (XML)">
+   <BOUNDS height="270" left="570" top="2880" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XSLT Stylesheet" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Validate on Parse" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="120" nodename="Separate (String)" systemname="Separate (String Legacy)">
+   <BOUNDS height="0" left="1245" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Keep Quotes" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Ignore between" slicecount="1" values="Pipe">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="119" nodename="Substitute (String)">
+   <BOUNDS height="0" left="1260" top="7065" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="||||||">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="118" nodename="Subtract (String)">
+   <BOUNDS height="0" left="1245" top="7500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="118" dstpinname="Operand 1" srcnodeid="119" srcpinname="Output">
+   </LINK>
+   <NODE id="117" nodename="Subtract (String)">
+   <BOUNDS height="0" left="1230" top="7860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Operand 1" visible="1">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Occurence Mode" slicecount="1" values="Last">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="117" dstpinname="Operand 1" srcnodeid="118" srcpinname="Result">
+   </LINK>
+   <LINK dstnodeid="119" dstpinname="Input" srcnodeid="120" srcpinname="Output">
+   </LINK>
+   <NODE id="115" nodename="EQ (String)">
+   <BOUNDS height="0" left="3285" top="5190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Color">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="114" nodename="Select (String)">
+   <BOUNDS height="0" left="2805" top="5655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="114" dstpinname="Select" srcnodeid="115" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="113" nodename=":MODULES:\vvvv group\String\AsColor (String).v4p">
+   <BOUNDS height="0" left="2820" top="6150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8580" left="24555" top="2580" type="Window" width="10740">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2820" top="6150" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Input color String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="113" dstpinname="Input color String" srcnodeid="114" srcpinname="Output">
+   </LINK>
+   <NODE id="112" nodename="AsString (Color Hex)">
+   <BOUNDS height="0" left="2835" top="6975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="112" dstpinname="Input" srcnodeid="113" srcpinname="Output">
+   </LINK>
+   <NODE id="111" nodename="CountIndices (Spreads)">
+   <BOUNDS height="0" left="3240" top="6555" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Index Hit Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="111" dstpinname="Indices" srcnodeid="113" srcpinname="Former Index">
+   </LINK>
+   <NODE id="110" nodename="Count (String)">
+   <BOUNDS height="0" left="3855" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="111" dstpinname="Spread Count" srcnodeid="110" srcpinname="Count">
+   </LINK>
+   <NODE id="109" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="3075" top="8595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <NODE id="108" nodename="Add (String)">
+   <BOUNDS height="270" left="2670" top="8055" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;SLICE&gt;&lt;HEX&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/HEX&gt;&lt;ALPHA&gt;">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&lt;/ALPHA&gt;&lt;/SLICE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="108" dstpinname="Input 2" srcnodeid="112" srcpinname="Output">
+   </LINK>
+   <NODE id="107" nodename="AsString (Value)">
+   <BOUNDS height="0" left="3165" top="7620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="107" dstpinname="Input" srcnodeid="112" srcpinname="Alpha">
+   </LINK>
+   <LINK dstnodeid="108" dstpinname="Input 4" srcnodeid="107" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="109" dstpinname="Input" srcnodeid="108" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="109" dstpinname="Bin Size" srcnodeid="111" srcpinname="Index Hit Count">
+   </LINK>
+   <LINK dstnodeid="110" dstpinname="Input" srcnodeid="114" srcpinname="Output">
+   </LINK>
+   <NODE id="106" nodename="EQ (String)">
+   <BOUNDS height="0" left="1725" top="5250" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="105" nodename="Select (String)">
+   <BOUNDS height="0" left="1245" top="5730" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="105" dstpinname="Select" srcnodeid="106" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="120" dstpinname="Input" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   <NODE id="104" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="1260" top="8745" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <NODE id="103" nodename="Add (String)">
+   <BOUNDS height="270" left="1260" top="8265" type="Node" width="600">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;SLICE&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/SLICE&gt;">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="104" dstpinname="Input" srcnodeid="103" srcpinname="Output">
+   </LINK>
+   <NODE id="102" nodename="CountIndices (Spreads)">
+   <BOUNDS height="0" left="1440" top="6600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Index Hit Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="102" dstpinname="Indices" srcnodeid="120" srcpinname="Former Index">
+   </LINK>
+   <NODE id="101" nodename="Count (String)">
+   <BOUNDS height="0" left="2100" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="102" dstpinname="Spread Count" srcnodeid="101" srcpinname="Count">
+   </LINK>
+   <LINK dstnodeid="101" dstpinname="Input" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="104" dstpinname="Bin Size" srcnodeid="102" srcpinname="Index Hit Count">
+   </LINK>
+   <LINK dstnodeid="103" dstpinname="Input 2" srcnodeid="117" srcpinname="Result">
+   </LINK>
+   <NODE id="100" nodename="Substitute (String)">
+   <BOUNDS height="270" left="555" top="10530" type="Node" width="2010">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="To" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="99" nodename="Cons (String Legacy)">
+   <BOUNDS height="0" left="2655" top="9195" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="98" nodename="Cons (String Legacy)">
+   <BOUNDS height="0" left="1710" top="9270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="98" dstpinname="Input 2" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="114" srcpinname="Output">
+   <LINKPOINT x="3135" y="7960">
+   </LINKPOINT>
+   <LINKPOINT x="2070" y="7985">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="99" dstpinname="Input 2" srcnodeid="109" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="99" dstpinname="Input 1" srcnodeid="104" srcpinname="Output">
+   </LINK>
+   <NODE id="97" nodename="XSLT (XML)">
+   <BOUNDS height="0" left="555" top="11715" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XSLT Stylesheet" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Validate on Parse" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="96" nodename="HTTP (Network Server)">
+   <BOUNDS height="0" left="2490" top="13995" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="81">
+   </PIN>
+   </NODE>
+   <NODE id="95" nodename="Reader (String)">
+   <BOUNDS height="0" left="11505" top="17715" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1" slicecount="17" values="Sources\bg.gif,Sources\bottom.gif,Sources\colorPickerAdv.html,Sources\createWebPage.xsl,Sources\edge.gif,Sources\getData.xsl,Sources\header.gif,Sources\logout.gif,Sources\pick.gif,Sources\scripts.js,Sources\styles.css,Sources\Thumbs.db,Sources\images\close.jpg,Sources\images\grayScale.jpg,Sources\images\spacer.gif,Sources\images\spectrum_small.jpg,Sources\images\Thumbs.db">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Read" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
+   <BOUNDS type="Box" left="11505" top="17715">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="88" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="15690" top="14085" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12765" top="4125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="4140" left="15690" top="14085" type="Box" width="1305">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="17" values="image/gif,image/gif,text/html,none,image/gif,none,image/gif,image/gif,image/gif,text/plain,text/css,none,image/jpeg,image/jpeg,image/gif,image/jpeg,none">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE id="87" nodename="Subtract (String)">
+   <BOUNDS height="0" left="10530" top="14190" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Operand 1" visible="1" slicecount="4" values="|C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\Sources\images\close.jpg|,|C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\Sources\images\grayScale.jpg|,|C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\Sources\images\spacer.gif|,|C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\09_Web Interface\Sources\images\spectrum_small.jpg|">
+   </PIN>
+   <PIN pinname="Operand 2" slicecount="1" values="Sources\">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="85" nodename="Substitute (String)">
+   <BOUNDS height="0" left="10530" top="17700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="\">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="/">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="85" dstpinname="Input" srcnodeid="87" srcpinname="Result">
+   </LINK>
+   <NODE id="84" nodename="HTTP (Network Server)">
+   <BOUNDS height="0" left="10530" top="18705" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1" slicecount="17" values="|R0lGODlhzAIBAKIAANTQyP///4CAgEBAQOfj5wAAAAAAAAAAACH5BAAAAAAALAAAAADMAgEAAAMg&cr;&lf;CAFA/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wHDHCkAAAOw==|,|R0lGODlhzAIFAKIAAP///+fj54CAgEBAQNTQyAAAAAAAAAAAACH5BAAAAAAALAAAAADMAgUAAAOa&cr;&lf;SEAU/jDKSau9OOvNu/9gKI5kaZ5oqq5s675wHDHCoDB4ru987//AoHBILBqPyKRyyWw6n9CodEqt&cr;&lf;Wq/YrPZXu22/4LB4TC6bz+i0es3OdgXwuHxOr9vv+Lx+z+/7/4CBgoOEhYaHiImKi4yNjo+QkZKT&cr;&lf;eQOWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLmiCQA7|,|PEhUTUw+CjxIRUFEPgo8VElUTEU+QWR2YW5jZWQgQ29sb3IgUGlja2VyPC9USVRMRT4KPFNDUklQ&cr;&lf;VCBMQU5HVUFHRT1qYXZhc2NyaXB0Pgo8IS0tCgkvLyBTZXQgdGhlIHNjYWxlIG9mIHRoZSBzcGVj&cr;&lf;dHJ1bSBhbmQgZ3JheSBzY2FsZSBpbWFnZXMuCgl2YXIgbV9pbnRTY2FsZSA9IDY7IC8vIDEvNiBz&cr;&lf;aXplCgkKCS8vIENhcHR1cmUgZXZlbnRzIGZvciBNb3ppbGxhIGFuZCBOZXRzY2FwZQoJdHJ5IHsK&cr;&lf;CQlkb2N1bWVudC5jYXB0dXJlRXZlbnRzKEV2ZW50Lk1PVVNFTU9WRSB8IEV2ZW50Lk1PVVNFVVAg&cr;&lf;fCBFdmVudC5NT1VTRURPV04pOwoJfSBjYXRjaCAoZXgpIHsgfQoKCgkvLyBUaGUgaW1hZ2VzIHNy&cr;&lf;YyBwcm9wZXJ0eSBtdXN0IGJlIHNldCBoZXJlIHRvIHVzZSB0aGUgZmlsZVBhdGgKCWZ1bmN0aW9u&cr;&lf;IGJvZHlfb25Mb2FkKCkgewoJCWN1cnJDb2xvciA9IHNlbGYucGFyZW50LmRvY3VtZW50LmdldEVs&cr;&lf;ZW1lbnRCeUlkKCdjb2xvclBpY2tlckFkdkRpdicpLnBhcmVudE5vZGUucHJldmlvdXNTaWJsaW5n&cr;&lf;LnZhbHVlOwoJCXZhciBmaWxlUGF0aCA9ICcuJzsKCQkKCQlkb2N1bWVudC5nZXRFbGVtZW50QnlJ&cr;&lf;ZCgnX19hZHZDUF9zcGVjdHJ1bScpLnNyYyA9IGZpbGVQYXRoICsgJy9pbWFnZXMvc3BlY3RydW1f&cr;&lf;c21hbGwuanBnJzsKCQlkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnX19hZHZDUF9ncmF5U2NhbGUn&cr;&lf;KS5zcmMgPSBmaWxlUGF0aCArICcvaW1hZ2VzL2dyYXlTY2FsZS5qcGcnOwoJCS8vZG9jdW1lbnQu&cr;&lf;Z2V0RWxlbWVudEJ5SWQoJ19fYWR2Q1BfY2lyY2xlJykuc3JjID0gZmlsZVBhdGggKyAnL2ltYWdl&cr;&lf;cy8xMFBpeC1jaXJjbGUuZ2lmJzsKCQkKCQlkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnX19hZHZD&cr;&lf;UF9ncmF5U2NhbGUnKS5vbm1vdXNlbW92ZSA9IGdyYXlTY2FsZV9vbk1vdmU7CgkJZG9jdW1lbnQu&cr;&lf;Z2V0RWxlbWVudEJ5SWQoJ19fYWR2Q1BfZ3JheVNjYWxlJykub25tb3VzZXVwID0gZ3JheVNjYWxl&cr;&lf;X29uQ2xpY2s7CgkJCgkJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ19fYWR2Q1Bfc3BlY3RydW0n&cr;&lf;KS5vbm1vdXNlbW92ZSA9IHNwZWN0cnVtX29uTW92ZTsKCQlkb2N1bWVudC5nZXRFbGVtZW50QnlJ&cr;&lf;ZCgnX19hZHZDUF9zcGVjdHJ1bScpLm9ubW91c2V1cCA9IHNwZWN0cnVtX29uQ2xpY2s7CgkJCgkJ&cr;&lf;Ly9kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnX19hZHZDUF9jaXJjbGUnKS5vbm1vdXNlbW92ZSA9&cr;&lf;IGNpcmNsZV9vbk1vdmU7CgkJLy9kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnX19hZHZDUF9jaXJj&cr;&lf;bGUnKS5vbm1vdXNldXAgPSBjaXJjbGVfb25DbGljazsKCQkKCX0KCQoJCgkKCgoJCglmdW5jdGlv&cr;&lf;biBjYW5jZWxfb25DbGljaygpIHsKCQlzZWxmLnBhcmVudC5jb2xvclBpY2tlcl9jYWxsQmFjayhj&cr;&lf;dXJyQ29sb3IsICcnKTsKCQlzZWxmLnBhcmVudC5jbG9zZUNvbG9yUGlja2VyQWR2KCk7Cgl9CgoK&cr;&lf;CQoJCgkKCQoKCgoJZnVuY3Rpb24gZ3JheVNjYWxlX29uQ2xpY2soZSkgewoJCXRyeSB7CgkJCXZh&cr;&lf;ciB5UG9zID0gKHdpbmRvdy5ldmVudCk/IHdpbmRvdy5ldmVudC55IDogZS5wYWdlWTsKCQkJdmFy&cr;&lf;IHhQb3MgPSAod2luZG93LmV2ZW50KT8gd2luZG93LmV2ZW50LnggOiBlLnBhZ2VYOwoJCQl2YXIg&cr;&lf;c3RyQ29sb3IgPSBnZXRDb2xvckdTKHlQb3MgLSAxOSk7CgkJCgkJCS8vcGxhY2VDaXJjbGUoeFBv&cr;&lf;cywgeVBvcyk7CgkJCS8vZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ19fYWR2Q1BfY29sb3JDaG9p&cr;&lf;Y2UnKS5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBzdHJDb2xvcjsKCQkJLy9kb2N1bWVudC5nZXRF&cr;&lf;bGVtZW50QnlJZCgnX19hZHZDUF9jb2xvclR4dCcpLnZhbHVlID0gc3RyQ29sb3I7CgkJCXNlbGYu&cr;&lf;cGFyZW50LmNsb3NlQ29sb3JQaWNrZXJBZHYoKTsKCQl9IGNhdGNoIChlKSB7fTsKCX0KCQoJCglm&cr;&lf;dW5jdGlvbiBncmF5U2NhbGVfb25Nb3ZlKGUpIHsKCQl0cnkgewoJCQkvL2RvY3VtZW50LmdldEVs&cr;&lf;ZW1lbnRCeUlkKCdfX2FkdkNQX2NvbG9yVmlldycpLnN0eWxlLmJhY2tncm91bmRDb2xvciA9IGdl&cr;&lf;dENvbG9yR1MoKHdpbmRvdy5ldmVudCk/IHdpbmRvdy5ldmVudC55IC0gMTkgOiBlLnBhZ2VZIC0g&cr;&lf;MTkpOwoJCQlzZWxmLnBhcmVudC5jb2xvclBpY2tlcl9jYWxsQmFjaygiIyIgKyBnZXRDb2xvckdT&cr;&lf;KCh3aW5kb3cuZXZlbnQpPyB3aW5kb3cuZXZlbnQueSAtIDE5IDogZS5wYWdlWSAtIDE5KSwgJycp&cr;&lf;OwoJCX0gY2F0Y2ggKGUpIHt9OwoJfQoJCgkKCS8vIEdldHMgdGhlIGdyYXkgc2NhbGUgY29sb3Ig&cr;&lf;Zm9yIHRoZSBwb3NpdGlvbiBnaXZlbi4KCWZ1bmN0aW9uIGdldENvbG9yR1MoeVBvcykgewoJCQoJ&cr;&lf;CXZhciB2YWx1ZSA9IDA7CgkJCgkJeVBvcyA9IHlQb3MgKiAobV9pbnRTY2FsZSAvIDIpOwoJCXZh&cr;&lf;bHVlID0gbnVtYmVyMkhleChNYXRoLm1heChNYXRoLm1pbigyNTYgLSB5UG9zLDI1NSksMCkpOwoJ&cr;&lf;CQoJCXJldHVybiB2YWx1ZSArICcnICsgdmFsdWUgKyAnJyArIHZhbHVlOwoJfQoJCgkKCWZ1bmN0&cr;&lf;aW9uIHNwZWN0cnVtX29uQ2xpY2soZSkgewoJCXRyeSB7CgkJCXZhciB5UG9zID0gKHdpbmRvdy5l&cr;&lf;dmVudCk/IHdpbmRvdy5ldmVudC55IDogZS5wYWdlWTsKCQkJdmFyIHhQb3MgPSAod2luZG93LmV2&cr;&lf;ZW50KT8gd2luZG93LmV2ZW50LnggOiBlLnBhZ2VYOwoJCQl2YXIgc3RyQ29sb3IgPSBnZXRDb2xv&cr;&lf;cih4UG9zIC0gMTksIHlQb3MgLSAxOSk7CgkJCgkJCS8vcGxhY2VDaXJjbGUoeFBvcywgeVBvcyk7&cr;&lf;CgkJCS8vZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ19fYWR2Q1BfY29sb3JDaG9pY2UnKS5zdHls&cr;&lf;ZS5iYWNrZ3JvdW5kQ29sb3IgPSBzdHJDb2xvcjsKCQkJLy9kb2N1bWVudC5nZXRFbGVtZW50QnlJ&cr;&lf;ZCgnX19hZHZDUF9jb2xvclR4dCcpLnZhbHVlID0gc3RyQ29sb3I7CgkJCXNlbGYucGFyZW50LmNs&cr;&lf;b3NlQ29sb3JQaWNrZXJBZHYoKTsKCQl9IGNhdGNoIChlKSB7fTsKCX0KCQoJCglmdW5jdGlvbiBz&cr;&lf;cGVjdHJ1bV9vbk1vdmUoZSkgewoJCXRyeSB7CgkJCXZhciB5UG9zID0gKHdpbmRvdy5ldmVudCk/&cr;&lf;IHdpbmRvdy5ldmVudC55IDogZS5wYWdlWTsKCQkJdmFyIHhQb3MgPSAod2luZG93LmV2ZW50KT8g&cr;&lf;d2luZG93LmV2ZW50LnggOiBlLnBhZ2VYOwoJCQkKCQkJLy9kb2N1bWVudC5nZXRFbGVtZW50QnlJ&cr;&lf;ZCgnX19hZHZDUF9jb2xvclZpZXcnKS5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBnZXRDb2xvcih4&cr;&lf;UG9zIC0gMTksIHlQb3MgLSAxOSk7CgkJCXNlbGYucGFyZW50LmNvbG9yUGlja2VyX2NhbGxCYWNr&cr;&lf;KCIjIiArIGdldENvbG9yKHhQb3MgLSAxOSwgeVBvcyAtIDE5KSwgJycpOwoJCX0gY2F0Y2ggKGUp&cr;&lf;IHt9OwoJfQoJCgkKCWZ1bmN0aW9uIGdldENvbG9yKHhQb3MsIHlQb3MpIHsKCQl2YXIgcmVkID0g&cr;&lf;MDsKCQl2YXIgYmx1ZSA9IDA7CgkJdmFyIGdyZWVuID0gMDsKCQkKCQl4UG9zID0geFBvcyAqIG1f&cr;&lf;aW50U2NhbGU7CgkJeVBvcyA9IHlQb3MgKiBtX2ludFNjYWxlOwoJCQoJCQoJCS8vIEdldCB0aGUg&cr;&lf;aHVlIGJhc2VkIG9uIHRoZSB4IHBvc2l0aW9uLgoJCQoJCS8vIEdldCBSZWQgVmFsdWUKCQlpZiAo&cr;&lf;KHhQb3MgPCAyNTYpIHx8ICh4UG9zID4gMTI4MCkpIHsKCQkJcmVkID0gMjU1OwoJCX0KCQllbHNl&cr;&lf;IGlmICgoeFBvcyA+IDI1NSkgJiYgKHhQb3MgPCA1MTIpKSB7CgkJCXJlZCA9IDI1NSArICgyNTYg&cr;&lf;LSAoeFBvcykpOwoJCX0KCQllbHNlIGlmICh4UG9zID4gMTAyMykgewoJCQlyZWQgPSB4UG9zIC0g&cr;&lf;MTAyNDsKCQl9CgkJCgkJCgkJLy9HZXQgR3JlZW4gVmFsdWUKCQlpZiAoeFBvcyA8IDI1NikgewoJ&cr;&lf;CQlncmVlbiA9IHhQb3M7CgkJfQoJCWVsc2UgaWYgKCh4UG9zID4gMjU1KSAmJiAoeFBvcyA8IDc2&cr;&lf;OCkpIHsKCQkJZ3JlZW4gPSAyNTU7CgkJfQoJCWVsc2UgaWYgKCh4UG9zID4gNzY3KSAmJiAoeFBv&cr;&lf;cyA8IDEwMjQpKSB7CgkJCWdyZWVuID0gMjU1ICsgKDc2OCAtICh4UG9zKSk7CgkJfQoJCQoJCS8v&cr;&lf;R2V0IEJsdWUgVmFsdWUKCQlpZiAoKHhQb3MgPiA3NjcpICYmICh4UG9zIDwgMTI4MCkpIHsKCQkJ&cr;&lf;Ymx1ZSA9IDI1NTsKCQl9CgkJZWxzZSBpZiAoKHhQb3MgPiA1MTEpICYmICh4UG9zIDwgNzY4KSkg&cr;&lf;ewoJCQlibHVlID0geFBvcyAtIDUxMjsKCQl9CgkJZWxzZSBpZiAoeFBvcyA+IDEyNzkpIHsKCQkJ&cr;&lf;Ymx1ZSA9IDI1NiArICgxMjgwIC0gKHhQb3MpKTsKCQl9CgkJCgoJCS8vIERhcmtlbiBvciBsaWdo&cr;&lf;dGVuIHRoZSBjb3JyZWN0IHBlcmNlbnRhZ2UgYmFzZWQgb24gdGhlIHkgcG9zaXRpb24uCgkJaWYg&cr;&lf;KHlQb3MgPiAyNTUpIHsKCQkJdmFyIGRhcmtlblBjdCA9ICgoeVBvcyAtIDI1NikgLyAyNTYpOwoK&cr;&lf;CQkJcmVkID0gcGFyc2VJbnQocmVkIC0gKHJlZCAqIGRhcmtlblBjdCkpOwoJCQlncmVlbiA9IHBh&cr;&lf;cnNlSW50KGdyZWVuIC0gKGdyZWVuICogZGFya2VuUGN0KSk7CgkJCWJsdWUgPSBwYXJzZUludChi&cr;&lf;bHVlIC0gKGJsdWUgKiBkYXJrZW5QY3QpKTsKCQl9CgkJZWxzZSB7CgkJCXlQb3MgPSAyNTYgLSB5&cr;&lf;UG9zOwoJCQl2YXIgbGlnaHRlblBjdCA9ICh5UG9zIC8gMjU2KTsKCQkJCgkJCXJlZCA9IHBhcnNl&cr;&lf;SW50KHJlZCArICgoMjU2IC0gcmVkKSAqIGxpZ2h0ZW5QY3QpKTsKCQkJZ3JlZW4gPSBwYXJzZUlu&cr;&lf;dChncmVlbiArICgoMjU2IC0gZ3JlZW4pICogbGlnaHRlblBjdCkpOwoJCQlibHVlID0gcGFyc2VJ&cr;&lf;bnQoYmx1ZSArICgoMjU2IC0gYmx1ZSkgKiBsaWdodGVuUGN0KSk7CgkJfQoJCQoJCQoJCS8vIE1h&cr;&lf;a2Ugc3VyZSB0aGUgdmFsdWUgaXMgYmV0d2VlbiAwLTI1NQoJCXJlZCA9IE1hdGgubWF4KE1hdGgu&cr;&lf;bWluKHJlZCwyNTUpLDApOwoJCWdyZWVuID0gTWF0aC5tYXgoTWF0aC5taW4oZ3JlZW4sMjU1KSww&cr;&lf;KTsKCQlibHVlID0gTWF0aC5tYXgoTWF0aC5taW4oYmx1ZSwyNTUpLDApOwoJCQoJCS8vcmV0dXJu&cr;&lf;IHRoZSBSR0IgSGV4IHN0cmluZwoJCXJldHVybiBudW1iZXIySGV4KHJlZCkgKyAnJyArIG51bWJl&cr;&lf;cjJIZXgoZ3JlZW4pICsgJycgKyBudW1iZXIySGV4KGJsdWUpOwoJfQoJCgkKCWZ1bmN0aW9uIG51&cr;&lf;bWJlcjJIZXgoaW50TnVtKSB7CgkJdmFyIGludEJhc2UgPSBpbnROdW0gLyAxNjsKCQl2YXIgaW50&cr;&lf;UmVtID0gaW50TnVtICUgMTY7CgkJCgkJaW50QmFzZSA9IGludEJhc2UgLSAoaW50UmVtIC8gMTYp&cr;&lf;OwoJCQoJCXJldHVybiBkaWdpdDJIZXgoaW50QmFzZSkgKyAnJyArIGRpZ2l0MkhleChpbnRSZW0p&cr;&lf;OwoJfQoKCQoJCglmdW5jdGlvbiBkaWdpdDJIZXgoaW50RGlnKSB7CgkJaWYoKGludERpZyA+PSAw&cr;&lf;KSAmJiAoaW50RGlnIDw9IDkpKSB7CgkJCXJldHVybiBpbnREaWc7CgkJfQoJCWVsc2UgewoJCQlz&cr;&lf;d2l0Y2goaW50RGlnKSB7CgkJCQljYXNlIDEwOiByZXR1cm4gIkEiOyAKCQkJCWNhc2UgMTE6IHJl&cr;&lf;dHVybiAiQiI7IAoJCQkJY2FzZSAxMjogcmV0dXJuICJDIjsgCgkJCQljYXNlIDEzOiByZXR1cm4g&cr;&lf;IkQiOyAKCQkJCWNhc2UgMTQ6IHJldHVybiAiRSI7IAoJCQkJY2FzZSAxNTogcmV0dXJuICJGIjsg&cr;&lf;CgkJCX0KCQl9Cgl9CgovLy0tPgo8L1NDUklQVD4KPC9IRUFEPgo8Qk9EWSBCR0NPTE9SPSIjRDRE&cr;&lf;MEM4IiBPTkxPQUQ9ImJvZHlfb25Mb2FkKCk7Ij4KCjxJTUcgU1JDPSIiIEJPUkRFUj0wIAoJSUQ9&cr;&lf;Il9fYWR2Q1Bfc3BlY3RydW0iCglTVFlMRT0icG9zaXRpb246YWJzb2x1dGU7dG9wOiAxNTsgbGVm&cr;&lf;dDoxNTsgYm9yZGVyLXN0eWxlOnNvbGlkO2JvcmRlci13aWR0aDoxcHg7ei1pbmRleDoxMDAwOyI+&cr;&lf;CgkKPElNRyBTUkM9ImltYWdlcy9ncmF5U2NhbGUuanBnIiBCT1JERVI9MCAKCUlEPSJfX2FkdkNQ&cr;&lf;X2dyYXlTY2FsZSIKCVNUWUxFPSJwb3NpdGlvbjphYnNvbHV0ZTt0b3A6IDE1OyBsZWZ0OjI4MDsg&cr;&lf;Ym9yZGVyLXN0eWxlOnNvbGlkO2JvcmRlci13aWR0aDoxcHg7ei1pbmRleDoxMDAwOyI+Cgo8SU1H&cr;&lf;IFNSQz0iaW1hZ2VzL2Nsb3NlLmpwZyIgQk9SREVSPTAgCglTVFlMRT0icG9zaXRpb246YWJzb2x1&cr;&lf;dGU7dG9wOiAxNTsgbGVmdDozMDA7IGJvcmRlci1zdHlsZTpzb2xpZDtib3JkZXItd2lkdGg6MHB4&cr;&lf;O3otaW5kZXg6MTAwMDsiCglPTkNMSUNLPSJjYW5jZWxfb25DbGljaygpOyI+CgoKCgoKPC9CT0RZ&cr;&lf;Pgo8L0hUTUw+Cg==|,|R0lGODlhCQAPAJEAAOfj54CAgP///wAAACH5BAEAAAIALAAAAAAJAA8AAAIPhBGnu8l/HHxyNkuR&cr;&lf;xpwXADs=|,|R0lGODlhzAIUAPcAAA4obZ/C6kFemShEhFRzqXCRwjBNiyRAgKDE6wokapCy3XiZyXSVxTJPjF18&cr;&lf;sS5KiRo1eFd2rIOk0naXx1JxqHOUxI+y3I+x3CpGho6w2zRRjoChz2WFuHKSw3GSwxQvcqDD6iI+&cr;&lf;f0pooVl4rh04eitIhz9clwwmbBItcVZ0qztYlD1alnKTxFp5rjdUkTxZlVt6rxYxdBk0d1V0qlFw&cr;&lf;pzlWkh86fFp6rxw3eT5blhAqbyA7fCE8fiA8fTxalSM/gJe646XJ74Sm03ucy3mayZi75Imr13WW&cr;&lf;xpa54oiq1oKk0WaGuUlnoEhmny1JiDZTkBgzdiZCghcydSdDg4qs2Jm85UdlnnqbypO24H6gzp7C&cr;&lf;6ZW44aHF7IGj0I2v2pK134ep1XydzJy/55G03neYyKTI7oao1DpXk2eHul9+s0VjnWGBtUJgmm2N&cr;&lf;v0tpojNQjVNyqRErcGqKvFBvpmiIu2yMvmSEtx45e05spFh3rWuLvThVkTVSjxMucpCz3Z7B6X6f&cr;&lf;zYao1Yut2X+hz5u+5kZknX2ezIyv2nCQwXeYx5S34Y2w24Wn03+gzqLG7KLG7aPH7Zq95Zq+5pzA&cr;&lf;6J3A6J3B6H2fzYCi0GGAtJS34EZknoWn1Iuu2UNhm26PwGB/tE9tpSI9fm6OwERinClFhTFOjGOC&cr;&lf;tm+QwVx7sENgm159smmJvGyNvhEscExrozhVkkBdmFFvpxUwc2ODt09upVBupkBAQGKCtk1roz9d&cr;&lf;mICAgGCAtGmJu05tpV9/s15+snmbykRhm6TI71l4rYKj0Yqs16TH7k1rpJO135O235W44i9LiaPG&cr;&lf;7Yqt2Iut2Iep1oOl0pu+54yu2Udln5q95pu/54ir10tqomqKvXyezKLF7H2ezaPH7oGi0Iyu2pi8&cr;&lf;5JK03nqcynudy5W34WiIukdknpm95S9MiiVBgUxqojZSj2SDt01spG+PwEVinExqo2uMvh46e2qL&cr;&lf;vWiJu2+PwUJfmkFfmWKCtShEg2ODtidCgm2Ovy1KiGKBtf///9TQyCwAAAAAzAIUAAAI/wD/CRxI&cr;&lf;sKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsiRDW//8qVzJsqXLlzBjypxJs6bN&cr;&lf;mzhz6tzJs6fPn0CDCh1KtKjRo0iTKl3KtKlMXSj9mZxKtarVq1izat3KtavXr2BLQk0ZtqzZs2jT&cr;&lf;ql3Ltq3btwrHSv2XoK5duyfy6j0BoK/fvzoC64hDmHCrw61QKEbRp3GfD5Ahy5osK4blGFIyS4HC&cr;&lf;mbOMzzIgiB4NAYfp0yRSk7jD+k68eDZi75i9o0cPHjxC6Q4VonfvH8B/HBh+AJ1xdFGSR9E3pfkU&cr;&lf;fAOik5o+HYN1DCWya8/upHt3fg/CL/8bv+yc+XMG0qcvxb5Ug/cN3sh/o6F+fT741T3Z/8SFfxd7&cr;&lf;BPjKKzUUWMMZCJ6hwoILvuDgCz6sIGEOFOZgwoUX5pILLLAI4KEA9oRYDxskppJKJygGM8qK7qjh&cr;&lf;ohqFFKKJJuVYYeM0TeTYBBM88ijCjyK4IaQb16STzjuuuIILLsewg8eTvfQCCii00FJLLXNkGUss&cr;&lf;NHRJAwVgUgDHmHAQYKaZM6SZwpprRuCmm3nEmccwI9TZwp0t3ADDnjCg4icqDgTqgCqEqvLLL2kk&cr;&lf;6osvn3yyyy6YYLLGpP3cc8stppiSzyyzrGPHp3ZwICoHS5RaKhqookEOHazOwwsvq6z/Ises2Mij&cr;&lf;x63w1KErK6y04es+ogTriSft0HPKKYggUsCyy3rgbAcsRMtCBdRWwMC11x6h7RETdDtBIomQIe4C&cr;&lf;5C5AxLlEAHPFuuEM4e4Q4oQhbzaGGLKNJZYAAkgW/DbSyCCDbLDBJQR308XBxCihsBISQOMwNEJE&cr;&lf;LAQjjGyyiRkYBxIIGBw/k8THSVhjxMhGFEPFyc04I4ggnHAijTeHHOLFzIsskkEGF+R8gQU8K+DH&cr;&lf;zz+PITQ4XxSNTDJYJJ1JJoooMs4WUCuDxNRIAGG11UVkXcQ3VXRtTiSRUCOJJIQQEk01YqQ9ySSU&cr;&lf;UFJJJX/8ocXcAQQAwt0gIKA3Alz0/62NI4488ggzkEDCjTFlJC5MEIwHIZBcAt0l+V56/WU5AIIN&cr;&lf;VlgciCW2mGOPRfYBZZVdptlmnUEBWmikiXYaaqq15hpsstFmG2678eZbCMEJR9xxyCnHnHPQSUcd&cr;&lf;Kddht5123n0X3gPklXeeeuu1B19889l3X3789fdfgHsMaOCBCTLY4IMRTlghhhlu2OGHIdozYokn&cr;&lf;prjiKC2+GOOMNd6o4449YgKQgjSkIh0pSUtq0pPwEKUpVelKWZrDlrz0pTCRqUxnIkCaZsCmNr0p&cr;&lf;AnKaU51GgKc88alPfxLUoAp1qESlYVGNelSkJrWGSl0qU5vqFKhCNSpTnSpVq2rVq/9iNSs51OpW&cr;&lf;esjVrnr1q2CJYljFOlaymNWsZ0lrWtXCVra25a1vhWtc5UJXutZ1hXa9K17zqte98rWvfv0rYAMr&cr;&lf;2MG6kLCFNexhEptYxS6WsY11DGQhI1nJTkaFlK2sZS+L2cy8ULOb6WxnPQNa0IZWtC8cLWlYWFrT&cr;&lf;nhY1qlXtakDQ2ta6VoWvhW1sZTtb2sSwtra9LW5z00Ld8Ja3vfWNC38L3OAKd7jElWFxjXtcVCIn&cr;&lf;ObxQji+X80vmNsc5xCyGMY4R3egocxnMaCZ1qgNN61z3OhyoZjWteU1sbECb2twmN7vZHe+CQ5zi&cr;&lf;HEc5y3HOc6IzgOMh7zrLY17zwCP/HvKcBz3Ua4974DMf+mgPP3zQD3/+AyABEchACVKQ+R4EIQmt&cr;&lf;oEIWYp+GOPQhEImIRGwwEYo6oSIWvQhGMqKRjayAIx0FUIBAGhKRjIQkJTHJSVCSEpWshCUtcclL&cr;&lf;YRITmTKoQTV18IMglBOd7IQnPfHpT4ASVKEMhShFMcpRkJIUpSyFKU1xylOgGhWpfJgqVbGKDq6C&cr;&lf;laxoZStc6aoOvPJVG4AlLGIZC1nKoqKzPAAtaVXLWlrcFre8BS5xkaFc5kKXutj1LnjJKwz0she+&cr;&lf;9MWvLPgLYAIj2CUMhrCFMexhEJMYxSyGMTNojGNg8BjIREYyk6FMZSxzGcxkRjOb/+FMZzyzgM8k&cr;&lf;KbQxEM1oSFMa05wGtS1IjWqgDKXWuOY1sImNbGZDm9rY5ja4yY1udsPb3vjmN8AJjnCGQ5ziGue4&cr;&lf;f0COLsWsyzGRmUzMCYaZnXsm6KRJumqeDpur22ZpuvlN2YmzdrO5HTp1o87etRN48Bxec4pXz+Ml&cr;&lf;L5/c2efzovdP6hlAoNcrqPY0gFCF7oeh4BMfRMs3UfRZFKPsM8FG3+eh+M0vpPUj6f3y56L9qdR/&cr;&lf;Lg3gAGVqwJomEKcM1OkDeyrBn3YpqBck6gY7mAKkhnCpJGzqCaGqwqm20KoxzCoNbdjVHIL1U2L1&cr;&lf;4RLKGkS0DnGtRmxrEt8a1ybWNf+KeKViAfba12j9VYsMEGwXCwtGcolxsWVsLBohq8bJttGyb8ys&cr;&lf;HDtrR9DmcbR8NK0fUwtI1o7MtYWELSJnu8hG3jZnud0t0Hr7W0sGN5PD5aRxPZlcUTK3lM5FZXRX&cr;&lf;2crqwhK7tNzuLXP5XV6K95fkFSZZ0Jve9ba3L8vcXHw/F03R1dd010xdfrfZTW/GLpy0I6ftzpm7&cr;&lf;ArPzd+8UnjwZbM8HQ7h5TuAn9Pw5vYBaj6DZOyj3Fvo9h44vouZTAUXTd9H1adR9HXUxSEVqP5Pq&cr;&lf;L6X9Y+n/XrrjAtIUgTddYAN3CkGfUhDJQ83gko/6wSePsIRO3ROVpcrCqr7wqjL/1GoNuYrDr+4w&cr;&lf;zGQF4lnTSkS2IlGJcGXiXJ0IxbtOUa9W9GsWA8tFwn7xsGFULBnN6K5BR3aNlHUjZuO42TnWUWF3&cr;&lf;dNij91ja0/5xtYLEtCFjm0jaMtK2jwy1JP1A6kpeUribLO5xp9bq5ZLSlM9NpXRZSd1XXleW2b2b&cr;&lf;rrurS/D2crzBNO8wiV1MYx872YVZtmLm62xqQjsz+NUmtfl7bdb8V9sB5nY6d2dgcBsnweOmZ7nx&cr;&lf;eW4J93M8FXY3ezIcb/t0uHsgtveIEZTvfZ/Y3xhaccA/Sr+RlhR/J7VxwluaI4bH1OEHtKkCc+pA&cr;&lf;nkZwgkC1YMbPtHE2OVmpH5fy/1NTSHJCXfnkWZ7hVm/oVR2GtYcxR1WZaY7mI7p1iXKl6xPtKsW8&cr;&lf;MovOV3RnRKcte3Z0iPVnSydoj/V0hlZZlwVHmsVZdORZWRdaEQNpXTdpqvUxljZIr3VIsqVIteVI&cr;&lf;uBVJvEVJwIVJmkRcnYRcoORqdxdr0KVK0+VK1hVLs6RdtkR4vRZevgRMjCNsc5Fe6nVMx+ZegQFf&cr;&lf;zsRsjUFflmcZ9yVtmtc61dZf2DZO5SRg3UZ63zYcCCZuxKN6DsZ6+YRu6kZh7aYeGAZv8rFht0dv&cr;&lf;/hFiD1Ug+FZiDsJvKPZvHAU/xAdjxjdjyYdwK8V8ANQjDSckPQZx0xdk1VdxRf92cdo3JkpmVN7X&cr;&lf;ceDHVHcScijkJ1VWci4EQ1ilfivHfl72cvBnKmQ2c2dWRPa3ZvjnZvsHZz/3f0FnZ0OHLXpmdIZ1&cr;&lf;gErHWGe0gIXGRg6YaFQngVf3WXgkWlzXR6i1gYHUWoQ0dpsmgmdHgqBmgqOGgqamgqkmd6z2gnbX&cr;&lf;XKc0g3tXa36Hg4FXS3qza961Sz6IeEGoeMNGhAngeO0FeYaxhJPXbJHxbFAYbZ0xbVTIeanhX9mW&cr;&lf;haJHYFwIHAcWbsmhYPNkPNRhbmXoeusGe2lYPbPHhgZle/P2YfUWPnNIPrxnhxWlPhSSYsLHh/Iz&cr;&lf;cDF2fDSGUvwziAunY8+HiA//J31ANnFDdn1GVkFgkmQaR4ke9CYeh4kmNH6cWH5U9Ykop2Xr12Uu&cr;&lf;936iImapKERqxYpqhnNttnNv5nP+V0V8FYC3uEUEqIt9lljnAmhM51hpJFnCKHUQuGgT2GjJeIHL&cr;&lf;KGnNWGlhF42aFoJm52lph42T5Ftud2orqGpz90lXA4PimHezVoO29nc5KHg7iEvtaHi/BoTldV70&cr;&lf;aI/JhI/NdBjyxY+S8YTWhHlS+Bn6VYWdNztYuG24M3q+UXpe6JDxFIYSWR1kuDxmOGHsZh4Wtobv&cr;&lf;oWHyllC4F5IiRockxiC+h5IZFXwAx5IvRnAyZnA1Jog41nw2+SM8lpM/JnFC/2Z9Fpd9Qbl9aEKU&cr;&lf;TWaJcQJlIDdl5BcoVmZyoJhyW8Zy7fdlPFSV8WdWWFlzaXZzbKZz+tdz/SdnACh01IJnudgtfIZ0&cr;&lf;ftaLgfaLbwl1h/aAilZ1jIZ1jqaMpMWMX8eBffmBZMdpI/hpkKRba9d2KQh3LLhqLtiY4Qhr46h3&cr;&lf;tNZ3N4hrOriOPOiOhwdsieeZRAialyOakgdNTVh5k2FfAOkZU0garlmQVwhg5jSbClmbXehOpweG&cr;&lf;CyaGE9mb2/Gbryc9wil7A1Wctbc9yAmHDSWS99ac53OHv5eSeshiHtWSxVdwyHdwM7mdhegjNzlT&cr;&lf;0Ree1EdxRIZ9RxaJGMR96v/5fe0ZfpkIn0spn56IZaGoclzWcu4HZqf4Q/Knillpc/eXc/nHc/wX&cr;&lf;Z0A3lgoKWLhYdA5qgEm3lglIoYQGl1GHaFMXgVZHgR2Klx+qlyH6jJfmlyBYdp2GdiWooidomC2K&cr;&lf;anHXgnQHjlnzangnazTIdzZ4a4CXa5fJaz66mcEmj0M4pEb4eO+lbPqIpKHTj6gZhQH5pKMRpeDk&cr;&lf;eQcpmwOmO1jKkKYXPA+Zert5T9YBYSUgphdJpgClhu+Gpm14nB7mPXGoe8xZks5pYtCpktPZYn1o&cr;&lf;nTAZiH2qcDlmiIGaiDopno14qD+JcZI4lBzEcUZ5iVEWqUoZVZRqfvT5lKL/mKn5aYr8iYoy95/1&cr;&lf;t5UDWqpfeaCpWmdYtKADOFivuouxOka+2HTAaKsXSoy6uqHIqHUeGmleR2lgB40kOo2BiazXqKzZ&cr;&lf;yKzb6KKK+Y0yOq0xWKORia2TiY7cyqOYWXi+9oPhKqTFVq73eK6Rl66Ux65Lenmo866suXmvY4X0&cr;&lf;GpuhZ6X4+htZ+oX9qpsN9qUB23recYbBebAaeabYs7AeuaYg+bBuunsSNbFyWrF1Onx46od6GpPK&cr;&lf;R5MfC6jeCX0+FnGF2pPlmajnmbKMurKV2LKPipSaOHIz25SWap9Rqan6CXM8+6k+q5UC+opeGYtg&cr;&lf;iaC1eLSsapZK60VMG6Gy//q0blmrFjqMuUqXx1iBW/erW+uMHSh2f2msJzqYZFuYpfZ2zvqii1l3&cr;&lf;bPuY1lqOOKqtlamO3FW3PfijnCmExLS3lHOERgq4pjlNg/uPqmm4rDOQifuan4eQjutt+nqbWzq5&cr;&lf;XfqvFOmbFomGZYqwG6mwHammDZt7pRuxpxunJ9lvdCqde4ixrauxgMinN+ax3AmytYuTg4q7jGio&cr;&lf;PgmJvbuo6Qm8RQknLvueMduJNOuU6Yep+FmKVDlWz+ufZhaqATqqXVmgpzqLYmm0AtiqZ7m0aYmA&cr;&lf;4ut0wXirGFqMu2qXWOurWquBfOm1mVasJlqNKKp2y3q/iNmN0MqYWDOj1f9KjjearZSZjoNnwN+K&cr;&lf;t0G6eJ/Jt6Hpt/lImky4rqc5walZuE56uBgMO1K6uFSqhbQJuR+spfyamyNcubx5uRWZucCJkSnc&cr;&lf;ubQHui6cnKS7nCQ5w/pGsTYcne2Tw3danS/Zw9nZsYTofEMsqLe7iDxJno9onkLlu03MZI4qQsQr&cr;&lf;qTK7QlWcvFA5ilK5qfvJxZ7qxfQnvWJMoKYqi2E5Z9mbxtxbgN+rlk47oVBboQ0olxlqjLx6l3rE&cr;&lf;vnrctcP6tYB5rNaYoqJmv4fJjc8Ko9G6tqPkv4wsmeeoo5ZJt96qmZQcj3rbeJhcpJo8mp6zj0kq&cr;&lf;uKVDwaKcTaQMpQQ5r7DNmcoJ+bjr1MqSC8sRKcsAqzy17DxjGnsq7LnGGbovrJwjWYeoW8N5iMN2&cr;&lf;KnB5ep172sw//MzdSUBEPM07OZ6OiKhAmc1MXFROvJ7C680vm5QiF5/ijLzod6n3SYpTyak7u87z&cr;&lf;t4qi6oqkCosGiqq0qKq2iLRq3L0Pyovhy8/jy4BxiatzqaF1yaEEjYEgyrUiysfSuNDzm6wPzXba&cr;&lf;iL+J6Y0xmsj9S6OQea3mmKPbuqMF/NF3C4+duXhwEduyPdu0Xdu2fdu4ndsPARUBAQA7|,|R0lGODlhHAAXAPcAAP///wgICBAQECEhISkpKTExMTk5OUJCQkpKSlJSUlpaWmNjY2tra3Nzc3t7&cr;&lf;e4SEhIyMjJSUlJycnKWlpa2trbW1tb29vcbGxs7OztbW1t7e3ufn5+/v7/f3962lpVJKMUI5GGtj&cr;&lf;QjEpADkxAL21Y1pSEGtjEGNaCFJKAFpSAGNaAGtjAHNrAJSMAKWcAP//99bWzt7e1ufn3r29ta2t&cr;&lf;pZSUjJyclKWlnHt7c3Nza4SEe2trY2NjWlJSSqWllEpKQpSUhOfnzoSEc8bGrXt7azk5MXNzY62t&cr;&lf;lKWljGtrWjExKc7OrWNjUq2tjCkpIVJSQs7OpUpKOWNjSlpaQiEhGDExIRgYEGNjQkpKMXNzSlpa&cr;&lf;ObW1c0JCKSkpGDk5IUpKKXt7QhAQCFJSKTExGCEhEHt7OWtrMVpaKSkpEIyMMRgYCHt7KTExEISE&cr;&lf;KSEhCGNjGHNzGCkpCDExCFpaCGtrCAgIABAQABgYACEhACkpADExADk5AEJCAEpKAFJSAFpaAGNj&cr;&lf;AGtrAHNzAO/397W1vUJCSv/3/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///yH5BAEAAP8ALAAAAAAcABcA&cr;&lf;QAj/AP8JHEiwYA0INoTQmCGjoMOBMhYkaTBCSZ8NGjZo1JhHAIQLBDVUWNCgwYMJCpAAGGJigQMR&cr;&lf;Gv/osPCw5j8KaL4o8YPRi5eMLkQMyODwwYEYAAA0WXGmigcAUFZYwShoygIIFYja/HdhQYICDCJc&cr;&lf;0BDgjp1DD0BufUhkzBgvIE4EOiHHyo+1BJ/IOSInY8aNGwLVmaDVYY4rMpJu+XKEgZs+f0fUGdCA&cr;&lf;MEEFVG7cQNEmwYIiPgAsmdMjjkYWSSzXzIAhg4YHVThUKLEDaxiNfWbiHZjBQgULWjNMgACBQuHd&cr;&lf;A3FE6eJlDBkyTngcx6vDJxo6gDfwCdMA+YI8NtBgsNzg8+cGFXYq7Cbg5Y14vxria0hhJwIGmxS8&cr;&lf;2AAQY8wVNypgFJ8MfNRhgH0OWfAFEEkFkUYJTnQAAAlkaNTCHQVcRRNBC4SRlAxgwPEDAiB08EIb&cr;&lf;H5jHghQPGOdQBQoU4EQWCjTgABcAvJAGFgvIgVEgOahXEwYUSCBBBRUcYAgAZpTRQAR9bQCIEBvi&cr;&lf;lQAVVBQQQgMUXBAARng8UCVeFkTwQAQVaPBPAQIMcNV9BQUEADs=|,|R0lGODlhEgASAPfoAPnLZajB/9rUvsOrePzidOC5TOvBUvnKZdGmm/77m9u1bP//yP+vLp6qrf/n&cr;&lf;e//rmfyrLNapdJqRaPnggqaPhd6zbreZZaCTg7CYYZrFcPKfHdOHWM8XC/3wmrmfdPvSdP/mjP/j&cr;&lf;isq3e7XVdaiZd6yIZca4c66dcNrOvuHOrO/Fdv/eaMafYLjHutzbvv/7sP//tcS6hqmrj//fc6KO&cr;&lf;YevIWvnbd7uxS//70I+aqLy60vncdKaRcv+0MpevUtK0jO3botxHFd+hPtquLdO/i23XZP29M2/C&cr;&lf;XV5328mve9sfAK7CxvzXaejSuOr0peLYv/vp5uvl8VVl/MfYWb20fS+REMenS+vbZBCgJf9/Y7C5&cr;&lf;5kdk3P/2rdxMK6Ks/+Lnj+3NaPi3I6+VbtnSs//mf6meYtXIttnDuP/GT4yXuaOUaOqEKNvdzczg&cr;&lf;bLfI2d3JuMzApfbylKeKXfjtqugzLuC6Tf3jdvv2ms3KYqKRa5WQYtrSvv3/y/fSZfahQ/7ghN1T&cr;&lf;Effgcv/eoPXZe+TMpPnVcsyWZKKKW/zwp+CoMLejaqihiPGATj5Pz+bextjYuf/5mdvYvOO3fYqh&cr;&lf;S//yodK5g/fXd/7zice8p//vkIOwMNm9Q+XRjdu8buSrIv2zHfnfb5qNhKWgKv/5o+zkWfflcfub&cr;&lf;POi2Lb7KiP/riMStefqEKsCxoNudQsjU0u72tvHIb/XGYMO2p/bTYaeYQsjDsf/VWPmzVtlcFv/Q&cr;&lf;YOKiQ//JZ8S3mf+Nb/+3O0mQDsipcNDgi9y2Yq+baPjRZdLBg/3kiP/Ka/rXfe7vuMfHzv/zk7af&cr;&lf;fek6G87FsujCVNeAV/7onOHcrdzUf///s/vsedueYpbBVejWwNLEserWsc3RmP+zW8uSVvzTcfen&cr;&lf;LdbOTv/EMtfBov/gc+95QCOdIO6xQoiHff///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&cr;&lf;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAOgALAAAAAASABIA&cr;&lf;AAj/ANEJHCgQjocSciTIIMgQHSsSZabNwaaswTlZDZ+IOYFqRJsvOrwEcKWnFsFItG74OFLkWjAt&cr;&lf;UrYskRaKIIZNpDSVw5LBSY5GSFrgoDAQwQZuuUT9qjIpzrY0bvgsYIYCnTZovbKQEwJuCp5ql5K9&cr;&lf;SgBj2Bh0EXA1o9Pl1gpQpeyAoHQHEpc8bNBZW6WEA6NjxCwF+iMoWocXQC6ga6LLVBBAfnYd+DBo&cr;&lf;grFUmajFWISOUKJvayCEQwOgkI0dBBwsQ6TGGboUQ8L4MnLKQJ9ZTGaMIzOqGA+Bewp8YtDKgoga&cr;&lf;trwhC/GA06FsAxX00GAoiotn5lgkqaSKBi+CP2J5KaoAhUidbm/QmcEkoKGJK2AkwbJypiHDR1Q6&cr;&lf;qRCmyL59ccAM4Ih/AgUEADs=|,|Ly8gRnVuY3Rpb25zIGZvciB0aGUgQ29sb3IgUGlja2VyCmZ1bmN0aW9uIGNvbG9yUGlja2VyX2Nh&cr;&lf;bGxCYWNrKHN0ckNvbG9yKSB7Cglkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCkuc3R5bGUuYmFj&cr;&lf;a2dyb3VuZENvbG9yID0gIHN0ckNvbG9yOwoJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpLnZh&cr;&lf;bHVlID0gc3RyQ29sb3I7Cn0KCmZ1bmN0aW9uIGNvbG9yVmlld19DQihzdHJDb2xvcikgewoJZG9j&cr;&lf;dW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpLnN0eWxlLmJhY2tncm91bmRDb2xvciA9IHN0ckNvbG9y&cr;&lf;OwoJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpLnZhbHVlID0gc3RyQ29sb3I7Cn0KCmZ1bmN0&cr;&lf;aW9uIG9wZW5Db2xvclBpY2tlckFkdihzdHJJZCkgewoJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQo&cr;&lf;c3RySWQpLm5leHRTaWJsaW5nLmlubmVySFRNTCA9ICI8ZGl2IGlkPSdjb2xvclBpY2tlckFkdkRp&cr;&lf;dicgc3R5bGU9J21hcmdpbi1sZWZ0OjIwMHB4O21hcmdpbi10b3A6LTIwcHg7dmlzaWJpbGl0eTpo&cr;&lf;aWRkZW47cGFkZGluZzowO3Bvc2l0aW9uOmFic29sdXRlO3otaW5kZXg6MSc+PGlmcmFtZSBpZD0n&cr;&lf;Y29sb3JQaWNrZXJBZHYnICB3aWR0aD0nMzIzJyBzcmM9Jy4vY29sb3JQaWNrZXJBZHYuaHRtbCcg&cr;&lf;aGVpZ2h0PScxMjAnIHN0eWxlPSdib3JkZXItc3R5bGU6b3V0c2V0O2JvcmRlci13aWR0aDoycHg7&cr;&lf;JyBtYXJnaW53aWR0aD0nMCcgbWFyZ2luaGVpZ2h0PScwJyBub3Jlc2l6ZSBmcmFtZWJvcmRlcj0n&cr;&lf;MCcgYm9yZGVyPScwJz48L2lmcmFtZT48L2Rpdj4iOwoJaWYgKGRvY3VtZW50LmdldEVsZW1lbnRC&cr;&lf;eUlkKCdjb2xvclBpY2tlckFkdkRpdicpLnN0eWxlLnZpc2liaWxpdHkgIT0gJ3Zpc2libGUnKSB7&cr;&lf;CgkJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2NvbG9yUGlja2VyQWR2RGl2Jykuc3R5bGUudmlz&cr;&lf;aWJpbGl0eSA9ICd2aXNpYmxlJzsKCQlpZCA9IHN0cklkOwoJfQp9CmZ1bmN0aW9uIGNsb3NlQ29s&cr;&lf;b3JQaWNrZXJBZHYoKSB7Cglkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY29sb3JQaWNrZXJBZHZE&cr;&lf;aXYnKS5wYXJlbnROb2RlLmlubmVySFRNTCA9ICIiOwp9CgpmdW5jdGlvbiB1cGRhdGVDb2xvcihp&cr;&lf;ZCkgewogIHZhciBjdXJyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoaWQpLnZhbHVlOwogIGRv&cr;&lf;Y3VtZW50LmdldEVsZW1lbnRCeUlkKGlkKS5zdHlsZS5iYWNrZ3JvdW5kQ29sb3IgPSBjdXJyOwp9&cr;&lf;Ci8vIEZ1bmN0aW9ucyBmb3IgVmFsdWUgSU9Cb3hlcwpmdW5jdGlvbiBjaGtWYWx1ZXMgKGEsbWlu&cr;&lf;aW11bSxtYXhpbXVtKSB7CiAgdmFyIGNoa1ogPSAxOwogIHZhciB0b1NtYWxsID0gMDsKICB2YXIg&cr;&lf;dG9IaWdoID0gMDsKICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChhKS5uZXh0U2libGluZy5pbm5l&cr;&lf;clRleHQgPSAiIjsKICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChhKS5zdHlsZS5iYWNrZ3JvdW5k&cr;&lf;Q29sb3IgPSAiI0ZGRkZGRiI7CiAgaWYgKGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKGEpLnZhbHVl&cr;&lf;IDwgbWluaW11bSApIHsgY2hrWiA9IC0xOyB0b1NtYWxsID0gMX0KICBpZiAoZG9jdW1lbnQuZ2V0&cr;&lf;RWxlbWVudEJ5SWQoYSkudmFsdWUgPiBtYXhpbXVtICkgeyBjaGtaID0gLTE7IHRvSGlnaCA9IDF9&cr;&lf;IAogIGZvciAoaSA9IDA7IGkgPCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChhKS52YWx1ZS5sZW5n&cr;&lf;dGg7ICsraSkKICAgIGlmIChkb2N1bWVudC5nZXRFbGVtZW50QnlJZChhKS52YWx1ZS5jaGFyQXQo&cr;&lf;aSkgIT0gIi4iICYmCgkJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYSkudmFsdWUuY2hhckF0KGkp&cr;&lf;IDwgIjAiIHx8CiAgICAgICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYSkudmFsdWUuY2hhckF0&cr;&lf;KGkpID4gIjkiKQoJICBjaGtaID0gLTE7CgkgIAogIGlmIChjaGtaID09IC0xKSB7CiAgICBkb2N1&cr;&lf;bWVudC5nZXRFbGVtZW50QnlJZChhKS5mb2N1cygpOwoJZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQo&cr;&lf;YSkuc3R5bGUuYmFja2dyb3VuZENvbG9yID0gIiNmZjAwMDAiOwoJaWYgKHRvU21hbGwgPT0gMSkg&cr;&lf;ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoYSkubmV4dFNpYmxpbmcuaW5uZXJUZXh0ID0gIk5vdCBh&cr;&lf;bGxvd2VkOiB0byBzbWFsbCEiOwoJaWYgKHRvSGlnaCA9PSAxKSBkb2N1bWVudC5nZXRFbGVtZW50&cr;&lf;QnlJZChhKS5uZXh0U2libGluZy5pbm5lclRleHQgPSAiTm90IGFsbG93ZWQ6IHRvIGJpZyEiOwog&cr;&lf;ICAgcmV0dXJuIGZhbHNlOwogIH0KfQ==|,|Ym9keSB7CgltYXJnaW46IDBweCAwcHggMHB4IDBweDsKCXBhZGRpbmc6IDBweCAwcHggMHB4IDBw&cr;&lf;eDsKCWZvbnQtZmFtaWx5OiBMdWNpZGEgU2FucyBVbmljb2RlLCBBcmlhbCwgVmVyZGFuYSwgc2Fu&cr;&lf;cy1zZXJpZjsKCWZvbnQtc2l6ZTogOHB0OwoJY29sb3I6ICMwMDAwMDA7Cgl0ZXh0LWFsaWduOiBj&cr;&lf;ZW50ZXI7Cglmb250LXN0cmV0Y2g6IGNvbmRlbnNlZDsKfQoKZGl2IHsKCW1hcmdpbjogMHB4OwoJ&cr;&lf;cGFkZGluZzogMHB4OwoJZmxvYXQ6IG5vbmU7Cn0KCmRpdi5jb250YWluZXIgewoJbWFyZ2luOiBh&cr;&lf;dXRvOwoJcG9zaXRpb246IHJlbGF0aXZlOwoJbWFyZ2luLWJvdHRvbTogNTBweDsKCXRvcDogMjBw&cr;&lf;eDsKCXdpZHRoOjcxNnB4OwoJYmFja2dyb3VuZC1pbWFnZTogIHVybChiZy5naWYpOwoJYmFja2dy&cr;&lf;b3VuZC1yZXBlYXQ6IHJlcGVhdC15Owp9CgpkaXYuaGVhZGVyIHsKCXdpZHRoOiA3MTZweDsKCWhl&cr;&lf;aWdodDogMjBweDsKCWJhY2tncm91bmQtaW1hZ2U6ICB1cmwoaGVhZGVyLmdpZik7CgliYWNrZ3Jv&cr;&lf;dW5kLXJlcGVhdDogbm8tcmVwZWF0OwoJdGV4dC1hbGlnbjogbGVmdDsKCWZvbnQtZmFtaWx5OiBW&cr;&lf;ZXJkYW5hLCBHZW5ldmEsIEFyaWFsLCBIZWx2ZXRpY2EsIHNhbnMtc2VyaWY7Cgljb2xvcjogV2hp&cr;&lf;dGU7Cglmb250LXdlaWdodDogYm9sZDsKCXBhZGRpbmctbGVmdDo4cHg7CglwYWRkaW5nLXRvcDo0&cr;&lf;cHg7Cn0KCgpkaXYuZm9vdGVyIHsKCXdpZHRoOiA3MTZweDsKCWhlaWdodDogNXB4OwoJbWFyZ2lu&cr;&lf;LWJvdHRvbTogLTEwcHg7CgliYWNrZ3JvdW5kLWltYWdlOiAgdXJsKGJvdHRvbS5naWYpOwoJYmFj&cr;&lf;a2dyb3VuZC1yZXBlYXQ6IG5vLXJlcGVhdDsKfQoKZGl2LmNvbnRlbnQgewoJcGFkZGluZzogMjBw&cr;&lf;eDsKCXdpZHRoOjY4MHB4OwoJaGVpZ2h0OiAxMDAlOwoJdGV4dC1hbGlnbjogbGVmdDsKCXBhZGRp&cr;&lf;bmctYm90dG9tOiA1MHB4Owp9CgpkaXYuSmF2YVNjcmlwdE1lc3NhZ2UgewoJd2lkdGg6IDY3MHB4&cr;&lf;OwoJaGVpZ2h0OiA4MHB4OwoJYmFja2dyb3VuZC1jb2xvcjogU2lsdmVyOwoJYm9yZGVyOiBncm9v&cr;&lf;dmU7Cgl0ZXh0LWFsaWduOiBjZW50ZXI7Cglmb250LWZhbWlseTogTHVjaWRhIFNhbnMgVW5pY29k&cr;&lf;ZSwgQXJpYWwsIFZlcmRhbmEsIHNhbnMtc2VyaWY7Cglmb250LXNpemU6IGxhcmdlOwoJYm9yZGVy&cr;&lf;LWNvbG9yOiBSZWQ7Cgljb2xvcjogQmxhY2s7Cn0KCgphIHsKCWNvbG9yOiAjMDAwMDAwOwoJdGV4&cr;&lf;dC1kZWNvcmF0aW9uOiBub25lOwp9CgoKdGFibGUgewogd2lkdGg6IDUwMHB4OyAKIHBhZGRpbmc6&cr;&lf;IDBweDsKIG1hcmdpbjogMHB4IDBweCAwcHggMHB4OwogYmFja2dyb3VuZC1jb2xvcjojRkZGRkZG&cr;&lf;OwogYm9yZGVyLWNvbGxhcHNlOmNvbGxhcHNlOwp9Cgp0aCB7CgliYWNrZ3JvdW5kLWNvbG9yOiAj&cr;&lf;Q0NDQ0NDOwoJYm9yZGVyOiAxcHggc29saWQ7Cn0KdGQgeyAKCXBhZGRpbmc6IDJweDsKCWJvcmRl&cr;&lf;cjogMXB4IHNvbGlkOwoJYm9yZGVyLWNvbG9yOiM2NjY2NjY7Cn0KCgp0ZC5pb2JveE5hbWUgewoJ&cr;&lf;d2lkdGg6MjAwcHg7Cgl0ZXh0LWFsaWduOnJpZ2h0OwoJdmVydGljYWwtYWxpZ246dG9wOwoJCn0K&cr;&lf;dGQuc2xpY2VpbmRleCB7Cgl3aWR0aDogMjBweDsKCXRleHQtYWxpZ246cmlnaHQ7Cn0KdGQudmFs&cr;&lf;dWUgewoJY29sb3I6Izk5OTk5OTsKCXBhZGRpbmctbGVmdDogNXB4Owp9CnRkLm5ld2JveCB7Cgl3&cr;&lf;aWR0aDogMjBweDsKCXRleHQtYWxpZ246cmlnaHQ7Cn0KCmgxIHsKCWZvbnQtd2VpZ2h0OiBsaWdo&cr;&lf;dGVyOwoJZm9udC1zaXplOiAxMXB0Owp9CgpoMiB7Cglmb250LXdlaWdodDogbGlnaHRlcjsKCWZv&cr;&lf;bnQtc2l6ZTogMTBwdDsKfQoKCmhyIHsKCWJvcmRlci1ib3R0b206IDBweDsKCWJvcmRlci1sZWZ0&cr;&lf;OiAwcHg7Cglib3JkZXItcmlnaHQ6IDBweDsKCWJvcmRlci10b3A6IDFweCBkYXNoZWQ7Cglib3Jk&cr;&lf;ZXItY29sb3I6ICMwMDAwMDA7Cn0KCmltZyB7CgltYXJnaW46IDA7Cglib3JkZXI6IDA7Cn0KCmxp&cr;&lf;IHsKCWxpc3Qtc3R5bGU6IHNxdWFyZTsKCXBhZGRpbmctYm90dG9tOiAxMHB4Owp9CgpmaWVsZHNl&cr;&lf;dCB7CglwYWRkaW5nOiAxMHB4OwoJcGFkZGluZy10b3A6IDIwcHg7Cn0KCmZpZWxkc2V0LmJveCB7&cr;&lf;Cgl3aWR0aDogNDUwcHg7CgltYXJnaW4tcmlnaHQ6IDVweDsKfQoKZmllbGRzZXQuc2V0dGluZ3Mg&cr;&lf;ewoJaGVpZ2h0OiA3NXB4OwoJd2lkdGg6IDE5NXB4OwoJbWFyZ2luLXJpZ2h0OjVweDsKCWZsb2F0&cr;&lf;OiBsZWZ0Owp9CgppbnB1dCB7Cglmb250LWZhbWlseTogTHVjaWRhIFNhbnMgVW5pY29kZSwgQXJp&cr;&lf;YWwsIFZlcmRhbmEsIHNhbnMtc2VyaWY7CiAgIAlmb250LXNpemU6IDhwdDsKCWhlaWdodDogMTRw&cr;&lf;eDsKCWJvcmRlcjogMXB4IHNvbGlkOwoJYm9yZGVyLWNvbG9yOiAjMDAwMDAwOwp9CgppbnB1dC5z&cr;&lf;dWJtaXQgewoJbWFyZ2luOiAxMHB4IDAgMTBweCAwOwoJaGVpZ2h0OiAyMHB4Owp9CgppbnB1dC5j&cr;&lf;b2xvciB7Cgl3aWR0aDogMTIwcHg7Cgljb2xvcjogI0ZGRkZGRjsKfQppbnB1dC5zdHJpbmcgewoJ&cr;&lf;d2lkdGg6IDIxNXB4Owp9CgppbnB1dC5hbHBoYSB7Cgl3aWR0aDogNDBweDsKfQoKCgpsZWdlbmQg&cr;&lf;ewoJZm9udC13ZWlnaHQ6IGJvbGQ7Cn0KCnNwYW4gewoJbWFyZ2luLXJpZ2h0OiAxMHB4Owp9Cgo=|,,,,,,,," encoded="1">
+   </PIN>
+   <PIN pinname="URL" visible="1" slicecount="17" values="bg.gif,bottom.gif,colorPickerAdv.html,createWebPage.xsl,edge.gif,getData.xsl,header.gif,logout.gif,pick.gif,scripts.js,styles.css,Thumbs.db,images\close.jpg,images\grayScale.jpg,images\spacer.gif,images\spectrum_small.jpg,images\Thumbs.db">
+   </PIN>
+   <PIN pinname="MimeType" visible="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="81">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="84" dstpinname="MimeType" srcnodeid="88" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="82" nodename="IOBox (String)">
+   <BOUNDS height="270" left="11235" top="18705" type="Node" width="1215">
+   </BOUNDS>
+   <BOUNDS height="630" left="11235" top="18705" type="Box" width="1305">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|serving images and scripts|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="81" nodename="HTTP (Network Receiver)">
+   <BOUNDS height="0" left="11565" top="16890" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="ReceiveURL" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Method" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="81">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="97" dstpinname="XML Input" srcnodeid="100" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="Input" srcnodeid="121" srcpinname="Output">
+   </LINK>
+   <NODE id="80" nodename="GetPatch (VVVV)">
+   <BOUNDS height="0" left="555" top="1200" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   <PIN pinname="Patch" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="79" nodename="IOBox (Node)">
+   <BOUNDS height="0" left="540" top="600" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2595" top="1890" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="540" top="600" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Patch">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="80" dstpinname="Patch" srcnodeid="79" srcpinname="Output Node">
+   </LINK>
+   <NODE id="78" nodename="Add (String)">
+   <BOUNDS height="0" left="1530" top="9765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="&lt;/VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="78" dstpinname="Input 2" srcnodeid="98" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="From" srcnodeid="78" srcpinname="Output">
+   </LINK>
+   <NODE id="77" nodename="Add (String)">
+   <BOUNDS height="0" left="2490" top="9765" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" visible="1" values="&lt;/VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;VALUES&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="77" dstpinname="Input 2" srcnodeid="99" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="100" dstpinname="To" srcnodeid="77" srcpinname="Output">
+   </LINK>
+   <NODE id="76" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="555" top="12120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="76" dstpinname="Input" srcnodeid="97" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="121" dstpinname="XML Input" srcnodeid="80" srcpinname="Patch Description">
+   </LINK>
+   <NODE componentmode="InABox" id="75" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2475" top="11010" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4260" top="2565" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2475" top="11010" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="test.v4w">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="96" dstpinname="URL" srcnodeid="75" srcpinname="Output String" linkstyle="PolyLine">
+   </LINK>
+   <NODE componentmode="InABox" id="74" nodename="IOBox (String)">
+   <BOUNDS height="0" left="765" top="1950" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4575" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="660" left="765" top="1950" type="Box" width="2190">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&cr;&lf;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;&cr;&lf;&tab;&lt;xsl:output method=&quot;xml&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot; omit-xml-declaration=&quot;yes&quot;/&gt;&cr;&lf;&tab;&lt;xsl:template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&lt;!--This template will recursively break apart a comma-delimited string into child elements--&gt;&cr;&lf;&tab;&tab;&lt;xsl:param name=&quot;strInput&quot; select=&quot;&amp;apos;&amp;apos;&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:param name=&quot;strDelimiter&quot; select=&quot;&amp;apos;,&amp;apos;&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strNextItem&quot; select=&quot;substring-before($strInput, $strDelimiter)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strOutput&quot; select=&quot;substring-after($strInput, $strDelimiter)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:variable name=&quot;strLen&quot; select=&quot;string-length($strNextItem)&quot;/&gt;&cr;&lf;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains($strInput,$strDelimiter)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;$strNextItem&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;!-- At this point, the template will recursively call itself until the last comma is found --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:call-template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strInput&quot; select=&quot;$strOutput&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strDelimiter&quot; select=&quot;$strDelimiter&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:call-template&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;!-- The otherwise clause will be reached when a comma is not located using contains() --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;$strInput&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&tab;&lt;xsl:template match=&quot;/PATCH&quot;&gt;&cr;&lf;&tab;&tab;&lt;PATCH&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;name&quot;&gt;&lt;xsl:value-of select=&quot;@nodename&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;NODE[starts-with (@nodename,&apos;IOBox&apos;) and PIN[@pinname=&apos;Descriptive Name&apos;]/@values!=&apos;||||&apos; ]/PIN[@pinname=&apos;Descriptive Name&apos;]/..&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;id&quot; select=&quot;@id&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;Datatype&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(String)&apos; &quot;&gt;String&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;Value&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Color)&apos; &quot;&gt;Color&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Enumerations)&apos; &quot;&gt;Enum&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:variable&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;../LINK[@dstnodeid=$id]=false()&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;BOX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;name&quot;&gt;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Descriptive Name&apos;]/@values&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;id&quot;&gt;&lt;xsl:value-of select=&quot;@id&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;datatype&quot;&gt;&lt;xsl:value-of select=&quot;$Datatype&quot;/&gt;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:attribute name=&quot;pinname&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos; &quot;&gt;Input String&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos; &quot;&gt;Y Input Value&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos; &quot;&gt;Color Input&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos; &quot;&gt;Input Enum&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:attribute&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;GROUP&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains(PIN[@pinname=&apos;Descriptive Name&apos;]/@values, &apos;:&apos;)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;translate(substring-before(PIN[@pinname=&apos;Descriptive Name&apos;]/@values, &apos;:&apos;),&apos;||&apos;,&apos;&apos;) &quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Descriptive Name&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/GROUP&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICECOUNT&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@slicecount&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@slicecount&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]&quot;&gt;0&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;1&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/SLICECOUNT&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;VALUES&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@pinname&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:call-template name=&quot;Split&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strInput&quot; select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:with-param name=&quot;strDelimiter&quot; select=&quot;&apos;,&apos;&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:call-template&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[contains(@pinname,&apos;Input&apos;)]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;0&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;||0.00000,1.00000,0.00000,1.00000||&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$Datatype = &apos;Enum&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;SLICE&gt;nil&lt;/SLICE&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/VALUES&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;MIN&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[@pinname=&apos;Minimum&apos;]&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Minimum&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;-1&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/MIN&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;MAX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;PIN[@pinname=&apos;Maximum&apos;]&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;PIN[@pinname=&apos;Maximum&apos;]/@values&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;substring-after(@nodename,&apos;IOBox &apos;)=&apos;(Value Advanced)&apos; &quot;&gt;1&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/MAX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;/BOX&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&lt;/PATCH&gt;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&lt;/xsl:stylesheet&gt;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="121" dstpinname="XSLT Stylesheet" srcnodeid="74" srcpinname="Output String">
+   </LINK>
+   <NODE id="73" nodename="HTTP (Network Receiver)">
+   <BOUNDS height="270" left="6015" top="75" type="Node" width="2610">
+   </BOUNDS>
+   <PIN pinname="Method" slicecount="1" values="POST">
+   </PIN>
+   <PIN pinname="Name" visible="1">
+   </PIN>
+   <PIN pinname="Value" visible="1">
+   </PIN>
+   <PIN pinname="ValueType" visible="1">
+   </PIN>
+   <PIN pinname="On Data" visible="1">
+   </PIN>
+   <PIN pinname="Port" slicecount="1" values="81">
+   </PIN>
+   </NODE>
+   <NODE id="71" nodename="Add (String)">
+   <BOUNDS height="0" left="7365" top="3090" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="/PATCH/BOX[@name=&apos;">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&apos;]/@id">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="69" nodename="Add (String)">
+   <BOUNDS height="0" left="8505" top="4215" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="/PATCH/BOX[@id=&apos;">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&apos;]/@datatype">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="68" nodename="EQ (String)">
+   <BOUNDS height="0" left="8340" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Color">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="67" nodename="Select (String)">
+   <BOUNDS height="270" left="7935" top="5535" type="Node" width="735">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="67" dstpinname="Select" linkstyle="PolyLine" srcnodeid="68" srcpinname="Output">
+   </LINK>
+   <NODE id="66" nodename="Add (String)">
+   <BOUNDS height="270" left="8115" top="11340" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Color Input&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="65" nodename="AsString (Value)">
+   <BOUNDS height="270" left="8295" top="10785" type="Node" width="750">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="2" values="13,11">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <NODE id="64" nodename="Select (String)">
+   <BOUNDS height="0" left="10380" top="2670" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="64" dstpinname="Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="73" srcpinname="Value">
+   </LINK>
+   <NODE id="63" nodename="Sift (String)">
+   <BOUNDS height="0" left="7920" top="6165" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" slicecount="1" values="alpha">
+   </PIN>
+   <PIN pinname="Comparison" slicecount="1" values="ContainsAny">
+   </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="63" dstpinname="Input" linkstyle="PolyLine" srcnodeid="67" srcpinname="Output">
+   </LINK>
+   <NODE id="62" nodename="Select (String)">
+   <BOUNDS height="0" left="7455" top="6690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="62" dstpinname="Select" linkstyle="PolyLine" srcnodeid="63" srcpinname="Hits">
+   </LINK>
+   <NODE id="61" nodename="EQ (Value)">
+   <BOUNDS height="0" left="7305" top="7590" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="61" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="63" srcpinname="Hits">
+   </LINK>
+   <NODE id="60" nodename="Select (String)">
+   <BOUNDS height="0" left="6840" top="8730" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="60" dstpinname="Select" linkstyle="PolyLine" srcnodeid="61" srcpinname="Output">
+   </LINK>
+   <NODE id="59" nodename="Select (String)">
+   <BOUNDS height="0" left="6840" top="6210" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="59" dstpinname="Select" linkstyle="PolyLine" srcnodeid="68" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="62" dstpinname="Input" linkstyle="PolyLine" srcnodeid="59" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="60" dstpinname="Input" linkstyle="PolyLine" srcnodeid="59" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="58" nodename=":MODULES:\vvvv group\Color\AsString (Color).v4p">
+   <BOUNDS height="0" left="6840" top="10635" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8850" left="11730" top="2475" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="6840" top="10635" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Input color String" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Index" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" visible="1" slicecount="2" values="3,3">
+   </PIN>
+   </NODE>
+   <NODE id="57" nodename="AsColor (String Hex)">
+   <BOUNDS height="0" left="6825" top="9645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="57" dstpinname="Input" linkstyle="PolyLine" srcnodeid="60" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="58" dstpinname="Input" linkstyle="PolyLine" srcnodeid="57" srcpinname="Output">
+   </LINK>
+   <NODE id="56" nodename="Select (String)">
+   <BOUNDS height="270" left="7515" top="1575" type="Node" width="555">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="56" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="55" managers="" nodename="EQ (Value)">
+   <PIN pinname="Input 1" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="7530" top="540" type="Node" width="450">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Epsilon" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Inverse Output" pintype="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="55" dstpinname="Input 1" srcnodeid="73" srcpinname="ValueType">
+   </LINK>
+   <NODE id="54" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="270" left="7635" top="8460" type="Node" width="735">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="54" dstpinname="Select" linkstyle="PolyLine" srcnodeid="68" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="59" dstpinname="Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="64" srcpinname="Output">
+   </LINK>
+   <NODE id="53" nodename="AsValue (String)">
+   <BOUNDS height="0" left="7455" top="7215" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="53" dstpinname="Input" linkstyle="PolyLine" srcnodeid="62" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="57" dstpinname="Alpha" linkstyle="PolyLine" srcnodeid="53" srcpinname="Output">
+   </LINK>
+   <NODE id="52" nodename="AsValue (String)">
+   <BOUNDS height="0" left="7650" top="9645" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="66" dstpinname="Input 2" srcnodeid="65" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="66" dstpinname="Input 4" srcnodeid="58" srcpinname="Output">
+   </LINK>
+   <NODE id="51" nodename="Add (String)">
+   <BOUNDS height="0" left="9015" top="13575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="&lt;PATCH&gt;">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="&lt;/PATCH&gt;">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="50" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="8130" top="11805" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="50" dstpinname="Input" srcnodeid="66" srcpinname="Output">
+   </LINK>
+   <NODE id="49" nodename="SetPatch (VVVV)">
+   <BOUNDS height="0" left="7125" top="15825" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="49" dstpinname="Patch" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="79" srcpinname="Output Node">
+   </LINK>
+   <NODE id="48" nodename="Select (String)">
+   <BOUNDS height="270" left="7635" top="8910" type="Node" width="720">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="48" dstpinname="Input" linkstyle="PolyLine" srcnodeid="54" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="48" dstpinname="Select" linkstyle="PolyLine" srcnodeid="61" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="52" dstpinname="Input" linkstyle="PolyLine" srcnodeid="48" srcpinname="Output">
+   </LINK>
+   <NODE id="47" nodename="EQ (String)">
+   <BOUNDS height="0" left="10875" top="6420" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="Value">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="46" nodename="Select (String)">
+   <BOUNDS height="0" left="10395" top="6960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Select" linkstyle="PolyLine" srcnodeid="47" srcpinname="Output">
+   </LINK>
+   <NODE id="45" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="8940" top="6960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="45" dstpinname="Select" linkstyle="PolyLine" srcnodeid="47" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="46" dstpinname="Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="64" srcpinname="Output">
+   </LINK>
+   <NODE id="44" nodename="AsValue (String)">
+   <BOUNDS height="0" left="8940" top="7455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Input" srcnodeid="45" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="42" nodename="Clean (Value Spreads).v4p">
+   <BOUNDS height="100" left="8925" top="7920" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="8925" top="7920" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9705" left="13080" top="2370" type="Window" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="42" dstpinname="in" srcnodeid="44" srcpinname="Output">
+   </LINK>
+   <NODE id="41" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="10410" top="8505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="41" dstpinname="Input" srcnodeid="46" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="41" dstpinname="Bin Size" srcnodeid="42" srcpinname="count">
+   </LINK>
+   <NODE id="40" nodename="Add (String)">
+   <BOUNDS height="270" left="9405" top="9105" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Y Input Value&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="39" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="9405" top="9570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="39" dstpinname="Input" srcnodeid="40" srcpinname="Output">
+   </LINK>
+   <NODE id="38" nodename="AsString (Value)">
+   <BOUNDS height="0" left="9585" top="8505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Input" srcnodeid="42" srcpinname="out">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Input 2" srcnodeid="38" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="40" dstpinname="Input 4" srcnodeid="41" srcpinname="Output">
+   </LINK>
+   <NODE id="37" nodename="Cons (String Legacy)">
+   <BOUNDS height="0" left="9165" top="12465" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="37" dstpinname="Input 1" srcnodeid="50" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Input 2" srcnodeid="39" srcpinname="Output">
+   </LINK>
+   <NODE id="36" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="9165" top="12870" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="36" dstpinname="Input" srcnodeid="37" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="Input 2" srcnodeid="36" srcpinname="Output">
+   </LINK>
+   <NODE id="35" nodename="EQ (String)">
+   <BOUNDS height="0" left="13995" top="6420" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="34" nodename="Select (String)">
+   <BOUNDS height="0" left="13515" top="6960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="Select" linkstyle="PolyLine" srcnodeid="35" srcpinname="Output">
+   </LINK>
+   <NODE id="33" nodename="Select (String)">
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="11610" top="6960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Select" linkstyle="PolyLine" srcnodeid="35" srcpinname="Output">
+   </LINK>
+   <NODE id="32" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="13350" top="8505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="Comma">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="31" nodename="Add (String)">
+   <BOUNDS height="270" left="12090" top="9105" type="Node" width="900">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;NODE id=&quot;|">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|&quot;&gt;&lt;PIN pinname=&quot;Input String&quot; values=&quot;|">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   <PIN pinname="Input 5" slicecount="1" values="&quot;&gt;&lt;/PIN&gt;&lt;/NODE&gt;">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="30" nodename="Add (String Spectral)">
+   <BOUNDS height="0" left="12075" top="9570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="30" dstpinname="Input" srcnodeid="31" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="34" dstpinname="Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="64" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="29" nodename="Clean (Value Spreads).v4p">
+   <BOUNDS height="100" left="11625" top="7920" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS left="11625" top="7920" type="Box">
+   </BOUNDS>
+   <BOUNDS height="9705" left="13380" top="2670" type="Window" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="AsValue (String)">
+   <BOUNDS height="0" left="11625" top="7455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Input" srcnodeid="33" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="in" srcnodeid="28" srcpinname="Output">
+   </LINK>
+   <NODE id="27" nodename="AsString (Value)">
+   <BOUNDS height="0" left="12270" top="8505" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="32" dstpinname="Bin Size" srcnodeid="29" srcpinname="count">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Input" srcnodeid="29" srcpinname="out">
+   </LINK>
+   <LINK dstnodeid="31" dstpinname="Input 2" srcnodeid="27" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="37" dstpinname="Input 3" srcnodeid="30" srcpinname="Output">
+   </LINK>
+   <NODE id="26" nodename="Add (String)">
+   <BOUNDS height="0" left="13350" top="7920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="None">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="31" dstpinname="Input 4" srcnodeid="32" srcpinname="Output">
+   </LINK>
+   <NODE id="25" nodename="Substitute (String)">
+   <BOUNDS height="0" left="13515" top="7455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="||||">
+   </PIN>
+   <PIN pinname="To" slicecount="1" values="||||||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="Input" srcnodeid="34" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="26" dstpinname="Input 2" srcnodeid="25" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="32" dstpinname="Input" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)">
+   <BOUNDS height="0" left="735" top="11040" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3300" top="11430" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="480" left="735" top="11040" type="Box" width="1200">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&cr;&lf;&lt;xsl:stylesheet version=&quot;1.0&quot; xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot;&gt;&cr;&lf;&tab;&lt;xsl:output method=&quot;html&quot; version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; indent=&quot;yes&quot; omit-xml-declaration=&quot;yes&quot; doctype-public=&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; doctype-system=&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;/&gt;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&lt;xsl:key name=&quot;PATCH&quot; match=&quot;BOX&quot; use=&quot;GROUP&quot;/&gt;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&cr;&lf;&tab;&lt;xsl:template match=&quot;/PATCH&quot;&gt;&cr;&lf;&tab;&tab;&lt;!-- &tab;&cr;&lf;&tab;&tab;Begin  HTML&cr;&lf;&tab;&tab;Output&cr;&lf;&tab;&tab; --&gt;&cr;&lf;&tab;&tab;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&lf;&tab;&tab;&lt;head&gt;&cr;&lf;&tab;&tab;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot; /&gt;&cr;&lf;&tab;&tab;&lt;title&gt;VVVV Patch Remoting&lt;/title&gt;&cr;&lf;&tab;&tab;&tab;&lt;script src=&quot;scripts.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;&cr;&lf;&tab;&tab;&lt;/head&gt;&cr;&lf;&tab;&tab;&lt;body&gt;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&lt;div class=&quot;container&quot;&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;header&quot;&gt;&lt;xsl:value-of select=&quot;/PATCH/@name&quot;/&gt;&lt;/div&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;content&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;h1&gt;Welcome &lt;/h1&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;p&gt;This is a web-interface for a vvvv patch! You need valid username and a valid password to change values.&lt;/p&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;hr /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;h1 style=&quot;margin-top: 20px;&quot;&gt;Web Interface&lt;/h1&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;!-- Here we start generating output. &cr;&lf;&tab;&tab;&tab;&tab;&tab;For every Group we create one HTML table --&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;//BOX[generate-id(.)=generate-id(key(&apos;PATCH&apos;,GROUP))]&quot;&gt;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &lt;table cellspacing=&quot;0&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;th colspan=&quot;5&quot;&gt;&lt;xsl:value-of select=&quot;GROUP&quot;/&gt;&lt;/th&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;/tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;!--Go through the IOBoxes and Sort at the  secondary key &quot; IOBox Name&quot;,  sorted by name--&gt;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab; &lt;xsl:for-each select=&quot;key(&apos;PATCH&apos;,GROUP)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:sort select=&quot;@name&quot;/&gt; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;slicecount&quot; select=&quot;SLICECOUNT&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:variable name=&quot;datatype&quot; select=&quot;@datatype&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:for-each select=&quot;VALUES/SLICE&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;position()=1&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;ioboxName&quot; rowspan=&quot;{$slicecount}&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:choose&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:when test=&quot;contains(../../@name, &apos;:&apos;)&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;translate(substring-after(../../@name, &apos;:&apos;),&apos;||&apos;,&apos;&apos;) &quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:when&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:otherwise&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:value-of select=&quot;../../@name&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:otherwise&gt;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:choose&gt;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab; (&lt;xsl:value-of select=&quot;../../@datatype&quot;/&gt;)&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;sliceindex&quot;&gt;&lt;xsl:value-of select=&quot;position()&quot;/&gt;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;td class=&quot;value&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;Color&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;Alpha: &lt;input name=&quot;{../../@name}---{position()}-alpha&quot; id=&quot;{../../@name}&quot; value=&quot;{ALPHA}&quot; maxlength=&quot;100&quot; class=&quot;alpha&quot; onblur=&quot;return chkValues(this.id,0,1)&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot; value=&quot;{HEX}&quot; maxlength=&quot;100&quot; class=&quot;color&quot; style=&quot;background-color: {HEX};&quot; onblur=&quot;return updateColor(this.id)&quot;  /&gt;&lt;span&gt;&lt;/span&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;a href=&quot;javascript:openColorPickerAdv(&apos;{../../@name}---{position()}&apos;);&quot;&gt;&lt;img src=&quot;pick.gif&quot; /&gt;&lt;/a&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;String&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot;  maxlength=&quot;100&quot; class=&quot;string&quot; value=&quot;{.}&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;xsl:if test=&quot;$datatype=&apos;Value&apos;&quot;&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;input name=&quot;{../../@name}---{position()}&quot; id=&quot;{../../@name}---{position()}&quot;  maxlength=&quot;100&quot; class=&quot;Value&quot; value=&quot;{.}&quot;/&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:if&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/td&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/tr&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;&tab;&lt;/xsl:for-each&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&cr;&lf;  &tab;&tab;&lt;/table&gt;&cr;&lf;&tab;&tab;&lt;br/&gt;&lt;br/&gt;&cr;&lf;&tab;&lt;/xsl:for-each&gt;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab; &tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;  &cr;&lf;&tab;&tab;&tab;&tab;&tab; &cr;&lf;&tab;&tab;&tab;&tab;&tab;Username: &lt;input name=&quot;username&quot;  maxlength=&quot;100&quot; class=&quot;value&quot; value=&quot;&quot; /&gt;&lt;br /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;Password: &lt;input name=&quot;password&quot;  maxlength=&quot;100&quot; class=&quot;value&quot; value=&quot;&quot; type=&quot;password&quot; /&gt;&lt;br /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&tab;&lt;input type=&quot;submit&quot; value=&quot;submit&quot; class=&quot;submit&quot; /&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/form&gt;&cr;&lf;&tab;&tab;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&tab;&tab;&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;&cr;&lf;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&tab;&lt;/body&gt;&cr;&lf;&tab;&tab;&lt;/html&gt;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&tab;&lt;/xsl:template&gt;&cr;&lf;&lt;/xsl:stylesheet&gt;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="97" dstpinname="XSLT Stylesheet" srcnodeid="24" srcpinname="Output String">
+   </LINK>
+   <NODE id="23" nodename="AND (Boolean)">
+   <BOUNDS height="270" left="6780" top="1110" type="Node" width="1215">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="22" nodename="EQ (String)">
+   <BOUNDS height="0" left="6405" top="540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="username">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Input 1" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <NODE id="21" nodename="EQ (String)">
+   <BOUNDS height="0" left="6975" top="540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="password">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Input 1" srcnodeid="73" srcpinname="Name">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 3" srcnodeid="55" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 1" srcnodeid="22" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="23" dstpinname="Input 2" srcnodeid="21" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="56" dstpinname="Select" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="64" dstpinname="Select" linkstyle="PolyLine" srcnodeid="23" srcpinname="Output">
+   </LINK>
+   <NODE id="20" nodename="Select (String)">
+   <BOUNDS height="0" left="5280" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Input" hiddenwhenlocked="1" linkstyle="PolyLine" srcnodeid="73" srcpinname="Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Select" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <NODE id="19" nodename="Select (String)">
+   <BOUNDS height="0" left="5985" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Select" srcnodeid="21" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Input" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="Value">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4065" top="570" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4005" top="1485" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4065" top="570" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="username">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="david">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="0" left="5010" top="585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4305" top="1785" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5010" top="585" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="password">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="test">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="EQ (String)">
+   <BOUNDS height="0" left="4575" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Cons (String Legacy)">
+   <BOUNDS height="0" left="4560" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input 1" srcnodeid="18" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input 2" srcnodeid="17" srcpinname="Output String">
+   </LINK>
+   <NODE id="14" nodename="Cons (String Legacy)">
+   <BOUNDS height="0" left="5280" top="2175" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="20" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="19" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Input 2" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="13" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="7290" top="15390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Input 2" linkstyle="PolyLine" srcnodeid="51" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="49" dstpinname="XML Input" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="Add (Value Spectral)">
+   <PIN pinname="Input" pintype="Input" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="4575" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Bin Size" pintype="Input" slicecount="1" visible="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="16" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="EQ (Value)">
+   <BOUNDS height="0" left="4575" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Input 1" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3240" top="12000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16170" top="6495" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="3240" top="12000" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|  &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;&cr;&lf;&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; lang=&quot;de&quot;&gt;&cr;&lf;&lt;head&gt;&cr;&lf;&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot; /&gt;&cr;&lf;&lt;title&gt;VVVV Patch Remoting&lt;/title&gt;&cr;&lf;&lt;script language=&quot;Javascript&quot;&gt;&cr;&lf;&lt;!--&cr;&lf;var URL   = &quot;{BaseURL}&quot;&cr;&lf;var speed = 3000&cr;&lf;&cr;&lf;function reload() {&cr;&lf;location = URL&cr;&lf;}&cr;&lf;&cr;&lf;setTimeout(&quot;reload()&quot;, speed);&cr;&lf;//--&gt;&cr;&lf;&lt;/script&gt;&cr;&lf;&cr;&lf;&lt;/head&gt;&cr;&lf;&cr;&lf;&lt;body&gt;&tab;&tab;&tab;&cr;&lf;&tab;&tab;&cr;&lf;&lt;div class=&quot;container&quot;&gt;&cr;&lf;&tab;&lt;div class=&quot;header&quot;&gt;Reloading Interface....&lt;/div&gt;&cr;&lf;&tab;&lt;div class=&quot;content&quot;&gt;&cr;&lf;&tab;&tab;{Text}&cr;&lf;&tab;&tab;&lt;/div&gt;&cr;&lf;&tab;&lt;div class=&quot;footer&quot;&gt;&lt;/div&gt;&cr;&lf;&lt;/div&gt;&cr;&lf;&lt;/body&gt;&cr;&lf;&lt;/html&gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="2730" top="13440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="76" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="96" dstpinname="Content" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="Substitute (String)">
+   <BOUNDS height="270" left="3225" top="12705" type="Node" width="915">
+   </BOUNDS>
+   <PIN pinname="From" slicecount="2" values="{BaseURL},{Text}">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="To" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input" srcnodeid="10" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Input 2" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Switch" hiddenwhenlocked="1" linkstyle="Bezier" srcnodeid="73" srcpinname="On Data">
+   </LINK>
+   <NODE id="7" nodename="Cons (String Legacy)">
+   <BOUNDS height="270" left="4080" top="12000" type="Node" width="960">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="75" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="To" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="4980" top="11310" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="|&lt;H1&gt;Proceeded!&lt;/h1&gt;Interface is reloading|">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|&lt;h1&gt;Invalid username or password&lt;/h1&gt;|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Switch" srcnodeid="11" srcpinname="Inverse Output">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2040" top="300" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="270" left="2040" top="300" type="Box" width="1170">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|patch by david|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="AND (Boolean)">
+   <BOUNDS height="0" left="7275" top="14880" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="11" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 2" srcnodeid="73" srcpinname="On Data">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Switch" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="Substitute (String)">
+   <BOUNDS height="0" left="7515" top="1935" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="From" slicecount="1" values="---">
+   </PIN>
+   <PIN pinname="To" slicecount="1" visible="1" values="|&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="56" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="Separate (String)" systemname="Separate (String Legacy)">
+   <BOUNDS height="0" left="7515" top="2295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="NewLineAutoDetection">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="1" nodename="Select (String)">
+   <BOUNDS height="0" left="7515" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="2" values="1,0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="71" dstpinname="Input 2" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="Select (String)">
+   <BOUNDS height="0" left="7530" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="2" values="0,1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="67" dstpinname="Input" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="98" dstpinname="Input 1" srcnodeid="105" srcpinname="Output">
+   </LINK>
+   <NODE systemname="XPath (XML)" nodename="XPath (XML)" componentmode="Hidden" id="123">
+   <BOUNDS type="Node" left="3270" top="4410" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="124" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3420" top="3990" width="975" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3420" top="3990" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="/PATCH/BOX/@datatype">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="124" srcpinname="Output String" dstnodeid="123" dstpinname="XPath Query">
+   </LINK>
+   <NODE systemname="XPath (XML)" nodename="XPath (XML)" componentmode="Hidden" id="125">
+   <BOUNDS type="Node" left="1230" top="4350" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XPath Query" visible="1" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="126" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1380" top="3975" width="1005" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1380" top="3975" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="/PATCH/BOX/VALUES">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="126" srcpinname="Output String" dstnodeid="125" dstpinname="XPath Query">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="125" dstpinname="XML Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="105" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="125" srcpinname="Output" dstnodeid="114" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output" dstnodeid="106" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="123" srcpinname="Output" dstnodeid="115" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="127" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1905" top="4905" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1905" top="4905" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="127" srcpinname="Output String" dstnodeid="106" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="128" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3480" top="4875" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3480" top="4875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="Color">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="128" srcpinname="Output String" dstnodeid="115" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="129" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="9360" top="13200" width="885" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9360" top="13200" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="&lt;/PATCH&gt;">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="129" srcpinname="Output String" dstnodeid="51" dstpinname="Input 3">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="131" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="14190" top="6060" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14190" top="6060" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="131" srcpinname="Output String" dstnodeid="35" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="132" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="11055" top="5910" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11055" top="5910" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="Value">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="132" srcpinname="Output String" dstnodeid="47" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="XPath (XML)" nodename="XPath (XML)" componentmode="Hidden" id="133">
+   <BOUNDS type="Node" left="7185" top="3495" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="Resolve Externals" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Output" dstnodeid="133" dstpinname="XPath Query">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="133" dstpinname="XML Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="123" dstpinname="XML Input" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="69" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="54" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="33" dstpinname="Input">
+   </LINK>
+   <NODE systemname="XPath (XML)" nodename="XPath (XML)" componentmode="Hidden" id="134">
+   <BOUNDS type="Node" left="8340" top="4635" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <PIN pinname="XPath Query" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="121" srcpinname="Output" dstnodeid="134" dstpinname="XML Input">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="134" dstpinname="XPath Query">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="68" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="35" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="134" srcpinname="Output" dstnodeid="47" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="133" srcpinname="Output" dstnodeid="45" dstpinname="Input">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="135">
+   <BOUNDS type="Node" left="12855" top="14085" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12855" top="14085" width="2805" height="4155">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="17">
+   </PIN>
+   <PIN pinname="Input String" visible="1" slicecount="9" values="Sources\bg.gif,Sources\bottom.gif,Sources\colorPickerAdv.html,Sources\edge.gif,Sources\header.gif,Sources\logout.gif,Sources\pick.gif,Sources\scripts.js,Sources\styles.css">
+   </PIN>
+   </NODE>
+   <NODE systemname="Dir (File)" nodename="Dir (File)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="10860" top="12795" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Directory" slicecount="1" values="Sources">
+   </PIN>
+   <PIN pinname="Include Subdirectories" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Filenames" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="RelativePath (File)" filename="" nodename="RelativePath (File)" componentmode="Hidden" id="137">
+   <BOUNDS type="Node" left="10530" top="13425" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Absolute Path" visible="1">
+   </PIN>
+   <PIN pinname="Base Path" visible="1">
+   </PIN>
+   <PIN pinname="Relative Path" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="Filenames" dstnodeid="137" dstpinname="Absolute Path">
+   </LINK>
+   <NODE systemname="FileName (File Split)" nodename="FileName (File Split)" componentmode="Hidden" id="138">
+   <BOUNDS type="Node" left="11850" top="12960" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="138" srcpinname="Path" dstnodeid="137" dstpinname="Base Path">
+   </LINK>
+   <LINK srcnodeid="137" srcpinname="Relative Path" dstnodeid="135" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="95" srcpinname="Content" dstnodeid="84" dstpinname="Content">
+   </LINK>
+   <PACK Name="addonpack" Version="34.1.0">
+   </PACK>
+   <LINK srcnodeid="137" srcpinname="Relative Path" dstnodeid="87" dstpinname="Operand 1">
+   </LINK>
+   <LINK srcnodeid="85" srcpinname="Output" dstnodeid="84" dstpinname="URL">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Filenames" dstnodeid="95" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="81" srcpinname="On Data" dstnodeid="95" dstpinname="Read">
+   </LINK>
+   <NODE id="43" componentmode="Hidden" nodename="Clean (Value Spreads).v4p" systemname="Clean (Value Spreads)" filename="%VVVV%\girlpower\IO\Web\09_Web Interface\Clean (Value Spreads).v4p">
+   <BOUNDS type="Node" height="100" left="7650" top="10155" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7650" top="10155">
+   </BOUNDS>
+   <BOUNDS type="Window" height="9705" left="12780" top="2070" width="7170">
+   </BOUNDS>
+   <PIN pinname="in" visible="1">
+   </PIN>
+   <PIN pinname="out" visible="1">
+   </PIN>
+   <PIN pinname="count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="43" dstpinname="in" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="count" dstnodeid="58" dstpinname="Bin Size" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="out" dstnodeid="65" dstpinname="Input" linkstyle="PolyLine">
+   </LINK>
+   </PATCH>

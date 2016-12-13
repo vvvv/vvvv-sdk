@@ -1,0 +1,211 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Normalize (3d) help.v4p">
+   <BOUNDS height="5430" left="4680" top="3225" type="Window" width="4875">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="510" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10470" top="5610" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="510" top="1230" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1440" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10935" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1440" top="1230" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2355" top="1230" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11640" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2355" top="1230" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Normalize (3d)">
+   <BOUNDS height="0" left="1785" top="2130" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="NormalizedX" visible="1">
+   </PIN>
+   <PIN pinname="NormalizedY" visible="1">
+   </PIN>
+   <PIN pinname="NormalizedZ" visible="1">
+   </PIN>
+   <PIN pinname="Input Length" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X" linkstyle="VHV" srcnodeid="10" srcpinname="Y Output Value">
+   <LINKPOINT x="1275" y="1800">
+   </LINKPOINT>
+   <LINKPOINT x="1815" y="1800">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Y" linkstyle="VHV" srcnodeid="9" srcpinname="Y Output Value">
+   <LINKPOINT x="2205" y="1800">
+   </LINKPOINT>
+   <LINKPOINT x="2205" y="1800">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Z" linkstyle="VHV" srcnodeid="8" srcpinname="Y Output Value">
+   <LINKPOINT x="3120" y="1800">
+   </LINKPOINT>
+   <LINKPOINT x="2595" y="1800">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="375" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="375" top="2985" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="NormX">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1305" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11235" top="5790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1305" top="2985" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="NormY">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2220" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11940" top="5775" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2220" top="2985" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="NormZ">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="7" srcpinname="NormalizedX">
+   <LINKPOINT x="1815" y="2685">
+   </LINKPOINT>
+   <LINKPOINT x="1140" y="2685">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="7" srcpinname="NormalizedY">
+   <LINKPOINT x="2070" y="2685">
+   </LINKPOINT>
+   <LINKPOINT x="2070" y="2685">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="7" srcpinname="NormalizedZ">
+   <LINKPOINT x="2340" y="2685">
+   </LINKPOINT>
+   <LINKPOINT x="2985" y="2685">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3180" top="2985" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12240" top="6075" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3180" top="2985" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Input Length|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="7" srcpinname="Input Length">
+   <LINKPOINT x="2595" y="2565">
+   </LINKPOINT>
+   <LINKPOINT x="3945" y="2565">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="315" top="3960" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="255" left="315" top="3960" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Normalize (3d)">
+   <BOUNDS height="0" left="345" top="4260" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2145">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="19290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Normalizes a 3d Vector.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="3210">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="19290" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Normalize - 3d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

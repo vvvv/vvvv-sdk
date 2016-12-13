@@ -1,0 +1,341 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.4.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\TCP (Network Client String) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\Network\TCP (Network Client String) help.v4p" systemname="TCP (Network Client String) help">
+   <BOUNDS height="6510" left="2055" top="1425" type="Window" width="9015">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1245" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6090" top="6435" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1245" top="2445" type="Box" width="1740">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4710" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8220" top="5790" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="300" left="4710" top="2610" type="Box" width="1185">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="127.0.0.1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4875" top="3090" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7725" top="6075" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4875" top="3090" type="Box" width="540">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="4445">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="9999999">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="TimeToString (String)" systemname="TimeToString (String)">
+   <BOUNDS height="0" left="1245" top="1725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="CurrentTime (Astronomy)" systemname="CurrentTime (Astronomy)">
+   <BOUNDS height="0" left="1245" top="1335" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Current Time" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Time" srcnodeid="2" srcpinname="Current Time">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="3" srcpinname="String">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4185" top="5400" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5700" top="9120" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4185" top="5400" type="Box" width="1650">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="2970">
+   </BOUNDS>
+   <BOUNDS height="160" left="9900" top="42960" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="| is connecting to a TCP server service|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9900" top="42960" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|TCP (Network Client String)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4350" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="4350" top="1275" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4530" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="4530" top="1980" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4875" top="4020" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="4875" top="4020" type="Box" width="480">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="2610" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="285" left="5910" top="2610" type="Box" width="2265">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Remote Host (e.g. localhost)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5025" top="2085" type="Node" width="1920">
+   </BOUNDS>
+   <BOUNDS height="270" left="5025" top="2085" type="Box" width="1920">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; bang here to send data|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="3060" type="Node" width="1170">
+   </BOUNDS>
+   <BOUNDS height="270" left="5910" top="3060" type="Box" width="1170">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; Remote Port|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="4110" type="Node" width="1995">
+   </BOUNDS>
+   <BOUNDS height="270" left="5910" top="4110" type="Box" width="1995">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; is connected to a server|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5910" top="5400" type="Node" width="1920">
+   </BOUNDS>
+   <BOUNDS height="270" left="5910" top="5400" type="Box" width="1920">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; data sent by the server|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5025" top="1380" type="Node" width="2385">
+   </BOUNDS>
+   <BOUNDS height="270" left="5025" top="1380" type="Box" width="2385">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|&lt; enable connection to a server|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="25" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="1245" top="2850" type="Node" width="3210">
+   </BOUNDS>
+   <BOUNDS height="900" left="1245" top="2850" type="Box" width="1200">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|^ string to be sent to a connected server|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="26" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="4680" type="Node" width="5100">
+   </BOUNDS>
+   <BOUNDS height="720" left="165" top="4680" type="Box" width="1935">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|open the helppatch of &cr;&lf; TCP (Network Server) &cr;&lf;to let them communicate|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="29" nodename="S+H (String)" systemname="S+H (String)">
+   <BOUNDS height="100" left="4185" top="4995" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="30" nodename="EQ (String)" systemname="EQ (String)">
+   <BOUNDS height="100" left="4320" top="4590" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   <PIN pinname="Inverse Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Set" srcnodeid="30" srcpinname="Inverse Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input String" srcnodeid="29" srcpinname="Output">
+   </LINK>
+   <NODE id="10" nodename="TCP (Network Client String)" systemname="TCP (Network Client String)" filename="%VVVV%\lib\nodes\modules\Network\TCP (Network Client String).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="4185" top="3525" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="Do Send" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Remote Host" visible="1">
+   </PIN>
+   <PIN pinname="Remote Port" visible="1">
+   </PIN>
+   <PIN pinname="Connected" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Remote Host" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Remote Port" srcnodeid="4" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="3" srcpinname="String">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Enable" srcnodeid="16" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="18" dstpinname="Y Input Value" srcnodeid="10" srcpinname="Connected">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Do Send" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="29" dstpinname="Input" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="30" dstpinname="Input 1" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE id="15" nodename="TCP (Network Server String)" systemname="TCP (Network Server String)" filename="%VVVV%\lib\nodes\modules\Network\TCP (Network Server String).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="2235" top="4890" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

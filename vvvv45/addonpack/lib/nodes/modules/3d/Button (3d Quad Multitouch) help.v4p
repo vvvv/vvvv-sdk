@@ -1,0 +1,933 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.8.dtd" >
+   <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch) help.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="0" top="0" width="16440" height="11745">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5520" height="465">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Button (3d Quad Multitouch)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE id="30" systemname="Touch (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Touch (Devices Window)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="5865" top="1560" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="PositionXY" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Box" left="2295" top="0" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mode" pintype="Input" visible="1" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Queue Mode" pintype="Input" visible="1" slicecount="1" values="Discard">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output">
+   </PIN>
+   <PIN pinname="Device" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Id" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Contact AreaXY" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Is New" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="29" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="9600" top="1800" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9600" top="1800" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2115" top="1875" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2115" top="1875" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="40">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="27" nodename="IOBox (Value Advanced)" componentmode="InABox" systemname="IOBox (Value Advanced)" hiddenwhenlocked="1">
+   <BOUNDS type="Box" left="8685" top="1815" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8685" top="1815" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.17">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="26" systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="8445" top="2685" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="25" systemname="CircularSpread (Spreads)" nodename="CircularSpread (Spreads)" componentmode="Hidden" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="8235" top="2175" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Input X" visible="1">
+   </PIN>
+   <PIN pinname="Input Y" visible="1">
+   </PIN>
+   <PIN pinname="Output X" visible="1">
+   </PIN>
+   <PIN pinname="Output Y" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="24" systemname="Mouse (System Window Legacy2)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (System Window)" componentmode="Hidden" hiddenwhenlocked="1">
+   <BOUNDS type="Node" left="8070" top="1395" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Wheel" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="23" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p">
+   <BOUNDS type="Node" height="100" left="13215" top="3225" width="100">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="13215" top="3225" width="4800">
+   </BOUNDS>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <BOUNDS type="Window" height="6000" left="5130" top="2940" width="9000">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Inverse View" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.05">
+   </PIN>
+   </NODE>
+   <NODE id="22" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS type="Node" height="270" left="1620" top="8130" width="3735">
+   </BOUNDS>
+   <BOUNDS type="Box" height="915" left="1620" top="8130" width="1980">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="0" top="0" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Red is the nearest, blue ones are behind, if the cursor is over multiple quads.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="21" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
+   <BOUNDS type="Node" height="0" left="1245" top="2760" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="2.41">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="130">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Count (Value)" systemname="Count (Value)">
+   <BOUNDS type="Node" height="0" left="2880" top="4590" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
+   <BOUNDS type="Node" height="0" left="1035" top="2355" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="2.84">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="148">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="Transform (Transform 3d Vector)" systemname="Transform (Transform 3d Vector)">
+   <BOUNDS type="Node" height="0" left="840" top="3180" width="0">
+   </BOUNDS>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Scale XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Rotate XYZ" slicecount="3" visible="1" values="0,0,0">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Center XYZ" slicecount="3" values="6.07153216591882E-017,6.07153216591882E-017,6.07153216591882E-017">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Add (Value)" systemname="Add (Value)">
+   <BOUNDS type="Node" height="0" left="1620" top="6120" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Stallone (Spreads)" systemname="Stallone (Spreads)">
+   <BOUNDS type="Node" height="0" left="2055" top="5040" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="SetSlice (Spreads Legacy)" systemname="SetSlice (Spreads Legacy)">
+   <BOUNDS type="Node" height="270" left="2055" top="5670" width="1215">
+   </BOUNDS>
+   <PIN pinname="Index" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Spread" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="InputMorph (Color)" systemname="InputMorph (Color)">
+   <BOUNDS type="Node" height="0" left="1620" top="6600" width="0">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="|1.00000,1.00000,1.00000,0.36134|">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="|0.22321,0.00000,1.00000,0.74719|">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" slicecount="1" values="|1.00000,0.00134,0.01164,0.74714|">
+   </PIN>
+   </NODE>
+   <NODE id="13" componentmode="InAWindow" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS type="Node" height="0" left="630" top="9210" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" height="3600" left="630" top="9210" width="4800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="16425" top="0" width="7425" height="7605">
+   </BOUNDS>
+   <PIN pinname="testcamera" visible="1">
+   </PIN>
+   <PIN pinname="othercamera" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="show viewplane">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS type="Node" height="0" left="3000" top="6255" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.02,0.02,0.02">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS type="Node" height="0" left="2835" top="6720" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS type="Node" height="0" left="945" top="8205" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   <PIN pinname="Layer 6" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS type="Node" height="0" left="645" top="7200" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform" linkstyle="Bezier">
+   <LINKPOINT x="860" y="5330">
+   </LINKPOINT>
+   <LINKPOINT x="850" y="5320">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="9" dstpinname="Color" linkstyle="Bezier">
+   <LINKPOINT x="1650" y="7035">
+   </LINKPOINT>
+   <LINKPOINT x="1650" y="7035">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Layer" dstnodeid="10" dstpinname="Layer 1" linkstyle="Bezier">
+   <LINKPOINT x="675" y="7830">
+   </LINKPOINT>
+   <LINKPOINT x="975" y="7830">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="10" dstpinname="Layer 2" linkstyle="Bezier">
+   <LINKPOINT x="3025" y="7590">
+   </LINKPOINT>
+   <LINKPOINT x="1085" y="7590">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Layer" dstnodeid="13" dstpinname="Layers" linkstyle="Bezier">
+   <LINKPOINT x="975" y="8835">
+   </LINKPOINT>
+   <LINKPOINT x="660" y="8835">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Transform Out" dstnodeid="11" dstpinname="Transform" linkstyle="Bezier">
+   <LINKPOINT x="3030" y="6615">
+   </LINKPOINT>
+   <LINKPOINT x="3030" y="6615">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Projection" dstnodeid="13" dstpinname="Projection" linkstyle="Bezier">
+   <LINKPOINT x="13530" y="6338">
+   </LINKPOINT>
+   <LINKPOINT x="1965" y="6338">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="View" dstnodeid="13" dstpinname="View" linkstyle="Bezier">
+   <LINKPOINT x="13380" y="6338">
+   </LINKPOINT>
+   <LINKPOINT x="1815" y="6338">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="14" dstpinname="Switch" linkstyle="Bezier">
+   <LINKPOINT x="1650" y="6495">
+   </LINKPOINT>
+   <LINKPOINT x="1650" y="6495">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="17" dstpinname="Input 2" linkstyle="Bezier">
+   <LINKPOINT x="2085" y="6030">
+   </LINKPOINT>
+   <LINKPOINT x="1890" y="6030">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output 1" dstnodeid="15" dstpinname="Spread" linkstyle="Bezier">
+   <LINKPOINT x="2085" y="5490">
+   </LINKPOINT>
+   <LINKPOINT x="2085" y="5490">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Count" dstnodeid="16" dstpinname="Spread Count" linkstyle="Bezier">
+   <LINKPOINT x="2855" y="4935">
+   </LINKPOINT>
+   <LINKPOINT x="2800" y="4950">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="18" dstpinname="Scale XYZ" linkstyle="Bezier">
+   <LINKPOINT x="1275" y="3105">
+   </LINKPOINT>
+   <LINKPOINT x="1275" y="3105">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="18" dstpinname="Translate XYZ" linkstyle="Bezier">
+   <LINKPOINT x="1065" y="2895">
+   </LINKPOINT>
+   <LINKPOINT x="1065" y="2895">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Y Output Value" dstnodeid="25" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Output Y" dstnodeid="26" dstpinname="Y" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Output X" dstnodeid="26" dstpinname="X" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="5790" top="3015" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="PositionXY" dstnodeid="8" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="XY" dstnodeid="8" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4980" top="2220" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4980" top="2220" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="8" dstpinname="Switch">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5610" top="2190" width="1680" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5610" top="2190" width="1875" height="540">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Activate to simulate touch using mouse input|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="X" dstnodeid="25" dstpinname="Input X" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Y" dstnodeid="25" dstpinname="Input Y" hiddenwhenlocked="1">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="270" top="705" type="Node" width="3540">
+   </BOUNDS>
+   <BOUNDS height="315" left="270" top="705" type="Box" width="6480">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Checks if one or more cursors are over quads (in 3d space) and provides additional info|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.8.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10650" top="6030" width="1185" height="1530">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10650" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Pointer Index|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4620" top="6030" width="435" height="4080">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4620" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="14">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Touched">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="14" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="34" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="12000" top="6030" width="1185" height="1530">
+   </BOUNDS>
+   <BOUNDS type="Node" left="12000" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Nearest Quad|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="42" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5700" top="6030" width="1350" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5700" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Quad Index|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7155" top="6030" width="1350" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7155" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Pointer Count|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8625" top="6030" width="1350" height="1515">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8625" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Pointer List|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5640" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5640" top="7875" width="1440" height="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Lists the &quot;nearest&quot; touched quads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7140" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7140" top="7875" width="1440" height="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Lists how many pointers actually do touch the specific quad. It also acts as a kind of bin size for &quot;Pointer List&quot;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8640" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8640" top="7875" width="1320" height="1365">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The indices of the pointers that touch a certain quad.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6480" top="4740" width="1605" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6480" top="4740" width="2850" height="420">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&quot;Quad&quot; point-of-view|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="51" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11565" top="4740" width="1605" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11565" top="4740" width="2850" height="420">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&quot;Pointer&quot; point-of-view|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="52" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10620" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10620" top="7875" width="1275" height="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Index of the pointers that touch a quad|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11940" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11940" top="7875" width="1335" height="1620">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Index of the nearest quad touched by this pointer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="54" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14910" top="10770" width="1005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14910" top="10770" width="1005" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|2015, motzi|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6030" top="5280" width="1005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6030" top="5280" width="4155" height="465">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain quad which pointer is over it, use these infos below|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11565" top="5280" width="1005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11565" top="5280" width="3465" height="570">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you need to know for a certain pointer which quad it touches, use these infos below|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="13365" top="6030" width="1185" height="1530">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13365" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Quad Count|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="58" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="13305" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13305" top="7875" width="1380" height="1620">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Number of quads this pointer actually touches. It also acts as a kind of bin size for &quot;Quad List&quot;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="14730" top="6030" width="1185" height="1530">
+   </BOUNDS>
+   <BOUNDS type="Node" left="14730" top="6030" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Quad List|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="60" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="14700" top="7875" width="1275" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14700" top="7875" width="1440" height="1605">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|All the quads touched by the pointer|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="67" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9510" top="10110" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9510" top="10110" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|also see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Button (3d Mesh)" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Mesh).v4p" nodename="Button (3d Mesh)" componentmode="Hidden" id="63">
+   <BOUNDS type="Node" left="10305" top="10620" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Button (3d Quad)" filename="%VVVV%\lib\nodes\modules\3D\Button (3d Quad).v4p" nodename="Button (3d Quad)" componentmode="Hidden" id="62">
+   <BOUNDS type="Node" left="11205" top="10620" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="BUTTON (3D MESH MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Mesh Multitouch).v4p" nodename="Button (3d Mesh Multitouch)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="10260" top="10125" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <INFO author="motzi" description="" tags="">
+   </INFO>
+   <NODE id="31" systemname="BUTTON (3D QUAD MULTITOUCH)" filename="%VVVV%\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" nodename="Button (3d Quad Multitouch)" componentmode="Hidden">
+   <BOUNDS type="Node" left="3645" top="3900" width="11835" height="270">
+   </BOUNDS>
+   <PIN pinname="Index of Nearest" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Mouse Over" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1">
+   </PIN>
+   <PIN pinname="Transform Quad" visible="1">
+   </PIN>
+   <PIN pinname="Pointer Transform" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="1845" top="0" width="11940" height="15150">
+   </BOUNDS>
+   <PIN pinname="Touched ID" visible="1">
+   </PIN>
+   <PIN pinname="BinSize" visible="1">
+   </PIN>
+   <PIN pinname="Pointer ID" visible="1">
+   </PIN>
+   <PIN pinname="Touched Bin Size" visible="1">
+   </PIN>
+   <PIN pinname="Index Of Touched" visible="1">
+   </PIN>
+   <PIN pinname="Quad Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Touched" dstnodeid="17" dstpinname="Input 1" linkstyle="Bezier">
+   <LINKPOINT x="2120" y="4530">
+   </LINKPOINT>
+   <LINKPOINT x="1915" y="5145">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Transform Out" dstnodeid="31" dstpinname="Transform Quad">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Touched" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="View Projection" dstnodeid="31" dstpinname="View Projection" linkstyle="Bezier">
+   <LINKPOINT x="13275" y="3683">
+   </LINKPOINT>
+   <LINKPOINT x="14595" y="3683">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="31" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Pointer Index" dstnodeid="32" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Touched" dstnodeid="33" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Quad Index" dstnodeid="42" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Pointer Count" dstnodeid="41" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Pointer List" dstnodeid="44" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Quad Count" dstnodeid="59" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Quad List" dstnodeid="61" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Pointer Transform" dstnodeid="12" dstpinname="Transform In" linkstyle="Bezier">
+   <LINKPOINT x="15420" y="5198">
+   </LINKPOINT>
+   <LINKPOINT x="3060" y="5198">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Index of Nearest" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Quad Index" dstnodeid="15" dstpinname="Index">
+   </LINK>
+   </PATCH>

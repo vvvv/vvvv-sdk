@@ -1,0 +1,151 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha22.dtd" >
+   <PATCH nodename="C:\Programme\vvvv\vvvv_40beta21\help\Sun (Astronomy) help.v4p">
+   <BOUNDS height="3165" left="5145" top="1320" type="Window" width="11805">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="3195">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="18540" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the horizontal coordinates of the sun at a given time (GMT) and place.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="2910">
+   </BOUNDS>
+   <BOUNDS height="160" left="510" top="18540" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sun - Astronomy|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="Sun (Astronomy)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="7920" top="1485" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Latitude" visible="1">
+   </PIN>
+   <PIN pinname="Longitude" visible="1">
+   </PIN>
+   <PIN pinname="Azimuth" visible="1">
+   </PIN>
+   <PIN pinname="Elevation" visible="1">
+   </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="0" top="1020" width="5730" height="1740">
+   </BOUNDS>
+   <BOUNDS type="Box" left="0" top="1020" width="5505" height="1695">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Negative elevation means the sun is not visible because it is underneath the&cr;&lf;horizon, whereas 90 degrees means the zenith; the azimuth is defined as 0&cr;&lf;degrees for south direction, 90 degrees for west and so on.&cr;&lf;&cr;&lf;The observer&apos;s latitude is negative for the southern hemisphere and positive&cr;&lf;for the northern hemisphere; the longitude is positive for points west of&cr;&lf;Greenwich, negative for points east, and both given in degrees.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="7380" top="465" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7380" top="465" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12915" top="3420" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="50.1167">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Latitude">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Latitude">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="8490" top="450" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8490" top="450" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14025" top="3405" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="-7.3167">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Longitude">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Longitude" linkstyle="PolyLine">
+   <LINKPOINT x="9240" y="1125">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="6735" top="2160" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6735" top="2160" width="780" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12270" top="6360" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Azimuth">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Azimuth" dstnodeid="20" dstpinname="Y Input Value" linkstyle="PolyLine">
+   <LINKPOINT x="7470" y="2055">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="7590" top="2145" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7590" top="2145" width="780" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14010" top="6000" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Elevation">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Elevation" dstnodeid="21" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22">
+   <BOUNDS type="Node" left="9345" top="420" width="1740" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9345" top="420" width="2250" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Frankfurt / Main Germany|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="CurrentTime (Astronomy)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="6120" top="495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="GMT" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="GMT" dstnodeid="16" dstpinname="Time" linkstyle="PolyLine">
+   <LINKPOINT x="6135" y="1170">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>
