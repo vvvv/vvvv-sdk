@@ -96,6 +96,10 @@ namespace VVVV.Nodes.Input
                                     var wheelNotification = n as MouseWheelNotification;
                                     InputSimulator.Mouse.VerticalScroll(wheelNotification.WheelDelta);
                                     break;
+                                case MouseNotificationKind.MouseHorizontalWheel:
+                                    var hwheelNotification = n as MouseHorizontalWheelNotification;
+                                    InputSimulator.Mouse.HorizontalScroll(hwheelNotification.WheelDelta);
+                                    break;
                                 default:
                                     break;
                             }
