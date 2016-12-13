@@ -15,7 +15,7 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "TweakTime", Category = "VVVV", Version = "LowLatency", AutoEvaluate = true)]
 	#endregion PluginInfo
-	public class LowLatencyVVVVTweakTimeNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+	public class LowLatencyVVVVTweakTimeNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
 		//, ITimeProvider
 	{
 		[Input("Time")]
@@ -79,6 +79,11 @@ namespace VVVV.Nodes
 						FHost.SetFrameTimeProvider((ITimeProvider)null);
 				}
 			}
+		}
+		
+		public void Dispose()
+		{
+			Enabled = false;
 		}
 	}
 }
