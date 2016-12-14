@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.107.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 2d) help.v4p">
-   <BOUNDS type="Window" left="840" top="1620" width="7620" height="8460">
+   <BOUNDS type="Window" left="300" top="825" width="8280" height="8460">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -19,7 +19,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="225" top="600" width="3060" height="315">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Draws 2d points within projection space.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Draws 2d points in 2d world space.|">
    </PIN>
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
@@ -29,7 +29,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="345" top="6975" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="8265" top="1620" width="6240" height="6195">
+   <BOUNDS type="Window" left="8460" top="885" width="6240" height="6195">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
@@ -47,7 +47,7 @@
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="4740" top="2655" width="13995" height="11175">
+   <BOUNDS type="Window" left="4740" top="2655" width="13995" height="6180">
    </BOUNDS>
    <PIN pinname="Inner Radius" slicecount="1" visible="1" values="0.54">
    </PIN>
@@ -340,16 +340,16 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Point (DX9 2d Projected)" filename="%VVVV%\lib\nodes\modules\EX9\Point (DX9 2d Projected).v4p" nodename="Point (DX9 2d Projected)" componentmode="Hidden" id="35">
+   <NODE systemname="Point (DX9 2d ProjectionSpace)" filename="%VVVV%\lib\nodes\modules\EX9\Point (DX9 2d ProjectionSpace).v4p" nodename="Point (DX9 2d ProjectionSpace)" componentmode="Hidden" id="35">
    <BOUNDS type="Node" left="4170" top="6510" width="100" height="100">
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36">
    <BOUNDS type="Node" left="5295" top="6510" width="1860" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="5295" top="6510" width="1860" height="270">
+   <BOUNDS type="Box" left="5295" top="6510" width="2325" height="300">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Point (DX9 2d Projected)|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Point (DX9 2d ProjectionSpace)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -379,9 +379,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="40">
    <BOUNDS type="Node" left="3075" top="1350" width="7500" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3075" top="1350" width="4185" height="735">
+   <BOUNDS type="Box" left="3075" top="1350" width="4410" height="1020">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|This module draws points in the World Space. So the points, like all other objects in the world are moving when the Camera moves.&cr;&lf;Rightclick and drag in the Renderer to move the Camera.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This module draws points in the World Space. So the points, like all other objects in the world are moving when the Camera moves. Try rightclick and drag in the Renderer to move the Camera.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
