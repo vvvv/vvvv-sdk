@@ -47,6 +47,7 @@
   <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build">
     <RemoveDir Directories="$(DeployDir)" />
     <Message Text="Deploying to $(DeployDir)" Importance="High" />
+    <!-- Copy files to deploy directory (public/build/vvvv_VERSION) -->
     <CreateItem Include="$(DeployInclude)" Exclude="$(DeployExclude)">
       <Output ItemName="FilesToDeploy" TaskParameter="Include" />
     </CreateItem>
@@ -55,10 +56,16 @@
           SkipUnchangedFiles="true" 
           OverwriteReadOnlyFiles="true" 
           ContinueOnError="true" />
-    <Exec Condition="'$(DeployReadOnlyFiles)' != ''"
-          Command="attrib +R &quot;$(DeployDir)$(DeployReadOnlyFiles)&quot; /S /D" />
-    <Exec Condition="'$(DeployHiddenFiles)' != ''"
-          Command="attrib +H &quot;$(DeployDir)$(DeployHiddenFiles)&quot;" />
+    <!-- Set read-only flags -->
+    <CombinePath BasePath="$(DeployDir)" Paths="$(DeployReadOnlyFiles)">
+      <Output TaskParameter="CombinedPaths" ItemName="_DeployReadOnlyFiles"/>
+    </CombinePath>
+    <Exec Command="attrib +R &quot;%(_DeployReadOnlyFiles.Identity)&quot; /S /D" />
+    <!-- Set hidden flags -->
+    <CombinePath BasePath="$(DeployDir)" Paths="$(DeployHiddenFiles)">
+      <Output TaskParameter="CombinedPaths" ItemName="_DeployHiddenFiles" />
+    </CombinePath>
+    <Exec Command="attrib +H &quot;%(_DeployHiddenFiles.Identity)&quot;" />
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
     <!-- Call /nodelist without any arguments to include native nodes -->
     <Exec Condition="Exists('$(DeployedVVVVExe)')"
