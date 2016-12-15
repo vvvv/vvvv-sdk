@@ -439,7 +439,8 @@ namespace VVVV.PluginInterfaces.V2
 
         private static void SetIOProperties(IPluginIO pin, IOAttribute attribute)
         {
-            pin.Order = attribute.Order;
+            if (attribute.Order != pin.Order)
+                pin.Order = attribute.Order;
         }
 
         private static void SetInputProperties(IPluginIn input, InputAttribute attribute)
