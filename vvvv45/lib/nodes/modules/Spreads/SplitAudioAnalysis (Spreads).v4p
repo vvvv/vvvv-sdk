@@ -1,0 +1,221 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.2.dtd" >
+   <PATCH nodename="X:\vvvv40\modules\tonfilms\SplitAudioAnalysis (Spreads).v4p">
+   <BOUNDS height="6000" left="12540" top="10035" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1425" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4440" top="10125" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1425" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Sound Volumes|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2925" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6135" top="10080" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2925" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Beat Bang|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4050" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8385" top="9105" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4050" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Beat Decay|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5385" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9675" top="9165" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5385" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Energy">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7110" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18120" top="13875" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7110" top="4515" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Beat">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="8565" top="4500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="19245" top="13905" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="8565" top="4500" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Phase">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="255" top="4530" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11730" top="7935" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="255" top="4530" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="FFT">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="630" top="1050" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2550" top="3660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="630" top="1050" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Audio Analysis|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="990" top="3255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="18">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="256">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="5" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="2175" top="3285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="3360" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="4545" top="3345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="8">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="5730" top="3375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="1" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="7170" top="3330" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <NODE id="0" nodename="GetSpread (Spreads)">
+   <BOUNDS height="0" left="8475" top="3330" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Offset" slicecount="1" values="17">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Input" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <INFO author="tonfilm" description="module to split the values from the AudioAnalysis node" tags="audio, vj">
+   </INFO>
+   </PATCH>

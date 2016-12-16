@@ -1,0 +1,725 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
+   <PATCH nodename="X:\vvvv33svn\public\vvvv33\effects\GouraudPoint help.v4p">
+   <BOUNDS height="9585" left="495" top="5490" type="Window" width="9540">
+   </BOUNDS>
+   <NODE id="36" nodename="Box (EX9.Geometry)">
+   <BOUNDS height="0" left="900" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0.75">
+   </PIN>
+   <PIN pinname="Depth" slicecount="1" values="0.75">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.75">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="35" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4125" top="3030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3990" top="7410" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="825" left="4125" top="3030" type="Box" width="780">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,-0.26,0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   </NODE>
+   <NODE id="34" nodename="Sphere (EX9.Geometry)">
+   <BOUNDS height="0" left="1200" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Radius " slicecount="1" values="0.70000">
+   </PIN>
+   <PIN pinname="Slices " slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Stacks " slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <NODE id="33" nodename="Cylinder (EX9.Geometry)">
+   <BOUNDS height="0" left="1500" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Radius 1" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Radius 2" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Stacks " slicecount="1" values="10.00000">
+   </PIN>
+   <PIN pinname="Slices " slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <NODE id="32" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2355" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="31" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2655" top="4275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE id="30" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="2955" top="4575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="29" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="2055" top="7290" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="FOV" slicecount="1" values="0.25">
+   </PIN>
+   </NODE>
+   <NODE id="28" nodename="Transform (Transform 3d)">
+   <BOUNDS height="0" left="4050" top="7395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateZ" slicecount="1" values="1.36">
+   </PIN>
+   <PIN pinname="TranslateY" slicecount="1" values="-0.899999999999999">
+   </PIN>
+   <PIN pinname="Yaw" slicecount="1" visible="1" values="0.45000">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="CenterX" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="TranslateX" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="27" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="4065" top="6960" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="-0.1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Transform In" srcnodeid="27" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="26" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="5325" top="6945" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Pause" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="28" dstpinname="Yaw" srcnodeid="26" srcpinname="Output">
+   </LINK>
+   <NODE id="25" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="3255" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <NODE id="24" nodename="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="1800" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Text">
+   </PIN>
+   <PIN pinname="Radius 1">
+   </PIN>
+   <PIN pinname="Radius 2">
+   </PIN>
+   <PIN pinname="Stacks ">
+   </PIN>
+   <PIN pinname="Slices ">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6270" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6960" top="9375" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6270" top="4830" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7185" top="4815" type="Node" width="930">
+   </BOUNDS>
+   <BOUNDS height="270" left="7185" top="4815" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|light range|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6210" top="5355" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7125" top="9900" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6210" top="5355" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="270" left="7125" top="5340" type="Node" width="2325">
+   </BOUNDS>
+   <BOUNDS height="270" left="7125" top="5340" type="Box" width="2325">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|shininess of specular highlight|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="270" left="4980" top="3210" type="Node" width="3945">
+   </BOUNDS>
+   <BOUNDS height="525" left="4980" top="3210" type="Box" width="2190">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|play with the lights position for better understanding|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="255" left="0" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="0" top="390" type="Box" width="3960">
+   </BOUNDS>
+   <BOUNDS height="160" left="10800" top="43860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|gouraud shaded blinn lighting with a single pointlight|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="270" left="0" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="0" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10800" top="43860" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GouraudPoint (EX9.Effect)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Renderer (EX9)" componentmode="InAWindow">
+   <BOUNDS height="0" left="765" top="7875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="495" top="510" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="765" top="7875" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Group (EX9)">
+   <BOUNDS height="0" left="765" top="7275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="15" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Projection Transform" srcnodeid="29" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="View Transform" srcnodeid="28" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="14" nodename=":EFFECTS:\GouraudPoint.fx">
+   <BOUNDS height="0" left="750" top="5355" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="13230" left="10125" top="315" type="Window" width="11925">
+   </BOUNDS>
+   <BOUNDS height="3600" left="750" top="5355" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Light Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.50000,0.50000,0.50000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Range" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   <PIN pinname="Color Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient">
+   </PIN>
+   <PIN pinname="Specular">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Attenuation 0" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Light Attenuation 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Light Attenuation 2" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Mesh" srcnodeid="36" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Transform" srcnodeid="32" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Light Range" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Power" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layer 1" srcnodeid="14" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="13" nodename=":EFFECTS:\GouraudPoint.fx">
+   <BOUNDS height="0" left="1050" top="5700" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6720" left="6180" top="10005" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1050" top="5700" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Light Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.50000,0.50000,0.50000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Range" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   <PIN pinname="Color Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient">
+   </PIN>
+   <PIN pinname="Specular">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Attenuation 0" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Light Attenuation 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Light Attenuation 2" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Mesh" srcnodeid="34" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Transform" srcnodeid="31" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Light Range" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Power" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layer 2" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="12" nodename=":EFFECTS:\GouraudPoint.fx">
+   <BOUNDS height="0" left="1350" top="6045" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6720" left="6480" top="10305" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1350" top="6045" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Light Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Enable SliceWise" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.50000,0.50000,0.50000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Range" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   <PIN pinname="Color Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient">
+   </PIN>
+   <PIN pinname="Specular">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Attenuation 0" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Light Attenuation 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Light Attenuation 2" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Mesh" srcnodeid="33" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Transform" srcnodeid="30" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Light Range" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Power" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layer 3" srcnodeid="12" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename=":EFFECTS:\GouraudPoint.fx">
+   <BOUNDS height="0" left="1650" top="6375" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6720" left="6780" top="10605" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1650" top="6375" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Light Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Enable SliceWise" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Diffuse">
+   </PIN>
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.50000,0.50000,0.50000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Range" visible="1">
+   </PIN>
+   <PIN pinname="Power" visible="1">
+   </PIN>
+   <PIN pinname="Color Transform" visible="1">
+   </PIN>
+   <PIN pinname="Ambient">
+   </PIN>
+   <PIN pinname="Specular">
+   </PIN>
+   <PIN pinname="Specular Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Light Attenuation 0" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Light Attenuation 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Light Attenuation 2" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Technique Valid" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="25" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Mesh" srcnodeid="24" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Light Range" srcnodeid="23" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Power" srcnodeid="21" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layer 4" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="420" top="1650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3000" top="9000" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="435" left="420" top="1650" type="Box" width="1560">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="| TGouraudPoint|">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Technique" srcnodeid="10" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Technique" srcnodeid="10" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Technique" srcnodeid="10" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Technique" srcnodeid="10" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="2085" top="1560" type="Node" width="5925">
+   </BOUNDS>
+   <BOUNDS height="540" left="2085" top="1560" type="Box" width="5325">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|both techniques should show the same result if your graphiccard can do shaders. if not, at least TGouraudPointFF should work.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Switch (String Input)">
+   <BOUNDS height="0" left="3135" top="8010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="|your graphiccard does not support shaders!|">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="|your graphiccard supports at least vs1.1 and ps1.4|">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="GetSlice (Spreads)">
+   <BOUNDS height="0" left="3150" top="7530" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Switch" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="0" left="270" top="8625" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4920" top="15315" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="270" top="8625" type="Box" width="7995">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input String" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Input" srcnodeid="11" srcpinname="Technique Valid">
+   </LINK>
+   <NODE id="5" nodename="HSL (Transform)">
+   <BOUNDS height="0" left="6555" top="6795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Hue" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Lightness Min" visible="1">
+   </PIN>
+   <PIN pinname="Lightness Max" visible="1">
+   </PIN>
+   <PIN pinname="Luminance Adaption" slicecount="1" values="|Preserve Luminance (NTSC color space)|">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Switch (Value Input)">
+   <BOUNDS height="0" left="7155" top="6285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="0.6">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Lightness Min" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="Switch (Value Input)">
+   <BOUNDS height="0" left="7860" top="6285" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Lightness Max" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="7530" top="6795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9075" top="11610" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="7530" top="6795" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Switch" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Switch" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="8385" top="6780" type="Node" width="615">
+   </BOUNDS>
+   <BOUNDS height="270" left="8385" top="6780" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="invert">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Color Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Color Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Color Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Color Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="0" nodename=":MODULES:\Light (EX9 Point).v4p">
+   <BOUNDS height="0" left="4845" top="4155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="8355" left="10170" top="3120" type="Window" width="10635">
+   </BOUNDS>
+   <BOUNDS height="3600" left="4845" top="4155" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Light Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Light Position" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="out1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Light Position" srcnodeid="35" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Light Position XYZ" srcnodeid="0" srcpinname="Light Position Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Light Position XYZ" srcnodeid="0" srcpinname="Light Position Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Light Position XYZ" srcnodeid="0" srcpinname="Light Position Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Light Position XYZ" srcnodeid="0" srcpinname="Light Position Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layer 5" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   </PATCH>

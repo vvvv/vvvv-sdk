@@ -1,0 +1,73 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33special9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Count (Color) help.v4p">
+   <BOUNDS type="Window" left="3870" top="1695" width="4170" height="3930">
+   </BOUNDS>
+   <NODE id="9" nodename="Count (Color)">
+   <BOUNDS height="0" left="960" top="2325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="960" top="1350" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6435" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="795" left="960" top="1350" type="Box" width="2580">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="3" values="|0.00000,0.72311,0.93242,1.00000|,|0.00000,0.40097,0.82475,1.00000|,|0.00000,0.10075,0.92742,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" srcnodeid="8" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="570" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4920" top="6255" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="570" top="2790" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Count">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="270" left="180" top="135" type="Node" width="1140">
+   </BOUNDS>
+   <BOUNDS height="495" left="180" top="135" type="Box" width="2235">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count (Color)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="195" top="630" type="Node" width="3345">
+   </BOUNDS>
+   <BOUNDS height="270" left="195" top="630" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Count the number of slices in a color spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
