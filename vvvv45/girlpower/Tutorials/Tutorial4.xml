@@ -6,7 +6,11 @@ Now we're getting to it: Here is how you create nodes!
 
 The patch below already draws a grid of Quads. By adding two nodes we'll be making the example a bit interactive: Depending on the distance of each quad to the mouse cursor its size will be adapted...  
   </English>
-  <Deutsch></Deutsch>
+  <Deutsch>
+Jetzt gehts los: Hier lernst du, wie du Nodes anlegst! 
+
+Der Patch unten zeigt bereits ein paar im Gitter angeordnete Quadrate. Indem wir den Patch um zwei Nodes erweitern werden wir ihn etwas interaktiver machen: Abhängig von der Distanz jedes Quads zum Mauscursor wollen wir seine Grösse verändern...
+  </Deutsch>
   <Russian></Russian>
 </Entry>
 <Entry id="1" prefix="">
@@ -15,7 +19,11 @@ Double leftclick in the empty space next to the GridSpread node to bring up the 
 
 Then, a bit below the new Mouse node doubleclick again to create a node named 'Distance (2d).
 </English>
-  <Deutsch></Deutsch>
+  <Deutsch>
+Ein Doppelklick an einer freien Stelle im Patch, am besten neben dem GridSpread Node, ruft den Nodebrowser auf. Tippe 'Mouse' und wähle dann von der gefilterten Liste von verfügbaren Nodes die zweite Option mit der Bezeichnung 'Mouse (Devices Window)' mit einem Klick. Der neue Node kann jetzt mittels drag-drop an eine beliebige Stelle im Patch verschoben werden.
+
+Dann doppelklicke noch einmal, etwas unterhalb des Mouse Nodes und erzeuge den Node 'Distance (2d)'.
+  </Deutsch>
   <Russian></Russian>
 </Entry>
 <Entry id="2" prefix="">
@@ -28,7 +36,15 @@ When you now connect the 'Distance' output to the 'XYZ' input of the UniformScal
 
 Further you notice that the rendering has changed. Move the mouse over the renderer to see how now the quads with a small distance to the cursor are drawn smaller and all the others are drawn bigger.
   </English>
-  <Deutsch></Deutsch>
+  <Deutsch>
+Jetzt verbinden wir den Output vom GridSpread Node an den ersten Input des Distance Nodes und den 'PositionXY' Output des Mouse Nodes an den zweiten Input des Distance Nodes.
+
+Das gibt uns die Distanz zwischen jeder der Positionen im Gitter und der aktuellen Mausposition.
+
+Wenn du jetzt den 'Distance' Output an den 'XYZ' Input des UniformScale Nodes verbindest, wirst du sehen, dass die Verbindung dahin von der IOBox, die vorher bestand verschwunden ist. Das liegt daran, dass jeder Input in vvvv immer nur einen Link akzeptieren kann!
+
+Asserdem wirst du bemerkt haben, dass sich das Ergebnis im Renderer bereits verändert hat: Quads mit einer kurzen Distanz zum Cursor werden jetzt kleiner gezeichnet, als Quads, die weiter entfernt sind. 
+  </Deutsch>
   <Russian></Russian>
 </Entry>
 <Entry id="3" prefix="">
@@ -39,7 +55,13 @@ Doubleclick in the patch, type 'map' and then chose the first option: Map (Value
 
 Now identify the 'Destination Maximum' input on the Map node, click it and press the middle mousebutton in the patch to create an IOBox for this parameter. Change the value to around 0.1 and then move your mouse over the renderer to see the result.
 </English>
-  <Deutsch></Deutsch>
+  <Deutsch>
+Jetzt lass uns noch einen 'Map (Value)' Node zwischen Distance und UniformScale einfügen um kontrollieren zu können, wie die Distanz die Grösse beeinflusst. 
+
+Also ein Doppelklick in den Patch, dann 'map' tippen und die ersten Option: Map (Value) auswählen. Verbinde jetzt den Output vom Distance Node mit dem ersten Input des Map Nodes, dann dessen Output mit dem XYZ Input von UniformScale (dabei wieder den zuvor existierenden Link ersetzen).
+
+Jetzt suchen wir den Input 'Destination Maximum' am Map Node, klicken ihn und erzeugen dann eine IOBox im Patch durch einen Mittelklick. Ändere den Wert auf etwa 0.1 und bewege dann die Maus im Renderer um das Ergebnis zu sehen. 
+  </Deutsch>
   <Russian></Russian>
 </Entry>
 <Entry id="4" prefix="">
@@ -48,7 +70,11 @@ If you want to compare your result to what we we're hoping you would get, you ca
 Press the right mousebutton in an empty area of the patch and drag to the left to move the patch in this direction:
 ----------&gt;
 </English>
-  <Deutsch></Deutsch>
+  <Deutsch>
+Wenn du dein Ergebnis vergleichen willst, mit dem wie's gedacht war, dann kannst du den Patch nach rechts scrollen:
+Drück dazu die rechte Maustaste an einer freien Stelle im Patch und ziehe nach links um den Patch in diese Richtung zu bewegen:
+----------&gt;
+  </Deutsch>
   <Russian></Russian>
 </Entry>
 </Entries>

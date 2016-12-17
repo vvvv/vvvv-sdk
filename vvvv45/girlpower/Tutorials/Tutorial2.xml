@@ -8,16 +8,24 @@ Don't worry if you don't understand the whole patch yet. In this tutorial we sim
 
 In the renderer you see a randomly moving pointcloud where dots whose distance is below a certain threshold are connected by a line. Let's see how we can manipulate the animation a bit..
 </English>
-<Deutsch>Werte verändern.</Deutsch>
+<Deutsch>
+IOBoxen zu einem bestehenden Patch hinzufügen.
+
+Keine Sorgen, wenn du den Patch unten noch nicht verstehst. In diesem Tutorial geht es nur darum dir zu zeigen, wie du einzelne Parameter bestehender Patches modifizieren kannst, indem du IOBoxen hinzufügst. 
+
+Im Renderer unten siehst du eine sich zufällig bewegende Punktewolke. Punkte, zwischen denen die Distanz geringer als ein gewisser Wert ist, sind mit einer Linie verbunden. Mal schaun, wie wir die Animation etwas verändern können...
+</Deutsch>
 <Russian>Как изменять значения.</Russian>
 </Entry>
 <Entry id="1" prefix="">
 <English>
-On the &lt; node hover the second input called 'Input 2' to see there is already a value in that pin. In order to control that value via an IOBox click the input to start a link from it, then middle click (or press SPACE and right-click) to create an IOBox anywhere in the patch. Besides the IOBox there'll appear a list of options (Bang, Toggle, Press,...) which you can simply ignore for now. Move the mouse away a bit to get rid of it. 
+On the &lt; node hover the second input called 'Input 2' to see there is already a value or 0.2 in that pin. In order to control that value via an IOBox click the input to start a link from it, then middle click (or press SPACE and right-click) to create an IOBox anywhere in the patch. Besides the IOBox there'll appear a list of options (Bang, Toggle, Press,...) which you can simply ignore for now. Move the mouse away a bit to get rid of it. 
 
 Note that as you change this value more or less points will be connected.
 </English>
-<Deutsch></Deutsch>
+<Deutsch>
+Wenn du beim beim &lt; Node mit der Maus über den zweiten Input namens 'Input 2' fährst, siehst du, dass dieser Pin schon einen Wert von 0.2 hat. Um diesen Wert mit einer IOBox zu verändern klicke den Pin mit der linken Maustaste. Damit startest du einen Link. Jetzt kannst du irgendwo im Patch mit einem Mittelklick (oder SPACE + Rechtsklick) eine IOBox erzeugen. Neben der IOBox erscheint dabei eine Auswahlliste (Bang, Toggle, Press,...) die du erstmal ignorieren kannst. Wenn du die Maus etwas wegbewegst, verschwindet die Liste.
+</Deutsch>
 <Russian>
 Это Bang IOBox. Кликни правой кнопкой мышки внутри. В этот момент Counter посчитает вверх.
 </Russian>
@@ -30,7 +38,13 @@ Now let's change the width of the line. Find the 'Width' input on the Line node 
 
 Change the value in this IOBox to get fatter lines.
 </English>
-<Deutsch></Deutsch>
+<Deutsch>
+Um die Farbe der Linien zwischen den Punkten zu ändern müssen wir eine IOBox an den Input mit der Bezeichnung 'Color' des Line Nodes hängen. Dazu wieder auf diesen Input klicken und danach ein Mittelklick irgendwo im Patch um eine Farb IOBox anzulegen. 
+
+Jetzt noch die Breite der Linie: Dazu suchen wir den Input 'Width' am Line Node und legen wieder eine IOBox an, aber diesmal beachten wir die Auswahlliste und drücken auf den Eintrag 'Integer' um eine IOBox zu bekommen, die in Ganzzahlschritten arbeitet. 
+
+Verändere diesen Wert um die Dicke der Linie zu beeinflussen.
+</Deutsch>
 <Russian>
 Нажми правой кнопкой мышки в Value IOBox и держа кнопку нажатой поводи мышкой вверх-вниз, чтобы поменять значение. Это значение определяет количество точек, которые будут отрисованы.
 </Russian>
@@ -40,7 +54,7 @@ Change the value in this IOBox to get fatter lines.
 Finally let us change the shape of the points by finding the 'Type' input on the Point node and creating an IOBox as we just learned: Click the input and then middle-click anywhere in the patch to get an enumeration IOBox. Then rightclick the IOBox to choose between 'Rectangle, Triangle, Circle'.
 </English>
 <Deutsch>
-Drücke die rechte Maustaste in der Auswahl-IOBox um eine andere Schriftart auszuwählen
+Und jetzt wollen wir noch die Form der Punkte verändern. Dazu suchen wir den Input 'Type' am Point Node und legen wieder eine IOBox an: Erst ein Klick auf den Input, dann ein Mittelklick irgendwo in der Nähe um eine Enumeration IOBox zu bekommen. Diese ist wieder mit der rechten Maustaste zu bedienen und lässt uns zwischen 'Rechteck, 'Dreieck' und 'Kreis' wählen.
 </Deutsch>
 <Russian>
 Кликни правой кнопокой мышки в Enumeration IOBox, чтобы выбрать другой шрифт.
@@ -85,4 +99,16 @@ For more details on using IOBoxes see:
 - Все эти правила также применимы и к pin.
 </Russian>
 </Entry>
+<Entry id="4" prefix="">
+<English>
+For more details on using IOBoxes, see:
+</English>
+<Deutsch>
+Für weitere Details zur IOBox, siehe:
+</Deutsch>
+<Russian>
+
+</Russian>
+</Entry>
+
 </Entries>

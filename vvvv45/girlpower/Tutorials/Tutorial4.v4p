@@ -1,5 +1,5 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Tutorials\Tutorial4.v4p" scrollx="0" scrolly="-2340" systemname="Tutorial4" filename="C:\Users\joreg\Documents\repos\vvvv-tutorials\Tutorial4.v4p" locked="0">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Tutorials\Tutorial4.v4p" scrollx="0" scrolly="-720" systemname="Tutorial4" filename="C:\Users\joreg\Documents\repos\vvvv-tutorials\Tutorial4.v4p" locked="0">
    <BOUNDS type="Window" left="6990" top="240" width="14085" height="14985">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="6">
@@ -49,7 +49,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8415" top="4005" width="4380" height="4860">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Now connect the output of the GridSpread node to the first input of the Distance node and the &apos;PositionXY&apos; output of the Mouse node to the second second input of the Distance node.&lf;&lf;This will give you the distance between each of the grids points and the mouse position.&lf;&lf;When you now connect the &apos;Distance&apos; output to the &apos;XYZ&apos; input of the UniformScale node you&apos;ll notice that the existing connection on that pin to the IOBox is automatically removed because any input in vvvv can always only accept one connection!&lf;&lf;Further you notice that the rendering has changed. Move the mouse over the renderer to see how now the quads with a small distance to the cursor are drawn smaller and all the others are drawn bigger.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt verbinden wir den Output vom GridSpread Node an den ersten Input des Distance Nodes und den &apos;PositionXY&apos; Output des Mouse Nodes an den zweiten Input des Distance Nodes.&lf;&lf;Das gibt uns die Distanz zwischen jeder der Positionen im Gitter und der aktuellen Mausposition.&lf;&lf;Wenn du jetzt den &apos;Distance&apos; Output an den &apos;XYZ&apos; Input des UniformScale Nodes verbindest, wirst du sehen, dass die Verbindung dahin von der IOBox, die vorher bestand verschwunden ist. Das liegt daran, dass jeder Input in vvvv immer nur einen Link akzeptieren kann!&lf;&lf;Asserdem wirst du bemerkt haben, dass sich das Ergebnis im Renderer bereits verändert hat: Quads mit einer kurzen Distanz zum Cursor werden jetzt kleiner gezeichnet, als Quads, die weiter entfernt sind.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -83,7 +83,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4275" top="765" width="3495" height="2445">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Now we&apos;re getting to it: Here is how you create nodes! &lf;&lf;The patch below already draws a grid of Quads. By adding two nodes we&apos;ll be making the example a bit interactive: Depending on the distance of each quad to the mouse cursor its size will be adapted...|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt gehts los: Hier lernst du, wie du Nodes anlegst! &lf;&lf;Der Patch unten zeigt bereits ein paar im Gitter angeordnete Quadrate. Indem wir den Patch um zwei Nodes erweitern werden wir ihn etwas interaktiver machen: Abhängig von der Distanz jedes Quads zum Mauscursor wollen wir seine Grösse verändern...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -151,7 +151,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8415" top="9090" width="4515" height="4170">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Finally let us place a &apos;Map (Value)&apos; node between the Distance and the UniformScale node to better control how the distance influences the size.&lf;&lf;Doubleclick in the patch, type &apos;map&apos; and then chose the first option: Map (Value). Connect the output of the Distance node to the Map nodes input and the Map nodes output to the UniformScale&apos;s XYZ input (again replacing the previously existing link).&lf;&lf;Now identify the &apos;Destination Maximum&apos; input on the Map node, click it and press the middle mousebutton in the patch to create an IOBox for this parameter. Change the value to around 0.1 and then move your mouse over the renderer to see the result.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt lass uns noch einen &apos;Map (Value)&apos; Node zwischen Distance und UniformScale einfügen um kontrollieren zu können, wie die Distanz die Grösse beeinflusst. &lf;&lf;Also ein Doppelklick in den Patch, dann &apos;map&apos; tippen und die ersten Option: Map (Value) auswählen. Verbinde jetzt den Output vom Distance Node mit dem ersten Input des Map Nodes, dann dessen Output mit dem XYZ Input von UniformScale (dabei wieder den zuvor existierenden Link ersetzen).&lf;&lf;Jetzt suchen wir den Input &apos;Destination Maximum&apos; am Map Node, klicken ihn und erzeugen dann eine IOBox im Patch durch einen Mittelklick. Ändere den Wert auf etwa 0.1 und bewege dann die Maus im Renderer um das Ergebnis zu sehen.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -169,7 +169,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8415" top="795" width="4290" height="2955">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Double leftclick in the empty space next to the GridSpread node to bring up the nodebrwoser. Type &apos;Mouse&apos; and from the now filtered list of available nodes choose the second option named &apos;Mouse (Devices Window)&apos; by clicking on it. Note how you can now simply drag-drop the node to find a good place for it in the patch. &lf;&lf;Then, a bit below the new Mouse node doubleclick again to create a node named &apos;Distance (2d).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Ein Doppelklick an einer freien Stelle im Patch, am besten neben dem GridSpread Node, ruft den Nodebrowser auf. Tippe &apos;Mouse&apos; und wähle dann von der gefilterten Liste von verfügbaren Nodes die zweite Option mit der Bezeichnung &apos;Mouse (Devices Window)&apos; mit einem Klick. Der neue Node kann jetzt mittels drag-drop an eine beliebige Stelle im Patch verschoben werden.&lf;&lf;Dann doppelklicke noch einmal, etwas unterhalb des Mouse Nodes und erzeuge den Node &apos;Distance (2d)&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -465,7 +465,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1815" top="12090" width="5085" height="1725">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you want to compare your result to what we we&apos;re hoping you would get, you can scroll the patch to the right:&lf;Press the right mousebutton in an empty area of the patch and drag to the left to move the patch in this direction:&lf;----------&gt;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Wenn du dein Ergebnis vergleichen willst, mit dem wie&apos;s gedacht war, dann kannst du den Patch nach rechts scrollen:&lf;Drück dazu die rechte Maustaste an einer freien Stelle im Patch und ziehe nach links um den Patch in diese Richtung zu bewegen:&lf;----------&gt;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
