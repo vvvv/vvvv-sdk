@@ -123,7 +123,7 @@ namespace TUIODecoder
                 IPluginInfo Info = new PluginInfo();
                 Info.Name = "TUIODecoder";							//use CamelCaps and no spaces
                 Info.Category = "Network";						//try to use an existing one
-                Info.Version = "1.0";						//versions are optional. leave blank if not needed
+                Info.Version = "1.0 Legacy";						//versions are optional. leave blank if not needed
                 Info.Help = "Takes a TUIO command string (for example from an UDP client), \ndecodes it and returns the parsed command";
                 Info.Bugs = "";
                 Info.Credits = "Thanks to the \"TUIO C# Library\" from the reacTIVision project";								//give credits to thirdparty code used
