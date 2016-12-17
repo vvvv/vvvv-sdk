@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entries>
+<Entry id="Subtitle" prefix="">
+  <English>
+Now we're getting to it: Here is how you create nodes! 
+
+The patch below already draws a grid of Quads. By adding two nodes we'll be making the example a bit interactive: Depending on the distance of each quad to the mouse cursor its size will be adapted...  
+  </English>
+  <Deutsch></Deutsch>
+  <Russian></Russian>
+</Entry>
+<Entry id="1" prefix="">
+  <English>
+Double leftclick in the empty space next to the GridSpread node to bring up the nodebrwoser. Type 'Mouse' and from the now filtered list of available nodes choose the second option named 'Mouse (Devices Window)' by clicking on it. Note how you can now simply drag-drop the node to find a good place for it in the patch. 
+
+Then, a bit below the new Mouse node doubleclick again to create a node named 'Distance (2d).
+</English>
+  <Deutsch></Deutsch>
+  <Russian></Russian>
+</Entry>
+<Entry id="2" prefix="">
+  <English>
+Now connect the output of the GridSpread node to the first input of the Distance node and the 'PositionXY' output of the Mouse node to the second second input of the Distance node.
+
+This will give you the distance between each of the grids points and the mouse position.
+
+When you now connect the 'Distance' output to the 'XYZ' input of the UniformScale node you'll notice that the existing connection on that pin to the IOBox is automatically removed because any input in vvvv can always only accept one connection!
+
+Further you notice that the rendering has changed. Move the mouse over the renderer to see how now the quads with a small distance to the cursor are drawn smaller and all the others are drawn bigger.
+  </English>
+  <Deutsch></Deutsch>
+  <Russian></Russian>
+</Entry>
+<Entry id="3" prefix="">
+  <English>
+Finally let us place a 'Map (Value)' node between the Distance and the UniformScale node to better control how the distance influences the size.
+
+Doubleclick in the patch, type 'map' and then chose the first option: Map (Value). Connect the output of the Distance node to the Map nodes input and the Map nodes output to the UniformScale's XYZ input (again replacing the previously existing link).
+
+Now identify the 'Destination Maximum' input on the Map node, click it and press the middle mousebutton in the patch to create an IOBox for this parameter. Change the value to around 0.1 and then move your mouse over the renderer to see the result.
+</English>
+  <Deutsch></Deutsch>
+  <Russian></Russian>
+</Entry>
+<Entry id="4" prefix="">
+  <English>
+If you want to compare your result to what we we're hoping you would get, you can scroll the patch to the right:
+Press the right mousebutton in an empty area of the patch and drag to the left to move the patch in this direction:
+----------&gt;
+</English>
+  <Deutsch></Deutsch>
+  <Russian></Russian>
+</Entry>
+</Entries>
