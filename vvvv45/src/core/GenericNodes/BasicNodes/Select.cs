@@ -43,11 +43,11 @@ namespace VVVV.Nodes.Generic
 
     public class Select<T> : IPluginEvaluate
     {
-        [Input("Input")]
+        [Input("Input", DimensionNames = new string[]{ "", "", "", "" })]
         protected IInStream<T> FDataIn;
         [Input("Select", CheckIfChanged = true)]
         protected IInStream<int> FSelectIn;
-        [Output("Output")]
+        [Output("Output", DimensionNames = new string[] { "", "", "", "" })]
         protected IOutStream<T> FDataOut;
         [Output("Former Slice")]
         protected IOutStream<int> FFormerSliceOut;
