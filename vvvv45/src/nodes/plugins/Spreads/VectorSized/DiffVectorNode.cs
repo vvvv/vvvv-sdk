@@ -14,9 +14,11 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class DifferentialVectorNode : IPluginEvaluate
 	{
-		#region fields & pins
-		#pragma warning disable 649
-		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
+        #region fields & pins
+        readonly VecBinSpread<double> spread = new VecBinSpread<double>();
+        
+        #pragma warning disable 649
+        [Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
 		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
@@ -48,7 +50,7 @@ namespace VVVV.Nodes
 				if (FInput.Length>0 && FVec.Length>0 && FBin.Length>0)
 				{
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
-					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin);
+                    spread.Sync(FInput,vecSize,FBin);
 					
 					FOutput.Length = Math.Max(spread.ItemCount-(spread.NonEmptyBinCount*vecSize),0);
 					FOutBin.Length = spread.Count;

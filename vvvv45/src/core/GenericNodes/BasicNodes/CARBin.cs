@@ -13,9 +13,11 @@ namespace VVVV.Nodes.Generic
 {
 	public class CARBin<T> : IPluginEvaluate
 	{
-		#region fields & pins
-		#pragma warning disable 649
-		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
+        #region fields & pins
+        readonly VecBinSpread<T> spread = new VecBinSpread<T>();
+
+        #pragma warning disable 649
+        [Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<T> FInput;
 		
 		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
@@ -37,7 +39,7 @@ namespace VVVV.Nodes.Generic
 			
 			if (FInput.IsChanged || FBin.IsChanged)
 			{
-				VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin);				
+				spread.Sync(FInput,1,FBin);				
 				
 				FFirst.Length = spread.Count;
 				if (FFirst.Length == spread.ItemCount || spread.ItemCount == 0)

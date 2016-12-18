@@ -16,9 +16,11 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class ReverseVectorNode : IPluginEvaluate
 	{
-		#region fields & pins
-		#pragma warning disable 649
-		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
+        #region fields & pins
+        readonly VecBinSpread<double> spread = new VecBinSpread<double>();
+        
+        #pragma warning disable 649
+        [Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
 		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
@@ -47,7 +49,7 @@ namespace VVVV.Nodes
 				if (FVec.Length>0)
 				{
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
-					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin, FReverse.SliceCount);			
+                    spread.Sync(FInput,vecSize,FBin, FReverse.SliceCount);			
 		    
 					FOutput.Length = spread.ItemCount;
 					using (var dataWriter = FOutput.GetWriter())
