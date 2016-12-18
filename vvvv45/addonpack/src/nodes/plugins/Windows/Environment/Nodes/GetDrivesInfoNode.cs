@@ -123,14 +123,19 @@ namespace VVVV.Nodes
 
                 for (int i = 0; i < infos.Length; i++)
                 {
-                    this.FPinOutName.SetString(i, infos[i].Name);
-                    this.FPinOutType.SetString(i, infos[i].DriveType.ToString());
-                    this.FPinOutFormat.SetString(i, infos[i].DriveFormat);
-                    this.FPinOutAvailableSpace.SetValue(i, Convert.ToDouble(infos[i].AvailableFreeSpace));
-                    this.FPinOutFreeSpace.SetValue(i, Convert.ToDouble(infos[i].TotalFreeSpace));
-                    this.FPinOutTotalSpace.SetValue(i, Convert.ToDouble(infos[i].TotalSize));
-                    this.FPinOutVolumeName.SetString(i, infos[i].VolumeLabel);
-                    this.FPinOutReady.SetValue(i, Convert.ToDouble(infos[i].IsReady));
+                    try
+                    {
+                        this.FPinOutName.SetString(i, infos[i].Name);
+                        this.FPinOutType.SetString(i, infos[i].DriveType.ToString());
+                        this.FPinOutFormat.SetString(i, infos[i].DriveFormat);
+                        this.FPinOutAvailableSpace.SetValue(i, Convert.ToDouble(infos[i].AvailableFreeSpace));
+                        this.FPinOutFreeSpace.SetValue(i, Convert.ToDouble(infos[i].TotalFreeSpace));
+                        this.FPinOutTotalSpace.SetValue(i, Convert.ToDouble(infos[i].TotalSize));
+                        this.FPinOutVolumeName.SetString(i, infos[i].VolumeLabel);
+                        this.FPinOutReady.SetValue(i, Convert.ToDouble(infos[i].IsReady));
+                    }
+                    catch (IOException e)
+                    { }
                 }
             }
         }
@@ -142,6 +147,4 @@ namespace VVVV.Nodes
         }
         #endregion
     }
-        
-        
 }
