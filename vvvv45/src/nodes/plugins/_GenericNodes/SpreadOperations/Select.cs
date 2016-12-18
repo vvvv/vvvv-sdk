@@ -15,7 +15,19 @@ namespace VVVV.Nodes
                 Category = "Value",
                 Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
 	            Tags = "repeat, resample, duplicate, spreadop")]
-    public class ValueSelectNode : Select<double> {}
+    public class ValueSelectNode : Select<double> { }
+
+    [PluginInfo(Name = "Select",
+            Category = "2d",
+            Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
+            Tags = "repeat, resample, duplicate, spreadop")]
+    public class Vecto2DSelectNode : Select<Vector2D> { }
+
+    [PluginInfo(Name = "Select",
+            Category = "3d",
+            Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
+            Tags = "repeat, resample, duplicate, spreadop")]
+    public class Vector3DSelectNode : Select<Vector3D> { }
 
     [PluginInfo(Name = "Select",
                 Category = "Transform",
