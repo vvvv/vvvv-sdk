@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.7.dtd" >
-   <PATCH nodename="C:\vvvv\git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" systemname="Button (3d Quad Multitouch Advanced)" filename="C:\Users\Matthias\Dropbox\FH\NOE_Raum\application\patch\subpatch\Button (3d Quad Multitouch Advanced).v4p" scrollx="0" scrolly="-360">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\modules\3d\Button (3d Quad Multitouch).v4p" systemname="Button (3d Quad Multitouch Advanced)" filename="C:\Users\Matthias\Dropbox\FH\NOE_Raum\application\patch\subpatch\Button (3d Quad Multitouch Advanced).v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="1845" top="0" width="12825" height="15150">
    </BOUNDS>
    <NODE id="28" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
@@ -323,33 +323,13 @@
    <NODE id="9" nodename="CAR (Spreads Vector)" systemname="CAR (Spreads Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll">
    <BOUNDS height="0" left="6255" top="9495" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="First Slice" visible="1">
    </PIN>
    <PIN pinname="Bin Size" visible="1">
    </PIN>
    </NODE>
-   <NODE id="8" nodename="Select (Value Vector)" systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll">
-   <BOUNDS height="0" left="6255" top="8970" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="8" dstpinname="Select" linkstyle="Bezier" srcnodeid="20" srcpinname="Output">
-   <LINKPOINT x="8385" y="8380">
-   </LINKPOINT>
-   <LINKPOINT x="7605" y="8615">
-   </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Former Slice" dstnodeid="8" dstpinname="Input">
-   </LINK>
-   <LINK dstnodeid="9" dstpinname="Input" linkstyle="Bezier" srcnodeid="8" srcpinname="Output">
-   <LINKPOINT x="6285" y="9335">
-   </LINKPOINT>
-   <LINKPOINT x="6285" y="9385">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="SwapDim (Spreads)" nodename="SwapDim (Spreads)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="5910" top="6300" width="100" height="100">
    </BOUNDS>
@@ -506,7 +486,7 @@
    </LINK>
    <LINK srcnodeid="15" srcpinname="Output" dstnodeid="0" dstpinname="Input 2">
    </LINK>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="I (Spreads)" nodename="I (Spreads)" componentmode="Hidden" id="30">
    <BOUNDS type="Node" left="4230" top="7425" width="100" height="100">
@@ -747,17 +727,37 @@
    <NODE systemname="Mod (Value)" nodename="Mod (Value)" componentmode="Hidden" id="63">
    <BOUNDS type="Node" left="7290" top="10005" width="675" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="63" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="63" srcpinname="Output" dstnodeid="60" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Count" dstnodeid="63" dstpinname="Input 2">
+   </LINK>
+   <NODE id="8" nodename="Select (Value)" systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="6255" top="8730" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="63" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="9" dstpinname="Input" linkstyle="Bezier">
+   <LINKPOINT x="6285" y="9175">
+   </LINKPOINT>
+   <LINKPOINT x="6285" y="9305">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Former Slice" dstnodeid="8" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="8" dstpinname="Select" linkstyle="Bezier">
+   <LINKPOINT x="8385" y="8300">
+   </LINKPOINT>
+   <LINKPOINT x="7605" y="8455">
+   </LINKPOINT>
    </LINK>
    </PATCH>

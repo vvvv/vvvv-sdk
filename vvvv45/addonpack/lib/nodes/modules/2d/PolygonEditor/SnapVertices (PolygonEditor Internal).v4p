@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.101.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor Internal).v4p" systemname="SnapVertices (PolygonEditor Internal)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor Internal).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor Internal).v4p" systemname="SnapVertices (PolygonEditor Internal)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\SnapVertices (PolygonEditor Internal).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="5160" top="1170" width="23235" height="12255">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="23">
    <BOUNDS type="Node" left="18615" top="735" width="100" height="100">
@@ -52,34 +52,6 @@
    <PIN pinname="Maximum" slicecount="1" values="1000">
    </PIN>
    </NODE>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="107">
-   <BOUNDS type="Node" left="15660" top="5325" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Former Slice" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="108">
-   <BOUNDS type="Node" left="12240" top="5280" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Former Slice" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   </NODE>
    <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="109">
    <BOUNDS type="Node" left="13170" top="5265" width="100" height="100">
    </BOUNDS>
@@ -88,22 +60,16 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="109" srcpinname="Output" dstnodeid="108" dstpinname="Select">
-   </LINK>
    <NODE systemname="NearestNeighbour (2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\NearestNeighbour.dll" nodename="NearestNeighbour (2d)" componentmode="Hidden" id="110">
    <BOUNDS type="Node" left="13335" top="5730" width="2340" height="270">
    </BOUNDS>
-   <PIN pinname="ReferenceXY" visible="1">
+   <PIN pinname="ReferenceXY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="InputXY" visible="1">
    </PIN>
    <PIN pinname="Nearest Index" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="110" dstpinname="ReferenceXY">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Output" dstnodeid="110" dstpinname="InputXY">
-   </LINK>
    <NODE systemname="SetSlice (Spreads)" nodename="SetSlice (Spreads)" componentmode="Hidden" id="111">
    <BOUNDS type="Node" left="11505" top="12030" width="100" height="100">
    </BOUNDS>
@@ -113,7 +79,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Index" visible="1">
+   <PIN pinname="Index" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Bin Size" slicecount="1" values="2">
    </PIN>
@@ -121,7 +87,7 @@
    <NODE systemname="Distance (2d)" filename="%VVVV%\lib\nodes\modules\2D\Distance (2d).v4p" nodename="Distance (2d)" componentmode="Hidden" id="112">
    <BOUNDS type="Node" left="14985" top="7200" width="1200" height="270">
    </BOUNDS>
-   <PIN pinname="XY2" visible="1">
+   <PIN pinname="XY2" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="XY1" visible="1">
    </PIN>
@@ -131,7 +97,7 @@
    <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="113">
    <BOUNDS type="Node" left="14985" top="6765" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Index" visible="1">
    </PIN>
@@ -140,11 +106,7 @@
    <PIN pinname="Bin Size" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="113" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="110" srcpinname="Nearest Index" dstnodeid="113" dstpinname="Index">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Output" dstnodeid="112" dstpinname="XY2">
    </LINK>
    <LINK srcnodeid="113" srcpinname="Output" dstnodeid="112" dstpinname="XY1">
    </LINK>
@@ -175,20 +137,16 @@
    <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="119">
    <BOUNDS type="Node" left="12705" top="7020" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Index" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="108" srcpinname="Former Slice" dstnodeid="119" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="110" srcpinname="Nearest Index" dstnodeid="119" dstpinname="Index">
    </LINK>
    <LINK srcnodeid="119" srcpinname="Output" dstnodeid="117" dstpinname="Index">
-   </LINK>
-   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="111" dstpinname="Index">
    </LINK>
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="140">
    <BOUNDS type="Node" left="17415" top="8205" width="100" height="100">
@@ -243,7 +201,7 @@
    <NODE systemname="GetSlice (Spreads)" nodename="GetSlice (Spreads)" componentmode="Hidden" id="158">
    <BOUNDS type="Node" left="11940" top="8550" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Index" visible="1">
+   <PIN pinname="Index" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Bin Size" slicecount="1" values="2">
    </PIN>
@@ -252,8 +210,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="158" dstpinname="Index">
-   </LINK>
    <LINK srcnodeid="158" srcpinname="Output" dstnodeid="156" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="117" srcpinname="Output" dstnodeid="156" dstpinname="Input 2">
@@ -486,10 +442,6 @@
    <LINKPOINT x="11385" y="1598">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="107" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="108" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="117" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="158" dstpinname="Input">
@@ -619,15 +571,13 @@
    </PIN>
    <BOUNDS type="Box" left="19410" top="7710">
    </BOUNDS>
-   <PIN pinname="Point Index" visible="1">
+   <PIN pinname="Point Index" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Shape Index" visible="1">
    </PIN>
    <PIN pinname="Vertex Bin Size" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="139" dstpinname="Point Index" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="139" srcpinname="Shape Index" dstnodeid="140" dstpinname="Input 2">
    </LINK>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="177">
@@ -685,8 +635,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="179" srcpinname="Output" dstnodeid="180" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="180" srcpinname="Output" dstnodeid="107" dstpinname="Select">
    </LINK>
    <LINK srcnodeid="180" srcpinname="Output" dstnodeid="109" dstpinname="Input">
    </LINK>
@@ -844,4 +792,56 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE id="108" systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden">
+   <BOUNDS type="Node" left="12240" top="5280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="108" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="108" srcpinname="Former Slice" dstnodeid="119" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="113" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="110" dstpinname="ReferenceXY">
+   </LINK>
+   <LINK srcnodeid="109" srcpinname="Output" dstnodeid="108" dstpinname="Select">
+   </LINK>
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="107">
+   <BOUNDS type="Node" left="15660" top="5325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Former Slice" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="107" srcpinname="Output" dstnodeid="110" dstpinname="InputXY">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Output" dstnodeid="112" dstpinname="XY2">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="111" dstpinname="Index">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="158" dstpinname="Index">
+   </LINK>
+   <LINK srcnodeid="169" srcpinname="Y Output Value" dstnodeid="107" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="107" srcpinname="Former Slice" dstnodeid="139" dstpinname="Point Index" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="180" srcpinname="Output" dstnodeid="107" dstpinname="Select">
+   </LINK>
    </PATCH>

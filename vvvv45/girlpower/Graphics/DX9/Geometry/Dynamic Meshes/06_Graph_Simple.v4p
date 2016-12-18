@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\06_Graph_Simple.v4p" systemname="06_Graph_Simple" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\06_Graph_Simple.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="150" top="240" width="13470" height="15000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\06_Graph_Simple.v4p" systemname="06_Graph_Simple" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Graphics\DX9\Geometry\Dynamic Meshes\06_Graph_Simple.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="150" top="240" width="13500" height="15000">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="Grid (EX9.Geometry)" nodename="Grid (EX9.Geometry)" componentmode="Hidden" id="42">
    <BOUNDS type="Node" left="10335" top="1695" width="100" height="100">
@@ -11,9 +11,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="9360" top="1185" width="750" height="240">
+   <BOUNDS type="Box" left="9300" top="1185" width="750" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="9360" top="1185" width="0" height="0">
+   <BOUNDS type="Node" left="9300" top="1185" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="100">
    </PIN>
@@ -191,27 +191,11 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="300" values="0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0,0,-0.5,0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="8805" top="4665" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Vector Size">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="8805" top="4665">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Spread Count">
    </LINK>
    <NODE systemname="Gradient (EX9.Effect)" nodename="Gradient (EX9.Effect)" componentmode="Hidden" id="21" filename="%VVVV%\lib\nodes\effects\Gradient.fx">
@@ -329,22 +313,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="54" srcpinname="Y Output Value" dstnodeid="34" dstpinname="Degree">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8985" top="4170" width="300" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8985" top="4170" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="59" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Vector Size">
    </LINK>
    <NODE systemname="Scale (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="60">
    <BOUNDS type="Node" left="10215" top="8535" width="100" height="100">
@@ -538,8 +506,6 @@
    </LINK>
    <LINK srcnodeid="28" srcpinname="XYZ" dstnodeid="27" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="27" dstpinname="Input 2">
-   </LINK>
    <LINK srcnodeid="127" srcpinname="Position XYZ" dstnodeid="29" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="119" srcpinname="Layer" dstnodeid="120" dstpinname="Layers">
@@ -599,7 +565,7 @@
    </BOUNDS>
    <BOUNDS height="11655" left="1125" top="3120" type="Box" width="4245">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is split into &apos;Vertex Buffer&apos; and &apos;Indices&apos;. The &apos;Vertex Buffer&apos; is split further into Positions, Normals and Texture Coordinates of every vertex.&cr;&lf;&cr;&lf;The B-Spline (Value) returns points sitting on a curve defined by the &apos;Control&apos; points. This node receives a spread of random values on its &apos;Control&apos; pin (these values define the shape of a curve) and also a spread of the positions of where the curve should be sampled (the &apos;Input&apos; pin). The curve is sampled in as many positions as there are vertices in the top row of the mesh (100 in this example).&cr;&lf;&cr;&lf;The spread of vectors is constructed with 0 for their X and Z position, and their Y comes from the curve. These vectors will modify the vertices of the top row of the mesh.&cr;&lf;&cr;&lf;The Select (Value Vector) duplicates the simple vector (0, -0.5, 0) as many times as there are vertices in the bottom row of the mesh (100 in this example). These vectors will move all the vertices from the bottom row down by the -0.5.&cr;&lf;&cr;&lf;The Cons (Spreads) concatenates two spreads of the modifying vectors. It is done this way because the spread of the vertex positions coming from the VertexBuffer (EX9.Geometry Split) is constucted the same way: all of the vertices of the top row followed by the vertices of the bottom row.&cr;&lf;&cr;&lf;The modifying vectors are added to the original vertex positions of the mesh.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) returns a mesh out of the joined &apos;Vertex Buffer&apos; and a spread of Indices (which were not modified).&cr;&lf;&cr;&lf;The Gradient (EX9.Effect) draws the mesh with a gradient applied to it. Note, that the mesh is scaled and the gradient is rotated.&cr;&lf;&cr;&lf;The mesh is rendered to a window. This is a temporary renderer, which can be hidden. Rightclick on the Renderer node to hide its window.&cr;&lf;&cr;&lf;The mesh is also rendered to a texture by the DX9Texture (EX9.Texture). Note the two &apos;Width&apos; and &apos;Height&apos; pins which define the size of the texture. The pins are hidden by default and are accessible via the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After applying a Glow (EX9.Texture Filter) to this texture, it is rendered to a FullscreenQuad in a new renderer window.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The grid mesh is split into &apos;Vertex Buffer&apos; and &apos;Indices&apos;. The &apos;Vertex Buffer&apos; is split further into Positions, Normals and Texture Coordinates of every vertex.&cr;&lf;&cr;&lf;The B-Spline (Value) returns points sitting on a curve defined by the &apos;Control&apos; points. This node receives a spread of random values on its &apos;Control&apos; pin (these values define the shape of a curve) and also a spread of the positions of where the curve should be sampled (the &apos;Input&apos; pin). The curve is sampled in as many positions as there are vertices in the top row of the mesh (100 in this example).&cr;&lf;&cr;&lf;The spread of vectors is constructed with 0 for their X and Z position, and their Y comes from the curve. These vectors will modify the vertices of the top row of the mesh.&cr;&lf;&cr;&lf;The Select (3d) duplicates the simple vector (0, -0.5, 0) as many times as there are vertices in the bottom row of the mesh (100 in this example). These vectors will move all the vertices from the bottom row down by the -0.5.&cr;&lf;&cr;&lf;The Cons (Spreads) concatenates two spreads of the modifying vectors. It is done this way because the spread of the vertex positions coming from the VertexBuffer (EX9.Geometry Split) is constucted the same way: all of the vertices of the top row followed by the vertices of the bottom row.&cr;&lf;&cr;&lf;The modifying vectors are added to the original vertex positions of the mesh.&cr;&lf;&cr;&lf;The Mesh (EX9.Geometry Join) returns a mesh out of the joined &apos;Vertex Buffer&apos; and a spread of Indices (which were not modified).&cr;&lf;&cr;&lf;The Gradient (EX9.Effect) draws the mesh with a gradient applied to it. Note, that the mesh is scaled and the gradient is rotated.&cr;&lf;&cr;&lf;The mesh is rendered to a window. This is a temporary renderer, which can be hidden. Rightclick on the Renderer node to hide its window.&cr;&lf;&cr;&lf;The mesh is also rendered to a texture by the DX9Texture (EX9.Texture). Note the two &apos;Width&apos; and &apos;Height&apos; pins which define the size of the texture. The pins are hidden by default and are accessible via the Inspektor (Ctrl+I).&cr;&lf;&cr;&lf;After applying a Glow (EX9.Texture Filter) to this texture, it is rendered to a FullscreenQuad in a new renderer window.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -978,8 +944,6 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Select">
-   </LINK>
    <NODE id="35" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow">
    <BOUNDS type="Node" left="9885" top="10905" width="100" height="100">
    </BOUNDS>
@@ -989,7 +953,7 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="3">
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
    </PIN>
@@ -1047,5 +1011,25 @@
    <LINK srcnodeid="35" srcpinname="EX9 Out" dstnodeid="117" dstpinname="Source">
    </LINK>
    <LINK srcnodeid="117" srcpinname="Texture Out" dstnodeid="118" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="8805" top="4665" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Vector Size">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8805" top="4665">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="27" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Select">
    </LINK>
    </PATCH>
