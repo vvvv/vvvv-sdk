@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Tutorials\Tutorial4.v4p" scrollx="0" scrolly="-720" systemname="Tutorial4" filename="C:\Users\joreg\Documents\repos\vvvv-tutorials\Tutorial4.v4p" locked="0">
-   <BOUNDS type="Window" left="6990" top="240" width="14085" height="14985">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.107.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Tutorials\Tutorial4.v4p" scrollx="0" scrolly="-564" systemname="Tutorial4" filename="C:\Users\joreg\Documents\repos\vvvv-tutorials\Tutorial4.v4p" locked="0">
+   <BOUNDS type="Window" left="615" top="2010" width="13890" height="11700">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="6">
    <BOUNDS type="Node" left="2880" top="8205" width="100" height="100">
@@ -45,11 +45,11 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8415" top="4005" width="6150" height="270">
+   <BOUNDS type="Node" left="8415" top="3810" width="6150" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8415" top="4005" width="4380" height="4860">
+   <BOUNDS type="Box" left="8415" top="3810" width="4380" height="4860">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt verbinden wir den Output vom GridSpread Node an den ersten Input des Distance Nodes und den &apos;PositionXY&apos; Output des Mouse Nodes an den zweiten Input des Distance Nodes.&lf;&lf;Das gibt uns die Distanz zwischen jeder der Positionen im Gitter und der aktuellen Mausposition.&lf;&lf;Wenn du jetzt den &apos;Distance&apos; Output an den &apos;XYZ&apos; Input des UniformScale Nodes verbindest, wirst du sehen, dass die Verbindung dahin von der IOBox, die vorher bestand verschwunden ist. Das liegt daran, dass jeder Input in vvvv immer nur einen Link akzeptieren kann!&lf;&lf;Asserdem wirst du bemerkt haben, dass sich das Ergebnis im Renderer bereits verändert hat: Quads mit einer kurzen Distanz zum Cursor werden jetzt kleiner gezeichnet, als Quads, die weiter entfernt sind.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Соедини output у GridSpread node c первым input у Distance node. И &apos;PositionXY&apos; output у Mouse node со вторым input у Distance node.&lf;&lf;Это даст тебе расстояние между каждой точкой в сетке и позицией мышки.&lf;&lf;Если теперь соединить &apos;Distance&apos; output c &apos;XYZ&apos; input pin у UniformScale node, то существующий link между этим input pin и IOBox автоматически пропадет, потому что input pin в vvvv может принимать только один link!&lf;&lf;Смотри, результат в Renderer изменился. Проведи мышкой над Renderer: Quads с меньшим расстояним до мышки имеют меньший размер, чем все остальные.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -83,7 +83,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="4275" top="765" width="3495" height="2445">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt gehts los: Hier lernst du, wie du Nodes anlegst! &lf;&lf;Der Patch unten zeigt bereits ein paar im Gitter angeordnete Quadrate. Indem wir den Patch um zwei Nodes erweitern werden wir ihn etwas interaktiver machen: Abhängig von der Distanz jedes Quads zum Mauscursor wollen wir seine Grösse verändern...|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Поехали! Вот как создавать nodes.&lf;&lf;Patch внизу уже отрисовывает сетку из квадратов. Добавив всего две node, сделаем его немного интерактивным: размер квадратов будет меняться в зависимости от расстояния до мышки...|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -97,9 +97,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="89" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7935" top="4005" width="240" height="270">
+   <BOUNDS type="Node" left="7935" top="3810" width="240" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7935" top="4005" width="405" height="495">
+   <BOUNDS type="Box" left="7935" top="3810" width="405" height="495">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="2.">
    </PIN>
@@ -113,9 +113,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="90" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="7935" top="9090" width="240" height="270">
+   <BOUNDS type="Node" left="7935" top="8670" width="240" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7935" top="9090" width="480" height="495">
+   <BOUNDS type="Box" left="7935" top="8670" width="480" height="495">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="3.">
    </PIN>
@@ -147,11 +147,11 @@
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="127" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8415" top="9090" width="6150" height="270">
+   <BOUNDS type="Node" left="8415" top="8670" width="6150" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8415" top="9090" width="4515" height="4170">
+   <BOUNDS type="Box" left="8415" top="8670" width="4515" height="4170">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Jetzt lass uns noch einen &apos;Map (Value)&apos; Node zwischen Distance und UniformScale einfügen um kontrollieren zu können, wie die Distanz die Grösse beeinflusst. &lf;&lf;Also ein Doppelklick in den Patch, dann &apos;map&apos; tippen und die ersten Option: Map (Value) auswählen. Verbinde jetzt den Output vom Distance Node mit dem ersten Input des Map Nodes, dann dessen Output mit dem XYZ Input von UniformScale (dabei wieder den zuvor existierenden Link ersetzen).&lf;&lf;Jetzt suchen wir den Input &apos;Destination Maximum&apos; am Map Node, klicken ihn und erzeugen dann eine IOBox im Patch durch einen Mittelklick. Ändere den Wert auf etwa 0.1 und bewege dann die Maus im Renderer um das Ergebnis zu sehen.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|В заключении, между Distance и UniformScale поставь еще один node: &apos;Map (Value)&apos;. Тем самым можно будет лучше контролировать как расстояние влияет на размер.&lf;&lf;Щелкни 2 раза в patch, набери map и выбери первую node в списке: Map (Value). Соедини Output у Distance node c Input pin у Map node. А потом соедини Output у Map node с XYZ у UniformScale (опять, просто заменяя уже присоединенный туда link).&lf;&lf;Теперь найди &apos;Destination Maximum&apos; input у Map node, щелкни по нему, а затем щелкни средней кнопкой мышки в любом месте в patch, чтобы создать IOBox. Измени в нем значение, сделай примерно 0.1, а затем проведи мышкой над Renderer, чтобы посмотреть результат.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -169,7 +169,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8415" top="795" width="4290" height="2955">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Ein Doppelklick an einer freien Stelle im Patch, am besten neben dem GridSpread Node, ruft den Nodebrowser auf. Tippe &apos;Mouse&apos; und wähle dann von der gefilterten Liste von verfügbaren Nodes die zweite Option mit der Bezeichnung &apos;Mouse (Devices Window)&apos; mit einem Klick. Der neue Node kann jetzt mittels drag-drop an eine beliebige Stelle im Patch verschoben werden.&lf;&lf;Dann doppelklicke noch einmal, etwas unterhalb des Mouse Nodes und erzeuge den Node &apos;Distance (2d)&apos;.|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Щелкни 2 раза мышкой в путом месте в patch (лучше где-нибудь рядом с GridSpread) и появится NodeBrowser. Набери &apos;Mouse&apos; и, теперь уже в отфильтрованном списке, щелкни левой кнопкой мышки по второй строчке, там стоит &apos;Mouse (Devices Window)&apos;. Новую node можно переместить в любое место в patch с помощью drag and drop.&lf;&lf;А теперь, чуть пониже Mouse node, щелкни опять 2 раза левой кнопкой мышки и создай еще одну node, которая называется &apos;Distance (2d)&apos;.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -247,7 +247,7 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="XYZ" visible="1">
+   <PIN pinname="XYZ" visible="1" slicecount="100" values="1.48332012695784,1.28337956705997,1.08346108540891,0.8835793491897,0.683766867136093,0.484109236174654,0.284932286123674,0.0895044735933344,0.121801873117626,0.318842178407623,1.50123226457347,1.30404096036329,1.10785722760364,0.913330268562616,0.721801109552537,0.536489949307323,0.366941576867258,0.247932982782418,0.261333904140142,0.39385282516428,1.54504305479294,1.35424612064156,1.16653648280761,0.983682829188445,0.80898490141584,0.64906178032241,0.517789387493943,0.441509335030313,0.449171613551715,0.5371962182084,1.61264309339299,1.43088862626583,1.2546980000085,1.08678038901352,0.931620242493148,0.796706282251804,0.693949245482368,0.639054143577134,0.644371665985437,0.708547445384995,1.70119882513349,1.53000063945881,1.3666480041301,1.21431104331297,1.07767155116503,0.963431676948057,0.880355184725461,0.83776482045414,0.841828094026506,0.891907606385917,1.80763305244368,1.64753202287412,1.49705930972828,1.35941572727519,1.23888489450867,1.14090332885756,1.07167395271337,1.03697140946212,1.04025686709755,1.08118406757608,1.92898854479757,1.77983744203482,1.64153773350401,1.5170598779338,1.41006926621181,1.32480940496044,1.26567950706238,1.23643408951518,1.23919082598968,1.27374194468649,2.06263342458658,1.92387139859466,1.79669306471055,1.68372518882924,1.58800351818775,1.51280527422836,1.46130231398544,1.43604634186254,1.43842057183513,1.46829097249669,2.20633545299393,2.07719537965179,1.95999118765753,1.8569841136677,1.77065373822575,1.70353728595805,1.65796982474814,1.63575321576726,1.63783797379188,1.6641327671888,2.35825698302999,2.2379009165105,2.12955988940601,2.03515352376325,1.95669990738605,1.89618014743354,1.85535004962599,1.83552402592957,1.83738213098594,1.86085940729094">
    </PIN>
    <PIN pinname="Transform In" visible="1">
    </PIN>
@@ -329,9 +329,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="170" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="16995" top="3420" width="405" height="465">
+   <BOUNDS type="Box" left="17265" top="3420" width="405" height="465">
    </BOUNDS>
-   <BOUNDS type="Node" left="16995" top="3420" width="0" height="0">
+   <BOUNDS type="Node" left="17265" top="3420" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="10,10">
    </PIN>
@@ -413,13 +413,13 @@
    </PIN>
    </NODE>
    <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="164">
-   <BOUNDS type="Node" left="17640" top="4005" width="100" height="100">
+   <BOUNDS type="Node" left="18075" top="3975" width="100" height="100">
    </BOUNDS>
    <PIN pinname="PositionXY" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Distance (2d)" filename="%VVVV%\lib\nodes\modules\2D\Distance (2d).v4p" nodename="Distance (2d)" componentmode="Hidden" id="163">
-   <BOUNDS type="Node" left="17070" top="4785" width="100" height="100">
+   <BOUNDS type="Node" left="17415" top="4740" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XY1" visible="1">
    </PIN>
@@ -447,9 +447,9 @@
    <LINK srcnodeid="162" srcpinname="Output" dstnodeid="167" dstpinname="XYZ">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="161" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="18930" top="4800" width="795" height="240">
+   <BOUNDS type="Box" left="18600" top="4770" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="18930" top="4800" width="0" height="0">
+   <BOUNDS type="Node" left="18600" top="4770" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
    </PIN>
@@ -465,7 +465,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="1815" top="12090" width="5085" height="1725">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Wenn du dein Ergebnis vergleichen willst, mit dem wie&apos;s gedacht war, dann kannst du den Patch nach rechts scrollen:&lf;Drück dazu die rechte Maustaste an einer freien Stelle im Patch und ziehe nach links um den Patch in diese Richtung zu bewegen:&lf;----------&gt;|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Если ты хочешь сравнить то, что получилось у тебя, с тем, что мы хотели получить, можешь проскороллить patch направо:&lf;Нажми и удерживай правую кнопку мышки в пустом месте в patch, а затем поведи мышкой влево, чтобы пододвинуть patch в эту сторону:&lf;----------&gt;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -478,8 +478,6 @@
    <PIN pinname="Size" slicecount="1" values="8">
    </PIN>
    </NODE>
-   <LINK srcnodeid="155" srcpinname="Y Output Value" dstnodeid="153" dstpinname="XYZ">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="177" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8430" top="13470" width="3090" height="270">
    </BOUNDS>
@@ -501,7 +499,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="8430" top="13185" width="4815" height="285">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|For more details on nodes, see:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Подробнее о nodes:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -509,7 +507,7 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Tag" slicecount="1" values="6">
+   <PIN pinname="Tag" slicecount="1" values="5">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="8">
    </PIN>
@@ -589,9 +587,9 @@
    </PIN>
    </NODE>
    <NODE id="182" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="510" top="1815" width="3255" height="270">
+   <BOUNDS type="Node" left="510" top="2085" width="3255" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="510" top="1815" width="3075" height="285">
+   <BOUNDS type="Box" left="510" top="2085" width="3075" height="285">
    </BOUNDS>
    <PIN pinname="Input String" visible="-1" slicecount="1" pintype="Input" values="http://vvvv.org/documentation/tutorials">
    </PIN>
@@ -605,9 +603,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="181" systemname="IOBox (String)">
    <BOUNDS type="Node" left="510" top="1545" width="6150" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="510" top="1545" width="3405" height="285">
+   <BOUNDS type="Box" left="510" top="1545" width="2340" height="555">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|More Tutorials are available online:|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Дополнительные туториал смотрите по адресу:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -615,9 +613,11 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Tag" slicecount="1" values="7">
+   <PIN pinname="Tag" slicecount="1" values="6">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="8">
    </PIN>
    </NODE>
+   <LINK srcnodeid="155" srcpinname="Y Output Value" dstnodeid="153" dstpinname="XYZ">
+   </LINK>
    </PATCH>
