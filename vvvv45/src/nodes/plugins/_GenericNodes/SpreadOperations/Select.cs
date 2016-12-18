@@ -30,6 +30,12 @@ namespace VVVV.Nodes
     public class Vector3DSelectNode : Select<Vector3D> { }
 
     [PluginInfo(Name = "Select",
+            Category = "4d",
+            Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
+            Tags = "repeat, resample, duplicate, spreadop")]
+    public class Vector4DSelectNode : Select<Vector4D> { }
+
+    [PluginInfo(Name = "Select",
                 Category = "Transform",
                 Help = "Returns each slice of the Input spread as often as specified by the corresponding Select slice. 0 meaning the slice will be omitted.",
                 Tags = "repeat, resample, duplicate, spreadop")]
