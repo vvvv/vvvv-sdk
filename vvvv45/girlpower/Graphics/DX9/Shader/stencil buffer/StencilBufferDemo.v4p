@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.108.dtd" >
-   <PATCH nodename="D:\develop\Sandbox\stencilTest\stencilTest.v4p" scrollx="0" scrolly="0" systemname="stencilTest" filename="D:\temp\stencilTest.v4p">
-   <BOUNDS type="Window" left="976" top="2336" width="9960" height="7080">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.108.dtd" >
+   <PATCH nodename="E:\dev\vvvv\public\vvvv45\girlpower\Graphics\DX9\Shader\stencil buffer\StencilBufferDemo.v4p" scrollx="0" scrolly="0" systemname="stencilTest" filename="D:\temp\stencilTest.v4p">
+   <BOUNDS type="Window" left="5055" top="645" width="9960" height="7080">
    </BOUNDS>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="0">
    <BOUNDS type="Node" left="472" top="5688" width="100" height="100">
@@ -91,7 +91,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="1696" top="2800" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="| TStencilMask|">
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="| TConstant|">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
@@ -152,18 +152,6 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <NODE systemname="StencilDemo (EX9.Effect)" filename="effects\StencilDemo.fx" nodename="StencilDemo (EX9.Effect)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="480" top="3128" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Color" slicecount="1" values="|0.51195,0.51195,0.51195,1.00000|">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="16" srcpinname="Output Enum" dstnodeid="28" dstpinname="Technique">
-   </LINK>
-   <LINK srcnodeid="18" srcpinname="Mesh" dstnodeid="28" dstpinname="Mesh">
-   </LINK>
    <LINK srcnodeid="22" srcpinname="Output" dstnodeid="7" dstpinname="Y">
    </LINK>
    <NODE systemname="Sign (Value)" nodename="Sign (Value)" componentmode="Hidden" id="30">
@@ -210,15 +198,11 @@
    </NODE>
    <LINK srcnodeid="20" srcpinname="Output" dstnodeid="24" dstpinname="TranslateX">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Transform Out" dstnodeid="28" dstpinname="Transform">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="ScaleY">
    </LINK>
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="ScaleZ">
    </LINK>
    <LINK srcnodeid="7" srcpinname="Transform Out" dstnodeid="24" dstpinname="Transform In">
-   </LINK>
-   <LINK srcnodeid="28" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 1">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="34">
    <BOUNDS type="Node" left="5176" top="992" width="2600" height="5976">
@@ -322,4 +306,78 @@
    </NODE>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
+   <NODE systemname="Stencil (EX9.RenderState)" nodename="Stencil (EX9.RenderState)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="3525" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Reference Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Stencil Pass Function" slicecount="1" values="Replace">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="ZWriteEnable (EX9.RenderState)" nodename="ZWriteEnable (EX9.RenderState)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="3540" top="975" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="ZWrite Enable" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Render State Out" dstnodeid="42" dstpinname="Render State In">
+   </LINK>
+   <NODE id="28" systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Render State" visible="1" slicecount="1" pintype="Input" values="||">
+   </PIN>
+   <BOUNDS type="Node" left="480" top="3128" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Color" slicecount="1" pintype="Input" visible="1" values="|0.51195,0.51195,0.51195,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Select Next Valid Technique" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mesh" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Color Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Technique" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" pintype="Input" visible="1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Compiled" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Technique Valid" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Description" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Transform Out" dstnodeid="28" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Mesh" dstnodeid="28" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output Enum" dstnodeid="28" dstpinname="Technique">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Render State Out" dstnodeid="28" dstpinname="Render State">
+   </LINK>
    </PATCH>
