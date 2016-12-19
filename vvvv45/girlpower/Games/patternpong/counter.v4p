@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug24.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\girlpower\( patternpong )\counter.v4p">
-   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.108.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Games\patternpong\counter.v4p" scrollx="2145" scrolly="2430">
+   <BOUNDS height="8205" left="10830" top="9345" type="Window" width="9720">
    </BOUNDS>
    <NODE componentmode="InABox" id="32" nodename="Renderer (GDI)">
    <BOUNDS height="0" left="6630" top="3735" type="Node" width="0">
@@ -32,7 +32,7 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE id="30" nodename="Counter (Animation)">
+   <NODE id="30" nodename="Counter (Animation Legacy)">
    <BOUNDS height="0" left="1860" top="1905" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum" slicecount="1" values="9">
@@ -46,7 +46,7 @@
    <PIN pinname="Mode" slicecount="1" values="Clamp">
    </PIN>
    </NODE>
-   <NODE id="29" nodename="Counter (Animation)">
+   <NODE id="29" nodename="Counter (Animation Legacy)">
    <BOUNDS height="0" left="5100" top="1905" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Maximum" slicecount="1" values="9">
@@ -60,7 +60,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="28" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="28" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2070" top="900" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8400" top="9750" type="Window" width="215">
@@ -74,7 +74,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="27" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3045" top="900" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9240" top="9645" type="Window" width="215">
@@ -88,7 +88,7 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="26" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="26" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7020" top="975" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10215" top="9750" type="Window" width="215">
@@ -181,7 +181,7 @@
    </PIN>
    <PIN pinname="Render Mode" slicecount="1" values="Copy">
    </PIN>
-   <PIN pinname="Format" slicecount="1" values="X1R5G5B5">
+   <PIN pinname="Format" slicecount="1" values="X8R8G8B8">
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Texture">
    </PIN>
@@ -228,7 +228,7 @@
    </NODE>
    <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="18" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="18" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5445" top="5130" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="19230" top="13080" type="Window" width="215">
@@ -336,7 +336,7 @@
    </LINK>
    <LINK dstnodeid="13" dstpinname="Input 1" srcnodeid="29" srcpinname="Output">
    </LINK>
-   <NODE id="9" nodename="FrameDelay (Animation)">
+   <NODE id="9" nodename="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="6585" top="6855" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -374,15 +374,17 @@
    </LINK>
    <LINK dstnodeid="9" dstpinname="Input 1" srcnodeid="7" srcpinname="Down Edge">
    </LINK>
-   <NODE id="6" nodename="S (Value)">
+   <NODE id="6" nodename="S (VALUE)">
    <BOUNDS height="0" left="5400" top="8175" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="SendString" slicecount="1" values="running">
+   <PIN pinname="Send String" slicecount="1" values="running">
    </PIN>
    <PIN pinname="Input Value" slicecount="1" visible="1" values="1.00000">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="5" nodename="FrameDelay (Animation)">
+   <NODE id="5" nodename="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="5400" top="7680" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -464,7 +466,7 @@
    </NODE>
    <LINK dstnodeid="1" dstpinname="Input Node" srcnodeid="2" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="33" nodename="AvoidNIL (Spreads)" path="C:\Users\joreg\dev\vake\source\complete\vvvv45\modules\vvvv group\Spreads\">
+   <NODE componentmode="Hidden" id="33" nodename="AvoidNIL (Spreads)">
    <BOUNDS height="0" left="3375" top="6315" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="6000" left="8475" top="16755" type="Window" width="9000">
@@ -486,4 +488,6 @@
    <LINKPOINT x="7890" y="495">
    </LINKPOINT>
    </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
