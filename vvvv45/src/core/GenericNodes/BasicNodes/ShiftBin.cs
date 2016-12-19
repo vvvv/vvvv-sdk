@@ -13,9 +13,11 @@ namespace VVVV.Nodes.Generic
 {
 	public class ShiftBin<T> : IPluginEvaluate
 	{
-		#region fields & pins
-		#pragma warning disable 649
-		[Input("Spread", CheckIfChanged = true, AutoValidate = false)]
+        #region fields & pins
+        readonly VecBinSpread<T> spread = new VecBinSpread<T>();
+
+        #pragma warning disable 649
+        [Input("Spread", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<T> FInput;
 		
 		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
@@ -43,7 +45,7 @@ namespace VVVV.Nodes.Generic
 			
 			if (FInput.IsChanged || FBin.IsChanged || FTogPhase.IsChanged || FPhase.IsChanged)
 			{
-				VecBinSpread<T> spread = new VecBinSpread<T>(FInput,1,FBin,FPhase.CombineWith(FTogPhase));				
+				spread.Sync(FInput,1,FBin,FPhase.CombineWith(FTogPhase));				
 				
 				FOutBin.Length = spread.Count;
 				FOutput.Length = spread.ItemCount;

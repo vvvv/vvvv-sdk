@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="D:\gitHub\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundingBox (PolygonEditor DX9).v4p" systemname="CircumRectangle render" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\CircumRectangle render.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundingBox (PolygonEditor DX9).v4p" systemname="CircumRectangle render" filename="C:\Users\Domi\Documents\GitHub\badMapper-v3.0\dragCorners\CircumRectangle render.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="-25335" top="-840" width="14715" height="15840">
    </BOUNDS>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="4365" top="7170" width="100" height="100">
@@ -35,7 +35,7 @@
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="18">
    <BOUNDS type="Node" left="9060" top="10755" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="8" values="0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -141,7 +141,7 @@
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="3870" top="9855" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="8" values="0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027,0.544176706827309,1.02711223203027">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -330,20 +330,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
    </NODE>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="34">
-   <BOUNDS type="Node" left="4380" top="6735" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="34" srcpinname="Output" dstnodeid="22" dstpinname="Input">
-   </LINK>
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="35">
    <BOUNDS type="Node" left="4890" top="6165" width="100" height="100">
    </BOUNDS>
@@ -357,8 +343,6 @@
    <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Select">
-   </LINK>
-   <LINK srcnodeid="35" srcpinname="Output" dstnodeid="34" dstpinname="Select">
    </LINK>
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="36" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="5190" top="6735" width="100" height="100">
@@ -596,44 +580,6 @@
    </LINK>
    <LINK srcnodeid="82" srcpinname="Output" dstnodeid="3" dstpinname="Color" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="83">
-   <BOUNDS type="Node" left="4290" top="7845" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Center" dstnodeid="83" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="83" srcpinname="Output" dstnodeid="7" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="83" srcpinname="Output" dstnodeid="21" dstpinname="Input 1">
-   </LINK>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="84">
-   <BOUNDS type="Node" left="5010" top="7860" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Width" dstnodeid="84" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="6" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="77" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="85">
    <BOUNDS type="Node" left="2160" top="3540" width="1470" height="270">
    </BOUNDS>
@@ -695,8 +641,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="98" srcpinname="XYZ Transformed" dstnodeid="100" dstpinname="XYZ">
-   </LINK>
-   <LINK srcnodeid="100" srcpinname="XY" dstnodeid="34" dstpinname="Input">
    </LINK>
    <NODE systemname="Mean (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Mean (Spectral Vector)" componentmode="Hidden" id="102">
    <BOUNDS type="Node" left="2700" top="2775" width="100" height="100">
@@ -966,4 +910,60 @@
    </LINK>
    <INFO author="dominikKoller" description="draws a Bounding Box with handles around a polygon, used in PolygonEditorView" tags="">
    </INFO>
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="83">
+   <BOUNDS type="Node" left="4290" top="7845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Center" dstnodeid="83" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="83" srcpinname="Output" dstnodeid="7" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="83" srcpinname="Output" dstnodeid="21" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="84">
+   <BOUNDS type="Node" left="5010" top="7860" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Width" dstnodeid="84" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="18" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="6" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="84" srcpinname="Output" dstnodeid="77" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="4380" top="6735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Output" dstnodeid="22" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Output" dstnodeid="34" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="XY" dstnodeid="34" dstpinname="Input">
+   </LINK>
    </PATCH>

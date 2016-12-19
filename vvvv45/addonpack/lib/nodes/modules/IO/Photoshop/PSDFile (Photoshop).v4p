@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\PSDFile (Photoshop).v4p" scrollx="0" scrolly="15" systemname="PSDFile (Photoshop)" filename="C:\Users\joreg\Documents\repos\Avateering\PSDLayers\PSDFile (Photoshop).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\PSDFile (Photoshop).v4p" scrollx="0" scrolly="15" systemname="PSDFile (Photoshop)" filename="C:\Users\joreg\Documents\repos\Avateering\PSDLayers\PSDFile (Photoshop).v4p">
    <BOUNDS height="14025" left="8745" top="855" type="Window" width="15660">
    </BOUNDS>
    <NODE componentmode="Hidden" id="53" nodename="XSLT (XML)" systemname="XSLT (XML)">
@@ -111,7 +111,7 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="20" values="45,25,570,773,442,476,629,476,415,1078,794,1070,933,425,153,398,901,278,145,227">
    </PIN>
-   <PIN pinname="Source Maximum" visible="1" slicecount="1" values="512">
+   <PIN pinname="Source Maximum" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -127,7 +127,7 @@
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="20" values="1143,129,187,183,72,72,183,204,218,235,1070,61,166,166,315,310,140,148,171,183">
    </PIN>
-   <PIN pinname="Source Maximum" visible="1" slicecount="1" values="512">
+   <PIN pinname="Source Maximum" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -270,7 +270,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="34.100.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="FileName (File Split)" nodename="FileName (File Split)" componentmode="Hidden" id="54">
    <BOUNDS type="Node" left="765" top="2565" width="100" height="100">
@@ -444,26 +444,6 @@
    </LINK>
    <LINK srcnodeid="47" srcpinname="Output 4" dstnodeid="75" dstpinname="Y">
    </LINK>
-   <NODE systemname="Select (Value Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Select (Value Vector)" componentmode="Hidden" id="76">
-   <BOUNDS type="Node" left="6900" top="5745" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="76" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="File Count" dstnodeid="76" dstpinname="Select">
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="45" dstpinname="Source Maximum">
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="41" dstpinname="Source Maximum">
-   </LINK>
    <LINK srcnodeid="35" srcpinname="Output" dstnodeid="59" dstpinname="TranslateXY">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="78" systemname="IOBox (Value Advanced)">
@@ -603,7 +583,7 @@
    <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="116">
    <BOUNDS type="Node" left="3075" top="10650" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1" slicecount="2" values="1920,1080">
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="X" visible="1">
    </PIN>
@@ -645,8 +625,6 @@
    <LINK srcnodeid="121" srcpinname="Output String" dstnodeid="120" dstpinname="XPath Query">
    </LINK>
    <LINK srcnodeid="54" srcpinname="Shortname" dstnodeid="55" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="116" dstpinname="XY">
    </LINK>
    <NODE systemname="MakePath (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\MakePath.dll" nodename="MakePath (String)" componentmode="Hidden" id="136">
    <BOUNDS type="Node" left="810" top="7305" width="100" height="100">
@@ -873,5 +851,27 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="154" srcpinname="Y Output Value" dstnodeid="151" dstpinname="Select">
+   </LINK>
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="76">
+   <BOUNDS type="Node" left="6930" top="5985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output" dstnodeid="76" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="File Count" dstnodeid="76" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="45" dstpinname="Source Maximum">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="41" dstpinname="Source Maximum">
+   </LINK>
+   <LINK srcnodeid="76" srcpinname="Output" dstnodeid="116" dstpinname="XY">
    </LINK>
    </PATCH>

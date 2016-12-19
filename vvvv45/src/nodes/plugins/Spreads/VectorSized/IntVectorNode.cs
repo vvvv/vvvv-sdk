@@ -14,9 +14,11 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public class IntegralVectorNode : IPluginEvaluate
 	{
-		#region fields & pins
-		#pragma warning disable 649
-		[Input("Input", CheckIfChanged = true, AutoValidate = false)]
+        #region fields & pins
+        readonly VecBinSpread<double> spread = new VecBinSpread<double>();
+
+        #pragma warning disable 649
+        [Input("Input", CheckIfChanged = true, AutoValidate = false)]
 		IInStream<double> FInput;
 
 		[Input("Vector Size", MinValue = 1, DefaultValue = 1, IsSingle = true, CheckIfChanged = true, AutoValidate = false)]
@@ -53,7 +55,7 @@ namespace VVVV.Nodes
 					int vecSize = Math.Max(1,FVec.GetReader().Read());
 					int offsetCount = (int)Math.Ceiling(FOffset.SliceCount/(double)vecSize);
 					offsetCount = offsetCount.CombineWith(FInclOffset);
-					VecBinSpread<double> spread = new VecBinSpread<double>(FInput,vecSize,FBin,offsetCount);				
+                    spread.Sync(FInput,vecSize,FBin,offsetCount);				
 					
 					FOutBin.Length = spread.Count;
 					FOutput.Length = spread.ItemCount+(spread.Count*spread.VectorSize);
