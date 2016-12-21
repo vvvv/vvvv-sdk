@@ -14,13 +14,19 @@ float4x4 tWV: WORLDVIEW;
 float4x4 tWVP: WORLDVIEWPROJECTION;
 float4x4 tP: PROJECTION;   //projection matrix as set via Renderer (EX9)
 
-float4x4 tA <string uiname="Second Transform";>;
+float4x4 tA <string uiname="Transform in Viewspace";>;
 
-//alpha
+//material properties
+float4 cAmb : COLOR <String uiname="Color";>  = {1, 1, 1, 1};
 float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
 
 //texture
 texture Tex <string uiname="Texture";>;
+
+//fixed size
+bool fixedSize <string uiname = "Fixed Size"; > = false;
+float Size = 0.2;
+
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
 {
     Texture   = (Tex);          //apply a texture to the sampler
@@ -54,11 +60,29 @@ vs2ps VS(
     //normal in view space
     Out.NormV = normalize(mul(NormO, tA));
 
-    //worlsview position
+    //WorldView position
     float4 pos = mul(float4(0, 0, 0, 1), tWV);
-
+	
     //position (projected)
-    Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
+	if (fixedSize)
+	{   
+		// Apply Projection to the world's view position
+		pos = mul (pos, tP);
+		
+		// Make a perspective division
+		pos.xyz /= pos.w;
+		
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldViewProjected position
+		Out.PosWVP = float4(pos.xyz + mul(PosO, tA).xyz * Size, 1);
+	}
+	else
+	{
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldView position and then apply Projection
+		Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
+	}
+	
     Out.TexCd = mul(TexCd, tTex);
     return Out;
 }
@@ -67,14 +91,12 @@ vs2ps VS(
 // PIXELSHADERS:
 // --------------------------------------------------------------------------------------------------
 
-float4 colore : COLOR = 1;
-
 float4 PS(vs2ps In): COLOR
 {
-
-    float4 col = tex2D(Samp, In.TexCd);
-    col.a *= Alpha;
-    return mul(col*colore, tColor);
+    float4 col = tex2D(Samp, In.TexCd) * cAmb;
+    col = mul(col, tColor);
+	col.a *= Alpha;
+    return col;
 }
 
 
