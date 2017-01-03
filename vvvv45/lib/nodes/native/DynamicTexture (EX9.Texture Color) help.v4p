@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\DynamicTexture (EX9.Texture Color) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\DynamicTexture (EX9.Texture Color) help.v4p">
    <BOUNDS height="7425" left="3330" top="1620" type="Window" width="9345">
    </BOUNDS>
    <NODE id="17" nodename="DynamicTexture (EX9.Texture Color)">
@@ -74,14 +74,6 @@
    <PIN pinname="Period" slicecount="1" values="20">
    </PIN>
    </NODE>
-   <NODE id="11" nodename="Scale (Transform Vector)">
-   <BOUNDS height="0" left="1755" top="1935" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="XYZ" slicecount="3" values="8.14,8.14,8.14">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="10" nodename="LinearSpread (Spreads)">
    <BOUNDS height="0" left="3075" top="1230" type="Node" width="0">
    </BOUNDS>
@@ -101,15 +93,13 @@
    <NODE id="9" nodename="Translate (Transform)">
    <BOUNDS height="0" left="1770" top="3615" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    <PIN pinname="X" slicecount="1" visible="1" values="-0.61">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="Transform In" srcnodeid="11" srcpinname="Transform Out">
-   </LINK>
    <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="9" srcpinname="Transform Out">
    </LINK>
    <NODE id="8" nodename="Quad (DX9)">
@@ -129,16 +119,10 @@
    </PIN>
    <PIN pinname="X" slicecount="1" visible="1" values="0.61">
    </PIN>
-   <PIN pinname="Transform In" visible="1">
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="7" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="7" dstpinname="Transform In" linkstyle="Bezier" srcnodeid="11" srcpinname="Transform Out">
-   <LINKPOINT x="1785" y="2910">
-   </LINKPOINT>
-   <LINKPOINT x="5370" y="2775">
-   </LINKPOINT>
    </LINK>
    <NODE id="6" nodename="DynamicTexture (EX9.Texture Value)">
    <BOUNDS height="0" left="5445" top="3045" type="Node" width="0">
@@ -280,26 +264,8 @@
    </NODE>
    <PACK Name="VVVV.Packs" Version="0.2.0">
    </PACK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="0" dstpinname="Layer 2">
-   </LINK>
-   <NODE id="12" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" componentmode="Hidden">
-   <BOUNDS height="100" left="2505" top="5940" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="6000" left="11370" top="9315" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="2505" top="5940" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   <PIN pinname="View Projection" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="15" dstpinname="View" srcnodeid="12" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Projection" srcnodeid="12" srcpinname="Projection">
    </LINK>
    </PATCH>
