@@ -22,7 +22,7 @@ namespace VVVV.Nodes
 	            Category = "EX9.Geometry",
 	            Version = "",
 	            Help = "Basic template which creates a mesh",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{

@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Template", 
 	            Category = "Spectral",
 	            Help = "Basic template with 2 dimensional spread with bin size input",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{

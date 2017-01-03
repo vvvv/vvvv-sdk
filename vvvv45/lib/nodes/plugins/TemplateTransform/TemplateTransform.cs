@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Template", 
 	            Category = "Transform",
 	            Help = "Basic template with one transform in/out",
-	            Tags = "matrix")]
+	            Tags = "matrix, c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{

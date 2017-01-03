@@ -16,7 +16,7 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Template",
 	            Category = "Boolean",
 	            Help = "Basic template with one boolean in/out",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{

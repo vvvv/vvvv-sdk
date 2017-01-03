@@ -12,7 +12,11 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes
 {
-	[PluginInfo(Name = "Template", Category = "Node", Version = "Source", Help = "Basic template with one value in/out", Tags = "")]
+	[PluginInfo(Name = "Template", 
+				Category = "Node", 
+				Version = "Source", 
+				Help = "Basic template with one value in/out", 
+				Tags = "c#")]
 	public class GenericTemplateSourceNode : IPluginEvaluate
 	{
 		public class DerivedObject
@@ -33,7 +37,11 @@ namespace VVVV.Nodes
 		}
 	}
 	
-	[PluginInfo(Name = "Template", Category = "Node", Version = "Sink", Help = "Basic template with one value in/out", Tags = "")]
+	[PluginInfo(Name = "Template", 
+				Category = "Node", 
+				Version = "Sink", 
+				Help = "Basic template with one value in/out", 
+				Tags = "c#")]
 	public class GenericTemplateSinkNode : IPluginEvaluate
 	{
 		[Input("Input")]

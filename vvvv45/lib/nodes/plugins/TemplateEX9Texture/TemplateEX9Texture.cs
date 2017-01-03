@@ -25,7 +25,7 @@ namespace VVVV.Nodes
 	            Category = "EX9.Texture", 
 	            Version = "",
 	            Help = "Basic template which creates a texture",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{

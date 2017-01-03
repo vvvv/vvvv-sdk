@@ -18,7 +18,7 @@ namespace VVVV.Nodes
 	            Category = "Enumerations", 
 	            Version = "Dynamic",
 	            Help = "Basic template with dynamic custom enumeration",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{

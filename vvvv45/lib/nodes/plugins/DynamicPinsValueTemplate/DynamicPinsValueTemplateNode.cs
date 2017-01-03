@@ -15,7 +15,11 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
 	#region PluginInfo
-	[PluginInfo(Name = "Template", Category = "Value", Version = "DynamicPins", Help = "Basic template with a dynamic amount of in- and outputs", Tags = "")]
+	[PluginInfo(Name = "Template", 
+				Category = "Value", 
+				Version = "DynamicPins", 
+				Help = "Basic template with a dynamic amount of in- and outputs", 
+				Tags = "c#")]
 	#endregion PluginInfo
 	public class DynamicPinsValueTemplateNode : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
