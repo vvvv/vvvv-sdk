@@ -452,7 +452,7 @@ namespace VVVV.Hosting.IO.Streams
                     var keyboard = Keyboard.Empty;
                     if (upstreamInterface != null)
                     {
-                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        FNodeIn.GetUpstreamSlice(i, out usS);
                         keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
                     }
                     SetKeyboardState(i, KeyboardState.Empty);
@@ -565,7 +565,7 @@ namespace VVVV.Hosting.IO.Streams
                     var mouse = Mouse.Empty;
                     if (upstreamInterface != null)
                     {
-                        FNodeIn.GetUpsreamSlice(i, out usS);
+                        FNodeIn.GetUpstreamSlice(i, out usS);
                         mouse = (Mouse)upstreamInterface.GetSlice(usS);
                     }
                     SetMouseState(i, ref emptyMouseState);
