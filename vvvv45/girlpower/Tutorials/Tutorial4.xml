@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Entries>
+<Entry id="Subtitle" prefix="">
+  <English>
+Now we're getting to it: Here is how you create nodes!
+
+The patch below already draws a grid of Quads. By adding two nodes we'll be making the example a bit interactive: Depending on the distance of each quad to the mouse cursor its size will be adapted...
+  </English>
+  <Deutsch>
+Jetzt gehts los: Hier lernst du, wie du Nodes anlegst!
+
+Der Patch unten zeigt bereits ein paar im Gitter angeordnete Quadrate. Indem wir den Patch um zwei Nodes erweitern, werden wir ihn etwas interaktiv machen: Abhängig von der Distanz jedes Quads zum Mauscursor wollen wir seine Grösse verändern...
+  </Deutsch>
+  <Russian>
+Поехали! Вот как создавать nodes.
+
+Patch внизу уже отрисовывает сетку из квадратов. Добавив всего две node, сделаем его немного интерактивным: размер квадратов будет меняться в зависимости от расстояния до мышки...
+  </Russian>
+</Entry>
+<Entry id="1" prefix="">
+  <English>
+Double leftclick in the empty space next to the GridSpread node to bring up the nodebrwoser. Type 'mouse' and from the now filtered list of available nodes choose the second option named 'Mouse (Devices Window)' by clicking on it. Note how you can now simply drag-drop the node to find a good place for it in the patch.
+
+Then, a bit below the new Mouse node doubleclick again to create a node named 'Distance (2d).
+  </English>
+  <Deutsch>
+Ein Doppelklick an einer freien Stelle im Patch, am besten neben dem GridSpread Node, ruft den Nodebrowser auf. Tippe 'mouse' und wähle dann von der gefilterten Liste von verfügbaren Nodes die zweite Option mit der Bezeichnung 'Mouse (Devices Window)' mit einem Klick. Der neue Node kann jetzt mittels drag-drop an eine beliebige Stelle im Patch verschoben werden.
+
+Dann doppelklicke noch einmal, etwas unterhalb des Mouse Nodes und erzeuge den Node 'Distance (2d)'.
+  </Deutsch>
+  <Russian>
+Щелкни 2 раза мышкой в путом месте в patch (лучше где-нибудь рядом с GridSpread) и появится NodeBrowser. Набери 'Mouse' и, теперь уже в отфильтрованном списке, щелкни левой кнопкой мышки по второй строчке, там стоит 'Mouse (Devices Window)'. Новую node можно переместить в любое место в patch с помощью drag and drop.
+
+А теперь, чуть пониже Mouse node, щелкни опять 2 раза левой кнопкой мышки и создай еще одну node, которая называется 'Distance (2d)'.
+  </Russian>
+</Entry>
+<Entry id="2" prefix="">
+  <English>
+Now connect the output of the GridSpread node to the first input of the Distance node and the 'PositionXY' output of the Mouse node to the second input of the Distance node.
+
+This will give you the distance between each of the grids points and the mouse position.
+
+When you now connect the 'Distance' output to the 'XYZ' input of the UniformScale node you'll notice that the existing connection on that pin to the IOBox is automatically removed because any input in vvvv can always only accept one connection!
+
+Further you notice that the rendering has changed. Move the mouse over the renderer to see how now the quads with a small distance to the cursor are drawn smaller and others are drawn bigger.
+  </English>
+  <Deutsch>
+Jetzt verbinden wir den Output vom GridSpread Node an den ersten Input des Distance Nodes und den 'PositionXY' Output des Mouse Nodes an den zweiten Input des Distance Nodes.
+
+Das gibt uns die Distanz zwischen jeder der Positionen im Gitter und der aktuellen Mausposition.
+
+Wenn du jetzt den 'Distance' Output an den 'XYZ' Input des UniformScale Nodes verbindest, wirst du sehen, dass die Verbindung dahin von der IOBox, die vorher bestand, verschwunden ist. Das liegt daran, dass jeder Input in vvvv immer nur einen Link akzeptieren kann!
+
+Asserdem wirst du bemerkt haben, dass sich das Ergebnis im Renderer bereits verändert hat: Quads mit einer kurzen Distanz zum Cursor werden jetzt kleiner gezeichnet, als Quads, die weiter entfernt sind.
+  </Deutsch>
+  <Russian>
+Соедини output у GridSpread node c первым input у Distance node. И 'PositionXY' output у Mouse node со вторым input у Distance node.
+
+Это даст тебе расстояние между каждой точкой в сетке и позицией мышки.
+
+Если теперь соединить 'Distance' output c 'XYZ' input pin у UniformScale node, то существующий link между этим input pin и IOBox автоматически пропадет, потому что input pin в vvvv может принимать только один link!
+
+Смотри, результат в Renderer изменился. Проведи мышкой над Renderer: Quads с меньшим расстояним до мышки имеют меньший размер, чем все остальные.
+  </Russian>
+</Entry>
+<Entry id="3" prefix="">
+  <English>
+Finally let us place a 'Map (Value)' node between the Distance and the UniformScale node to better control how the distance influences the size.
+
+Doubleclick in the patch, type 'map' and then chose the first option: Map (Value). Connect the output of the Distance node to the Map nodes input and the Map nodes output to the UniformScale's XYZ input (again replacing the previously existing link).
+
+Now identify the 'Destination Maximum' input on the Map node, click it and press the middle mousebutton in the patch to create an IOBox for this parameter. Change the value to around 0.1 and then move your mouse over the renderer to see the result.
+</English>
+  <Deutsch>
+Jetzt lass uns noch einen 'Map (Value)' Node zwischen Distance und UniformScale einfügen um kontrollieren zu können, wie die Distanz die Grösse beeinflusst.
+
+Also ein Doppelklick in den Patch, dann 'map' tippen und die ersten Option: Map (Value) auswählen. Verbinde jetzt den Output vom Distance Node mit dem ersten Input des Map Nodes, dann dessen Output mit dem XYZ Input von UniformScale (dabei wieder den zuvor existierenden Link ersetzen).
+
+Jetzt suchen wir den Input 'Destination Maximum' am Map Node, klicken ihn und erzeugen dann eine IOBox im Patch durch einen Mittelklick. Ändere den Wert auf etwa 0.1 und bewege dann die Maus im Renderer um das Ergebnis zu sehen.
+  </Deutsch>
+  <Russian>
+В заключении, между Distance и UniformScale поставь еще один node: 'Map (Value)'. Тем самым можно будет лучше контролировать как расстояние влияет на размер.
+
+Щелкни 2 раза в patch, набери map и выбери первую node в списке: Map (Value). Соедини Output у Distance node c Input pin у Map node. А потом соедини Output у Map node с XYZ у UniformScale (опять, просто заменяя уже присоединенный туда link).
+
+Теперь найди 'Destination Maximum' input у Map node, щелкни по нему, а затем щелкни средней кнопкой мышки в любом месте в patch, чтобы создать IOBox. Измени в нем значение, сделай примерно 0.1, а затем проведи мышкой над Renderer, чтобы посмотреть результат.
+  </Russian>
+</Entry>
+<Entry id="4" prefix="">
+  <English>
+If you want to compare your result to what we were hoping you would get, you can scroll the patch to the right:
+Press the right mousebutton in an empty area of the patch and drag to the left to move the patch in this direction:
+----------&gt;
+</English>
+  <Deutsch>
+Wenn du dein Ergebnis vergleichen willst, mit dem wie's gedacht war, dann kannst du den Patch nach rechts scrollen:
+Drück dazu die rechte Maustaste an einer freien Stelle im Patch und ziehe nach links um den Patch in diese Richtung zu bewegen:
+----------&gt;
+  </Deutsch>
+  <Russian>
+Если ты хочешь сравнить то, что получилось у тебя, с тем, что мы хотели получить, можешь проскороллить patch направо:
+Нажми и удерживай правую кнопку мышки в пустом месте в patch, а затем поведи мышкой влево, чтобы пододвинуть patch в эту сторону:
+----------&gt;
+  </Russian>
+</Entry>
+
+<Entry id="5" prefix="">
+  <English>
+For more details on nodes, see:
+  </English>
+  <Deutsch>
+Für mehr Details zu Nodes, siehe:
+  </Deutsch>
+  <Russian>
+Подробнее о nodes:
+  </Russian>
+</Entry>
+
+<Entry id="6" prefix="">
+  <English>
+More Tutorials are available online:
+  </English>
+  <Deutsch>
+Weitere Tutorials gibt's online:
+  </Deutsch>
+  <Russian>
+Дополнительные туториал смотрите по адресу:
+  </Russian>
+</Entry>
+
+</Entries>

@@ -1,0 +1,533 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha20.5.dtd" >
+   <PATCH nodename="E:\vvvv_svn\vvvv33_trunk\help\Oscillator (Animation Advanced) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="11565" left="195" top="525" type="Window" width="10470">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="27" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="690" top="960" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="45" top="6465" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2895" left="690" top="960" type="Box" width="5430">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="26" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="3210" top="10440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="25" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="3390" top="9345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Transform" srcnodeid="25" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5940" top="6765" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8100" top="3225" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5940" top="6765" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.13">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|dot size|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="25" dstpinname="ScaleX" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
+   <LINKPOINT x="6255" y="8985">
+   </LINKPOINT>
+   <LINKPOINT x="5685" y="8370">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="ScaleY" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
+   <LINKPOINT x="6360" y="9255">
+   </LINKPOINT>
+   <LINKPOINT x="5730" y="8415">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3420" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10110" top="1155" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3420" top="4110" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.59">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Cyclics / second|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2505" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9255" top="1020" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2505" top="4110" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="8.36">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="FilterTime">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="3855" top="9780" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12420" top="4695" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="3855" top="9780" type="Box" width="915">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.06000,1.00000,0.06000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="26" dstpinname="Color" srcnodeid="21" srcpinname="Color Output">
+   </LINK>
+   <NODE id="20" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="1335" top="10440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="1515" top="9345" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="TranslateY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="1980" top="9780" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12720" top="4995" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="375" left="1980" top="9780" type="Box" width="915">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.13520,0.06000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Color" srcnodeid="18" srcpinname="Color Output">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="TranslateX" linkstyle="Bezier" srcnodeid="27" srcpinname="X">
+   <LINKPOINT x="315" y="10320">
+   </LINKPOINT>
+   <LINKPOINT x="1545" y="8595">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="TranslateY" linkstyle="Bezier" srcnodeid="27" srcpinname="Y">
+   <LINKPOINT x="390" y="10320">
+   </LINKPOINT>
+   <LINKPOINT x="1800" y="8190">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="420" left="405" top="4110" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="315" left="405" top="4110" type="Box" width="870">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|mouse x|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1530" top="4110" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="330" left="1530" top="4110" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|mouse y|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="ScaleY" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
+   <LINKPOINT x="5925" y="9480">
+   </LINKPOINT>
+   <LINKPOINT x="5535" y="8100">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="ScaleX" linkstyle="Bezier" srcnodeid="24" srcpinname="Y Output Value">
+   <LINKPOINT x="5670" y="9780">
+   </LINKPOINT>
+   <LINKPOINT x="4605" y="7935">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4635" top="4110" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13305" top="3480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4635" top="4110" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="cyclic">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4635" top="6570" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12195" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1185" left="4635" top="6570" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-20">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|acceleration y|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3855" top="6570" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12495" top="6210" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1185" left="3855" top="6570" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-20">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|velocity y|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2865" top="6585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12495" top="6210" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1185" left="2865" top="6585" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-20">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|acceleration x|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2085" top="6585" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="12795" top="6510" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1185" left="2085" top="6585" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-20">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|velocity x|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="915" left="5730" top="4875" type="Node" width="2325">
+   </BOUNDS>
+   <BOUNDS height="1365" left="5730" top="4875" type="Box" width="3135">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="| move your mouse over the black  window!&cr;&lf; play around with FilterTime!&cr;&lf; play around with Cyclics/second!&cr;&lf; &cr;&lf; look, what velocity is doing!&cr;&lf; look, what acceleration is doing!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="420" left="5730" top="9225" type="Node" width="3300">
+   </BOUNDS>
+   <BOUNDS height="540" left="5730" top="9225" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|when you right click here&cr;&lf;you can compare the Oscillator to similar nodes!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="5670" top="9795" type="Node" width="1035">
+   </BOUNDS>
+   <BOUNDS height="270" left="5670" top="9795" type="Box" width="1440">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="--------------&gt;">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="255" left="60" top="10410" type="Node" width="1155">
+   </BOUNDS>
+   <BOUNDS height="255" left="60" top="10410" type="Box" width="1155">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|patch by kalle!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="6195" top="975" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="2370" left="6195" top="975" type="Box" width="3795">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Oscillation is the periodic variation, typically in time, of some measure as seen, for example, in a swinging pendulum. The term vibration is sometimes used more narrowly to mean a mechanical oscillation but sometimes is used to be synonymous with oscillation. Oscillations occur not only in physical systems but also in biological systems and in human society. Oscillations are the origin of the sensation of musical tone.&cr;&lf;&cr;&lf;http://en.wikipedia.org/wiki/Oscillator|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Oscillator (Animation Advanced)">
+   <BOUNDS height="0" left="1755" top="5775" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Cyclics / second" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration Out" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="x">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Go To Position" srcnodeid="27" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="TranslateX" srcnodeid="4" srcpinname="Position Out">
+   <LINKPOINT x="1785" y="6525">
+   </LINKPOINT>
+   <LINKPOINT x="1785" y="8310">
+   </LINKPOINT>
+   <LINKPOINT x="3570" y="8310">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Cyclics / second" linkstyle="Bezier" srcnodeid="23" srcpinname="Y Output Value">
+   <LINKPOINT x="4530" y="4890">
+   </LINKPOINT>
+   <LINKPOINT x="3120" y="4890">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="FilterTime" linkstyle="Bezier" srcnodeid="22" srcpinname="Y Output Value">
+   <LINKPOINT x="3615" y="4890">
+   </LINKPOINT>
+   <LINKPOINT x="2880" y="4890">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Cyclic" linkstyle="Bezier" srcnodeid="15" srcpinname="Y Output Value">
+   <LINKPOINT x="5745" y="4920">
+   </LINKPOINT>
+   <LINKPOINT x="3240" y="5085">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Velocity Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Acceleration Out">
+   </LINK>
+   <NODE id="3" nodename="Oscillator (Animation Advanced)">
+   <BOUNDS height="0" left="3735" top="5775" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Cyclics / second" visible="1">
+   </PIN>
+   <PIN pinname="FilterTime" visible="1">
+   </PIN>
+   <PIN pinname="Cyclic" visible="1">
+   </PIN>
+   <PIN pinname="Acceleration Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="y">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Go To Position" srcnodeid="27" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="TranslateY" srcnodeid="3" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Cyclics / second" linkstyle="Bezier" srcnodeid="23" srcpinname="Y Output Value">
+   <LINKPOINT x="4530" y="4725">
+   </LINKPOINT>
+   <LINKPOINT x="3300" y="4725">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="FilterTime" linkstyle="Bezier" srcnodeid="22" srcpinname="Y Output Value">
+   <LINKPOINT x="3615" y="4725">
+   </LINKPOINT>
+   <LINKPOINT x="3060" y="4725">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Cyclic" linkstyle="Bezier" srcnodeid="15" srcpinname="Y Output Value">
+   <LINKPOINT x="5745" y="4935">
+   </LINKPOINT>
+   <LINKPOINT x="3735" y="4935">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Acceleration Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Velocity Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="3390">
+   </BOUNDS>
+   <BOUNDS height="160" left="-4230" top="27150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Pendulum style oscillator with some advanced features|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4005">
+   </BOUNDS>
+   <BOUNDS height="160" left="-4230" top="27150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Oscillator - Animation Advanced|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Group (EX9)">
+   <BOUNDS height="0" left="2130" top="10860" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="20" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="26" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="27" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="15" y="11085">
+   </LINKPOINT>
+   <LINKPOINT x="30" y="960">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="28" nodename="compare filters.v4p" path="E:\vvvv_svn\vvvv33_trunk\help\">
+   <BOUNDS height="0" left="7155" top="9795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS left="7155" top="9795" type="Box" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="615" top="1500" width="16065" height="7680">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
