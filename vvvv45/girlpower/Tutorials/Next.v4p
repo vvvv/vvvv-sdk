@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Tutorials\Next.v4p" systemname="Next" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Tutorials\Next.v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="9570" top="1755" width="10290" height="7965">
    </BOUNDS>
@@ -34,26 +34,6 @@
    </NODE>
    <LINK srcnodeid="3" srcpinname="Patch Path" dstnodeid="2" dstpinname="Filename">
    </LINK>
-   <NODE systemname="MakePath (String)" filename="%VVVV%\addonpack\lib\nodes\plugins\MakePath.dll" nodename="MakePath (String)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="840" top="4935" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input Count" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Prepend Patch Path" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="840" top="4935">
-   </BOUNDS>
-   <PIN pinname="Input 3" visible="1" slicecount="1" values=".xml">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Path" dstnodeid="1" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="1665" top="4425" width="100" height="100">
    </BOUNDS>
@@ -68,8 +48,6 @@
    <PIN pinname="Input 3" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="1" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="RegExpr (String)" nodename="RegExpr (String)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="1530" top="2175" width="100" height="100">
    </BOUNDS>
@@ -153,15 +131,15 @@
    <LINK srcnodeid="5" srcpinname="Match 1" dstnodeid="0" dstpinname="Input 1">
    </LINK>
    <NODE systemname="OpenURL (Network)" filename="%VVVV%\lib\nodes\modules\Network\OpenURL (Network).v4p" nodename="OpenURL (Network)" componentmode="Hidden" id="11">
-   <BOUNDS type="Node" left="840" top="5550" width="100" height="100">
+   <BOUNDS type="Node" left="510" top="5520" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Url" visible="1">
    </PIN>
    <PIN pinname="Open" visible="1">
    </PIN>
+   <BOUNDS type="Box" left="510" top="5520">
+   </BOUNDS>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="11" dstpinname="Url">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3735" top="3765" width="480" height="480">
    </BOUNDS>
@@ -249,7 +227,7 @@
    </PIN>
    </NODE>
    <NODE systemname="DeleteNode (VVVV)" nodename="DeleteNode (VVVV)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="5070" top="5490" width="100" height="100">
+   <BOUNDS type="Node" left="5070" top="5520" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Parent Patch" visible="1">
    </PIN>
@@ -319,5 +297,21 @@
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="28" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="28" srcpinname="Output" dstnodeid="21" dstpinname="Delete">
+   </LINK>
+   <NODE systemname="AbsolutePath (File)" nodename="AbsolutePath (File)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="510" top="5085" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Base Path" visible="1">
+   </PIN>
+   <PIN pinname="Relative Path" visible="1">
+   </PIN>
+   <PIN pinname="Absolute Path" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Path" dstnodeid="29" dstpinname="Base Path">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="29" dstpinname="Relative Path">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Absolute Path" dstnodeid="11" dstpinname="Url">
    </LINK>
    </PATCH>
