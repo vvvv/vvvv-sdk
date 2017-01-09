@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha25.1.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\Select\Select (Transform) help.v4p" filename="D:\vvvv\sourceforge\plugins\wrk\Select\Select (Transform) help.v4p" systemname="Select (Transform) help">
-   <BOUNDS height="6840" left="7485" top="2940" type="Window" width="4785">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\Select (Transform Bin) help.v4p" filename="D:\vvvv\sourceforge\plugins\wrk\Select\Select (Transform) help.v4p" systemname="Select (Transform) help">
+   <BOUNDS height="7260" left="7485" top="2940" type="Window" width="4980">
    </BOUNDS>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="3645" top="6000" type="Node" width="750">
@@ -17,9 +17,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   <BOUNDS height="255" left="165" top="540" type="Node" width="570">
    </BOUNDS>
-   <BOUNDS height="525" left="15" top="390" type="Box" width="1770">
+   <BOUNDS height="525" left="165" top="540" type="Box" width="1770">
    </BOUNDS>
    <BOUNDS height="160" left="12870" top="39750" type="Window" width="215">
    </BOUNDS>
@@ -31,13 +31,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="29" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   <BOUNDS height="270" left="165" top="165" type="Node" width="915">
    </BOUNDS>
-   <BOUNDS height="375" left="15" top="15" type="Box" width="2715">
+   <BOUNDS height="375" left="165" top="165" type="Box" width="2715">
    </BOUNDS>
    <BOUNDS height="160" left="12870" top="39750" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select - Transform|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select (Transform Bin)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -46,7 +46,7 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="Select.dll" id="31" nodename="Select (Transform)" systemname="Select (Transform)">
+   <NODE componentmode="Hidden" filename="Select.dll" id="31" nodename="Select (Transform)" systemname="Select (Transform Bin)">
    <BOUNDS height="270" left="870" top="3510" type="Node" width="1350">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -94,7 +94,7 @@
    </NODE>
    <LINK dstnodeid="43" dstpinname="Input 2" srcnodeid="44" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="45" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="1680" top="2940" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="495" left="1680" top="2940" type="Box" width="540">
@@ -134,7 +134,7 @@
    </NODE>
    <LINK dstnodeid="47" dstpinname="Transform" srcnodeid="31" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="48" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InABox" id="48" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="100" left="705" top="4515" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="705" top="4515" type="Box" width="2400">
@@ -142,6 +142,16 @@
    <BOUNDS height="4920" left="8415" top="7905" type="Window" width="6120">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
    <LINK dstnodeid="48" dstpinname="Layers" srcnodeid="47" srcpinname="Layer">
@@ -158,4 +168,6 @@
    </LINK>
    <LINK srcnodeid="43" srcpinname="Output" dstnodeid="31" dstpinname="Input">
    </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
