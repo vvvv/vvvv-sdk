@@ -1,0 +1,131 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\vake\source\complete\vvvv45\help\SharedMemory (DShow9 TransformInPlace) help.v4p">
+   <BOUNDS height="4680" left="1290" top="7290" type="Window" width="6105">
+   </BOUNDS>
+   <NODE id="9" nodename="SharedMemory (EX9.Texture)" systemname="SharedMemory (EX9.Texture)">
+   <BOUNDS height="270" left="405" top="3465" type="Node" width="1170">
+   </BOUNDS>
+   <PIN pinname="Shared Memory Name" slicecount="1" visible="1" values="|any name for the shared memory location|">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="320">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="240">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="X8R8G8B8">
+   </PIN>
+   <PIN pinname="Repair" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Flip Vertically" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Bytes per Pixel" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="VIDEOIN (DSHOW9)" systemname="VideoIn (DShow9)">
+   <BOUNDS height="0" left="840" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Video Format" slicecount="1" values="RGB24">
+   </PIN>
+   <PIN pinname="Force Preview Output (via SmartT)" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2490" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14535" top="6525" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="2490" top="1245" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|any name for the shared memory location|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="465" left="15" top="390" type="Box" width="4560">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Passes Video trough and writes the current mediasample into a shared memory location|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="5025">
+   </BOUNDS>
+   <BOUNDS height="160" left="900" top="3150" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SharedMem (DShow9 TransformInPlace)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="360" top="3120" type="Node" width="1605">
+   </BOUNDS>
+   <BOUNDS height="270" left="360" top="3120" type="Box" width="810">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2460" top="1710" type="Node" width="4095">
+   </BOUNDS>
+   <BOUNDS height="1575" left="2460" top="1710" type="Box" width="2715">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|the video image in the shared memory location can now be read by any number of applications at very low performance overhead. &cr;&lf;&cr;&lf;like this a videoinput can be shared among applications.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="VideoOut (DShow9)" systemname="VideoOut (DShow9)">
+   <BOUNDS height="0" left="825" top="2490" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="VideoOut (DShow9 SharedMemory)" systemname="VideoOut (DShow9 SharedMemory)">
+   <BOUNDS height="0" left="405" top="3855" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="2" nodename="SharedMemory (DShow9 TransformInPlace)" systemname="SharedMemory (DShow9 TransformInPlace)">
+   <BOUNDS height="0" left="825" top="1905" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video Input" visible="1">
+   </PIN>
+   <PIN pinname="Video Output" visible="1">
+   </PIN>
+   <PIN pinname="Shared Name" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Video Input" srcnodeid="8" srcpinname="Video">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Video" srcnodeid="2" srcpinname="Video Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Shared Name" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   </PATCH>
