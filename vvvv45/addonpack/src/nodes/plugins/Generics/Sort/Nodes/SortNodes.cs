@@ -9,7 +9,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Sort",
 		Category = "Spreads",
 		Version = "Advanced",
-		Tags = "", Author="vux,elias"
+		Tags = "order", 
+        Author="vux, elias"
 		)]
 	public class ValueSortNode : BaseSortNode<double>//, IPluginEvaluate
 	{
@@ -19,7 +20,8 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Sort",
 	Category = "String",
 	Version = "Advanced",
-	Tags = "", Author = "vux,elias"
+	Tags = "order", 
+    Author = "vux, elias"
 	)]
 	public class StringSortNode : BaseSortNode<string>//, IPluginEvaluate
 	{
