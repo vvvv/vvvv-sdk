@@ -168,5 +168,30 @@ namespace VVVV.Hosting.Factories
             if (!filename.Contains("~temp") && !filename.Contains(".xml"))
                 base.DoRemoveFile(filename);
         }
+
+        protected override bool CloneNode(INodeInfo nodeInfo, string path, string name, string category, string version, out string filename)
+        {
+            if (nodeInfo.Type == NodeType.Module)
+            {
+                var originalModule = nodeInfo.Filename;
+                var catver = category + " " + version;
+                filename = Path.Combine(path, name + " (" + catver + ").v4p");
+
+                try
+                {
+                    Directory.CreateDirectory(path);
+                    File.Copy(originalModule, filename);
+                }
+                catch (Exception e)
+                {
+                    Logger.Log(LogType.Error, "Problem cloning to: " + filename);
+                    Logger.Log(e);
+                }
+
+                return true;
+            }
+
+            return base.CloneNode(nodeInfo, path, name, category, version, out filename);
+        }
     }
 }
