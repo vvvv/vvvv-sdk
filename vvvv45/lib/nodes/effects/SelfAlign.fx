@@ -48,8 +48,9 @@ struct vs2ps
 // --------------------------------------------------------------------------------------------------
 // VERTEXSHADERS
 // --------------------------------------------------------------------------------------------------
+float2 RendererSize;
 
-vs2ps VS(
+vs2ps VS_Pixel(
     float4 PosO: POSITION,
     float3 NormO: NORMAL,
     float4 TexCd : TEXCOORD0)
@@ -74,7 +75,40 @@ vs2ps VS(
 		
 		// Add the Object's position multiplied by the viewspace transform
 		// to the WorldViewProjected position
-		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*float3(tP[0][0]/tP[1][1],1,1), 1);
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*float3(2/RendererSize,1), 1); //float3(tP[0][0]/tP[1][1],1,1), 1);
+	}
+	else
+	{
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldView position and then apply Projection
+		Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
+		//Out.PosWVP = pos + mul(PosO, tA);
+	}
+	
+    Out.TexCd = mul(TexCd, tTex);
+    return Out;
+}
+
+vs2ps VS(
+    float4 PosO: POSITION,
+    float3 NormO: NORMAL,
+    float4 TexCd : TEXCOORD0)
+{
+    //inititalize all fields of output struct with 0
+    vs2ps Out = (vs2ps)0;
+    
+    //normal in view space
+    Out.NormV = normalize(mul(NormO, tA));
+
+    //World position
+    float4 pos = mul(float4(0, 0, 0, 1), tW);
+	
+    //position (projected)
+	if (fixedSize)
+	{   
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldViewProjected position
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*float3(2/RendererSize,1), 1);
 	}
 	else
 	{
