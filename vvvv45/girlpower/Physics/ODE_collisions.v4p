@@ -1,0 +1,49 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.6.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\patches\beispiel patches\ODE\ODE_collisions (help).v4p">
+   <BOUNDS height="6495" left="1185" top="1875" type="Window" width="12825">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="750" left="165" top="720" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="3075" left="165" top="720" type="Box" width="11715">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Collisions between bodies or between bodies and the static environment are handled as follows:&cr;&lf;&cr;&lf;1. Before each simulation step, the vvvv calls collision detection functions to determine what is touching what. These functions return a list of contact points. Each contact point specifies a position in space, a surface normal vector, and a penetration depth.&cr;&lf;&cr;&lf;2. A special contact joint is created for each contact point. The contact joint is given extra information about the contact, for example the friction present at the contact surface, how bouncy or soft it is, and various other properties.&cr;&lf;&cr;&lf;3. The contact joints are put in a joint ”group”, which allows them to be added to and removed from the system very quickly. The simulation speed goes down as the number of contacts goes up, so various strategies can be used to limit the number of contact points.&cr;&lf;&cr;&lf;4. A simulation step is taken.&cr;&lf;&cr;&lf;5. All contact joints are removed from the system.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="165" top="120" type="Node" width="1050">
+   </BOUNDS>
+   <BOUNDS height="330" left="165" top="120" type="Box" width="1950">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="COLLISIONS">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="420" left="225" top="5655" type="Node" width="2790">
+   </BOUNDS>
+   <BOUNDS height="510" left="225" top="5655" type="Box" width="5805">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Text taken out of ODE&apos;s documentation (http://ode.org/ode-docs.html)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

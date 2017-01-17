@@ -1,0 +1,109 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\native\Timing (Debug) help.v4p">
+   <BOUNDS height="9525" left="4785" top="765" type="Window" width="8010">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
+   <BOUNDS height="3390" left="330" top="4590" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="3960" left="330" top="4590" type="Box" width="6975">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The main loop is an abstraction of the two main forces in a modern graphical rendering system:&cr;&lf;  - for rendering a frame as fast as possible  the graphics engine should be&cr;&lf;    configured in a minimal time and then left alone for a maximal time (so gpu&cr;&lf;    and cpu can work in parallel)&cr;&lf;  - rendering the graphical unser interface has a lower priority than rendering&cr;&lf;    the display. therefore it should be possible to slow down the gui or even&cr;&lf;    stalling it completely if rendering quality is a premium.&cr;&lf;&cr;&lf;  for that all scheduling is done in three passes:&cr;&lf;  (1) prepareGraph (encapsulating all cpu work for preparing the next frame)&cr;&lf;  (2) updateView (updating all gui elements based on the previous calculations)&cr;&lf;  (3) present (instruct the graphics engine to present the image from the frame before)&cr;&lf;  (4) render (encapsulating all data transfers to the gpu to render the next frame)&cr;&lf;&cr;&lf;&cr;&lf;note that the second step is optional and can be skipped if render performance is premium. &cr;&lf;UpdateView is just responsible for updating data in the view and is not allowed to change anything in the graphs behaviour.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (String)">
+   <BOUNDS height="750" left="3945" top="2010" type="Node" width="2430">
+   </BOUNDS>
+   <BOUNDS height="2235" left="3945" top="2010" type="Box" width="3345">
+   </BOUNDS>
+   <BOUNDS height="160" left="600" top="600" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|dark pink - windows + mainloop &cr;&lf;violet - timerCB&cr;&lf;pink  - updateviewCB&cr;&lf;green - preparegraph&cr;&lf;gray -  render&cr;&lf;cyan - present &cr;&lf;light gray - networksync&cr;&lf;khaki - debug&cr;&lf;orange - resetcache|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="RENDERER (EX9)">
+   <BOUNDS height="0" left="330" top="2550" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3270" top="10125" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1680" left="330" top="2550" type="Box" width="3285">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="390" type="Box" width="5715">
+   </BOUNDS>
+   <BOUNDS height="160" left="10560" top="44610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|prints information about the elapsed time to the gdi window or to the console|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10560" top="44610" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Timing (Debug)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="PerfMeter (Debug)" filename="%VVVV%\lib\nodes\modules\Debug\PerfMeter (Debug).v4p" nodename="PerfMeter (Debug)" componentmode="Hidden" id="40">
+   <BOUNDS type="Node" left="330" top="1965" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="330" top="1965">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Layer" dstnodeid="13" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="330" top="930" width="7635" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="330" top="930" width="3600" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Open the PerfMeter (Debug) module to see how it uses the Timing (Debug) node to visualize the individual timings.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>
