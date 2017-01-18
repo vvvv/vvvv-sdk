@@ -1138,8 +1138,8 @@ namespace VVVV.Nodes.Input
                         (X2ButtonIn[i] ? MouseButtons.XButton2 : MouseButtons.None),
                     Observers = oldState.Observers ?? new List<IObserver<MouseNotification>>()
                 };
-                // Notify our observers
-                foreach (var observer in newState.Observers)
+                // Notify our observers (make a copy of the list first as the OnNext calls could trigger an unsubscription and we'd get an exception here)
+                foreach (var observer in newState.Observers.ToArray())
                     NotifyObserver(oldState, newState, observer);
                 // Save the new mouse state
                 MouseStates[i] = newState;
