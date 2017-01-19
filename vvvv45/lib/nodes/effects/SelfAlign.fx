@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: aligns the orientation of a geometry to the camera
+//@help: Aligns the orientation of a geometry to the camera.
 //@tags: billboard, view space
 //@credits:
 
@@ -48,8 +48,6 @@ struct vs2ps
 // --------------------------------------------------------------------------------------------------
 // VERTEXSHADERS
 // --------------------------------------------------------------------------------------------------
-float2 RendererSize;
-
 vs2ps VS(
     float4 PosO: POSITION,
     float3 NormO: NORMAL,
