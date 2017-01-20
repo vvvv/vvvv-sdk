@@ -209,7 +209,7 @@ namespace VVVV.Nodes.NodeBrowser
                 //now that we create a text make sure not to create a comment as well
                 TagsTextBox.Text = "";
                 
-                if ((Control.ModifierKeys == Keys.Control) && (selNode.Type == NodeType.Dynamic || selNode.Type == NodeType.Effect || selNode.Type == NodeType.VL))
+                if ((Control.ModifierKeys == Keys.Control) && (selNode.Type == NodeType.Dynamic || selNode.Type == NodeType.Effect || selNode.Type == NodeType.VL || selNode.Type == NodeType.Module))
                     OnPanelChange(NodeBrowserPage.Clone, selNode);
                 else
                     OnCreateNode(selNode);
@@ -412,7 +412,7 @@ namespace VVVV.Nodes.NodeBrowser
                 tip += "\n AUTHOR: " + ni.Author.Trim();
             if (!string.IsNullOrEmpty(ni.Credits))
                 tip += "\n CREDITS: " + ni.Credits.Trim();
-            if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect || ni.Type == NodeType.VL)
+            if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect || ni.Type == NodeType.VL || ni.Type == NodeType.Module)
                 tip += "\n Use CTRL+Enter or CTRL+Click to clone this node.";
 
             if (!string.IsNullOrEmpty(tip))

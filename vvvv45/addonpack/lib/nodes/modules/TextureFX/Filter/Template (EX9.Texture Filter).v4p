@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta23.dtd" >
-   <PATCH nodename="c:\Program Files\vvvv_45beta25.1\modules\Texture FX\_Template (EX9.Texture).v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Template (EX9.Texture FX).v4p" systemname="_Template (EX9.Texture FX)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Template (EX9.Texture Filter).v4p" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Template (EX9.Texture Filter).v4p" systemname="Template (EX9.Texture Filter)">
    <BOUNDS height="11220" left="13815" top="195" type="Window" width="10950">
    </BOUNDS>
    <NODE componentmode="InABox" id="10" nodename="IOBox (Node)" systemname="IOBox (Node)">
@@ -14,7 +14,7 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="9" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="9" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="2040" top="6330" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="2040" top="6330" type="Box" width="2400">
@@ -29,14 +29,24 @@
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
    </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="8" nodename="Info (EX9.Texture)" systemname="Info (EX9.Texture)">
+   <NODE componentmode="Hidden" id="8" nodename="INFO (EX9.TEXTURE)" systemname="Info (EX9.Texture)">
    <BOUNDS height="0" left="2535" top="2490" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Texture" slicecount="1" visible="1" values="||">
@@ -80,7 +90,7 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Texture" linkstyle="PolyLine" srcnodeid="10" srcpinname="Output Node">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="0" left="7545" top="4980" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="480" left="7545" top="4980" type="Box" width="480">
@@ -160,7 +170,7 @@
    <PIN pinname="XYZ" slicecount="1" values="2">
    </PIN>
    </NODE>
-   <LINK dstnodeid="9" dstpinname="View Transform" srcnodeid="1" srcpinname="Transform Out">
+   <LINK dstnodeid="9" dstpinname="View" srcnodeid="1" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="0" nodename="Quad (DX9)" systemname="Quad (DX9)">
    <BOUNDS height="100" left="2040" top="4980" type="Node" width="100">
@@ -169,9 +179,13 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
    </NODE>
-   <LINK dstnodeid="0" dstpinname="Render State" srcnodeid="10" srcpinname="Output Node">
-   </LINK>
    <LINK dstnodeid="9" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
    </LINK>
+   <LINK srcnodeid="10" srcpinname="Output Node" dstnodeid="0" dstpinname="Texture">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
