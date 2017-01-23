@@ -1,0 +1,275 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches_TODO\Tester_Mesh.v4p" filename="C:\Users\joreg\dev\vake\source\complete\vvvv45\girlpower\Tester_Mesh.v4p" systemname="Tester_Mesh">
+   <BOUNDS height="6300" left="9795" top="2820" type="Window" width="14820">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="1" nodename="Count (EX9.Geometry Mesh)" systemname="Count (EX9.Geometry Mesh)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="2445" top="3060" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
+   <BOUNDS height="100" left="2445" top="1950" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="375" top="900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="375" top="900" type="Box" width="480">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="2445" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="2445" top="3675" type="Box" width="795">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="1" srcpinname="SubsetCount">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <BOUNDS height="0" left="3345" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3345" top="3675" type="Box" width="795">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="1" srcpinname="VertexCount per Subset">
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="BoundingBox (EX9.Geometry Mesh)" systemname="BoundingBox (EX9.Geometry Mesh)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="4545" top="3060" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="7" nodename="VertexDeclaration (EX9.Geometry Mesh)" systemname="VertexDeclaration (EX9.Geometry Mesh)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="6300" top="3060" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN encoded="0" pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN encoded="0" pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Content Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS height="0" left="6315" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1185" left="6315" top="3675" type="Box" width="4410">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="7" srcpinname="Declaration">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <BOUNDS height="0" left="5040" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="720" left="5040" top="3675" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Scale of complete meshXYZ">
+   </LINK>
+   <NODE componentmode="InAWindow" id="10" nodename="Renderer (TTY)" systemname="Renderer (TTY)">
+   <BOUNDS height="100" left="1215" top="4875" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1215" top="4875" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="3255" left="9480" top="10545" type="Window" width="16920">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="1740" top="255" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Change" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="11" srcpinname="Change">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="12" nodename="Change (EX9.Geometry Mesh)" systemname="Change (EX9.Geometry Mesh)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="11250" top="3060" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="OnChange" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <BOUNDS height="0" left="11250" top="4140" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="11250" top="4140" type="Box" width="480">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="14" nodename="ViewFrustumCulling (EX9.Geometry Mesh)" systemname="ViewFrustumCulling (EX9.Geometry Mesh)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <BOUNDS height="100" left="12675" top="3060" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <BOUNDS height="0" left="12675" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="12675" top="3675" type="Box" width="480">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="14" srcpinname="View Frustum Test">
+   </LINK>
+   <NODE componentmode="Hidden" id="16" nodename="Writer (EX9.Geometry XFile)" systemname="Writer (EX9.Geometry XFile)">
+   <PIN pinname="Mesh" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Do Write">
+   </PIN>
+   <BOUNDS height="100" left="465" top="3690" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="Hidden" id="17" nodename="Switch (String Input)" systemname="Switch (String Input)">
+   <PIN encoded="0" pinname="Input 1" slicecount="1" values="..\..\..\..\..\..\..\Desktop\vvvvs\vvvv_50beta35_x64\lib\assets\geometries\v.x">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Input 2" slicecount="1" values="..\..\..\..\..\..\..\Desktop\vvvvs\vvvv_50beta35_x64\lib\assets\geometries\soft-cube.x">
+   </PIN>
+   <BOUNDS height="100" left="3000" top="600" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\String\NIL (String).v4p" id="18" nodename="NIL (String)" systemname="NIL (String)">
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="3555" top="165" type="Node" width="100">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Input 3" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="22" nodename="MonoFlop (Animation)" systemname="MonoFlop (Animation)">
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS height="100" left="11250" top="3600" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Time" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="22" dstpinname="Set" srcnodeid="12" srcpinname="OnChange">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="22" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Switch" srcnodeid="11" srcpinname="Cycles">
+   </LINK>
+   <LINK dstnodeid="17" dstpinname="Switch" srcnodeid="11" srcpinname="Cycles">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Mesh" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <BOUNDS height="0" left="1005" top="3105" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="1005" top="3105" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Do Write" srcnodeid="24" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="25" nodename="XFile (EX9.Geometry Load)" systemname="XFile (EX9.Geometry Load)">
+   <BOUNDS height="100" left="3000" top="1155" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 2" srcnodeid="25" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="25" dstpinname="Filename" srcnodeid="17" srcpinname="Output">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   </PATCH>

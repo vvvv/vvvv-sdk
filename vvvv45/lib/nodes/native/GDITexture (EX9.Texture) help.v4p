@@ -1,0 +1,347 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\GDITexture (EX9.Texture) help.v4p">
+   <BOUNDS height="9705" left="4020" top="1650" type="Window" width="7080">
+   </BOUNDS>
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="15" managers="" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="645" top="5715" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3135" left="645" top="5715" type="Box" width="4995">
+   </BOUNDS>
+   <BOUNDS height="5820" left="9150" top="2925" type="Window" width="6000">
+   </BOUNDS>
+   <PIN pinname="View Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Depth Buffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Background Color" pintype="Input" slicecount="1" visible="1" values="|0.99237,0.28464,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Adapter" pintype="Configuration" slicecount="1" values="|Default Adapter|">
+   </PIN>
+   <PIN pinname="Mode" pintype="Configuration" slicecount="1" values="|XGA Default: [1024x768 32bit] if possible|">
+   </PIN>
+   <PIN pinname="Swap" pintype="Configuration" slicecount="1" values="copy">
+   </PIN>
+   <PIN pinname="Sync" pintype="Configuration" slicecount="1" values="default">
+   </PIN>
+   <PIN pinname="Back Buffer Count" pintype="Configuration" slicecount="1" values="2.00000">
+   </PIN>
+   <PIN pinname="Antialiasing" pintype="Configuration" slicecount="1" values="|No Multi Sampling|">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Clear" pintype="Input" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Render Pass" pintype="Input" slicecount="1" visible="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Autosize Backbuffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Backbuffer Width" pintype="Input" slicecount="1" visible="1" values="1024">
+   </PIN>
+   <PIN pinname="Backbuffer Height" pintype="Input" slicecount="1" visible="1" values="1024">
+   </PIN>
+   <PIN pinname="Global Visual Range" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Fullscreen On Client" pintype="Input" slicecount="1" visible="0" values="0.00000">
+   </PIN>
+   <PIN pinname="Clear Depth Buffer" pintype="Input" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Projection Transform" pintype="Input" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="X" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="DX9 Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|512 x 384|">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="2145" top="5010" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|1.00000,1.00000,1.00000,0.31782|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="GDITexture (EX9.Texture)">
+   <BOUNDS height="0" left="2460" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Reload" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Render Mode" slicecount="1" values="Copy">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Texture" srcnodeid="13" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="135" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3540" top="5490" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="1800" left="135" top="1395" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="GDI Out" visible="1">
+   </PIN>
+   <PIN pinname="Autosize Backbuffer" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" visible="1" values="511.99999">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" visible="1" values="512">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Source" srcnodeid="12" srcpinname="GDI Out">
+   </LINK>
+   <NODE id="11" nodename="Text (GDI)">
+   <BOUNDS height="0" left="135" top="945" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Text" slicecount="1" values="|I&apos;m a GDI Text|">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.49">
+   </PIN>
+   <PIN pinname="Height" slicecount="1" values="0.290000000000001">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="82">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-0.15">
+   </PIN>
+   <PIN pinname="Bold" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="3525" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Transform" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="10" srcpinname="Transform Out">
+   <LINKPOINT x="3555" y="4770">
+   </LINKPOINT>
+   <LINKPOINT x="2340" y="4770">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="9" nodename="Cross (2d)">
+   <BOUNDS height="0" left="3765" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X Out" visible="1">
+   </PIN>
+   <PIN pinname="Y Out" visible="1">
+   </PIN>
+   <PIN pinname="X In" visible="1">
+   </PIN>
+   <PIN pinname="Y In" slicecount="20" visible="1" values="0.44978,0.47182,-0.33226,0.48850,0.24821,0.46486,0.41815,-0.27978,0.57296,0.35838,0.33001,-0.17143,0.09881,0.55282,-0.54890,0.19300,0.33854,0.35184,-0.13917,-0.37162">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="X" linkstyle="VHV" srcnodeid="9" srcpinname="X Out">
+   <LINKPOINT x="3795" y="4155">
+   </LINKPOINT>
+   <LINKPOINT x="3795" y="4155">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y" linkstyle="VHV" srcnodeid="9" srcpinname="Y Out">
+   <LINKPOINT x="4485" y="4155">
+   </LINKPOINT>
+   <LINKPOINT x="4050" y="4155">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="8" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3765" top="3255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="20.00000">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="123.00000">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.18">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="X In" srcnodeid="8" srcpinname="Output">
+   </LINK>
+   <NODE id="7" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="5100" top="3255" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="210.91898">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.6">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y In" linkstyle="VHV" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="5130" y="3660">
+   </LINKPOINT>
+   <LINKPOINT x="3960" y="3660">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="6" nodename="Random (Value)">
+   <BOUNDS height="0" left="3930" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="399.99999">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Random Seed" linkstyle="VHV" srcnodeid="6" srcpinname="Output">
+   <LINKPOINT x="3960" y="3060">
+   </LINKPOINT>
+   <LINKPOINT x="4545" y="3060">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5490" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11535" top="4260" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5490" top="1770" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Spread Count" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="5910" y="2625">
+   </LINKPOINT>
+   <LINKPOINT x="4920" y="2625">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Spread Count" hiddenwhenlocked="1" linkstyle="VHV" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="5910" y="2625">
+   </LINKPOINT>
+   <LINKPOINT x="6255" y="2625">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4110" top="1770" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8835" top="3630" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="435" left="4110" top="1770" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Enabled" linkstyle="VHV" srcnodeid="4" srcpinname="Y Output Value">
+   <LINKPOINT x="4530" y="2400">
+   </LINKPOINT>
+   <LINKPOINT x="3960" y="2400">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4035" top="1425" type="Node" width="2325">
+   </BOUNDS>
+   <BOUNDS height="300" left="4035" top="1425" type="Box" width="2490">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|enable and increase spreadcount|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Random (Value)">
+   <BOUNDS height="0" left="5070" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="399.99999">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Random Seed" linkstyle="VHV" srcnodeid="2" srcpinname="Output">
+   <LINKPOINT x="5100" y="3060">
+   </LINKPOINT>
+   <LINKPOINT x="5880" y="3060">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Enabled" linkstyle="VHV" srcnodeid="4" srcpinname="Y Output Value">
+   <LINKPOINT x="4530" y="2400">
+   </LINKPOINT>
+   <LINKPOINT x="5100" y="2400">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="3105">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="13770" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Allows to use the content of any drawn window as a texture in a DX window|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="13770" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GDITexture - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="15" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="12" dstpinname="Layers">
+   </LINK>
+   </PATCH>
