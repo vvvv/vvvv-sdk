@@ -71,9 +71,14 @@ vs2ps VS(
 		// Make a perspective division
 		pos.xyz /= pos.w;
 		
+		//Aspect Ratio
+		float aX = tP[0][0];
+		float aY = tP[1][1];
+		float3 aspectRatio = float3 (aX, aY, 1);
+		
 		// Add the Object's position multiplied by the additional Viewspace Transform
 		// to the WorldViewProjected position
-		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*float3(tP[0][0]/tP[1][1],1,1), 1);
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*aspectRatio, 1);
 	}
 	else
 	{
