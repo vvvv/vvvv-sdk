@@ -25,20 +25,78 @@ namespace VVVV.Nodes
 	#endregion PluginInfo
 	public unsafe class C3dTetrahedralizeNode : IPluginEvaluate, IDisposable
     {
+        // dll loading code copied from tonfilm.s VVVV.OpenVR
+        private class UnsafeNativeMethods
+        {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern bool SetDllDirectory(string lpPathName);
 
-    static C3dTetrahedralizeNode()
-    {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            public static extern int GetDllDirectory(int bufsize, StringBuilder buf);
+
+            [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+            public static extern IntPtr LoadLibrary(string librayName);
+        }
+
+        public static string CoreAssemblyNativeDir
+        {
+            get
+            {
+                //get the full location of the assembly with DaoTests in it
+                string fullPath = Assembly.GetAssembly(typeof(C3dTetrahedralizeNode)).Location;
+                var subfolder = Environment.Is64BitProcess ? "x64" : "x86";
+
+                //get the folder that's in
+                return Path.Combine(Path.GetDirectoryName(fullPath), subfolder);
+            }
+        }
+
+        public static void LoadDllFile(string dllfolder, string libname)
+        {
+            var currentpath = new StringBuilder(255);
+            var length = UnsafeNativeMethods.GetDllDirectory(currentpath.Length, currentpath);
+
+            // use new path
+            var success = UnsafeNativeMethods.SetDllDirectory(dllfolder);
+
+            if (success)
+            {
+                var handle = UnsafeNativeMethods.LoadLibrary(libname);
+                success = handle.ToInt64() > 0;
+            }
+
+            // restore old path
+            UnsafeNativeMethods.SetDllDirectory(currentpath.ToString());
+        }
+        static C3dTetrahedralizeNode()
+         {
+            LoadDllFile(CoreAssemblyNativeDir, "Tetgen2vvvv.dll");
+            //add dependencies folder to path when used as a standalone plugin
             var platform = IntPtr.Size == 4 ? "x86" : "x64";
             var pathToThisAssembly = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+//            var pathToBinFolder = Path.Combine(pathToThisAssembly, "dependencies");
             var pathToBinFolder = Path.Combine(pathToThisAssembly, "dependencies", platform);
             var envPath = Environment.GetEnvironmentVariable("PATH");
             envPath = string.Format("{0};{1}", envPath, pathToBinFolder);
             Environment.SetEnvironmentVariable("PATH", envPath);
+
+            
         }
 
 
-    #region fields & pins
-    	[Input("Input ", BinVisibility = PinVisibility.OnlyInspector)]
+        /// dll import
+        [System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
+        private static extern IntPtr tetCalculate(String behaviour, double[] vertXYZ, double[] vertAttr, int[] vertMarker, int[] numPoly, int[] numVertices, int[] vertIndex, int[] numFHoles, double[] fHoleXYZ, int[] facetMarker, double[] HoleXYZ, double[] RegionXYZ, double[] RegionAttrib, double[] RegionVolConst, int[] binSizes, String fileName);
+
+        [System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
+        private static extern void getValues([In, Out] double[] _vertXYZ, [In, Out] int[] _triIndices, [In, Out] int[] _tetIndices, [In, Out] double[] _regionMarker, [In, Out] int[] _pointMarker, [In, Out] int[] _faceMarker, [In, Out] int[] _pointAttr, [In, Out] int[] _neighborList);
+
+        [System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
+        private static extern int ReleaseMemory(IntPtr ptr);
+
+
+        #region fields & pins
+        [Input("Input ", BinVisibility = PinVisibility.OnlyInspector)]
 		public ISpread<ISpread<Vector3D>> FVec;
     	
 //    	[Input("Vertex Attributes", BinVisibility = PinVisibility.OnlyInspector)]
@@ -131,20 +189,13 @@ namespace VVVV.Nodes
 */
 		[Import()]
 		public ILogger FLogger;
-		#endregion fields & pins
-		
-		[System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
-        private static extern IntPtr tetCalculate(String behaviour, double[] vertXYZ,double[] vertAttr,int[] vertMarker,int[] numPoly,int[] numVertices,int[] vertIndex,int[] numFHoles, double[] fHoleXYZ,int[] facetMarker, double[] HoleXYZ, double[] RegionXYZ, double[] RegionAttrib, double[] RegionVolConst, int[] binSizes, String fileName);
-		
-    	[System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
-		private static extern void getValues([In, Out] double[] _vertXYZ, [In, Out] int[] _triIndices, [In, Out] int[] _tetIndices,  [In, Out] double[] _regionMarker, [In, Out] int[] _pointMarker, [In, Out] int[] _faceMarker, [In, Out] int[] _pointAttr, [In, Out] int[] _neighborList);
-    
-		[System.Runtime.InteropServices.DllImport("TetGen2vvvv.dll")]
-		private static extern int ReleaseMemory(IntPtr ptr);
+        #endregion fields & pins
+
+//        string importDLL = pathToPlatformDLL();
 
 
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
 		{
 			SpreadMax = SpreadUtils.SpreadMax(FVec, FPoly,FNVert,FVI,FFH,FFHI,FFM,FHOI,FRI,FRA,FRVC,FHO,FR,FWriteIn,FFile,FWriteOut/*,FPA,FPM*/);
 			FPoints.SliceCount=SpreadMax;
@@ -154,97 +205,96 @@ namespace VVVV.Nodes
 			FPtMarker.SliceCount=SpreadMax;
 			FFaceMarker.SliceCount=SpreadMax;
 			FTetNeighbor.SliceCount=SpreadMax;
-//			FDebug.SliceCount=SpreadMax;
-//			FPtAttr.SliceCount=SpreadMax;
-			
-			for (int binID=0; binID<SpreadMax;binID++){
-			
-			string bhvr = FB[binID];
-			string fileName=FFile[binID];
-			
-			int computeNeighbors = Convert.ToInt32(bhvr.Contains("n"));
-			int computeRegionAttr = Convert.ToInt32(bhvr.Contains("A"));	
-			
-//			//always compute neighbors
-//			bhvr +="n";
-//			FDebug[0]=computeRegionAttr;
-			int entries = FVec[binID].SliceCount;
-			int entriesXYZ =entries*3;
-			
-			int numFacets = FPoly[binID].SliceCount;
-			int numHoles = FHO[binID];
-			int numRegions = FR[binID];
-			int writeIn = Convert.ToInt32(FWriteIn[binID]);
-			int writeOut = Convert.ToInt32(FWriteOut[binID]);
+            //			FDebug.SliceCount=SpreadMax;
+            //			FPtAttr.SliceCount=SpreadMax;
 
-            var help = new Helpers();
-			
-			double[] V = new double[entriesXYZ];
-			V = help.Vector3DToArray(V,FVec[binID]);
-			
-			int[] nP = new int[numFacets];
-			nP=FPoly[binID].ToArray();
-			
-			int numVert=FNVert[binID].SliceCount;
-			int[] nV = new int[numVert];
-			nV=FNVert[binID].ToArray();
-			
-			int numFHolesXYZ=FFHI[binID].SliceCount*3;
-			double[] FfHI = new double[numFHolesXYZ];	//test	
-			FfHI = help.Vector3DToArray(FfHI,FFHI[binID]);
-			
-			int numIndices = FVI[binID].SliceCount;
-			int[] VI = new int[numIndices];
-			VI=FVI[binID].ToArray();			
-			for(int nInd=0;nInd<numIndices;nInd++) VI[nInd]+=1;//tetgen expects indices starting at 1
-			
-			//facet marker
-			int[] FM = new int[numFacets];
-			help.SpreadToArray(FM,FFM[binID]); //can not use toArray() here, as Slicecount may be smaller than numFacets
-			
-			//facet holes
-			int[] FfH = new int[numFacets];
-			help.SpreadToArray(FfH,FFH[binID]); //can not use toArray() here, as Slicecount may be smaller than numFacets
+            if (FCal[0])
+            {
 
-            //hole indicators
-            int sizeHI=FHOI[binID].SliceCount*3;
-			double[] HI = new double[sizeHI];
-			HI= help.Vector3DToArray(HI,FHOI[binID]);
+                for (int binID=0; binID<SpreadMax;binID++){
 			
-			int sizeRI=FRI[binID].SliceCount*3;
-			double[] RI = new double[sizeRI];
-			RI= help.Vector3DToArray(RI,FRI[binID]);
+			    string bhvr = FB[binID];
+			    string fileName=FFile[binID];
 			
-			int sizeRA=FRA[binID].SliceCount;
-			double[] RA = new double[sizeRA];
-			RA=FRA[binID].ToArray();
+			    int computeNeighbors = Convert.ToInt32(bhvr.Contains("n"));
+			    int computeRegionAttr = Convert.ToInt32(bhvr.Contains("A"));	
 			
-			int sizeRVC=FRVC[binID].SliceCount;			
-			double[] RVC = new double[sizeRVC];
-			RVC=FRVC[binID].ToArray();
+    //			//always compute neighbors
+    //			bhvr +="n";
+    //			FDebug[0]=computeRegionAttr;
+			    int entries = FVec[binID].SliceCount;
+			    int entriesXYZ =entries*3;
+			
+			    int numFacets = FPoly[binID].SliceCount;
+			    int numHoles = FHO[binID];
+			    int numRegions = FR[binID];
+			    int writeIn = Convert.ToInt32(FWriteIn[binID]);
+			    int writeOut = Convert.ToInt32(FWriteOut[binID]);
+
+                var help = new Helpers();
+			
+			    double[] V = new double[entriesXYZ];
+			    V = help.Vector3DToArray(V,FVec[binID]);
+			
+			    int[] nP = new int[numFacets];
+			    nP=FPoly[binID].ToArray();
+			
+			    int numVert=FNVert[binID].SliceCount;
+			    int[] nV = new int[numVert];
+			    nV=FNVert[binID].ToArray();
+			
+			    int numFHolesXYZ=FFHI[binID].SliceCount*3;
+			    double[] FfHI = new double[numFHolesXYZ];	//test	
+			    FfHI = help.Vector3DToArray(FfHI,FFHI[binID]);
+			
+			    int numIndices = FVI[binID].SliceCount;
+			    int[] VI = new int[numIndices];
+			    VI=FVI[binID].ToArray();			
+			    for(int nInd=0;nInd<numIndices;nInd++) VI[nInd]+=1;//tetgen expects indices starting at 1
+			
+			    //facet marker
+			    int[] FM = new int[numFacets];
+			    help.SpreadToArray(FM,FFM[binID]); //can not use toArray() here, as Slicecount may be smaller than numFacets
+			
+			    //facet holes
+			    int[] FfH = new int[numFacets];
+			    help.SpreadToArray(FfH,FFH[binID]); //can not use toArray() here, as Slicecount may be smaller than numFacets
+
+                //hole indicators
+                int sizeHI=FHOI[binID].SliceCount*3;
+			    double[] HI = new double[sizeHI];
+			    HI= help.Vector3DToArray(HI,FHOI[binID]);
+			
+			    int sizeRI=FRI[binID].SliceCount*3;
+			    double[] RI = new double[sizeRI];
+			    RI= help.Vector3DToArray(RI,FRI[binID]);
+			
+			    int sizeRA=FRA[binID].SliceCount;
+			    double[] RA = new double[sizeRA];
+			    RA=FRA[binID].ToArray();
+			
+			    int sizeRVC=FRVC[binID].SliceCount;			
+			    double[] RVC = new double[sizeRVC];
+			    RVC=FRVC[binID].ToArray();
 				
-			//point Markers
-			int[] PM = new int[entries];
-			help.SpreadToArray(PM,FPM[binID]); //can not use toArray() here, as Slicecount may be smaller than entries
+			    //point Markers
+			    int[] PM = new int[entries];
+			    help.SpreadToArray(PM,FPM[binID]); //can not use toArray() here, as Slicecount may be smaller than entries
 
-            //point Attributes
-            double[] PA = new double[entries];
-//			help.SpreadToArray(PA,FPA[binID]);//can not use toArray() here, as Slicecount may be smaller than entries	
+                //point Attributes
+                double[] PA = new double[entries];
+    //			help.SpreadToArray(PA,FPA[binID]);//can not use toArray() here, as Slicecount may be smaller than entries	
 
-            int[] binSizes = new int[8];
-			binSizes[0]=entries;
-			binSizes[1]=numFacets;
-			binSizes[2]=numHoles;
-			binSizes[3]=numRegions;
-			binSizes[4]=writeIn;
-			binSizes[5]=writeOut;
-			binSizes[6]=computeNeighbors;
-			binSizes[7]=computeRegionAttr;	
-				
-			
-			
-			if (FCal[0]){
-				
+                int[] binSizes = new int[8];
+			    binSizes[0]=entries;
+			    binSizes[1]=numFacets;
+			    binSizes[2]=numHoles;
+			    binSizes[3]=numRegions;
+			    binSizes[4]=writeIn;
+			    binSizes[5]=writeOut;
+			    binSizes[6]=computeNeighbors;
+			    binSizes[7]=computeRegionAttr;	
+								
 				try
 				{
 									
@@ -321,8 +371,12 @@ namespace VVVV.Nodes
 				
 				ReleaseMemory(tet);  
 				}
-						
-			finally
+                catch (Exception ex)
+                {
+
+                }
+
+                finally
 			{
 				
 			}

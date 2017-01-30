@@ -135,180 +135,196 @@ namespace VVVV.Nodes
             FRmark.SliceCount = SpreadMax;
 			FInd.SliceCount = SpreadMax;
 
-            int index = 0;
-			
-			List<int> shift = new List<int>();			
+            int index = 0;			
+
+            if (FCal[0])
+            {
+            	
+            List<int> shift = new List<int>();			
 			shift.Add(0);
-
-			
-			for (int meshID=0;meshID<SpreadMax;meshID++){
-				
-            var polygon = new Polygon();
-			
-			for (int contourID=0;contourID<Fvert[meshID].SliceCount;contourID++){
-				
-			int vertexcount =0;
-				
-			
-				
-			if (Fvert[meshID][contourID]!=0){
-				vertexcount = Fvert[meshID][contourID];
-				}
-				else{
-					vertexcount=FInput[meshID].SliceCount;
-				}
-			
-			ISpread<Vertex> vcsSpread = new Spread<Vertex>();
-			vcsSpread.SliceCount=vertexcount;
-			
-			
-			
-            for (int i = 0; i < vertexcount; i++)
-            {          	
-                vcsSpread[i] = new Vertex(FInput[meshID][index+i].x, FInput[meshID][index+i].y, FBmark[meshID][index+i]);
-			}
-			
-			if (vertexcount>1){
-					if(FConSeg[meshID][contourID])
-						{
-						for (int segID=0;segID<vertexcount-1;segID++)
-							{
-							polygon.Add(new Segment(vcsSpread[segID],vcsSpread[segID+1]), true);
-							}
-						}
-					else
-						{
-						polygon.Add(new Contour(vcsSpread, contourID+1), FIsH[meshID][contourID]);	
-						}					
-            	}
-            	else
-				{
-					polygon.Add(vcsSpread[0]);
-				}
-				
-				
-				
-			index+=vertexcount;
-
-			}
-			
-            var quality = new QualityOptions() { MinimumAngle = FMinAngle[meshID], MaximumAngle = FMaxAngle[meshID], SteinerPoints = FSteiner[meshID] };
-            if (Freg[meshID])
-                {
-                    for (int regionID = 0; regionID < FRegInd[meshID].SliceCount; regionID++)
-                    {
-                        polygon.Regions.Add(new RegionPointer(FRegInd[meshID][regionID].x, FRegInd[meshID][regionID].x, FRegMark[meshID][regionID]));
-                    }
-
-				
-                }
-			else{
-				quality.MaximumArea=FMaxArea[meshID][0];	
-				}
-			
-			
-            // Triangulate the polygon
-			var options = new ConstraintOptions() { ConformingDelaunay = FConDel[meshID], SegmentSplitting = FSplit[meshID] };
-			if (FSmooth[meshID])options = new ConstraintOptions() { ConformingDelaunay = true, SegmentSplitting = FSplit[meshID] };	
-			
-			
+            	
             
-			if (FCal[0]){	
-			var mesh = polygon.Triangulate(options, quality);
-			
-            if (Freg[meshID])
-                {
-                    foreach (var t in mesh.Triangles)
-				    {
-				        // Set area constraint for all triangles
-				        t.Area = FMaxArea[meshID][t.Label-1];
-				    }
-				// Use per triangle area constraint for next refinement
-            	quality.VariableArea = true;
-                
-
-	            // Refine mesh to meet area constraint.
-	            mesh.Refine(quality,FConDel[meshID]);
-	            
-
-                }
+            for (int meshID=0;meshID<SpreadMax;meshID++){
 				
-			// Do some smoothing.
-        	if (FSmooth[meshID]) (new SimpleSmoother()).Smooth(mesh, FSmoothLimit[meshID]);
-
-			mesh.Renumber();
+	            var polygon = new Polygon();
 				
-		
-            int triangleCount = mesh.Triangles.Count;
-			int SliceOut = triangleCount*3;
-			int vertexCount = mesh.Vertices.Count;
-				
-			
-            
-			var vertices = mesh.Vertices.ToSpread();		
-			var triangles = mesh.Triangles.ToSpread();
-				
-			FRmark[meshID] = new Spread<int>();
-				
-			FInd[meshID].SliceCount = SliceOut;	
-				
-			if (FUni[meshID]){
-				
-				shift.Add(shift[meshID]+vertexCount*(Convert.ToInt32(FShift[0])));
-				
-				FOutput[meshID].SliceCount = vertexCount;
-				FVmark[meshID].SliceCount = vertexCount;
-	            FRmark[meshID].SliceCount = vertexCount;
-	//			FMesh[meshID] = mesh;
+				for (int contourID=0;contourID<Fvert[meshID].SliceCount;contourID++){
 					
-				for (int j = 0; j < vertexCount; j++)
-	            { 
-	            	FOutput[meshID][j]=new Vector2D(vertices[j].X,vertices[j].Y);
-	            	FVmark[meshID][j] = vertices[j].Label;	           	
-	            }				
+				int vertexcount =0;
+					
+				
+					
+				if (Fvert[meshID][contourID]!=0){
+					vertexcount = Fvert[meshID][contourID];
+					}
+					else{
+						vertexcount=FInput[meshID].SliceCount;
+					}
+				
+				ISpread<Vertex> vcsSpread = new Spread<Vertex>();
+				vcsSpread.SliceCount=vertexcount;
+				
+				
+				
+	            for (int i = 0; i < vertexcount; i++)
+	            {          	
+	                vcsSpread[i] = new Vertex(FInput[meshID][index+i].x, FInput[meshID][index+i].y, FBmark[meshID][index+i]);
+				}
+				
+				if (vertexcount>1){
+						if(FConSeg[meshID][contourID])
+							{
+							for (int segID=0;segID<vertexcount-1;segID++)
+								{
+								polygon.Add(new Segment(vcsSpread[segID],vcsSpread[segID+1]), true);
+								}
+							}
+						else
+							{
+							polygon.Add(new Contour(vcsSpread, contourID+1), FIsH[meshID][contourID]);	
+							}					
+	            	}
+	            	else
+					{
+						polygon.Add(vcsSpread[0]);
+					}
+					
+					
+					
+				index+=vertexcount;
+	
+				}
+				
+	            var quality = new QualityOptions() { MinimumAngle = FMinAngle[meshID], MaximumAngle = FMaxAngle[meshID], SteinerPoints = FSteiner[meshID] };
+	            if (Freg[meshID])
+	                {
+	                    for (int regionID = 0; regionID < FRegInd[meshID].SliceCount; regionID++)
+	                    {
+	                        polygon.Regions.Add(new RegionPointer(FRegInd[meshID][regionID].x, FRegInd[meshID][regionID].x, FRegMark[meshID][regionID]));
+	                    }
+	
+					
+	                }
+				else{
+					quality.MaximumArea=FMaxArea[meshID][0];	
+					}
+				
+				
+	            // Triangulate the polygon
+				var options = new ConstraintOptions() { ConformingDelaunay = FConDel[meshID], SegmentSplitting = FSplit[meshID] };
+				if (FSmooth[meshID])options = new ConstraintOptions() { ConformingDelaunay = true, SegmentSplitting = FSplit[meshID] };	
+				
+				
+	            
+					
+				var mesh = polygon.Triangulate(options, quality);
+				
+	            if (Freg[meshID])
+	                {
+	                    foreach (var t in mesh.Triangles)
+					    {
+					        // Set area constraint for all triangles
+					        t.Area = FMaxArea[meshID][t.Label-1];
+					    }
+					// Use per triangle area constraint for next refinement
+	            	quality.VariableArea = true;
+	                
+	
+		            // Refine mesh to meet area constraint.
+		            mesh.Refine(quality,FConDel[meshID]);
+		            
+	
+	                }
+					
+				// Do some smoothing.
+	        	if (FSmooth[meshID]) (new SimpleSmoother()).Smooth(mesh, FSmoothLimit[meshID]);
+	
+				mesh.Renumber();
+					
 			
-	            for (int i = 0; i < triangleCount; i++)
-	            	{	     	
-	            	for (int tri =0; tri<3;tri++)
-	            		{
-	            		FInd[meshID][i * 3+tri] = triangles[i].GetVertexID(tri)+shift[meshID];
-	            		if (triangles[i].Label>=FRmark[meshID][triangles[i].GetVertexID(tri)]) FRmark[meshID][triangles[i].GetVertexID(tri)]= triangles[i].Label;
-	            		
-	            		}
-	              	}
+	            int triangleCount = mesh.Triangles.Count;
+				int SliceOut = triangleCount*3;
+				int vertexCount = mesh.Vertices.Count;
+					
 				
-				List<int> OldIndices = new List<int>();
-				List<int> NewIndices = new List<int>();
-				
-				for (int s=0; s<FConSeg[meshID].SliceCount;s++){
-					if (FConSeg[meshID][s]){
-						int startindex=0;
+	            
+				var vertices = mesh.Vertices.ToSpread();		
+				var triangles = mesh.Triangles.ToSpread();
+					
+				FRmark[meshID] = new Spread<int>();
+					
+				FInd[meshID].SliceCount = SliceOut;	
+					
+				if (FUni[meshID]){
+					
+					shift.Add(shift[meshID]+vertexCount*(Convert.ToInt32(FShift[0])));
+					
+					FOutput[meshID].SliceCount = vertexCount;
+					FVmark[meshID].SliceCount = vertexCount;
+		            FRmark[meshID].SliceCount = vertexCount;
+		//			FMesh[meshID] = mesh;
 						
-						int first=0;
-						for (int u=0; u<s;u++){
-							startindex+=Fvert[meshID][u];
-						}
-						for (int segPID=1; segPID<Fvert[meshID][s]-1;segPID++){
-							int counter=0;
-							for (int vertID=0;vertID<vertexCount;vertID++){
-								if (vertices[vertID].X==FInput[meshID][startindex+segPID].x && vertices[vertID].Y==FInput[meshID][startindex+segPID].y){
-									counter++;
-									if (counter>1){
-										OldIndices.Add(vertID);
-										NewIndices.Add(first);
-									}
-									else{
-										first = vertID;
+							
+				
+		            for (int i = 0; i < triangleCount; i++)
+		            	{	     	
+		            	for (int tri =0; tri<3;tri++)
+		            		{
+		            		FInd[meshID][i * 3+tri] = triangles[i].GetVertexID(tri)+shift[meshID];
+		            		if (triangles[i].Label>=FRmark[meshID][triangles[i].GetVertexID(tri)]) FRmark[meshID][triangles[i].GetVertexID(tri)]= triangles[i].Label;
+		            		
+		            		}
+		              	}
+					
+					for (int j = 0; j < vertexCount; j++)
+		            { 
+
+		            		FOutput[meshID][j]=new Vector2D(vertices[j].X,vertices[j].Y);
+		            		FVmark[meshID][j] = vertices[j].Label;   		           	
+		            }	
+
+					
+					
+					
+/*					List<int> OldIndices = new List<int>();
+					List<int> NewIndices = new List<int>();
+					
+					for (int s=0; s<FConSeg[meshID].SliceCount;s++){
+						if (FConSeg[meshID][s]){
+							int startindex=0;
+							
+							int first=0;
+							for (int u=0; u<s;u++){
+								startindex+=Fvert[meshID][u];
+							}
+							
+							//only check for points on segments, excluding start and end points
+							
+							for (int segPID=1; segPID<Fvert[meshID][s]-1;segPID++){
+								int counter=0;
+								for (int vertID=0;vertID<vertexCount;vertID++){
+									if (vertices[vertID].X==FInput[meshID][startindex+segPID].x && vertices[vertID].Y==FInput[meshID][startindex+segPID].y){
+										counter++;
+										if (counter>1){
+											OldIndices.Add(vertID);
+											NewIndices.Add(first);
+										}
+										else{
+											first = vertID;
+										}
 									}
 								}
 							}
+							
+						for (int indexID=0; indexID<OldIndices.Count;indexID++){
+							
+							FInd[meshID].Select(num => num == OldIndices[indexID] ? NewIndices[indexID] : num);
+							}
 						}
-						
-					for (int indexID=0; indexID<OldIndices.Count;indexID++){
-						
-						FInd[meshID].Select(num => num == OldIndices[indexID] ? NewIndices[indexID] : num);
 						}
-						
+					*/
+					//remove duplicate points which do not belong to any triangle
+				
 					List<int> GarbageIndex = new List<int>();
 					for (int vecID=0; vecID<FOutput[meshID].SliceCount;vecID++){
 						bool isPart = false;
@@ -316,53 +332,45 @@ namespace VVVV.Nodes
 						isPart = FInd[meshID].Contains(vecID);
 						
 						if (!isPart) {
-							GarbageIndex.Add(vecID);
-							
-						}
-						
+							GarbageIndex.Add(vecID);								
+						}							
 					}
 					
-					for (int g = 0; g<FInd[meshID].SliceCount;g++){
-							for (int h =0; h<GarbageIndex.Count;h++){
-								if (FInd[meshID][g]>=GarbageIndex[h]) FInd[meshID][g]-=1;
-								}
-//								
-								
-							}
+					
 					GarbageIndex.Reverse();
 					for (int vecID=0; vecID<GarbageIndex.Count;vecID++){
 						FOutput[meshID].RemoveAt(GarbageIndex[vecID]);
 					}
-						
-						
-					}
+					for (int g = 0; g<FInd[meshID].SliceCount;g++){
+							for (int h =0; h<GarbageIndex.Count;h++){
+								if (FInd[meshID][g]>=GarbageIndex[h]){
+									int r = FInd[meshID][g]-1; 
+									FInd[meshID][g] = r<0 ? r+FOutput[meshID].SliceCount : r;
+								} //can be -1?
+							}							
+					}		
 				}
-				
-				
-				
-				
-			}
-			else
-				{
-					
-				shift.Add(shift[meshID]+SliceOut*(Convert.ToInt32(FShift[0])));	
-					
-				FOutput[meshID].SliceCount = SliceOut;
-				FVmark[meshID].SliceCount = SliceOut;
-	            FRmark[meshID].SliceCount = SliceOut;
-					
-				for (int i = 0; i < triangleCount; i++)
-	            	{	
-	     	
-	            	for (int tri =0; tri<3;tri++)
-	            		{
-	            		FOutput[meshID][i * 3+tri]=new Vector2D(triangles[i].GetVertex(tri).X,triangles[i].GetVertex(tri).Y);
-	            		FVmark[meshID][i * 3+tri]=triangles[i].GetVertex(tri).Label;
-	            		FRmark[meshID][i * 3+tri]=triangles[i].Label;	
-	            		FInd[meshID][i * 3+tri] = i*3+tri+ +shift[meshID];
-	            		}	
-	              	}						
-				}				
+				else
+					{
+						
+					shift.Add(shift[meshID]+SliceOut*(Convert.ToInt32(FShift[0])));	
+						
+					FOutput[meshID].SliceCount = SliceOut;
+					FVmark[meshID].SliceCount = SliceOut;
+		            FRmark[meshID].SliceCount = SliceOut;
+						
+					for (int i = 0; i < triangleCount; i++)
+		            	{	
+		     	
+		            	for (int tri =0; tri<3;tri++)
+		            		{
+		            		FOutput[meshID][i * 3+tri]=new Vector2D(triangles[i].GetVertex(tri).X,triangles[i].GetVertex(tri).Y);
+		            		FVmark[meshID][i * 3+tri]=triangles[i].GetVertex(tri).Label;
+		            		FRmark[meshID][i * 3+tri]=triangles[i].Label;	
+		            		FInd[meshID][i * 3+tri] = i*3+tri+ +shift[meshID];
+		            		}	
+		              	}						
+					}				
 			}            
 		}
 		}
