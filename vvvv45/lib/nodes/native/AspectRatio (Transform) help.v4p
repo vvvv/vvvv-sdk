@@ -352,10 +352,10 @@
    </LINK>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="24">
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="24">
    <BOUNDS type="Node" left="945" top="9570" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="945" top="9570" width="2400" height="1800">
+   <BOUNDS type="Box" left="945" top="9570" width="1500" height="2130">
    </BOUNDS>
    <BOUNDS type="Window" left="4815" top="3465" width="14295" height="2160">
    </BOUNDS>
@@ -373,7 +373,7 @@
    </PIN>
    </NODE>
    <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="1785" top="10200" width="100" height="100">
+   <BOUNDS type="Node" left="1785" top="12000" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Aspect Width" visible="1">
    </PIN>
@@ -391,15 +391,15 @@
    <LINK srcnodeid="24" srcpinname="Actual Backbuffer Height" dstnodeid="25" dstpinname="Aspect Height">
    </LINK>
    <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="24" dstpinname="Aspect Ratio" linkstyle="Bezier">
-   <LINKPOINT x="3390" y="11715">
+   <LINKPOINT x="4500" y="14290">
    </LINKPOINT>
-   <LINKPOINT x="3930" y="8685">
+   <LINKPOINT x="4995" y="8195">
    </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="26">
-   <BOUNDS type="Box" left="2685" top="9780" width="1020" height="240">
+   <BOUNDS type="Box" left="2670" top="11505" width="1020" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2685" top="9780" width="0" height="0">
+   <BOUNDS type="Node" left="2670" top="11505" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" visible="1" values="FitWidth">
    </PIN>
@@ -619,7 +619,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="53">
-   <BOUNDS type="Node" left="12570" top="9195" width="100" height="100">
+   <BOUNDS type="Node" left="12570" top="9240" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Texture" visible="1">
    </PIN>
@@ -661,9 +661,9 @@
    <LINK srcnodeid="54" srcpinname="Original Height" dstnodeid="55" dstpinname="Aspect Height">
    </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="56">
-   <BOUNDS type="Node" left="12585" top="10605" width="100" height="100">
+   <BOUNDS type="Node" left="12585" top="10665" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="12585" top="10605" width="2175" height="2235">
+   <BOUNDS type="Box" left="12585" top="10665" width="2175" height="2235">
    </BOUNDS>
    <BOUNDS type="Window" left="17850" top="12825" width="6240" height="5085">
    </BOUNDS>
@@ -677,7 +677,7 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="57">
-   <BOUNDS type="Box" left="12255" top="7800" width="1020" height="240">
+   <BOUNDS type="Box" left="12255" top="7800" width="1260" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="12255" top="7800" width="0" height="0">
    </BOUNDS>
@@ -689,7 +689,7 @@
    <LINK srcnodeid="55" srcpinname="Transform Out" dstnodeid="53" dstpinname="Transform">
    </LINK>
    <NODE systemname="Invert (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Invert\Invert (EX9.Texture Filter).v4p" nodename="Invert (EX9.Texture Filter)" componentmode="Hidden" id="62">
-   <BOUNDS type="Node" left="12915" top="8310" width="100" height="100">
+   <BOUNDS type="Node" left="12885" top="8280" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -703,7 +703,7 @@
    <LINK srcnodeid="62" srcpinname="Output" dstnodeid="53" dstpinname="Texture">
    </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="63">
-   <BOUNDS type="Node" left="12570" top="10035" width="100" height="100">
+   <BOUNDS type="Node" left="12570" top="10185" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
    </PIN>
@@ -715,7 +715,7 @@
    <LINK srcnodeid="63" srcpinname="Layer" dstnodeid="56" dstpinname="Layers">
    </LINK>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="64">
-   <BOUNDS type="Node" left="14445" top="9165" width="100" height="100">
+   <BOUNDS type="Node" left="14520" top="9210" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -729,7 +729,7 @@
    <LINK srcnodeid="64" srcpinname="Layer" dstnodeid="63" dstpinname="Layer 2">
    </LINK>
    <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="65">
-   <BOUNDS type="Node" left="14445" top="8280" width="100" height="100">
+   <BOUNDS type="Node" left="14520" top="8280" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -739,9 +739,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="66">
-   <BOUNDS type="Box" left="14715" top="7890" width="1110" height="240">
+   <BOUNDS type="Box" left="14790" top="7890" width="1110" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="14715" top="7890" width="0" height="0">
+   <BOUNDS type="Node" left="14790" top="7890" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" visible="1" values="WireFrame">
    </PIN>
@@ -751,7 +751,7 @@
    <LINK srcnodeid="53" srcpinname="Layer" dstnodeid="63" dstpinname="Layer 1">
    </LINK>
    <NODE systemname="Blend (EX9.RenderState)" nodename="Blend (EX9.RenderState)" componentmode="Hidden" id="67">
-   <BOUNDS type="Node" left="14460" top="8700" width="100" height="100">
+   <BOUNDS type="Node" left="14535" top="8700" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Render State Out" visible="1">
    </PIN>
@@ -908,4 +908,32 @@
    </NODE>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="78">
+   <BOUNDS type="Node" left="14610" top="9555" width="840" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="14610" top="9555" width="1110" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|1x1 Blue Quad|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="79">
+   <BOUNDS type="Node" left="12645" top="9555" width="840" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12645" top="9555" width="1140" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Textured Quad|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
