@@ -1,0 +1,153 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
+   <PATCH nodename="C:\vvvv\PackBrowser (VVVV VPM) help.v4p" systemname="PackBrowser (VVVV VPM) help" filename="C:\vvvv\PackBrowser (VVVV VPM) help.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="990" top="4320" width="9000" height="6000">
+   </BOUNDS>
+   <PACK Name="vvvv-Message" Version="2.9.0">
+   </PACK>
+   <PACK Name="vvvv-ZeroMQ" Version="0.5.3">
+   </PACK>
+   <PACK Name="vvvv-ZeroMQ_Release_x64" Version="0.5.0">
+   </PACK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE systemname="PackBrowser (VVVV VPM)" filename="PackBrowser (VVVV VPM).v4p" nodename="PackBrowser (VVVV VPM)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="885" top="4305" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Get vpm" visible="1">
+   </PIN>
+   <PIN pinname="Update VVVV to latest alpha" visible="1">
+   </PIN>
+   <PIN pinname="Install Latest Alpha of VVVV Elsewhere" visible="1">
+   </PIN>
+   <PIN pinname="Destination" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1">
+   <BOUNDS type="Box" left="885" top="615" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="885" top="615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Get vpm">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="1470" top="690" width="5115" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1470" top="690" width="5595" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|if you dont have vpm yet get it here first and register it (to open vpm links)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="1065" top="1275" width="4200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1065" top="1275" width="6015" height="1155">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|By typing in the &quot;Filter packs&quot; text field you can search for your wanted pack. The first highlighted version (3rd column) is the last modified .vpack file. .vpack files are little xml files describing pack metadata and its installation script. Clicking on one will quit vvvv and launch the last registered vpm to install the selected pack. Quitting is necessary to update existing packs.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4">
+   <BOUNDS type="Box" left="1245" top="2460" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1245" top="2460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Update VVVV to latest alpha">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5">
+   <BOUNDS type="Node" left="1785" top="2565" width="5085" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1785" top="2565" width="6360" height="750">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|launch vpm to automatically download and update vvvv to latest alpha. This might delete and overwrite vanilla and addonpack vvvv files (including root.v4p). If you have any custom modifications please make a backup|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Box" left="1650" top="3360" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1650" top="3360" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Install Latest Alpha of VVVV Elsewhere">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
+   <BOUNDS type="Node" left="2205" top="3465" width="5310" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2205" top="3465" width="5310" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Install latest alpha to a different folder (which can be a new/empty folder)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8">
+   <BOUNDS type="Box" left="2685" top="3765" width="3765" height="285">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2685" top="3765" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|app\vpm install test with space|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="0" dstpinname="Destination">
+   </LINK>
+   </PATCH>
