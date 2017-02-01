@@ -62,30 +62,74 @@ vs2ps VS(
     //WorldView position
     float4 pos = mul(float4(0, 0, 0, 1), tWV);
 	
-    //position (projected)
+    //position
 	if (fixedSize)
 	{   
-		// Apply Projection to the WorldView position
+		// Apply Projection to the world's view position
 		pos = mul (pos, tP);
 		
 		// Make a perspective division
 		pos.xyz /= pos.w;
-		
-		//Aspect Ratio
+				
 		float aX = tP[0][0];
 		float aY = tP[1][1];
 		float3 aspectRatio = float3 (aX, aY, 1);
+
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldViewProjected position multiplied by the Aspect Ratio
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz * aspectRatio, 1);
 		
-		// Add the Object's position multiplied by the additional Viewspace Transform
-		// to the WorldViewProjected position
-		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz*aspectRatio, 1);
 	}
 	else
 	{
 		// Add the Object's position multiplied by the viewspace transform
-		// to the WorldView position and then apply Projection
+		// to the WorldView position and then apply Projection	
 		Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
-		//Out.PosWVP = pos + mul(PosO, tA);
+	
+	}
+	
+    Out.TexCd = mul(TexCd, tTex);
+    return Out;
+}
+
+vs2ps VS_Projected(
+    float4 PosO: POSITION,
+    float3 NormO: NORMAL,
+    float4 TexCd : TEXCOORD0)
+{
+    //inititalize all fields of output struct with 0
+    vs2ps Out = (vs2ps)0;
+    
+    //normal in view space
+    Out.NormV = normalize(mul(NormO, tA));
+
+    //WorldView position
+    float4 pos = mul(float4(0, 0, 0, 1), tW);
+	
+    //position (projected)
+	if (fixedSize)
+	{   
+		// Apply Projection to the world's view position
+		pos = mul (pos, tP);
+		
+		// Make a perspective division
+		pos.xyz /= pos.w;
+				
+		float aX = tP[0][0];
+		float aY = tP[1][1];
+		float3 aspectRatio = float3 (aX, aY, 1);
+
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldViewProjected position multiplied by the Aspect Ratio
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz * aspectRatio, 1);
+		
+	}
+	else
+	{
+		// Add the Object's position multiplied by the viewspace transform
+		// to the WorldView position and then apply Projection	
+		Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
+	
 	}
 	
     Out.TexCd = mul(TexCd, tTex);
@@ -110,12 +154,22 @@ float4 PS(vs2ps In): COLOR
 // TECHNIQUES:
 // --------------------------------------------------------------------------------------------------
 
-technique TSelfAlign
+technique SelfAlign
 {
     pass P0
     {
         //Wrap0 = U;  // useful when mesh is round like a sphere
         VertexShader = compile vs_1_1 VS();
+        PixelShader = compile ps_2_0 PS();
+    }
+}
+
+technique SelfAlignProjected
+{
+    pass P0
+    {
+        //Wrap0 = U;  // useful when mesh is round like a sphere
+        VertexShader = compile vs_1_1 VS_Projected();
         PixelShader = compile ps_2_0 PS();
     }
 }
