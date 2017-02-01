@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 2d ProjectionSpace).v4p" systemname="Point (DX9 2d Projected)" filename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 2d Projected).v4p">
-   <BOUNDS type="Window" left="4740" top="2655" width="12120" height="5805">
+   <BOUNDS type="Window" left="4740" top="2655" width="11295" height="5400">
    </BOUNDS>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
@@ -183,6 +183,8 @@
    </PIN>
    <PIN pinname="Translate XYZ" visible="1">
    </PIN>
+   <PIN pinname="Projected" visible="1" pintype="Input" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output Enum" dstnodeid="4" dstpinname="Type">
    </LINK>
@@ -203,5 +205,25 @@
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="6" dstpinname="XY">
    </LINK>
    <LINK srcnodeid="6" srcpinname="XYZ" dstnodeid="4" dstpinname="Translate XYZ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18">
+   <BOUNDS type="Box" left="3960" top="2685" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3960" top="2685" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Projected">
    </LINK>
    </PATCH>

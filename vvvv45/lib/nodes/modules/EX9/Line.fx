@@ -65,7 +65,6 @@ float3 slerp(float3 A, float3 B, float S)
 // VERTEXSHADERS
 // --------------------------------------------------------------------------------------------------
 
-
 vs2ps VS_ConstantWidth(
     float4 Pos : POSITION,
     float4 TexCd : TEXCOORD0,
@@ -89,6 +88,66 @@ vs2ps VS_ConstantWidth(
     // get tangent in projection space
     float4 p1 = mul(float4(Point1, 1), tWVP);
     float4 p2 = mul(float4(Point2, 1), tWVP);
+
+    p = lerp(p1, p2, u);
+
+    p1 /= p1.w;
+    p2 /= p2.w;
+    float4 tangent = p2 - p1;
+
+    //p = lerp(p1, p2, u);
+
+    // get normal in projection space
+    float2 normal = normalize(float2(tangent.y, -tangent.x));
+
+    // translate point to get a thick curve
+    float2 off = Pos.y * normal * w * p.w;
+
+    // correct aspect ratio
+    off *= mul(float4(1, 1, 0, 0), tP);
+
+    p+= float4(off, 0, 0);
+
+    //tangent = normalize(tangent);
+    //float3 normal = cross(tangent, float3(0,0,1));
+    //p += Pos.y * float4(normal, 0) * w * p.w;
+
+    // output pos p
+    Out.Pos = p;
+
+    TexCd.x *= .1 * length(tangent) / w;
+
+    //ouput texturecoordinates
+    Out.TexCd = mul(TexCd, tTex);
+
+    return Out;
+}
+
+vs2ps VS_ConstantWidth_Projected(
+    float4 Pos : POSITION,
+    float4 TexCd : TEXCOORD0,
+    float depth : TEXCOORD1)
+{
+    float w = Width * 0.003;
+
+    //inititalize all fields of output struct with 0
+    vs2ps Out = (vs2ps)0;
+    
+    float u=Pos.x+0.5;
+    Out.uv = float2(u, Pos.y*2);
+    
+    // get point on curve
+    float4 p;
+    //p = float4(lerp(Point1, Point2, u), 1);
+
+    // get position in projection space
+    //p = mul(p, tWVP);
+
+    // get tangent in projection space
+
+	float4x4 tWP = mul (tW, tP);
+    float4 p1 = mul(float4(Point1, 1), tWP);
+    float4 p2 = mul(float4(Point2, 1), tWP);
 
     p = lerp(p1, p2, u);
 
@@ -149,3 +208,15 @@ technique TLine
         PixelShader = compile ps_2_0 PS();
     }
 }
+
+technique TLineProjected
+{
+    pass P0
+    {
+        //Wrap0 = U;  // useful when mesh is round like a sphere
+        VertexShader = compile vs_2_0 VS_ConstantWidth_Projected();
+        PixelShader = compile ps_2_0 PS();
+    }
+}
+
+

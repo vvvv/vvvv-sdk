@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9 FromTo).v4p" systemname="Line (EX9 TwoPoints)" filename="C:\Work\Anton-Work\Line (EX9 TwoPoints).v4p">
-   <BOUNDS type="Window" left="13020" top="5925" width="14745" height="9480">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Line (EX9 FromTo).v4p" systemname="Line (EX9 TwoPoints)" filename="C:\Work\Anton-Work\Line (EX9 TwoPoints).v4p">
+   <BOUNDS type="Window" left="5250" top="3750" width="20100" height="9480">
    </BOUNDS>
    <NODE id="47" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="5340" top="6705" type="Node" width="0">
@@ -515,9 +515,9 @@
    <LINK dstnodeid="34" dstpinname="Input 2" srcnodeid="11" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="15180" top="420" type="Node" width="100">
+   <BOUNDS height="100" left="17115" top="495" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="480" left="15180" top="420" type="Box" width="480">
+   <BOUNDS height="480" left="17115" top="495" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="17685" top="9195" type="Window" width="215">
    </BOUNDS>
@@ -814,8 +814,42 @@
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <INFO author="" description="A line drawing module. &apos;From&apos; and &apos;To&apos; points of the line are supplied via two spreads." tags="">
    </INFO>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="6570" top="7425" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="69" srcpinname="Enum" dstnodeid="15" dstpinname="Technique">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="70">
+   <BOUNDS type="Box" left="15675" top="540" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="15675" top="540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Projection Space|">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="70" srcpinname="Y Output Value" dstnodeid="69" dstpinname="Ord Value">
+   </LINK>
+   <PACK Name="dx11" Version="0.7.2">
+   </PACK>
    </PATCH>
