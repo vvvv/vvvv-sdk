@@ -123,9 +123,9 @@
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32">
-   <BOUNDS type="Box" left="4515" top="4410" width="480" height="480">
+   <BOUNDS type="Box" left="4515" top="4260" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="4515" top="4410" width="0" height="0">
+   <BOUNDS type="Node" left="4515" top="4260" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
@@ -141,9 +141,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="34">
-   <BOUNDS type="Node" left="5250" top="4515" width="4155" height="480">
+   <BOUNDS type="Node" left="5250" top="4365" width="4155" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="5250" top="4515" width="975" height="270">
+   <BOUNDS type="Box" left="5250" top="4365" width="975" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Fixed Size|">
    </PIN>
@@ -155,9 +155,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="5355" top="5010" width="4155" height="480">
+   <BOUNDS type="Node" left="5355" top="4860" width="4155" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="5355" top="5010" width="975" height="270">
+   <BOUNDS type="Box" left="5355" top="4860" width="975" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Size|">
    </PIN>
@@ -169,9 +169,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36">
-   <BOUNDS type="Node" left="6270" top="4425" width="195" height="900">
+   <BOUNDS type="Node" left="6270" top="4275" width="195" height="900">
    </BOUNDS>
-   <BOUNDS type="Box" left="6270" top="4425" width="285" height="900">
+   <BOUNDS type="Box" left="6270" top="4275" width="285" height="900">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|||&cr;&lf;||&cr;&lf;||&cr;&lf;|||">
    </PIN>
@@ -183,9 +183,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="37">
-   <BOUNDS type="Node" left="6435" top="4425" width="4155" height="480">
+   <BOUNDS type="Node" left="6435" top="4275" width="4155" height="480">
    </BOUNDS>
-   <BOUNDS type="Box" left="6435" top="4425" width="1920" height="945">
+   <BOUNDS type="Box" left="6435" top="4275" width="1920" height="945">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|When turned on the objects are drawn with fixed scaling independent of the Camera.|">
    </PIN>
@@ -197,9 +197,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39">
-   <BOUNDS type="Box" left="4650" top="4965" width="615" height="465">
+   <BOUNDS type="Box" left="4650" top="4815" width="615" height="465">
    </BOUNDS>
-   <BOUNDS type="Node" left="4650" top="4965" width="0" height="0">
+   <BOUNDS type="Node" left="4650" top="4815" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.55,0.55">
    </PIN>
@@ -253,7 +253,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6735" top="8040" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="30">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="15">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="s">
    </PIN>
@@ -329,7 +329,7 @@
    <LINK srcnodeid="55" srcpinname="Y Output Value" dstnodeid="52" dstpinname="X">
    </LINK>
    <NODE id="23" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" height="270" left="3540" top="5130" width="525">
+   <BOUNDS type="Node" height="270" left="3540" top="4980" width="525">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1" pintype="Output">
    </PIN>
@@ -435,7 +435,7 @@
    </PIN>
    </NODE>
    <NODE id="62" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" height="270" left="9405" top="5130" width="525">
+   <BOUNDS type="Node" height="270" left="9435" top="4965" width="525">
    </BOUNDS>
    <PIN pinname="Mesh" visible="1" pintype="Output">
    </PIN>
@@ -477,6 +477,8 @@
    </BOUNDS>
    <PIN pinname="Transform in Viewspace" visible="1" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="64" dstpinname="Texture" srcnodeid="24" srcpinname="Texture Out">
    </LINK>
@@ -490,4 +492,30 @@
    </LINK>
    <LINK srcnodeid="23" srcpinname="Mesh" dstnodeid="64" dstpinname="Mesh">
    </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="65">
+   <BOUNDS type="Box" left="9720" top="5415" width="285" height="300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9720" top="5415" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.44488,1.00000,0.83941,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="66">
+   <BOUNDS type="Box" left="4035" top="5340" width="285" height="300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4035" top="5340" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|1.00000,0.43490,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="66" srcpinname="Color Output" dstnodeid="64" dstpinname="Color">
+   </LINK>
+   <LINK srcnodeid="65" srcpinname="Color Output" dstnodeid="51" dstpinname="Color">
+   </LINK>
+   <PACK Name="ImagePack" Version="0.2.0">
+   </PACK>
    </PATCH>
