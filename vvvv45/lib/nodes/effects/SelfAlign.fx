@@ -80,7 +80,8 @@ vs2ps VS(
 	{
 		// Add the Object's position multiplied by the viewspace transform
 		// to the WorldView position and then apply Projection
-		Out.PosWVP  = mul(pos + mul(PosO, tA), tP);
+		pos.xyz += mul(PosO, tA).xyz;
+		Out.PosWVP  = mul(pos, tP);
 	}
 	
     Out.TexCd = mul(TexCd, tTex);
