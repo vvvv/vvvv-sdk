@@ -39,6 +39,12 @@
    </PIN>
    <PIN pinname="View" visible="1">
    </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="RandomSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (2d).v4p" nodename="RandomPoints (2d)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="300" top="1635" width="100" height="100">
@@ -414,4 +420,20 @@
    <BOUNDS type="Node" left="4380" top="5655" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="36">
+   <BOUNDS type="Node" left="1950" top="7140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Actual Backbuffer Width" dstnodeid="36" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Actual Backbuffer Height" dstnodeid="36" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Transform Out" dstnodeid="21" dstpinname="Aspect Ratio">
+   </LINK>
    </PATCH>
