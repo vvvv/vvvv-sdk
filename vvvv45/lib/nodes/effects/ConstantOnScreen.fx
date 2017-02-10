@@ -12,7 +12,8 @@ float4x4 tW: WORLD;        	//the models world matrix
 float4x4 tV: VIEW;         	//view matrix as set via Renderer (EX9)
 float4x4 tP: PROJECTION;	//projection matrix as set via Renderer (EX9)
 float4x4 tWVP: WORLDVIEWPROJECTION;
-float2x1 invTargetSize: INVTARGETSIZE; // Inverse Renderer Size in px
+float2 invTargetSize: INVTARGETSIZE; // Inverse Renderer Size in px
+float2 targetSize: TARGETSIZE; // Inverse Renderer Size in px
 
 //Additional Transform in Projection Space
 float4x4 tA <string uiname="Transform in Projection Space (px)";>;
@@ -67,7 +68,7 @@ vs2ps VS(
 	
 	// Aspect Ratio
 	float3 aspectRatio;
-	float coeff = tP[0][0] / tP[1][1]; // width / height
+	float coeff = targetSize.y / targetSize.x; // width / height
 	
 	if (coeff >= 1)
 	{

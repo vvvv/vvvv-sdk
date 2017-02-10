@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Line (EX9).v4p" systemname="Line (EX9 Vector)" filename="C:\Work\Anton-Work\Line (EX9 Vector).v4p" locked="0" scrollx="0" scrolly="-1299">
-   <BOUNDS type="Window" left="2190" top="825" width="22170" height="14580">
+   <BOUNDS type="Window" left="5565" top="2535" width="27495" height="10980">
    </BOUNDS>
    <NODE id="47" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="3300" top="10155" type="Node" width="0">
@@ -517,9 +517,9 @@
    <LINK dstnodeid="34" dstpinname="Input 2" srcnodeid="11" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="19230" top="690" type="Node" width="100">
+   <BOUNDS height="100" left="17400" top="600" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="480" left="19230" top="690" type="Box" width="480">
+   <BOUNDS height="480" left="17400" top="600" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="17685" top="9195" type="Window" width="215">
    </BOUNDS>
@@ -960,62 +960,6 @@
    </LINK>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="164">
-   <BOUNDS type="Box" left="17865" top="720" width="480" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="17865" top="720" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
-   </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Projection Space|">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="WithinProjection (Transform)" nodename="WithinProjection (Transform)" componentmode="Hidden" id="165">
-   <BOUNDS type="Node" left="18345" top="1290" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="166">
-   <BOUNDS type="Node" left="1545" top="3750" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Transform In 1" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transform In 2" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="166" dstpinname="Transform In 1">
-   </LINK>
-   <NODE systemname="Switch (Node Input)" nodename="Switch (Node Input)" componentmode="Hidden" id="167">
-   <BOUNDS type="Node" left="17850" top="1710" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Switch" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="164" srcpinname="Y Output Value" dstnodeid="167" dstpinname="Switch">
-   </LINK>
-   <LINK srcnodeid="165" srcpinname="Transform Out" dstnodeid="167" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="167" srcpinname="Output" dstnodeid="166" dstpinname="Transform In 2">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\EX9\Line.fx" id="168" systemname="Line (EX9.Effect)" nodename="Line (EX9.Effect)">
    <BOUNDS height="270" left="3150" top="11490" type="Node" width="3225">
    </BOUNDS>
@@ -1046,8 +990,8 @@
    </LINK>
    <LINK srcnodeid="143" srcpinname="Output" dstnodeid="168" dstpinname="Enabled">
    </LINK>
-   <LINK srcnodeid="166" srcpinname="Transform Out" dstnodeid="2" dstpinname="Input Node">
-   </LINK>
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="168" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="2" dstpinname="Input Node">
    </LINK>
    </PATCH>
