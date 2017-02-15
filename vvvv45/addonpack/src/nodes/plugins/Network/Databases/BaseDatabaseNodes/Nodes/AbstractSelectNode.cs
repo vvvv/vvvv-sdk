@@ -4,6 +4,7 @@ using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.DataTypes;
 using System.Data;
+using System.Linq;
 
 namespace VVVV.Nodes
 {
@@ -133,6 +134,8 @@ namespace VVVV.Nodes
                 this.FPinCfgFields.GetString(0, out fnames);
                 string[] fields = fnames.Split(",".ToCharArray());
 
+                string[] reservedNames = { "Statement", "Status", "OnData", "Dataset Column Names" };
+
                 //Add field pin only if same name is not added already
                 foreach (string f in fields)
                 {
@@ -141,6 +144,9 @@ namespace VVVV.Nodes
                     {
                         if (!this.FPinOutFields.ContainsKey(field))
                         {
+                            if (reservedNames.Contains(field))
+                                field = field + "_";
+
                             IStringOut so;
                             this.FHost.CreateStringOutput(field, TSliceMode.Dynamic, TPinVisibility.True, out so);
                             this.FPinOutFields.Add(field, so);
