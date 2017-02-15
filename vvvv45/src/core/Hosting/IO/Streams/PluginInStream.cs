@@ -302,7 +302,7 @@ namespace VVVV.Hosting.IO.Streams
 
         public IStreamReader<T> GetReader()
         {
-            if (FNodeIn.IsConvoluted)
+            if (FNodeIn.IsConvoluted || FUpstreamStream.Length != FLength)
                 return new ConvolutedReader(FUpstreamStream, FLength, FUpStreamSlices);
             return FUpstreamStream.GetReader();
         } 
