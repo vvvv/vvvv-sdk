@@ -135,7 +135,9 @@ namespace VVVV.Nodes
                         this.FPinOutReady.SetValue(i, Convert.ToDouble(infos[i].IsReady));
                     }
                     catch (IOException e)
-                    { }
+                    {
+                        this.FPinOutReady.SetValue(i, 0);
+                    }
                 }
             }
         }

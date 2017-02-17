@@ -18,7 +18,7 @@ namespace VVVV.Nodes
 		Name = "Template", 
 		Category = "Raw", 
 		Help = "Basic raw template which copies up to count bytes from the input to the output", 
-		Tags = ""
+		Tags = "c#"
 	)]
 	#endregion PluginInfo
 	public class RawTemplateNode : IPluginEvaluate, IPartImportsSatisfiedNotification

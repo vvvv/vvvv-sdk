@@ -17,11 +17,11 @@ namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Template", 
-	Category = "GUI", 
-	Version = "Dynamic", 
-	Help = "Template with a dynamic set of gui elements", 
-	Tags = "", 
-	AutoEvaluate = true)]
+				Category = "GUI", 
+				Version = "Dynamic", 
+				Help = "Template with a dynamic set of gui elements", 
+				Tags = "c#", 
+				AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class DynamicGUITemplateNode : UserControl, IPluginEvaluate
 	{

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\Transform\AlignToPath (Transform) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\AlignToPath (Transform) help.v4p">
    <BOUNDS type="Window" left="945" top="5925" width="5460" height="6450">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -38,30 +38,14 @@
    <BOUNDS type="Window" left="3270" top="4575" width="7530" height="8895">
    </BOUNDS>
    </NODE>
-   <NODE systemname="SpiralSpread (Spreads)" filename="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Spreads.vl" nodename="SpiralSpread (Spreads)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="1740" top="1875" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="OutputXY" visible="1">
-   </PIN>
-   <PIN pinname="Count" slicecount="1" visible="1" values="20">
-   </PIN>
-   <PIN pinname="Factor" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="SizeXY" slicecount="2" values="1,1">
-   </PIN>
-   <PIN pinname="Phase" slicecount="1" values="1">
-   </PIN>
-   </NODE>
    <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="1740" top="2280" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1">
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
    </PIN>
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="OutputXY" dstnodeid="5" dstpinname="XY">
-   </LINK>
    <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="0" dstpinname="PositionXYZ">
    </LINK>
    <NODE systemname="Axis (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Axis (DX9).v4p" nodename="Axis (DX9)" componentmode="Hidden" id="7">
@@ -102,7 +86,7 @@
    </LINK>
    <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3195" top="2025" width="375" height="645">
@@ -135,10 +119,10 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Count">
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="10">
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="10">
    <BOUNDS type="Node" left="2430" top="4590" width="100" height="100">
    </BOUNDS>
    <PIN pinname="View" visible="1">
@@ -149,5 +133,27 @@
    <LINK srcnodeid="10" srcpinname="View" dstnodeid="8" dstpinname="View">
    </LINK>
    <LINK srcnodeid="10" srcpinname="Projection" dstnodeid="8" dstpinname="Projection">
+   </LINK>
+   <NODE systemname="SpiralSpread (Spreads 2d)" filename="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Spreads.vl" nodename="SpiralSpread (Spreads 2d)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1740" top="1875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Factor" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SizeXY" slicecount="2" values="1,1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="OutputXY" dstnodeid="5" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Spread Count">
    </LINK>
    </PATCH>

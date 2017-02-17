@@ -28,7 +28,7 @@ namespace VVVV.Nodes
 	            Category = "Enumerations",
 	            Version = "Static",
 	            Help = "Basic template with native .NET enum type",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{

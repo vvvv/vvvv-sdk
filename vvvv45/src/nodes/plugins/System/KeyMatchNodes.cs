@@ -22,7 +22,7 @@ namespace VVVV.Nodes.Input
                 Category = "Keyboard",
                 Help = "Detects pressed keys when connected with a Keyboard Node. Use the inspector to specify the keys to check.",
                 AutoEvaluate = true)]
-    public class KeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification
+    public class KeyMatchNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
         public enum KeyMode { Press, Toggle, UpOnly, DownOnly, DownUp, RepeatedEvent };
 
@@ -230,6 +230,12 @@ namespace VVVV.Nodes.Input
                         keyMatch.Reset();
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            foreach (var column in FColumns)
+                column.Dispose();
         }
     }
 

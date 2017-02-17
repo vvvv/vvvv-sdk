@@ -17,10 +17,10 @@ namespace VVVV.Nodes
 {
 	#region PluginInfo
 	[PluginInfo(Name = "Template",
-	Category = "GUI",
-	Help = "Template with some gui elements",
-	Tags = "",
-	AutoEvaluate = true)]
+				Category = "GUI",
+				Help = "Template with some gui elements",
+				Tags = "c#",
+				AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class GUITemplateNode : UserControl, IPluginEvaluate
 	{

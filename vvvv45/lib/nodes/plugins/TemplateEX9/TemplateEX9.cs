@@ -42,7 +42,7 @@ namespace VVVV.Nodes
 	            Category = "EX9",
 	            Version = "",
 	            Help = "Basic template which renders directly into the vvvv Renderer(EX9)",
-	            Tags = "")]
+	            Tags = "c#")]
 	#endregion PluginInfo
 	public class Template : DXLayerOutPluginBase<CustomDeviceData>, IPluginEvaluate
 	{

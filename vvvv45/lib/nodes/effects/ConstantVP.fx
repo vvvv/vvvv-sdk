@@ -1,6 +1,6 @@
 //@author: vvvv group
-//@help: draws a mesh with a constant color
-//@tags: template, basic
+//@help: Draws a mesh with a constant color only in the specified ViewPort
+//@tags: template, hlsl
 //@credits:
 
 // --------------------------------------------------------------------------------------------------
