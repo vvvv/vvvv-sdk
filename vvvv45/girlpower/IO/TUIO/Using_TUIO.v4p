@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" scrollx="0" scrolly="-1299">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" systemname="Using_TUIO" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\TUIO\Using_TUIO.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="1005" top="1665" width="17340" height="11700">
    </BOUNDS>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS height="405" left="675" top="195" type="Box" width="3795">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Using TUIO Protocol.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Using the TUIO Protocol|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -21,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="990" left="675" top="3750" type="Box" width="3960">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example the TUIOCursor (Network Split 2d) receives TUIO messages over UDP.&cr;&lf;&cr;&lf;See also:|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|In this example the TUIOCursor (Network Split) receives TUIO messages over UDP.&cr;&lf;&cr;&lf;See also:|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -379,15 +379,15 @@
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="165">
    <BOUNDS type="Node" left="11700" top="4320" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="11700" top="4320" width="1020" height="1410">
+   <BOUNDS type="Box" left="11700" top="4320" width="975" height="1155">
    </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="5">
+   <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Input String" slicecount="5" values="|Session ID|,|Cursor ID|,|Position XY|,|Velocity XY|,Acceleration">
+   <PIN pinname="Input String" slicecount="4" values="|Session ID|,|Position XY|,|Velocity XY|,Acceleration">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
@@ -741,7 +741,7 @@
    </BOUNDS>
    <BOUNDS height="7455" left="675" top="7155" type="Box" width="4140">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The &apos;Position XY&apos; is used to transform a mesh, which is drawn using the Constant effect (see the Step 5).&cr;&lf;&cr;&lf;The ZIP (Value Bin) combines the Atrributes of each object together and returns them as a big spread of values. The &apos;Bin Size&apos; pins are set to the respective values for each Input (1 for the &apos;Session ID&apos; (one value), 2 for the &apos;PositionXY&apos; (two values)).&cr;&lf;&cr;&lf;+ (String Spectral) is there to join into one string those Attributes, which contain more than 1 value.&cr;&lf;&cr;&lf;Constant (EX9.Effect) receives a mesh, loaded using the XFile (EX9.Geometry Load), transformations for every object and a color.&cr;&lf;&cr;&lf;In order to draw each object with its own color the &apos;Session ID&apos; is used to pick one of the indexed retro colors.&cr;&lf;&cr;&lf;At every position not only the mesh is drawn, but also 5 rows of text. So the transformation of every object is duplicated 5 times.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) creates 5 values which are used to place the rows vertically at each object&apos;s position. Additional transformation shifts the position of the text on the X axis and scales the text.&cr;&lf;&cr;&lf;The Text (EX9) draws lines of text.&cr;&lf;&cr;&lf;After converting Attribute values of every object into the string representation using FormatValue (String) and shifting these strings even more on the X axis, all the data is drawn.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The &apos;Position XY&apos; is used to transform a mesh, which is drawn using the Constant effect (see the Step 5).&cr;&lf;&cr;&lf;The ZIP (Value Bin) combines the Atrributes of each object together and returns them as a big spread of values. The &apos;Bin Size&apos; pins are set to the respective values for each Input (1 for the &apos;Session ID&apos; (one value), 2 for the &apos;PositionXY&apos; (two values)).&cr;&lf;&cr;&lf;+ (String Spectral) is there to join into one string those Attributes, which contain more than 1 value.&cr;&lf;&cr;&lf;Constant (EX9.Effect) receives a mesh, loaded using the XFile (EX9.Geometry Load), transformations for every object and a color.&cr;&lf;&cr;&lf;In order to draw each object with its own color the &apos;Session ID&apos; is used to pick one of the indexed retro colors.&cr;&lf;&cr;&lf;At every position not only the mesh is drawn, but also 4 rows of text. So the transformation of every object is duplicated 4 times.&cr;&lf;&cr;&lf;The LinearSpread (Spreads) creates 4 values which are used to place the rows vertically at each object&apos;s position. Additional transformation shifts the position of the text on the X axis and scales the text.&cr;&lf;&cr;&lf;The Text (EX9) draws lines of text.&cr;&lf;&cr;&lf;After converting Attribute values of every object into the string representation using FormatValue (String) and shifting these strings even more on the X axis, all the data is drawn.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -962,7 +962,7 @@
    </LINK>
    <LINK srcnodeid="213" srcpinname="Layer" dstnodeid="140" dstpinname="Layer 3">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="UDP (Network Server)" filename="" nodename="UDP (Network Server)" componentmode="Hidden" id="57">
    <BOUNDS type="Node" left="6810" top="1290" width="915" height="270">
@@ -979,9 +979,9 @@
    <NODE systemname="Zip (Value Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (Value Bin)" componentmode="Hidden" id="215">
    <BOUNDS type="Node" left="13335" top="4320" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="5">
+   <PIN pinname="Input Count" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Input 5 Bin Size" visible="1">
+   <PIN pinname="Input 5 Bin Size" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 1 Bin Size" visible="1">
    </PIN>
@@ -995,7 +995,7 @@
    </PIN>
    <PIN pinname="Input 4" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Input 5" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 5" visible="1">
    </PIN>
    <PIN pinname="Input 4 Bin Size" visible="1">
    </PIN>
@@ -1022,11 +1022,7 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="216" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 5 Bin Size">
-   </LINK>
    <LINK srcnodeid="216" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 1 Bin Size">
-   </LINK>
-   <LINK srcnodeid="216" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 2 Bin Size">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="217" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="14145" top="3525" width="345" height="240">
@@ -1044,8 +1040,6 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="217" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 4 Bin Size">
-   </LINK>
    <LINK srcnodeid="217" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 3 Bin Size">
    </LINK>
    <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="170">
@@ -1196,12 +1190,6 @@
    </LINK>
    <LINK srcnodeid="214" srcpinname="Session ID" dstnodeid="128" dstpinname="Index">
    </LINK>
-   <LINK srcnodeid="214" srcpinname="PositionXY" dstnodeid="215" dstpinname="Input 3">
-   </LINK>
-   <LINK srcnodeid="214" srcpinname="VelocityXY" dstnodeid="215" dstpinname="Input 4">
-   </LINK>
-   <LINK srcnodeid="214" srcpinname="Acceleration" dstnodeid="215" dstpinname="Input 5">
-   </LINK>
    <LINK srcnodeid="214" srcpinname="PositionXY" dstnodeid="170" dstpinname="TranslateXY">
    </LINK>
    <LINK srcnodeid="214" srcpinname="Session ID" dstnodeid="215" dstpinname="Input 1">
@@ -1218,8 +1206,6 @@
    <BOUNDS type="Box" left="720" top="5190">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="214" srcpinname="Cursor ID" dstnodeid="215" dstpinname="Input 2">
-   </LINK>
    <NODE componentmode="InABox" id="227" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="7575" top="765" type="Node" width="315">
    </BOUNDS>
@@ -1252,4 +1238,14 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="217" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 2 Bin Size">
+   </LINK>
+   <LINK srcnodeid="216" srcpinname="Y Output Value" dstnodeid="215" dstpinname="Input 4 Bin Size">
+   </LINK>
+   <LINK srcnodeid="214" srcpinname="PositionXY" dstnodeid="215" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="214" srcpinname="VelocityXY" dstnodeid="215" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="214" srcpinname="Acceleration" dstnodeid="215" dstpinname="Input 4">
+   </LINK>
    </PATCH>
