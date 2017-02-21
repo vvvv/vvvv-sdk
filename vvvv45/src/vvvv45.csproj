@@ -12,7 +12,7 @@
   <!-- Deploy -->
   <PropertyGroup>
     <DeployInclude>$(RootDir)**\*.*</DeployInclude>
-    <DeployExclude>$(RootDir)*.rsm;$(RootDir)0.v4p;$(RootDir)*.drc;$(RootDir)**\.gitignore;$(RootDir)**\*.pdb;$(RootDir)src\**\*.*;$(RootDir)tests\**\*.*;$(RootDir)addonpack\**\*.*;$(RootDir)lib\nodes\plugins\*\bin\**\*.*;$(RootDir)packs\**\*.*</DeployExclude>
+    <DeployExclude>$(RootDir)*.rsm;$(RootDir)0.v4p;$(RootDir)*.drc;$(RootDir)**\.gitignore;$(RootDir)**\.git;$(RootDir)**\*.pdb;$(RootDir)src\**\*.*;$(RootDir)tests\**\*.*;$(RootDir)addonpack\**\*.*;$(RootDir)lib\nodes\plugins\*\bin\**\*.*;$(RootDir)packs\**\*.*</DeployExclude>
     <!-- Files to exclude for platform specific builds -->
     <DeployExclude Condition=" '$(Platform)' == 'x86' ">$(DeployExclude);..\lib\thirdparty\x64\**\*.*</DeployExclude>
     <DeployExclude Condition=" '$(Platform)' == 'x64' ">$(DeployExclude);..\lib\thirdparty\x86\**\*.*;..\lib\nodes\directshowfilter\*.*;..\lib\nodes\freeframes\*.*</DeployExclude>
