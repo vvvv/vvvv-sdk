@@ -65,7 +65,6 @@ vs2ps VS(
      //transform texturecoordinates
     Out.TexCd = mul(TexCd, tTex);
 
-	
 	// Aspect Ratio
 	float3 aspectRatio;
 	float coeff = targetSize.y / targetSize.x; // width / height
@@ -89,10 +88,10 @@ vs2ps VS(
 	float4 PosInProjection = mul(PosO, tA);
 	
 	//Calculate Pixel Size coeff from Renderer Size (in px)
-	float3 pixelSizeCoeff= float3(2 * invTargetSize,1);
+	float3 pixelSizeCoeff = float3(2 * invTargetSize,1);
 	
 	//Adjust the position according to the Pixel Size Coeff
-	float3 vertexPos = PosInProjection.xyz*pixelSizeCoeff;
+	float3 vertexPos = PosInProjection.xyz * pixelSizeCoeff;
 	
 	//Final Vertex Position
 	Out.Pos = float4(worldPosition + vertexPos, 1);
