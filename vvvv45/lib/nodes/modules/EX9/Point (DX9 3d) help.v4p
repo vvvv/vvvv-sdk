@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 3d) help.v4p">
    <BOUNDS type="Window" left="0" top="1290" width="7140" height="8415">
    </BOUNDS>
@@ -64,17 +64,17 @@
    </LINK>
    <LINK srcnodeid="5" srcpinname="Projection" dstnodeid="4" dstpinname="Projection">
    </LINK>
-   <NODE systemname="RandomPoints (3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (3d).v4p" nodename="RandomPoints (3d)" componentmode="Hidden" id="6">
+   <NODE systemname="RandomSpread (Spreads 3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (3d).v4p" nodename="RandomPoints (3d)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="225" top="2280" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
-   <PIN pinname="Count" slicecount="1" visible="1" values="17">
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="17">
    </PIN>
    <PIN pinname="Random Seed" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="Group (EX9)" id="7" systemname="Group (EX9)">
    <BOUNDS type="Node" left="510" top="6075" width="0" height="0">
@@ -138,7 +138,7 @@
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
    </NODE>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Count">
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Spread Count">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
    <BOUNDS type="Node" left="3495" top="2550" width="1185" height="270">
@@ -193,7 +193,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="735" top="3840" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Window" left="3285" top="1935" width="12870" height="6585">
+   <BOUNDS type="Window" left="8850" top="4980" width="12870" height="6585">
    </BOUNDS>
    <PIN pinname="SizeXY" visible="1">
    </PIN>
@@ -202,6 +202,10 @@
    <PIN pinname="Color" visible="1">
    </PIN>
    <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Translate XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Size XY" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="XYZ" dstnodeid="18" dstpinname="XYZ">
@@ -213,9 +217,9 @@
    <LINK srcnodeid="15" srcpinname="Output Enum" dstnodeid="18" dstpinname="Type">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1440" top="3030" width="645" height="480">
+   <BOUNDS type="Box" left="1335" top="3030" width="645" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="1440" top="3030" width="0" height="0">
+   <BOUNDS type="Node" left="1335" top="3030" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0.05,0.05">
    </PIN>
@@ -226,6 +230,8 @@
    <PIN pinname="Vector Size" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="SizeXY">
@@ -255,9 +261,9 @@
    <LINK srcnodeid="21" srcpinname="Color Output" dstnodeid="18" dstpinname="Color">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1410" top="2745" width="600" height="270">
+   <BOUNDS type="Node" left="1305" top="2745" width="600" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1410" top="2745" width="600" height="270">
+   <BOUNDS type="Box" left="1305" top="2745" width="600" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="SizeXY">
    </PIN>
@@ -360,4 +366,8 @@
    </INFO>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
+   <LINK srcnodeid="6" srcpinname="XYZ" dstnodeid="18" dstpinname="Translate XYZ">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Size XY">
+   </LINK>
    </PATCH>

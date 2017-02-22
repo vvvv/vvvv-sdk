@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: aligns the orientation of a geometry to the camera
+//@help: Aligns the orientation of a geometry to the camera.
 //@tags: billboard, view space
 //@credits:
 
@@ -25,7 +25,7 @@ texture Tex <string uiname="Texture";>;
 
 //fixed size
 bool fixedSize <string uiname = "Fixed Size"; > = false;
-float Size = 0.2;
+float2 Size = float2 (0.2, 0.2);
 
 sampler Samp = sampler_state    //sampler for doing the texture-lookup
 {
@@ -48,7 +48,6 @@ struct vs2ps
 // --------------------------------------------------------------------------------------------------
 // VERTEXSHADERS
 // --------------------------------------------------------------------------------------------------
-
 vs2ps VS(
     float4 PosO: POSITION,
     float3 NormO: NORMAL,
@@ -63,7 +62,7 @@ vs2ps VS(
     //WorldView position
     float4 pos = mul(float4(0, 0, 0, 1), tWV);
 	
-    //position (projected)
+    //position
 	if (fixedSize)
 	{   
 		// Apply Projection to the world's view position
@@ -71,17 +70,23 @@ vs2ps VS(
 		
 		// Make a perspective division
 		pos.xyz /= pos.w;
-		
+				
+		float aX = tP[0][0];
+		float aY = tP[1][1];
+		float3 aspectRatio = float3 (aX, aY, 1);
+
 		// Add the Object's position multiplied by the viewspace transform
-		// to the WorldViewProjected position
-		Out.PosWVP = float4(pos.xyz + mul(PosO, tA).xyz * Size, 1);
+		// to the WorldViewProjected position multiplied by the Aspect Ratio
+		Out.PosWVP = float4(pos.xyz + mul(PosO * float4(Size,1,1), tA).xyz * aspectRatio, 1);
+		
 	}
 	else
 	{
 		// Add the Object's position multiplied by the viewspace transform
-		// to the WorldView position and then apply Projection
+		// to the WorldView position and then apply Projection	
 		pos.xyz += mul(PosO, tA).xyz;
 		Out.PosWVP  = mul(pos, tP);
+	
 	}
 	
     Out.TexCd = mul(TexCd, tTex);
@@ -105,7 +110,7 @@ float4 PS(vs2ps In): COLOR
 // TECHNIQUES:
 // --------------------------------------------------------------------------------------------------
 
-technique TSelfAlign
+technique SelfAlign
 {
     pass P0
     {
