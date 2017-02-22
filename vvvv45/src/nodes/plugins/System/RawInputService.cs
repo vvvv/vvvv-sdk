@@ -43,7 +43,7 @@ namespace VVVV.Nodes.Input
             protected override void WndProc(ref Message m)
             {
                 if (m.Msg == (int)WM.INPUT)
-                    Device.HandleMessage(m.LParam);
+                    Device.HandleMessage(m.LParam, m.HWnd);
                 else if (m.Msg == (int)WM.INPUT_DEVICE_CHANGE)
                     RawInputService.EnumerateDevices();
                 base.WndProc(ref m);
