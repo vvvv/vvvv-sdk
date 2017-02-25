@@ -1,0 +1,167 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\lib\nodes\plugins\Encode (String HTML) help.v4p">
+   <BOUNDS type="Window" left="7620" top="585" width="8520" height="6825">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="150" top="150" width="5000" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="150" width="5000" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Encode (String HTML)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="150" top="550" width="5000" height="500">
+   </BOUNDS>
+   <BOUNDS type="Box" left="150" top="550" width="5000" height="500">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts a string to an HTML-encoded string.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Encode (String HTML)" componentmode="Hidden" id="0" systemname="Encode (String HTML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" left="3430" top="3155" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3430" top="3155" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="3420" top="2490" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3420" top="2490" width="1365" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|What the &amp;&apos;&lt;&gt;&quot; ?|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output String" dstnodeid="0" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="5" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3435" top="3945" width="2760" height="300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3435" top="3945" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="5" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="8" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="165" top="1020" width="14130" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="1020" width="3255" height="795">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|HTML encoding makes sure that text is displayed correctly in the browser and not interpreted by the browser as HTML.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="300" top="4710" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="4710" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Encode (String HTML Attribute)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Encode (String HTML Attribute)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="345" top="5505" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="345" top="5505">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4590" top="5130" width="1650" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="5130" width="1650" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Encode (String URL)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1155" top="5505" width="1650" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1155" top="5505" width="2265" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Encode (String HTML Attribute)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1155" top="5115" width="1650" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1155" top="5115" width="1620" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Decode (String HTML)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4590" top="5490" width="1650" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="5490" width="1650" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Decode (String URL)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Encode (String URL)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Encode (String URL)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="3795" top="5115" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Decode (String HTML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Decode (String HTML)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="345" top="5115" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="345" top="5115">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Decode (String URL)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Decode (String URL)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="3795" top="5490" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3795" top="5490">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
