@@ -13,7 +13,7 @@ namespace VVVV.Hosting.IO
             if (sink == null) return true;
 
             var sourceDataType = GetDataType(GetType(source));
-            var sinkDataType = GetDataType(GetType(source));
+            var sinkDataType = GetDataType(GetType(sink));
 			
 			return sinkDataType.IsAssignableFrom(sourceDataType);
 		}
