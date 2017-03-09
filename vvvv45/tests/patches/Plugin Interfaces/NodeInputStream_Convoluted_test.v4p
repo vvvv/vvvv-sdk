@@ -1,23 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputStream_Convoluted_test.v4p" systemname="NodeInputStream_Convoluted_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputStream_Convoluted_test.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputStream_Convoluted_test.v4p" systemname="NodeInputStream_Convoluted_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputStream_Convoluted_test.v4p">
    <BOUNDS type="Window" left="8010" top="5175" width="8475" height="7920">
    </BOUNDS>
-   <NODE systemname="PatchAlias (VVVV ActivePatch)" nodename="PatchAlias (VVVV ActivePatch)" componentmode="Hidden" id="31">
-   <BOUNDS type="Node" left="1335" top="315" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Patch" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="GetPatch (VVVV)" nodename="GetPatch (VVVV)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="1335" top="990" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Patch" visible="1">
-   </PIN>
-   <PIN pinname="Patch Description" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Patch" dstnodeid="32" dstpinname="Patch">
-   </LINK>
    <NODE systemname="AsXElement (XML)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsXElement (XML)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="1335" top="1410" width="100" height="100">
    </BOUNDS>
@@ -26,8 +10,6 @@
    <PIN pinname="Element" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Patch Description" dstnodeid="33" dstpinname="XML">
-   </LINK>
    <NODE systemname="GetElements (XElement ByXPath)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetElements (XElement ByXPath)" componentmode="Hidden" id="34">
    <BOUNDS type="Node" left="1335" top="1890" width="100" height="100">
    </BOUNDS>
@@ -68,7 +50,7 @@
    </LINK>
    <LINK srcnodeid="36" srcpinname="Output Node" dstnodeid="35" dstpinname="Object">
    </LINK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="52" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1650" top="2550" width="795" height="240">
@@ -173,7 +155,7 @@
    </PIN>
    <PIN pinname="Output Node" visible="1">
    </PIN>
-   <PIN pinname="Index" slicecount="1" values="3" visible="1">
+   <PIN pinname="Index" slicecount="1" visible="1" values="3">
    </PIN>
    <PIN pinname="Bin Size" slicecount="1" values="4">
    </PIN>
@@ -386,4 +368,18 @@
    </NODE>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
+   <NODE systemname="Reader (String)" filename="%VVVV%\lib\nodes\modules\String\Reader (String).v4p" nodename="Reader (String)" componentmode="Hidden" id="81">
+   <BOUNDS type="Node" left="1320" top="825" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="NodeInputStream_Convoluted_test.v4p">
+   </PIN>
+   <PIN pinname="Read" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="81" srcpinname="Content" dstnodeid="33" dstpinname="XML">
+   </LINK>
+   <LINK srcnodeid="74" srcpinname="Y Output Value" dstnodeid="81" dstpinname="Read">
+   </LINK>
    </PATCH>
