@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\plugins\Queue (Spreads) test.v4p" systemname="Queue (Spreads))" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Queue (Spreads) test.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\Queue (Spreads) test.v4p" systemname="Queue (Spreads))" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Queue (Spreads) test.v4p">
    <BOUNDS type="Window" left="13965" top="4755" width="9195" height="8625">
    </BOUNDS>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="11">
@@ -75,7 +75,7 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -234,7 +234,7 @@
    <PIN pinname="Up Edge" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="FrameDelay (Animation)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="39">
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="39">
    <BOUNDS type="Node" left="4725" top="2670" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -263,7 +263,7 @@
    <LINK srcnodeid="35" srcpinname="Output" dstnodeid="37" dstpinname="Input">
    </LINK>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="42">
-   <BOUNDS type="Node" left="4500" top="4050" width="100" height="100">
+   <BOUNDS type="Node" left="4410" top="4065" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -278,12 +278,14 @@
    </LINK>
    <LINK srcnodeid="42" srcpinname="Output" dstnodeid="23" dstpinname="Expected">
    </LINK>
-   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="23" dstpinname="Enabled" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="11" dstpinname="Enabled" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="4" dstpinname="Insert" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="38" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <LINK srcnodeid="39" srcpinname="Output 1" dstnodeid="23" dstpinname="Enabled">
    </LINK>
    </PATCH>

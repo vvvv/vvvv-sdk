@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.6.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" systemname="ChangeAndTogedgeBangOnCreate test" filename="D:\dev\v45\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" systemname="ChangeAndTogedgeBangOnCreate test" filename="D:\dev\v45\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" locked="0">
    <BOUNDS type="Window" left="420" top="3810" width="14850" height="10200">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
@@ -7,7 +7,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="12540" top="4605" width="480" height="480">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
@@ -15,13 +15,13 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Run">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)" hiddenwhenlocked="1">
@@ -510,18 +510,6 @@
    <PIN pinname="Bang On Create" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Select (String)" nodename="Select (String)" componentmode="Hidden" id="106" hiddenwhenlocked="1">
-   <BOUNDS type="Node" left="4710" top="3000" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Select" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Input" slicecount="1" visible="1" values="egal">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="106" srcpinname="Output" dstnodeid="104" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
    <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="108" hiddenwhenlocked="1">
    <BOUNDS type="Node" left="4725" top="2490" width="100" height="100">
    </BOUNDS>
@@ -533,10 +521,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="91" srcpinname="Output" dstnodeid="108" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="106" dstpinname="Input" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="89" srcpinname="Output" dstnodeid="106" dstpinname="Select" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="104" srcpinname="OnChange" dstnodeid="74" dstpinname="Actual" hiddenwhenlocked="1">
    </LINK>
@@ -553,8 +537,6 @@
    <LINK srcnodeid="74" srcpinname="Message" dstnodeid="44" dstpinname="Input 6" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="72" srcpinname="Y Output Value" dstnodeid="104" dstpinname="Bang On Create">
-   </LINK>
-   <LINK srcnodeid="106" srcpinname="Output" dstnodeid="101" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="91" srcpinname="Output" dstnodeid="59" dstpinname="Input" hiddenwhenlocked="1">
    </LINK>
@@ -594,4 +576,10 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="101" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="108" srcpinname="Output" dstnodeid="104" dstpinname="Input">
+   </LINK>
    </PATCH>
