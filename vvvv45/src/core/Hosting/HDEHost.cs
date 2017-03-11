@@ -166,17 +166,18 @@ namespace VVVV.Hosting
             //add repository paths from commandline
             //from commandline
             var repoArg = "/package-repositories";
+
             var packageRepositories = AssemblyLoader.ParseCommandLine(repoArg);
 
             //from args.txt
             var argsFile = Path.Combine(ExePath, "args.txt");
             if (File.Exists(argsFile))
             {
-                var args = File.ReadAllText(argsFile).Split(' ');
+                var args = File.ReadAllText(argsFile).Trim('\r', '\n', ' ').Split(' ');
                 var sourcesIndex = Array.IndexOf(args, repoArg);
                 if (sourcesIndex >= 0 && args.Length > sourcesIndex + 1)
                 {
-                    var sourcesString = args[sourcesIndex + 1];
+                    var sourcesString = args[sourcesIndex + 1].Trim('"');
                     var repoPaths = sourcesString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                     for (int i = 0; i < repoPaths.Length; i++)
                     {
