@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" systemname="ChangeAndTogedgeBangOnCreate test" filename="D:\dev\v45\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" locked="0">
-   <BOUNDS type="Window" left="420" top="3810" width="14850" height="10200">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\ChangeAndTogedgeBangOnCreate test.v4p" systemname="ChangeAndTogedgeBangOnCreate test" filename="D:\dev\v45\vvvv\public\vvvv45\tests\patches\Unsorted\ChangeAndTogedgeBangOnCreate test.v4p" locked="0">
+   <BOUNDS type="Window" left="420" top="3810" width="19095" height="10200">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="12540" top="4605" width="0" height="0">
@@ -47,7 +47,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Time" slicecount="1" values="0.2">
+   <PIN pinname="Time" slicecount="1" values="0.2" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
@@ -59,8 +59,10 @@
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value" hiddenwhenlocked="1">
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value" hiddenwhenlocked="0">
    </LINK>
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set" hiddenwhenlocked="0">
    </LINK>
@@ -76,6 +78,10 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="38" hiddenwhenlocked="1">
@@ -548,38 +554,56 @@
    </LINK>
    <LINK srcnodeid="71" srcpinname="Y Output Value" dstnodeid="63" dstpinname="Input">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="109" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8415" top="630" width="3720" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8415" top="630" width="3720" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|creates slices and destroys them in the next frame|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="110" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="8940" top="1215" width="4380" height="270">
-   </BOUNDS>
-   <BOUNDS type="Box" left="8940" top="1215" width="4380" height="270">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|that way we only have the &quot;creation&quot; case that is tested here.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <LINK srcnodeid="108" srcpinname="Output" dstnodeid="101" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="108" srcpinname="Output" dstnodeid="104" dstpinname="Input">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="111">
+   <BOUNDS type="Box" left="13260" top="4980" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="13260" top="4980" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="111" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Time">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="113">
+   <BOUNDS type="Node" left="13500" top="255" width="975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13500" top="255" width="1950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Description">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="112">
+   <BOUNDS type="Node" left="13500" top="780" width="6720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="13500" top="780" width="3765" height="3300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Creates slices and destroys them in the next frame. That way we only have the &quot;creation&quot; case that is tested here.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>

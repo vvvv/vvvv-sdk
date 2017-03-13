@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug29.5.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\plugins\Cons (Spreads) test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p">
-   <BOUNDS type="Window" left="3150" top="5850" width="9525" height="7830">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Cons (Spreads) test.v4p" systemname="Cons (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Cons (Value) test.v4p">
+   <BOUNDS type="Window" left="1410" top="5400" width="14175" height="8445">
    </BOUNDS>
    <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="645" top="2430" width="2010" height="270">
@@ -155,7 +155,7 @@
    </PIN>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -192,16 +192,6 @@
    </NODE>
    <LINK srcnodeid="14" srcpinname="Output" dstnodeid="15" dstpinname="Input String">
    </LINK>
-   <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="6930" top="3330" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Set" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Time" slicecount="1" values="0.1">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
    <BOUNDS type="Node" left="6930" top="6630" width="100" height="100">
    </BOUNDS>
@@ -211,11 +201,11 @@
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set" hiddenwhenlocked="0">
-   </LINK>
    <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Input 3">
@@ -243,6 +233,10 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="19" srcpinname="Output" dstnodeid="18" dstpinname="Y Input Value">
    </LINK>
@@ -250,8 +244,44 @@
    </LINK>
    <LINK srcnodeid="6" srcpinname="Success" dstnodeid="19" dstpinname="Input 2" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="6" dstpinname="Enabled" hiddenwhenlocked="1">
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enabled">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="5" dstpinname="Enabled" hiddenwhenlocked="1">
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled">
    </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="8655" top="675" width="975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8655" top="675" width="1950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Description">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="8655" top="1200" width="6720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8655" top="1200" width="3765" height="3300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See if Cons (Spreads) correctly deals with NIL on inputs.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>

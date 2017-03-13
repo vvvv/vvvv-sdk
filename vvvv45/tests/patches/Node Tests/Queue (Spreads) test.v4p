@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Unsorted\Queue (Spreads) test.v4p" systemname="Queue (Spreads))" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Queue (Spreads) test.v4p">
-   <BOUNDS type="Window" left="13965" top="4755" width="9195" height="8625">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Queue (Spreads) test.v4p" systemname="Queue (Spreads))" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Queue (Spreads) test.v4p">
+   <BOUNDS type="Window" left="450" top="2940" width="15945" height="8625">
    </BOUNDS>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="11">
    <BOUNDS type="Node" left="1155" top="4515" width="100" height="100">
@@ -121,7 +121,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Time" slicecount="1" values="0.1">
+   <PIN pinname="Time" slicecount="1" values="0.1" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="31">
@@ -132,6 +132,10 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Running">
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="31" dstpinname="Y Input Value" hiddenwhenlocked="1">
@@ -163,6 +167,8 @@
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
    <LINK srcnodeid="33" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value">
    </LINK>
@@ -180,6 +186,8 @@
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Insert" visible="1">
+   </PIN>
+   <PIN pinname="Frame Count" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Output" dstnodeid="11" dstpinname="Actual">
@@ -217,7 +225,7 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Frame Count" slicecount="1" values="2">
+   <PIN pinname="Frame Count" slicecount="1" values="2" visible="1">
    </PIN>
    <PIN pinname="Insert" visible="1">
    </PIN>
@@ -227,7 +235,7 @@
    <LINK srcnodeid="37" srcpinname="Output" dstnodeid="23" dstpinname="Actual">
    </LINK>
    <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="4365" top="2340" width="100" height="100">
+   <BOUNDS type="Node" left="5115" top="2325" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -235,7 +243,7 @@
    </PIN>
    </NODE>
    <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="4725" top="2670" width="100" height="100">
+   <BOUNDS type="Node" left="5715" top="2730" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -243,7 +251,7 @@
    </PIN>
    </NODE>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="4365" top="3075" width="100" height="100">
+   <BOUNDS type="Node" left="5115" top="3060" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -288,4 +296,96 @@
    </PACK>
    <LINK srcnodeid="39" srcpinname="Output 1" dstnodeid="23" dstpinname="Enabled">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43">
+   <BOUNDS type="Box" left="7860" top="1110" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7860" top="1110" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Time">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44">
+   <BOUNDS type="Box" left="3105" top="1155" width="360" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3105" top="1155" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Frame Count">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45">
+   <BOUNDS type="Box" left="3120" top="1590" width="375" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3120" top="1590" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="37" dstpinname="Frame Count">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46">
+   <BOUNDS type="Node" left="3630" top="1350" width="1200" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3630" top="1350" width="1200" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Frame Count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="48">
+   <BOUNDS type="Node" left="9855" top="1125" width="975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9855" top="1125" width="1950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Description">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="47">
+   <BOUNDS type="Node" left="9855" top="1650" width="6720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9855" top="1650" width="3765" height="3300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Two tests for Queue (Spreads):&cr;&lf;- one simply inserting a spread in a queue with framecount=1&cr;&lf;- the other inserting that spread twice in a queue with framecount=2|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    </PATCH>
