@@ -1,23 +1,11 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Zip (Value) test.v4p" systemname="Zip (Value))" filename="D:\vvvv_dev\vvvv\public\vvvv45\tests\Zip (Value) test.v4p">
-   <BOUNDS type="Window" left="4320" top="3780" width="13290" height="8460">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Zip (2d) test.v4p" systemname="Zip (2d))" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Zip (2d) test.v4p">
+   <BOUNDS type="Window" left="4470" top="5715" width="13980" height="8160">
    </BOUNDS>
-   <NODE systemname="Zip (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (Value)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="1140" top="3030" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="11">
    <BOUNDS type="Node" left="1155" top="4515" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Actual" visible="1">
+   <PIN pinname="Actual" visible="1" slicecount="4" values="0,1,2,3">
    </PIN>
    <PIN pinname="Expected" visible="1">
    </PIN>
@@ -28,8 +16,6 @@
    <PIN pinname="Success" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="11" dstpinname="Actual">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="1155" top="5100" width="0" height="0">
    </BOUNDS>
@@ -79,13 +65,13 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
-   <BOUNDS type="Node" left="2505" top="2145" width="100" height="100">
+   <BOUNDS type="Node" left="1920" top="2955" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="2505" top="2145" width="795" height="960">
+   <BOUNDS type="Box" left="1920" top="2955" width="795" height="960">
    </BOUNDS>
    <PIN pinname="Rows" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="4" values="0,1,2,3">
+   <PIN pinname="Y Input Value" slicecount="4" values="0,2,1,3">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="4">
    </PIN>
@@ -96,28 +82,10 @@
    </NODE>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Expected">
    </LINK>
-   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Input 2">
-   </LINK>
-   <NODE systemname="Zip (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (Value)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="4185" top="3030" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input Count" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Input 3" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Input 4" slicecount="1" values="3">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="4185" top="4485" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Actual" visible="1">
+   <PIN pinname="Actual" visible="1" slicecount="4" values="0,1,2,3">
    </PIN>
    <PIN pinname="Expected" visible="1">
    </PIN>
@@ -143,8 +111,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="23" srcpinname="Success" dstnodeid="22" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="23" dstpinname="Actual">
    </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Expected">
    </LINK>
@@ -242,18 +208,62 @@
    </NODE>
    <LINK srcnodeid="33" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value">
    </LINK>
+   <NODE systemname="Zip (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (2d)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1140" top="3030" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Input 2XY" visible="1">
+   </PIN>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Input 1XY">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Input 2XY">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="OutputXY" dstnodeid="11" dstpinname="Actual">
+   </LINK>
+   <NODE systemname="Zip (2d Bin)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Zip (2d Bin)" componentmode="Hidden" id="35">
+   <BOUNDS type="Node" left="4185" top="3030" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1 Bin Size" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 2 Bin Size" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Input 2XY" visible="1">
+   </PIN>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Input 1XY">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Input 2XY">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="OutputXY" dstnodeid="23" dstpinname="Actual">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Enabled">
    </LINK>
    <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="31" dstpinname="Y Input Value">
    </LINK>
-   <PACK Name="addonpack" Version="35.0.0">
-   </PACK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="36">
-   <BOUNDS type="Node" left="8970" top="990" width="975" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37">
+   <BOUNDS type="Node" left="9315" top="645" width="975" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8970" top="990" width="1950" height="510">
+   <BOUNDS type="Box" left="9315" top="645" width="1950" height="510">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Description">
    </PIN>
@@ -268,12 +278,12 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="8970" top="1515" width="6720" height="270">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="36">
+   <BOUNDS type="Node" left="9315" top="1170" width="6720" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8970" top="1515" width="3765" height="3300">
+   <BOUNDS type="Box" left="9315" top="1170" width="3765" height="3300">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Simple test for Zip (Value).|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Simple test for Zip (2d).|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
