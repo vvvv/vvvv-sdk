@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.5.dtd" >
-   <PATCH nodename="F:\vvvv\vvvv\public\vvvv45\tests\patches\Unsorted\Base64Roundtrip test.v4p" systemname="Base64Roundtrip test" filename="F:\vvvv\vvvv\public\vvvv45\tests\patches\Unsorted\Base64Roundtrip test.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Topic Tests\Raw\Base64Roundtrip test.v4p" systemname="Base64Roundtrip test" filename="F:\vvvv\vvvv\public\vvvv45\tests\patches\Unsorted\Base64Roundtrip test.v4p">
    <BOUNDS type="Window" left="9900" top="5100" width="9000" height="7620">
    </BOUNDS>
    <NODE systemname="Encode (String Base64)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Encode (String Base64)" componentmode="Hidden" id="0">
@@ -141,6 +141,8 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Set">
    </LINK>
@@ -148,4 +150,20 @@
    </LINK>
    <LINK srcnodeid="11" srcpinname="Output" dstnodeid="5" dstpinname="Enabled">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14">
+   <BOUNDS type="Box" left="7005" top="1215" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7005" top="1215" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Time">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>

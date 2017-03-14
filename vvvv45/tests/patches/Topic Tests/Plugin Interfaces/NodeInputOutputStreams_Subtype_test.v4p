@@ -1,17 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.6.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputOutputStreams_Subtype_test.v4p" systemname="NodeInputOutputStreams_Subtype_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputOutputStreams_Subtype_test.v4p">
-   <BOUNDS type="Window" left="13785" top="5985" width="9000" height="7080">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Topic Tests\Plugin Interfaces\NodeInputOutputStreams_Subtype_test.v4p" systemname="NodeInputOutputStreams_Subtype_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\NodeInputOutputStreams_Subtype_test.v4p">
+   <BOUNDS type="Window" left="5580" top="4905" width="9000" height="7080">
    </BOUNDS>
-   <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="5055" top="1365" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Set" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Time">
-   </PIN>
-   </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="2">
    <BOUNDS type="Node" left="5055" top="4515" width="100" height="100">
    </BOUNDS>
@@ -21,13 +11,13 @@
    </PIN>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="2" dstpinname="Y Input Value" hiddenwhenlocked="1">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5055" top="285" width="480" height="480">
+   <BOUNDS type="Box" left="5040" top="1155" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="5055" top="285" width="0" height="0">
+   <BOUNDS type="Node" left="5040" top="1155" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
@@ -43,23 +33,9 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Set">
-   </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="0" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="6045" top="660" width="795" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="6045" top="660" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="s">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Time">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="4" systemname="IOBox (String)">
    <BOUNDS type="Node" left="810" top="525" width="2880" height="270">
    </BOUNDS>
@@ -178,6 +154,10 @@
    <LINKPOINT x="2040" y="4680">
    </LINKPOINT>
    </LINK>
-   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="10" dstpinname="Enabled" hiddenwhenlocked="1">
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="10" dstpinname="Enabled">
    </LINK>
+   <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Y Input Value">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
