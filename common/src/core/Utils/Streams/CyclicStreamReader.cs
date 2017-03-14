@@ -85,11 +85,12 @@ namespace VVVV.Utils.Streams
 				case 1:
 					// Special treatment for streams of length one
 					if (FReader.Eos) FReader.Reset();
-					
+
+                    var value = Read(stride);
 					if (index == 0 && length == buffer.Length)
-						buffer.Init(FReader.Read(stride)); // Slightly faster
+						buffer.Init(value); // Slightly faster
 					else
-						buffer.Fill(index, length, FReader.Read(stride));
+						buffer.Fill(index, length, value);
 					break;
 				default:
 					int numSlicesRead = 0;

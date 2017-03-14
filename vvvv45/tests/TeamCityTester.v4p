@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.5.dtd" >
-   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\tests\TeamCityTester.v4p" systemname="TeamCityTester" filename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="1035" top="0" width="12645" height="12450">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\TeamCityTester.v4p" systemname="TeamCityTester" filename="D:\devvvv\vvvv\public\vvvv45\girlpower\testing\TeamCityTester.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="720" top="1320" width="12645" height="12450">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5490" top="735" width="480" height="480">
@@ -149,7 +149,7 @@
    <LINK srcnodeid="25" srcpinname="Output String" dstnodeid="26" dstpinname="Input">
    </LINK>
    <NODE systemname="WriteLn (TTY)" filename="" nodename="WriteLn (TTY)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="1155" top="4875" width="100" height="100">
+   <BOUNDS type="Node" left="1155" top="5295" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Write" visible="1">
    </PIN>
@@ -162,8 +162,6 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="14" dstpinname="input">
-   </LINK>
    <NODE systemname="WriteLn (TTY)" filename="" nodename="WriteLn (TTY)" componentmode="Hidden" id="21">
    <BOUNDS type="Node" left="4230" top="4890" width="100" height="100">
    </BOUNDS>
@@ -487,6 +485,8 @@
    </PIN>
    <PIN pinname="Subdirectories" visible="1">
    </PIN>
+   <PIN pinname="All Levels" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="45" srcpinname="Output" dstnodeid="56" dstpinname="Directory">
    </LINK>
@@ -538,7 +538,7 @@
    </LINK>
    <LINK srcnodeid="61" srcpinname="Result" dstnodeid="20" dstpinname="Argument 1">
    </LINK>
-   <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="68">
+   <NODE systemname="Separate (String Legacy)" nodename="Separate (String)" componentmode="Hidden" id="68">
    <BOUNDS type="Node" left="6135" top="5880" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Intersperse" slicecount="1" values="NewLineAutoDetection">
@@ -580,7 +580,7 @@
    </LINK>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="73" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8250" top="900" width="480" height="480">
@@ -621,5 +621,21 @@
    <LINK srcnodeid="52" srcpinname="Output" dstnodeid="74" dstpinname="Y Input Value">
    </LINK>
    <LINK srcnodeid="52" srcpinname="Output" dstnodeid="46" dstpinname="Quit VVVV">
+   </LINK>
+   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="75">
+   <BOUNDS type="Node" left="1005" top="4845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Intersperse" slicecount="1" values="CarriageReturnLineFeed">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="75" srcpinname="Output" dstnodeid="14" dstpinname="input">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="75" dstpinname="Input 2">
    </LINK>
    </PATCH>
