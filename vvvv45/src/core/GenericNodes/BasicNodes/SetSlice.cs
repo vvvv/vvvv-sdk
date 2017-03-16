@@ -13,9 +13,9 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes.Generic
 {
 
-	public class SetSlice<T> : IPluginEvaluate
-	{
-		#region fields & pins
+    public class SetSlice<T> : IPluginEvaluate
+    {
+        #region fields & pins
 #pragma warning disable 0649
         [Input("Spread", BinName = "Bin Size", BinSize = 1, BinOrder = 1)]
         ISpread<ISpread<T>> FSpread;
@@ -27,24 +27,31 @@ namespace VVVV.Nodes.Generic
         ISpread<int> FIndex;
 
         [Output("Output")]
-        ISpread<ISpread<T>> FOutput; 
+        ISpread<ISpread<T>> FOutput;
 #pragma warning restore
-		#endregion fields & pins
-		
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{
-			FOutput.AssignFrom(FSpread);
+        #endregion fields & pins
 
-			int incr=0;
-			for (int i=0; i<FIndex.SliceCount; i++)
-			{
-				int ind = FIndex[i];
-				for (int s=0; s<FOutput[ind].SliceCount; s++)
-					FOutput[ind][s]=FInput[incr+s];
-				incr+=FOutput[ind].SliceCount;
-			}
-		}
-	}
-	
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
+        {
+            var count = FOutput.SliceCount = FSpread.SliceCount;
+
+            int incr = 0;
+            for (int i = 0; i < count; i++)
+            {
+                var os = FOutput[i];
+                var ind = VMath.Zmod(FIndex[i], count);
+                if (i != ind)
+                    os.AssignFrom(FSpread[i]);
+                else
+                {
+                    var osCount = os.SliceCount;
+                    for (int s = 0; s < osCount; s++)
+                        os[s] = FInput[incr + s];
+                    incr += osCount;
+                }
+            }
+        }
+    }
+
 }
