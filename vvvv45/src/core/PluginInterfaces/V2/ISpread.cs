@@ -23,7 +23,7 @@ namespace VVVV.PluginInterfaces.V2
 	/// Set/Get, Read/Write methods are only implemented when it makes sense.
 	/// </summary>
 	[ComVisible(false)]
-	public interface ISpread<T> : IEnumerable<T>, ISpread
+	public interface ISpread<T> : IEnumerable<T>, ISpread, IReadOnlyList<T>
 	{
 		/// <summary>
 		/// Provides random read/write access to the actual data.
@@ -122,47 +122,38 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			return CombineSpreads(spread1.SliceCount, spread2.SliceCount);
 		}
-		
-		/// <summary>
-		/// Copy all values from <see cref="IEnumerable{T}"/> to this <see cref="ISpread{T}"/>.
-		/// </summary>
-		/// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
-		/// <param name="enumerable">The IEnumerable{T} to copy from.</param>
-		public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> enumerable)
+
+        /// <summary>
+        /// Copy all values from <see cref="IEnumerable{T}"/> to this <see cref="ISpread{T}"/>.
+        /// </summary>
+        /// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
+        /// <param name="source">The <see cref="IEnumerable{T}"/> to copy from.</param>
+        public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> source) => spread.Stream.AssignFrom(source);
+
+        /// <summary>
+        /// Copy all values from <see cref="IList{T}"/> to this <see cref="ISpread{T}"/>.
+        /// </summary>
+        /// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
+        /// <param name="source">The <see cref="IList{T}"/> to copy from.</param>
+        public static void AssignFrom<T>(this ISpread<T> spread, IList<T> source) => spread.Stream.AssignFrom(source);
+
+        /// <summary>
+        /// Copy all values from <see cref="ISpread{T}"/> to this <see cref="ISpread{T}"/>.
+        /// </summary>
+        /// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
+        /// <param name="source">The <see cref="ISpread{T}"/> to copy from.</param>
+        public static void AssignFrom<T>(this ISpread<T> spread, ISpread<T> source) => spread.Stream.AssignFrom(source.Stream);
+
+        /// <summary>
+        /// Adds an item to the <see cref="ISpread{T}"/>.
+        /// </summary>
+        /// <param name="spread">The <see cref="ISpread{T}"/> to add the object to.</param>
+        /// <param name="item">The object to add.</param>
+        /// <remarks>This is operation has a runtime of O(1).</remarks>
+        public static void Add<T>(this ISpread<T> spread, T item)
 		{
-            var collection = enumerable as ICollection;
-			spread.SliceCount = collection != null
-                ? collection.Count
-                : enumerable.Count();
-			
-			int i = 0;
-			foreach	(var entry in enumerable)
-				spread[i++] = entry;
-		}
-		
-		/// <summary>
-		/// Copy all values from <see cref="IList{T}"/> to this <see cref="ISpread{T}"/>.
-		/// </summary>
-		/// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
-		/// <param name="list">The IList{T} to copy from.</param>
-		public static void AssignFrom<T>(this ISpread<T> spread, IList<T> list)
-		{
-			spread.SliceCount = list.Count;
-			
-			for (int i = 0; i < list.Count; i++)
-				spread[i] = list[i];
-		}
-		
-		/// <summary>
-		/// Adds an item to the <see cref="ISpread{T}"/>.
-		/// </summary>
-		/// <param name="spread">The <see cref="ISpread{T}"/> to add the object to.</param>
-		/// <param name="item">The object to add.</param>
-		/// <remarks>This is operation has a runtime of O(1).</remarks>
-		public static void Add<T>(this ISpread<T> spread, T item)
-		{
-			spread.SliceCount++;
-			spread[spread.SliceCount - 1] = item;
+			var previousCount = spread.SliceCount++;
+			spread[previousCount] = item;
 		}
 		
 		/// <summary>

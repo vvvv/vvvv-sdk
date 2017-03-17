@@ -313,6 +313,29 @@ namespace VVVV.Utils.Streams
             }
         }
 
+        public static void AssignFrom<T>(this IOutStream<T> outStream, IEnumerable<T> source)
+        {
+            using (var writer = outStream.GetDynamicWriter())
+                foreach (var entry in source)
+                    writer.Write(entry);
+        }
+
+        public static void AssignFrom<T>(this IOutStream<T> outStream, ICollection<T> source)
+        {
+            outStream.Length = source.Count;
+            using (var writer = outStream.GetWriter())
+                foreach (var entry in source)
+                    writer.Write(entry);
+        }
+
+        public static void AssignFrom<T>(this IOutStream<T> outStream, IReadOnlyCollection<T> source)
+        {
+            outStream.Length = source.Count;
+            using (var writer = outStream.GetWriter())
+                foreach (var entry in source)
+                    writer.Write(entry);
+        }
+
         public static void Append<T>(this IOutStream<T> outStream, IInStream<T> inStream, T[] buffer)
         {
             var initialOutLength = outStream.Length;
