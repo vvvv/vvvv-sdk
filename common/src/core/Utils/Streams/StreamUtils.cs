@@ -320,6 +320,14 @@ namespace VVVV.Utils.Streams
                     writer.Write(entry);
         }
 
+        public static void AssignFrom<T>(this IOutStream<T> outStream, ICollection<T> source)
+        {
+            outStream.Length = source.Count;
+            using (var writer = outStream.GetWriter())
+                foreach (var entry in source)
+                    writer.Write(entry);
+        }
+
         public static void AssignFrom<T>(this IOutStream<T> outStream, IReadOnlyCollection<T> source)
         {
             outStream.Length = source.Count;

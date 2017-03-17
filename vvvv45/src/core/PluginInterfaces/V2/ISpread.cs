@@ -131,11 +131,11 @@ namespace VVVV.PluginInterfaces.V2
         public static void AssignFrom<T>(this ISpread<T> spread, IEnumerable<T> source) => spread.Stream.AssignFrom(source);
 
         /// <summary>
-        /// Copy all values from <see cref="IReadOnlyCollection{T}"/> to this <see cref="ISpread{T}"/>.
+        /// Copy all values from <see cref="IList{T}"/> to this <see cref="ISpread{T}"/>.
         /// </summary>
         /// <param name="spread">The <see cref="ISpread{T}"/> to copy to.</param>
-        /// <param name="source">The <see cref="IReadOnlyCollection{T}"/> to copy from.</param>
-        public static void AssignFrom<T>(this ISpread<T> spread, IReadOnlyCollection<T> source) => spread.Stream.AssignFrom(source);
+        /// <param name="source">The <see cref="IList{T}"/> to copy from.</param>
+        public static void AssignFrom<T>(this ISpread<T> spread, IList<T> source) => spread.Stream.AssignFrom(source);
 
         /// <summary>
         /// Copy all values from <see cref="ISpread{T}"/> to this <see cref="ISpread{T}"/>.
