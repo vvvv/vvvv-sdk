@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FiducialTracker" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="..\..\..\..\lib\nodes\freeframes\FiducialTracker" prefix_auto="1" extension_auto="1" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-O2" />
+					<Add option="-O1" />
+					<Add option="-O" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Debug">
+				<Option output="..\..\..\..\lib\nodes\freeframes\FiducialTracker" prefix_auto="1" extension_auto="1" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DWIN32 -DNDEBUG -D_WINDOWS -D_MBCS -D_USRDLL" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-D__GNUWIN32__" />
+			<Add directory="libfidtrack" />
+		</Compiler>
+		<Linker>
+			<Add option="-Xlinker --add-stdcall-alias" />
+			<Add option="-Wl,--kill-at" />
+		</Linker>
+		<Unit filename="FiducialObject.cpp" />
+		<Unit filename="FiducialObject.h" />
+		<Unit filename="FiducialTracker.cpp" />
+		<Unit filename="FiducialTracker.h" />
+		<Unit filename="FreeFrame.cpp" />
+		<Unit filename="FreeFrame.h" />
+		<Unit filename="libfidtrack\default_trees.h" />
+		<Unit filename="libfidtrack\dump_graph.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\dump_graph.h" />
+		<Unit filename="libfidtrack\fidtrack120.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\fidtrack120.h" />
+		<Unit filename="libfidtrack\fidtrackX.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\fidtrackX.h" />
+		<Unit filename="libfidtrack\floatpoint.h" />
+		<Unit filename="libfidtrack\segment.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\segment.h" />
+		<Unit filename="libfidtrack\threshold.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\threshold.h" />
+		<Unit filename="libfidtrack\tiled_bernsen_threshold.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\tiled_bernsen_threshold.h" />
+		<Unit filename="libfidtrack\topologysearch.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="libfidtrack\topologysearch.h" />
+		<Unit filename="libfidtrack\treeidmap.cpp" />
+		<Unit filename="libfidtrack\treeidmap.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
