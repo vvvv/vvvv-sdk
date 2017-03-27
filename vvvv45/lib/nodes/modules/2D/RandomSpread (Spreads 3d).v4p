@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.4.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\2D\RandomSpread (Spreads 3d).v4p" systemname="RandomPoints (3d)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\2D\RandomPoints (3d).v4p">
-   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="6915">
+   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="7710">
    </BOUNDS>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
@@ -67,11 +67,11 @@
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3195" top="1155" width="795" height="240">
+   <BOUNDS type="Box" left="3240" top="1050" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="3195" top="1155" width="0" height="0">
+   <BOUNDS type="Node" left="3240" top="1050" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="41">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -85,9 +85,11 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="MapRange (Value)" nodename="MapRange (Value)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="2520" top="4995" width="100" height="100">
+   <BOUNDS type="Node" left="2505" top="5505" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -100,8 +102,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Input">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="855" top="1110" width="795" height="720">
    </BOUNDS>
@@ -151,9 +151,9 @@
    <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Center">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2520" top="5550" width="795" height="720">
+   <BOUNDS type="Box" left="2505" top="6060" width="795" height="720">
    </BOUNDS>
-   <BOUNDS type="Node" left="2520" top="5550" width="0" height="0">
+   <BOUNDS type="Node" left="2505" top="6060" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -182,30 +182,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="3210" top="3330" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="24" dstpinname="Select">
-   </LINK>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="23">
-   <BOUNDS type="Node" left="3960" top="3360" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="23" dstpinname="Select">
-   </LINK>
    <NODE systemname="Count (3d)" filename="%VVVV%\lib\nodes\modules\3D\Count (3D).v4p" nodename="Count (3d)" componentmode="Hidden" id="27">
    <BOUNDS type="Node" left="870" top="2415" width="100" height="100">
    </BOUNDS>
@@ -230,12 +206,24 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Input">
+   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="28">
+   <BOUNDS type="Node" left="2505" top="4815" width="615" height="270">
+   </BOUNDS>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="OutputXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="28" dstpinname="InputXYZ">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="23" dstpinname="Input">
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="28" dstpinname="Select">
    </LINK>
-   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="0" dstpinname="Random Seed">
+   <LINK srcnodeid="28" srcpinname="OutputXYZ" dstnodeid="18" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="23" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Random Seed">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
    </LINK>
    </PATCH>

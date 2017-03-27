@@ -22,14 +22,14 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="6915">
+   <BOUNDS type="Window" left="10245" top="6315" width="6930" height="7275">
    </BOUNDS>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1545" top="5175" width="795" height="480">
+   <BOUNDS type="Box" left="1335" top="5430" width="795" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="1545" top="5175" width="0" height="0">
+   <BOUNDS type="Node" left="1335" top="5430" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -47,7 +47,7 @@
    <INFO author="vvvv group" description="Generates a random point cloud in 2d space" tags="cloud">
    </INFO>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="1545" top="3675" width="100" height="100">
+   <BOUNDS type="Node" left="1350" top="3795" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1" slicecount="1" values="2">
    </PIN>
@@ -111,7 +111,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="3195" top="1155" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="41">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -124,6 +124,8 @@
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
@@ -151,7 +153,7 @@
    </PIN>
    </NODE>
    <NODE systemname="MapRange (Value)" nodename="MapRange (Value)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="1545" top="4560" width="100" height="100">
+   <BOUNDS type="Node" left="1335" top="4815" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -164,12 +166,10 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="9" dstpinname="Y Input Value">
    </LINK>
    <NODE systemname="Count (2d)" filename="%VVVV%\lib\nodes\modules\2D\Count (2D).v4p" nodename="Count (2d)" componentmode="Hidden" id="19">
-   <BOUNDS type="Node" left="1680" top="1875" width="100" height="100">
+   <BOUNDS type="Node" left="1755" top="1875" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -202,40 +202,28 @@
    </LINK>
    <LINK srcnodeid="20" srcpinname="Count" dstnodeid="21" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="24">
-   <BOUNDS type="Node" left="2715" top="2895" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Select" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="24" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="24" dstpinname="Select">
-   </LINK>
-   <LINK srcnodeid="24" srcpinname="Output" dstnodeid="0" dstpinname="Random Seed">
+   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Center">
    </LINK>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Width">
    </LINK>
-   <LINK srcnodeid="17" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Center">
-   </LINK>
-   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="3465" top="2925" width="100" height="100">
+   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="1350" top="4305" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="InputXY" visible="1">
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="25" dstpinname="Select">
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="32" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="25" dstpinname="Input">
+   <LINK srcnodeid="21" srcpinname="Output" dstnodeid="32" dstpinname="Select">
    </LINK>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
+   <LINK srcnodeid="32" srcpinname="OutputXY" dstnodeid="18" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Random Seed">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
    </LINK>
    </PATCH>

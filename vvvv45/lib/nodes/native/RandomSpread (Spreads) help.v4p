@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33beta9.10.dtd" >
-   <PATCH locked="0" nodename="Y:\vvvv33\help\RandomSpread (Spreads) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.4.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\RandomSpread (Spreads) help.v4p" locked="0">
    <LINK dstnodeid="14" dstpinname="Random Seed" srcnodeid="15" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="15" nodename="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Minimum" slicecount="1" values="-100000">
    </PIN>
    <PIN pinname="Maximum" slicecount="1" values="100000">
@@ -20,7 +20,7 @@
    </NODE>
    <LINK dstnodeid="14" dstpinname="Spread Count" srcnodeid="8" srcpinname="Y Output Value">
    </LINK>
-   <NODE id="14" nodename="RandomSpread (Spreads)">
+   <NODE id="14" nodename="RandomSpread (Spreads Legacy)">
    <PIN pinname="Random Seed Mode" slicecount="1" values="Spreaded">
    </PIN>
    <PIN pinname="Random Seed" visible="1">
@@ -62,7 +62,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <BOUNDS height="8700" left="1440" top="795" type="Window" width="8490">
+   <BOUNDS height="8970" left="10110" top="5355" type="Window" width="9705">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
    <BOUNDS height="255" left="435" top="1050" type="Node" width="3495">
@@ -120,7 +120,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Input Value" slicecount="1" values="19" slices="0">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
@@ -144,7 +144,7 @@
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="Point (GDI)">
+   <NODE id="6" nodename="POINT (GDI)">
    <PIN pinname="Y" slicecount="1" visible="1" values="0">
    </PIN>
    <BOUNDS height="0" left="1905" top="3105" type="Node" width="0">
@@ -205,7 +205,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|RandomSpread - Spreads|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|RandomSpread (Spreads)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -216,4 +216,46 @@
    </NODE>
    <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
    </LINK>
+   <NODE systemname="RandomSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 2d).v4p" nodename="RandomSpread (Spreads 2d)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="420" top="7545" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="7545">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="1890" top="7545" width="2115" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1890" top="7545" width="2115" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|RandomSpread (Spreads 2d)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="1890" top="7890" width="2115" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1890" top="7890" width="2115" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|RandomSpread (Spreads 3d)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="RandomSpread (Spreads 3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 3d).v4p" nodename="RandomSpread (Spreads 3d)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="420" top="7890" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="7890">
+   </BOUNDS>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>

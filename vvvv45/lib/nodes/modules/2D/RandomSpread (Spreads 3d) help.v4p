@@ -77,7 +77,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4110" top="1635" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="52">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -88,6 +88,8 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="13">
@@ -152,34 +154,6 @@
    <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.51428,0.28913,0.08787,1.00000|">
    </PIN>
    </NODE>
-   <NODE nodename="RandomSpread (Spreads 3d)" componentmode="Hidden" id="19" systemname="RandomSpread (Spreads 3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 3d).v4p">
-   <BOUNDS type="Node" left="2835" top="2505" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2835" top="2505" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="Spread Count" visible="1">
-   </PIN>
-   <PIN pinname="Random Seed" visible="1">
-   </PIN>
-   <PIN pinname="SizeXY" visible="1">
-   </PIN>
-   <PIN pinname="CenterXY" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="6915">
-   </BOUNDS>
-   <PIN pinname="CenterXYZ" visible="1">
-   </PIN>
-   <PIN pinname="SizeXYZ" visible="1">
-   </PIN>
-   <PIN pinname="XYZ" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Spread Count">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="19" dstpinname="Random Seed">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="20">
    <BOUNDS type="Box" left="2070" top="1560" width="795" height="720">
    </BOUNDS>
@@ -195,9 +169,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="19" dstpinname="CenterXYZ">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="21">
    <BOUNDS type="Box" left="3105" top="1545" width="795" height="720">
    </BOUNDS>
@@ -214,8 +188,6 @@
    <PIN pinname="Rows" slicecount="1" values="3">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="19" dstpinname="SizeXYZ">
-   </LINK>
    <NODE systemname="Point (DX9 3d)" filename="%VVVV%\lib\nodes\modules\EX9\Point (DX9 3d).v4p" nodename="Point (DX9 3d)" componentmode="Hidden" id="18">
    <BOUNDS type="Node" left="3630" top="4410" width="100" height="100">
    </BOUNDS>
@@ -223,7 +195,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Translate XYZ" visible="1">
+   <PIN pinname="Translate XYZ" visible="1" slicecount="240" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Circle">
    </PIN>
@@ -231,10 +203,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="18" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 2">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="XY" dstnodeid="18" dstpinname="XY">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="XYZ" dstnodeid="18" dstpinname="Translate XYZ">
    </LINK>
    <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="3900" top="6120" width="100" height="100">
@@ -256,6 +224,8 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    <PIN pinname="Period" visible="1">
+   </PIN>
+   <PIN pinname="Pause" slicecount="1" values="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="22" dstpinname="Initial Longitude">
@@ -333,7 +303,7 @@
    </BOUNDS>
    <PIN pinname="BinSize" slicecount="1" values="-1">
    </PIN>
-   <PIN pinname="To" visible="1">
+   <PIN pinname="To" visible="1" slicecount="240" values="0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0,0.5,0,0">
    </PIN>
    <PIN pinname="From" visible="1">
    </PIN>
@@ -341,8 +311,6 @@
    <LINK srcnodeid="4" srcpinname="Color Output" dstnodeid="30" dstpinname="Color">
    </LINK>
    <LINK srcnodeid="30" srcpinname="Layer" dstnodeid="6" dstpinname="Layer 1">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="XYZ" dstnodeid="30" dstpinname="To">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="31">
    <BOUNDS type="Box" left="1755" top="3615" width="570" height="615">
@@ -363,5 +331,29 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="30" dstpinname="From">
+   </LINK>
+   <NODE nodename="RandomSpread (Spreads 3d)" componentmode="Hidden" id="32" systemname="RandomSpread (Spreads 3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 3d).v4p">
+   <BOUNDS type="Node" left="2835" top="2505" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2835" top="2505" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="7710">
+   </BOUNDS>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="32" dstpinname="CenterXYZ">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="32" dstpinname="SizeXYZ">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="XY" dstnodeid="18" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="XYZ" dstnodeid="18" dstpinname="Translate XYZ">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="XYZ" dstnodeid="30" dstpinname="To">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="32" dstpinname="Random Seed">
    </LINK>
    </PATCH>

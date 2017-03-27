@@ -24,36 +24,16 @@
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
    </NODE>
-   <NODE nodename="RandomSpread (Spreads 2d)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="3375" top="2790" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="3375" top="2790" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="XY" visible="1">
-   </PIN>
-   <PIN pinname="Spread Count" visible="1">
-   </PIN>
-   <PIN pinname="Random Seed" visible="1">
-   </PIN>
-   <PIN pinname="SizeXY" visible="1">
-   </PIN>
-   <PIN pinname="CenterXY" visible="1">
-   </PIN>
-   <BOUNDS type="Window" left="10245" top="6315" width="7125" height="6915">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="Point (DX9 2d)" filename="%VVVV%\lib\nodes\modules\EX9\Point (DX9 2d).v4p" nodename="Point (DX9 2d)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="4170" top="5295" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1">
+   <PIN pinname="XY" visible="1" slicecount="84" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="SizeXY" slicecount="2" values="0.031,0.031">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="XY" dstnodeid="4" dstpinname="XY">
-   </LINK>
    <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="5">
    <BOUNDS type="Node" left="3525" top="6570" width="100" height="100">
    </BOUNDS>
@@ -81,11 +61,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Spread Count">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="7">
    <BOUNDS type="Node" left="5115" top="1530" width="570" height="270">
    </BOUNDS>
@@ -105,7 +83,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="4560" top="1920" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="42">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -117,9 +95,9 @@
    </PIN>
    <PIN pinname="Rows" slicecount="1" values="1">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Random Seed">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="4530" top="1530" width="465" height="270">
    </BOUNDS>
@@ -135,7 +113,7 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
-   <BOUNDS type="Box" left="3645" top="1920" width="795" height="480">
+   <BOUNDS type="Box" left="3645" top="1920" width="615" height="450">
    </BOUNDS>
    <BOUNDS type="Node" left="3645" top="1920" width="0" height="0">
    </BOUNDS>
@@ -151,27 +129,9 @@
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
-   <BOUNDS type="Box" left="2580" top="1920" width="690" height="480">
-   </BOUNDS>
-   <BOUNDS type="Node" left="2580" top="1920" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="0,0">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Vector Size" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Rows" slicecount="1" values="2">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="X Input Value" slicecount="2" values="0,0">
-   </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="2" values="1,1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="12">
@@ -205,13 +165,11 @@
    <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="2700" top="4470" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="XY" visible="1">
+   <PIN pinname="XY" visible="1" slicecount="84" values="0.636800617561676,-0.549223091918975,-0.73175360087771,0.526029163738713,0.704595119808801,0.60806349478662,-0.63451200874988,0.162471823627129,0.618938946747221,-0.254779576789588,-0.097612616722472,0.722171439556405,0.391594836604781,0.470011579804122,0.28751498402562,0.22173493844457,0.599371838034131,-0.739645721856505,0.00481771293561906,0.177698675310239,0.433960515190847,0.744745284318924,0.671999127021991,-0.32032093196176,-0.526063878438435,0.593526686076075,0.653098766575567,0.234519325895235,-0.688257757457905,0.685054105706513,-0.454416780383326,-0.0170052282046527,0.0434674067655578,0.0858297566883266,0.237261405098252,-0.234360741684213,0.504227166180499,0.258662844076753,-0.396663425141014,0.389255177462474,-0.493035855120979,0.287919808644801,-0.211092465673573,-0.679330435814336,0.217478556674905,0.285926914773881,0.397231581970118,-0.0907012063544244,0.673501691431738,0.019587682094425,-0.22093833249528,0.115084372228011,0.330624870141037,-0.328722339123487,-0.506629731156863,0.0933623223099858,0.392896368750371,-0.476920948829502,0.384772487799637,-0.636771339224651,0.0608988107414916,0.228417665697634,0.0979608645429835,-0.339036528719589,0.205119528458454,-0.289835263509303,0.724464410799555,-0.0449239297304302,-0.652573606814258,-0.40073393471539,-0.347955638193525,0.474533766740933,0.208461613976397,0.00296101765707135,0.0620391470147297,-0.0232632842380553,0.453766005230136,-0.733346139080822,-0.105028920457698,-0.643198634264991,0.146446223021485,-0.731500054243952,-0.520272735622711,-0.425285000586882">
    </PIN>
    <PIN pinname="XYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="XY" dstnodeid="14" dstpinname="XY">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="16">
    <BOUNDS type="Node" left="3525" top="5970" width="100" height="100">
    </BOUNDS>
@@ -236,10 +194,6 @@
    </LINK>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="0" dstpinname="CenterXY">
-   </LINK>
-   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="SizeXY">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="23">
    <BOUNDS type="Node" left="315" top="7275" width="750" height="270">
    </BOUNDS>
@@ -301,7 +255,7 @@
    </PIN>
    <PIN pinname="To" visible="1">
    </PIN>
-   <PIN pinname="From" slicecount="1" values="0" visible="1">
+   <PIN pinname="From" slicecount="1" visible="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="14" srcpinname="XYZ" dstnodeid="15" dstpinname="VerticesXYZ">
@@ -337,5 +291,65 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="24" srcpinname="Y Output Value" dstnodeid="15" dstpinname="From">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="25">
+   <BOUNDS type="Node" left="2580" top="1920" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2580" top="1920" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <NODE id="27" nodename="RandomSpread (Spreads 2d)" componentmode="Hidden" systemname="RandomSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 2d).v4p" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="3210" top="2775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3210" top="2775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10245" top="6315" width="6930" height="7275">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="CenterXY" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Spread Count" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="XY" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="27" dstpinname="CenterXY">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="27" dstpinname="SizeXY">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="XY" dstnodeid="14" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Spread Count">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="XY" dstnodeid="4" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Random Seed">
    </LINK>
    </PATCH>
