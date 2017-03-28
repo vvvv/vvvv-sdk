@@ -4,10 +4,10 @@
    </BOUNDS>
    <PACK Name="addonpack" Version="35.0.0">
    </PACK>
-   <INFO author="vvvv group" description="Generates a random point cloud in 3d space" tags="cloud">
+   <INFO author="vvvv group" description="Generates a random point cloud in 3d space." tags="cloud">
    </INFO>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="2520" top="4110" width="100" height="100">
+   <BOUNDS type="Node" left="2550" top="3285" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Spread Count" visible="1" slicecount="1" values="2">
    </PIN>
@@ -23,9 +23,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
-   <BOUNDS type="Node" left="4560" top="1155" width="100" height="100">
+   <BOUNDS type="Node" left="5550" top="1065" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="4560" top="1155" width="795" height="240">
+   <BOUNDS type="Box" left="5550" top="1065" width="795" height="240">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Integer">
    </PIN>
@@ -39,7 +39,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="4560" top="1800" width="100" height="100">
+   <BOUNDS type="Node" left="5550" top="1815" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -51,9 +51,9 @@
    <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="14" dstpinname="Input 1">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5385" top="1470" width="390" height="240">
+   <BOUNDS type="Box" left="5820" top="1425" width="390" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="5385" top="1470" width="0" height="0">
+   <BOUNDS type="Node" left="5820" top="1425" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="3">
    </PIN>
@@ -89,7 +89,7 @@
    </PIN>
    </NODE>
    <NODE systemname="MapRange (Value)" nodename="MapRange (Value)" componentmode="Hidden" id="18">
-   <BOUNDS type="Node" left="2505" top="5505" width="100" height="100">
+   <BOUNDS type="Node" left="2535" top="4830" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -146,14 +146,10 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="SizeXYZ">
    </PIN>
    </NODE>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Width">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="18" dstpinname="Destination Center">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2505" top="6060" width="795" height="720">
+   <BOUNDS type="Box" left="2535" top="5385" width="795" height="720">
    </BOUNDS>
-   <BOUNDS type="Node" left="2505" top="6060" width="0" height="0">
+   <BOUNDS type="Node" left="2535" top="5385" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -172,58 +168,62 @@
    </NODE>
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="22" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Max (Value)" nodename="Max (Value)" componentmode="Hidden" id="25">
-   <BOUNDS type="Node" left="1380" top="2775" width="100" height="100">
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Random Seed">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
+   </LINK>
+   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="29">
+   <BOUNDS type="Node" left="5400" top="3705" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="2">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="1" values="2">
+   <PIN pinname="Select" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   </NODE>
-   <NODE systemname="Count (3d)" filename="%VVVV%\lib\nodes\modules\3D\Count (3D).v4p" nodename="Count (3d)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="870" top="2415" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
+   <PIN pinname="InputXY" visible="1" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Count" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="27" srcpinname="Count" dstnodeid="25" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Count (3d)" filename="%VVVV%\lib\nodes\modules\3D\Count (3D).v4p" nodename="Count (3d)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="1830" top="2415" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="26" srcpinname="Count" dstnodeid="25" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="28">
-   <BOUNDS type="Node" left="2505" top="4815" width="615" height="270">
-   </BOUNDS>
    <PIN pinname="InputXYZ" visible="1">
-   </PIN>
-   <PIN pinname="Select" visible="1">
    </PIN>
    <PIN pinname="OutputXYZ" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="28" dstpinname="InputXYZ">
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="29" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="28" dstpinname="Select">
+   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="4680" top="3720" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   <PIN pinname="InputXYZ" visible="1">
+   </PIN>
+   <PIN pinname="OutputXYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="30" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="28" srcpinname="OutputXYZ" dstnodeid="18" dstpinname="Input">
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="30" dstpinname="InputXYZ">
    </LINK>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Random Seed">
+   <LINK srcnodeid="20" srcpinname="Y Output Value" dstnodeid="29" dstpinname="InputXYZ">
    </LINK>
-   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="0" dstpinname="Spread Count">
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="30" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="29" dstpinname="Select">
+   </LINK>
+   <LINK srcnodeid="30" srcpinname="OutputXYZ" dstnodeid="18" dstpinname="Destination Center">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="OutputXYZ" dstnodeid="18" dstpinname="Destination Width">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="18" dstpinname="Input">
    </LINK>
    </PATCH>
