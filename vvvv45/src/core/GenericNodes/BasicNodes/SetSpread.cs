@@ -31,10 +31,10 @@ namespace VVVV.Nodes.Generic
 
 		//called when data for any output pin is requested
 		public void Evaluate(int SpreadMax)
-		{
-			
-			FOutput.SliceCount = Math.Max(FSpread.SliceCount,Math.Max(FInput.SliceCount,FOffset.SliceCount));
-			for (int i=0; i<FInput.SliceCount; i++)
+		{			
+			FOutput.SliceCount = SpreadUtils.SpreadMax(FSpread, FInput, FOffset);
+
+            for (int i=0; i<FInput.SliceCount; i++)
 			{
 				FOutput[i].AssignFrom(FSpread[i]);
 				for (int s=0; s<FInput[i].SliceCount; s++)
