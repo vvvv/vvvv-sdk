@@ -1,27 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv-sdk\vvvv45\girlpower\IO\Web\01_HTTP_Overview.v4p" systemname="http" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\http.v4p">
-   <BOUNDS type="Window" left="195" top="0" width="15435" height="12495">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\01_HTTP_Overview.v4p" systemname="http" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\http.v4p">
+   <BOUNDS type="Window" left="195" top="0" width="15285" height="11880">
    </BOUNDS>
-   <NODE systemname="HTTP (Network Get)" nodename="HTTP (Network Get)" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="7620" top="2625" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="HTTP (Network Get String)" filename="%VVVV%\lib\nodes\modules\Network\HTTP (Network Get String).v4p" nodename="HTTP (Network Get String)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="10845" top="2625" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10845" top="2625">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="HTTP (Network Post)" nodename="HTTP (Network Post)" componentmode="Hidden" id="2">
-   <BOUNDS type="Node" left="7620" top="6420" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <NODE systemname="HTTP (Network Post String)" filename="%VVVV%\lib\nodes\modules\Network\HTTP (Network Post String).v4p" nodename="HTTP (Network Post String)" componentmode="Hidden" id="3">
-   <BOUNDS type="Node" left="10695" top="6420" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="10695" top="6420">
-   </BOUNDS>
-   </NODE>
    <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
    </BOUNDS>
@@ -41,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="1545" left="675" top="3300" type="Box" width="3990">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTP (Network Get) and HTTP (Network Get String) send GET requests to the defined URLs and return the data retrieved from web-servers. These are mainly used to receive data. &cr;&lf;&cr;&lf;It&apos;s possible to add Name/Value pairs to the request as well as the username/password data.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTPGet (Network) and HTTPGet (Network String) send GET requests to the defined URLs and return the data retrieved from web-servers. These are mainly used to receive data. &cr;&lf;&cr;&lf;It&apos;s possible to add Name/Value pairs to the request as well as the username/password data.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -99,9 +79,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="300" top="10275" type="Node" width="315">
+   <BOUNDS height="270" left="300" top="9825" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="300" top="10275" type="Box" width="405">
+   <BOUNDS height="390" left="300" top="9825" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -147,9 +127,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="8625" top="10815" type="Node" width="315">
+   <BOUNDS height="270" left="8625" top="10215" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="300" left="8625" top="10815" type="Box" width="330">
+   <BOUNDS height="300" left="8625" top="10215" type="Box" width="330">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
    </PIN>
@@ -167,7 +147,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="7620" top="2130" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org">
+   <PIN pinname="Input String" slicecount="1" values="https://vvvv.org">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
    </PIN>
@@ -178,16 +158,12 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="0" dstpinname="URL">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="23" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="8205" top="3900" width="1500" height="660">
    </BOUNDS>
    <BOUNDS type="Node" left="8205" top="3900" width="0" height="0">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Body" dstnodeid="23" dstpinname="Input Node">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
    <BOUNDS type="Box" left="7605" top="3315" width="1530" height="240">
    </BOUNDS>
@@ -202,8 +178,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="0" srcpinname="Status" dstnodeid="24" dstpinname="Input String">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
    <BOUNDS type="Box" left="10860" top="3315" width="1545" height="240">
    </BOUNDS>
@@ -218,8 +192,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Status" dstnodeid="25" dstpinname="Input String">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
    <BOUNDS type="Box" left="11415" top="3900" width="2475" height="675">
    </BOUNDS>
@@ -234,14 +206,12 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Body" dstnodeid="26" dstpinname="Input String">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
    <BOUNDS type="Box" left="10830" top="2130" width="1410" height="240">
    </BOUNDS>
    <BOUNDS type="Node" left="10830" top="2130" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org">
+   <PIN pinname="Input String" slicecount="1" values="https://vvvv.org">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
    </PIN>
@@ -252,8 +222,6 @@
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
    </NODE>
-   <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="1" dstpinname="URL">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8880" top="1395" width="1020" height="270">
    </BOUNDS>
@@ -271,9 +239,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="8880" top="5820" width="1020" height="270">
+   <BOUNDS type="Node" left="8865" top="5325" width="1020" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8880" top="5820" width="1830" height="375">
+   <BOUNDS type="Box" left="8865" top="5325" width="1830" height="375">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|POST Request|">
    </PIN>
@@ -287,9 +255,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="11715" top="10800" type="Node" width="315">
+   <BOUNDS height="270" left="11715" top="10200" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="300" left="11715" top="10800" type="Box" width="330">
+   <BOUNDS height="300" left="11715" top="10200" type="Box" width="330">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
    </PIN>
@@ -303,9 +271,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)" exposed="0">
-   <BOUNDS type="Node" left="7830" top="9960" width="2160" height="270">
+   <BOUNDS type="Node" left="7830" top="9360" width="2160" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="7830" top="9960" width="3810" height="375">
+   <BOUNDS type="Box" left="7830" top="9360" width="3810" height="375">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|HTTP Server / HTTP Receiver|">
    </PIN>
@@ -321,9 +289,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
    <BOUNDS type="Node" left="8190" top="4650" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="8190" top="4650" width="540" height="285">
+   <BOUNDS type="Box" left="8190" top="4650" width="1185" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ Raw|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ Body as raw|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -335,9 +303,9 @@
    <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
    <BOUNDS type="Node" left="11400" top="4650" width="420" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="11400" top="4650" width="735" height="270">
+   <BOUNDS type="Box" left="11400" top="4650" width="1710" height="300">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ String|">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ Body as string|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -365,9 +333,9 @@
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="6015" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1560" left="675" top="6015" type="Box" width="3750">
+   <BOUNDS height="990" left="675" top="6015" type="Box" width="3780">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTP (Network Post) and HTTP (Network Post String) send POST requests to the defined URLs and return the data, which come from web-servers. These are mainly used to send data. &cr;&lf;&cr;&lf;Besides Name/Value pairs it&apos;s possible to define MIME- and encoding-types and set proxies.|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTPost (Network) and HTTPPost (Network String) send POST requests to the defined URLs and return the data, which come from web-servers. These are mainly used to send data. |">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -395,9 +363,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="37">
-   <BOUNDS type="Node" left="675" top="9000" width="100" height="100">
+   <BOUNDS type="Node" left="675" top="8550" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="9000" width="3705" height="240">
+   <BOUNDS type="Box" left="675" top="8550" width="3705" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
@@ -405,9 +373,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="38" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="8670" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="8220" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="300" left="675" top="8670" type="Box" width="3090">
+   <BOUNDS height="300" left="675" top="8220" type="Box" width="3090">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|GET vs. POST comparsion:|">
    </PIN>
@@ -421,9 +389,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="39">
-   <BOUNDS type="Node" left="675" top="9330" width="100" height="100">
+   <BOUNDS type="Node" left="675" top="8880" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="9330" width="3705" height="240">
+   <BOUNDS type="Box" left="675" top="8880" width="3705" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
@@ -441,9 +409,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="42" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="7650" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="7200" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="285" left="675" top="7650" type="Box" width="3210">
+   <BOUNDS height="285" left="675" top="7200" type="Box" width="3210">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|More information about the POST method:|">
    </PIN>
@@ -457,9 +425,9 @@
    </PIN>
    </NODE>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="41">
-   <BOUNDS type="Node" left="675" top="7950" width="100" height="100">
+   <BOUNDS type="Node" left="675" top="7500" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="675" top="7950" width="3705" height="240">
+   <BOUNDS type="Box" left="675" top="7500" width="3705" height="240">
    </BOUNDS>
    <PIN pinname="String Type" slicecount="1" values="URL">
    </PIN>
@@ -483,9 +451,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="44" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="9615" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="9165" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="240" left="675" top="9615" type="Box" width="3825">
+   <BOUNDS height="240" left="675" top="9165" type="Box" width="3825">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-------------------------------------------------">
    </PIN>
@@ -499,9 +467,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="45" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="8415" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="7965" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="240" left="675" top="8415" type="Box" width="3825">
+   <BOUNDS height="240" left="675" top="7965" type="Box" width="3825">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="-------------------------------------------------">
    </PIN>
@@ -515,9 +483,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="46" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="675" top="10290" type="Node" width="7425">
+   <BOUNDS height="270" left="675" top="9840" type="Node" width="7425">
    </BOUNDS>
-   <BOUNDS height="1035" left="675" top="10290" type="Box" width="3750">
+   <BOUNDS height="1035" left="675" top="9840" type="Box" width="3750">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|HTTP (Network Server) and HTTP (Network Receiver) serve recources via HTTP and receive HTTP requests respectively. Please check their helppatches for examples.|">
    </PIN>
@@ -531,17 +499,17 @@
    </PIN>
    </NODE>
    <NODE systemname="HTTP (Network Server)" nodename="HTTP (Network Server)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="7620" top="10815" width="885" height="270">
+   <BOUNDS type="Node" left="7620" top="10215" width="885" height="270">
    </BOUNDS>
    </NODE>
    <NODE systemname="HTTP (Network Receiver)" nodename="HTTP (Network Receiver)" componentmode="Hidden" id="5">
-   <BOUNDS type="Node" left="10695" top="10815" width="900" height="270">
+   <BOUNDS type="Node" left="10695" top="10215" width="900" height="270">
    </BOUNDS>
    </NODE>
    <NODE componentmode="InABox" id="47" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7050" top="10740" type="Node" width="315">
+   <BOUNDS height="270" left="7050" top="10140" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="7050" top="10740" type="Box" width="405">
+   <BOUNDS height="390" left="7050" top="10140" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -552,6 +520,170 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE systemname="HTTPGet (Network)" nodename="HTTPGet (Network)" componentmode="Hidden" id="0" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Network.HTTP.vl">
+   <BOUNDS type="Node" left="7620" top="2625" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output String" dstnodeid="0" dstpinname="URL">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Body" dstnodeid="23" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Status" dstnodeid="24" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="HTTPGet (Network String)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPGet (Network String).v4p" nodename="HTTPGet (Network String)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="10845" top="2625" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10845" top="2625">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Status" dstnodeid="25" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Body" dstnodeid="26" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="1" dstpinname="URL">
+   </LINK>
+   <NODE componentmode="InABox" id="48" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="12120" top="2580" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="300" left="12120" top="2580" type="Box" width="330">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="49" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="11970" top="6390" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="300" left="11970" top="6390" type="Box" width="330">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="F1">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE systemname="HTTPPost (Network)" nodename="HTTPPost (Network)" componentmode="Hidden" id="2" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Network.HTTP.vl">
+   <BOUNDS type="Node" left="7620" top="6420" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="HTTPPost (Network String)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPPost (Network String).v4p" nodename="HTTPPost (Network String)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="10695" top="6420" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10695" top="6420">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50">
+   <BOUNDS type="Box" left="7620" top="5850" width="1380" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7620" top="5850" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="https://vvvv.org">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="https://vvvv.org">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="50" srcpinname="Output String" dstnodeid="2" dstpinname="URL">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="51">
+   <BOUNDS type="Box" left="10695" top="5850" width="1470" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10695" top="5850" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="51" srcpinname="Output String" dstnodeid="3" dstpinname="URL">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="52">
+   <BOUNDS type="Box" left="8205" top="7215" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8205" top="7215" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Body" dstnodeid="52" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="53">
+   <BOUNDS type="Box" left="11280" top="7140" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11280" top="7140" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Body" dstnodeid="53" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="55" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8190" top="7605" width="420" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8190" top="7605" width="1185" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ Body as raw|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="54" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="11250" top="7470" width="420" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11250" top="7470" width="1710" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^ Body as string|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    </PATCH>
