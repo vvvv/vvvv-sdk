@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\UserInfo (facebook) help.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\UserInfo (Facebook) help.v4p" componentmode="InAWindow">
    <BOUNDS height="12165" left="1605" top="360" type="Window" width="10800">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="31" nodename="RENDERER (EX9)" stayontop="1">
@@ -127,7 +127,7 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values=".jpg" encoded="0">
+   <PIN pinname="Input 2" slicecount="1" encoded="0" values=".jpg">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -141,7 +141,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Input 2" slicecount="1" encoded="0" values="||">
    </PIN>
    </NODE>
    <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="23" srcpinname="Output">
@@ -160,30 +160,20 @@
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
-   <NODE id="16" nodename="HTTP (Network Get)">
-   <BOUNDS height="0" left="3765" top="4395" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="URL" visible="1">
-   </PIN>
-   <PIN pinname="Refresh" visible="1">
-   </PIN>
-   <PIN pinname="Body" visible="1">
-   </PIN>
-   <PIN pinname="Success" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="15" nodename="WRITER (FILE)">
+   <NODE id="15" nodename="WRITER (FILE)" systemname="Writer (String)">
    <BOUNDS height="0" left="4875" top="5880" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
-   <PIN pinname="Content" visible="1">
+   <PIN pinname="Content" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Write" visible="1">
+   <PIN pinname="Write" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
+   <PIN pinname="Append" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="15" dstpinname="Content" srcnodeid="16" srcpinname="Body">
-   </LINK>
    <NODE id="14" nodename="Quad (DX9)">
    <BOUNDS height="0" left="4635" top="8835" type="Node" width="0">
    </BOUNDS>
@@ -252,8 +242,6 @@
    <PIN pinname="First Name" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="URL" srcnodeid="10" srcpinname="Picture">
-   </LINK>
    <NODE componentmode="InABox" id="9" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4230" top="2265" type="Node" width="0">
    </BOUNDS>
@@ -274,8 +262,6 @@
    <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Refresh" srcnodeid="9" srcpinname="Y Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="8310" top="5505" type="Node" width="0">
    </BOUNDS>
@@ -301,8 +287,6 @@
    <LINK dstnodeid="15" dstpinname="Filename" srcnodeid="19" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="17" dstpinname="Filename" srcnodeid="19" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="15" dstpinname="Write" srcnodeid="16" srcpinname="Success">
    </LINK>
    <NODE id="7" nodename="Scale (Transform Vector)">
    <BOUNDS height="0" left="900" top="4875" type="Node" width="0">
@@ -389,7 +373,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Application Key|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Application Key|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
@@ -401,7 +385,7 @@
    </BOUNDS>
    <PIN pinname="Output String" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Secret Key|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Secret Key|">
    </PIN>
    </NODE>
    <LINK dstnodeid="11" dstpinname="Secret Key" srcnodeid="1" srcpinname="Output String">
@@ -439,7 +423,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="1065" top="750" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|UserInfo - Facebook|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|UserInfo (Facebook)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -455,7 +439,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="825" top="945" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns user details from a facebook profile|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Returns user details from a facebook profile|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -478,4 +462,30 @@
    </LINK>
    <LINK srcnodeid="10" srcpinname="First Name" dstnodeid="35" dstpinname="Text">
    </LINK>
+   <NODE id="16" nodename="HTTPGet (Network String)" systemname="HTTPGet (Network String)" filename="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPGet (Network String).v4p" componentmode="Hidden">
+   <BOUNDS height="100" left="3765" top="4395" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Refresh" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
+   </PIN>
+   <PIN pinname="On Completed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Content" srcnodeid="16" srcpinname="Body">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="URL" srcnodeid="10" srcpinname="Picture">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Refresh" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="On Completed" dstnodeid="15" dstpinname="Write">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>

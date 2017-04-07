@@ -46,7 +46,7 @@ namespace VVVV.PluginInterfaces.V2
             DefaultColor = new double[] { 0.0, 1.0, 0.0, 1.0 };
             
             //enum
-            EnumName = "Empty";
+            EnumName = "_ANY_";
             
             Dimension = 1;
         }
