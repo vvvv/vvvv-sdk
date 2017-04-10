@@ -352,7 +352,7 @@ namespace VVVV.PluginInterfaces.V2
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
             if (type != null)
-                result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
+                result.SetSubType2(type, new Guid[] { GenerateGUIDHack(type) }, type.GetCSharpName());
             else
                 result.SetSubType(new Guid[] { }, "Variant");
             SetInputProperties(result, attribute);
@@ -364,20 +364,22 @@ namespace VVVV.PluginInterfaces.V2
 			INodeOut result = null;
 			host.CreateNodeOutput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			
-			// Register all implemented interfaces and inherited classes of T
-			// to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
-			var guids = new List<Guid>();
-			var typeT = type;
-
             if (type != null)
             {
-                foreach (var interf in typeT.GetInterfaces())
-                    guids.Add(interf.GUID);
+                // Register all implemented interfaces and inherited classes of T
+                // to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
+                var guids = new List<Guid>();
 
-                while (typeT != null)
+                RegisterID(host, guids, type);
+
+                foreach (var interf in type.GetInterfaces())
+                    RegisterID(host, guids, interf);
+
+                var t = type.BaseType;
+                while (t != null)
                 {
-                    guids.Add(typeT.GUID);
-                    typeT = typeT.BaseType;
+                    RegisterID(host, guids, t);
+                    t = t.BaseType;
                 }
 
                 result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
@@ -388,6 +390,29 @@ namespace VVVV.PluginInterfaces.V2
             SetOutputProperties(result, attribute);
 			return result;
 		}
+
+        private static void RegisterID(IPluginHost host, List<Guid> guids, Type t)
+        {
+            Guid id = GenerateGUIDHack(t);
+            guids.Add(id);
+            host.RegisterType(id, t.GetCSharpName());
+        }
+
+        static Guid GenerateGUIDHack(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                var result = type.GUID.ToByteArray();
+                foreach (var argument in type.GenericTypeArguments)
+                {
+                    var a = argument.GUID.ToByteArray();
+                    for (int i = 0; i < result.Length; i++)
+                        result[i] ^= a[i];
+                }
+                return new Guid(result);
+            }
+            return type.GUID;
+        }
 
         public static IRawIn CreateRawInput(this IPluginHost host, InputAttribute attribute)
         {

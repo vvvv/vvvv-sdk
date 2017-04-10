@@ -276,6 +276,10 @@ namespace VVVV.PluginInterfaces.V1
         /// Triggers Evaluate() of the plugin - if not evaluated yet in that frame. 
         /// </summary>
         void Evaluate();
+        /// <summary>
+        /// Registers a type.
+        /// </summary>
+        void RegisterType(Guid guid, string friendlyName);
 	}
 	#endregion host
 }
