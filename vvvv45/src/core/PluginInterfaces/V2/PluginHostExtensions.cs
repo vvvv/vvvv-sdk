@@ -352,7 +352,7 @@ namespace VVVV.PluginInterfaces.V2
 			INodeIn result = null;
 			host.CreateNodeInput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
             if (type != null)
-                result.SetSubType2(type, new Guid[] { GenerateGUIDHack(type) }, type.GetCSharpName());
+                result.SetSubType2(type, new Guid[] { type.GUID }, type.GetCSharpName());
             else
                 result.SetSubType(new Guid[] { }, "Variant");
             SetInputProperties(result, attribute);
@@ -393,25 +393,9 @@ namespace VVVV.PluginInterfaces.V2
 
         private static void RegisterID(IPluginHost host, List<Guid> guids, Type t)
         {
-            Guid id = GenerateGUIDHack(t);
+            Guid id = t.GUID;
             guids.Add(id);
             host.RegisterType(id, t.GetCSharpName());
-        }
-
-        static Guid GenerateGUIDHack(Type type)
-        {
-            if (type.IsGenericType)
-            {
-                var result = type.GUID.ToByteArray();
-                foreach (var argument in type.GenericTypeArguments)
-                {
-                    var a = argument.GUID.ToByteArray();
-                    for (int i = 0; i < result.Length; i++)
-                        result[i] ^= a[i];
-                }
-                return new Guid(result);
-            }
-            return type.GUID;
         }
 
         public static IRawIn CreateRawInput(this IPluginHost host, InputAttribute attribute)
