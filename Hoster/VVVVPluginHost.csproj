@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props" Condition="Exists('packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.props')" />
+  <PropertyGroup>
+    <AssemblyName>TimelinerSA</AssemblyName>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3CA130F-2045-4F0E-B9BC-4DC4338057B2}</ProjectGuid>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
+    <PlatformTarget>x86</PlatformTarget>
+    <FileAlignment>4096</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <OutputPath>bin\</OutputPath>
+    <OutputType>Exe</OutputType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace>VVVVPlugHostMono</RootNamespace>
+    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <Optimize>False</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>Full</DebugType>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <RootNamespace>TimelineHost</RootNamespace>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Optimize>True</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>None</DebugType>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <RootNamespace>Hoster</RootNamespace>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>Full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SlimDX">
+      <HintPath>packages\VVVV.SlimDX.1.0.1\build\net40\lib\x86\SlimDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex">
+      <HintPath>packages\VVVV.System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="VVVV.Core">
+      <HintPath>packages\VVVV.Core.33.7.0\lib\net40\VVVV.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.PluginInterfaces">
+      <HintPath>packages\VVVV.PluginInterfaces.33.7.0\build\net40\lib\x86\VVVV.PluginInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="VVVV.Utils">
+      <HintPath>packages\VVVV.Utils.33.7.0\lib\net40\VVVV.Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="MainForm.cs">
+      <Generator>p</Generator>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PinPanel.cs" />
+    <Compile Include="PinPanel.Designer.cs">
+      <DependentUpon>PinPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PluginHost\BasePin.cs" />
+    <Compile Include="PluginHost\ColorPin.cs" />
+    <Compile Include="PluginHost\EnumPin.cs" />
+    <Compile Include="PluginHost\LayerPin.cs" />
+    <Compile Include="PluginHost\MeshPin.cs" />
+    <Compile Include="PluginHost\NodePins.cs" />
+    <Compile Include="PluginHost\PluginHost.cs" />
+    <Compile Include="PluginHost\StatePin.cs" />
+    <Compile Include="PluginHost\StringPin.cs" />
+    <Compile Include="PluginHost\TexturePin.cs" />
+    <Compile Include="PluginHost\Timer.cs" />
+    <Compile Include="PluginHost\TransformPins.cs" />
+    <Compile Include="PluginHost\ValuePin.cs" />
+    <Compile Include="PluginPage.cs" />
+    <Compile Include="PluginPage.Designer.cs">
+      <DependentUpon>PluginPage.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PluginPage.resx">
+      <DependentUpon>PluginPage.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Remoter\Remoter.csproj">
+      <Project>{5509AC01-1916-4134-8B4D-BE560A715A89}</Project>
+      <Name>Remoter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets" Condition="Exists('packages\VVVV.SlimDX.1.0.1\build\net40\VVVV.SlimDX.targets')" />
+  <Import Project="packages\VVVV.PluginInterfaces.33.7.0\build\net40\VVVV.PluginInterfaces.targets" Condition="Exists('packages\VVVV.PluginInterfaces.33.7.0\build\net40\VVVV.PluginInterfaces.targets')" />
+</Project>

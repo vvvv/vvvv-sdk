@@ -1,0 +1,293 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Node Tests\Cons (String) test.v4p" systemname="Cons (String))" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\Cons (String) test.v4p">
+   <BOUNDS type="Window" left="2055" top="4935" width="10830" height="8820">
+   </BOUNDS>
+   <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="2580" top="4755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Actual" visible="1">
+   </PIN>
+   <PIN pinname="Expected" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2580" top="4755">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="2895" top="3090" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2895" top="3090" width="795" height="885">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="4,0,2,0">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Expected">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="13" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4995" top="2595" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4995" top="2595" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Run">
+   </PIN>
+   </NODE>
+   <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2565" top="6210" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="2565" top="6210">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Message" dstnodeid="14" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2565" top="6660" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2565" top="6660" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Message">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Output" dstnodeid="15" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="4995" top="6645" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4995" top="6645" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Running">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="Cons (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (String)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="645" top="2430" width="2010" height="270">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Output Bin Size" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="645" top="2430">
+   </BOUNDS>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Input 4" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output Bin Size" dstnodeid="6" dstpinname="Actual">
+   </LINK>
+   <NODE systemname="NIL (String)" filename="%VVVV%\lib\nodes\modules\String\NIL (String).v4p" nodename="NIL (String)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="1620" top="540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1620" top="540">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="18" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="645" top="1005" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="645" top="1005" width="345" height="930">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" encoded="0" values="0,1,2,3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output String" dstnodeid="0" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Input 4">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2250" top="1005" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2250" top="1005" width="345" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="2" encoded="0" values="4,5">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output String" dstnodeid="0" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="0" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="AreEqual (Test String)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test String).v4p" nodename="AreEqual (Test String)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="645" top="4755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Actual" visible="1" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Expected" visible="1" encoded="0">
+   </PIN>
+   <BOUNDS type="Box" left="645" top="4755">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="14625" top="2295" width="9000" height="6000">
+   </BOUNDS>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Message" dstnodeid="14" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1110" top="3120" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1110" top="3120" width="690" height="1290">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="6" encoded="0" values="0,1,2,3,4,5">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="24" srcpinname="Output String" dstnodeid="5" dstpinname="Expected">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="5" dstpinname="Actual">
+   </LINK>
+   <NODE systemname="Cons (Spreads)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Spreads)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="930" top="6225" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" encoded="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" encoded="0">
+   </PIN>
+   <BOUNDS type="Box" left="930" top="6225">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Success" dstnodeid="26" dstpinname="Input 1" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Success" dstnodeid="26" dstpinname="Input 2" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="915" top="6690" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="915" top="6690" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Success">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Output" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="5" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29">
+   <BOUNDS type="Node" left="6150" top="660" width="975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6150" top="660" width="1950" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Description">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28">
+   <BOUNDS type="Node" left="6150" top="1185" width="6720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6150" top="1185" width="3765" height="3300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See if Cons (String) deals with NIL on inputs correctly.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   </PATCH>

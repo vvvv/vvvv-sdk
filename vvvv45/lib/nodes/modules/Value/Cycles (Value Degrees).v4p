@@ -1,0 +1,63 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Value\Cycles (Value Degrees).v4p">
+   <BOUNDS height="6000" left="8190" top="6615" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1485" top="3450" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8160" top="10035" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1485" top="3450" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Cycles">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="2550" top="1860" type="Node" width="420">
+   </BOUNDS>
+   <BOUNDS height="330" left="2550" top="1860" type="Box" width="1005">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="| 360|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1485" top="450" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8715" top="6345" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1485" top="450" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Degrees">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="360">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Divide (Value)" systemname="Divide (Value)">
+   <BOUNDS height="0" left="2220" top="2265" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="360">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Input" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Output">
+   </LINK>
+   <INFO author="vvvv group" description="Converts degrees to cycles." tags="angle, 2d, modulo, convert">
+   </INFO>
+   </PATCH>

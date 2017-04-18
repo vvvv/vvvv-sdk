@@ -1,0 +1,259 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\EX9\MultiScreen (EX9 Spanmode) help.v4p">
+   <BOUNDS height="8475" left="2355" top="3825" type="Window" width="10665">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="13" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="1440" top="7215" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="3735" left="90" top="15" type="Window" width="13620">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1440" top="7215" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Viewport Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="GaussianSpread (Spreads)" systemname="GaussianSpread (Spreads)">
+   <BOUNDS height="0" left="2370" top="2625" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="131">
+   </PIN>
+   <PIN pinname="Standard Deviation" slicecount="1" values="4.17">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="34">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Translate (Transform Vector)" systemname="Translate (Transform Vector)">
+   <BOUNDS height="0" left="1620" top="3240" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="XYZ" srcnodeid="12" srcpinname="Output">
+   </LINK>
+   <NODE id="10" nodename="Scale (Transform Vector)" systemname="Scale (Transform Vector)">
+   <BOUNDS height="0" left="1560" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="1.41,1.41,1.41">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Transform In" srcnodeid="11" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="9" nodename="Pillow (DX9)" systemname="Pillow (DX9)">
+   <BOUNDS height="0" left="1410" top="4215" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Transform" srcnodeid="10" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="8" nodename="Rotate (Transform Vector)" systemname="Rotate (Transform Vector)">
+   <BOUNDS height="0" left="900" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform In" srcnodeid="8" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="7" nodename="LFO (Animation)" systemname="LFO (Animation)">
+   <BOUNDS height="0" left="1290" top="2355" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="30">
+   </PIN>
+   <PIN pinname="Pause" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="XYZ" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="6" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
+   <BOUNDS height="0" left="2205" top="5730" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Aspect Width" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Aspect Height" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="FitIn">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="345" top="5835" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3435" top="8025" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="345" top="5835" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Overlap">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="3975" top="2070" type="Node" width="4155">
+   </BOUNDS>
+   <BOUNDS height="5700" left="3975" top="2070" type="Box" width="6390">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Thoughts about the actual screen size:&cr;&lf;The more projectors you have the more you&apos;re able to display, 3 projectors in a row can display more content than just one. You could display the same content but then it will be stretched by 3 times. &cr;&lf;&cr;&lf;If you want to avoid stretching and instead keep a good aspect ratio you have the choice: &cr;&lf;do you want to see 3 times more in height or do you want to see just the middle strip of your original content (in fact a 3rd of your original content)? &cr;&lf;&cr;&lf;more difficult is maybe the question: &cr;&lf;what happens when you&apos;re tweaking projector overlaps at the end of your project? &cr;&lf;when you move projectors together to get a bigger overlap also the content has to have a bigger overlap. however if you do decrease the overall screen size by moving projectors together also the content has to be adjusted so that your aspect ratio still stays correct. &cr;&lf;You have to decide if you want to keep the width or the height of your content.&cr;&lf;&cr;&lf;all the different modes are supported by the Sight pin.&cr;&lf;0: if you change projector count or overlaps the view onto the scene will change. however the aspect ratio won&apos;t change. &cr;&lf;1: the left and right borders of your scene will always stay in its place independent of screen count or overlaps. aspect ratio won&apos;t change. swimming height.&cr;&lf;2: the top and bottom borders of your scene will always stay in its place independent of screen count or overlaps. aspect ratio won&apos;t change. swimming width.&cr;&lf;3: you will always have the original scene size. however aspect ratio will change depending of how many screens or how big the overlap is.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1125" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="20070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Enables you to spread a rendered image across many screens, when in spanmode. In that way this allows you to easiely puzzle together a wide projection. &cr;&lf;With the softedge feature it should be able to blend the images together in a way that it looks like one.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="20070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|MultiScreen - EX9 Spanmode|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6615" top="630" type="Node" width="1290">
+   </BOUNDS>
+   <BOUNDS height="660" left="6615" top="630" type="Box" width="2175">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|LEGACY MODULE|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="11">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\EX9\MultiScreen (EX9 Spanmode).v4p" id="15" nodename="MultiScreen (EX9 Spanmode)" systemname="MultiScreen (EX9 Spanmode)">
+   <PIN pinname="Projection Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="View Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Overlap X" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <BOUNDS height="6000" left="4575" top="11145" type="Window" width="9000">
+   </BOUNDS>
+   <PIN pinname="Calibrate" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="100" left="1425" top="6630" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1425" top="6630" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Viewports" visible="1">
+   </PIN>
+   <PIN pinname="Projection Out" visible="1">
+   </PIN>
+   <PIN pinname="View Out" visible="1">
+   </PIN>
+   <PIN pinname="Screen Count X" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Screen Count Y" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Overlap Y" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Soft Edge" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Gamma SoftEdge" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Extended Sight">
+   </PIN>
+   <PIN pinname="Display Numbers" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Sight" slicecount="1" values="ExtendedSight">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Layers" srcnodeid="15" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Viewport Transform" srcnodeid="15" srcpinname="Viewports">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="View Transform" srcnodeid="15" srcpinname="View Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Layers" srcnodeid="9" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Projection Transform" srcnodeid="15" srcpinname="Projection Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Overlap X" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\modules\vvvv group\Transform\Camera (Transform Softimage).v4p" id="17" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)">
+   <BOUNDS height="100" left="2205" top="6120" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="5175" top="10575" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="2205" top="6120" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Distortion" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Distortion" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="View Transform" srcnodeid="17" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Projection Transform" srcnodeid="17" srcpinname="Projection">
+   </LINK>
+   </PATCH>
