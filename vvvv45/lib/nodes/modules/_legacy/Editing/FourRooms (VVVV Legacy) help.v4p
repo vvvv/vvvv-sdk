@@ -1,0 +1,111 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\VVVV\FourRooms (VVVV) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="4200" left="12660" top="2670" type="Window" width="5910">
+   </BOUNDS>
+   <NODE id="5" nodename="Teapot (EX9.Geometry)" systemname="Teapot (EX9.Geometry)">
+   <BOUNDS height="0" left="855" top="1530" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="PhongDirectional (EX9.Effect)" systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\effects\PhongDirectional.fx">
+   <BOUNDS height="0" left="720" top="2055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="15195" top="7350" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="720" top="2055" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Mesh" srcnodeid="5" srcpinname="Mesh">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="255" top="525" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Four different views on a 3d scene.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|FourRooms - VVVV|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4140" top="1620" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="16755" top="4845" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1170" left="4140" top="1620" type="Box" width="735">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="3.89795918367347">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.75675675675676">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="1635" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="15345" top="6795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="1635" top="2415" type="Box" width="2295">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.64842,0.64842,0.64842,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="8" nodename="FourRooms (VVVV)" systemname="FourRooms (VVVV)" filename="%VVVV%\lib\nodes\modules\VVVV\FourRooms (VVVV).v4p">
+   <BOUNDS height="100" left="1950" top="3150" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="3600" left="1950" top="3150" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <BOUNDS height="11310" left="555" top="1395" type="Window" width="11790">
+   </BOUNDS>
+   <PIN pinname="Scale" visible="1">
+   </PIN>
+   <PIN pinname="Depth" slicecount="1" values="100">
+   </PIN>
+   <PIN pinname="Background Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Layers" srcnodeid="4" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Scale" srcnodeid="1" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Background Color" srcnodeid="0" srcpinname="Color Output">
+   </LINK>
+   </PATCH>
