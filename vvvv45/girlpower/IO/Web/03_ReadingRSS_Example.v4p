@@ -1,23 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\03_ReadingRSS_Example.v4p" systemname="ReadingRSS" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\ReadingRSS.v4p">
-   <BOUNDS height="11640" left="300" top="315" type="Window" width="15630">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\03_ReadingRSS_Example.v4p" systemname="ReadingRSS" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\ReadingRSS.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="12285" left="5205" top="1845" type="Window" width="15630">
    </BOUNDS>
-   <NODE id="19" nodename="HTTP (Network Get String)" systemname="HTTP (Network Get String)" filename="%VVVV%\lib\nodes\modules\Network\HTTP (Network Get String).v4p">
-   <BOUNDS height="270" left="6315" top="1650" type="Node" width="2370">
-   </BOUNDS>
-   <PIN pinname="URL" slicecount="1" visible="1" values="http://www.transmediale.de/03/de/03/schedule.php?filter=6#">
-   </PIN>
-   <PIN pinname="Body" visible="1">
-   </PIN>
-   <PIN pinname="Refresh" slicecount="1" visible="1" values="0.00000">
-   </PIN>
-   <PIN pinname="Status" visible="1">
-   </PIN>
-   <PIN pinname="Success" visible="1">
-   </PIN>
-   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
-   </PIN>
-   </NODE>
    <NODE id="17" nodename="Add (String Spectral)" systemname="Add (String Spectral)">
    <BOUNDS height="0" left="7035" top="6225" type="Node" width="0">
    </BOUNDS>
@@ -35,19 +19,7 @@
    </BOUNDS>
    <BOUNDS height="240" left="6300" top="2220" type="Box" width="1545">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="16" dstpinname="Input String" srcnodeid="19" srcpinname="Status">
-   </LINK>
-   <NODE id="15" nodename="LFO (Animation)" systemname="LFO (Animation)">
-   <BOUNDS height="0" left="8310" top="675" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Cycles" visible="1">
-   </PIN>
-   <PIN pinname="Period" slicecount="1" values="60">
-   </PIN>
-   <PIN pinname="Change" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="|IOHandler value is not valid|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="Renderer (GDI)" systemname="Renderer (GDI)">
@@ -55,7 +27,7 @@
    </BOUNDS>
    <BOUNDS height="3105" left="135" top="225" type="Window" width="7815">
    </BOUNDS>
-   <BOUNDS height="2505" left="6420" top="8145" type="Box" width="8175">
+   <BOUNDS height="3120" left="6420" top="8145" type="Box" width="8160">
    </BOUNDS>
    <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
    </PIN>
@@ -91,17 +63,17 @@
    </BOUNDS>
    <BOUNDS height="160" left="3516" top="986" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="6330" top="1200" type="Box" width="2580">
+   <BOUNDS height="270" left="6330" top="1200" type="Box" width="2850">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="http://slashdot.org/index.rss">
+   <PIN pinname="Input String" slicecount="1" visible="1" values="https://news.ycombinator.com/rss">
    </PIN>
    <PIN pinname="Output String" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="255" left="9015" top="1185" type="Node" width="1110">
+   <BOUNDS height="255" left="9315" top="1185" type="Node" width="1110">
    </BOUNDS>
-   <BOUNDS height="285" left="9015" top="1185" type="Box" width="1320">
+   <BOUNDS height="285" left="9315" top="1185" type="Box" width="1320">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -112,8 +84,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="19" dstpinname="URL" srcnodeid="9" srcpinname="Output String">
-   </LINK>
    <NODE id="0" nodename="Cons (String Legacy)" systemname="Cons (String Legacy)">
    <BOUNDS height="0" left="7020" top="5370" type="Node" width="0">
    </BOUNDS>
@@ -127,8 +97,6 @@
    <LINK dstnodeid="17" dstpinname="Input" srcnodeid="0" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="13" srcpinname="Layer" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Change" dstnodeid="19" dstpinname="Refresh">
    </LINK>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="675" top="195" type="Node" width="945">
@@ -206,20 +174,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8325" top="270" width="555" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8325" top="270" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="60">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="s">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="59" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Period">
-   </LINK>
    <NODE systemname="XPath (XML)" nodename="XPath (XML)" componentmode="Hidden" id="63">
    <BOUNDS type="Node" left="9855" top="3240" width="100" height="100">
    </BOUNDS>
@@ -228,22 +182,6 @@
    <PIN pinname="Base Element" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="63" dstpinname="XML Input">
-   </LINK>
-   <NODE componentmode="InABox" id="64" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="255" left="9015" top="255" type="Node" width="1110">
-   </BOUNDS>
-   <BOUNDS height="285" left="9015" top="255" type="Box" width="1320">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Refresh time|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="65" systemname="IOBox (String)">
@@ -267,11 +205,11 @@
    <LINK srcnodeid="65" srcpinname="Output String" dstnodeid="63" dstpinname="XPath Query">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="66" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="7035" top="4890" width="2295" height="270">
+   <BOUNDS type="Box" left="7035" top="4890" width="2595" height="255">
    </BOUNDS>
    <BOUNDS type="Node" left="7035" top="4890" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="|CURRENT SLASHDOT HEADLINES&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" values="|CURRENT HACKERNEWS HEADLINES&cr;&lf;|">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="text">
    </PIN>
@@ -291,7 +229,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="67" systemname="IOBox (String)">
@@ -313,8 +251,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="67" srcpinname="Output String" dstnodeid="68" dstpinname="XPath Query">
-   </LINK>
-   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="68" dstpinname="XML Input">
    </LINK>
    <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="7470" top="4320" width="100" height="100">
@@ -625,7 +561,7 @@
    </PIN>
    <BOUNDS type="Node" height="0" left="7935" top="6570" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE id="12" nodename="S+H (String)" systemname="S+H (String)">
@@ -640,10 +576,46 @@
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output" dstnodeid="12" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="11" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="13" dstpinname="Text">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
+   <NODE id="19" nodename="HTTPGet (Network String)" systemname="HTTPGet (Network String)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPGet (Network String).v4p" componentmode="Hidden">
+   <BOUNDS height="270" left="6315" top="1650" type="Node" width="2355">
+   </BOUNDS>
+   <PIN pinname="URL" slicecount="1" visible="1" values="http://www.transmediale.de/03/de/03/schedule.php?filter=6#">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Refresh" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" values="utf-8">
+   </PIN>
+   <PIN pinname="Header" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input String" srcnodeid="19" srcpinname="Status">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="URL" srcnodeid="9" srcpinname="Output String">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="63" dstpinname="XML Input">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="68" dstpinname="XML Input">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Body" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="99">
+   <BOUNDS type="Node" left="8610" top="735" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="99" srcpinname="Bang" dstnodeid="19" dstpinname="Refresh">
+   </LINK>
    </PATCH>

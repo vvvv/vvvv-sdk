@@ -1,9 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\05_Wikipedia Example\Wikipedia_Example.v4p" systemname="_root" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\01_WikipediaParcer\_root.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\05_Wikipedia Example\_Wikipedia_Example.v4p" systemname="_root" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\01_WikipediaParcer\_root.v4p">
    <BOUNDS type="Window" left="0" top="0" width="10155" height="7170">
    </BOUNDS>
    <NODE systemname="WikipediaParser" filename="WikipediaParser.v4p" nodename="WikipediaParser.v4p" componentmode="Hidden" id="0">
-   <BOUNDS type="Node" left="6795" top="2355" width="2025" height="270">
+   <BOUNDS type="Node" left="6795" top="2955" width="2025" height="270">
    </BOUNDS>
    <PIN pinname="From Article" visible="1">
    </PIN>
@@ -11,6 +11,8 @@
    </PIN>
    <BOUNDS type="Window" left="10515" top="645" width="15960" height="14580">
    </BOUNDS>
+   <PIN pinname="Rescan" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
    <BOUNDS type="Box" left="6795" top="1065" width="555" height="240">
@@ -29,9 +31,9 @@
    <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Title of Article">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="7455" top="1815" width="450" height="240">
+   <BOUNDS type="Box" left="7455" top="2265" width="450" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="7455" top="1815" width="0" height="0">
+   <BOUNDS type="Node" left="7455" top="2265" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="6">
    </PIN>
@@ -45,9 +47,9 @@
    <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Page Link Limit">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8115" top="1815" width="435" height="240">
+   <BOUNDS type="Box" left="8115" top="2265" width="435" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8115" top="1815" width="0" height="0">
+   <BOUNDS type="Node" left="8115" top="2265" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="2">
    </PIN>
@@ -75,13 +77,13 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Rescan">
-   </LINK>
    <NODE id="24" systemname="Renderer (HTML String)" nodename="Renderer (HTML String)" componentmode="InAWindow">
-   <BOUNDS type="Node" left="6255" top="4185" width="960" height="270">
+   <BOUNDS type="Node" left="6255" top="4785" width="960" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6255" top="4185" width="2400" height="1800">
+   <BOUNDS type="Box" left="6255" top="4785" width="2400" height="1800">
    </BOUNDS>
    <BOUNDS type="Window" left="10200" top="0" width="5565" height="7140">
    </BOUNDS>
@@ -91,9 +93,9 @@
    </PIN>
    </NODE>
    <NODE systemname="CreateHTML" filename="CreateHTML.v4p" componentmode="Hidden" id="100" nodename="CreateHTML.v4p">
-   <BOUNDS type="Node" left="6795" top="3240" width="1170" height="270">
+   <BOUNDS type="Node" left="6795" top="3840" width="1170" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="6795" top="3240" width="4800" height="3600">
+   <BOUNDS type="Box" left="6795" top="3840" width="4800" height="3600">
    </BOUNDS>
    <BOUNDS type="Window" left="570" top="990" width="16845" height="13620">
    </BOUNDS>
@@ -197,9 +199,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="118" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6315" top="2265" type="Node" width="315">
+   <BOUNDS height="270" left="6315" top="2865" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6315" top="2265" type="Box" width="405">
+   <BOUNDS height="390" left="6315" top="2865" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
    </PIN>
@@ -213,9 +215,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="119" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="6315" top="3165" type="Node" width="315">
+   <BOUNDS height="270" left="6315" top="3765" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="6315" top="3165" type="Box" width="405">
+   <BOUNDS height="390" left="6315" top="3765" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
    </PIN>
@@ -229,9 +231,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="120" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="5775" top="4110" type="Node" width="315">
+   <BOUNDS height="270" left="5775" top="4710" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="5775" top="4110" type="Box" width="405">
+   <BOUNDS height="390" left="5775" top="4710" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
    </PIN>
@@ -304,6 +306,18 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="126">
+   <BOUNDS type="Node" left="8775" top="2445" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Simulate" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="126" dstpinname="Simulate">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Bang" dstnodeid="0" dstpinname="Rescan">
+   </LINK>
    </PATCH>

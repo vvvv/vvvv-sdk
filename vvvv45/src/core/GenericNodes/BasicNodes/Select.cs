@@ -21,7 +21,7 @@ namespace VVVV.Nodes.Generic
 
         public void Evaluate(int spreadMax)
         {
-            int sMax = Math.Max(FInput.SliceCount, FSelect.SliceCount);
+            int sMax = SpreadUtils.SpreadMax(FInput, FSelect);
 
             FOutput.SliceCount = 0;
             FFormerSlice.SliceCount = 0;

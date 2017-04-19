@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\Line (EX9 FromTo).v4p" systemname="Line (EX9 TwoPoints)" filename="C:\Work\Anton-Work\Line (EX9 TwoPoints).v4p">
-   <BOUNDS type="Window" left="13020" top="5925" width="14745" height="9480">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Line (EX9 FromTo).v4p" systemname="Line (EX9 TwoPoints)" filename="C:\Work\Anton-Work\Line (EX9 TwoPoints).v4p" scrollx="60" scrolly="0">
+   <BOUNDS type="Window" left="13020" top="5925" width="11205" height="9480">
    </BOUNDS>
    <NODE id="47" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
    <BOUNDS height="0" left="5340" top="6705" type="Node" width="0">
@@ -13,11 +13,11 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="46" nodename="IOBox (Node)" systemname="IOBox (Node)">
-   <BOUNDS height="0" left="5175" top="8385" type="Node" width="0">
+   <BOUNDS height="0" left="5160" top="8505" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7860" top="16965" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="5175" top="8385" type="Box" width="795">
+   <BOUNDS height="240" left="5160" top="8505" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Input Node" visible="1">
    </PIN>
@@ -215,7 +215,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="5025" top="2310" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="32" visible="1" values="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -515,9 +515,9 @@
    <LINK dstnodeid="34" dstpinname="Input 2" srcnodeid="11" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="15180" top="420" type="Node" width="100">
+   <BOUNDS height="100" left="15525" top="390" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="480" left="15180" top="420" type="Box" width="480">
+   <BOUNDS height="480" left="15525" top="390" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="17685" top="9195" type="Window" width="215">
    </BOUNDS>
@@ -563,9 +563,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="48" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3165" top="315" type="Node" width="0">
+   <BOUNDS height="0" left="2700" top="270" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="525" left="3165" top="315" type="Box" width="405">
+   <BOUNDS height="525" left="2700" top="270" type="Box" width="405">
    </BOUNDS>
    <BOUNDS height="160" left="23250" top="10545" type="Window" width="215">
    </BOUNDS>
@@ -593,9 +593,9 @@
    <LINK dstnodeid="50" dstpinname="Switch" srcnodeid="48" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="52" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="100" left="3630" top="315" type="Node" width="100">
+   <BOUNDS height="100" left="3585" top="570" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="3630" top="315" type="Box" width="795">
+   <BOUNDS height="240" left="3585" top="570" type="Box" width="795">
    </BOUNDS>
    <BOUNDS height="160" left="14400" top="8820" type="Window" width="215">
    </BOUNDS>
@@ -649,8 +649,6 @@
    <LINK srcnodeid="54" srcpinname="Count" dstnodeid="53" dstpinname=".. To [">
    </LINK>
    <LINK srcnodeid="53" srcpinname="Output" dstnodeid="56" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="55" dstpinname="Input Node">
    </LINK>
    <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="54" dstpinname="Input">
    </LINK>
@@ -808,14 +806,34 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="55" srcpinname="Output Node" dstnodeid="15" dstpinname="Transform">
-   </LINK>
    <LINK srcnodeid="50" srcpinname="Output" dstnodeid="67" dstpinname="Select">
    </LINK>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <INFO author="" description="A line drawing module. &apos;From&apos; and &apos;To&apos; points of the line are supplied via two spreads." tags="">
    </INFO>
+   <PACK Name="dx11" Version="0.7.2">
+   </PACK>
+   <LINK srcnodeid="55" srcpinname="Output Node" dstnodeid="15" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="3765" top="6615" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="1740" top="4440" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output Node" dstnodeid="72" dstpinname="Transform In 1">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Transform Out" dstnodeid="55" dstpinname="Input Node">
+   </LINK>
    </PATCH>

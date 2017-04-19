@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\02_HTML_Overview.v4p" systemname="html" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\html.v4p" scrollx="0" scrolly="-2829">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\02_HTML_Overview.v4p" systemname="html" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\html.v4p" scrollx="0" scrolly="-2829">
    <BOUNDS type="Window" left="225" top="285" width="14940" height="12225">
    </BOUNDS>
    <NODE systemname="HTMLTexture (EX9.Texture String)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.dll" nodename="HTMLTexture (EX9.Texture String)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="11160" top="3525" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="HTML" visible="1" slicecount="1" values="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body">
+   <PIN pinname="HTML" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -126,20 +126,12 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE systemname="HTTP (Network Get String)" filename="%VVVV%\lib\nodes\modules\Network\HTTP (Network Get String).v4p" nodename="HTTP (Network Get String)" componentmode="Hidden" id="17">
-   <BOUNDS type="Node" left="10575" top="2565" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Body" visible="1">
-   </PIN>
-   <PIN pinname="Refresh" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Box" left="11325" top="1950" width="2265" height="270">
    </BOUNDS>
    <BOUNDS type="Node" left="11325" top="1950" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="https://www.processing.org">
+   <PIN pinname="Input String" slicecount="1" values="http://openframeworks.cc">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
    </PIN>
@@ -156,10 +148,6 @@
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
    </NODE>
-   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="17" dstpinname="URL">
-   </LINK>
-   <LINK srcnodeid="17" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="11610" top="3060" width="435" height="240">
    </BOUNDS>
@@ -197,11 +185,11 @@
    <LINK srcnodeid="0" srcpinname="Is Loading" dstnodeid="33" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6435" top="1950" width="1425" height="240">
+   <BOUNDS type="Box" left="6435" top="1950" width="1620" height="270">
    </BOUNDS>
    <BOUNDS type="Node" left="6435" top="1950" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org">
+   <PIN pinname="Input String" slicecount="1" values="https://vvvv.org">
    </PIN>
    <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
    </PIN>
@@ -794,8 +782,20 @@
    </NODE>
    <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="0" dstpinname="Base Url">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <LINK srcnodeid="74" srcpinname="Output String" dstnodeid="52" dstpinname="Input">
+   </LINK>
+   <NODE systemname="HTTPGet (Network String)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPGet (Network String).v4p" nodename="HTTPGet (Network String)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="10575" top="2565" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Refresh" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="17" dstpinname="URL">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Body" dstnodeid="0" dstpinname="HTML">
    </LINK>
    </PATCH>

@@ -65,7 +65,6 @@ float3 slerp(float3 A, float3 B, float S)
 // VERTEXSHADERS
 // --------------------------------------------------------------------------------------------------
 
-
 vs2ps VS_ConstantWidth(
     float4 Pos : POSITION,
     float4 TexCd : TEXCOORD0,
@@ -149,3 +148,5 @@ technique TLine
         PixelShader = compile ps_2_0 PS();
     }
 }
+
+
