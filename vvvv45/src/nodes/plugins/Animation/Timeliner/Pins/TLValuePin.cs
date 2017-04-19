@@ -75,10 +75,10 @@ namespace VVVV.Nodes.Timeliner
 		
 		protected override void InitializeHeight()
 		{
-			FMinimalHeight = 110;
+			FMinimalHeight = DIP(110);
 			
 			if (FUncollapsedHeight == 0)
-				FUncollapsedHeight = 150;
+				FUncollapsedHeight = DIP(150);
 			
 			base.InitializeHeight();
 		}
