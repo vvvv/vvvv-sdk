@@ -20,12 +20,19 @@ namespace VVVV.Nodes.Timeliner
 
 		public TLPin(IPluginHost Host, TLTransformer Transformer, int Order, XmlNode PinSettings, bool ShowRemoveButton, bool ShowPinName):base(Transformer, Order, PinSettings)
 		{
+            float originalHeight = Height;
+
 			InitializeComponent();
 			
 			FHost = Host;
 			FUncollapsedHeight = Height;
-			
-			this.RemoveButton.Visible = ShowRemoveButton;
+
+            //compute dpifactor here instead of getting it from graphics.DPIY
+            //because controls are set to AutoSizeMode font 
+            //and therefore the actual scaling factor is different to the dpi-value
+            FDPIFactor = Height / originalHeight;
+
+            this.RemoveButton.Visible = ShowRemoveButton;
 			this.PinNameEdit.Visible = ShowPinName;
 			
 			//initializecomponent overrides the name! reset it here
@@ -62,7 +69,7 @@ namespace VVVV.Nodes.Timeliner
 		protected override void InitializeHeight()
 		{
 			if (FUncollapsedHeight == 0)
-				FUncollapsedHeight = 80;
+				FUncollapsedHeight = DIP(80);
 			
 			base.InitializeHeight();
 		}
@@ -281,7 +288,7 @@ namespace VVVV.Nodes.Timeliner
 			if(FCollapsed)
 			{
 				FUncollapsedHeight = Height;
-				Height = FOutputSlices.Count * 20;
+				Height =  FOutputSlices.Count * DIP(20);
 				CollapseButton.Text = ">";				
 			}
 			else
