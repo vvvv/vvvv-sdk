@@ -46,54 +46,55 @@ namespace VVVV.Nodes.Timeliner
         	this.Name = attr.Value;
         	
 			this.RemoveButton.Visible = ShowRemoveButton;
-			
 		}
 		
 		protected override void InitializeHeight()
 		{
-			FMinimalHeight = 20;
+			FMinimalHeight = DIP(25);
 			
 			if (FUncollapsedHeight == 0)
-				FUncollapsedHeight = 20;
+				FUncollapsedHeight = DIP(25);
 			
 			base.InitializeHeight();
 		}
 		
 		private void InitializeComponent()
 		{
-			this.label1 = new System.Windows.Forms.Label();
-			this.RemoveButton = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// label1
-			// 
-			this.label1.ForeColor = System.Drawing.Color.White;
-			this.label1.Location = new System.Drawing.Point(3, 4);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(70, 14);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "label1";
-			// 
-			// RemoveButton
-			// 
-			this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RemoveButton.ForeColor = System.Drawing.Color.White;
-			this.RemoveButton.Location = new System.Drawing.Point(0, 0);
-			this.RemoveButton.Name = "RemoveButton";
-			this.RemoveButton.Size = new System.Drawing.Size(18, 20);
-			this.RemoveButton.TabIndex = 2;
-			this.RemoveButton.Text = "X";
-			this.RemoveButton.UseVisualStyleBackColor = true;
-			this.RemoveButton.Click += new System.EventHandler(this.Button1Click);
-			// 
-			// TLRulerPin
-			// 
-			this.BackColor = System.Drawing.Color.Gray;
-			this.Controls.Add(this.RemoveButton);
-			this.Controls.Add(this.label1);
-			this.Name = "TLRulerPin";
-			this.Size = new System.Drawing.Size(150, 20);
-			this.ResumeLayout(false);
+            this.label1 = new System.Windows.Forms.Label();
+            this.RemoveButton = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(3, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "label1";
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RemoveButton.ForeColor = System.Drawing.Color.White;
+            this.RemoveButton.Location = new System.Drawing.Point(0, 0);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(18, 20);
+            this.RemoveButton.TabIndex = 2;
+            this.RemoveButton.Text = "X";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.Button1Click);
+            // 
+            // TLRulerPin
+            // 
+            this.BackColor = System.Drawing.Color.Gray;
+            this.Controls.Add(this.RemoveButton);
+            this.Controls.Add(this.label1);
+            this.Name = "TLRulerPin";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
 		} 
 		private System.Windows.Forms.Button RemoveButton;
 		private System.Windows.Forms.Label label1;
