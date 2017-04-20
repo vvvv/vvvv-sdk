@@ -19,22 +19,36 @@ using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes
 {
-    public class SomeType
+    public class SomeType<T>
     {
 
     }
 
-    [PluginInfo(Name = "OutputSomeType", Category = "Node")]
-    public class OutputSomeTypeNode : IPluginEvaluate
+    [PluginInfo(Name = "OutputSomeTypeInt", Category = "Node")]
+    public class OutputSomeTypeIntNode : IPluginEvaluate
     {
         [Output("Output")]
-        public ISpread<SomeType> FOutput;
+        public ISpread<SomeType<int>> FOutput;
 
         //called when data for any output pin is requested
         public void Evaluate(int spreadMax)
         {
             FOutput.SliceCount = 1;
-            FOutput[0] = new SomeType();
+            FOutput[0] = new SomeType<int>();
+        }
+    }
+	
+    [PluginInfo(Name = "OutputSomeTypeFloat", Category = "Node")]
+    public class OutputSomeTypeFloatNode : IPluginEvaluate
+    {
+        [Output("Output")]
+        public ISpread<SomeType<float>> FOutput;
+
+        //called when data for any output pin is requested
+        public void Evaluate(int spreadMax)
+        {
+            FOutput.SliceCount = 1;
+            FOutput[0] = new SomeType<float>();
         }
     }
 
@@ -190,19 +204,19 @@ namespace VVVV.Nodes
         {
             FXSpread = new DynamiclyTypedSpread(FX);
 
-            FX.SetConnectionHandler(this, 0);
+            FX.SetConnectionHandler(this, null);
 
-            // for the case that OR is implemented...
+            // the following internally sets some legacy "or-connection handler"
 
-            //            FX.SetSubType(
-            //                new Guid[]{
-            //                    typeof(IValueData).GUID,
-            //                    typeof(IColorData).GUID,
-            //                    typeof(StringData).GUID,
-            //                    typeof(IRawData).GUID,
-            //                    typeof(SomeType).GUID,
-            //                 },
-            //                "Value | Color | String | Raw | SomeType");
+//                        FX.SetSubType(
+//                            new Guid[]{
+//                                typeof(IValueData).GUID,
+//                                typeof(IColorData).GUID,
+//                                typeof(IStringData).GUID,
+//                                typeof(IRawData).GUID,
+//                                typeof(SomeType<>).GUID,
+//                             },
+//                            "Value | Color | String | Raw | any SomeType instanciation");
         }
 
         //called when data for any output pin is requested
@@ -250,7 +264,7 @@ namespace VVVV.Nodes
 	                return;
 	            }
 	
-	            var someTypes = FXSpread.TryTypedSpread<SomeType>();
+	            var someTypes = FXSpread.TryTypedSpread<SomeType<float>>();
 	            if (someTypes != null)
 	            {
 	                FOutput[0] = "first someType: " + someTypes[0].ToString();
@@ -263,11 +277,11 @@ namespace VVVV.Nodes
 
         public bool Accepts(object source, object sink)
         {
-            return source is IValueData || source is IColorData || source is IStringData || source is IRawData || source is IInStream<SomeType>;
+            return source is IValueData || source is IColorData || source is IStringData || source is IRawData || source is IInStream<SomeType<float>>;
         }
 
-        public string GetFriendlyNameForSink(object sink) { return "Value | Color | String | Raw | SomeType"; }
-        public string GetFriendlyNameForSource(object source) { return "Value | Color | String | Raw | SomeType"; }
+        public string GetFriendlyNameForSink(object sink) { return "Value | Color | String | Raw | SomeType<float>"; }
+        public string GetFriendlyNameForSource(object source) { return "Value | Color | String | Raw | SomeType<float>"; }
     }
 
     public class MyColorAndValueData : IColorData, IValueData
@@ -350,11 +364,11 @@ namespace VVVV.Nodes
 
         public bool Accepts(object source, object sink)
         {
-            return source is IValueData || source is IColorData || source is IInStream<SomeType>;
+            return source is IValueData || source is IColorData || source is IInStream<SomeType<int>>;
         }
 
-        public string GetFriendlyNameForSink(object sink) { return "Value | Color | SomeType"; }
-        public string GetFriendlyNameForSource(object source) { return "Value | Color | SomeType"; }
+        public string GetFriendlyNameForSink(object sink) { return "Value | Color | SomeType<int>"; }
+        public string GetFriendlyNameForSource(object source) { return "Value | Color | SomeType<int>"; }
     }
 	
 	[PluginInfo(Name = "TestB", Category = "Node")]
