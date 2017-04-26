@@ -108,37 +108,34 @@ namespace VVVV.Hosting.IO.Streams
             FEnumOut.SetOrd(index, value.Index);
         }
     }
+
+    internal static class DynamicAssemblyTypeHelpers
+    {
+        public static bool UsesDynamicAssembly(this Type type)
+        {
+            return type.Assembly.IsDynamic || (type.IsGenericType && type.GetGenericArguments().Any(t => UsesDynamicAssembly(t)));
+        }
+    }
     
     class NodeOutStream<T> : MemoryIOStream<T>, IGenericIO
     {
         private readonly INodeOut FNodeOut;
         
         public NodeOutStream(INodeOut nodeOut)
-            : this(nodeOut, new DefaultConnectionHandler())
-        {
-            
-        }
+            : this(nodeOut, null)
+        {}
         
         public NodeOutStream(INodeOut nodeOut, IConnectionHandler handler)
         {
             FNodeOut = nodeOut;
-            if (UsesDynamicAssembly(typeof(T)))
-            {
+            if (typeof(T).UsesDynamicAssembly())
                 FNodeOut.SetInterface(new DynamicTypeWrapper(this));
-                FNodeOut.SetConnectionHandler(handler, new DynamicTypeWrapper(this));
-            }
             else
-            {
                 FNodeOut.SetInterface(this);
-                FNodeOut.SetConnectionHandler(handler, this);
-            }
+            if (handler != null)
+                FNodeOut.SetConnectionHandler(handler, null);
         }
 
-        bool UsesDynamicAssembly(Type type)
-        {
-            return type.Assembly.IsDynamic || (type.IsGenericType && type.GetGenericArguments().Any(t => UsesDynamicAssembly(t)));
-        }
-        
         object IGenericIO.GetSlice(int index)
         {
             return this[VMath.Zmod(index, Length)];

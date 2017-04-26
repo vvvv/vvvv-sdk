@@ -97,282 +97,282 @@ namespace VVVV.Nodes
 		
 		private void InitializeComponent()
 		{
-		    this.MainMenu = new System.Windows.Forms.Panel();
-		    this.TimeBarModeBox = new System.Windows.Forms.ComboBox();
-		    this.ToggleCollapseButton = new System.Windows.Forms.Button();
-		    this.MidiButton = new System.Windows.Forms.Button();
-		    this.WavButton = new System.Windows.Forms.Button();
-		    this.AutomataCheckBox = new System.Windows.Forms.CheckBox();
-		    this.ColorButton = new System.Windows.Forms.Button();
-		    this.RulerButton = new System.Windows.Forms.Button();
-		    this.StringButton = new System.Windows.Forms.Button();
-		    this.ValueButton = new System.Windows.Forms.Button();
-		    this.PlayButton = new System.Windows.Forms.Button();
-		    this.StopButton = new System.Windows.Forms.Button();
-		    this.PinPanel = new System.Windows.Forms.Panel();
-		    this.InsertPreview = new System.Windows.Forms.Panel();
-		    this.SliceArea = new VVVV.Nodes.Timeliner.TLSliceArea();
-		    this.SplitContainer = new System.Windows.Forms.SplitContainer();
-		    this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
-		    this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
-		    this.MainMenu.SuspendLayout();
-		    this.PinPanel.SuspendLayout();
-		    ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
-		    this.SplitContainer.Panel1.SuspendLayout();
-		    this.SplitContainer.Panel2.SuspendLayout();
-		    this.SplitContainer.SuspendLayout();
-		    this.SuspendLayout();
-		    // 
-		    // MainMenu
-		    // 
-		    this.MainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-		    this.MainMenu.Controls.Add(this.TimeBarModeBox);
-		    this.MainMenu.Controls.Add(this.ToggleCollapseButton);
-		    this.MainMenu.Controls.Add(this.MidiButton);
-		    this.MainMenu.Controls.Add(this.WavButton);
-		    this.MainMenu.Controls.Add(this.AutomataCheckBox);
-		    this.MainMenu.Controls.Add(this.ColorButton);
-		    this.MainMenu.Controls.Add(this.RulerButton);
-		    this.MainMenu.Controls.Add(this.StringButton);
-		    this.MainMenu.Controls.Add(this.ValueButton);
-		    this.MainMenu.Controls.Add(this.PlayButton);
-		    this.MainMenu.Controls.Add(this.StopButton);
-		    this.MainMenu.Dock = System.Windows.Forms.DockStyle.Top;
-		    this.MainMenu.Location = new System.Drawing.Point(0, 0);
-		    this.MainMenu.Name = "MainMenu";
+            this.MainMenu = new System.Windows.Forms.Panel();
+            this.TimeBarModeBox = new System.Windows.Forms.ComboBox();
+            this.ToggleCollapseButton = new System.Windows.Forms.Button();
+            this.MidiButton = new System.Windows.Forms.Button();
+            this.WavButton = new System.Windows.Forms.Button();
+            this.AutomataCheckBox = new System.Windows.Forms.CheckBox();
+            this.ColorButton = new System.Windows.Forms.Button();
+            this.RulerButton = new System.Windows.Forms.Button();
+            this.StringButton = new System.Windows.Forms.Button();
+            this.ValueButton = new System.Windows.Forms.Button();
+            this.PlayButton = new System.Windows.Forms.Button();
+            this.StopButton = new System.Windows.Forms.Button();
+            this.PinPanel = new System.Windows.Forms.Panel();
+            this.InsertPreview = new System.Windows.Forms.Panel();
+            this.SliceArea = new VVVV.Nodes.Timeliner.TLSliceArea();
+            this.SplitContainer = new System.Windows.Forms.SplitContainer();
+            this.PinHeaderPanel0 = new System.Windows.Forms.Panel();
+            this.PinHeaderPanel1 = new System.Windows.Forms.Panel();
+            this.MainMenu.SuspendLayout();
+            this.PinPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).BeginInit();
+            this.SplitContainer.Panel1.SuspendLayout();
+            this.SplitContainer.Panel2.SuspendLayout();
+            this.SplitContainer.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // MainMenu
+            // 
+            this.MainMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.MainMenu.Controls.Add(this.TimeBarModeBox);
+            this.MainMenu.Controls.Add(this.ToggleCollapseButton);
+            this.MainMenu.Controls.Add(this.MidiButton);
+            this.MainMenu.Controls.Add(this.WavButton);
+            this.MainMenu.Controls.Add(this.AutomataCheckBox);
+            this.MainMenu.Controls.Add(this.ColorButton);
+            this.MainMenu.Controls.Add(this.RulerButton);
+            this.MainMenu.Controls.Add(this.StringButton);
+            this.MainMenu.Controls.Add(this.ValueButton);
+            this.MainMenu.Controls.Add(this.PlayButton);
+            this.MainMenu.Controls.Add(this.StopButton);
+            this.MainMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.MainMenu.Location = new System.Drawing.Point(0, 0);
+            this.MainMenu.Name = "MainMenu";
 		    this.MainMenu.Size = new System.Drawing.Size(688, 25);
-		    this.MainMenu.TabIndex = 0;
-		    // 
-		    // TimeBarModeBox
-		    // 
-		    this.TimeBarModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-		    this.TimeBarModeBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-		    this.TimeBarModeBox.FormattingEnabled = true;
-		    this.TimeBarModeBox.Items.AddRange(new object[] {
+            this.MainMenu.TabIndex = 0;
+            // 
+            // TimeBarModeBox
+            // 
+            this.TimeBarModeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.TimeBarModeBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TimeBarModeBox.FormattingEnabled = true;
+            this.TimeBarModeBox.Items.AddRange(new object[] {
             "Manual",
             "Jump",
             "Follow"});
 		    this.TimeBarModeBox.Location = new System.Drawing.Point(454, 2);
-		    this.TimeBarModeBox.Name = "TimeBarModeBox";
+            this.TimeBarModeBox.Name = "TimeBarModeBox";
 		    this.TimeBarModeBox.Size = new System.Drawing.Size(93, 21);
-		    this.TimeBarModeBox.TabIndex = 10;
-		    this.TimeBarModeBox.SelectionChangeCommitted += new System.EventHandler(this.TimeBarModeBoxSelectionChangeCommitted);
-		    // 
-		    // ToggleCollapseButton
-		    // 
-		    this.ToggleCollapseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TimeBarModeBox.TabIndex = 10;
+            this.TimeBarModeBox.SelectionChangeCommitted += new System.EventHandler(this.TimeBarModeBoxSelectionChangeCommitted);
+            // 
+            // ToggleCollapseButton
+            // 
+            this.ToggleCollapseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.ToggleCollapseButton.Location = new System.Drawing.Point(110, 0);
-		    this.ToggleCollapseButton.Name = "ToggleCollapseButton";
+            this.ToggleCollapseButton.Name = "ToggleCollapseButton";
 		    this.ToggleCollapseButton.Size = new System.Drawing.Size(40, 23);
-		    this.ToggleCollapseButton.TabIndex = 2;
-		    this.ToggleCollapseButton.Text = "v | >";
-		    this.ToggleCollapseButton.UseVisualStyleBackColor = true;
-		    this.ToggleCollapseButton.Click += new System.EventHandler(this.ToggleCollapseButtonClick);
-		    // 
-		    // MidiButton
-		    // 
-		    this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ToggleCollapseButton.TabIndex = 2;
+            this.ToggleCollapseButton.Text = "v | >";
+            this.ToggleCollapseButton.UseVisualStyleBackColor = true;
+            this.ToggleCollapseButton.Click += new System.EventHandler(this.ToggleCollapseButtonClick);
+            // 
+            // MidiButton
+            // 
+            this.MidiButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.MidiButton.Location = new System.Drawing.Point(374, 0);
-		    this.MidiButton.Name = "MidiButton";
+            this.MidiButton.Name = "MidiButton";
 		    this.MidiButton.Size = new System.Drawing.Size(34, 23);
-		    this.MidiButton.TabIndex = 8;
-		    this.MidiButton.Text = "+M";
-		    this.MidiButton.UseVisualStyleBackColor = true;
-		    this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // WavButton
-		    // 
-		    this.WavButton.Enabled = false;
-		    this.WavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MidiButton.TabIndex = 8;
+            this.MidiButton.Text = "+M";
+            this.MidiButton.UseVisualStyleBackColor = true;
+            this.MidiButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // WavButton
+            // 
+            this.WavButton.Enabled = false;
+            this.WavButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.WavButton.Location = new System.Drawing.Point(414, 0);
-		    this.WavButton.Name = "WavButton";
+            this.WavButton.Name = "WavButton";
 		    this.WavButton.Size = new System.Drawing.Size(34, 23);
-		    this.WavButton.TabIndex = 9;
-		    this.WavButton.Text = "+W";
-		    this.WavButton.UseVisualStyleBackColor = true;
-		    this.WavButton.Visible = false;
-		    this.WavButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // AutomataCheckBox
-		    // 
-		    this.AutomataCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WavButton.TabIndex = 9;
+            this.WavButton.Text = "+W";
+            this.WavButton.UseVisualStyleBackColor = true;
+            this.WavButton.Visible = false;
+            this.WavButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // AutomataCheckBox
+            // 
+            this.AutomataCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.AutomataCheckBox.Location = new System.Drawing.Point(185, 0);
-		    this.AutomataCheckBox.Name = "AutomataCheckBox";
+            this.AutomataCheckBox.Name = "AutomataCheckBox";
 		    this.AutomataCheckBox.Size = new System.Drawing.Size(34, 24);
-		    this.AutomataCheckBox.TabIndex = 3;
-		    this.AutomataCheckBox.Text = "A";
-		    this.AutomataCheckBox.UseVisualStyleBackColor = true;
-		    this.AutomataCheckBox.CheckedChanged += new System.EventHandler(this.AutomataCheckBoxCheckedChanged);
-		    // 
-		    // ColorButton
-		    // 
-		    this.ColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AutomataCheckBox.TabIndex = 3;
+            this.AutomataCheckBox.Text = "A";
+            this.AutomataCheckBox.UseVisualStyleBackColor = true;
+            this.AutomataCheckBox.CheckedChanged += new System.EventHandler(this.AutomataCheckBoxCheckedChanged);
+            // 
+            // ColorButton
+            // 
+            this.ColorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.ColorButton.Location = new System.Drawing.Point(337, 0);
-		    this.ColorButton.Name = "ColorButton";
+            this.ColorButton.Name = "ColorButton";
 		    this.ColorButton.Size = new System.Drawing.Size(31, 23);
-		    this.ColorButton.TabIndex = 7;
-		    this.ColorButton.Text = "+C";
-		    this.ColorButton.UseVisualStyleBackColor = true;
-		    this.ColorButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // RulerButton
-		    // 
-		    this.RulerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ColorButton.TabIndex = 7;
+            this.ColorButton.Text = "+C";
+            this.ColorButton.UseVisualStyleBackColor = true;
+            this.ColorButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // RulerButton
+            // 
+            this.RulerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.RulerButton.Location = new System.Drawing.Point(225, 0);
-		    this.RulerButton.Name = "RulerButton";
+            this.RulerButton.Name = "RulerButton";
 		    this.RulerButton.Size = new System.Drawing.Size(31, 23);
-		    this.RulerButton.TabIndex = 4;
-		    this.RulerButton.Text = "+R";
-		    this.RulerButton.UseVisualStyleBackColor = true;
-		    this.RulerButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // StringButton
-		    // 
-		    this.StringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RulerButton.TabIndex = 4;
+            this.RulerButton.Text = "+R";
+            this.RulerButton.UseVisualStyleBackColor = true;
+            this.RulerButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // StringButton
+            // 
+            this.StringButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.StringButton.Location = new System.Drawing.Point(299, 0);
-		    this.StringButton.Name = "StringButton";
+            this.StringButton.Name = "StringButton";
 		    this.StringButton.Size = new System.Drawing.Size(32, 23);
-		    this.StringButton.TabIndex = 6;
-		    this.StringButton.Text = "+S";
-		    this.StringButton.UseVisualStyleBackColor = true;
-		    this.StringButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // ValueButton
-		    // 
-		    this.ValueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StringButton.TabIndex = 6;
+            this.StringButton.Text = "+S";
+            this.StringButton.UseVisualStyleBackColor = true;
+            this.StringButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // ValueButton
+            // 
+            this.ValueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.ValueButton.Location = new System.Drawing.Point(262, 0);
-		    this.ValueButton.Name = "ValueButton";
+            this.ValueButton.Name = "ValueButton";
 		    this.ValueButton.Size = new System.Drawing.Size(31, 23);
-		    this.ValueButton.TabIndex = 5;
-		    this.ValueButton.Text = "+V";
-		    this.ValueButton.UseVisualStyleBackColor = true;
-		    this.ValueButton.Click += new System.EventHandler(this.PinButtonClick);
-		    // 
-		    // PlayButton
-		    // 
-		    this.PlayButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ValueButton.TabIndex = 5;
+            this.ValueButton.Text = "+V";
+            this.ValueButton.UseVisualStyleBackColor = true;
+            this.ValueButton.Click += new System.EventHandler(this.PinButtonClick);
+            // 
+            // PlayButton
+            // 
+            this.PlayButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 		    this.PlayButton.Location = new System.Drawing.Point(46, 0);
-		    this.PlayButton.Name = "PlayButton";
+            this.PlayButton.Name = "PlayButton";
 		    this.PlayButton.Size = new System.Drawing.Size(40, 23);
-		    this.PlayButton.TabIndex = 1;
-		    this.PlayButton.Text = "Play";
-		    this.PlayButton.UseVisualStyleBackColor = true;
-		    this.PlayButton.Click += new System.EventHandler(this.PlayButtonClick);
-		    // 
-		    // StopButton
-		    // 
-		    this.StopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-		    this.StopButton.Location = new System.Drawing.Point(0, 0);
-		    this.StopButton.Name = "StopButton";
+            this.PlayButton.TabIndex = 1;
+            this.PlayButton.Text = "Play";
+            this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayButtonClick);
+            // 
+            // StopButton
+            // 
+            this.StopButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StopButton.Location = new System.Drawing.Point(0, 0);
+            this.StopButton.Name = "StopButton";
 		    this.StopButton.Size = new System.Drawing.Size(40, 23);
-		    this.StopButton.TabIndex = 0;
-		    this.StopButton.Text = "Stop";
-		    this.StopButton.UseVisualStyleBackColor = true;
-		    this.StopButton.Click += new System.EventHandler(this.StopButtonClick);
-		    // 
-		    // PinPanel
-		    // 
-		    this.PinPanel.AutoScroll = true;
-		    this.PinPanel.Controls.Add(this.InsertPreview);
-		    this.PinPanel.Controls.Add(this.SliceArea);
-		    this.PinPanel.Controls.Add(this.SplitContainer);
-		    this.PinPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StopButton.TabIndex = 0;
+            this.StopButton.Text = "Stop";
+            this.StopButton.UseVisualStyleBackColor = true;
+            this.StopButton.Click += new System.EventHandler(this.StopButtonClick);
+            // 
+            // PinPanel
+            // 
+            this.PinPanel.AutoScroll = true;
+            this.PinPanel.Controls.Add(this.InsertPreview);
+            this.PinPanel.Controls.Add(this.SliceArea);
+            this.PinPanel.Controls.Add(this.SplitContainer);
+            this.PinPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 		    this.PinPanel.Location = new System.Drawing.Point(0, 25);
-		    this.PinPanel.Name = "PinPanel";
+            this.PinPanel.Name = "PinPanel";
 		    this.PinPanel.Size = new System.Drawing.Size(688, 330);
-		    this.PinPanel.TabIndex = 1;
-		    // 
-		    // InsertPreview
-		    // 
-		    this.InsertPreview.BackColor = System.Drawing.Color.Black;
+            this.PinPanel.TabIndex = 1;
+            // 
+            // InsertPreview
+            // 
+            this.InsertPreview.BackColor = System.Drawing.Color.Black;
 		    this.InsertPreview.Location = new System.Drawing.Point(156, 17);
-		    this.InsertPreview.Name = "InsertPreview";
+            this.InsertPreview.Name = "InsertPreview";
 		    this.InsertPreview.Size = new System.Drawing.Size(150, 2);
-		    this.InsertPreview.TabIndex = 4;
-		    this.InsertPreview.Visible = false;
-		    // 
-		    // SliceArea
-		    // 
-		    this.SliceArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-		    this.SliceArea.Dock = System.Windows.Forms.DockStyle.Fill;
-		    this.SliceArea.ForeColor = System.Drawing.SystemColors.Window;
+            this.InsertPreview.TabIndex = 4;
+            this.InsertPreview.Visible = false;
+            // 
+            // SliceArea
+            // 
+            this.SliceArea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.SliceArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SliceArea.ForeColor = System.Drawing.SystemColors.Window;
 		    this.SliceArea.Location = new System.Drawing.Point(150, 0);
-		    this.SliceArea.MouseState = VVVV.Nodes.Timeliner.TLMouseState.msIdle;
-		    this.SliceArea.Name = "SliceArea";
+            this.SliceArea.MouseState = VVVV.Nodes.Timeliner.TLMouseState.msIdle;
+            this.SliceArea.Name = "SliceArea";
 		    this.SliceArea.Size = new System.Drawing.Size(538, 330);
-		    this.SliceArea.TabIndex = 3;
-		    // 
-		    // SplitContainer
-		    // 
-		    this.SplitContainer.BackColor = System.Drawing.Color.Black;
-		    this.SplitContainer.Dock = System.Windows.Forms.DockStyle.Left;
-		    this.SplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-		    this.SplitContainer.Location = new System.Drawing.Point(0, 0);
-		    this.SplitContainer.Name = "SplitContainer";
-		    this.SplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
-		    // 
-		    // SplitContainer.Panel1
-		    // 
-		    this.SplitContainer.Panel1.AutoScroll = true;
-		    this.SplitContainer.Panel1.Controls.Add(this.PinHeaderPanel0);
-		    this.SplitContainer.Panel1MinSize = 20;
-		    // 
-		    // SplitContainer.Panel2
-		    // 
-		    this.SplitContainer.Panel2.AutoScroll = true;
-		    this.SplitContainer.Panel2.Controls.Add(this.PinHeaderPanel1);
+            this.SliceArea.TabIndex = 3;
+            // 
+            // SplitContainer
+            // 
+            this.SplitContainer.BackColor = System.Drawing.Color.Black;
+            this.SplitContainer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.SplitContainer.Location = new System.Drawing.Point(0, 0);
+            this.SplitContainer.Name = "SplitContainer";
+            this.SplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // SplitContainer.Panel1
+            // 
+            this.SplitContainer.Panel1.AutoScroll = true;
+            this.SplitContainer.Panel1.Controls.Add(this.PinHeaderPanel0);
+            this.SplitContainer.Panel1MinSize = 20;
+            // 
+            // SplitContainer.Panel2
+            // 
+            this.SplitContainer.Panel2.AutoScroll = true;
+            this.SplitContainer.Panel2.Controls.Add(this.PinHeaderPanel1);
 		    this.SplitContainer.Size = new System.Drawing.Size(150, 330);
 		    this.SplitContainer.SplitterDistance = 20;
 		    this.SplitContainer.SplitterWidth = 5;
-		    this.SplitContainer.TabIndex = 2;
-		    this.SplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainerSplitterMoved);
-		    // 
-		    // PinHeaderPanel0
-		    // 
-		    this.PinHeaderPanel0.AllowDrop = true;
-		    this.PinHeaderPanel0.AutoScroll = true;
-		    this.PinHeaderPanel0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-		    this.PinHeaderPanel0.Dock = System.Windows.Forms.DockStyle.Fill;
-		    this.PinHeaderPanel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-		    this.PinHeaderPanel0.Location = new System.Drawing.Point(0, 0);
-		    this.PinHeaderPanel0.Name = "PinHeaderPanel0";
+            this.SplitContainer.TabIndex = 2;
+            this.SplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.SplitContainerSplitterMoved);
+            // 
+            // PinHeaderPanel0
+            // 
+            this.PinHeaderPanel0.AllowDrop = true;
+            this.PinHeaderPanel0.AutoScroll = true;
+            this.PinHeaderPanel0.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.PinHeaderPanel0.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PinHeaderPanel0.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.PinHeaderPanel0.Location = new System.Drawing.Point(0, 0);
+            this.PinHeaderPanel0.Name = "PinHeaderPanel0";
 		    this.PinHeaderPanel0.Size = new System.Drawing.Size(150, 20);
-		    this.PinHeaderPanel0.TabIndex = 0;
-		    this.PinHeaderPanel0.Tag = "0";
-		    this.PinHeaderPanel0.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragDrop);
-		    this.PinHeaderPanel0.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragEnter);
-		    this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
-		    // 
-		    // PinHeaderPanel1
-		    // 
-		    this.PinHeaderPanel1.AllowDrop = true;
-		    this.PinHeaderPanel1.AutoScroll = true;
-		    this.PinHeaderPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-		    this.PinHeaderPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-		    this.PinHeaderPanel1.Location = new System.Drawing.Point(0, 0);
-		    this.PinHeaderPanel1.Name = "PinHeaderPanel1";
+            this.PinHeaderPanel0.TabIndex = 0;
+            this.PinHeaderPanel0.Tag = "0";
+            this.PinHeaderPanel0.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragDrop);
+            this.PinHeaderPanel0.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragEnter);
+            this.PinHeaderPanel0.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel0DragOver);
+            // 
+            // PinHeaderPanel1
+            // 
+            this.PinHeaderPanel1.AllowDrop = true;
+            this.PinHeaderPanel1.AutoScroll = true;
+            this.PinHeaderPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.PinHeaderPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PinHeaderPanel1.Location = new System.Drawing.Point(0, 0);
+            this.PinHeaderPanel1.Name = "PinHeaderPanel1";
 		    this.PinHeaderPanel1.Size = new System.Drawing.Size(150, 305);
-		    this.PinHeaderPanel1.TabIndex = 1;
-		    this.PinHeaderPanel1.Tag = "1";
-		    this.PinHeaderPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragDrop);
-		    this.PinHeaderPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragEnter);
-		    this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
-		    // 
-		    // TimelinerPlugin
-		    // 
+            this.PinHeaderPanel1.TabIndex = 1;
+            this.PinHeaderPanel1.Tag = "1";
+            this.PinHeaderPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragDrop);
+            this.PinHeaderPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragEnter);
+            this.PinHeaderPanel1.DragOver += new System.Windows.Forms.DragEventHandler(this.PinHeaderPanel1DragOver);
+            // 
+            // TimelinerPlugin
+            // 
 		    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-		    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-		    this.Controls.Add(this.PinPanel);
-		    this.Controls.Add(this.MainMenu);
-		    this.Name = "TimelinerPlugin";
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.PinPanel);
+            this.Controls.Add(this.MainMenu);
+            this.Name = "TimelinerPlugin";
 		    this.Size = new System.Drawing.Size(688, 355);
-		    this.MainMenu.ResumeLayout(false);
-		    this.PinPanel.ResumeLayout(false);
-		    this.SplitContainer.Panel1.ResumeLayout(false);
-		    this.SplitContainer.Panel2.ResumeLayout(false);
-		    ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
-		    this.SplitContainer.ResumeLayout(false);
-		    this.ResumeLayout(false);
+            this.MainMenu.ResumeLayout(false);
+            this.PinPanel.ResumeLayout(false);
+            this.SplitContainer.Panel1.ResumeLayout(false);
+            this.SplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SplitContainer)).EndInit();
+            this.SplitContainer.ResumeLayout(false);
+            this.ResumeLayout(false);
 
 		}
 		private System.Windows.Forms.ComboBox TimeBarModeBox;
@@ -402,6 +402,12 @@ namespace VVVV.Nodes
 		public TimelinerPlugin()
 		{
 			InitializeComponent();
+
+            using (var g = this.CreateGraphics())
+            {
+                var dpiFactor = g.DpiY / 96.0f;
+                SplitContainer.SplitterDistance = (int) Math.Round(30 * dpiFactor);
+            }
 
 			this.BackColor = System.Drawing.Color.LightGray;
 
@@ -1418,6 +1424,9 @@ namespace VVVV.Nodes
 		
 		private void SetGUIParameter(string tag, string attribute, string value)
 		{
+            if (FGUISettings == null) //while still starting up
+                return; 
+
 			//load current settings
 			string s;
 			var splitterPos = "0";

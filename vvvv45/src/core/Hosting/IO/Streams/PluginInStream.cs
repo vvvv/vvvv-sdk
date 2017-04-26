@@ -285,18 +285,21 @@ namespace VVVV.Hosting.IO.Streams
 
         public NodeInStream(INodeIn nodeIn, IConnectionHandler handler, T defaultValue = default(T))
         {
+            handler = handler ?? new DefaultConnectionHandler(null, typeof(T));
             FNodeIn = nodeIn;
-            if (typeof(T).Assembly.IsDynamic)
-                FNodeIn.SetConnectionHandler(handler, new DynamicTypeWrapper(this));
+            object inputInterface;
+            if (typeof(T).UsesDynamicAssembly())
+                inputInterface = new DynamicTypeWrapper(this);
             else
-                FNodeIn.SetConnectionHandler(handler, this);
+                inputInterface = this;
+            FNodeIn.SetConnectionHandler(handler, inputInterface);
             FAutoValidate = nodeIn.AutoValidate;
             FDefaultValue = defaultValue;
             FUpstreamStream = FNullStream;
         }
 
         public NodeInStream(INodeIn nodeIn)
-            : this(nodeIn, new DefaultConnectionHandler())
+            : this(nodeIn, null)
         {
         }
 

@@ -1,27 +1,7 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\05_Wikipedia Example\WikipediaParser.v4p">
    <BOUNDS height="14580" left="10515" top="645" type="Window" width="15960">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="0" nodename="HTTP (Network Get String)">
-   <BOUNDS height="270" left="7380" top="4770" type="Node" width="1800">
-   </BOUNDS>
-   <BOUNDS height="0" left="7380" top="4770" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="6300" left="9855" top="5235" type="Window" width="11475">
-   </BOUNDS>
-   <PIN pinname="Status" visible="1">
-   </PIN>
-   <PIN pinname="URL" visible="1">
-   </PIN>
-   <PIN pinname="Body" visible="1">
-   </PIN>
-   <PIN pinname="Refresh" visible="1">
-   </PIN>
-   <PIN pinname="Success" visible="1">
-   </PIN>
-   <PIN pinname="Encoding" slicecount="1" values="|System Default|">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
    <BOUNDS height="100" left="7380" top="2175" type="Node" width="100">
    </BOUNDS>
@@ -41,7 +21,7 @@
    </BOUNDS>
    <BOUNDS height="0" left="12825" top="2790" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot;?&gt;&lt;api&gt;&lt;continue plcontinue=&quot;2356196||0||.NET_Framework_3.0&quot; continue=&quot;||||info&quot; /&gt;&lt;query&gt;&lt;pages&gt;&lt;page _idx=&quot;2356196&quot; pageid=&quot;2356196&quot; ns=&quot;0&quot; title=&quot;C Sharp (programming language)&quot; contentmodel=&quot;wikitext&quot; pagelanguage=&quot;en&quot; pagelanguagehtmlcode=&quot;en&quot; pagelanguagedir=&quot;ltr&quot; touched=&quot;2017-04-04T22:40:24Z&quot; lastrevid=&quot;773872013&quot; length=&quot;54278&quot;&gt;&lt;links&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Compact Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Core&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Foundation&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 1.1&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 2.0&quot; /&gt;&lt;/links&gt;&lt;/page&gt;&lt;/pages&gt;&lt;/query&gt;&lt;/api&gt;|">
    </PIN>
    <PIN pinname="XPath Query" visible="1">
    </PIN>
@@ -52,8 +32,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="XML Input" srcnodeid="0" srcpinname="Body">
-   </LINK>
    <NODE componentmode="Hidden" id="8" nodename="QUEUE (STRING)" filename="%VVVV%\plugins\SpreadOperations.dll">
    <BOUNDS height="100" left="7650" top="9420" type="Node" width="100">
    </BOUNDS>
@@ -221,7 +199,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="13695" top="6345" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
@@ -383,11 +361,9 @@
    </BOUNDS>
    <BOUNDS height="160" left="11700" top="4620" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="|HTTP/1.1 200 OK|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="35" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
-   </LINK>
    <LINK dstnodeid="30" dstpinname="Input String" srcnodeid="23" srcpinname="Output">
    </LINK>
    <NODE componentmode="InABox" id="39" nodename="IOBox (String)">
@@ -547,7 +523,7 @@
    </BOUNDS>
    <BOUNDS height="0" left="12825" top="2790" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="XML Input" visible="1">
+   <PIN pinname="XML Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot;?&gt;&lt;api&gt;&lt;continue plcontinue=&quot;2356196||0||.NET_Framework_3.0&quot; continue=&quot;||||info&quot; /&gt;&lt;query&gt;&lt;pages&gt;&lt;page _idx=&quot;2356196&quot; pageid=&quot;2356196&quot; ns=&quot;0&quot; title=&quot;C Sharp (programming language)&quot; contentmodel=&quot;wikitext&quot; pagelanguage=&quot;en&quot; pagelanguagehtmlcode=&quot;en&quot; pagelanguagedir=&quot;ltr&quot; touched=&quot;2017-04-04T22:40:24Z&quot; lastrevid=&quot;773872013&quot; length=&quot;54278&quot;&gt;&lt;links&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Compact Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Core&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Foundation&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 1.1&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 2.0&quot; /&gt;&lt;/links&gt;&lt;/page&gt;&lt;/pages&gt;&lt;/query&gt;&lt;/api&gt;|">
    </PIN>
    <PIN pinname="XPath Query" visible="1">
    </PIN>
@@ -558,8 +534,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="51" dstpinname="XML Input" srcnodeid="0" srcpinname="Body">
-   </LINK>
    <NODE componentmode="InABox" id="52" nodename="IOBox (String)">
    <BOUNDS height="100" left="9840" top="6675" type="Node" width="100">
    </BOUNDS>
@@ -669,7 +643,7 @@
    </BOUNDS>
    <PIN pinname="Input 2" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -681,13 +655,11 @@
    </BOUNDS>
    <BOUNDS height="0" left="16200" top="7020" type="Window" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot;?&gt;&lt;api&gt;&lt;continue plcontinue=&quot;2356196||0||.NET_Framework_3.0&quot; continue=&quot;||||info&quot; /&gt;&lt;query&gt;&lt;pages&gt;&lt;page _idx=&quot;2356196&quot; pageid=&quot;2356196&quot; ns=&quot;0&quot; title=&quot;C Sharp (programming language)&quot; contentmodel=&quot;wikitext&quot; pagelanguage=&quot;en&quot; pagelanguagehtmlcode=&quot;en&quot; pagelanguagedir=&quot;ltr&quot; touched=&quot;2017-04-04T22:40:24Z&quot; lastrevid=&quot;773872013&quot; length=&quot;54278&quot;&gt;&lt;links&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Compact Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Core&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Foundation&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 1.1&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 2.0&quot; /&gt;&lt;/links&gt;&lt;/page&gt;&lt;/pages&gt;&lt;/query&gt;&lt;/api&gt;|">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="74" dstpinname="Input" srcnodeid="0" srcpinname="Body">
-   </LINK>
    <NODE componentmode="Hidden" id="75" nodename="Switch (String Input)">
    <BOUNDS height="270" left="11415" top="6285" type="Node" width="1230">
    </BOUNDS>
@@ -697,7 +669,7 @@
    </BOUNDS>
    <PIN pinname="Switch" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="|&lt;?xml version=&quot;1.0&quot;?&gt;&lt;api&gt;&lt;continue plcontinue=&quot;2356196||0||.NET_Framework_3.0&quot; continue=&quot;||||info&quot; /&gt;&lt;query&gt;&lt;pages&gt;&lt;page _idx=&quot;2356196&quot; pageid=&quot;2356196&quot; ns=&quot;0&quot; title=&quot;C Sharp (programming language)&quot; contentmodel=&quot;wikitext&quot; pagelanguage=&quot;en&quot; pagelanguagehtmlcode=&quot;en&quot; pagelanguagedir=&quot;ltr&quot; touched=&quot;2017-04-04T22:40:24Z&quot; lastrevid=&quot;773872013&quot; length=&quot;54278&quot;&gt;&lt;links&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Compact Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Core&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Foundation&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 1.1&quot; /&gt;&lt;pl ns=&quot;0&quot; title=&quot;.NET Framework 2.0&quot; /&gt;&lt;/links&gt;&lt;/page&gt;&lt;/pages&gt;&lt;/query&gt;&lt;/api&gt;|">
    </PIN>
    <PIN pinname="Input 1" slicecount="1" values="||">
    </PIN>
@@ -705,8 +677,6 @@
    </PIN>
    </NODE>
    <LINK dstnodeid="75" dstpinname="Switch" srcnodeid="74" srcpinname="OnChange">
-   </LINK>
-   <LINK dstnodeid="75" dstpinname="Input 2" srcnodeid="0" srcpinname="Body">
    </LINK>
    <LINK dstnodeid="65" dstpinname="XML Input" srcnodeid="75" srcpinname="Output">
    </LINK>
@@ -792,10 +762,6 @@
    </LINK>
    <LINK dstnodeid="27" dstpinname="Input 1" srcnodeid="82" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Success">
-   </LINK>
-   <LINK dstnodeid="71" dstpinname="Input 1" srcnodeid="0" srcpinname="Success">
-   </LINK>
    <NODE componentmode="Hidden" id="83" nodename="AsString (Value)">
    <BOUNDS height="100" left="8775" top="2625" type="Node" width="100">
    </BOUNDS>
@@ -815,8 +781,6 @@
    <LINK dstnodeid="40" dstpinname="Input 2" srcnodeid="83" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="24" dstpinname="Up" srcnodeid="71" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="0" dstpinname="Refresh" srcnodeid="43" srcpinname="Y Output Value" hiddenwhenlocked="1">
    </LINK>
    <NODE componentmode="Hidden" id="84" nodename="QUEUE (SPREADS)" filename="%VVVV%\plugins\SpreadOperations.dll">
    <BOUNDS height="100" left="8925" top="9420" type="Node" width="100">
@@ -1318,10 +1282,8 @@
    </NODE>
    <LINK srcnodeid="57" srcpinname="Output" dstnodeid="77" dstpinname="Input">
    </LINK>
-   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="0" dstpinname="URL">
-   </LINK>
    <NODE id="97" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
-   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|A GET request to the Wikipedia website is prepared. Substitute (String) replaces portions (defined on the &apos;From&apos; pin) of the URL string with the two slices from the &apos;To&apos; pin. These slices are: the page title and the link limit.&cr;&lf;&cr;&lf;Strings for the HTTP requests have to be properly encoded.&cr;&lf;&cr;&lf;HTTP (Network Get String) sends the GET request to Wikipedia and returns its response as a string.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN pinname="Input String" slicecount="1" encoded="0" visible="0" values="|A GET request to the Wikipedia website is prepared. Substitute (String) replaces portions (defined on the &apos;From&apos; pin) of the URL string with the two slices from the &apos;To&apos; pin. These slices are: the page title and the link limit.&cr;&lf;&cr;&lf;Strings for the HTTP requests have to be properly encoded.&cr;&lf;&cr;&lf;HTTPGet (Network String) sends the GET request to Wikipedia and returns its response as a string.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <BOUNDS type="Node" height="270" left="855" top="3015" width="7425">
    </BOUNDS>
@@ -1412,6 +1374,74 @@
    </LINK>
    <LINK srcnodeid="136" srcpinname="Output" dstnodeid="9" dstpinname="To">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
+   <NODE componentmode="Hidden" id="0" nodename="HTTPGet (Network String)" systemname="HTTPGet (Network String)" filename="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\modules\HTTPGet (Network String).v4p" hiddenwhenlocked="0" managers="">
+   <BOUNDS height="270" left="7380" top="4770" type="Node" width="1770">
+   </BOUNDS>
+   <BOUNDS height="0" left="7380" top="4770" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="6300" left="9855" top="5235" type="Window" width="11475">
+   </BOUNDS>
+   <PIN pinname="Status" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="URL" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Body" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Refresh" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Encoding" slicecount="1" pintype="Input" visible="-1" values="|System Default|">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Names" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Names Bin Size" pintype="Input" visible="1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Values" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Values Bin Size" pintype="Input" visible="1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Username" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Password" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Patch" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Header" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="In Progress" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="On Completed" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="XML Input" srcnodeid="0" srcpinname="Body">
+   </LINK>
+   <LINK dstnodeid="35" dstpinname="Input String" srcnodeid="0" srcpinname="Status">
+   </LINK>
+   <LINK dstnodeid="51" dstpinname="XML Input" srcnodeid="0" srcpinname="Body">
+   </LINK>
+   <LINK dstnodeid="74" dstpinname="Input" srcnodeid="0" srcpinname="Body">
+   </LINK>
+   <LINK dstnodeid="75" dstpinname="Input 2" srcnodeid="0" srcpinname="Body">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Refresh" srcnodeid="43" srcpinname="Y Output Value" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="0" dstpinname="URL">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="On Completed" dstnodeid="19" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="On Completed" dstnodeid="71" dstpinname="Input 1">
+   </LINK>
    </PATCH>

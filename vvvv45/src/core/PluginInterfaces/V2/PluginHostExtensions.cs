@@ -364,20 +364,22 @@ namespace VVVV.PluginInterfaces.V2
 			INodeOut result = null;
 			host.CreateNodeOutput(attribute.Name, (TSliceMode) attribute.SliceMode, (TPinVisibility) attribute.Visibility, out result);
 			
-			// Register all implemented interfaces and inherited classes of T
-			// to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
-			var guids = new List<Guid>();
-			var typeT = type;
-
             if (type != null)
             {
-                foreach (var interf in typeT.GetInterfaces())
-                    guids.Add(interf.GUID);
+                // Register all implemented interfaces and inherited classes of T
+                // to support the assignment of ISpread<Apple> output to ISpread<Fruit> input.
+                var guids = new List<Guid>();
 
-                while (typeT != null)
+                RegisterID(host, guids, type);
+
+                foreach (var interf in type.GetInterfaces())
+                    RegisterID(host, guids, interf);
+
+                var t = type.BaseType;
+                while (t != null)
                 {
-                    guids.Add(typeT.GUID);
-                    typeT = typeT.BaseType;
+                    RegisterID(host, guids, t);
+                    t = t.BaseType;
                 }
 
                 result.SetSubType2(type, guids.ToArray(), type.GetCSharpName());
@@ -388,6 +390,13 @@ namespace VVVV.PluginInterfaces.V2
             SetOutputProperties(result, attribute);
 			return result;
 		}
+
+        private static void RegisterID(IPluginHost host, List<Guid> guids, Type t)
+        {
+            Guid id = t.GUID;
+            guids.Add(id);
+            host.RegisterType(id, t.GetCSharpName());
+        }
 
         public static IRawIn CreateRawInput(this IPluginHost host, InputAttribute attribute)
         {

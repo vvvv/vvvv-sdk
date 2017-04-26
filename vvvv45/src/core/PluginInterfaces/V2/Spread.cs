@@ -132,6 +132,8 @@ namespace VVVV.PluginInterfaces.V2
         {
             return FStream.GetEnumerator();
         }
+
+        int IReadOnlyCollection<T>.Count => SliceCount;
         
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {

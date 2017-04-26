@@ -35,15 +35,21 @@ namespace VVVV.Nodes.Timeliner
 					return base.Top;
 			}
 		}
-		
-		//default constructor for designer in inherited classes to work
-		public TLBasePin():base(){}
+
+        protected int DIP(int pixel)
+        {
+            return (int)Math.Round(pixel * FDPIFactor);
+        }
+        protected float FDPIFactor = 1;
+
+        //default constructor for designer in inherited classes to work
+        public TLBasePin():base(){}
 		
 		public TLBasePin(TLTransformer Transformer, int Order, XmlNode PinSettings):base()
 		{
 			FSettings = new XmlDocument();
-			
-			FTransformer = Transformer;
+
+            FTransformer = Transformer;
 			FOrder = Order;			
 			
 			XmlAttribute attr = PinSettings.Attributes.GetNamedItem("Name") as XmlAttribute;
@@ -127,8 +133,8 @@ namespace VVVV.Nodes.Timeliner
 		{
 			get { return FUncollapsedHeight;}
 		}
-		
-		public int SliceCount
+
+        public int SliceCount
 		{
 			get{return FOutputSlices.Count;}
 		}
@@ -252,8 +258,8 @@ namespace VVVV.Nodes.Timeliner
     		pin.Attributes.Append(attr);
     		
     		attr = FSettings.CreateAttribute("Height");
-    		attr.Value = UncollapsedHeight.ToString();
-    		pin.Attributes.Append(attr);
+            attr.Value = ((int) Math.Round(UncollapsedHeight / FDPIFactor)).ToString();
+            pin.Attributes.Append(attr);
     		
     		attr = FSettings.CreateAttribute("Parent");
     		attr.Value = Parent.Tag.ToString();

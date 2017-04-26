@@ -31,7 +31,7 @@ namespace VVVV.Nodes.Generic
 		//called when data for any output pin is requested
 		public virtual void Evaluate(int SpreadMax)
 		{
-			int sMax = Math.Max(FInput.SliceCount,FSelect.SliceCount);
+			int sMax = SpreadUtils.SpreadMax(FInput, FSelect);
 			
 			FOutput.SliceCount = 0;
 			FFormerSlice.SliceCount=0;

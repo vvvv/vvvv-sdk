@@ -103,7 +103,7 @@ namespace VVVV.Nodes.Timeliner
 		protected override void InitializeHeight()
 		{
 			if (FUncollapsedHeight == 0)
-				FUncollapsedHeight = 40;
+				FUncollapsedHeight = DIP(40);
 			
 			base.InitializeHeight();
 		}

@@ -361,7 +361,7 @@ namespace VVVV.Hosting.IO
                                       var dataType = context.DataType;
                                       var uncheckedDefaultValue = context.IOAttribute.DefaultNodeValue;
                                       var defaultValue = uncheckedDefaultValue != null && dataType == uncheckedDefaultValue.GetType() ? uncheckedDefaultValue : dataType.IsValueType ? Activator.CreateInstance(dataType) : null;
-                                      stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject, new DefaultConnectionHandler(), defaultValue) as IInStream;
+                                      stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject, null, defaultValue) as IInStream;
                                   }
                                   // Using MemoryIOStream -> needs to be synced on managed side.
                                   if (attribute.AutoValidate)
