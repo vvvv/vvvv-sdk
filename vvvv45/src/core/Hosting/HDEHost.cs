@@ -545,6 +545,7 @@ namespace VVVV.Hosting
         public void Shutdown()
         {
             FStartableRegistry.ShutDown();
+            Container.Dispose();
             FIsRunning = false;
         }
         
