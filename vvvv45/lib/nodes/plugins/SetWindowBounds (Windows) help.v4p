@@ -1,0 +1,315 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\SetWindowBounds (Windows) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="0" top="0" width="8340" height="9825">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SetWindowBounds (Windows)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="4170" height="525">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sets the size and position of a given window in pixels including its border and titlebar.|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="36">
+   <BOUNDS type="Node" left="2340" top="4785" width="3570" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2340" top="4785" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="8145" top="0" width="3900" height="6300">
+   </BOUNDS>
+   <PIN pinname="Window Handle" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2325" top="4035" width="1470" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2325" top="4035" width="1470" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Window&apos;s Handle|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="32" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2295" top="5115" width="3315" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2295" top="5115" width="1830" height="1035">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|^&cr;&lf;This Pin of the Renderer is hidden by default.&cr;&lf;See Inspektor.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3810" top="2835" width="360" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3810" top="2835" width="690" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Apply|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5070" top="5460" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5070" top="5460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Actual Backbuffer Width" dstnodeid="28" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="27" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5910" top="5460" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5910" top="5460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Actual Backbuffer Height" dstnodeid="27" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4995" top="5670" width="2025" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4995" top="5670" width="2025" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|-------------------------&cr;&lf;Backbuffer Size|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetWindowBounds (Windows)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SetWindowBounds (Windows)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="2385" top="3375" width="1335" height="270">
+   </BOUNDS>
+   <PIN pinname="Set" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Width" visible="1" slicecount="1" values="420">
+   </PIN>
+   <PIN pinname="Handle" visible="1">
+   </PIN>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   <PIN pinname="Set Size" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Set Position" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="PositionXY" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Window Handle" dstnodeid="25" dstpinname="Handle" linkstyle="Bezier">
+   <LINKPOINT x="1155" y="5470">
+   </LINKPOINT>
+   <LINKPOINT x="1365" y="2705">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2070" top="1920" width="795" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2070" top="1920" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="545,0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="px">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Changed" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="25" dstpinname="PositionXY">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="45" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3030" top="1920" width="690" height="495">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3030" top="1920" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="2" visible="1" values="260,420">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="px">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Changed" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="45" srcpinname="Y Output Value" dstnodeid="25" dstpinname="SizeXY">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Changed" dstnodeid="25" dstpinname="Set Position" hiddenwhenlocked="0">
+   </LINK>
+   <LINK srcnodeid="45" srcpinname="Changed" dstnodeid="25" dstpinname="Set Size" hiddenwhenlocked="0">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="46" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2055" top="1620" width="720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2055" top="1620" width="720" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Position">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="47" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3000" top="1620" width="720" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3000" top="1620" width="720" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Size">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="56" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="255" top="6405" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="6405" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="HandleFromCaption (Windows)" nodename="HandleFromCaption (Windows)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="300" top="8625" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="HandleFromPoint (Windows)" nodename="HandleFromPoint (Windows)" componentmode="Hidden" id="54">
+   <BOUNDS type="Node" left="300" top="8235" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="53" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="7260" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="7260" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|GetWindowBounds (Windows)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="50" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="7635" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="7635" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|GetWindowBounds (Windows  ClientArea)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="49" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1740" top="6870" width="2925" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="6870" width="2925" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|SetWindowBounds (Windows ClientArea)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetWindowBounds (Windows ClientArea)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="SetWindowBounds (Windows ClientArea)" componentmode="Hidden" id="48">
+   <BOUNDS type="Node" left="300" top="6855" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="6855">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="GetWindowBounds (Windows)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetWindowBounds (Windows)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="300" top="7245" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="7245">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="GetWindowBounds (Windows ClientArea)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="GetWindowBounds (Windows ClientArea)" componentmode="Hidden" id="51">
+   <BOUNDS type="Node" left="300" top="7635" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="300" top="7635">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

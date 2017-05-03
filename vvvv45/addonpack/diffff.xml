@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Short Description
+ 
+  This file controls the conversion process when opening patches
+  A patch comes with a version info that states with which vvvv version it was saved.
+  Comparing that with the currently running version enables vvvv to convert the patches.
+  
+  For each version one       
+	  <PATCH version=...>
+      </PATCH>
+	tag is added (if renamings have taken place in the nodelibrary that comes with vvvv)
+	
+  However it now also can be used to temporarily do a conversion task for you.
+  You can rename your nodes (plugins, modules) and then use this file to do conversion even if the patches 
+  already are stored with current version.
+   
+  ========================================================================================================
+	  
+  How to edit this file 
+  * if you are not an internal developer you can contribute to this via the SDK and by making a pull request
+  
+  * HOWEVER you are also invited to use this tool to convert temporarily   
+   
+  * since you can't increase the vvvversion by yourself just use "current" like that:
+	  <PATCH version="current">
+      </PATCH>  
+  
+  * note that you can also replace standard modules (...) with your own.
+  
+  * add a node tag within the patch tag for the node you want to be converted
+      <NODE old="I (Spread)">
+      </NODE>   
+      
+  * add attribute "new" if you want to change the node name
+      new="J (Value)"
+      
+  * add a pin tag within the node tag if you want to change the pin interface
+      <PIN old="Output"> </PIN>
+      
+  * add attribute "new" if you want to change the pin name
+      new="Integers"
+      
+  * add attribute "olddefault" if you want to change the default value of the pin. 
+    specify the old default value.
+      olddefault="3"
+
+  comments:
+  + for all file based nodes (modules, effects ...) a special syntax is used:
+    :MODULES:\vvvv group\EX9\Sprite (DX9).v4p  
+-->
+
+<CONVVVVERTER>
+  <PATCH version="31.9.0">
+	<NODE old="S (Value Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.SValueNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="R (Value Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.RValueNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="S (String Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.SStringNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="R (String Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.RStringNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="S (Color Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.SColorNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="R (Color Advanced)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="RSNodes.dll|VVVV.Nodes.RColorNode">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	
+	<NODE old="S (Keyboard)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Keyboard)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="S (Mouse)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Mouse)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="S (Touch)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+	<NODE old="R (Touch)">
+      <PIN new="Display Channel" olddefault="0" />
+    </NODE>
+  </PATCH>
+  <PATCH version="33.3.01">
+	<NODE old="Background (EX9.Layer)" new="Background (EX9)" />
+  </PATCH>
+  <PATCH version="33.8.0">
+	<NODE old="Button (3d Mesh Multitouch)">
+		<PIN old="Cursor Transform" new="Pointer Transform" />
+	</NODE>
+	<NODE old="Button (3d Quad Multitouch)">
+		<PIN old="Cursor Transform" new="Pointer Transform" />
+	</NODE>
+  </PATCH>
+  <PATCH version="33.10.0">
+	<NODE old="Occurrence (Vector2D)" new="Occurrence (2d)" />
+	<NODE old="Occurrence (Vector3D)" new="Occurrence (3d)" />
+	<NODE old="Occurrence (Vector4D)" new="Occurrence (4d)" />
+	<NODE old="Camera (Transform Orbit)">
+  	  <PIN old="Inital Distance" olddefault="15" new="Initial Distance" />
+  	</NODE>
+  </PATCH>
+  <PATCH version="34.101.0">  
+    <NODE old="Camera (Transform Orbit)" new="Camera (Transform Orbit Legacy)"></NODE>
+	<NODE old="FourRooms (Transform Viewport)" new="FourRooms (Transform Legacy)"></NODE>
+	<NODE old="PolyLine (2d)" new="PolyLine (2d Legacy)"></NODE>
+  </PATCH>
+  <PATCH version="35.0.0">  
+    <NODE old="TUIODecoder (Network 1.0)" new="TUIODecoder (Network 1.0 Legacy)"></NODE>
+  </PATCH>
+</CONVVVVERTER>

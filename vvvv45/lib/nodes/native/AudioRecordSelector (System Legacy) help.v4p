@@ -1,0 +1,93 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\AudioRecordSelector (System Legacy) help.v4p">
+   <BOUNDS height="5625" left="6315" top="2445" type="Window" width="5085">
+   </BOUNDS>
+   <NODE id="5" nodename="AudioRecordSelector (System Legacy)">
+   <BOUNDS height="0" left="2160" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="AudioIn (DShow9)">
+   <BOUNDS height="0" left="555" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="AudioOut (DShow9)">
+   <BOUNDS height="0" left="540" top="4470" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Audio" visible="1">
+   </PIN>
+   <PIN pinname="Driver" slicecount="1" values="|SoundMAX Digital Audio|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Audio" srcnodeid="4" srcpinname="Audio">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="2145" top="2520" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4485" top="4230" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1770" left="2145" top="2520" type="Box" width="1395">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Mikrofon">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Device" srcnodeid="2" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="390" type="Box" width="3870">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="7710" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Controls the recording selector of the sound card.&cr;&lf;Select your microphone and make some noise!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="15" top="15" type="Box" width="4620">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="7710" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AudioRecordSelector (System Legacy)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="450" top="1155" width="3195" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="450" top="1155" width="3525" height="900">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note: No longer useful since Windows Vista!|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   </PATCH>

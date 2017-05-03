@@ -1,0 +1,137 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Sift (String) help.v4p">
+   <BOUNDS height="6255" left="4545" top="3645" type="Window" width="8760">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4200" top="5460" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="315" left="4200" top="5460" type="Box" width="4350">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Bugs: use case insensitive mode for optimal performance|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Sift (String)">
+   <BOUNDS height="0" left="450" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Filter" visible="1">
+   </PIN>
+   <PIN pinname="Comparison" slicecount="1" values="Contains">
+   </PIN>
+   <PIN pinname="Hits" visible="1">
+   </PIN>
+   <PIN pinname="Input Index" visible="1">
+   </PIN>
+   <PIN pinname="Filter Index" visible="1">
+   </PIN>
+   <PIN pinname="Found At Position" visible="1">
+   </PIN>
+   <PIN pinname="Case Sensitive" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="435" top="1050" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1005" left="435" top="1050" type="Box" width="7875">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Streng dem definierten Wesen des Blindtextes folgend, fungiere ich als solcher und gebe mich unverbindlich inhaltsleer. In bedrückender Enge in vorgefertigte Masken gepresst friste ich ein freudloses Dasein auf dem schmalen Grat zwischen Nichtbeachtung und Bedeutungslosigkeit und habe doch eine Bitte: Handeln Sie Sinn stiftend für meine Existenz und lesen Sie mich.|">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="3" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="615" top="2580" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="5805" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="615" top="2580" type="Box" width="2625">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="inhaltsleer">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Filter" srcnodeid="2" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="165" top="3825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4950" top="7500" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="165" top="3825" type="Box" width="630">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Hits">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="4" srcpinname="Hits">
+   <LINKPOINT x="480" y="3660">
+   </LINKPOINT>
+   <LINKPOINT x="765" y="3660">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="885" top="3795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5850" top="8400" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1755" left="885" top="3795" type="Box" width="600">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Found at position|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="4" srcpinname="Found At Position">
+   <LINKPOINT x="1020" y="3645">
+   </LINKPOINT>
+   <LINKPOINT x="1455" y="3645">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="540" left="15" top="390" type="Box" width="6870">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="| find one or more keywords in the inputstring or compare whole input string with filterstring. in case-insensitive match mode, the a ? can be used to match any char|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9930" top="37530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sift - String|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
