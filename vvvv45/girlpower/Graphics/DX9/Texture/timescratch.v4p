@@ -1,0 +1,225 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Y:\vvvv33\girlpower\granularvideo.v4p">
+   <BOUNDS height="6315" left="1950" top="4770" type="Window" width="6120">
+   </BOUNDS>
+   <NODE id="16" nodename="QUAD (DX9)">
+   <BOUNDS height="0" left="900" top="4965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture Coord Mapping" slicecount="1" values="OnShape_UV">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="GetSlice (Node)">
+   <BOUNDS height="0" left="1230" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" visible="1" values="151.00000">
+   </PIN>
+   <PIN pinname="Input Node" slicecount="20" visible="1" values=",,,,,,,,,,,,,,,,,,,">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="255" top="3675" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="14" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="13" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="420" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="TranslateX" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE id="12" nodename="VideoTexture (EX9.Texture VMR9)">
+   <BOUNDS height="0" left="1665" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Texture Size Mode" slicecount="1" values="Pow2Stretched">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Queue (EX9.Texture)">
+   <BOUNDS height="0" left="1680" top="3600" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="200.00000">
+   </PIN>
+   <PIN pinname="do Insert" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Texture In" visible="1">
+   </PIN>
+   <PIN pinname="Insert" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Frame Count" slicecount="1" values="50">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="VideoIn (DShow9)">
+   <BOUNDS height="0" left="1665" top="2070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Video Format" slicecount="1" values="RGB24">
+   </PIN>
+   <PIN pinname="Framerate" slicecount="1" values="25">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Video" srcnodeid="10" srcpinname="Video">
+   </LINK>
+   <NODE id="9" nodename="Random (Value)">
+   <BOUNDS height="0" left="3135" top="2820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3180" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13275" top="12270" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3180" top="2025" type="Box" width="915">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Scale" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="7" nodename="Blend (EX9.RenderState)">
+   <BOUNDS height="0" left="330" top="4335" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Render State" srcnodeid="7" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Texture" srcnodeid="15" srcpinname="Output Node">
+   </LINK>
+   <NODE id="6" nodename="Cons (Spreads)">
+   <BOUNDS height="0" left="3120" top="3885" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Random (Value)">
+   <BOUNDS height="0" left="3615" top="3270" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Scale" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="5" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Index" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="GT (Value)">
+   <BOUNDS height="0" left="3120" top="1485" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Enabled" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <NODE id="3" nodename="Random (Value)">
+   <BOUNDS height="0" left="3135" top="1035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE id="2" nodename="GT (Value)">
+   <BOUNDS height="0" left="4230" top="1470" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Random (Value)">
+   <BOUNDS height="0" left="4230" top="1035" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Enabled" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input Node" srcnodeid="11" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InAWindow" id="0" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="900" top="5355" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="1950" top="-60" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="900" top="5355" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layers" srcnodeid="16" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture In" srcnodeid="12" srcpinname="Texture Out">
+   </LINK>
+   </PATCH>

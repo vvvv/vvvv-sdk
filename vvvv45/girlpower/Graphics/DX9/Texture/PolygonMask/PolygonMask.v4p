@@ -1,0 +1,387 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Texture\PolygonMask\PolygonMask.v4p" scrollx="0" scrolly="0" systemname="PolygonMask" filename="D:\gitHub\own VVVV ideas\PolygonMask.v4p">
+   <BOUNDS type="Window" left="7530" top="5925" width="11070" height="9885">
+   </BOUNDS>
+   <NODE systemname="Polygon (PolygonEditor Split)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\Polygon (PolygonEditor Split).v4p" nodename="Polygon (PolygonEditor Split)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="7320" top="4110" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="140" values="12,9,0,0,0,0,0,9,1,1,0,0,0,54,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,-0.49,-0.39,0,0,-0.38,-0.28,0,0,-0.35,-0.11,0,0,-0.43,0.05,0,0,-0.56,0.1,0,0,-0.7,0.05,0,0,-0.75,-0.08,0,0,-0.75,-0.28,0,0,-0.63,-0.39,0,0,0.33,-0.61,0,0,0.59,-0.39,0,0,0.65,-0.05,0,0,0.48,0.25,0,0,0.16,0.36,0,0,-0.16,0.25,0,0,-0.34,-0.05,0,0,-0.28,-0.39,0,0,-0.01,-0.61,0,0">
+   </PIN>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="4" stayontop="0">
+   <BOUNDS type="Node" left="1560" top="8355" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1560" top="8355" width="3480" height="2535">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1950" top="570" width="5745" height="5250">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1560" top="7815" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="4860" top="480" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="4860" top="480">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Polygon (EX9.Geometry 2d)" filename="%VVVV%\addonpack\lib\nodes\plugins\2dMeshNodes.dll" nodename="Polygon (EX9.Geometry 2d)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="7320" top="4695" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="VerticesXY" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="VerticesXY" dstnodeid="10" dstpinname="VerticesXY">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Vertex Bin Size" dstnodeid="10" dstpinname="Vertex Count">
+   </LINK>
+   <NODE systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="7155" top="5265" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.97777,0.97777,0.97777,1.00000|">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Output" dstnodeid="11" dstpinname="Mesh">
+   </LINK>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="6075" top="7770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Layer" dstnodeid="4" dstpinname="Layers">
+   </LINK>
+   <PACK Name="VVVV.Packs" Version="0.1.0">
+   </PACK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="PolygonManager" filename="PolygonManager.v4p" nodename="PolygonManager" componentmode="Hidden" id="35">
+   <BOUNDS type="Node" left="3975" top="2310" width="1305" height="270">
+   </BOUNDS>
+   <PIN pinname="PolygonEditor Input" visible="1" slicecount="140" values="12,9,0,0,0,0,0,9,1,1,0,0,0,54,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,-0.49,-0.39,0,0,-0.38,-0.28,0,0,-0.35,-0.11,0,0,-0.43,0.05,0,0,-0.56,0.1,0,0,-0.7,0.05,0,0,-0.75,-0.08,0,0,-0.75,-0.28,0,0,-0.63,-0.39,0,0,0.33,-0.61,0,0,0.59,-0.39,0,0,0.65,-0.05,0,0,0.48,0.25,0,0,0.16,0.36,0,0,-0.16,0.25,0,0,-0.34,-0.05,0,0,-0.28,-0.39,0,0,-0.01,-0.61,0,0">
+   </PIN>
+   <PIN pinname="Polygon Output" visible="1">
+   </PIN>
+   <PIN pinname="Initialize" visible="1">
+   </PIN>
+   <PIN pinname="Remove Polygon Index" visible="1">
+   </PIN>
+   <PIN pinname="Remove Polygon" visible="1">
+   </PIN>
+   <PIN pinname="Insert Polygon" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Insert Polygon Vertex Count" slicecount="1" visible="1" values="5">
+   </PIN>
+   <PIN pinname="Load" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="6300" top="1485" width="20505" height="15240">
+   </BOUNDS>
+   <PIN pinname="Snap" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="file.txt">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Device" dstnodeid="35" dstpinname="Mouse">
+   </LINK>
+   <NODE systemname="Blur (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter).v4p" nodename="Blur (EX9.Texture Filter)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="7155" top="6345" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="0.31">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Control" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="46" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Window" left="7695" top="585" width="5355" height="5235">
+   </BOUNDS>
+   <PIN pinname="Actual Backbuffer Height" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Layers" visible="1" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Node" left="6075" top="8520" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6075" top="8520" width="2400" height="1800">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Device" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Fullscreen Format" pintype="Configuration" slicecount="1" values="X8R8G8B8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" pintype="Configuration" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" pintype="Configuration" slicecount="1" values="AsDesktop">
+   </PIN>
+   <PIN pinname="Fullscreen Refresh Rate" pintype="Configuration" slicecount="1" values="60">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" pintype="Configuration" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Backbuffer Count" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Fullscreen Swap Effect" pintype="Configuration" slicecount="1" values="discard">
+   </PIN>
+   <PIN pinname="Windowed Backbuffer Format" pintype="Configuration" slicecount="1" values="X8R8G8B8">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" pintype="Configuration" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" pintype="Configuration" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Backbuffer Count" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Windowed Swap Effect" pintype="Configuration" slicecount="1" values="discard">
+   </PIN>
+   <PIN pinname="Clip Device" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" pintype="Configuration" slicecount="1" values="default">
+   </PIN>
+   <PIN pinname="Clear Depth Buffer" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Clear" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Background Color" pintype="Input" visible="1" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Backbuffer Width" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Fullscreen" pintype="Input" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="View" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Aspect Ratio" pintype="Input" visible="0" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Crop" pintype="Input" visible="-1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Viewport" pintype="Input" visible="-1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transformations Index" pintype="Input" visible="-1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="X" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Y" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Left Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Middle Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Right Button" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Is Fullscreen" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="EX9 Out" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="1560" top="7245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="140" values="12,9,0,0,0,0,0,9,1,1,0,0,0,54,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,2,1,1,-0.49,-0.39,0,0,-0.38,-0.28,0,0,-0.35,-0.11,0,0,-0.43,0.05,0,0,-0.56,0.1,0,0,-0.7,0.05,0,0,-0.75,-0.08,0,0,-0.75,-0.28,0,0,-0.63,-0.39,0,0,0.33,-0.61,0,0,0.59,-0.39,0,0,0.65,-0.05,0,0,0.48,0.25,0,0,0.16,0.36,0,0,-0.16,0.25,0,0,-0.34,-0.05,0,0,-0.28,-0.39,0,0,-0.01,-0.61,0,0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1560" top="7245">
+   </BOUNDS>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 1">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="61">
+   <BOUNDS type="Node" left="6450" top="480" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="6450" top="480">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="46" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Mix (EX9.Texture Mixer)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Mixer\Mix\Mix (EX9.Texture Mixer).v4p" nodename="Mix (EX9.Texture Mixer)" componentmode="Hidden" id="69">
+   <BOUNDS type="Node" left="6075" top="7260" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Output" dstnodeid="69" dstpinname="Control">
+   </LINK>
+   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="15" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Device" dstnodeid="35" dstpinname="Keyboard">
+   </LINK>
+   <NODE systemname="PolygonEditor (2d)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor (2d).v4p" nodename="PolygonEditor (2d)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="3990" top="3465" width="2730" height="270">
+   </BOUNDS>
+   <PIN pinname="Force Shape Mode" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Snap" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="35" dstpinname="PolygonEditor Input" linkstyle="Bezier">
+   <LINKPOINT x="3420" y="4290">
+   </LINKPOINT>
+   <LINKPOINT x="3465" y="1575">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Polygon Output" dstnodeid="72" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Initialize" dstnodeid="72" dstpinname="Initialize">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Insert Polygon" dstnodeid="72" dstpinname="Insert">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Remove Polygon Index" dstnodeid="72" dstpinname="Remove Polygon Index">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Remove Polygon" dstnodeid="72" dstpinname="Remove">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Output" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="61" srcpinname="Device" dstnodeid="72" dstpinname="Keyboard">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Device" dstnodeid="72" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Snap" dstnodeid="72" dstpinname="Snap">
+   </LINK>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="73">
+   <BOUNDS type="Node" left="5145" top="6360" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="..\..\..\..\..\lib\assets\images\earth_512x512.jpg">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="73" srcpinname="Texture Out" dstnodeid="69" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="74">
+   <BOUNDS type="Node" left="6105" top="6360" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" slicecount="1" values="|..\..\..\..\..\lib\assets\images\flower four.jpg|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="74" srcpinname="Texture Out" dstnodeid="69" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="RenderTarget (EX9.Texture Source)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\RenderTarget\RenderTarget (EX9.Texture Source).v4p" nodename="RenderTarget (EX9.Texture Source)" componentmode="Hidden" id="75">
+   <BOUNDS type="Node" left="7155" top="5775" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Layer" dstnodeid="75" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="75" srcpinname="Texture Out" dstnodeid="53" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Actual Backbuffer Width" dstnodeid="75" dstpinname="Width" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="Actual Backbuffer Height" dstnodeid="75" dstpinname="Height" hiddenwhenlocked="1">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="85" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6375" top="2310" width="4890" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6375" top="2310" width="1440" height="1005">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See the helppatch of PolygonEditor for details on how to operate it.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="88" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="4695" top="1860" width="300" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4695" top="1860" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="88" srcpinname="Y Output Value" dstnodeid="35" dstpinname="Insert Polygon Vertex Count">
+   </LINK>
+   <NODE systemname="Cursor (DX9)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="3195" top="7245" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Cursor Type" visible="1" slicecount="1" values="Cross">
+   </PIN>
+   <PIN pinname="Selection" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="5" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Cursor Type" dstnodeid="3" dstpinname="Cursor Type" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Selection Rect" dstnodeid="3" dstpinname="Selection" hiddenwhenlocked="1">
+   </LINK>
+   </PATCH>
