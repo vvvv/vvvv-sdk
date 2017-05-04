@@ -77,10 +77,14 @@
     <Exec Condition="!Exists('$(DeployedVVVVExe)')" 
           Command="&quot;$(VVVVExe)&quot; /allowmultiple /nodelist &quot;$(DeployDir)lib\nodes&quot;" />
     <!-- Generate a nodelist.xml file for each VL integration pack -->
+    <PropertyGroup>
+      <_InternalPacksDirectory>$(DeployDir)lib\packs</_InternalPacksDirectory>
+    </PropertyGroup>
     <ItemGroup>
-      <_VLPacksDirectories Include="$([System.IO.Directory]::GetDirectories(&quot;$(DeployDir)lib\packs&quot;, &quot;VL.*&quot;))" />
+      <_VLPacksDirectories Condition="Exists('$(_InternalPacksDirectory)')" 
+                           Include="$([System.IO.Directory]::GetDirectories(&quot;$(_InternalPacksDirectory)&quot;, &quot;VL.*&quot;))" />
     </ItemGroup>
-    <Exec Condition="Exists('$(DeployedVVVVExe)') AND Exists('%(_VLPacksDirectories.Identity)\vvvv\nodes')"
+    <Exec Condition="Exists('$(DeployedVVVVExe)') AND Exists('$(_InternalPacksDirectory)') AND Exists('%(_VLPacksDirectories.Identity)\vvvv\nodes')"
           Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist &quot;%(_VLPacksDirectories.Identity)\vvvv\nodes&quot;" />
   </Target>
   
