@@ -40,10 +40,17 @@ namespace VVVV.PluginInterfaces.V2
 			EnumName = enumName;
 		}
 
-		/// <summary>
-		/// EnumEntry can be used like a string
-		/// </summary>
-		public static implicit operator string(EnumEntry e)
+        public EnumEntry(string enumName, int index, string entryName)
+        {
+            Index = index;
+            Name = entryName;
+            EnumName = enumName;
+        }
+
+        /// <summary>
+        /// EnumEntry can be used like a string
+        /// </summary>
+        public static implicit operator string(EnumEntry e)
 		{
 			return e.Name;
 		}

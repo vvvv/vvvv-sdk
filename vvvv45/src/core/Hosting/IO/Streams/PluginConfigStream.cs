@@ -256,8 +256,10 @@ namespace VVVV.Hosting.IO.Streams
         protected override EnumEntry GetSlice(int index)
         {
             int ord;
+            string name;
             FEnumConfig.GetOrd(index, out ord);
-            return new EnumEntry(FEnumName, ord);
+            FEnumConfig.GetString(index, out name);
+            return new EnumEntry(FEnumName, ord, name);
         }
         
         protected override void SetSlice(int index, EnumEntry value)
