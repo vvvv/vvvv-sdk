@@ -394,6 +394,11 @@ namespace VVVV.PluginInterfaces.V2
         /// By using this you can potenitally reduce latency.
         /// </summary>
         void SetFrameTimeProvider(ITimeProvider timeProvider);
+
+        /// <summary>
+        /// The version of vvvv. Will for example return "35.5.0.0" for the officially called beta 35.5
+        /// </summary>
+        Version Version { get; }
     }
     #endregion IHDEHost
 

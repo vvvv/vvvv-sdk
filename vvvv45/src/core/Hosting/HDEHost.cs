@@ -545,6 +545,7 @@ namespace VVVV.Hosting
         public void Shutdown()
         {
             FStartableRegistry.ShutDown();
+            Container.Dispose();
             FIsRunning = false;
         }
         
@@ -1005,5 +1006,26 @@ namespace VVVV.Hosting
         }
 
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
+
+        public Version Version
+        {
+            get
+            {
+                if (FVersion == null)
+                {
+                    var p = Path.Combine(ExePath, "vvvv.exe");
+                    if (File.Exists(p))
+                    {
+                        var versionInfo = FileVersionInfo.GetVersionInfo(p);
+                        if (versionInfo != null)
+                            FVersion = new Version(versionInfo.FileMajorPart, versionInfo.FileMinorPart, versionInfo.FileBuildPart, versionInfo.FilePrivatePart);
+                    }
+                    if (FVersion == null)
+                        FVersion = new Version();
+                }
+                return FVersion;
+            }
+        }
+        Version FVersion;
     }
 }

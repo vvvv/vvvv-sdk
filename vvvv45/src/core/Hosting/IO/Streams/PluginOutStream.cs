@@ -105,7 +105,7 @@ namespace VVVV.Hosting.IO.Streams
         
         protected override void SetSlice(int index, EnumEntry value)
         {
-            FEnumOut.SetOrd(index, value.Index);
+            FEnumOut.SetString(index, value.Name);
         }
     }
 
