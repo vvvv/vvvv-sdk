@@ -1,0 +1,339 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\Molecule Viewer\Infolayer.v4p" systemname="Infolayer" filename="C:\Work\MoleculeViewer\Infolayer.v4p" scrollx="0" scrolly="-720">
+   <NODE id="1" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Infolayer Layer|">
+   </PIN>
+   <BOUNDS type="Box" left="6606" top="4275" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6606" top="4275" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <BOUNDS type="Window" left="3705" top="1635" width="13245" height="5505">
+   </BOUNDS>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="2" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="5190" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5190" top="540" width="1140" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform In|">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7605" top="555" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7605" top="555" width="885" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Selected Atom|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="10110" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10110" top="540" width="360" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6705" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6705" top="540" width="660" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="6" values="1,2,0,0,0,3">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Atom info|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="InfolayerController" filename="InfolayerController.v4p" nodename="InfolayerController.v4p" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="6600" top="2730" width="4560" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4785" top="585" width="15135" height="8205">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2370" top="795" width="17385" height="9795">
+   </BOUNDS>
+   <PIN pinname="TextLeft" visible="1" slicecount="5" values="|Atomic Number|,|Standart Atomic Weight|,|Electron Configurations|,Phase,Density">
+   </PIN>
+   <PIN pinname="TextRight" visible="1">
+   </PIN>
+   <PIN pinname="Atom Title" visible="1">
+   </PIN>
+   <PIN pinname="XYZ Transformed" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Selected Atom" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Atom Typ" visible="1">
+   </PIN>
+   <PIN pinname="View Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Quad" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enable" visible="1">
+   </PIN>
+   <PIN pinname="ViewProjection Scene" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Atom Titles" visible="1">
+   </PIN>
+   <PIN pinname="Info Layer Columns" visible="1">
+   </PIN>
+   <PIN pinname="Left Column" visible="1">
+   </PIN>
+   <PIN pinname="Right Column" visible="1">
+   </PIN>
+   <PIN pinname="Atom Info" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="6" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Selected Atom">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output Node" dstnodeid="6" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Atom Typ">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="10620" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10620" top="540" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Reset">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Reset">
+   </LINK>
+   <NODE systemname="R (NODE)" nodename="R (Node)" componentmode="Hidden" id="12">
+   <BOUNDS type="Node" left="8115" top="2136" width="345" height="270">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="11" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="5130" top="1485" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5130" top="1485" width="2790" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="ViewProjectionInversedAspectRatio">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="12" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Input Value" dstnodeid="6" dstpinname="ViewProjection Scene">
+   </LINK>
+   <NODE systemname="R (STRING)" nodename="R (String)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="8610" top="2136" width="270" height="270">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="13" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="8070" top="1500" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8070" top="1500" width="1005" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Atom Title|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Output Enum" dstnodeid="14" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Input Value" dstnodeid="6" dstpinname="Atom Titles">
+   </LINK>
+   <NODE systemname="R (STRING)" nodename="R (String)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="9120" top="2136" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="15" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="9120" top="1500" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9120" top="1500" width="1785" height="255">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Infolayer Left Column|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Output Enum" dstnodeid="16" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Input Value" dstnodeid="6" dstpinname="Info Layer Columns">
+   </LINK>
+   <NODE systemname="R (STRING)" nodename="R (String)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="9606" top="2136" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="10995" top="1500" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10995" top="1500" width="1950" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="|Infolayer Right Column|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="18" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Input Value" dstnodeid="6" dstpinname="Left Column">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Input Value" dstnodeid="6" dstpinname="Right Column">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Atom Info">
+   </LINK>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="615" top="540" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="1710" left="615" top="540" type="Box" width="3165">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Infolayer subpatch is again divided into two different subpatches:&cr;&lf;&cr;&lf;A controller, where the logic sits. &cr;&lf;&cr;&lf;And a draw, which is responsible only to draw the layer.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="1155" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="165" top="1155" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="1605" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="165" top="1605" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6150" top="3525" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="6150" top="3525" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="27" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6150" top="2655" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="6150" top="2655" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE id="28" componentmode="Hidden" systemname="InfolayerView" filename="InfolayerView.v4p" nodename="InfolayerView.v4p">
+   <BOUNDS type="Node" left="6621" top="3615" width="4530" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2790" top="5265" width="15510" height="8250">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="CloseButton Transform" dstnodeid="6" dstpinname="Transform Quad" linkstyle="Bezier">
+   <LINKPOINT x="12349" y="4885">
+   </LINKPOINT>
+   <LINKPOINT x="13232" y="1460">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="TextRight" dstnodeid="28" dstpinname="Text Right">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="TextLeft" dstnodeid="28" dstpinname="Text Left">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Atom Title" dstnodeid="28" dstpinname="Atom Title">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="XYZ Transformed" dstnodeid="28" dstpinname="XYZ">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Enable" dstnodeid="28" dstpinname="Enable">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Alpha" dstnodeid="28" dstpinname="Alpha">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Transform Out" dstnodeid="28" dstpinname="Transform In 2">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Transform Out" dstnodeid="28" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Infolayer Layer" dstnodeid="1" dstpinname="Input Node">
+   </LINK>
+   </PATCH>

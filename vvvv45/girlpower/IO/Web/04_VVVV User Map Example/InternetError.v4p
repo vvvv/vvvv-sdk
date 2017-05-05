@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.1.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\( vvvv user map )\InternetError.v4p" systemname="InternetError">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\04_VVVV User Map Example\InternetError.v4p" systemname="InternetError">
    <BOUNDS height="8325" left="9915" top="7200" type="Window" width="7710">
    </BOUNDS>
    <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
@@ -22,36 +22,16 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\plugins\DrawText.dll" id="3" nodename="Text (EX9)" systemname="Text (EX9 Legacy)">
-   <BOUNDS height="100" left="1740" top="5295" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Enabled" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Text" visible="1">
-   </PIN>
-   <PIN pinname="Font" visible="1">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="413">
-   </PIN>
-   <PIN pinname="Horizontal Align" slicecount="1" values="Center">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="100" left="1725" top="5865" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="240" left="1725" top="5865" type="Box" width="795">
    </BOUNDS>
-   <PIN pinname="Input Node" visible="1">
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
    </PIN>
    </NODE>
-   <LINK dstnodeid="4" dstpinname="Input Node" srcnodeid="3" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" id="5" nodename="Transform (Transform 3d)" systemname="Transform (Transform 3d)">
    <BOUNDS height="100" left="1905" top="3135" type="Node" width="100">
    </BOUNDS>
@@ -82,12 +62,10 @@
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="100" left="2205" top="3570" type="Node" width="100">
+   <BOUNDS height="100" left="2040" top="3600" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="525" left="2205" top="3570" type="Box" width="2250">
+   <BOUNDS height="525" left="2040" top="3600" type="Box" width="2250">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="2" values="|internet not found|,|check your connection please|">
    </PIN>
@@ -99,17 +77,15 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="9" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="100" left="2520" top="4755" type="Node" width="100">
+   <BOUNDS height="100" left="2205" top="4860" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="240" left="2520" top="4755" type="Box" width="1185">
+   <BOUNDS height="240" left="2205" top="4860" type="Box" width="1185">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="|MS Sans Serif|">
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Font" srcnodeid="9" srcpinname="Output Enum">
-   </LINK>
    <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="100" left="2205" top="2085" type="Node" width="100">
    </BOUNDS>
@@ -152,8 +128,6 @@
    </LINK>
    <LINK dstnodeid="5" dstpinname="Transform In" srcnodeid="6" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="0" srcpinname="Y Output Value">
-   </LINK>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="15">
    <BOUNDS type="Node" left="5220" top="630" width="100" height="100">
    </BOUNDS>
@@ -167,7 +141,7 @@
    </PIN>
    </NODE>
    <NODE systemname="Cons (String)" filename="%VVVV%\plugins\SpreadOperations.dll" nodename="Cons (String)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="2220" top="4320" width="1080" height="270">
+   <BOUNDS type="Node" left="2055" top="4350" width="495" height="270">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -177,8 +151,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="8" srcpinname="Output String" dstnodeid="16" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="3" dstpinname="Text">
    </LINK>
    <LINK srcnodeid="15" srcpinname="Output String" dstnodeid="16" dstpinname="Input 2">
    </LINK>
@@ -192,4 +164,34 @@
    </NODE>
    <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="6" dstpinname="Object Space">
    </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="3" nodename="Text (EX9)" systemname="Text (EX9)">
+   <BOUNDS height="100" left="1740" top="5295" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Font" visible="1">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="413">
+   </PIN>
+   <PIN pinname="Horizontal Align" slicecount="1" values="Center">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input Node" srcnodeid="3" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Font" srcnodeid="9" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Enabled" srcnodeid="0" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output" dstnodeid="3" dstpinname="Text">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
