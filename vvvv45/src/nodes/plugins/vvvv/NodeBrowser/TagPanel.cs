@@ -457,12 +457,22 @@ namespace VVVV.Nodes.NodeBrowser
                                                    }
                                                    else if (t.Length > 1)
                                                    {
-                                                       t = t.ToUpperFirstInvariant();
-                                                       //first char matches case-sensitive, all later chars match insensitive
-                                                       var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
-                                                       var rex = new Regex(pattern);
-                                                       var matches = rex.Match(displayName);
-                                                       found = matches.Length > 0;
+                                                       //first we check case-insensitive if the displayname simply start with the given tag
+                                                       found = displayName.StartsWith(t);
+                                                       if (!found)
+                                                       {
+                                                           //then we consider the tag a sub-term in the displayname 
+                                                           //and therefore want it to start with a capital letter
+                                                           //so that we don't just find any occurances 
+                                                           //but only those were the tag appears as a proper camel-cased sub-term
+                                                           
+                                                           t = t.ToUpperFirstInvariant();
+                                                           //first char matches case-sensitive, all later chars match insensitive
+                                                           var pattern = "(" + Regex.Escape(t[0].ToString()) + "(?i)" + Regex.Escape(string.Join("", t.Skip(1))) + "(?-i))";
+                                                           var rex = new Regex(pattern);
+                                                           var matches = rex.Match(displayName);
+                                                           found = matches.Length > 0;
+                                                       }
                                                    }
                                                    else if (t.Length > 0)
                                                        found = displayName.IndexOf(t[0]) >= 0;
