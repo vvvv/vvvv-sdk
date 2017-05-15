@@ -114,8 +114,22 @@ namespace VVVV.Nodes.ImagePlayer
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
             
-            FImagePlayers.Resize(spreadMax, CreateImagePlayer, DestroyImagePlayer);
-            
+            var oldPlayers = new List<ImagePlayer>(FImagePlayers.ToList());
+
+            FImagePlayers.SliceCount = spreadMax;
+            for (int i = 0; i < spreadMax; i++)
+            {
+                var player = oldPlayers.Where(p => p.Directories.SpreadEqual(FDirectoryIn[i])).DefaultIfEmpty(null).First();
+                if (player == null)
+                    player = CreateImagePlayer(i);
+                else
+                    oldPlayers.Remove(player);
+
+                FImagePlayers[i] = player;
+            }
+            foreach (var p in oldPlayers)
+                DestroyImagePlayer(p);
+
             FImagePlayers.SliceCount = spreadMax;
             FTextureOut.SliceCount = spreadMax;
             FTextureWidthOut.SliceCount = spreadMax;
