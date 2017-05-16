@@ -113,13 +113,13 @@ namespace VVVV.Nodes.ImagePlayer
                 .CombineWith(FVisibleFramesIn)
                 .CombineWith(FPreloadFramesIn)
                 .CombineWith(FReloadIn);
-            
-            var oldPlayers = new List<ImagePlayer>(FImagePlayers.ToList());
+
+            List<ImagePlayer> oldPlayers = FImagePlayers.ToList();
 
             FImagePlayers.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
             {
-                var player = oldPlayers.Where(p => p.Directories.SpreadEqual(FDirectoryIn[i])).DefaultIfEmpty(null).First();
+                var player = oldPlayers.FirstOrDefault(p => p.Directories.SpreadEqual(FDirectoryIn[i]));
                 if (player == null)
                     player = CreateImagePlayer(i);
                 else
