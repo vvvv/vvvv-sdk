@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.Composition;
+using System.Linq;
 using VVVV.Nodes.Generic;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
@@ -103,13 +104,49 @@ namespace VVVV.Nodes
 	[PluginInfo(Name = "Unzip", Category = "Enumerations", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]
 	public class EnumUnzipNode : Unzip<EnumEntry>
 	{
-		
-	}
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            string subType = null;
+            foreach (var output in FOutputContainer.GetPluginIOs().OfType<IPin>())
+            {
+                subType = output.GetDownstreamSubType();
+                if (subType != null)
+                    break;
+            }
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                foreach (var outputPin in FOutputContainer.GetPluginIOs().OfType<IEnumIn>())
+                    outputPin.SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
 
     [PluginInfo(Name = "Unzip", Category = "Enumerations", Version = "Bin", Help = UnzipInfo.HELPBIN, Tags = UnzipInfo.TAGS)]
     public class EnumBinSizeUnzipNode : Unzip<IInStream<EnumEntry>>
     {
+        string FLastSubType;
 
+        protected override void Prepare()
+        {
+            string subType = null;
+            foreach (var output in FOutputContainer.GetPluginIOs().OfType<IPin>())
+            {
+                subType = output.GetDownstreamSubType();
+                if (subType != null)
+                    break;
+            }
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                foreach (var outputPin in FOutputContainer.GetPluginIOs().OfType<IEnumIn>())
+                    outputPin.SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
     }
     
     [PluginInfo(Name = "Unzip", Category = "Raw", Help = UnzipInfo.HELP, Tags = UnzipInfo.TAGS)]

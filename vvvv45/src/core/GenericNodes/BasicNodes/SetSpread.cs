@@ -13,32 +13,51 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes.Generic
 {
 
-	public class SetSpread<T> : IPluginEvaluate
+	public class SetSpread<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		#region fields & pins
-		[Input("Spread")]
-        protected ISpread<ISpread<T>> FSpread;
+        protected IIOContainer<ISpread<ISpread<T>>> FSpreadContainer;
+        protected IIOContainer<ISpread<ISpread<T>>> FInputContainer;
 		
-		[Input("Input", BinSize =  1, BinName = "Count", BinOrder = 1)]
-        protected ISpread<ISpread<T>> FInput;
-		
-		[Input("Offset")]
+		[Input("Offset", Order = 20)]
         protected ISpread<int> FOffset;
 
-		[Output("Output")]
-        protected ISpread<ISpread<T>> FOutput;
-		#endregion fields & pins
+        protected IIOContainer<ISpread<ISpread<T>>> FOutputContainer;
 
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
-		{			
-			FOutput.SliceCount = SpreadUtils.SpreadMax(FSpread, FInput, FOffset);
+        [Import]
+        IIOFactory FFactory;
+        #endregion fields & pins
 
-            for (int i=0; i<FInput.SliceCount; i++)
+        public void OnImportsSatisfied()
+        {
+            FSpreadContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new InputAttribute("Spread"));
+
+            FInputContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+               new InputAttribute("Input") { BinSize = 1, BinName = "Count", BinOrder = 1 });
+
+            FOutputContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new OutputAttribute("Output"));
+        }
+
+        protected virtual void Prepare() { }
+
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
+		{
+            Prepare();
+
+            var spread = FSpreadContainer.IOObject;
+            var input = FInputContainer.IOObject;
+            var output = FOutputContainer.IOObject;
+
+			output.SliceCount = SpreadUtils.SpreadMax(spread, input, FOffset);
+
+            for (int i=0; i<input.SliceCount; i++)
 			{
-				FOutput[i].AssignFrom(FSpread[i]);
-				for (int s=0; s<FInput[i].SliceCount; s++)
-					FOutput[i][s+FOffset[i]]=FInput[i][s];
+				output[i].AssignFrom(spread[i]);
+				for (int s=0; s<input[i].SliceCount; s++)
+					output[i][s+FOffset[i]]=input[i][s];
 			}
 		}
 	}

@@ -29,7 +29,23 @@ namespace VVVV.Nodes
 	            Tags = "",
 	            Author = "woei")]
 	#endregion PluginInfo
-	public class SetSliceEnum : SetSlice<EnumEntry> {}
+	public class SetSliceEnum : SetSlice<EnumEntry>
+    {
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            var outputPin = FOutputContainer.GetPluginIO() as IPin;
+            var subType = outputPin.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (outputPin as IEnumOut).SetSubType(subType);
+                (FSpreadContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "SetSlice",

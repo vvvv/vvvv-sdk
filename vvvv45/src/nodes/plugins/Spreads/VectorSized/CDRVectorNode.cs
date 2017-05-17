@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.Composition;
 using VVVV.Nodes.Generic;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
@@ -104,7 +105,24 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "CDR", Category = "Enumerations", Version = "Bin", Help = "Splits the spread into the last element and the rest, with bin size", Author = "woei")]
 	#endregion PluginInfo
-	public class CDREnumBin : CDRBin<EnumEntry> {}
+	public class CDREnumBin : CDRBin<EnumEntry>
+    {
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            var remainder = FRemainderContainer.GetPluginIO() as IPin;
+            var last = FLastContainer.GetPluginIO() as IPin;
+            var subType = remainder.GetDownstreamSubType() ?? last.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (last as IEnumOut).SetSubType(subType);
+                (remainder as IEnumOut).SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "CDR", Category = "Raw", Version = "Bin", Help = "Splits the spread into the last element and the rest, with bin size", Author = "woei")]
