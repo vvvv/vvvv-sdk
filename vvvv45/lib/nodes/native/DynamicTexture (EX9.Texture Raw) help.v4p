@@ -1,0 +1,273 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\DynamicTexture (EX9.Texture Raw) help.v4p" systemname="DynamicTexture (EX9.Texture Raw) help" filename="D:\vvvv_dev\vvvv\public\vvvv45\lib\nodes\native\DynamicTexture (EX9.Texture Raw) help.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="8070" left="195" top="4320" type="Window" width="9540">
+   </BOUNDS>
+   <NODE id="11" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="3480" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="10" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="2145" top="5040" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4710" left="9825" top="4320" type="Window" width="5955">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2145" top="5040" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="3240" top="1455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6735" top="5415" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3240" top="1455" type="Box" width="2055">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="https://vvvv.org/sites/default/files/imagecache/large/images/patternpong.png">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Quad (DX9)" systemname="Quad (DX9)">
+   <BOUNDS height="0" left="765" top="3780" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="930" top="3435" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="-0.5">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Translate (Transform)" systemname="Translate (Transform)">
+   <BOUNDS height="0" left="3630" top="3480" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Transform" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="150" top="165" type="Box" width="4740">
+   </BOUNDS>
+   <BOUNDS height="160" left="7650" top="4920" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|DynamicTexture (EX9.Texture Raw)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="150" top="540" type="Node" width="8220">
+   </BOUNDS>
+   <BOUNDS height="765" left="150" top="540" type="Box" width="4215">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|the DynamicTexture (Raw) takes a sequence of bytes containing the binary data of an image (encoded in one of the file formats) and creates a texture from that.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Group (EX9)" systemname="Group (EX9)">
+   <BOUNDS height="0" left="2130" top="4440" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="11" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="5865" top="1545" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   <PIN pinname="Simulate" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Reader (Raw)" systemname="Reader (Raw)">
+   <BOUNDS height="0" left="1095" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Filename" slicecount="1" encoded="0" values="..\..\assets\images\wimp.jpg">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Read" visible="1">
+   </PIN>
+   <PIN pinname="Encoding">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Bang" dstnodeid="12" dstpinname="Read">
+   </LINK>
+   <NODE id="13" nodename="DynamicTexture (EX9.Texture Raw)" systemname="DynamicTexture (EX9.Texture Raw)">
+   <BOUNDS height="0" left="1095" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="10500" left="6795" top="8400" type="Window" width="10500">
+   </BOUNDS>
+   <BOUNDS height="5000" left="2430" top="3675" type="Box" width="4000">
+   </BOUNDS>
+   <PIN pinname="Data" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Texture" srcnodeid="13" srcpinname="Texture Out">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Content" dstnodeid="13" dstpinname="Data">
+   </LINK>
+   <NODE id="8" nodename="DynamicTexture (EX9.Texture Raw)" systemname="DynamicTexture (EX9.Texture Raw)">
+   <BOUNDS height="0" left="3795" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Data" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Apply" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Texture" srcnodeid="8" srcpinname="Texture Out">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5130" top="6405" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5130" top="6405" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1530" top="6750" width="1755" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1530" top="6750" width="1755" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsTexture (Raw)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsTexture (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsTexture (Raw)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="390" top="6750" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="390" top="6750">
+   </BOUNDS>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6180" top="6750" width="1755" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6180" top="6750" width="1755" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|AsRaw (EX9.Texture)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (EX9.Texture)" filename="" nodename="AsRaw (EX9.Texture)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="5175" top="6750" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5175" top="6765">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="26" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="390" top="6075" width="3030" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="390" top="6075" width="4170" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This node works for the images in one of the file formats.&cr;&lf;For the pure pixmaps (plain pixel data), use:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="HTTPGet (Network)" systemname="HTTPGet (Network)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Network.HTTP.vl">
+   <BOUNDS height="0" left="3225" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="URL" visible="1">
+   </PIN>
+   <PIN pinname="Body" visible="1">
+   </PIN>
+   <PIN pinname="Encoding">
+   </PIN>
+   <PIN pinname="Refresh" slicecount="1" values="0" visible="1">
+   </PIN>
+   <PIN pinname="On Completed" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="URL" srcnodeid="7" srcpinname="Output String">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Body" dstnodeid="8" dstpinname="Data">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="On Completed" dstnodeid="8" dstpinname="Apply">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Bang" dstnodeid="9" dstpinname="Refresh">
+   </LINK>
+   </PATCH>

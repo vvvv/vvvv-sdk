@@ -1,0 +1,131 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\Select (Color Bin) help.v4p" systemname="Select (Color Advanced) help" filename="D:\vvvv\sourceforge\plugins\wrk\Select\Select (Color Advanced) help.v4p">
+   <BOUNDS height="9150" left="8880" top="2970" type="Window" width="7035">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5190" top="7845" type="Node" width="750">
+   </BOUNDS>
+   <BOUNDS height="270" left="5190" top="7845" type="Box" width="870">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|2010, woei|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="30" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="165" top="540" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="705" left="165" top="540" type="Box" width="3960">
+   </BOUNDS>
+   <BOUNDS height="160" left="12870" top="39750" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select selects the slices which form the new spread.&cr;&lf;with Bin Size option&cr;&lf;If Select = 0, nothing is selected.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="29" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="405" left="165" top="165" type="Box" width="3390">
+   </BOUNDS>
+   <BOUNDS height="160" left="12870" top="39750" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Select (Color Bin)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="2970" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5880" top="8220" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3060" left="2970" top="1395" type="Box" width="2295">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="10" visible="1" values="|0.00000,0.59256,0.73000,1.00000|,|0.00000,0.73000,0.12139,1.00000|,|0.15731,0.00000,0.73000,1.00000|,|0.46540,0.00000,0.73000,1.00000|,|0.70815,0.73000,0.00000,1.00000|,|0.66587,0.00000,0.73000,1.00000|,|0.00000,0.02134,0.73000,1.00000|,|0.73000,0.00000,0.55960,1.00000|,|0.73000,0.00000,0.32555,1.00000|,|0.00000,0.37079,0.73000,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="37" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="5775" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11850" top="8505" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3090" left="5775" top="1380" type="Box" width="465">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="10" values="2,0,1,0,2,1,0,0,1,0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="36" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="165" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6180" top="8520" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3075" left="165" top="5100" type="Box" width="2850">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <NODE id="38" nodename="Select (Color Advanced)" systemname="Select (Color Bin)" filename="Select.dll">
+   <BOUNDS height="0" left="2955" top="4815" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Select" visible="1">
+   </PIN>
+   <PIN pinname="Input Bin Size" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="Select" linkstyle="VHV" srcnodeid="37" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Color Output" dstnodeid="38" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output" dstnodeid="36" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="41">
+   <BOUNDS type="Node" left="5295" top="3825" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5295" top="3825" width="450" height="600">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="38" dstpinname="Input Bin Size" linkstyle="VHV">
+   <LINKPOINT x="5870" y="4603">
+   </LINKPOINT>
+   <LINKPOINT x="3100" y="4653">
+   </LINKPOINT>
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   </PATCH>

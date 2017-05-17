@@ -1,0 +1,929 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Analysis\Average\Average (EX9.Texture Analysis).v4p">
+   <BOUNDS height="11715" left="10170" top="450" type="Window" width="15180">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="41" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="615" top="615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="615" top="615" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8325" top="7905" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="39" nodename="INFO (EX9.TEXTURE)" systemname="Info (EX9.Texture)">
+   <BOUNDS height="270" left="2445" top="210" type="Node" width="2070">
+   </BOUNDS>
+   <PIN pinname="Texture" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Get Original File Infos" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Format Description" visible="1">
+   </PIN>
+   <PIN pinname="Format" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="38" nodename="Vector (2d Join)" systemname="Vector (2d Join)">
+   <BOUNDS height="0" left="2475" top="630" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="38" dstpinname="X" linkstyle="PolyLine" srcnodeid="39" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="38" dstpinname="Y" linkstyle="PolyLine" srcnodeid="39" srcpinname="Height">
+   </LINK>
+   <LINK dstnodeid="39" dstpinname="Texture" linkstyle="PolyLine" srcnodeid="41" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="InABox" id="34" nodename="IOBox (Node)" systemname="IOBox (Node)">
+   <BOUNDS height="0" left="615" top="11160" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="615" top="11160" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6945" top="10350" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node" slicecount="1" visible="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="33" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
+   <BOUNDS height="270" left="615" top="10725" type="Node" width="1080">
+   </BOUNDS>
+   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="33" dstpinname="Input 1" linkstyle="PolyLine" srcnodeid="41" srcpinname="Output Node">
+   </LINK>
+   <INFO author="unc" description="track by color" tags="fx">
+   </INFO>
+   <NODE componentmode="InABox" id="32" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="14415" top="315" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="14415" top="315" type="Box" width="480">
+   </BOUNDS>
+   <BOUNDS height="160" left="10680" top="11325" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="34" dstpinname="Input Node" srcnodeid="41" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Average.fx" id="21" nodename="Average.fx" systemname="Average (EX9.Effect)">
+   <BOUNDS height="270" left="7410" top="3045" type="Node" width="5055">
+   </BOUNDS>
+   <BOUNDS height="5415" left="12825" top="5775" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="tex0" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Compiled" visible="1">
+   </PIN>
+   <PIN pinname="tex1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" slicecount="1" visible="1" values="0.181">
+   </PIN>
+   <PIN pinname="tgt" slicecount="1" visible="1" values="|0.59388,0.59388,0.59388,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="20" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="7410" top="3975" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="7410" top="3975" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4890" left="7845" top="7320" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="21" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="19" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="9225" top="4050" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="18" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <BOUNDS height="0" left="7410" top="2295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="17" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="9225" top="4425" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" slicecount="1" values="A32B32G32R32F" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Input">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Source" srcnodeid="20" srcpinname="EX9 Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="16" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="7560" top="2700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="15" nodename="AND (Boolean)" systemname="AND (Boolean)">
+   <BOUNDS height="270" left="9075" top="3495" type="Node" width="525">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="21" dstpinname="Render State" srcnodeid="18" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="11700" top="2715" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="11700" top="2715" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="8460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Input 1" srcnodeid="21" srcpinname="Compiled">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Mesh" srcnodeid="16" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Input 2" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Enabled" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="20" dstpinname="Enabled" hiddenwhenlocked="0" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Technique Pass" srcnodeid="14" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="13" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6585" top="1665" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6585" top="1665" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8685" top="5070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="XY" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="R XY" srcnodeid="13" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="tex0" srcnodeid="41" srcpinname="Output Node">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Average.fx" id="12" nodename="Average.fx" systemname="Average (EX9.Effect)">
+   <BOUNDS height="270" left="8175" top="6450" type="Node" width="5055">
+   </BOUNDS>
+   <BOUNDS height="5415" left="12825" top="5775" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="tex0" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Compiled" visible="1">
+   </PIN>
+   <PIN pinname="tex1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" slicecount="1" visible="1" values="0.181">
+   </PIN>
+   <PIN pinname="tgt" slicecount="1" visible="1" values="0.59388,0.59388,0.59388,1.0000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="11" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="8175" top="7380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="8175" top="7380" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4890" left="7845" top="7320" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="12" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="9900" top="7350" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="9" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <BOUNDS height="0" left="8175" top="5700" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="9615" top="7845" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="|1 mm|">
+   </PIN>
+   <PIN pinname="Width" visible="1" pintype="Input">
+   </PIN>
+   <PIN pinname="Height" visible="1" pintype="Input">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Source" srcnodeid="11" srcpinname="EX9 Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="8325" top="6105" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="6" nodename="AND (Boolean)" systemname="AND (Boolean)">
+   <BOUNDS height="270" left="9840" top="6900" type="Node" width="525">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Render State" srcnodeid="9" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="12465" top="6120" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="12465" top="6120" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="8460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Input 1" srcnodeid="12" srcpinname="Compiled">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Input 2" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Enabled" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Enabled" hiddenwhenlocked="0" srcnodeid="6" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Technique Pass" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <BOUNDS height="0" left="9900" top="9480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="9900" top="9480" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="5670" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="|Approximate Max Color|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6300" top="4830" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="6300" top="4830" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8685" top="5070" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="XY" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="R XY" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="tex0" srcnodeid="17" srcpinname="Texture Out">
+   </LINK>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="5640" top="285" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="5640" top="285" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.25">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Quality">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="43" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6195" top="855" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="480" left="6195" top="855" type="Box" width="795">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Y Input Value" srcnodeid="43" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="44" nodename="Multiply (Value)" systemname="Multiply (Value)">
+   <BOUNDS height="100" left="4650" top="495" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="45" nodename="Frac (Value)" systemname="Frac (Value)">
+   <BOUNDS height="100" left="5655" top="870" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Whole Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="44" dstpinname="Input 1" srcnodeid="38" srcpinname="XY">
+   </LINK>
+   <LINK dstnodeid="43" dstpinname="Y Input Value" srcnodeid="45" srcpinname="Whole Part">
+   </LINK>
+   <LINK dstnodeid="44" dstpinname="Input 2" srcnodeid="42" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="Hidden" id="46" nodename="Max (Value)" systemname="Max (Value)">
+   <BOUNDS height="100" left="5085" top="720" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="46" dstpinname="Input 1" srcnodeid="44" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="45" dstpinname="Input" srcnodeid="46" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Format" srcnodeid="39" srcpinname="Format">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="33" dstpinname="Switch">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="63" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="11430" top="2250" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="11430" top="2250" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| TMax|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Output Enum" dstnodeid="21" dstpinname="Technique">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="64" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="12165" top="5715" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="12165" top="5715" width="1590" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| TMax|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="64" srcpinname="Output Enum" dstnodeid="12" dstpinname="Technique">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="X" dstnodeid="17" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y" dstnodeid="17" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="X" dstnodeid="8" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y" dstnodeid="8" dstpinname="Height">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Average.fx" id="74" nodename="Average.fx" systemname="Average (EX9.Effect)">
+   <BOUNDS height="270" left="1560" top="3870" type="Node" width="5055">
+   </BOUNDS>
+   <BOUNDS height="5415" left="12825" top="5775" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="tex0" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Compiled" visible="1">
+   </PIN>
+   <PIN pinname="tex1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" visible="1">
+   </PIN>
+   <PIN pinname="tgt" slicecount="1" visible="1" values="0.59388,0.59388,0.59388,1.0000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="73" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="1560" top="4650" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1560" top="4650" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4890" left="7845" top="7320" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="73" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="74" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="72" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="3375" top="4725" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="71" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <BOUNDS height="0" left="1560" top="3120" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="70" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3375" top="5100" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" slicecount="1" visible="1" values="A32B32G32R32F">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="70" dstpinname="Source" srcnodeid="73" srcpinname="EX9 Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="69" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="1710" top="3525" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="68" nodename="AND (Boolean)" systemname="AND (Boolean)">
+   <BOUNDS height="270" left="3225" top="4320" type="Node" width="525">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="74" dstpinname="Render State" srcnodeid="71" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="67" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5850" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5850" top="3540" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="8460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="68" dstpinname="Input 1" srcnodeid="74" srcpinname="Compiled">
+   </LINK>
+   <LINK dstnodeid="74" dstpinname="Mesh" srcnodeid="69" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="73" dstpinname="Enabled" hiddenwhenlocked="0" srcnodeid="68" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="74" dstpinname="Technique Pass" srcnodeid="67" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="66" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4950" top="3180" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4950" top="3180" type="Box" width="1590">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| TAverage|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="74" dstpinname="Technique" srcnodeid="66" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="Width" srcnodeid="72" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="70" dstpinname="Height" srcnodeid="72" srcpinname="Y">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="68" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="74" dstpinname="R XY">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="72" dstpinname="XY">
+   </LINK>
+   <NODE componentmode="Hidden" filename="Average.fx" id="83" nodename="Average.fx" systemname="Average (EX9.Effect)">
+   <BOUNDS height="270" left="1560" top="6720" type="Node" width="5055">
+   </BOUNDS>
+   <BOUNDS height="5415" left="12825" top="5775" type="Window" width="12000">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="tex0" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="R XY" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Compiled" visible="1">
+   </PIN>
+   <PIN pinname="tex1" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Mask" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" visible="1">
+   </PIN>
+   <PIN pinname="Threshold" visible="1">
+   </PIN>
+   <PIN pinname="tgt" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="82" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="1560" top="7500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="1560" top="7500" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4890" left="7845" top="7320" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Backbuffer Width" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Backbuffer Height" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="View" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.00000,0.00000,0.00000,0.00000|">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="82" dstpinname="Layers" linkstyle="PolyLine" srcnodeid="83" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="81" nodename="Vector (2d Split)" systemname="Vector (2d Split)">
+   <BOUNDS height="0" left="3375" top="7575" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="80" nodename="Blend (EX9.RenderState Advanced)" systemname="Blend (EX9.RenderState Advanced)">
+   <BOUNDS height="0" left="1560" top="5970" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Alpha Blending" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="79" nodename="DX9Texture (EX9.Texture)" systemname="DX9Texture (EX9.Texture)">
+   <BOUNDS height="0" left="3375" top="7950" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Format" pintype="Input" slicecount="1" visible="1" values="A32B32G32R32F">
+   </PIN>
+   <PIN pinname="Mip Map Count" slicecount="1" values="All">
+   </PIN>
+   <PIN pinname="Width" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Height" pintype="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="79" dstpinname="Source" srcnodeid="82" srcpinname="EX9 Out">
+   </LINK>
+   <NODE componentmode="Hidden" id="78" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="1710" top="6375" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="77" nodename="AND (Boolean)" systemname="AND (Boolean)">
+   <BOUNDS height="270" left="3225" top="7170" type="Node" width="525">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="83" dstpinname="Render State" srcnodeid="80" srcpinname="Render State Out">
+   </LINK>
+   <NODE componentmode="InABox" id="76" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5850" top="6390" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="5850" top="6390" type="Box" width="450">
+   </BOUNDS>
+   <BOUNDS height="160" left="10695" top="8460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="77" dstpinname="Input 1" srcnodeid="83" srcpinname="Compiled">
+   </LINK>
+   <LINK dstnodeid="83" dstpinname="Mesh" srcnodeid="78" srcpinname="Mesh">
+   </LINK>
+   <LINK dstnodeid="82" dstpinname="Enabled" hiddenwhenlocked="0" srcnodeid="77" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="83" dstpinname="Technique Pass" srcnodeid="76" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="75" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4950" top="6030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4950" top="6030" type="Box" width="1590">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| TAverage|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="83" dstpinname="Technique" srcnodeid="75" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="79" dstpinname="Width" srcnodeid="81" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="79" dstpinname="Height" srcnodeid="81" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="77" dstpinname="Input 2" srcnodeid="32" srcpinname="Y Output Value">
+   </LINK>
+   <LINK srcnodeid="41" srcpinname="Output Node" dstnodeid="74" dstpinname="tex0">
+   </LINK>
+   <LINK srcnodeid="70" srcpinname="Texture Out" dstnodeid="83" dstpinname="tex0">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="83" dstpinname="R XY">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="81" dstpinname="XY">
+   </LINK>
+   <NODE systemname="Pipet (EX9.Texture)" nodename="Pipet (EX9.Texture)" componentmode="Hidden" id="86">
+   <BOUNDS type="Node" left="3375" top="8715" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Texture Out" dstnodeid="86" dstpinname="Texture">
+   </LINK>
+   <NODE id="30" componentmode="InABox" nodename="IOBox (Color)" systemname="IOBox (Color)">
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <BOUNDS type="Node" height="0" left="3435" top="10110" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" height="480" left="3435" top="10110" width="2250">
+   </BOUNDS>
+   <BOUNDS type="Window" height="160" left="6585" top="5670" width="215">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" encoded="0" slicecount="1" values="|Average Color|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="86" srcpinname="Color" dstnodeid="30" dstpinname="Color Input">
+   </LINK>
+   <NODE systemname="Pipet (EX9.Texture)" nodename="Pipet (EX9.Texture)" componentmode="Hidden" id="88">
+   <BOUNDS type="Node" left="9870" top="8505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="88" dstpinname="Texture">
+   </LINK>
+   <LINK srcnodeid="88" srcpinname="Color" dstnodeid="4" dstpinname="Color Input">
+   </LINK>
+   </PATCH>

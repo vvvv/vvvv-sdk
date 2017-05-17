@@ -1,0 +1,87 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta11.2.dtd" >
+   <PATCH nodename="Y:\vvvv33\help\Args (VVVV) help.v4p">
+   <BOUNDS height="5070" left="2055" top="1425" type="Window" width="11340">
+   </BOUNDS>
+   <NODE id="5" nodename="Args (VVVV)">
+   <BOUNDS height="270" left="330" top="1155" type="Node" width="1215">
+   </BOUNDS>
+   <PIN pinname="/ seperated Parameters" slicecount="1" values="/music/sun/chocolate">
+   </PIN>
+   <PIN pinname="Exename" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="0" left="330" top="1875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7521" top="6126" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="270" left="330" top="1875" type="Box" width="3240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input String" linkstyle="VHV" srcnodeid="5" srcpinname="Exename">
+   <LINKPOINT x="360" y="1650">
+   </LINKPOINT>
+   <LINKPOINT x="3855" y="1650">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="1905" left="4170" top="1305" type="Node" width="3930">
+   </BOUNDS>
+   <BOUNDS height="3495" left="4170" top="1305" type="Box" width="6840">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|The Args node has a configurationpin to set the parameters to parse for.&cr;&lf;&cr;&lf;Use it to get an initializing value from the commandline into your patch. Note that also all commandline parameters found in the file &apos;Args.txt&apos; in your applicationpath are used.&cr;&lf;&cr;&lf;built in commandlineparameters:&cr;&lf;/o                       strings that follow /o are interpreted as filenames and opened&cr;&lf;/r                       the first string that follows /r is interpreted as filename and opened as root&cr;&lf;/debug               starts vvvv in debug mode&cr;&lf;/allowmultiple    allows multiple instances of vvvv running&cr;&lf;/logstartup        logs all startup steps to a file placed in vvvvs root directory&cr;&lf;&cr;&lf;/client &lt;serverIp&gt; &lt;optionalRootPath&gt;     start as boygroup client&cr;&lf;/server               start as boygroup server&cr;&lf;&cr;&lf;The first output always gives you the exe-path and name.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="915" left="315" top="3195" type="Node" width="4110">
+   </BOUNDS>
+   <BOUNDS height="1620" left="315" top="3195" type="Box" width="3255">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Doubleclicking a patchfile in explorer invokes vvvv with &cr;&lf;/o followed by the filename. &cr;&lf;&cr;&lf;Rightclicking a patchfile in explorer&cr;&lf;and clicking &apos;Open as Root&apos; invokes vvvv with /r followed by the filename.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="3450">
+   </BOUNDS>
+   <BOUNDS height="160" left="4950" top="9900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gives access to the commandline parameters|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="4950" top="9900" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Args - VVVV|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
