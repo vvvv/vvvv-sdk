@@ -9,29 +9,45 @@ using VVVV.Utils.VMath;
 namespace VVVV.Nodes.Generic
 {
 
-	public abstract class Unzip<T> : IPluginEvaluate
+	public abstract class Unzip<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
-		[Input("Input", BinSize = -2)]
-		protected IInStream<T> FInputStream;
+		protected IIOContainer<IInStream<T>> FInputContainer;
+		protected IIOContainer<IInStream<IOutStream<T>>> FOutputContainer;
 
-		[Output("Output", IsPinGroup = true)]
-		protected IInStream<IOutStream<T>> FOutputStreams;
-		
-		public void Evaluate(int SpreadMax)
+        [Import]
+        IIOFactory FFactory;
+
+        public void OnImportsSatisfied()
+        {        
+            FInputContainer = FFactory.CreateIOContainer<IInStream<T>>(
+               new InputAttribute("Input") { BinSize = -2 });
+
+            FOutputContainer = FFactory.CreateIOContainer<IInStream<IOutStream<T>>>(
+                new OutputAttribute("Output") { IsPinGroup = true });
+        }
+
+        protected virtual void Prepare() { }
+
+        public void Evaluate(int SpreadMax)
 		{
-			FOutputStreams.SetLengthBy(FInputStream);
+            Prepare();
 
-            if (FInputStream.IsChanged || FOutputStreams.IsChanged)
+            var inputStream = FInputContainer.IOObject;
+            var outputStreams = FOutputContainer.IOObject;
+
+			outputStreams.SetLengthBy(inputStream);
+
+            if (inputStream.IsChanged || outputStreams.IsChanged)
             {
                 var buffer = MemoryPool<T>.GetArray();
                 try
                 {
-                    var outputStreamsLength = FOutputStreams.Length;
+                    var outputStreamsLength = outputStreams.Length;
 
-                    using (var reader = FInputStream.GetCyclicReader())
+                    using (var reader = inputStream.GetCyclicReader())
                     {
                         int i = 0;
-                        foreach (var outputStream in FOutputStreams)
+                        foreach (var outputStream in outputStreams)
                         {
                             int numSlicesToWrite = Math.Min(outputStream.Length, buffer.Length);
 

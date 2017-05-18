@@ -58,8 +58,21 @@ namespace VVVV.Nodes
 				Author = "woei")]
 	
 	public class SelectEnum : SelectBin<EnumEntry>
-	{	
-	}
+    {
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            var outputPin = FOutputContainer.GetPluginIO() as IPin;
+            var subType = outputPin.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (outputPin as IEnumOut).SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
 	#endregion Enumerations Node
 	
 	#region Raw Node

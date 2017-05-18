@@ -11,50 +11,68 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes.Generic
 {
-	public class CDRBin<T> : IPluginEvaluate
+	public class CDRBin<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
         #region fields & pins
         readonly VecBinSpread<T> spread = new VecBinSpread<T>();
 
         #pragma warning disable 649
-        [Input("Input", CheckIfChanged = true, AutoValidate = false)]
-		IInStream<T> FInput;
+        protected IIOContainer<IInStream<T>> FInputContainer;
 		
-		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false)]
+		[Input("Bin Size", DefaultValue = -1, CheckIfChanged = true, AutoValidate = false, Order = 10)]
 		IInStream<int> FBin;
 		
-		[Output("Remainder")]
-		IOutStream<T> FRemainder;
-		
-		[Output("Last Slice")]
-		IOutStream<T> FLast;
-		#pragma warning restore
-		#endregion fields & pins
-		
-		//called when data for any output pin is requested
-		public void Evaluate(int SpreadMax)
+        protected IIOContainer<IOutStream<T>> FRemainderContainer;		
+        protected IIOContainer<IOutStream<T>> FLastContainer;
+
+        [Import]
+        IIOFactory FFactory;
+        #pragma warning restore
+        #endregion fields & pins
+
+        public void OnImportsSatisfied()
+        {
+            FInputContainer = FFactory.CreateIOContainer<IInStream<T>>(
+                new InputAttribute("Input") { CheckIfChanged = true, AutoValidate = false });
+
+            FRemainderContainer = FFactory.CreateIOContainer<IOutStream<T>>(
+                new OutputAttribute("Remainder"));
+
+            FLastContainer = FFactory.CreateIOContainer<IOutStream<T>>(
+                new OutputAttribute("Last Slice"));
+        }
+
+        protected virtual void Prepare() { }
+
+        //called when data for any output pin is requested
+        public void Evaluate(int SpreadMax)
 		{
-			FInput.Sync(); 
+            Prepare();
+            var input = FInputContainer.IOObject;
+            var remainder = FRemainderContainer.IOObject;
+            var last = FLastContainer.IOObject;
+
+			input.Sync(); 
 			FBin.Sync();
 			
-			if (FInput.IsChanged || FBin.IsChanged)
+			if (input.IsChanged || FBin.IsChanged)
 			{
-				spread.Sync(FInput,1,FBin);
+				spread.Sync(input,1,FBin);
 				
-				FLast.Length = spread.Count;
-				if (FLast.Length == spread.ItemCount || spread.ItemCount==0)
+				last.Length = spread.Count;
+				if (last.Length == spread.ItemCount || spread.ItemCount==0)
 				{
-					FRemainder.Length = 0;
+					remainder.Length = 0;
 					if (spread.ItemCount!=0)
-						FLast.AssignFrom(FInput);
+						last.AssignFrom(input);
 					else
-						FLast.Length=0;
+						last.Length=0;
 				}
 				else
 				{
-					FRemainder.Length = spread.ItemCount-FLast.Length;
-					using (var rWriter = FRemainder.GetWriter())
-					using (var lWriter = FLast.GetWriter())
+					remainder.Length = spread.ItemCount-last.Length;
+					using (var rWriter = remainder.GetWriter())
+					using (var lWriter = last.GetWriter())
 					{
 						for (int b = 0; b < spread.Count; b++)
 						{

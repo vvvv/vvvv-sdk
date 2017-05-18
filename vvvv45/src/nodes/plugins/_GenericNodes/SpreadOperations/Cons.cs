@@ -85,6 +85,22 @@ namespace VVVV.Nodes
                 )]
     public class EnumCons : Cons<EnumEntry>
     {
+        string FLastSubType;
+
+        protected override bool Prepare()
+        {
+            var outputPin = FOutputContainer.GetPluginIO() as IPin;
+            var subType = outputPin.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (outputPin as IEnumOut).SetSubType(subType);
+                foreach (var inputPin in FInputContainer.GetPluginIOs().OfType<IEnumIn>())
+                    inputPin.SetSubType(subType);
+                return true;
+            }
+            return base.Prepare();
+        }
     }
 
     [PluginInfo(Name = "Cons",

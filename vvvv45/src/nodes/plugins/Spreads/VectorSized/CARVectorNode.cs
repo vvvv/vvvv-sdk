@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.Composition;
 using VVVV.Nodes.Generic;
+using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VColor;
@@ -101,7 +102,24 @@ namespace VVVV.Nodes
 	#region PluginInfo
 	[PluginInfo(Name = "CAR", Category = "Enumerations", Version = "Bin", Help = "Splits the spread into the first element and the rest, with bin size", Author = "woei")]
 	#endregion PluginInfo
-	public class CAREnumBin : CARBin<EnumEntry> {}
+	public class CAREnumBin : CARBin<EnumEntry>
+    {
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            var first = FFirstContainer.GetPluginIO() as IPin;
+            var remainder = FRemainderContainer.GetPluginIO() as IPin;
+            var subType = first.GetDownstreamSubType() ?? remainder.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (first as IEnumOut).SetSubType(subType);
+                (remainder as IEnumOut).SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "CAR", Category = "Raw", Version = "Bin", Help = "Splits the spread into the first element and the rest, with bin size", Author = "woei")]
