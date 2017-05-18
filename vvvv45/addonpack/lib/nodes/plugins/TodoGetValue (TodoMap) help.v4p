@@ -1,0 +1,269 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\TodoGetValue (TodoMap) help.v4p" filename="C:\Users\vux\Desktop\plugins\StringTest\UGRParserTest.v4p" systemname="UGRParserTest">
+   <BOUNDS height="8715" left="1575" top="1395" type="Window" width="12090">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="675" left="255" top="525" type="Box" width="3375">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Retrieves a variable value from Mapper|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|TodoGetValue (TodoMap)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" id="17" nodename="TodoMap (TodoMap)" systemname="TodoMap (TodoMap)">
+   <BOUNDS height="270" left="3300" top="2820" type="Node" width="2220">
+   </BOUNDS>
+   <BOUNDS height="8805" left="6675" top="525" type="Window" width="16935">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Learn Mode" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Path" visible="1">
+   </PIN>
+   <PIN pinname="Load" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Save" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="OSC Ignore List" visible="1" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Clear Mappings" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Clear Variables" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Auto Load" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Save On Exit" visible="1" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" id="18" nodename="TodoGetValue (TodoMap)" systemname="TodoGetValue (TodoMap)">
+   <BOUNDS height="270" left="1605" top="5475" type="Node" width="2640">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Variable Name" visible="1">
+   </PIN>
+   <PIN pinname="Auto Register" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Is Found" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="18" dstpinname="Engine" srcnodeid="17" srcpinname="Engine" linkstyle="Bezier">
+   <LINKPOINT x="3285" y="4275">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="4275">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="1605" top="6375" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="270" left="1605" top="6375" type="Box" width="945">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Y Input Value" srcnodeid="18" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="100" left="4020" top="2190" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="240" left="4020" top="2190" type="Box" width="1785">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" values="TodoMap.xml">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Path">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Path" srcnodeid="20" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\myplugins\lib\nodes\plugins\VVVV.Nodes.TodoMap.dll" id="33" nodename="TodoGetValue (TodoMap)" systemname="TodoGetValue (TodoMap)">
+   <BOUNDS height="270" left="5625" top="6060" type="Node" width="2640">
+   </BOUNDS>
+   <PIN pinname="Engine" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Variable Name" visible="1">
+   </PIN>
+   <PIN pinname="Auto Register" visible="1">
+   </PIN>
+   <PIN pinname="Normalized Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="34">
+   <BOUNDS type="Node" left="5625" top="7125" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5625" top="7125" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Output" dstnodeid="34" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="35">
+   <BOUNDS type="Node" left="6480" top="3810" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6480" top="3810" width="1290" height="555">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="2" values="alpha,scale" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Name" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Output String" dstnodeid="33" dstpinname="Variable Name">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Engine" dstnodeid="33" dstpinname="Engine" linkstyle="Bezier">
+   <LINKPOINT x="3360" y="4458">
+   </LINKPOINT>
+   <LINKPOINT x="5625" y="4678">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="36">
+   <BOUNDS type="Node" left="2475" top="4725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2475" top="4725" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="alpha" encoded="0">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Name" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="36" srcpinname="Output String" dstnodeid="18" dstpinname="Variable Name">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7845" top="3900" width="2580" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7845" top="3900" width="2580" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Variable input also spreadable|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="38">
+   <BOUNDS type="Node" left="7350" top="4650" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7350" top="4650" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Normalized" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Normalized Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8025" top="4680" width="4575" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8025" top="4680" width="3150" height="555">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Retrieves normalized value (0-&gt;1) instead of mapped value|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="40" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="8205" top="5310" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="8205" top="5310" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Auto Register|" encoded="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="33" dstpinname="Auto Register">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="41" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8805" top="5430" width="2505" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8805" top="5430" width="2505" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;-- Register variable if not found|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="42" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <BOUNDS height="100" left="4170" top="6225" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="480" left="4170" top="6225" type="Box" width="480">
+   </BOUNDS>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Found">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Is Found" dstnodeid="42" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>
