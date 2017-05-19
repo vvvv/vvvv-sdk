@@ -12,28 +12,45 @@ using VVVV.Core.Logging;
 
 namespace VVVV.Nodes.Generic
 {
-	public class SelectBin<T>: IPluginEvaluate
+	public class SelectBin<T>: IPluginEvaluate, IPartImportsSatisfiedNotification
 	{
 		#region fields & pins
-		[Input("Input", BinSize = 1)]
-		protected ISpread<ISpread<T>> FInput;
+		protected IIOContainer<ISpread<ISpread<T>>> FInputContainer;
 	
-		[Input("Select", DefaultValue = 1, MinValue = 0)]
+		[Input("Select", DefaultValue = 1, MinValue = 0, Order = 100)]
 		protected ISpread<int> FSelect;
 		
-		[Output("Output")]
-		protected ISpread<ISpread<T>> FOutput;
+		protected IIOContainer<ISpread<ISpread<T>>> FOutputContainer;
 		
-		[Output("Former Slice")]
+		[Output("Former Slice", Order = 100)]
 		protected ISpread<int> FFormerSlice;
-		#endregion fields & pins
-		
-		//called when data for any output pin is requested
-		public virtual void Evaluate(int SpreadMax)
+
+        [Import]
+        IIOFactory FFactory;
+        #endregion fields & pins
+
+        public void OnImportsSatisfied()
+        {
+            FInputContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new InputAttribute("Input") { BinSize = 1 });
+
+            FOutputContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new OutputAttribute("Output"));
+        }
+
+        protected virtual void Prepare() { }
+
+        //called when data for any output pin is requested
+        public virtual void Evaluate(int SpreadMax)
 		{
-			int sMax = SpreadUtils.SpreadMax(FInput, FSelect);
-			
-			FOutput.SliceCount = 0;
+            Prepare();
+
+            var input = FInputContainer.IOObject;
+            var output = FOutputContainer.IOObject;
+
+			int sMax = SpreadUtils.SpreadMax(input, FSelect);
+
+            output.SliceCount = 0;
 			FFormerSlice.SliceCount=0;
 			
 			for (int i = 0; i < sMax; i++) 
@@ -42,15 +59,14 @@ namespace VVVV.Nodes.Generic
 				{
 					if (s==0)
 					{
-						FOutput.SliceCount++;
-						FOutput[FOutput.SliceCount-1].SliceCount=0;
+                        output.SliceCount++;
+                        output[output.SliceCount-1].SliceCount=0;
 					}
-					FOutput[FOutput.SliceCount-1].AddRange(FInput[i]);
+                    output[output.SliceCount-1].AddRange(input[i]);
 					
 					FFormerSlice.Add(i);
 				}
 			}
 		}
-		
-	}
+    }
 }

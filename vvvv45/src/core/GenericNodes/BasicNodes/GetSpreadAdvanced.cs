@@ -1,6 +1,6 @@
 ﻿#region usings
 using System;
-
+using System.ComponentModel.Composition;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
@@ -10,26 +10,43 @@ using VVVV.Utils.VMath;
 
 namespace VVVV.Nodes.Generic
 {
-	public class GetSpreadAdvanced<T> : IPluginEvaluate
-	{
+	public class GetSpreadAdvanced<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
+    {
 	    #region fields & pins
-	    [Input("Input")]
-        protected IInStream<IInStream<T>> FInput;
+	    protected IIOContainer<IInStream<IInStream<T>>> FInputContainer;
 	    
-	    [Input("Offset")]
+	    [Input("Offset", Order = 10)]
         protected IInStream<int> FOffset;
 	    
-	    [Input("Count", DefaultValue = 1)]
+	    [Input("Count", DefaultValue = 1, Order = 20)]
         protected IInStream<int> FCount;
 	
-	    [Output("Output")]
-        protected IOutStream<IInStream<T>> FOutput;
-	    #endregion fields & pins
-	
-	    //called when data for any output pin is requested
-	    public void Evaluate(int spreadMax)
+        protected IIOContainer<IOutStream<IInStream<T>>> FOutputContainer;
+
+        [Import]
+        IIOFactory FFactory;
+        #endregion fields & pins
+
+        public void OnImportsSatisfied()
+        {
+            FInputContainer = FFactory.CreateIOContainer<IInStream<IInStream<T>>>(
+                new InputAttribute("Input"));
+
+            FOutputContainer = FFactory.CreateIOContainer<IOutStream<IInStream<T>>>(
+                new OutputAttribute("Output"));
+        }
+
+        protected virtual void Prepare() { }
+
+        //called when data for any output pin is requested
+        public void Evaluate(int spreadMax)
 	    {
-	        FOutput.Length = StreamUtils.GetMaxLength(FInput, FOffset, FCount);
+            Prepare();
+
+            var input = FInputContainer.IOObject;
+            var output = FOutputContainer.IOObject; 
+
+	        output.Length = StreamUtils.GetMaxLength(input, FOffset, FCount);
 	
 	        var inputBuffer = MemoryPool<IInStream<T>>.GetArray();
 	        var offsetBuffer = MemoryPool<int>.GetArray();
@@ -37,12 +54,12 @@ namespace VVVV.Nodes.Generic
 	        
 	        try
 	        {
-	            using (var inputReader = FInput.GetCyclicReader())
+	            using (var inputReader = input.GetCyclicReader())
 	            using (var offsetReader = FOffset.GetCyclicReader())
 	            using (var countReader = FCount.GetCyclicReader())
-	            using (var outputWriter = FOutput.GetWriter())
+	            using (var outputWriter = output.GetWriter())
 	            {
-	                var numSlicesToWrite = FOutput.Length;
+	                var numSlicesToWrite = output.Length;
 	                while (numSlicesToWrite > 0)
 	                {
 	                    var blockSize = Math.Min(numSlicesToWrite, inputBuffer.Length);
@@ -90,5 +107,5 @@ namespace VVVV.Nodes.Generic
 	            MemoryPool<int>.PutArray(countBuffer);
 	        }
 	    }
-	}
+    }
 }

@@ -8,11 +8,12 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Streams;
+using System.Collections.Generic;
 #endregion usings
 
 namespace VVVV.Nodes.Generic
 {
-    public class Cons<T> : IPluginEvaluate
+    public class Cons<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         //// Much simpler and cleaner
         //[Input("Input", IsPinGroup = true)]
@@ -29,32 +30,49 @@ namespace VVVV.Nodes.Generic
         //}
 
         // But this is a few ticks faster ...
-        [Input("Input", IsPinGroup = true)]
-        protected IInStream<IInStream<T>> FInputStreams;
+        protected IIOContainer<IInStream<IInStream<T>>> FInputContainer;
+        protected IIOContainer<IOutStream<T>> FOutputContainer;
 
-        [Output("Output")]
-        protected IOutStream<T> FOutputStream;
-
-        [Output("Output Bin Size")]
+        [Output("Output Bin Size", Order = 100)]
         protected IOutStream<int> FOutputBinSizeStream;
+
+        [Import]
+        protected IIOFactory FFactory;
+
+        public void OnImportsSatisfied()
+        {
+            FInputContainer = FFactory.CreateIOContainer<IInStream<IInStream<T>>>(
+                new InputAttribute("Input") { IsPinGroup = true });
+
+            FOutputContainer = FFactory.CreateIOContainer<IOutStream<T>>(
+                new OutputAttribute("Output"));
+        }
+
+        /// <summary>
+        /// Called before evaluation of the node starts. Return false in case nothing has to be done.
+        /// </summary>
+        protected virtual bool Prepare() => FInputContainer.IOObject.IsChanged;
 
         public void Evaluate(int SpreadMax)
         {
             // Early exit - important for expensive types like strings and streams.
-            if (!FInputStreams.IsChanged)
+            if (!Prepare())
                 return;
 
-            var outputLength = FInputStreams.GetLengthSum();
-            FOutputStream.Length = outputLength;
-            FOutputBinSizeStream.Length = FInputStreams.Length;
+            var inputStreams = FInputContainer.IOObject;
+            var outputStream = FOutputContainer.IOObject;
+
+            var outputLength = inputStreams.GetLengthSum();
+            outputStream.Length = outputLength;
+            FOutputBinSizeStream.Length = inputStreams.Length;
 
             var buffer = MemoryPool<T>.GetArray();
             try
             {
-                using (var writer = FOutputStream.GetWriter())
+                using (var writer = outputStream.GetWriter())
                 using (var binSizeWriter = FOutputBinSizeStream.GetWriter())
                 {
-                    foreach (var inputStream in FInputStreams)
+                    foreach (var inputStream in inputStreams)
                     {
                         using (var reader = inputStream.GetReader())
                         {

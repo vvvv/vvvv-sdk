@@ -14,22 +14,20 @@ namespace VVVV.Nodes
 {
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SetSlice",
+	[PluginInfo(Name = "GetSlice",
 	            Category = "Transform",
-	            Help = "Replaces slices in the Spread that are addressed by the Index pin, with the given Input.",
-	            Tags = "",
-	            Author = "woei")]
+	            Help = "Returns slices of the Input spread that are addressed by the Index pin.",
+	            Tags = "")]
 	#endregion PluginInfo
-	public class SetSliceTransform : SetSlice<Matrix4x4> {}
+	public class GetSliceTransform : GetSlice<Matrix4x4> {}
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SetSlice",
+	[PluginInfo(Name = "GetSlice",
 	            Category = "Enumerations",
-	            Help = "Replaces slices in the Spread that are addressed by the Index pin, with the given Input.",
-	            Tags = "",
-	            Author = "woei")]
+	            Help = "Returns slices of the Input spread that are addressed by the Index pin.",
+	            Tags = "")]
 	#endregion PluginInfo
-	public class SetSliceEnum : SetSlice<EnumEntry>
+	public class GetSliceEnum : GetSlice<EnumEntry>
     {
         string FLastSubType;
 
@@ -41,18 +39,16 @@ namespace VVVV.Nodes
             {
                 FLastSubType = subType;
                 (outputPin as IEnumOut).SetSubType(subType);
-                (FSpreadContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
                 (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
             }
         }
     }
 	
 	#region PluginInfo
-	[PluginInfo(Name = "SetSlice",
+	[PluginInfo(Name = "GetSlice",
 	            Category = "Raw",
-	            Help = "Replaces slices in the Spread that are addressed by the Index pin, with the given Input.",
-	            Tags = "",
-	            Author = "woei")]
+	            Help = "Returns slices of the Input spread that are addressed by the Index pin.",
+	            Tags = "")]
 	#endregion PluginInfo
-	public class SetSliceRaw : SetSlice<System.IO.Stream> {}
+	public class GetSliceRaw : GetSlice<System.IO.Stream> {}
 }

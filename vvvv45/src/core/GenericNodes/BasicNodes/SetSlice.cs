@@ -13,41 +13,56 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes.Generic
 {
 
-    public class SetSlice<T> : IPluginEvaluate
+    public class SetSlice<T> : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
         #region fields & pins
 #pragma warning disable 0649
-        [Input("Spread", BinName = "Bin Size", BinSize = 1, BinOrder = 1)]
-        ISpread<ISpread<T>> FSpread;
+        protected IIOContainer<ISpread<ISpread<T>>> FSpreadContainer;
+        protected IIOContainer<ISpread<T>> FInputContainer;
 
-        [Input("Input")]
-        ISpread<T> FInput;
-
-        [Input("Index", Order = 2)]
+        [Input("Index", Order = 100)]
         ISpread<int> FIndex;
 
-        [Output("Output")]
-        ISpread<ISpread<T>> FOutput;
+        protected IIOContainer<ISpread<ISpread<T>>> FOutputContainer;
+
+        [Import]
+        IIOFactory FFactory;
 #pragma warning restore
         #endregion fields & pins
+
+        public void OnImportsSatisfied()
+        {
+            FSpreadContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new InputAttribute("Spread") { BinName = "Bin Size", BinSize = 1, BinOrder = 1 });
+
+            FInputContainer = FFactory.CreateIOContainer<ISpread<T>>(
+                new InputAttribute("Input"));
+
+            FOutputContainer = FFactory.CreateIOContainer<ISpread<ISpread<T>>>(
+                new OutputAttribute("Output"));
+        }
+
+        protected virtual void Prepare() { }
 
         //called when data for any output pin is requested
         public void Evaluate(int SpreadMax)
         {
-            var count = FOutput.SliceCount = FSpread.SliceCount;
+            Prepare();
+
+            var count = FOutputContainer.IOObject.SliceCount = FSpreadContainer.IOObject.SliceCount;
 
             int incr = 0;
             for (int i = 0; i < count; i++)
             {
-                var os = FOutput[i];
+                var os = FOutputContainer.IOObject[i];
                 var ind = VMath.Zmod(FIndex[i], count);
                 if (i != ind)
-                    os.AssignFrom(FSpread[i]);
+                    os.AssignFrom(FSpreadContainer.IOObject[i]);
                 else
                 {
                     var osCount = os.SliceCount;
                     for (int s = 0; s < osCount; s++)
-                        os[s] = FInput[incr + s];
+                        os[s] = FInputContainer.IOObject[incr + s];
                     incr += osCount;
                 }
             }
