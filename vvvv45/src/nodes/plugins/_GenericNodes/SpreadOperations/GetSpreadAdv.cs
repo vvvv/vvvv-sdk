@@ -58,7 +58,22 @@ namespace VVVV.Nodes
                 Tags = "",
                 Author = "woei")]
     #endregion PluginInfo
-    public class GetSpreadEnum : GetSpreadAdvanced<EnumEntry> {}
+    public class GetSpreadEnum : GetSpreadAdvanced<EnumEntry>
+    {
+        string FLastSubType;
+
+        protected override void Prepare()
+        {
+            var outputPin = FOutputContainer.GetPluginIO() as IPin;
+            var subType = outputPin.GetDownstreamSubType();
+            if (subType != FLastSubType)
+            {
+                FLastSubType = subType;
+                (outputPin as IEnumOut).SetSubType(subType);
+                (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
+            }
+        }
+    }
     
     #region PluginInfo
     [PluginInfo(Name = "GetSpread",
