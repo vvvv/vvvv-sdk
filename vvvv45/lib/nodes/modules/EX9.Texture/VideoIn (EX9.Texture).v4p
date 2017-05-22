@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.7.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9.Texture\VideoIn (EX9.Texture).v4p" systemname="VideoIn (EX9.Texture)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\VideoIn (EX9.Texture)v4p.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.6.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\VideoIn (EX9.Texture).v4p" systemname="VideoIn (EX9.Texture)" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\VideoIn (EX9.Texture)v4p.v4p">
    <BOUNDS type="Window" left="9900" top="5100" width="14370" height="6000">
    </BOUNDS>
    <NODE systemname="VideoIn (DShow9)" nodename="VideoIn (DShow9)" componentmode="Hidden" id="0">
@@ -12,14 +12,6 @@
    <PIN pinname="Analog Video Standard" slicecount="1" values="None">
    </PIN>
    </NODE>
-   <NODE systemname="VideoTexture (EX9.Texture VMR9 YUVMixingMode)" nodename="VideoTexture (EX9.Texture VMR9 YUVMixingMode)" componentmode="Hidden" id="1">
-   <BOUNDS type="Node" left="2055" top="3135" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Video" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="0" srcpinname="Video" dstnodeid="1" dstpinname="Video">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="2" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="2085" top="4410" width="795" height="240">
    </BOUNDS>
@@ -28,8 +20,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Texture Out|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Texture Out" dstnodeid="2" dstpinname="Input Node">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3600" top="4440" width="795" height="240">
    </BOUNDS>
@@ -42,8 +32,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Average Framerate|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Average Framerate" dstnodeid="3" dstpinname="Y Input Value">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="405" top="885" width="480" height="480">
    </BOUNDS>
@@ -141,7 +129,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="6120" top="885" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="RGB24">
+   <PIN pinname="Input Enum" slicecount="1" values="MJPG">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="|Video Format|">
    </PIN>
@@ -153,7 +141,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="8010" top="885" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="|HP Webcam [2 MP Macro]|">
+   <PIN pinname="Input Enum" slicecount="1" values="|Integrated Webcam|">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Driver">
    </PIN>
@@ -178,8 +166,6 @@
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Adapter">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="12060" top="2370" width="795" height="240">
    </BOUNDS>
@@ -198,8 +184,6 @@
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Wait for every Nth frame">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="15" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="9300" top="2370" width="1590" height="240">
    </BOUNDS>
@@ -212,8 +196,28 @@
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
-   <LINK srcnodeid="15" srcpinname="Output Enum" dstnodeid="1" dstpinname="Texture Size Mode">
-   </LINK>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE systemname="VideoTexture (EX9.Texture VMR9)" nodename="VideoTexture (EX9.Texture VMR9)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="2055" top="3135" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Video" visible="1">
+   </PIN>
+   <PIN pinname="Deinterlace Mode" slicecount="1" values="|No Deinterlacing|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Video" dstnodeid="1" dstpinname="Video">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Texture Out" dstnodeid="2" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Average Framerate" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Adapter">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Wait for every Nth frame">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Output Enum" dstnodeid="1" dstpinname="Texture Size Mode">
+   </LINK>
    </PATCH>
