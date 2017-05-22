@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.104.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv50\public\vvvv45\lib\nodes\plugins\SpoutSenderNames (System) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\SpoutSenderNames (System) help.v4p">
    <BOUNDS type="Window" left="435" top="5760" width="5970" height="8010">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -25,9 +25,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="1140" top="2220" width="480" height="480">
+   <BOUNDS type="Box" left="3600" top="2205" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="1140" top="2220" width="0" height="0">
+   <BOUNDS type="Node" left="3600" top="2205" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -57,10 +57,14 @@
    </PIN>
    <PIN pinname="Input String" slicecount="1" values="||">
    </PIN>
+   <PIN pinname="SliceOffset" visible="1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <PACK Name="ImagePack" Version="0.2.0">
    </PACK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
    <BOUNDS type="Node" left="135" top="6180" width="750" height="270">
@@ -81,9 +85,9 @@
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="1710" top="2340" width="780" height="270">
+   <BOUNDS type="Node" left="4170" top="2325" width="780" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1710" top="2340" width="780" height="270">
+   <BOUNDS type="Box" left="4170" top="2325" width="780" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Update|">
    </PIN>
@@ -123,9 +127,9 @@
    </PIN>
    </NODE>
    <NODE nodename="SpoutSenderNames (System)" componentmode="Hidden" id="21" systemname="SpoutSenderNames (System)" filename="%VVVV%\lib\nodes\modules\EX9\plugins\VVVVSpoutSender\VVVVSpoutSender.csproj">
-   <BOUNDS type="Node" left="1125" top="3135" width="0" height="0">
+   <BOUNDS type="Node" left="3585" top="3120" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1125" top="3135" width="0" height="0">
+   <BOUNDS type="Box" left="3585" top="3120" width="0" height="0">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Update">
@@ -140,4 +144,36 @@
    <BOUNDS type="Node" left="1005" top="6630" width="100" height="100">
    </BOUNDS>
    </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22">
+   <BOUNDS type="Box" left="540" top="2970" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="540" top="2970" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="5" dstpinname="SliceOffset">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23">
+   <BOUNDS type="Node" left="1455" top="2970" width="2715" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="2970" width="1680" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; scroll to see more than 10 entries|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="vvvv-Message" Version="2.9.8">
+   </PACK>
    </PATCH>
