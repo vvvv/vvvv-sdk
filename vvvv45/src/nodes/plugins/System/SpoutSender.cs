@@ -14,7 +14,7 @@ namespace Spout
     public class SpoutSender : IDisposable
     {
         const string CSenderNamesHandle = "SpoutSenderNames";
-        const int CMaxSenders = 10;
+        const int CMaxSenders = 40;
         const int CSenderNameLength = 256;
         const string CActiveSenderHandle = "ActiveSenderName";
         const int CSpoutWaitTimeout = 100;
