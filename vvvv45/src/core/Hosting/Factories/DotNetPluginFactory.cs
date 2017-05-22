@@ -259,7 +259,9 @@ namespace VVVV.Hosting.Factories
                 namedArguments.Remove("InitialBoxWidth");
                 namedArguments.Remove("InitialBoxHeight");
             }
-            
+            else
+                nodeInfo.InitialBoxSize = new Size(200, 200);
+
             if (namedArguments.ContainsKey("InitialComponentMode"))
             {
                 nodeInfo.InitialComponentMode = (TComponentMode) namedArguments["InitialComponentMode"];
