@@ -1473,7 +1473,6 @@ namespace VVVV.Utils.VMath
 		
 		/// <summary>
 		/// Creates a transform matrix from translation, scaling and rotation parameters
-		/// Like the vvvv node Transform (3d)
 		/// </summary>
 		/// <param name="transX"></param>
 		/// <param name="transY"></param>
@@ -1494,7 +1493,6 @@ namespace VVVV.Utils.VMath
 		
 		/// <summary>
 		/// Creates a transform matrix from translation, scaling and rotation parameters given as 3d-vectors
-		/// Like the vvvv node Transform (3d Vector)
 		/// </summary>
 		/// <param name="trans"></param>
 		/// <param name="scale"></param>
@@ -1504,16 +1502,50 @@ namespace VVVV.Utils.VMath
 		{
 			return Rotate(rot.x, rot.y, rot.z) * Scale(scale.x, scale.y, scale.z) * Translate(trans.x, trans.y, trans.z);
 		}
-		
-		/// <summary>
-		/// Builds a left-handed perspective projection matrix based on a field of view.
+
+        /// <summary>
+		/// Creates a transform matrix from translation, scaling and rotation parameters
+		/// Like the vvvv node Transform (3d)
 		/// </summary>
-		/// <param name="FOV">Camera angle in cycles, [0..0.5]</param>
-		/// <param name="Near">Near Plane z</param>
-		/// <param name="Far">Far Plane z</param>
-		/// <param name="Aspect">Aspect Ratio</param>
-		/// <returns>Projection matrix</returns>
-		public static Matrix4x4 PerspectiveLH(double FOV, double Near, double Far, double Aspect)
+		/// <param name="transX"></param>
+		/// <param name="transY"></param>
+		/// <param name="transZ"></param>
+		/// <param name="scaleX"></param>
+		/// <param name="scaleY"></param>
+		/// <param name="scaleZ"></param>
+		/// <param name="rotX"></param>
+		/// <param name="rotY"></param>
+		/// <param name="rotZ"></param>
+		/// <returns>Transform matrix</returns>
+		public static Matrix4x4 TransformVVVV(double transX, double transY, double transZ,
+                                              double scaleX, double scaleY, double scaleZ,
+                                              double rotX, double rotY, double rotZ)
+        {
+            return Scale(scaleX, scaleY, scaleZ) * Rotate(rotX, rotY, rotZ) * Translate(transX, transY, transZ);
+        }
+
+        /// <summary>
+        /// Creates a transform matrix from translation, scaling and rotation parameters given as 3d-vectors
+        /// Like the vvvv node Transform (3d Vector)
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <param name="scale"></param>
+        /// <param name="rot"></param>
+        /// <returns>Transform matrix</returns>
+        public static Matrix4x4 TransformVVVV(Vector3D trans, Vector3D scale, Vector3D rot)
+        {
+            return  Scale(scale.x, scale.y, scale.z) * Rotate(rot.x, rot.y, rot.z) * Translate(trans.x, trans.y, trans.z);
+        }
+
+        /// <summary>
+        /// Builds a left-handed perspective projection matrix based on a field of view.
+        /// </summary>
+        /// <param name="FOV">Camera angle in cycles, [0..0.5]</param>
+        /// <param name="Near">Near Plane z</param>
+        /// <param name="Far">Far Plane z</param>
+        /// <param name="Aspect">Aspect Ratio</param>
+        /// <returns>Projection matrix</returns>
+        public static Matrix4x4 PerspectiveLH(double FOV, double Near, double Far, double Aspect)
 		{
 			double scaleY = 1.0/Math.Tan(FOV * Math.PI);
 			double scaleX = scaleY / Aspect;
