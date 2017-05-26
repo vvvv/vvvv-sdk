@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.104.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9.Geometry\BezierPatch (EX9.Geometry 2d).v4p" componentmode="InAWindow" systemname="BezierPatch (EX9.Geometry 3d)" filename="C:\Users\joreg\Documents\repos\vvvv\vvvv50\demos\Editors\BezierPatch (EX9.Geometry 3d).v4p" scrollx="3660" scrolly="15">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.6.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\lib\nodes\modules\EX9.Geometry\BezierPatch (EX9.Geometry 2d).v4p" componentmode="InAWindow" systemname="BezierPatch (EX9.Geometry 3d)" filename="C:\Users\joreg\Documents\repos\vvvv\vvvv50\demos\Editors\BezierPatch (EX9.Geometry 3d).v4p" scrollx="3660" scrolly="15">
    <BOUNDS height="9750" left="11055" top="585" type="Window" width="14115">
    </BOUNDS>
    <NODE id="41" nodename="Mesh (EX9.Geometry Join)" systemname="Mesh (EX9.Geometry Join)">
@@ -81,6 +81,8 @@
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Clamped">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\modules\3D\B-Spline (3D Surface Normals).v4p" id="1" nodename="..\3D\B-Spline (3D Surface Normals).v4p" systemname="B-Spline (3d Surface Normals)">
    <BOUNDS height="0" left="8715" top="5040" type="Node" width="0">
@@ -122,7 +124,7 @@
    </LINK>
    <INFO author="vvvv group" description="Lets you generate a grid by specifying spacings inbetween the controlpoints. The grid then can be modified in the renderer." tags="modelling, patch, B-Spline, 3d, helper, tool">
    </INFO>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="101" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="10395" top="8145" width="795" height="240">
@@ -242,7 +244,7 @@
    </NODE>
    <LINK srcnodeid="113" srcpinname="Changed" dstnodeid="106" dstpinname="Input 3">
    </LINK>
-   <NODE systemname="GridPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p" nodename="GridPoints (2d)" componentmode="Hidden" id="116">
+   <NODE systemname="GridSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p" nodename="GridPoints (2d)" componentmode="Hidden" id="116">
    <BOUNDS type="Node" left="3975" top="2145" width="100" height="100">
    </BOUNDS>
    <PIN pinname="ResolutionXY" visible="1">
@@ -342,14 +344,14 @@
    </LINK>
    <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="118" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="GridPoints (2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p" nodename="GridPoints (2d)" componentmode="Hidden" id="134">
+   <NODE systemname="GridSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\GridPoints (2d).v4p" nodename="GridPoints (2d)" componentmode="Hidden" id="134">
    <BOUNDS type="Node" left="10980" top="5040" width="100" height="100">
    </BOUNDS>
    <PIN pinname="ResolutionXY" visible="1">
    </PIN>
    <PIN pinname="XY" visible="1">
    </PIN>
-   <PIN pinname="CenterXY" slicecount="2" values="0.5,0.5" visible="1">
+   <PIN pinname="CenterXY" slicecount="2" visible="1" values="0.5,0.5">
    </PIN>
    <PIN pinname="SizeXY" visible="1" slicecount="2" values="1,1">
    </PIN>
