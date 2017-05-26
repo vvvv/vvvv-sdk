@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9) help.v4p" locked="0" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="0" top="0" width="11520" height="9825">
    </BOUNDS>
@@ -51,6 +51,10 @@
    </PIN>
    <BOUNDS type="Window" left="2895" top="2625" width="14760" height="9450">
    </BOUNDS>
+   <PIN pinname="Initial Longitude" visible="1">
+   </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
    </NODE>
    <NODE systemname="Vertigo (Transform)" nodename="Vertigo (Transform)" componentmode="Hidden" id="22">
    <BOUNDS type="Node" left="6720" top="4725" width="100" height="100">
@@ -361,6 +365,8 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Initial Yaw">
    </LINK>
@@ -374,6 +380,8 @@
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Initial Pitch">
@@ -542,7 +550,7 @@
    </NODE>
    <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Fill">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="21" hiddenwhenlocked="0">
    <BOUNDS type="Node" left="885" top="6315" width="100" height="100">
@@ -553,5 +561,9 @@
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="21" srcpinname="Layer" dstnodeid="17" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Initial Longitude">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Initial Latitude">
    </LINK>
    </PATCH>
