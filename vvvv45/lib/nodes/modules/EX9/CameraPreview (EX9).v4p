@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9).v4p" scrollx="510" scrolly="0" systemname="CameraPreview (EX9)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9).v4p" scrollx="0" scrolly="0" systemname="CameraPreview (EX9)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\CameraPreview (EX9).v4p">
    <BOUNDS type="Window" left="2895" top="2625" width="14760" height="9450">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE componentmode="InABox" id="1" nodename="IOBox (Node)" systemname="IOBox (Node)">
    <BOUNDS height="0" left="795" top="660" type="Node" width="0">
@@ -83,7 +83,7 @@
    <NODE componentmode="InAWindow" id="9" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="3960" top="7845" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="3630" left="11520" top="4860" type="Window" width="6135">
+   <BOUNDS height="6255" left="11520" top="4860" type="Window" width="8070">
    </BOUNDS>
    <BOUNDS height="4335" left="3960" top="7845" type="Box" width="4890">
    </BOUNDS>
@@ -275,15 +275,15 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Yaw|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Longitude|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="18" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="11325" top="660" width="795" height="240">
+   <BOUNDS type="Box" left="11655" top="630" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="11325" top="660" width="0" height="0">
+   <BOUNDS type="Node" left="11655" top="630" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.12">
    </PIN>
@@ -291,7 +291,7 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Pitch|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Initial Latitude|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -299,9 +299,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="17" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="12300" top="660" width="795" height="240">
+   <BOUNDS type="Box" left="12840" top="630" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="12300" top="660" width="0" height="0">
+   <BOUNDS type="Node" left="12840" top="630" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="25">
    </PIN>
@@ -317,9 +317,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="16" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="13395" top="660" width="450" height="465">
+   <BOUNDS type="Box" left="13935" top="630" width="450" height="465">
    </BOUNDS>
-   <BOUNDS type="Node" left="13395" top="660" width="0" height="0">
+   <BOUNDS type="Node" left="13935" top="630" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.11306,0.11306,0.11306,1.00000|">
    </PIN>
@@ -428,7 +428,7 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="7">
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="5535" top="7275" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Initial Yaw" visible="1">
@@ -447,6 +447,10 @@
    </PIN>
    <PIN pinname="Initial InterestXYZ" visible="1">
    </PIN>
+   <PIN pinname="Initial Longitude" visible="1">
+   </PIN>
+   <PIN pinname="Initial Latitude" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="View" dstnodeid="9" dstpinname="View">
    </LINK>
@@ -461,5 +465,9 @@
    <LINK srcnodeid="23" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Initial FOV">
    </LINK>
    <LINK srcnodeid="13" srcpinname="Output" dstnodeid="7" dstpinname="Initial InterestXYZ">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Initial Longitude">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Initial Latitude">
    </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.4.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\CameraCone (EX9).v4p" systemname="CameraCone (DX9)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\CameraCone (DX9).v4p" scrollx="15" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\CameraCone (EX9).v4p" systemname="CameraCone (DX9)" filename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\modules\EX9\CameraCone (DX9).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="1665" top="7500" width="19020" height="9060">
    </BOUNDS>
    <NODE hiddenwhenlocked="0" id="27" nodename="Inverse (Transform)" systemname="Inverse (Transform)">
@@ -272,7 +272,7 @@
    </NODE>
    <INFO author="vvvv group" description="Visualizes the cone of a Camera. A debugging tool for creating cameras." tags="tool, helper, debug, animation">
    </INFO>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="30" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="14160" top="525" width="480" height="480">
@@ -336,6 +336,10 @@
    <PIN pinname="Layer" visible="1">
    </PIN>
    <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alpha" slicecount="1" values="0.88">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" values="| TConstant|">
    </PIN>
    </NODE>
    <LINK srcnodeid="34" srcpinname="Mesh" dstnodeid="37" dstpinname="Mesh">
@@ -605,5 +609,15 @@
    <LINK srcnodeid="6" srcpinname="Output String" dstnodeid="7" dstpinname="Text">
    </LINK>
    <LINK srcnodeid="15" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
+   </LINK>
+   <NODE systemname="ZWriteEnable (EX9.RenderState)" nodename="ZWriteEnable (EX9.RenderState)" componentmode="Hidden" id="53">
+   <BOUNDS type="Node" left="11580" top="4350" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="ZWrite Enable" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="53" srcpinname="Render State Out" dstnodeid="7" dstpinname="Render State">
    </LINK>
    </PATCH>
