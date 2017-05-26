@@ -1,0 +1,81 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug31.7.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\plugins\PID (VVVV) help.v4p" systemname="PID (VVVV) help" filename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\plugins\PID (VVVV) help.v4p">
+   <BOUNDS type="Window" left="10200" top="2070" width="4080" height="4845">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="3315">
+   </BOUNDS>
+   <BOUNDS height="160" left="9360" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Returns the Process ID of this vvvv instance.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="15" top="15" type="Box" width="4215">
+   </BOUNDS>
+   <BOUNDS height="160" left="9360" top="15420" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|PID (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="345" top="2745" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="345" top="2745" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="Processes (Windows)" id="11" systemname="Processes (Windows)">
+   <BOUNDS type="Node" left="1215" top="3210" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="375" top="1755" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="375" top="1755" width="480" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="4664">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetProcessAffinityMask (Windows)" filename="" nodename="SetProcessAffinityMask (Windows)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="1200" top="3690" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="PID (Windows)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PID (Windows)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="1215" top="2775" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="PID (VVVV)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PID (VVVV)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="375" top="1200" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Process ID" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

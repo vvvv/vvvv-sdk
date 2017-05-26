@@ -1,0 +1,105 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.meso.net/versions/vvvv33special9.1.dtd" >
+   <PATCH nodename="X:\vvvv33\help\Multiply (Color) help.v4p">
+   <BOUNDS type="Window" left="135" top="105" width="6120" height="5340">
+   </BOUNDS>
+   <NODE id="13" nodename="Multiply (Color)">
+   <BOUNDS height="270" left="2790" top="2730" type="Node" width="1920">
+   </BOUNDS>
+   <PIN pinname="Scalar" visible="1">
+   </PIN>
+   <PIN pinname="ColorOp Mode" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <BOUNDS height="270" left="330" top="225" type="Node" width="450">
+   </BOUNDS>
+   <BOUNDS height="540" left="330" top="225" type="Box" width="1635">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|* (Color)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="240" top="3495" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9660" top="5715" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="240" top="3495" type="Box" width="2600">
+   </BOUNDS>
+   <PIN pinname="Color Input" visible="1">
+   </PIN>
+   <PIN pinname="Chooser Style" slicecount="1" values="HSVAField">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Color Input" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Color)">
+   <BOUNDS height="0" left="255" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9045" top="4410" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="450" left="255" top="1740" type="Box" width="2600">
+   </BOUNDS>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Color" srcnodeid="10" srcpinname="Color Output">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="4650" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11355" top="4380" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="675" left="4650" top="1740" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Style" slicecount="1" values="List">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Both">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="ColorOp Mode" srcnodeid="9" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3105" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10920" top="3240" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3105" top="1740" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Scalar" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="150" top="825" type="Node" width="1305">
+   </BOUNDS>
+   <BOUNDS height="300" left="150" top="825" type="Box" width="2235">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Multiply a color with a scalar.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
