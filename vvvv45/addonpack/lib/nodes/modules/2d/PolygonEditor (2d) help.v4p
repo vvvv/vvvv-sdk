@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
    <BOUNDS type="Window" left="5790" top="600" width="17730" height="9255">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="5955" top="555" width="100" height="100">
@@ -960,7 +960,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="482" componentmode="Hidden" systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)">
+   <NODE id="482" componentmode="InAWindow" systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)">
    <BOUNDS type="Window" left="8670" top="3915" width="16935" height="9330">
    </BOUNDS>
    <BOUNDS type="Node" left="5445" top="4905" width="100" height="100">
@@ -978,6 +978,8 @@
    <PIN pinname="Color ShapeMode Rectangle">
    </PIN>
    <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Colors" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="482" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 1">
@@ -1065,5 +1067,19 @@
    <LINK srcnodeid="512" srcpinname="Layer" dstnodeid="513" dstpinname="Layer 2" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="0" srcpinname="Selection Rect" dstnodeid="512" dstpinname="Selection">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="535">
+   <BOUNDS type="Box" left="6165" top="4065" width="585" height="615">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6165" top="4065" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="3" visible="1" values="|0.84519,0.84519,0.84519,1.00000|,|1.00000,1.00000,1.00000,1.00000|,|0.28016,0.75997,0.99445,1.00000|">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="535" srcpinname="Color Output" dstnodeid="482" dstpinname="Colors">
    </LINK>
    </PATCH>
