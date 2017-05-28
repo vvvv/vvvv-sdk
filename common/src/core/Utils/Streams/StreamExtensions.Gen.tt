@@ -1,0 +1,84 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#   
+   var primitiveTypes = new[] { "short", "ushort", "int", "uint", "long", "ulong", "float", "double" };
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace VVVV.Utils.Streams
+{
+    public static partial class StreamExtensions
+    {
+<# foreach (var primitiveType in primitiveTypes) { #>
+        public static <#= primitiveType #> Sum(this IInStream<<#= primitiveType #>> stream)
+        {
+            <#= primitiveType #> result = 0;
+            using (var buffer = MemoryPool<<#= primitiveType #>>.GetBuffer())
+            using (var reader = stream.GetReader())
+            {
+                while (!reader.Eos)
+                {
+                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
+                    for (int i = 0; i < itemsRead; i++)
+                        result += buffer[i];
+                }
+            }
+            return result;
+        }
+
+<# } #>
+
+<# foreach (var primitiveType in primitiveTypes) { #>
+        public static <#= primitiveType #> Max(this IInStream<<#= primitiveType #>> stream)
+        {
+            var result = <#= primitiveType #>.MinValue;
+            using (var buffer = MemoryPool<<#= primitiveType #>>.GetBuffer())
+            using (var reader = stream.GetReader())
+            {
+                while (!reader.Eos)
+                {
+                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
+                    for (int i = 0; i < itemsRead; i++)
+                    {
+                        var item = buffer[i];
+                        if (item > result)
+                            result = item;
+                    }
+                }
+            }
+            return result;
+        }
+
+<# } #>
+
+<# foreach (var primitiveType in primitiveTypes) { #>
+        public static <#= primitiveType #> Min(this IInStream<<#= primitiveType #>> stream)
+        {
+            var result = <#= primitiveType #>.MaxValue;
+            using (var buffer = MemoryPool<<#= primitiveType #>>.GetBuffer())
+            using (var reader = stream.GetReader())
+            {
+                while (!reader.Eos)
+                {
+                    var itemsRead = reader.Read(buffer, 0, buffer.Length);
+                    for (int i = 0; i < itemsRead; i++)
+                    {
+                        var item = buffer[i];
+                        if (item < result)
+                            result = item;
+                    }
+                }
+            }
+            return result;
+        }
+
+<# } #>
+    }
+}

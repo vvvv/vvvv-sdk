@@ -1,0 +1,123 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta34.106.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\modules\String\AvoidNIL (String).v4p">
+   <BOUNDS height="6000" left="10410" top="8850" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="2325" top="690" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18120" top="11280" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2325" top="690" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="text">
+   </PIN>
+   </NODE>
+   <NODE id="4" nodename="Count (String)">
+   <BOUNDS height="0" left="1005" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   <PIN pinname="High" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="| input slices|">
+   </PIN>
+   </NODE>
+   <NODE hiddenwhenlocked="0" id="3" managers="" nodename="EQ (Value)">
+   <PIN pinname="Input 1" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="270" left="1005" top="1965" type="Node" width="915">
+   </BOUNDS>
+   <PIN pinname="Input 2" pintype="Input" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Epsilon" pintype="Input" slicecount="1" visible="-1" values="0.01">
+   </PIN>
+   <PIN pinname="Inverse Output" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="| &quot;0&quot;?|">
+   </PIN>
+   </NODE>
+   <NODE id="2" nodename="Switch (String Input)">
+   <BOUNDS height="270" left="990" top="2310" type="Node" width="2715">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|if  zero, switch to Default String|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Switch" srcnodeid="3" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="0" left="3660" top="795" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18420" top="11580" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3660" top="795" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Default">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="975" top="2715" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="18720" top="11880" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="975" top="2715" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input 1" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input 2" srcnodeid="1" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Input String" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <INFO author="kalle" description="Replaces an empty string spread with a default string." tags="empty">
+   </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3580" top="2660" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3580" top="2660" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Is NIL|">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Count" dstnodeid="3" dstpinname="Input 1">
+   </LINK>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   </PATCH>
