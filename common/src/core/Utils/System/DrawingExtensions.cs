@@ -136,6 +136,16 @@ namespace System.Drawing
         }
 
         /// <summary>
+        /// Returns the squared distance to another point. Good for comparisons.
+        /// </summary>
+        public static float GetSquaredDistanceTo(this PointF from, PointF to)
+        {
+            float x = from.X - to.X;
+            float y = from.Y - to.Y;
+            return x * x + y * y;
+        }
+
+        /// <summary>
         /// Normalizes the length
         /// </summary>
         /// <param name="point"></param>
