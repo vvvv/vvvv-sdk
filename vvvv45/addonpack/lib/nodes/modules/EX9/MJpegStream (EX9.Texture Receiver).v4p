@@ -1,10 +1,10 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Users\joreg\Desktop\vvvvs\vvvveb_lib-0.1\MJpegStream (EX9.Texture Receiver).v4p" systemname="MJpegStream (EX9.Texture Receiver)" filename="C:\Users\joreg\Desktop\vvvvs\vvvveb_lib-0.1\MJpegStream (EX9.Texture Receiver).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.6.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\EX9\MJpegStream (EX9.Texture Receiver).v4p" systemname="MJpegStream (EX9.Texture Receiver)" filename="C:\Users\joreg\Desktop\vvvvs\vvvveb_lib-0.1\MJpegStream (EX9.Texture Receiver).v4p">
    <BOUNDS type="Window" left="13710" top="7575" width="8940" height="4560">
    </BOUNDS>
    <PACK Name="CV" Version="0.2.0">
    </PACK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
    </PACK>
    <NODE systemname="HTMLTexture (EX9.Texture URL)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.exe" nodename="HTMLTexture (EX9.Texture URL)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="2055" top="1995" width="100" height="100">
@@ -112,54 +112,6 @@
    </NODE>
    <LINK srcnodeid="0" srcpinname="Error Text" dstnodeid="5" dstpinname="Input String">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
-   <BOUNDS type="Node" left="2640" top="450" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2640" top="450" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Port">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Minimum" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Maximum" slicecount="1" values="65535">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="2800">
-   </PIN>
-   </NODE>
-   <NODE systemname="AsString (Value)" nodename="AsString (Value)" componentmode="Hidden" id="7">
-   <BOUNDS type="Node" left="2640" top="945" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="SubType" slicecount="1" values="|Integer (MinInt .. MaxInt)|">
-   </PIN>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="7" dstpinname="Input">
-   </LINK>
-   <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="2055" top="1410" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input 2" visible="1">
-   </PIN>
-   <PIN pinname="Intersperse String" slicecount="1" values=":">
-   </PIN>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Output" dstnodeid="8" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="8" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="Output" dstnodeid="0" dstpinname="Url">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3735" top="450" width="795" height="240">
    </BOUNDS>
@@ -206,4 +158,6 @@
    </LINK>
    <INFO author="vvvv group, henrik" description="Receives an MJPeg stream as a DX9 texture" tags="texture">
    </INFO>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
+   </LINK>
    </PATCH>

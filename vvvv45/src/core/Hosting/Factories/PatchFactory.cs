@@ -174,7 +174,7 @@ namespace VVVV.Hosting.Factories
             if (nodeInfo.Type == NodeType.Module)
             {
                 var originalModule = nodeInfo.Filename;
-                var catver = category + " " + version;
+                var catver = (category + " " + version).Trim();
                 filename = Path.Combine(path, name + " (" + catver + ").v4p");
 
                 try
