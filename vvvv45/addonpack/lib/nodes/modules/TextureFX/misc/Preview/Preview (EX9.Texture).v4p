@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p" systemname="Preview (EX9.Texture)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.7.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p" systemname="Preview (EX9.Texture)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\Preview\Preview (EX9.Texture).v4p">
    <BOUNDS height="13065" left="2205" top="5835" type="Window" width="21300">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="7" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
@@ -351,7 +351,7 @@
    </PIN>
    <PIN pinname="Technique" visible="1">
    </PIN>
-   <PIN pinname="tV" visible="1">
+   <PIN pinname="tV" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="CH" visible="1">
    </PIN>
@@ -363,7 +363,7 @@
    </PIN>
    <PIN pinname="tVI" visible="1">
    </PIN>
-   <PIN pinname="tP" visible="1">
+   <PIN pinname="tP" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="tPI" visible="1">
    </PIN>
@@ -769,20 +769,6 @@
    <LINK srcnodeid="65" srcpinname="Output" dstnodeid="42" dstpinname="Input 3">
    </LINK>
    <LINK srcnodeid="62" srcpinname="XYZ" dstnodeid="26" dstpinname="VR XYZ">
-   </LINK>
-   <NODE systemname="Camera (Transform Softimage)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="72">
-   <BOUNDS type="Node" left="6885" top="5700" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="View" visible="1">
-   </PIN>
-   <PIN pinname="Initial Pitch" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Inital Distance" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="72" srcpinname="View" dstnodeid="26" dstpinname="tV">
    </LINK>
    <INFO author="unc" description="Preview for textures - 2d, cubemap and volume" tags="fx">
    </INFO>
@@ -1651,27 +1637,43 @@
    <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="165">
    <BOUNDS type="Node" left="7065" top="6150" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Source" visible="1">
+   <PIN pinname="Source" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="72" srcpinname="View" dstnodeid="165" dstpinname="Source">
-   </LINK>
    <LINK srcnodeid="165" srcpinname="Transform Out" dstnodeid="26" dstpinname="tVI">
-   </LINK>
-   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="26" dstpinname="tP">
    </LINK>
    <NODE systemname="Inverse (Transform)" nodename="Inverse (Transform)" componentmode="Hidden" id="166">
    <BOUNDS type="Node" left="7755" top="6135" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Source" visible="1">
+   <PIN pinname="Source" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="166" dstpinname="Source">
-   </LINK>
    <LINK srcnodeid="166" srcpinname="Transform Out" dstnodeid="26" dstpinname="tPI">
    </LINK>
+   <NODE systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="4515" top="5175" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial Distance" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="View" dstnodeid="26" dstpinname="tV">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="View" dstnodeid="165" dstpinname="Source">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="26" dstpinname="tP">
+   </LINK>
+   <LINK srcnodeid="72" srcpinname="Projection" dstnodeid="166" dstpinname="Source">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
    </PATCH>
