@@ -49,7 +49,9 @@ namespace VVVV.Nodes.Input
         {
             var deviceName = deviceInfo.DeviceName;
             var indexOfHash = deviceName.IndexOf('#');
-            return deviceName.Substring(4, indexOfHash - 4);
+            if (indexOfHash >= 4)
+                return deviceName.Substring(4, indexOfHash - 4);
+            return string.Empty;
         }
 
         public static string GetDeviceDescription(this DeviceInfo deviceInfo)
