@@ -360,7 +360,7 @@ namespace VVVV.Hosting.IO
                                       container = factory.CreateIOContainer(context.ReplaceIOType(typeof(INodeIn)));
                                       var dataType = context.DataType;
                                       var uncheckedDefaultValue = context.IOAttribute.DefaultNodeValue;
-                                      var defaultValue = uncheckedDefaultValue != null && dataType == uncheckedDefaultValue.GetType() ? uncheckedDefaultValue : dataType.IsValueType ? Activator.CreateInstance(dataType) : null;
+                                      var defaultValue = uncheckedDefaultValue != null && dataType.IsAssignableFrom(uncheckedDefaultValue.GetType()) ? uncheckedDefaultValue : dataType.IsValueType ? Activator.CreateInstance(dataType) : null;
                                       stream = Activator.CreateInstance(typeof(NodeInStream<>).MakeGenericType(context.DataType), container.RawIOObject, null, defaultValue) as IInStream;
                                   }
                                   // Using MemoryIOStream -> needs to be synced on managed side.
