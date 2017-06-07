@@ -105,7 +105,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 if (FSubTree.Count > 0)
                     width += CVerticalPatchOffset; //for break after patch
                 else
-                    width += 20;
+                    width += FViewer.DIP(20);
                 return width;
             }
         }
@@ -121,7 +121,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 return count;
             }
         }
-        
+
         public MapperHierarchyNode(ModelMapper mapper, ICanvas canvas, IGraphElement parent, HierarchyViewer viewer)
             :base()
         {
@@ -578,7 +578,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                     y = FormerSibling.FBackground.Position.Y + stw + CElementOffset;
                 }
 
-                var height = SubTreeWidth;
+                var height = Math.Max(FBackground.Size.Height, SubTreeWidth);
                 if (FSubTree.Count > 0)
                     height -= (CVerticalPatchOffset + CElementOffset);
                 
@@ -596,7 +596,7 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
                 FPoly.Points.Add(new PointF(0, height/2+10));
                 FPoly.IsClosed = true;
                 
-                FText.Position = new PointF(FTextOffset, height/2-10);
+                FText.Position = new PointF(FTextOffset, height/2-FViewer.DIP(10));
                 FIcon.Position = new PointF(3, 3 + height/2-10);
                 
                 FBackground.Position = new PointF(x, y);
