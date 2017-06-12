@@ -17,7 +17,6 @@ using System.Reactive.Subjects;
 using System.Reactive;
 using System.Reactive.Linq;
 using SharpDX.RawInput;
-using SharpDX.Multimedia;
 using VVVV.Utils.Streams;
 
 namespace VVVV.Nodes.Input
