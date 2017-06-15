@@ -153,6 +153,12 @@ namespace VVVV.Nodes
 				foreach (var kv in FFonts)
 					kv.Value.Tag = null;
 			
+            if (e != null)
+            {
+                var e_ = e; 
+                e = null;
+                throw e_;
+            }
 		}
 		#endregion mainloop
 
@@ -374,12 +380,15 @@ namespace VVVV.Nodes
 			catch (Exception e)
 			{
 				Logger.Log(e);
+                this.e = e;
 			}
 			finally
 			{
 				dh.Sprite.End();
 			}
 		}
-		#endregion
+        #endregion
+
+        Exception e;
 	}
 }
