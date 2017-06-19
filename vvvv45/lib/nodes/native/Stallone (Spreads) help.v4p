@@ -1,0 +1,273 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha18.1.dtd" >
+   <PATCH nodename="Y:\vvvv_trunk\help\Stallone (Spreads) help.v4p">
+   <BOUNDS height="9390" left="1725" top="1215" type="Window" width="9360">
+   </BOUNDS>
+   <NODE id="16" nodename="Stallone (Spreads)">
+   <BOUNDS height="270" left="600" top="2340" type="Node" width="1110">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 2" visible="1">
+   </PIN>
+   <PIN pinname="Output 3" visible="1">
+   </PIN>
+   <PIN pinname="Output 4" visible="1">
+   </PIN>
+   <PIN pinname="Output 5" visible="1">
+   </PIN>
+   <PIN pinname="Input Sort" slicecount="1" values="Slice">
+   </PIN>
+   <PIN pinname="Output Sort" slicecount="1" values="Pin">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="585" top="1740" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" visible="1" values="5.00000">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" visible="1" values="2.09000">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="Block">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="Renderer (GDI)">
+   <PIN pinname="Global Visual Range" slicecount="1" values="0.00000">
+   </PIN>
+   <BOUNDS height="0" left="630" top="6045" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="3301" top="2527" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2880" left="630" top="6045" type="Box" width="3030">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="16" dstpinname="Input 1" srcnodeid="15" srcpinname="Output">
+   </LINK>
+   <NODE id="13" nodename="POINT (GDI)">
+   <BOUNDS height="0" left="1125" top="4410" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Type" slicecount="1" values="Asterisk">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="X" srcnodeid="16" srcpinname="Output 3">
+   </LINK>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|use the Stallone to change relation between Slices and Pins&cr;&lf;&cr;&lf;In the example left, stallone takes one input with five &cr;&lf;slices to distribute them to five outputs whith one slice each.&cr;&lf;&cr;&lf;Stallone is a very flexible node, which allows you to merge slices from any number of inputs and distribute them to any number of slices on any &cr;&lf;number of outputs. &cr;&lf;&cr;&lf;learn more: &cr;&lf;&cr;&lf;Open an inspector and click on the Stallone node:  &cr;&lf;&cr;&lf;You will notice two configuration inputs for input and output count. Changing the values will change the number of input or output pins. Take care not to destroy the help patch by setting the output count to anything smaller than 5.&cr;&lf;&cr;&lf;With the Spread Count pin you can select how many output slices should be generated. If there are not enough input slices, Stallone just starts over from the first slice of the first pin and repeats the values. &cr;&lf;&cr;&lf;Internally Stallone has one large Spread which contains all slices from all inputs which gets distributed to the slices of all outputs.  &cr;&lf;The internal SliceCount is the product of the maximum of all inputs and the number of pins (except one of the pins has slicecount 0 - then it is also 0)&cr;&lf;&cr;&lf;The input slices are collected either by  a) first taking all slices from the first pin, then from the second pin etc. (Pin Sort Mode) or by b) first taking the first Slice of all Pins, then the second Slice of all Pins etc. (Slice Sort Mode)&cr;&lf;&cr;&lf;The output slices are distributed in a similar way: a) In Pin Sort mode the first bunch of slices is copied to the first pin, the second bunch to the second pin etc.  and b) In Slice Sort mode all pins get their first slice, then the second slice etc. &cr;&lf;|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="8520" left="4530" top="390" type="Box" width="4410">
+   </BOUNDS>
+   <BOUNDS height="1410" left="4530" top="390" type="Node" width="3990">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|spread generating five slices|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="285" left="1650" top="1365" type="Box" width="2250">
+   </BOUNDS>
+   <BOUNDS height="420" left="1650" top="1365" type="Node" width="1680">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="420" left="1755" top="2310" type="Node" width="1680">
+   </BOUNDS>
+   <BOUNDS height="705" left="1755" top="2310" type="Box" width="2055">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone transforms one input with five slices to five outputs with one slice|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|five different shapes.|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="405" left="2235" top="4020" type="Box" width="1770">
+   </BOUNDS>
+   <BOUNDS height="420" left="2235" top="4020" type="Node" width="1830">
+   </BOUNDS>
+   </NODE>
+   <NODE id="8" nodename="RoundRect (GDI)">
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Type">
+   </PIN>
+   <BOUNDS height="0" left="1380" top="4890" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Width" slicecount="1" values="0.43">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="X" srcnodeid="16" srcpinname="Output 4">
+   </LINK>
+   <NODE id="7" nodename="VLine (GDI)">
+   <BOUNDS height="0" left="615" top="3660" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="X" srcnodeid="16" srcpinname="Output 1">
+   </LINK>
+   <NODE id="6" nodename="Circle (GDI)">
+   <BOUNDS height="0" left="840" top="4005" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Type">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="R" slicecount="1" values="0.27">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="16" srcpinname="Output 2">
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="105" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="2655" top="2340" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="105" top="1380" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.59">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Width" srcnodeid="5" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="690" left="15" top="390" type="Box" width="4245">
+   </BOUNDS>
+   <BOUNDS height="160" left="9960" top="41130" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone is a very flexible node, which allows you to merge slices from any number of inputs and distribute them to any number of slices on any number of outputs.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="9960" top="41130" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Stallone - Spreads|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1170" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="3105" top="2940" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1170" top="1380" type="Box" width="450">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Spread Count" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="1" nodename="HLine (GDI)">
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Type">
+   </PIN>
+   <BOUNDS height="0" left="1665" top="5325" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="R">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y" srcnodeid="16" srcpinname="Output 5">
+   </LINK>
+   <NODE id="0" nodename="Group (GDI)">
+   <BOUNDS height="0" left="630" top="5655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   <PIN pinname="Layer 4" visible="1">
+   </PIN>
+   <PIN pinname="Layer 5" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="7" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 3" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 4" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 5" srcnodeid="1" srcpinname="Layer">
+   </LINK>
+   </PATCH>

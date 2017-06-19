@@ -1,0 +1,285 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\HelpTester.v4p" systemname="HelpTester" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\tests\HelpTester.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS type="Window" left="300" top="3630" width="13500" height="6915">
+   </BOUNDS>
+   <NODE systemname="Renderer (TTY)" nodename="Renderer (TTY)" componentmode="InAWindow" id="121">
+   <BOUNDS type="Node" left="255" top="345" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="345" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="300" top="10410" width="13500" height="3720">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Tester (Test Internal)" filename="%VVVV%\tests\Tester (Test Internal).v4p" nodename="Tester (Test Internal)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="5528" top="3592" width="1620" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1185" top="480" width="9550" height="20635">
+   </BOUNDS>
+   <BOUNDS type="Window" left="13680" top="0" width="9555" height="18180">
+   </BOUNDS>
+   <PIN pinname="Y Input Value">
+   </PIN>
+   <PIN pinname="OnTestFinished" visible="1">
+   </PIN>
+   <PIN pinname="Nodelist">
+   </PIN>
+   <PIN pinname="Start Test">
+   </PIN>
+   <PIN pinname="Test Node|Help" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Node ID" visible="1" slicecount="1" values="118">
+   </PIN>
+   <PIN pinname="OnTestStarted" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="137" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6315" top="2280" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6315" top="2280" width="3105" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" encoded="0" values="..\..\lib\nodes\plugins\nodelist.xml">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="file.txt">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="|All Text Formats (*.csv, *.dtd, *.html, *.txt, *.xml)||*.csv;*.dtd;*.html;*.htm;*.txt;*.xml||Text (*.txt)||*.txt||XML (*.xml)||*.xml||CSV (*.csv)||*.csv||DTD (*.dtd)||*.dtd||HTML (*.html, *.htm)||*.html;*.htm|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="137" srcpinname="Output String" dstnodeid="136" dstpinname="Nodelist">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="138" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="6240" top="2850" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6240" top="2850" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="138" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Start Tests">
+   </LINK>
+   <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="140">
+   <BOUNDS type="Node" left="5535" top="4680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FrameDelay (Animation Legacy)" nodename="FrameDelay (Animation)" componentmode="Hidden" id="141">
+   <BOUNDS type="Node" left="5535" top="4140" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="OnTestStarted" dstnodeid="141" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="141" srcpinname="Output 1" dstnodeid="140" dstpinname="Set">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="143" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6840" top="2940" width="1035" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6840" top="2940" width="1035" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; run all|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="144" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="780" top="1560" width="4935" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="780" top="1560" width="1875" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|dummy node that is being replaced by the individual test-patches &gt;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="147">
+   <BOUNDS type="Node" left="5535" top="5085" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Down Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="140" srcpinname="Output" dstnodeid="147" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="147" srcpinname="Down Edge" dstnodeid="136" dstpinname="OnTestFinished" linkstyle="Bezier" hiddenwhenlocked="1">
+   <LINKPOINT x="8565" y="6495">
+   </LINKPOINT>
+   <LINKPOINT x="8610" y="2835">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="148" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9660" top="2295" width="4890" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9660" top="2295" width="2610" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Select a nodelist to test all helppatches found in the nodelists path.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="151" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8160" top="4125" width="930" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8160" top="4125" width="930" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Progress|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="152" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7095" top="4140" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7095" top="4140" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="%">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="Progress" dstnodeid="152" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="153" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7125" top="5775" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7125" top="5775" width="2985" height="285">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" encoded="0" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="136" srcpinname="Current Test" dstnodeid="153" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="154" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="10290" top="5760" width="1155" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10290" top="5760" width="1155" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; current test|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="155" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7605" top="855" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7605" top="855" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="155" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Next">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="156" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="8940" top="855" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8940" top="855" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="156" srcpinname="Y Output Value" dstnodeid="136" dstpinname="Previous">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE id="118" systemname="Add (Value)" filename="" nodename="Add (Value)" componentmode="Hidden">
+   <BOUNDS type="Node" left="2820" top="2040" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="ID" visible="1" pintype="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="ID" dstnodeid="136" dstpinname="Node ID">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="157" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="8130" top="975" width="615" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8130" top="975" width="615" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; next|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="158" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9450" top="960" width="915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9450" top="960" width="915" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; previous|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   </PATCH>

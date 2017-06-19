@@ -1,0 +1,249 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\GlobalRenderState (EX9) help.v4p">
+   <BOUNDS height="6075" left="1305" top="3210" type="Window" width="6690">
+   </BOUNDS>
+   <NODE id="19" nodename="GlobalRenderState (EX9)">
+   <BOUNDS height="0" left="3015" top="5280" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="18" nodename="AlphaTest (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="1275" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Compare Function" slicecount="1" values="GreaterEqual">
+   </PIN>
+   <PIN pinname="Alpha Test" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Alpha Reference Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="17" nodename="Blend (EX9.RenderState Advanced)">
+   <BOUNDS height="0" left="3015" top="1650" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Source Blend Mode" slicecount="1" values="InvDestColor">
+   </PIN>
+   <PIN pinname="Destination Blend Mode" slicecount="1" values="InvDestColor">
+   </PIN>
+   </NODE>
+   <NODE id="16" nodename="Clip (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="2025" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Clipping" slicecount="1" values="True">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="ColorChannel (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Enable Blue" slicecount="1" values="False">
+   </PIN>
+   <PIN pinname="Enable Red" slicecount="1" values="False">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Cull (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="2745" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Fog (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="3540" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="11" nodename="Shade (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="3930" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Shading" slicecount="1" values="Phong">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="ZWriteEnable (EX9.RenderState)">
+   <BOUNDS height="0" left="3015" top="4320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="ZWrite Enable" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Address (EX9.SamplerState)">
+   <BOUNDS height="0" left="4815" top="3900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Filter (EX9.SamplerState)">
+   <BOUNDS height="0" left="4815" top="4365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Sampler State In" visible="1">
+   </PIN>
+   <PIN pinname="Sampler State Out" visible="1">
+   </PIN>
+   <PIN pinname="MipMap Filter" slicecount="1" values="Point">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="165" top="1245" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="4605" top="5340" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2160" left="165" top="1245" type="Box" width="2370">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="17" dstpinname="Render State In" srcnodeid="18" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="16" dstpinname="Render State In" srcnodeid="17" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Render State In" srcnodeid="16" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Render State In" srcnodeid="15" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Render State In" srcnodeid="14" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Render State In" srcnodeid="13" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Render State In" srcnodeid="12" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Render State In" srcnodeid="11" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Render State" srcnodeid="10" srcpinname="Render State Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Sampler State In" srcnodeid="9" srcpinname="Sampler State Out">
+   </LINK>
+   <LINK dstnodeid="19" dstpinname="Sampler State" srcnodeid="8" srcpinname="Sampler State Out">
+   </LINK>
+   <NODE id="6" nodename="Quad (DX9)">
+   <BOUNDS height="270" left="165" top="3795" type="Node" width="1500">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Sphere (DX9)">
+   <BOUNDS height="0" left="165" top="4245" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="10">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2985" top="975" type="Node" width="1590">
+   </BOUNDS>
+   <BOUNDS height="255" left="2985" top="975" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Render State Nodes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="4800" top="3600" type="Node" width="1590">
+   </BOUNDS>
+   <BOUNDS height="255" left="4800" top="3600" type="Box" width="1590">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Sampler State Nodes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="285" left="15" top="390" type="Box" width="4215">
+   </BOUNDS>
+   <BOUNDS height="160" left="150" top="19470" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|sets global default render states for all objects in a patch|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="150" top="19470" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GlobalRenderState - EX9|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Group (EX9)">
+   <BOUNDS height="0" left="150" top="4920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer Template Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Layer 1" srcnodeid="5" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="0" dstpinname="Layer 2" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="0" srcpinname="Layer">
+   <LINKPOINT x="15" y="5175">
+   </LINKPOINT>
+   <LINKPOINT x="30" y="1185">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

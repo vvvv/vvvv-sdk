@@ -1,0 +1,301 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.103.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\PerspectiveLookAtRect (Transform ViewProjection) help.v4p" componentmode="InAWindow">
+   <BOUNDS height="7275" left="210" top="660" type="Window" width="11280">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7890" top="645" type="Node" width="1590">
+   </BOUNDS>
+   <BOUNDS height="765" left="7890" top="645" type="Box" width="2955">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|please have a look at the demo patch:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="255" top="525" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="1275" left="255" top="525" type="Box" width="5910">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Constructs a camera, that sees exactly the rect from a given position. The camera cone might be distorted heavily, however it is guaranteed that you will look at the specified rect which can placed arbitrarily in the room.&cr;&lf;The module outputs the camera as separate View &amp; Projection Transforms.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="255" top="165" type="Box" width="6375">
+   </BOUNDS>
+   <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|PerspectiveLookAtRect (Transform ViewProjection)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="7950" top="1515" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7950" top="1515" width="2610" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\Graphics\DX9\Shader\mirror\Mirror.v4p">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="16">
+   <BOUNDS type="Node" left="3975" top="6030" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3975" top="6030" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="11340" top="4215" width="6090" height="3750">
+   </BOUNDS>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="Box (EX9.Geometry)" nodename="Box (EX9.Geometry)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="735" top="3525" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="Depth" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="PhongDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\PhongDirectional.fx" nodename="PhongDirectional (EX9.Effect)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="570" top="4845" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Mesh" dstnodeid="14" dstpinname="Mesh">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="5115" top="2865" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5115" top="2865" width="675" height="705">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="-1.55,0.61,-2.17">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="5880" top="2865" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5880" top="2865" width="675" height="705">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="3" values="0,0,0">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="750" top="2850" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="750" top="2850" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Width">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Height">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Depth">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="1365" top="3525" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1365" top="3525" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.82">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="PerspectiveLookAtRect (Transform ViewProjection)" filename="%VVVV%\lib\nodes\modules\Transform\PerspectiveLookAtRect (Transform ViewProjection).v4p" nodename="PerspectiveLookAtRect (Transform ViewProjection)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="5100" top="4725" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mirror" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Scale Rect" visible="1">
+   </PIN>
+   <PIN pinname="Rotate Rect" slicecount="3" values="0,0,0">
+   </PIN>
+   <PIN pinname="Far Plane" slicecount="1" values="7.65">
+   </PIN>
+   <PIN pinname="Show Helpers" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="View Projection Out" visible="1">
+   </PIN>
+   <PIN pinname="View Out" visible="1">
+   </PIN>
+   <PIN pinname="Projection Out" visible="1">
+   </PIN>
+   <PIN pinname="Near Plane" slicecount="1" values="0.08">
+   </PIN>
+   <BOUNDS type="Window" left="11745" top="5310" width="13740" height="9615">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Translate Camera">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="View Out" dstnodeid="16" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Projection Out" dstnodeid="16" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Translate Rect">
+   </LINK>
+   <NODE systemname="Transform (Transform 3d)" nodename="Transform (Transform 3d)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="900" top="4110" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Transform Out" dstnodeid="14" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="8" dstpinname="TranslateZ">
+   </LINK>
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="7140" top="3930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Z" slicecount="1" visible="-1" pintype="Input" values="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="7140" top="2865" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7140" top="2865" width="795" height="480">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="2" values="1.6,0.9">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="|0, 0|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Y Output Value" dstnodeid="7" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="XYZ" dstnodeid="9" dstpinname="Scale Rect">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="16" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7650" top="6015" width="1920" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7650" top="6015" width="1920" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;&lt; see cam from outside|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE id="5" componentmode="Hidden" systemname="CameraPreview (EX9)" filename="%VVVV%\lib\nodes\modules\EX9\SecondLook (EX9 Softimage).v4p" nodename="SecondLook (EX9 Softimage)">
+   <BOUNDS type="Window" left="975" top="7605" width="11100" height="6735">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Node" left="5865" top="6030" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="testcamera" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="othercamera" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="show viewplane" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="5865" top="6030">
+   </BOUNDS>
+   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Name" slicecount="1" values="Cam">
+   </PIN>
+   <PIN pinname="Inital Distance" slicecount="1" values="12.75">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" values="|0.11306,0.11306,0.11306,1.00000|">
+   </PIN>
+   <PIN pinname="Initial Yaw" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Initial Pitch" slicecount="1" values="0.18">
+   </PIN>
+   <PIN pinname="Slide into Depth" slicecount="1" values="0.33">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="View Out" dstnodeid="5" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Projection Out" dstnodeid="5" dstpinname="Projection">
+   </LINK>
+   </PATCH>
