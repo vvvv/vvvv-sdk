@@ -1,0 +1,95 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Integrate (Differential) help.v4p">
+   <BOUNDS height="6030" left="5010" top="4740" type="Window" width="6660">
+   </BOUNDS>
+   <NODE id="4" nodename="Integrate (Differential)">
+   <BOUNDS height="0" left="1815" top="3810" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position In" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1050" top="1425" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7455" top="6765" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2130" left="1050" top="1425" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Position In" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1110" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7785" top="9180" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1110" top="4515" type="Box" width="750">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1890" top="4515" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8085" top="9480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1890" top="4515" type="Box" width="690">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Velocity Out">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="930" left="15" top="390" type="Box" width="6435">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="6690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Like a counter with variable increment or a incrementing LFO.&cr;&lf;The Input Value becomes the Velocity and the &quot;Position Out&quot; grows with the selected rate.&cr;&lf;If Position In = 1, the Itegrate node&apos;s Position Out will reach 1 in 1 second, after another second, the output will be 2...|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="6690" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Integrate - Differential|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

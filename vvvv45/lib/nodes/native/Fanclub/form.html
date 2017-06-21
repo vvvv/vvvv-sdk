@@ -1,0 +1,110 @@
+<html>
+<header>
+  <link href="irc.css" rel="stylesheet">
+  <script>
+    function connect()
+    {
+      var f = document.connection;
+
+      document.getElementById('Server').innerHTML = f.Server.value;
+      document.getElementById('Channel').innerHTML = f.Channel.value;
+      document.getElementById('Nickname').innerHTML = f.Nickname.value;
+      document.getElementById('Password').innerHTML = f.Password.value;
+      document.getElementById('Connect').innerHTML = 1;
+
+      focusTextfield();
+    }
+
+    function onload()
+    {
+      //scroll messages
+      var elem = document.getElementById('messages');
+      elem.scrollTop = elem.scrollHeight;
+
+      focusTextfield();
+    }
+
+    function  messageForm()
+    {
+      document.getElementById('Message').innerHTML = document.message.Message.value;
+      focusTextfield();
+    }
+
+    function focusTextfield()
+    {
+      //set focus to the message textfield
+      document.getElementById('MessageField').focus();
+    }
+
+</script>
+</header>
+<body onLoad = "onload()">
+  <div class="container">
+    <div class = "header">
+      <form action="javascript:connect()" name="connection">
+      <div class="connection">
+        <div class="hidden"><label>Server: </label><input type="text" name="Server" value ="[server]" placeholder="Server"></div>
+        <div class="hidden"><label>Channel: </label><input type="text" name="Channel" value ="[channel]" placeholder="Channel"></div>
+        <div class=""><label>Nickname: </label><input type="text" name="Nickname" value = "[nickname]" placeholder="Nickname" ></div>
+        <div class="hidden"><label>Password: </label><input type="text" name="Password" value = "" placeholder="(optional)"></div>
+      </div>
+      <div class = "status">
+        <div class = "connectionButton"><button>Connect</button></div>
+        <div class = "connectionBox [statusColor]"></div><div class = "connectionStatus">[status]:</div>
+        <div class = "connectionInfo">[server], [channel]</div>
+      </div>
+    </form>
+    </div>
+    <div class = "main">
+      <div class = "Error">[error]</div>
+      <div class="connecting">[connecting]</div>
+            <div class="messages" id="messages">
+            <!--Message-->
+            <div class = "message">
+              <div class="user">
+                [user]
+              </div>
+              <div class="text">
+                [message]
+              </div>
+            </div>
+            <!--/Message-->
+
+        </div>
+          <div class="buddylist">
+            <h3>Users:</h3>
+            <div class = "users">
+              [users]
+            </div>
+          <h3>Type:</h3>
+            <div class="info">
+              @username to notify a user.<br>
+              @all to notify everybody.
+            </div>
+            <!-- <a href="https://vvvv.org/documentation/howto-use-irc">Click for more info.</a> -->
+        </div>
+
+    </div>
+
+    <div class = "sendForm">
+        <form action="javascript:messageForm()" name = "message">
+          <input type="text" name="Message" id = "MessageField">
+          <button>Send</button>
+        </form>
+        <div class = "rightSpace">
+        </div>
+    </div>
+
+
+  </div>
+
+  <div class="data" id="data">
+    <div id="Server"></div>
+    <div id="Channel"></div>
+    <div id="Nickname"></div>
+    <div id="Password"></div>
+    <div id="Connect"></div>
+    <div id="Message"></div>
+  </div>
+</body>
+</html>

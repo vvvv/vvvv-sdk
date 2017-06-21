@@ -1,0 +1,257 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Multiply (Differential ConstantScale) help.v4p">
+   <BOUNDS height="4545" left="3180" top="2925" type="Window" width="7845">
+   </BOUNDS>
+   <NODE id="12" nodename="Multiply (Differential ConstantScale)">
+   <BOUNDS height="0" left="1035" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Scale" visible="1">
+   </PIN>
+   <PIN pinname="Position In" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="300" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="5685" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="300" top="3150" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position Out|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1245" top="3150" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5745" top="5985" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1245" top="3150" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity Out|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" srcnodeid="12" srcpinname="Velocity Out">
+   </LINK>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="315" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6045" top="6285" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="315" top="1320" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.40000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Scale">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Scale" srcnodeid="9" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1170" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6285" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1170" top="1320" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Position In" srcnodeid="8" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2085" top="1320" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2085" top="1320" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity In|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Velocity In" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE id="6" nodename="Multiply (Differential ConstantScale)">
+   <BOUNDS height="0" left="5295" top="2535" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Scale" visible="1">
+   </PIN>
+   <PIN pinname="Position In" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4575" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5745" top="5985" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4575" top="3225" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="6" srcpinname="Position Out">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5520" top="3225" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6045" top="6285" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5520" top="3225" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" linkstyle="PolyLine" srcnodeid="6" srcpinname="Velocity Out">
+   <LINKPOINT x="5715" y="2940">
+   </LINKPOINT>
+   <LINKPOINT x="6285" y="2940">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4560" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6345" top="6585" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4560" top="1920" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Scale" linkstyle="VHV" srcnodeid="3" srcpinname="Y Output Value">
+   <LINKPOINT x="5325" y="2340">
+   </LINKPOINT>
+   <LINKPOINT x="5325" y="2340">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="5445" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="5445" top="1920" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Position In" linkstyle="PolyLine" srcnodeid="2" srcpinname="Y Output Value">
+   <LINKPOINT x="6210" y="2310">
+   </LINKPOINT>
+   <LINKPOINT x="5520" y="2310">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="6345" top="1920" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6885" top="4395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="6345" top="1920" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Velocity In" linkstyle="PolyLine" srcnodeid="1" srcpinname="Y Output Value">
+   <LINKPOINT x="7110" y="2430">
+   </LINKPOINT>
+   <LINKPOINT x="5715" y="2430">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="0" nodename="LFO (Differential)">
+   <BOUNDS height="0" left="6180" top="1380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="VelocityBased">
+   </PIN>
+   <PIN pinname="Velocity" slicecount="1" values="1.35000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Y Input Value" srcnodeid="0" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="0" srcpinname="Velocity Out">
+   <LINKPOINT x="6495" y="1785">
+   </LINKPOINT>
+   <LINKPOINT x="7110" y="1785">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="510" left="15" top="390" type="Box" width="2850">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="13500" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Does a differential multiply by scaling Position and Velocity by a given factor|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4440">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="13500" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Multiply - Differential ConstantScale|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
