@@ -15,7 +15,7 @@ using VVVV.Core.Logging;
 namespace VVVV.Nodes
 {
     #region PluginInfo
-    [PluginInfo(Name = "Levin", Category = "Spreads", Version = "", Help = "", Tags = "", Author = "phlegma", Credits="http://acg.media.mit.edu/people/golan/scribble/")]
+    [PluginInfo(Name = "Levin", Category = "Spreads", Version = "Legacy", Help = "", Tags = "", Author = "phlegma", Credits="http://acg.media.mit.edu/people/golan/scribble/")]
     #endregion PluginInfo
     public class Levin : IPluginEvaluate, IPartImportsSatisfiedNotification
     {
