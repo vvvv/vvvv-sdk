@@ -103,16 +103,14 @@ namespace VVVV.Nodes
 
                         verts[0].pv = new Vector3(Convert.ToSingle(cx/dblcount),Convert.ToSingle(cy/dblcount),0);
                         verts[0].nv = new Vector3(0, 0, 1);
-                        verts[0].tu1 = 0.5f;
-                        verts[0].tv1 = 0.5f;
 
 
                         double w = maxx - minx;
                         double h = maxy - miny;
-                        for (int j = 0; j < dblcount; j++)
+                        for (int j = 0; j <= dblcount; j++)
                         {
-                            verts[j + 1].tu1 = Convert.ToSingle((verts[j + 1].pv.X - minx) / w);
-                            verts[j + 1].tv1 = 1.0f - Convert.ToSingle((verts[j + 1].pv.Y - miny) / h);
+                            verts[j].tu1 = Convert.ToSingle((verts[j].pv.X - minx) / w);
+                            verts[j].tv1 = 1.0f - Convert.ToSingle((verts[j].pv.Y - miny) / h);
                         }
 
                         this.FVertex.Add(verts);
