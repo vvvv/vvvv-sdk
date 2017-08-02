@@ -1,25 +1,9 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\DecryptMessage.v4p" systemname="DecryptMessage" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\DecryptMessage.v4p" scrollx="0" scrolly="0">
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="2550" top="2940" width="285" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="2550" top="2940" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="8">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   </NODE>
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\DecryptMessage.v4p" systemname="DecryptMessage" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\DecryptMessage.v4p" scrollx="0" scrolly="0">
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="29" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="2100" top="525" width="510" height="240">
+   <BOUNDS type="Box" left="3465" top="675" width="510" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2100" top="525" width="0" height="0">
+   <BOUNDS type="Node" left="3465" top="675" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Output Node" visible="1">
    </PIN>
@@ -28,14 +12,14 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Input">
    </PIN>
    </NODE>
-   <BOUNDS type="Window" left="12960" top="2610" width="7320" height="7860">
+   <BOUNDS type="Window" left="20385" top="3750" width="7320" height="7860">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="32" systemname="IOBox (Node)">
-   <BOUNDS type="Box" left="1605" top="6285" width="795" height="240">
+   <BOUNDS type="Box" left="2970" top="6435" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="1605" top="6285" width="0" height="0">
+   <BOUNDS type="Node" left="2970" top="6435" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
@@ -43,7 +27,7 @@
    </PIN>
    </NODE>
    <NODE systemname="PBKDF2 (Raw)" filename="plugins\RawEncrypt\RawEncrypt.csproj" nodename="PBKDF2 (Raw)" componentmode="Hidden" id="35">
-   <BOUNDS type="Node" left="2280" top="2310" width="100" height="100">
+   <BOUNDS type="Node" left="3645" top="2460" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Key" visible="1">
    </PIN>
@@ -55,13 +39,13 @@
    </PIN>
    <PIN pinname="Key Length" slicecount="1" values="24">
    </PIN>
-   <BOUNDS type="Box" left="2280" top="2310">
+   <BOUNDS type="Box" left="3645" top="2460">
    </BOUNDS>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="34" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="2565" top="1920" width="1560" height="240">
+   <BOUNDS type="Box" left="3930" top="2070" width="1560" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2565" top="1920" width="0" height="0">
+   <BOUNDS type="Node" left="3930" top="2070" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="1" values="|Adobe Photoshop|">
    </PIN>
@@ -77,9 +61,9 @@
    <LINK srcnodeid="34" srcpinname="Output String" dstnodeid="35" dstpinname="Salt">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="2820" top="525" width="795" height="240">
+   <BOUNDS type="Box" left="4185" top="675" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="2820" top="525" width="0" height="0">
+   <BOUNDS type="Node" left="4185" top="675" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input String" slicecount="1" visible="1" values="||">
    </PIN>
@@ -95,7 +79,7 @@
    <LINK srcnodeid="39" srcpinname="Output String" dstnodeid="35" dstpinname="Password">
    </LINK>
    <NODE systemname="Decrypt (Raw 3DES)" filename="plugins\RawEncrypt\RawEncrypt.csproj" nodename="Decrypt (Raw 3DES)" componentmode="Hidden" id="9">
-   <BOUNDS type="Node" left="2085" top="4770" width="825" height="270">
+   <BOUNDS type="Node" left="3450" top="4920" width="825" height="270">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
@@ -107,7 +91,7 @@
    <LINK srcnodeid="35" srcpinname="Key" dstnodeid="9" dstpinname="Key">
    </LINK>
    <NODE systemname="Switch (Node Input)" nodename="Switch (Node Input)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="1605" top="5685" width="100" height="100">
+   <BOUNDS type="Node" left="2970" top="5835" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
@@ -118,42 +102,12 @@
    </NODE>
    <LINK srcnodeid="40" srcpinname="Output" dstnodeid="32" dstpinname="Input Node">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="43" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="2955" top="2910" width="1290" height="690">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2955" top="2910" width="1290" height="690">
-   </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|Skip 8 Bytes:&cr;&lf;4 Bytes - Length&cr;&lf;4 Bytes - Status|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="String Type" slicecount="1" values="MultiLine">
-   </PIN>
-   </NODE>
-   <NODE systemname="Skip (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Skip (Raw)" componentmode="Hidden" id="44">
-   <BOUNDS type="Node" left="2085" top="3345" width="540" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="Count" visible="1">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="29" srcpinname="Output Node" dstnodeid="44" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="44" dstpinname="Count">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="9" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output" dstnodeid="40" dstpinname="Input 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="5775" top="375" width="480" height="480">
+   <BOUNDS type="Box" left="7140" top="525" width="480" height="480">
    </BOUNDS>
-   <BOUNDS type="Node" left="5775" top="375" width="0" height="0">
+   <BOUNDS type="Node" left="7140" top="525" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
@@ -169,5 +123,7 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="59" srcpinname="Y Output Value" dstnodeid="40" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="29" srcpinname="Output Node" dstnodeid="9" dstpinname="Input">
    </LINK>
    </PATCH>
