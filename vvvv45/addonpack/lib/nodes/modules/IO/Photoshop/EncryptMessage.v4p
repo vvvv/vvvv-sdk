@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\EncryptMessage.v4p" scrollx="0" scrolly="0" systemname="EncryptMessage" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\EncryptMessage.v4p">
-   <BOUNDS type="Window" left="16620" top="5655" width="8385" height="12060">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\EncryptMessage.v4p" scrollx="0" scrolly="0" systemname="EncryptMessage" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\EncryptMessage.v4p">
+   <BOUNDS type="Window" left="11130" top="750" width="8385" height="12060">
    </BOUNDS>
    <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="1890" top="4725" width="100" height="100">
@@ -40,8 +40,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="4" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="AsRaw (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="AsRaw (Value)" componentmode="Hidden" id="3">
    <BOUNDS type="Node" left="3165" top="4245" width="100" height="100">
    </BOUNDS>
@@ -108,7 +106,7 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="Switch (Node Input)" nodename="Switch (Node Input)" componentmode="Hidden" id="12">
    <BOUNDS type="Node" left="600" top="8850" width="100" height="100">
@@ -239,6 +237,8 @@
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="26" dstpinname="Input 2">
    </LINK>
@@ -309,5 +309,59 @@
    <LINK srcnodeid="24" srcpinname="Output" dstnodeid="12" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Output" dstnodeid="0" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="PrefixLength (Raw)" filename="..\..\..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="PrefixLength (Raw)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="3690" top="5325" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Byte Count" visible="1">
+   </PIN>
+   <PIN pinname="Big Endian" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Byte Count">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="43">
+   <BOUNDS type="Box" left="4755" top="4695" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4755" top="4695" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Y Output Value" dstnodeid="42" dstpinname="Big Endian">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Result" dstnodeid="4" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="+ (Raw)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="+ (Raw)" componentmode="Hidden" id="44">
+   <BOUNDS type="Node" left="3705" top="4815" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3705" top="4815" width="3000" height="3000">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Output" dstnodeid="44" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Output" dstnodeid="44" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output" dstnodeid="42" dstpinname="Input">
    </LINK>
    </PATCH>

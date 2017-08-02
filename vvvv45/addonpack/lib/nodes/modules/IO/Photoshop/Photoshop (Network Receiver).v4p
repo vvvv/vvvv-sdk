@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
    <NODE systemname="DecryptMessage" filename="DecryptMessage.v4p" nodename="DecryptMessage.v4p" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="1515" top="8130" width="100" height="100">
    </BOUNDS>
@@ -52,7 +52,7 @@
    </NODE>
    <BOUNDS type="Window" left="6315" top="1230" width="8190" height="9840">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="27">
    <BOUNDS type="Node" left="1695" top="1500" width="100" height="100">
@@ -135,15 +135,17 @@
    <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="2" dstpinname="Password">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="56" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="3405" top="5220" width="795" height="240">
+   <BOUNDS type="Box" left="6225" top="3630" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="3405" top="5220" width="0" height="0">
+   <BOUNDS type="Node" left="6225" top="3630" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" visible="1" values="120">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="s">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="65" systemname="IOBox (Node)">
@@ -178,10 +180,10 @@
    </LINK>
    <INFO author="vvvv group" description="Receives responses from Photoshop." tags="psd">
    </INFO>
-   <NODE systemname="CollectChunks" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" componentmode="Hidden" id="57">
+   <NODE systemname="CollectChunks" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\CollectChunks.v4p" componentmode="InAWindow" id="57">
    <BOUNDS type="Node" left="1515" top="5895" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Window" left="14880" top="2790" width="16905" height="13350">
+   <BOUNDS type="Window" left="10470" top="7455" width="16905" height="13350">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
@@ -201,10 +203,6 @@
    <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="57" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="57" dstpinname="Reset">
-   </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="90" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="57" srcpinname="Output" dstnodeid="2" dstpinname="Input">
    </LINK>
    <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="91">
    <BOUNDS type="Node" left="1500" top="3825" width="100" height="100">
@@ -233,5 +231,143 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="89" srcpinname="Output" dstnodeid="92" dstpinname="Y Input Value">
+   </LINK>
+   <NODE systemname="Tokenizer (Raw LengthPrefix)" filename="..\..\..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw LengthPrefix)" componentmode="Hidden" id="93">
+   <BOUNDS type="Node" left="3795" top="6540" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Data" visible="1">
+   </PIN>
+   <PIN pinname="Length Byte Count" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Length Big Endian" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="93" dstpinname="Data">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="94">
+   <BOUNDS type="Box" left="4095" top="6105" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4095" top="6105" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="4">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="94" srcpinname="Y Output Value" dstnodeid="93" dstpinname="Length Byte Count">
+   </LINK>
+   <LINK srcnodeid="93" srcpinname="Result" dstnodeid="90" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="93" srcpinname="Result" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="99" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5415" top="4080" width="465" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5415" top="4080" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="5235" top="3645" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="101" dstpinname="Input">
+   </LINK>
+   <NODE systemname="TimerFlop (Animation)" filename="%VVVV%\addonpack\lib\nodes\plugins\TimerFlop.dll" nodename="TimerFlop (Animation)" componentmode="Hidden" id="102">
+   <BOUNDS type="Node" left="5865" top="5400" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="Reset" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Y Output Value" dstnodeid="102" dstpinname="Time">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="104">
+   <BOUNDS type="Box" left="6765" top="4425" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6765" top="4425" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Y Output Value" dstnodeid="102" dstpinname="Reset">
+   </LINK>
+   <NODE systemname="TogEdge (Animation)" nodename="TogEdge (Animation)" componentmode="Hidden" id="106">
+   <BOUNDS type="Node" left="5850" top="5880" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Up Edge" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="102" srcpinname="Output" dstnodeid="106" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="106" srcpinname="Up Edge" dstnodeid="93" dstpinname="Reset">
+   </LINK>
+   <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="100">
+   <BOUNDS type="Node" left="5220" top="4575" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="99" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="Output" dstnodeid="102" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Count" dstnodeid="100" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="107">
+   <BOUNDS type="Box" left="4740" top="5895" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4740" top="5895" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="107" srcpinname="Y Output Value" dstnodeid="93" dstpinname="Length Big Endian">
    </LINK>
    </PATCH>
