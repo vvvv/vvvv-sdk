@@ -633,7 +633,7 @@ namespace VVVV.HDE.CodeEditor
 
                 var saveDialog = new System.Windows.Forms.SaveFileDialog();
                 saveDialog.InitialDirectory = Path.GetDirectoryName(TextDocument.Project.LocalPath);
-                saveDialog.Filter = String.Format("{0} Document (*.{1})|*.{1}", ext.ToUpper(), ext.ToLower());
+                saveDialog.Filter = String.Format("{0} Document (*{1})|*{1}", ext.ToUpper(), ext.ToLower());
                 saveDialog.AddExtension = true;
 
                 if (saveDialog.ShowDialog() == DialogResult.OK)
