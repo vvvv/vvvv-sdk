@@ -414,6 +414,8 @@ namespace VVVV.Nodes.NodeBrowser
                 tip += "\n CREDITS: " + ni.Credits.Trim();
             if (ni.Type == NodeType.Dynamic || ni.Type == NodeType.Effect || ni.Type == NodeType.VL || ni.Type == NodeType.Module)
                 tip += "\n Use CTRL+Enter or CTRL+Click to clone this node.";
+            if (!string.IsNullOrEmpty(ni.Filename))
+                tip += "\n\n" + ni.Filename;
 
             if (!string.IsNullOrEmpty(tip))
             	FToolTip.Show(tip.Trim(), FRichTextBox, x, y + DIPX(15));
