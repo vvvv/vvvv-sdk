@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\IO\Arduino\1_Arduino_DataAsStrings.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Arduino\Arduino_without_Firmata.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0" scrollx="0" scrolly="-1698">
    <BOUNDS type="Window" left="6480" top="225" width="19020" height="16650">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -149,9 +149,9 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -377,7 +377,7 @@
    </BOUNDS>
    <BOUNDS type="Node" left="9045" top="540" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
@@ -387,7 +387,7 @@
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="0">
+   <PIN pinname="X Input Value" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -901,9 +901,9 @@
    <LINK srcnodeid="474" srcpinname="Y Output Value" dstnodeid="473" dstpinname="Input">
    </LINK>
    <NODE id="450" nodename="IOBox (Enumerations)" componentmode="InABox" systemname="IOBox (Enumerations)" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Box" left="8145" top="8910" width="810" height="240">
+   <BOUNDS type="Box" left="8565" top="9075" width="810" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="8145" top="8910" width="0" height="0">
+   <BOUNDS type="Node" left="8565" top="9075" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" pintype="Input" visible="1" values="us-ascii">
    </PIN>
@@ -1078,54 +1078,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE id="458" systemname="Tokenizer (String)" nodename="Tokenizer (String)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="7500" top="11100" width="2940" height="270">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" pintype="Input" slicecount="1" values="75">
-   </PIN>
-   <PIN pinname="Separator" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Output" visible="1" pintype="Output">
-   </PIN>
-   <PIN pinname="Mode" slicecount="1" pintype="Input" visible="1" values="Postfix">
-   </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Queue Mode" pintype="Input" visible="1" slicecount="1" values="Enqueue">
-   </PIN>
-   <PIN pinname="Token Length" pintype="Input" visible="1" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Update" pintype="Input" visible="1" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Queue" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="Queue Length" pintype="Output" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <NODE id="448" systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <PIN pinname="Output" visible="1" pintype="Output">
-   </PIN>
-   <BOUNDS type="Node" left="7500" top="9300" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1" pintype="Input">
-   </PIN>
-   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Encoding" pintype="Input" visible="1">
-   </PIN>
-   <PIN pinname="ID" pintype="Output" visible="-1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="450" srcpinname="Output Enum" dstnodeid="448" dstpinname="Encoding">
-   </LINK>
-   <LINK srcnodeid="367" srcpinname="Output" dstnodeid="448" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="458" srcpinname="Output" dstnodeid="461" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="458" srcpinname="Output" dstnodeid="459" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="466" srcpinname="Y Output Value" dstnodeid="462" dstpinname="Input 2">
    </LINK>
    <LINK srcnodeid="462" srcpinname="Output" dstnodeid="460" dstpinname="Input 2">
@@ -1164,16 +1116,6 @@
    </LINK>
    <LINK srcnodeid="480" srcpinname="Output" dstnodeid="360" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="485" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="8655" top="10665" width="690" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8655" top="10665" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="Prefix">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="485" srcpinname="Output Enum" dstnodeid="458" dstpinname="Mode">
-   </LINK>
    <LINK srcnodeid="480" srcpinname="Output" dstnodeid="424" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="492" systemname="IOBox (Value Advanced)">
@@ -1203,9 +1145,9 @@
    <LINK srcnodeid="493" srcpinname="Output Enum" dstnodeid="481" dstpinname="Mode">
    </LINK>
    <NODE componentmode="InABox" id="496" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7065" top="9225" type="Node" width="315">
+   <BOUNDS height="270" left="7065" top="9930" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="7065" top="9225" type="Box" width="405">
+   <BOUNDS height="390" left="7065" top="9930" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1219,9 +1161,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="497" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="7050" top="11025" type="Node" width="315">
+   <BOUNDS height="270" left="7065" top="10575" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="7050" top="11025" type="Box" width="405">
+   <BOUNDS height="390" left="7065" top="10575" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1266,16 +1208,6 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="501" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="9420" top="10665" width="930" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="9420" top="10665" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="Enqueue">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="501" srcpinname="Output Enum" dstnodeid="458" dstpinname="Queue Mode">
-   </LINK>
    <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="502">
    <BOUNDS type="Node" left="825" top="3255" width="100" height="100">
    </BOUNDS>
@@ -1303,9 +1235,9 @@
    <NODE id="512" componentmode="InABox" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS type="Node" height="270" left="825" top="15390" width="7425">
    </BOUNDS>
-   <BOUNDS type="Box" height="3780" left="825" top="15390" width="5055">
+   <BOUNDS type="Box" height="3930" left="825" top="15390" width="5280">
    </BOUNDS>
-   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|RS232 (Devices) returns the arrived byte sequence which is then decoded as a string.&cr;&lf;&cr;&lf;Some parts of the string can arrive in different frames. Tokenizer (String) with its &apos;Queue Mode&apos; pin set to &apos;Enqueue&apos; buffers the input and returns the entire (completed) string only when if finds characters defined on its &apos;Separator&apos; pin. In this example a newline character (ASCII code 10) is used as the separator.&cr;&lf;&cr;&lf;The string passes through the S+H (String) only when it has changed AND its length is not zero.&cr;&lf;&cr;&lf;After cleaning the string from blank characters, it is separated into the slices at the separator defined on the &apos;Intersperse&apos; pin (a &apos;Comma&apos; in this example).&cr;&lf;&cr;&lf;These slices are converted into values and returned induvidually.|">
+   <PIN pinname="Input String" encoded="0" slicecount="1" visible="0" values="|The Tokenizer (Raw Postfix) buffers the bytes coming from the RS232 (Devices) and returns the completed message (aka token) only when it finds a byte sequence defined for the &apos;Postfix&apos; pin (LF character, code 0A in this example). Note, that the message can arrive splitted into pieces (during different vvvv frames), this is where the Tokenizer kicks in, collecting the pieces and returning the whole message.&cr;&lf;&cr;&lf;If the Tokenizer returns several messages in one frame, they are getting stored in Enqueue (Raw) and returned one by one during the next frames.&cr;&lf;&cr;&lf;The message (converted from bytes into the string) passes through the S+H (String) only when it has changed AND its length is not zero.&cr;&lf;&cr;&lf;After cleaning the string from blank characters, it is separated into the slices at the separator defined on the &apos;Intersperse&apos; pin (a &apos;Comma&apos; in this example).&cr;&lf;&cr;&lf;These slices are converted into values and returned induvidually.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1317,9 +1249,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="511" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="15390" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="15375" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="15390" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="15375" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
    </PIN>
@@ -1333,9 +1265,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="510" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="16005" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="16800" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="16005" type="Box" width="405">
+   <BOUNDS height="390" left="240" top="16800" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
    </PIN>
@@ -1349,9 +1281,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="509" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="17220" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="17490" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="390" left="240" top="17220" type="Box" width="570">
+   <BOUNDS height="390" left="240" top="17490" type="Box" width="570">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="10.">
    </PIN>
@@ -1365,9 +1297,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="508" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="17910" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="18090" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="240" top="17910" type="Box" width="615">
+   <BOUNDS height="405" left="240" top="18090" type="Box" width="615">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="11.">
    </PIN>
@@ -1404,37 +1336,9 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="458" srcpinname="Output" dstnodeid="522" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="460" srcpinname="Output" dstnodeid="522" dstpinname="Set">
    </LINK>
-   <NODE systemname="SpellValue (String)" nodename="SpellValue (String)" componentmode="Hidden" id="523">
-   <BOUNDS type="Node" left="8055" top="10185" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Mode" slicecount="1" values="Ascii">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="524" systemname="IOBox (Value Advanced)">
-   <BOUNDS type="Box" left="8070" top="9810" width="390" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="8070" top="9810" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" values="10">
-   </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
-   </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Integer">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="524" srcpinname="Y Output Value" dstnodeid="523" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="523" srcpinname="Output" dstnodeid="458" dstpinname="Separator">
-   </LINK>
-   <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="527">
+   <NODE systemname="Separate (String Legacy)" nodename="Separate (String)" componentmode="Hidden" id="527">
    <BOUNDS type="Node" left="7500" top="14400" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
@@ -1518,8 +1422,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="522" srcpinname="Output" dstnodeid="534" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="534" srcpinname="Output" dstnodeid="527" dstpinname="Input">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="535" systemname="IOBox (String)">
@@ -1671,9 +1573,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="546" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="240" top="18675" type="Node" width="315">
+   <BOUNDS height="270" left="240" top="18915" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="405" left="240" top="18675" type="Box" width="615">
+   <BOUNDS height="405" left="240" top="18915" type="Box" width="615">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="12.">
    </PIN>
@@ -1700,8 +1602,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="448" srcpinname="Output" dstnodeid="458" dstpinname="Input">
-   </LINK>
    <NODE systemname="IsActive (VVVV)" filename="%VVVV%\lib\nodes\modules\VVVV\IsActive (VVVV).v4p" nodename="IsActive (VVVV)" componentmode="Hidden" id="548">
    <BOUNDS type="Node" left="11355" top="7980" width="100" height="100">
    </BOUNDS>
@@ -1716,6 +1616,74 @@
    </LINK>
    <LINK srcnodeid="366" srcpinname="Y Output Value" dstnodeid="548" dstpinname="Enabled">
    </LINK>
-   <LINK srcnodeid="367" srcpinname="On Data" dstnodeid="458" dstpinname="Update">
+   <NODE systemname="LF (String)" filename="%VVVV%\lib\nodes\modules\String\LF (String).v4p" nodename="LF (String)" componentmode="Hidden" id="552">
+   <BOUNDS type="Node" left="7950" top="9090" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Enqueue (Raw)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Enqueue (Raw)" componentmode="Hidden" id="556">
+   <BOUNDS type="Node" left="7515" top="10650" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Data" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="559">
+   <BOUNDS type="Node" left="7515" top="11220" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="556" srcpinname="Result" dstnodeid="559" dstpinname="Input">
    </LINK>
+   <LINK srcnodeid="522" srcpinname="Output" dstnodeid="534" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Tokenizer (Raw Postfix)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw Postfix)" componentmode="Hidden" id="560">
+   <BOUNDS type="Node" left="7515" top="9990" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Postfix" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Data" visible="1">
+   </PIN>
+   <PIN pinname="Result" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="367" srcpinname="Output" dstnodeid="560" dstpinname="Data">
+   </LINK>
+   <LINK srcnodeid="560" srcpinname="Result" dstnodeid="556" dstpinname="Data">
+   </LINK>
+   <LINK srcnodeid="559" srcpinname="Output" dstnodeid="461" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="559" srcpinname="Output" dstnodeid="459" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="559" srcpinname="Output" dstnodeid="522" dstpinname="Input">
+   </LINK>
+   <NODE id="551" systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Output" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Node" left="7950" top="9510" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1" pintype="Input" values="|&cr;|">
+   </PIN>
+   <PIN pinname="Encoding" visible="1" pintype="Input" slicecount="1" values="|System Default|">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="551" srcpinname="Output" dstnodeid="560" dstpinname="Postfix">
+   </LINK>
+   <LINK srcnodeid="552" srcpinname="Output" dstnodeid="551" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="450" srcpinname="Output Enum" dstnodeid="551" dstpinname="Encoding">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
