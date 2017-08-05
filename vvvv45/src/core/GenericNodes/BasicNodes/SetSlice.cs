@@ -42,27 +42,26 @@ namespace VVVV.Nodes.Generic
                 new OutputAttribute("Output"));
         }
 
-        protected virtual void Prepare() { }
-
         //called when data for any output pin is requested
-        public void Evaluate(int SpreadMax)
+        public virtual void Evaluate(int spreadMax)
         {
-            Prepare();
+            var inputSpread = FSpreadContainer.IOObject;
+            var outputSpread = FOutputContainer.IOObject;
+            var input = FInputContainer.IOObject;
 
-            var count = FOutputContainer.IOObject.SliceCount = FSpreadContainer.IOObject.SliceCount;
-
-            int incr = 0;
+            var count = outputSpread.SliceCount = inputSpread.SliceCount;
+            var incr = 0;
             for (int i = 0; i < count; i++)
             {
-                var os = FOutputContainer.IOObject[i];
+                var output = outputSpread[i];
                 var ind = VMath.Zmod(FIndex[i], count);
                 if (i != ind)
-                    os.AssignFrom(FSpreadContainer.IOObject[i]);
+                    output.AssignFrom(inputSpread[i]);
                 else
                 {
-                    var osCount = os.SliceCount;
+                    var osCount = output.SliceCount = inputSpread[i].SliceCount;
                     for (int s = 0; s < osCount; s++)
-                        os[s] = FInputContainer.IOObject[incr + s];
+                        output[s] = input[incr + s];
                     incr += osCount;
                 }
             }
