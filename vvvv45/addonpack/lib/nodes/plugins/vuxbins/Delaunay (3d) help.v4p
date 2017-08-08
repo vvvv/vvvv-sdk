@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.dtd" >
-   <PATCH nodename="D:\work\repositories\vvvv-sdk\vvvv45\addonpack\lib\nodes\plugins\vuxbins\Delaunay (3d) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\vuxbins\Delaunay (3d) help.v4p">
    <BOUNDS height="11220" left="1365" top="195" type="Window" width="8115">
    </BOUNDS>
    <NODE componentmode="Hidden" id="23" nodename="RandomSpread (Spreads Legacy)">
@@ -40,7 +40,7 @@
    <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="21" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p">
+   <NODE componentmode="Hidden" id="21" nodename=":MODULES:\vvvv group\Transform\Camera (Transform Softimage).v4p" systemname="Camera (Transform Softimage Legacy)">
    <BOUNDS height="0" left="2460" top="9675" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="3600" left="2460" top="9675" type="Box" width="4800">
@@ -98,7 +98,7 @@
    <PIN pinname="Alpha" slicecount="1" values="0.26">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="16" nodename="Mesh (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="16" nodename="Mesh (EX9.Geometry Join)" systemname="MESH (EX9.GEOMETRY JOIN)">
    <BOUNDS height="0" left="1965" top="5190" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Indices" visible="1">
@@ -107,13 +107,17 @@
    </PIN>
    <PIN pinname="Mesh" visible="1">
    </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="15" nodename="VertexBuffer (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="15" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="0" left="720" top="4455" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Vertex Buffer" visible="1">
    </PIN>
    <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Vertex Buffer" linkstyle="VHV" srcnodeid="15" srcpinname="Vertex Buffer">
@@ -303,7 +307,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Indices Count|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Indices Count|">
    </PIN>
    </NODE>
    <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Count">
@@ -315,7 +319,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|by vux|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|by vux|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -329,7 +333,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="julien@mrvux.com" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="julien@mrvux.com">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -343,7 +347,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Computes delaunay tetrahedisation from a set of vertices|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Computes delaunay tetrahedisation from a set of vertices|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -357,7 +361,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="6660" top="12870" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Delaunay - 3d|" encoded="0">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Delaunay (3d)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -393,7 +397,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="1" values="50">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|Vertices Count|" encoded="0">
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Vertices Count|">
    </PIN>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
@@ -448,4 +452,6 @@
    </LINK>
    <LINK srcnodeid="17" srcpinname="Indices" dstnodeid="16" dstpinname="Indices">
    </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
