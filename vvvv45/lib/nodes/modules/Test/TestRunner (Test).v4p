@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" systemname="TestRunner (Test)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" scrollx="45" scrolly="180">
-   <BOUNDS type="Window" left="1050" top="1380" width="14685" height="14565">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" systemname="TestRunner (Test)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test).v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="13350" top="0" width="14625" height="16380">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="97" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Node" left="9480" top="2640" width="0" height="0">
@@ -301,7 +301,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="2" values="1,1">
+   <PIN pinname="Input 1" visible="1" slicecount="4" values="1,1,1,1">
    </PIN>
    </NODE>
    <LINK srcnodeid="146" srcpinname="Output" dstnodeid="147" dstpinname="Switch">
@@ -313,7 +313,7 @@
    </PIN>
    <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="text">
+   <PIN pinname="Input 1" visible="1" slicecount="12" values="OK,|Assertion failure in frame 1: Expected a slice count of 16 but got 0.|,|Assertion failure in frame 1: Expected 1.0000 but got 0.0000.|,OK,|Assertion failure in frame 1: Expected 2.0000 but got 1.0000.&cr;&lf;Expected 2.0000 but got 1.0000.&cr;&lf;Expected 2.0000 but got 1.0000.|,|Assertion failure in frame 1: Expected a slice count of 32 but got 16.|,|Assertion failure in frame 1: Expected 1.0000 but got 0.0000.|,OK,OK,|Assertion failure in frame 1: Expected a slice count of 32 but got 0.|,|Assertion failure in frame 1: Expected 1.0000 but got 0.0000.&cr;&lf;Expected 1.0000 but got 0.0000.|,OK">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -331,7 +331,7 @@
    </PIN>
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -558,7 +558,7 @@
    </LINK>
    <LINK srcnodeid="185" srcpinname="Output" dstnodeid="101" dstpinname="Create Node">
    </LINK>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <LINK srcnodeid="185" srcpinname="Output" dstnodeid="129" dstpinname="Set">
    </LINK>
@@ -582,7 +582,7 @@
    </NODE>
    <LINK srcnodeid="101" srcpinname="Can Create" dstnodeid="187" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="TransformInputDiff_IsChanged_test" filename="%VVVV%\tests\patches\Topic Tests\Plugin Interfaces\TransformInputDiff_IsChanged_test.v4p" componentmode="Hidden" id="104" nodename="%VVVV%\tests\patches\Plugin Interfaces\TransformInputDiff_IsChanged_test.v4p">
+   <NODE systemname="Zip (Vector2D) test" filename="%VVVV%\tests\patches\Node Tests\Zip (Vector2D) test.v4p" componentmode="Hidden" id="104" nodename="%VVVV%\tests\patches\Node Tests\Zip (Vector2D) test.v4p">
    <BOUNDS type="Node" left="9480" top="6270" width="3615" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="9480" top="6270" width="4800" height="3600">
@@ -598,12 +598,118 @@
    <PIN pinname="Running" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="104" srcpinname="Success" dstnodeid="147" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="104" srcpinname="Running" dstnodeid="149" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="104" dstpinname="Run">
    </LINK>
-   <LINK srcnodeid="104" srcpinname="Message" dstnodeid="148" dstpinname="Input 1">
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="188">
+   <BOUNDS type="Node" left="9255" top="7050" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="189" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6495" top="6360" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6495" top="6360" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Check for Red Nodes only|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="189" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="104" srcpinname="Success" dstnodeid="188" dstpinname="Input 1">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="190" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="9825" top="6615" width="360" height="345">
+   </BOUNDS>
+   <BOUNDS type="Node" left="9825" top="6615" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="190" srcpinname="Y Output Value" dstnodeid="188" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="188" srcpinname="Output" dstnodeid="147" dstpinname="Input 1">
+   </LINK>
+   <NODE systemname="Switch (Value Input)" nodename="Switch (Value Input)" componentmode="Hidden" id="191">
+   <BOUNDS type="Node" left="12750" top="7050" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="189" srcpinname="Y Output Value" dstnodeid="191" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="104" srcpinname="Running" dstnodeid="191" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Output 1" dstnodeid="191" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="192">
+   <BOUNDS type="Node" left="11025" top="7050" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="104" srcpinname="Message" dstnodeid="192" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="189" srcpinname="Y Output Value" dstnodeid="192" dstpinname="Switch">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="193" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="11520" top="6630" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="11520" top="6630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="OK">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="193" srcpinname="Output String" dstnodeid="192" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="192" srcpinname="Output" dstnodeid="148" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="191" srcpinname="Output" dstnodeid="149" dstpinname="Input 1">
    </LINK>
    </PATCH>
