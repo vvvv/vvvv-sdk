@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\.TestFilters.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\.TestFilters.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
    <BOUNDS height="9870" left="0" top="7095" type="Window" width="17460">
    </BOUNDS>
    <NODE componentmode="Hidden" id="1" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
@@ -340,11 +340,13 @@
    <BOUNDS height="270" left="3495" top="7725" type="Box" width="1005">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
-   <PIN pinname="Maximum forground fps" slicecount="1" values="99999">
+   <NODE componentmode="Hidden" id="-6" nodename="MainLoop (VVVV)" systemname="MAINLOOP (VVVV)">
+   <PIN pinname="Maximum Foreground FPS" slicecount="1" values="99999">
    </PIN>
    <BOUNDS height="100" left="14550" top="7620" type="Node" width="100">
    </BOUNDS>
+   <PIN pinname="Increase Timing Precision" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Perlin\Perlin (EX9.Texture Source).v4p" id="41" nodename="Perlin (EX9.Texture Source)" systemname="Perlin (EX9.Texture Source)">
    <PIN pinname="Texture Out" visible="1">
@@ -407,7 +409,7 @@
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Clamp|">
+   <PIN pinname="Mode" slicecount="1" values="Clamp">
    </PIN>
    <BOUNDS height="11235" left="13815" top="195" type="Window" width="10305">
    </BOUNDS>
@@ -836,12 +838,6 @@
    <BOUNDS height="270" left="15390" top="2265" type="Box" width="480">
    </BOUNDS>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Filter\_Template (EX9.Texture Filter).v4p" id="29" nodename="_Template (EX9.Texture Filter)" systemname="_Template (EX9.Texture Filter)">
-   <BOUNDS height="100" left="9720" top="330" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="11220" left="13815" top="195" type="Window" width="10950">
-   </BOUNDS>
-   </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Filter\Displace\Displace (EX9.Texture Filter).v4p" id="74" nodename="Displace (EX9.Texture Filter)" systemname="Displace (EX9.Texture Filter)">
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -877,7 +873,7 @@
    </PIN>
    <PIN pinname="Control" visible="1">
    </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Wrap|">
+   <PIN pinname="Mode" slicecount="1" values="Wrap">
    </PIN>
    <PIN pinname="Map Smooth" slicecount="1" values="0.15">
    </PIN>
@@ -895,7 +891,7 @@
    </PIN>
    <PIN pinname="Map Smooth" slicecount="1" values="0.100000001490116">
    </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Wrap|">
+   <PIN pinname="Mode" slicecount="1" values="Wrap">
    </PIN>
    <PIN pinname="Keep Aspect Ratio" slicecount="1" values="1">
    </PIN>
@@ -1300,4 +1296,10 @@
    </LINK>
    <LINK dstnodeid="46" dstpinname="Input" srcnodeid="18" srcpinname="Output">
    </LINK>
+   <NODE systemname="Template (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Template (EX9.Texture Filter).v4p" nodename="Template (EX9.Texture Filter)" componentmode="Hidden" id="101">
+   <BOUNDS type="Node" left="9645" top="345" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

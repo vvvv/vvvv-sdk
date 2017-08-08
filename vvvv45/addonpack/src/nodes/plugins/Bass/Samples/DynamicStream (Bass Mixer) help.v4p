@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta17.dtd" >
-   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Bass\trunk\Samples\DynamicStream (Bass Mixer) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\src\nodes\plugins\Bass\Samples\DynamicStream (Bass Mixer) help.v4p">
    <BOUNDS height="6855" left="6300" top="3750" type="Window" width="9000">
    </BOUNDS>
    <NODE componentmode="Hidden" id="9" nodename=":PLUGINS:\BassSound.dll|BassSound.Streams.BassDynamicStreamNode">
@@ -19,7 +19,7 @@
    </PIN>
    <PIN pinname="Reset" visible="1">
    </PIN>
-   <PIN pinname="Buffer" visible="1">
+   <PIN pinname="Buffer" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Do Write" visible="1">
    </PIN>
@@ -29,13 +29,15 @@
    </PIN>
    <PIN pinname="Handle Out" visible="1">
    </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="8" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.BassAsioOutputNode">
-   <BOUNDS height="0" left="1815" top="6075" type="Node" width="0">
+   <BOUNDS height="0" left="1830" top="5805" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="7605" top="9195" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="1815" top="6075" type="Box" width="0">
+   <BOUNDS height="0" left="1830" top="5805" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Channels" visible="1">
    </PIN>
@@ -44,7 +46,7 @@
    <PIN pinname="Handles In" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7545" top="1920" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9375" top="6720" type="Window" width="215">
@@ -68,7 +70,7 @@
    </NODE>
    <LINK dstnodeid="9" dstpinname="Reset" srcnodeid="7" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="5070" top="1800" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8070" top="7095" type="Window" width="215">
@@ -92,7 +94,7 @@
    </NODE>
    <LINK dstnodeid="9" dstpinname="Do Write" srcnodeid="6" srcpinname="Y Output Value">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2340" top="510" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7710" top="6855" type="Window" width="215">
@@ -110,7 +112,7 @@
    <PIN pinname="Y Input Value" slicecount="8" values="0,0,1,-0.2,0,-0.5,0.1,1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="4" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3495" top="540" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="10245" top="6765" type="Window" width="215">
@@ -133,11 +135,11 @@
    <LINK dstnodeid="9" dstpinname="Indices" srcnodeid="4" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="Hidden" id="3" nodename=":PLUGINS:\BassSound.dll|vvvv.Nodes.MixerNode">
-   <BOUNDS height="0" left="3075" top="5370" type="Node" width="0">
+   <BOUNDS height="0" left="2445" top="5235" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="0" left="8820" top="9225" type="Window" width="0">
    </BOUNDS>
-   <BOUNDS height="0" left="3075" top="5370" type="Box" width="0">
+   <BOUNDS height="0" left="2445" top="5235" type="Box" width="0">
    </BOUNDS>
    <PIN pinname="Is Decoding" slicecount="1" values="1">
    </PIN>
@@ -155,8 +157,10 @@
    </PIN>
    <PIN pinname="Handle In 1" visible="1">
    </PIN>
+   <PIN pinname="Play" visible="1">
+   </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4050" top="3900" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="7065" top="10860" type="Window" width="215">
@@ -188,21 +192,7 @@
    <PIN pinname="X Input Value" slicecount="2" values="0.0163934426229508,0.0655737704918033">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="1" nodename=":MODULES:\vux\ToneGenerator (Spreads).v4p" path="C:\vvvv_40beta17\modules\vux\">
-   <BOUNDS height="0" left="615" top="1935" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="6000" left="6930" top="6210" type="Window" width="9000">
-   </BOUNDS>
-   <BOUNDS height="3600" left="615" top="1935" type="Box" width="4800">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Type" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="9" dstpinname="Buffer" srcnodeid="1" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6240" top="1800" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="9510" top="7650" type="Window" width="215">
@@ -232,4 +222,40 @@
    </LINK>
    <LINK dstnodeid="8" dstpinname="Handles In" srcnodeid="3" srcpinname="Handle">
    </LINK>
+   <NODE componentmode="Hidden" id="1" nodename="ToneGenerator (Value)" systemname="ToneGenerator (Value)" filename="%VVVV%\addonpack\src\nodes\plugins\Bass\Samples\ToneGenerator (Value).v4p">
+   <BOUNDS height="100" left="615" top="1935" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="6000" left="6930" top="6210" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="615" top="1935" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Type" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Buffer" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Index">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10">
+   <BOUNDS type="Box" left="1560" top="4260" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1560" top="4260" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Play">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
