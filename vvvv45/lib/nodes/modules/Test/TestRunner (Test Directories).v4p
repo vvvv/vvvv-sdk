@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" systemname="TestRunner (Test Directories)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Directories).v4p" scrollx="0" scrolly="0">
-   <BOUNDS type="Window" left="3960" top="1350" width="15225" height="11610">
+   <BOUNDS type="Window" left="13350" top="0" width="14625" height="16380">
    </BOUNDS>
    <NODE systemname="TestRunner (Test Files)" filename="%VVVV%\lib\nodes\modules\Test\TestRunner (Test Files).v4p" nodename="TestRunner (Test Files)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="2730" top="7530" width="2355" height="270">
@@ -19,8 +19,10 @@
    </PIN>
    <PIN pinname="Test Patches" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="14595" top="0" width="14415" height="17550">
+   <BOUNDS type="Window" left="13350" top="0" width="14625" height="16380">
    </BOUNDS>
+   <PIN pinname="Check for Red Nodes Only" visible="1">
+   </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="9" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7425" top="675" width="2475" height="900">
@@ -437,7 +439,7 @@
    <NODE systemname="Dir (File)" nodename="Dir (File)" componentmode="Hidden" id="36">
    <BOUNDS type="Node" left="2745" top="6825" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Mask" slicecount="1" values="*test.v4p">
+   <PIN pinname="Mask" slicecount="1" visible="1" values="*test.v4p">
    </PIN>
    <PIN pinname="Directory" visible="1">
    </PIN>
@@ -446,6 +448,8 @@
    <PIN pinname="Update" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Filenames" visible="1">
+   </PIN>
+   <PIN pinname="Short Filenames" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="32" srcpinname="Output" dstnodeid="36" dstpinname="Directory">
@@ -510,7 +514,7 @@
    <LINKPOINT x="11760" y="8115">
    </LINKPOINT>
    </LINK>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="39">
    <BOUNDS type="Node" left="12615" top="2790" width="100" height="100">
@@ -622,4 +626,42 @@
    </LINK>
    <INFO author="vvvv group" description="" tags="">
    </INFO>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="43">
+   <BOUNDS type="Box" left="3900" top="870" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3900" top="870" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="*test.v4p">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="*.*">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="*.*">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mask">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Output String" dstnodeid="36" dstpinname="Mask">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="44">
+   <BOUNDS type="Box" left="3675" top="6750" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3675" top="6750" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Check for Red Nodes Only|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="44" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Check for Red Nodes Only">
+   </LINK>
    </PATCH>

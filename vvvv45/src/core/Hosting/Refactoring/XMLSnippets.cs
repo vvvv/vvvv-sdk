@@ -92,8 +92,14 @@ namespace VVVV.Hosting
 			get {return GetAttribute("systemname");}
 			set {SetAttribute("systemname", value);}
 		}
-		
-		public ComponentMode ComponentMode
+
+        public string Filename
+        {
+            get { return GetAttribute("filename"); }
+            set { SetAttribute("filename", value); }
+        }
+
+        public ComponentMode ComponentMode
 		{
 			//get {return ComponentMode.Parse(GetAttribute("componentmode"));}
 			set {SetAttribute("componentmode", value.ToString());}

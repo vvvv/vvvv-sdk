@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug30.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Skeleton (Kinect OpenNI) help.v4p" systemname="Skeleton (Kinect OpenNI) help">
    <BOUNDS height="8310" left="10860" top="1905" type="Window" width="8310">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\plugins\Kinect.dll" id="0" nodename="Kinect (Devices OpenNI)" systemname="Kinect (Devices OpenNI)">
@@ -41,23 +41,11 @@
    </BOUNDS>
    <BOUNDS height="5010" left="4590" top="1875" type="Window" width="6240">
    </BOUNDS>
-   <PIN pinname="Projection" visible="1">
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layers" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\Kinect\Perspective (Transform Kinect).v4p" id="7" nodename="Perspective (Transform Kinect)" systemname="Perspective (Transform Kinect)">
-   <BOUNDS height="100" left="2370" top="6600" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   <PIN pinname="FOV" visible="1" slicecount="2" values="0.161457703561845,0.125702075600724">
-   </PIN>
-   <BOUNDS type="Window" left="12015" top="8805" width="9000" height="6660">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="6" dstpinname="Projection" srcnodeid="7" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="Hidden" id="8" nodename="Sphere (DX9)" systemname="Sphere (DX9)">
    <BOUNDS height="100" left="2580" top="5730" type="Node" width="100">
    </BOUNDS>
@@ -224,6 +212,20 @@
    </NODE>
    <LINK srcnodeid="0" srcpinname="Context" dstnodeid="21" dstpinname="Context">
    </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\Transform\Perspective (Transform FOV).v4p" id="7" nodename="Perspective (Transform FOV)" systemname="Perspective (Transform FOV)">
+   <BOUNDS height="100" left="2370" top="6600" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="FOV" visible="1" slicecount="2" values="0.161457703561845,0.125702075600724">
+   </PIN>
+   <BOUNDS type="Window" left="12015" top="8805" width="9000" height="6660">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Projection" srcnodeid="7" srcpinname="Transform Out">
+   </LINK>
    <LINK srcnodeid="21" srcpinname="FOVXY" dstnodeid="7" dstpinname="FOV">
    </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
