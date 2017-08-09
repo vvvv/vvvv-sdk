@@ -25,9 +25,11 @@ namespace VVVV.Utils.Win32
         /// </summary>
         /// <param name="handle">The handle to the window. 
         /// (In windows forms, this is obtained by the Handle property)</param>
+        /// <param name="removeBorder">Remove window Borders</param>
+        /// <param name="rect">Defines a subrect of the given window handle to capture</param>
         /// <param name="addCursor">Render the cursor into the image</param>
         /// <returns></returns>
-        public Image CaptureWindow(IntPtr handle, bool addCursor = true)
+        public Image CaptureWindow(IntPtr handle, bool removeBorders = true, Rectangle? subrect = null, bool addCursor = true)
         {
             // get the size
             RECT windowRect;
@@ -37,18 +39,37 @@ namespace VVVV.Utils.Win32
             const int CYFRAME = 0x21;
             const int CYSMCAPTION = 0x33;
 
-            var cdX = User32.GetSystemMetrics(CXFRAME);
-            var cdY = User32.GetSystemMetrics(CYFRAME);
-            var cdC = User32.GetSystemMetrics(CYSMCAPTION);
-
-            //windows with empty captions don't have a titlebar (like the VL editor)
-            if (User32.GetWindowTextLength(handle) == 0)
-                cdC = 0;
-
+            int cdX = 0;
+            int cdY = 0;
+            int cdC = 0;
             var left = windowRect.Left + cdX;
             var top = windowRect.Top + cdY + cdC;
             var width = windowRect.Width - 2 * cdX;
             var height = windowRect.Height - (2 * cdY + cdC);
+
+            if (removeBorders)
+            {
+                cdX = User32.GetSystemMetrics(CXFRAME);
+                cdY = User32.GetSystemMetrics(CYFRAME);
+                
+                //windows with empty captions don't have a titlebar (like the VL editor)
+                if (User32.GetWindowTextLength(handle) != 0)
+                    cdC = User32.GetSystemMetrics(CYSMCAPTION);
+
+                left += cdX;
+                top += cdY + cdC;
+                width -= (2 * cdX);
+                height -= (2 * cdY + cdC);
+            }
+
+            if (subrect != null)
+            {
+                var sr = (Rectangle)subrect;
+                left += Math.Max(0, sr.Left);
+                top += Math.Max(0, sr.Top);
+                width = Math.Min(width, sr.Width);
+                height = Math.Min(height, sr.Height);
+            }
 
             var bmp = new Bitmap(width, height);
 
