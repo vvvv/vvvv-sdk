@@ -81,8 +81,8 @@ namespace VVVV.Utils.Win32
                 //draw cursor
                 if (addCursor && Cursor.Current != null)
                 {
-                    var x = Cursor.Position.X - windowRect.Left - cdX - Cursor.Current.HotSpot.X;
-                    var y = Cursor.Position.Y - windowRect.Top - cdY - cdC - Cursor.Current.HotSpot.Y;
+                    var x = Cursor.Position.X -left - Cursor.Current.HotSpot.X;
+                    var y = Cursor.Position.Y - top - Cursor.Current.HotSpot.Y;
                     var rect = new Rectangle(new Point(x, y), Cursor.Current.Size);
                     Cursor.Current.Draw(g, rect);
                 }
