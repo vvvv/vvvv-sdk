@@ -69,6 +69,14 @@ namespace System.Drawing
         }
 
         /// <summary>
+        /// Returns a rectangle for given center position and 1 pixel size
+        /// </summary>
+        public static RectangleF GetOnePixelRectangleForCenter(this PointF centerPosition)
+        {
+            return GetRectangleForCenterAndSize(centerPosition, new SizeF(1, 1));
+        }
+
+        /// <summary>
         /// Returns a rectangle for given center position and size.
         /// </summary>
         public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
