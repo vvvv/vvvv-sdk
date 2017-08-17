@@ -49,6 +49,7 @@ namespace VVVV.PluginInterfaces.V2
         /// Whether or not feedback loops are allowed on this pin.
         /// By default disabled.
         /// </summary>
+        [Obsolete("You may want to implement IPluginFeedbackLoop. It allows you to specify in detail on which inputs this output depends on.", false)]
         public bool AllowFeedback
         {
             get;
