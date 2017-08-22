@@ -10,8 +10,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "FrameDelay",
 	            Category = "XElement",
                 Help = "Delays the input value one calculation frame.",
-	            Tags = "generic",
-                AutoEvaluate = true)]
+	            Tags = "generic"
+	           )]
     public class XElementFrameDelayNode : FrameDelayNode<XElement>
     {
         public XElementFrameDelayNode() : base(XElementCopier.Default) { }

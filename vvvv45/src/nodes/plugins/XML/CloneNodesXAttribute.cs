@@ -10,8 +10,8 @@ namespace VVVV.Nodes
 	            Category = "XElement",
                 Version = "Attribute",
                 Help = "Delays the input value one calculation frame.",
-	            Tags = "generic",
-                AutoEvaluate = true)]
+	            Tags = "generic"
+	           )]
     public class XAttributeFrameDelayNode : FrameDelayNode<XAttribute>
     {
         public XAttributeFrameDelayNode() : base(XAttributeCopier.Default) { }
