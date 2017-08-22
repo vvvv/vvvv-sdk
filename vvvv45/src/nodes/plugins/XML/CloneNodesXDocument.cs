@@ -11,8 +11,8 @@ namespace VVVV.Nodes
 	            Category = "XElement",
                 Version = "Document",
                 Help = "Delays the input value one calculation frame.",
-	            Tags = "generic"
-	           )]
+	            Tags = "generic",
+                AutoEvaluate = true)]
     public class XDocumentFrameDelayNode : FrameDelayNode<XDocument>
     {
         public XDocumentFrameDelayNode() : base(XDocumentCopier.Default) { }

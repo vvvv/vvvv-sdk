@@ -16,7 +16,8 @@ namespace VVVV.Nodes
 {
     [PluginInfo(Name = "FrameDelay", Category = "Color",
                 Help = "Delays the input color one calculation frame.",
-                Tags = "generic")]
+                Tags = "generic",
+                AutoEvaluate = true)]
     public class ColorFrameDelayNode : FrameDelayNode<RGBAColor>
     {
         public ColorFrameDelayNode() : base(Copier<RGBAColor>.Immutable) { }
@@ -24,7 +25,8 @@ namespace VVVV.Nodes
 
     [PluginInfo(Name = "FrameDelay", Category = "Raw",
                 Help = "Delays the input value one calculation frame.",
-                Tags = "generic")]
+                Tags = "generic",
+                AutoEvaluate = true)]
     public class RawFrameDelayNode : FrameDelayNode<System.IO.Stream>
     {
         public RawFrameDelayNode() : base(Copiers.Raw) { }
@@ -32,7 +34,8 @@ namespace VVVV.Nodes
 
     [PluginInfo(Name = "FrameDelay", Category = "String",
                 Help = "Delays the input string one calculation frame.",
-                Tags = "generic")]
+                Tags = "generic",
+                AutoEvaluate = true)]
     public class StringFrameDelayNode : FrameDelayNode<string>
     {
         public StringFrameDelayNode() : base(Copier<string>.Immutable) { }
@@ -40,7 +43,8 @@ namespace VVVV.Nodes
 
     [PluginInfo(Name = "FrameDelay", Category = "Value",
                 Help = "Delays the input value one calculation frame.",
-                Tags = "generic")]
+                Tags = "generic",
+                AutoEvaluate = true)]
     public class ValueFrameDelayNode : FrameDelayNode<double>
     {
         public ValueFrameDelayNode() : base(Copier<double>.Immutable) { }
@@ -48,7 +52,8 @@ namespace VVVV.Nodes
 
     [PluginInfo(Name = "FrameDelay", Category = "Transform",
                 Help = "Delays the input matrix one calculation frame.",
-                Tags = "generic")]
+                Tags = "generic",
+                AutoEvaluate = true)]
     public class TransformFrameDelayNode : FrameDelayNode<Matrix>
     {
         public TransformFrameDelayNode() : base(Copier<Matrix>.Immutable) { }

@@ -8,7 +8,7 @@ using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes.Generic
-{
+{ 
     public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable, IPluginFeedbackLoop
     {
         [Config("Count", DefaultValue = 1, MinValue = 1, IsSingle = true)]
@@ -39,13 +39,11 @@ namespace VVVV.Nodes.Generic
         {
             var inputAttribute = new InputAttribute("Input") { };
             CountIn.Changed += HandlePinCountChanged;
-            FMainLoop.OnPrepareGraph += HandleOnPrepareGraph;
         }
 
         public void Dispose()
         {
             CountIn.Changed -= HandlePinCountChanged;
-            FMainLoop.OnPrepareGraph -= HandleOnPrepareGraph;
         }
 
         public bool OutputRequiresInputEvaluation(IPluginIO inputPin, IPluginIO outputPin)
@@ -117,12 +115,6 @@ namespace VVVV.Nodes.Generic
                     outputSpread.AssignFrom(buffer);
                 }
             }
-        }
-
-        void HandleOnPrepareGraph(object sender, EventArgs e)
-        {
-            // Might trigger our Evaluate method if no one asked for the data of our outputs yet
-            FIOFactory.PluginHost.Evaluate();
 
             for (int i = 0; i < FBuffers.SliceCount; i++)
             {

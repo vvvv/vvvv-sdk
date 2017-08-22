@@ -13,8 +13,8 @@ namespace VVVV.Nodes
     [PluginInfo(Name = "FrameDelay",
 	            Category = "NODECATEGORY",
                 Help = "Delays the input value one calculation frame.",
-	            Tags = "generic"
-	           )]
+	            Tags = "generic",
+                AutoEvaluate = true)]
     public class REPLACEME_CLASSFrameDelayNode : FrameDelayNode<REPLACEME_CLASS>
     {
         public REPLACEME_CLASSFrameDelayNode() : base(REPLACEME_CLASSCopier.Default) { }
