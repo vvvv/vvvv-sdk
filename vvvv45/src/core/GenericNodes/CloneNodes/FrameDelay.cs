@@ -33,6 +33,7 @@ namespace VVVV.Nodes.Generic
         {
             FCopier = copier;
         }
+        private readonly Spread<ISpread<T>> FBuffers = new Spread<ISpread<T>>();
 
         public void OnImportsSatisfied()
         {
@@ -59,6 +60,11 @@ namespace VVVV.Nodes.Generic
             ResizePinGroups(count, InputContainers, (i) => new InputAttribute(string.Format("Input {0}", i)) { AutoValidate = false });
             ResizePinGroups(count, DefaultContainers, (i) => new InputAttribute(string.Format("Default {0}", i)) { AutoValidate = false });
             ResizePinGroups(count, OutputContainers, (i) => new OutputAttribute(string.Format("Output {0}", i)));
+            FBuffers.Resize(
+                count,
+                i => new Spread<T>(1),
+                DisposeSpread
+            );
         }
 
         private static void DisposeSpread(ISpread<T> spread)
@@ -91,7 +97,7 @@ namespace VVVV.Nodes.Generic
             if (FFirstFrame || init)
             {
                 FFirstFrame = false;
-                for (int i = 0; i < OutputContainers.SliceCount; i++)
+                for (int i = 0; i < FBuffers.SliceCount; i++)
                 {
                     var defaultSpread = DefaultContainers[i].IOObject;
                     // Validate the default input
@@ -103,7 +109,13 @@ namespace VVVV.Nodes.Generic
             }
             else
             {
-                // Do nothing here - we output the data from the last frame
+                for (int i = 0; i < FBuffers.SliceCount; i++)
+                {
+                    var buffer = FBuffers[i];
+                    // Write the cached result from the last frame
+                    var outputSpread = OutputContainers[i].IOObject;
+                    outputSpread.AssignFrom(buffer);
+                }
             }
         }
 
@@ -112,14 +124,13 @@ namespace VVVV.Nodes.Generic
             // Might trigger our Evaluate method if no one asked for the data of our outputs yet
             FIOFactory.PluginHost.Evaluate();
 
-            for (int i = 0; i < OutputContainers.SliceCount; i++)
+            for (int i = 0; i < FBuffers.SliceCount; i++)
             {
                 var inputSpread = InputContainers[i].IOObject;
                 // Validate the regular input
                 inputSpread.Sync();
                 // And cache the result for the next frame
-                var outputSpread = OutputContainers[i].IOObject;
-                outputSpread.AssignFrom(FCopier.CopySpread(inputSpread));
+                FBuffers[i] = FCopier.CopySpread(inputSpread);
             }
         }
     }
