@@ -9,7 +9,7 @@ using VVVV.Utils.VColor;
 
 namespace VVVV.Nodes.Generic
 {
-    public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable, IPluginFeedbackLoop
+    public abstract class FrameDelayNode<T> : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable, IPluginFeedbackLoop, IPluginAwareOfEvaluation
     {
         [Config("Count", DefaultValue = 1, MinValue = 1, IsSingle = true)]
         public IDiffSpread<int> CountIn;
@@ -121,6 +121,11 @@ namespace VVVV.Nodes.Generic
 
         void HandleOnPrepareGraph(object sender, EventArgs e)
         {
+            // We registered at mainloop. So this is called even when node is disabled (Evaluate = 0)
+            // Let's do not evaluate anything in case of being turned off.
+            if (Stopped)
+                return;
+
             // Might trigger our Evaluate method if no one asked for the data of our outputs yet
             FIOFactory.PluginHost.Evaluate();
 
@@ -132,6 +137,24 @@ namespace VVVV.Nodes.Generic
                 // And cache the result for the next frame
                 FBuffers[i] = FCopier.CopySpread(inputSpread);
             }
+        }
+
+        bool Stopped;
+
+        /// <summary>
+        /// Node will get evaluated this frame and the coming frames.
+        /// </summary>
+        public void TurnOn()
+        {
+            Stopped = false;
+        }
+
+        /// <summary>
+        /// Node will not get evaluated this frame and the coming frames.
+        /// </summary>
+        public void TurnOff()
+        {
+            Stopped = true;
         }
     }
 }

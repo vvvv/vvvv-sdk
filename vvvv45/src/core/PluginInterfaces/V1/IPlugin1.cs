@@ -100,13 +100,32 @@ namespace VVVV.PluginInterfaces.V1
         bool OutputRequiresInputEvaluation(IPluginIO inputPin, IPluginIO outputPin);
     }
 
-	#endregion plugin
-	
-	#region PluginDXInterfaces
-	/// <summary>
-	/// Optional interface to be implemented on a plugin that deals with DirectX resources like Meshes, Textures, Layers...
-	/// </summary>
-	[Guid("1BDD5442-8113-4EF4-9951-906633170D8C"),
+    /// <summary>
+    /// Implement that interface to make your plugin aware of evaluate getting turned on or off. 
+    /// The vvvv user turns a node on or off by using the Evaluate pin on the node or on one of its parent patches.
+    /// </summary>
+    [Guid("BAFE0468-E61A-4455-87F1-8E573717E12F"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IPluginAwareOfEvaluation
+    {
+        /// <summary>
+        /// Node will get evaluated this frame and the coming frames.
+        /// </summary>
+        void TurnOn();
+
+        /// <summary>
+        /// Node will not get evaluated this frame and the coming frames.
+        /// </summary>
+        void TurnOff();
+    }
+
+    #endregion plugin
+
+    #region PluginDXInterfaces
+    /// <summary>
+    /// Optional interface to be implemented on a plugin that deals with DirectX resources like Meshes, Textures, Layers...
+    /// </summary>
+    [Guid("1BDD5442-8113-4EF4-9951-906633170D8C"),
 	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	public interface IPluginDXResource
 	{
