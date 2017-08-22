@@ -24,7 +24,7 @@ namespace VVVV.Nodes
 		[Input("Input")]
 		public IDiffSpread<double> DiffInput;
 
-		[Output("Evaluate")]
+		[Output("Output")]
 		public ISpread<bool> EvaluateIsChangedOut;
 		
 		[Output("Render")]

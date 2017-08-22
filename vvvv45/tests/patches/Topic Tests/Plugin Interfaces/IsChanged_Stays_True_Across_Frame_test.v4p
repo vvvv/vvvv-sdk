@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\tests\patches\Topic Tests\Plugin Interfaces\IsChanged_Stays_True_Across_Frame_test.v4p" systemname="DiffSpread_IsChanged_Stays_True_Across_Frame_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\DiffSpread_IsChanged_Stays_True_Across_Frame_test.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\tests\patches\Topic Tests\Plugin Interfaces\IsChanged_Stays_True_Across_Frame_test.v4p" systemname="DiffSpread_IsChanged_Stays_True_Across_Frame_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\DiffSpread_IsChanged_Stays_True_Across_Frame_test.v4p">
    <BOUNDS type="Window" left="1665" top="2160" width="7965" height="7470">
    </BOUNDS>
    <PACK Name="testPack" Version="0.1.0">
@@ -136,28 +136,28 @@
    </NODE>
    <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Epsilon">
    </LINK>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="IsChangedStaysTrueAcrossFrame (Value)" filename="%VVVV%\tests\patches\Plugin Interfaces\plugins\ValueIsChangedStaysTrueAcrossFrame\ValueIsChangedStaysTrueAcrossFrame.csproj" nodename="IsChangedStaysTrueAcrossFrame (Value)" componentmode="Hidden" id="52">
    <BOUNDS type="Node" left="1320" top="2490" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" slicecount="1" visible="1" values="0.372748354682699">
    </PIN>
-   <PIN pinname="Evaluate" visible="1">
+   <PIN pinname="Evaluate" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Render" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="56">
    <BOUNDS type="Node" left="1305" top="3030" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output 1" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="52" srcpinname="Evaluate" dstnodeid="56" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="56" srcpinname="Output 1" dstnodeid="22" dstpinname="Expected">
    </LINK>
    <LINK srcnodeid="52" srcpinname="Render" dstnodeid="22" dstpinname="Actual">
@@ -181,5 +181,7 @@
    <LINK srcnodeid="22" srcpinname="Message" dstnodeid="23" dstpinname="Input String">
    </LINK>
    <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="56" dstpinname="Input 1">
    </LINK>
    </PATCH>
