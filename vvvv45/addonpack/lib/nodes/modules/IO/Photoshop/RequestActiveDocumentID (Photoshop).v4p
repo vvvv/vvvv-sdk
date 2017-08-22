@@ -1,0 +1,83 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\RequestActiveDocumentID (Photoshop).v4p" systemname="RequestActiveDocumentID (Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\RequestActiveDocumentID (Photoshop).v4p">
+   <BOUNDS type="Window" left="6585" top="1860" width="4830" height="4605">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="0" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1455" top="1335" width="2295" height="525">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1455" top="1335" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="|var doc=app.activeDocument;&cr;&lf;&quot;id\n&quot;+doc.id|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2160" top="600" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2160" top="600" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1455" top="3135" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1455" top="3135" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" systemname="AsRaw (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (Photoshop).v4p" componentmode="Hidden" nodename="AsRaw (Photoshop)">
+   <BOUNDS type="Window" left="13005" top="1125" width="11130" height="8550">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1440" top="2160" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1440" top="2160" width="4800" height="3600">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Content Type" visible="1">
+   </PIN>
+   <PIN pinname="Content" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Command" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Photoshop Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output" dstnodeid="5" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="6" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Send">
+   </LINK>
+   <INFO author="vvvv group" description="Creates a command for Photoshop requesting an ID of the current active document." tags="psd, command">
+   </INFO>
+   </PATCH>

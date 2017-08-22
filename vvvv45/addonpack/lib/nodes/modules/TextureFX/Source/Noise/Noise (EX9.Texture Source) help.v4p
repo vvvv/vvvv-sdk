@@ -1,0 +1,193 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.3.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Source\Noise\Noise (EX9.Texture Source) help.v4p" systemname="Noise (EX9.Texture Source) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\Source\Noise\Noise (EX9.Texture Source) help.v4p">
+   <BOUNDS type="Window" left="2445" top="8565" width="6240" height="4635">
+   </BOUNDS>
+   <NODE systemname="FullscreenQuad (DX9)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\misc\FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="75" top="3270" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="75" top="3270">
+   </BOUNDS>
+   <PIN pinname="Texture Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="7">
+   <BOUNDS type="Node" left="75" top="3660" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="75" top="3660" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2445" top="2040" width="6240" height="6510">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="7" dstpinname="Layers">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="345" left="15" top="390" type="Box" width="4170">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Simple and rough noise generator|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Noise - EX9.Texture Source|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE systemname="Noise (EX9.Texture Source)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\Noise\Noise (EX9.Texture Source).v4p" nodename="Noise (EX9.Texture Source)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="90" top="2475" width="5760" height="270">
+   </BOUNDS>
+   <PIN pinname="Format" slicecount="1" values="A8R8G8B8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output" dstnodeid="6" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="57" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="90" top="810" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="90" top="810" width="2250" height="480">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Color A|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="57" srcpinname="Color Output" dstnodeid="56" dstpinname="Color A" linkstyle="Bezier">
+   <LINKPOINT x="120" y="1883">
+   </LINKPOINT>
+   <LINKPOINT x="120" y="1883">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="58" systemname="IOBox (Color)">
+   <BOUNDS type="Node" left="120" top="1590" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="120" top="1590" width="2250" height="480">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Color B|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="58" srcpinname="Color Output" dstnodeid="56" dstpinname="Color B" linkstyle="Bezier">
+   <LINKPOINT x="180" y="2258">
+   </LINKPOINT>
+   <LINKPOINT x="780" y="2258">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="59" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2910" top="1260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2910" top="1260" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Grey">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="59" srcpinname="Y Output Value" dstnodeid="56" dstpinname="Grey" linkstyle="Bezier">
+   <LINKPOINT x="2910" y="2093">
+   </LINKPOINT>
+   <LINKPOINT x="1575" y="2093">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="60" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="3660" top="1260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3660" top="1260" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Animated">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="60" srcpinname="Y Output Value" dstnodeid="56" dstpinname="Animated" linkstyle="Bezier">
+   <LINKPOINT x="3660" y="2093">
+   </LINKPOINT>
+   <LINKPOINT x="2295" y="2093">
+   </LINKPOINT>
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="61" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4440" top="1410" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4440" top="1410" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Seed">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="61" srcpinname="Y Output Value" dstnodeid="56" dstpinname="Seed" linkstyle="Bezier">
+   <LINKPOINT x="4440" y="2048">
+   </LINKPOINT>
+   <LINKPOINT x="3000" y="2048">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="Perlin (EX9.Texture Source)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Source\Perlin\Perlin (EX9.Texture Source).v4p" nodename="Perlin (EX9.Texture Source)" componentmode="Hidden" id="64">
+   <BOUNDS type="Node" left="4245" top="3330" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="66" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4275" top="3030" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="4275" top="3030" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Grain (EX9.Texture Filter)" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Filter\Grain\Grain (EX9.Texture Filter).v4p" nodename="Grain (EX9.Texture Filter)" componentmode="Hidden" id="67">
+   <BOUNDS type="Node" left="4245" top="3705" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>
