@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
-   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Arduino\Arduino_without_Firmata.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0" scrollx="0" scrolly="45">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Arduino\Arduino_without_Firmata.v4p" systemname="1_Arduino_DataAsStrings" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Arduino\1_Arduino_DataAsStrings.v4p" bgcolor="15329769" locked="0" scrollx="225" scrolly="1965">
    <BOUNDS type="Window" left="825" top="315" width="19020" height="16260">
    </BOUNDS>
    <NODE componentmode="InABox" id="76" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -107,7 +107,7 @@
    <NODE id="367" nodename="RS232 (Devices)" systemname="RS232 (Devices)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
    <PIN pinname="Port Name" visible="1">
    </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -137,21 +137,23 @@
    </PIN>
    <PIN pinname="Update Port List" slicecount="1" values="0">
    </PIN>
+   <PIN pinname="Connected" visible="1">
+   </PIN>
    </NODE>
    <NODE id="366" systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox">
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <BOUNDS type="Node" left="11325" top="6705" width="100" height="100">
+   <BOUNDS type="Node" left="11355" top="7095" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="11325" top="6705" width="705" height="720">
+   <BOUNDS type="Box" left="11355" top="7095" width="705" height="720">
    </BOUNDS>
    <PIN pinname="Value Type" slicecount="1" values="Boolean">
    </PIN>
    <PIN pinname="Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="X Input Value" slicecount="1" values="1">
+   <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
@@ -625,9 +627,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="419" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="12150" top="6945" width="870" height="270">
+   <BOUNDS type="Node" left="12180" top="7335" width="870" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="12150" top="6945" width="1245" height="300">
+   <BOUNDS type="Box" left="12180" top="7335" width="1245" height="300">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Connect. |">
    </PIN>
@@ -1521,6 +1523,8 @@
    </PIN>
    <PIN pinname="Result" visible="1">
    </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <NODE systemname="AsString (Raw)" nodename="AsString (Raw)" componentmode="Hidden" id="559">
    <BOUNDS type="Node" left="7515" top="11070" width="100" height="100">
@@ -1539,15 +1543,13 @@
    </BOUNDS>
    <PIN pinname="Postfix" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Data" visible="1">
+   <PIN pinname="Data" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Result" visible="1">
    </PIN>
-   <PIN pinname="Reset" slicecount="1" values="0">
+   <PIN pinname="Reset" slicecount="1" visible="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="367" srcpinname="Output" dstnodeid="560" dstpinname="Data">
-   </LINK>
    <LINK srcnodeid="560" srcpinname="Result" dstnodeid="556" dstpinname="Data">
    </LINK>
    <LINK srcnodeid="559" srcpinname="Output" dstnodeid="461" dstpinname="Input">
@@ -1559,35 +1561,79 @@
    <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="CRLF (String)" filename="%VVVV%\lib\nodes\modules\String\CRLF (String).v4p" nodename="CRLF (String)" componentmode="Hidden" id="552">
-   <BOUNDS type="Node" left="8580" top="9105" width="100" height="100">
+   <BOUNDS type="Node" left="7965" top="9165" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <NODE id="564" systemname="AsRaw (String)" nodename="AsRaw (String)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
-   <BOUNDS type="Node" left="8580" top="9525" width="100" height="100">
+   <BOUNDS type="Node" left="7965" top="9585" width="100" height="100">
    </BOUNDS>
    </NODE>
    <LINK srcnodeid="564" srcpinname="Output" dstnodeid="560" dstpinname="Postfix">
    </LINK>
    <LINK srcnodeid="552" srcpinname="Output" dstnodeid="564" dstpinname="Input">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="565">
-   <BOUNDS type="Box" left="11355" top="7890" width="480" height="480">
+   <NODE componentmode="InABox" id="566" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6990" top="8505" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS type="Node" left="11355" top="7890" width="0" height="0">
+   <BOUNDS height="390" left="6990" top="8505" type="Box" width="405">
    </BOUNDS>
-   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="7.">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||">
+   <PIN pinname="Output String" visible="0">
    </PIN>
-   <PIN pinname="Precision" slicecount="1" values="4">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
-   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <LINK srcnodeid="565" srcpinname="Y Output Value" dstnodeid="367" dstpinname="Enabled">
+   <NODE componentmode="InABox" id="567" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6990" top="9900" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6990" top="9900" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="8.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="568" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6990" top="10440" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6990" top="10440" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="9.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="367" srcpinname="Output" dstnodeid="560" dstpinname="Data">
+   </LINK>
+   <NODE systemname="IsActive (VVVV)" filename="%VVVV%\lib\nodes\modules\VVVV\IsActive (VVVV).v4p" nodename="IsActive (VVVV)" componentmode="Hidden" id="580">
+   <BOUNDS type="Node" left="11355" top="8115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="366" srcpinname="Y Output Value" dstnodeid="580" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="580" srcpinname="Output" dstnodeid="367" dstpinname="Enabled">
    </LINK>
    </PATCH>
