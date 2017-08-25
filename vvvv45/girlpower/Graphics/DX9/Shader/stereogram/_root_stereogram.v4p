@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Shader\stereogram\_root_stereogram.v4p" scrollx="0" scrolly="-1800">
-   <BOUNDS height="4935" left="390" top="1110" type="Window" width="5520">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Graphics\DX9\Shader\stereogram\_root_stereogram.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="5310" left="390" top="1110" type="Window" width="5520">
    </BOUNDS>
    <NODE componentmode="Hidden" id="127" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
    <BOUNDS height="0" left="3705" top="9885" type="Node" width="0">
@@ -613,7 +613,7 @@
    </BOUNDS>
    <BOUNDS height="1800" left="8385" top="8745" type="Box" width="2400">
    </BOUNDS>
-   <BOUNDS height="4800" left="390" top="6030" type="Window" width="4740">
+   <BOUNDS height="4800" left="390" top="6330" type="Window" width="4740">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -977,11 +977,11 @@
    <NODE componentmode="InABox" hiddenwhenlocked="0" id="71" managers="" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="225" top="930" type="Node" width="450">
    </BOUNDS>
-   <BOUNDS height="3510" left="225" top="930" type="Box" width="3990">
+   <BOUNDS height="3720" left="225" top="930" type="Box" width="3975">
    </BOUNDS>
    <BOUNDS height="160" left="18990" top="5730" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" encoded="0" values="|helohelo.&cr;&lf;&cr;&lf;this is a single image random dot stereogram. to see it, place your eyes straight before the image and press SPACE to see two dots in the center. then focus your eyes somewhere behind the screen, so that you see the 2 dots become 3. then you should get a 3D depth perception of the scene. when you see it, press animate to rotate the scene.&cr;&lf;&cr;&lf;don&apos;t show this patch on startup?&cr;&lf;delete args.txt in vvvv&apos;s root directory.&cr;&lf;&cr;&lf;F1 for help.|">
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="0" encoded="0" values="|helohelo.&cr;&lf;&cr;&lf;This is a single image random dot stereogram.&cr;&lf;&cr;&lf;To see it, click in the Renderer, place your eyes straight before the image and press SPACE to see two dots in the center. then focus your eyes somewhere behind the screen, so that you see the 2 dots become 3. then you should get a 3D depth perception of the scene. when you see it, press animate to rotate the scene.&cr;&lf;&cr;&lf;don&apos;t show this patch on startup?&cr;&lf;delete args.txt in vvvv&apos;s root directory.&cr;&lf;&cr;&lf;F1 for help.|">
    </PIN>
    <PIN pinname="Output String" pintype="Output" visible="0">
    </PIN>
@@ -1010,6 +1010,8 @@
    <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="0" values="0">
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="70" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1126,18 +1128,6 @@
    </NODE>
    <LINK srcnodeid="130" srcpinname="Space" dstnodeid="79" dstpinname="Enabled">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="128">
-   <BOUNDS type="Node" left="9090" top="16170" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Pressed Key Code" visible="1">
-   </PIN>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="128" srcpinname="Device" dstnodeid="130" dstpinname="Keyboard">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="131" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="9720" top="7005" width="375" height="240">
    </BOUNDS>
@@ -1162,7 +1152,7 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="95" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <NODE componentmode="Hidden" id="95" nodename="Camera (Transform Softimage)" systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
    <BOUNDS height="100" left="9330" top="7365" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="9330" top="7365" type="Box" width="4800">
@@ -1192,6 +1182,18 @@
    </LINK>
    <LINK srcnodeid="132" srcpinname="Y Output Value" dstnodeid="95" dstpinname="Initial FOV">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="128">
+   <BOUNDS type="Node" left="9090" top="16170" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Pressed Key Code" visible="1">
+   </PIN>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="128" srcpinname="Device" dstnodeid="130" dstpinname="Keyboard">
+   </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\Typewriter (String) help.v4p" locked="0" scrollx="0" scrolly="-864">
-   <BOUNDS height="11385" left="7830" top="255" type="Window" width="10785">
+   <BOUNDS height="11385" left="7845" top="195" type="Window" width="10785">
    </BOUNDS>
    <NODE componentmode="InABox" id="58" nodename="IOBox (String)">
    <BOUNDS height="255" left="120" top="600" type="Node" width="570">
@@ -668,7 +668,19 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="113">
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="125">
+   <BOUNDS type="Node" left="1395" top="10395" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1395" top="10395" width="3015" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="113">
    <BOUNDS type="Node" left="60" top="2085" width="100" height="100">
    </BOUNDS>
    <PIN pinname="State" visible="1">
@@ -682,16 +694,20 @@
    </NODE>
    <LINK srcnodeid="113" srcpinname="Device" dstnodeid="21" dstpinname="Keyboard">
    </LINK>
-   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="125">
-   <BOUNDS type="Node" left="1395" top="10395" width="100" height="100">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="126">
+   <BOUNDS type="Node" left="105" top="1470" width="2445" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="1395" top="10395" width="3015" height="240">
+   <BOUNDS type="Box" left="105" top="1470" width="3255" height="345">
    </BOUNDS>
-   <PIN pinname="String Type" slicecount="1" values="Filename">
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Click in the Renderer and Type|">
    </PIN>
-   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\girlpower\IO\Keyboard-Mouse-Touch\Keyboard-Multiple.v4p">
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="34.101.0">
-   </PACK>
    </PATCH>

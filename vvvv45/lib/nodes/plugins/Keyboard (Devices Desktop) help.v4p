@@ -1,13 +1,13 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
-   <PATCH nodename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\plugins\Keyboard (Devices Desktop) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\Keyboard (Devices Desktop) help.v4p">
    <BOUNDS height="10530" left="12915" top="300" type="Window" width="14010">
    </BOUNDS>
    <NODE componentmode="InABox" id="99" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3465" top="2685" type="Node" width="0">
+   <BOUNDS height="0" left="3465" top="3495" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="5175" top="4680" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="435" left="3465" top="2685" type="Box" width="450">
+   <BOUNDS height="435" left="3465" top="3495" type="Box" width="450">
    </BOUNDS>
    <PIN pinname="Show Slider" slicecount="1" values="1">
    </PIN>
@@ -59,11 +59,11 @@
    <NODE componentmode="InABox" id="95" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="165" top="1305" type="Node" width="8250">
    </BOUNDS>
-   <BOUNDS height="3135" left="165" top="1305" type="Box" width="3195">
+   <BOUNDS height="990" left="165" top="1305" type="Box" width="2460">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Note that the number of simultaneously detected pressed keys varies with hardware and seems to default to around 4.&cr;&lf;&cr;&lf;Known issue:&cr;&lf;As soon as one instance of this node is enabled all dead keys (like ^) will be consumed by it. This means that they won&apos;t come through anymore in other instances of this node, input forms (like this IO box) or other applications.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Note that the number of simultaneously detected pressed keys varies with hardware and seems to default to around 4.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -259,9 +259,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="104" systemname="IOBox (String)">
-   <BOUNDS type="Node" left="3405" top="2370" width="690" height="270">
+   <BOUNDS type="Node" left="3405" top="3180" width="690" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="3405" top="2370" width="690" height="270">
+   <BOUNDS type="Box" left="3405" top="3180" width="690" height="270">
    </BOUNDS>
    <PIN pinname="Input String" visible="0" slicecount="1" values="Enabled">
    </PIN>
@@ -438,7 +438,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE id="120" nodename="Keyboard (Devices Desktop)" systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" componentmode="Hidden">
    <BOUNDS type="Node" height="270" left="3465" top="4200" width="4545">
@@ -460,4 +460,36 @@
    </LINK>
    <LINK srcnodeid="120" srcpinname="Key Code Bin Size" dstnodeid="116" dstpinname="Y Input Value">
    </LINK>
+   <NODE componentmode="InABox" id="121" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="180" top="2730" type="Node" width="8250">
+   </BOUNDS>
+   <BOUNDS height="1620" left="180" top="2730" type="Box" width="2625">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|As soon as one instance of this node is enabled all dead keys (like ^) will be consumed by it. This means that they won&apos;t come through anymore in other instances of this node, input forms (like this IO box) or other applications.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="123" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="165" top="2400" width="2445" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="2400" width="1485" height="300">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|Known issue:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="10">
+   </PIN>
+   </NODE>
    </PATCH>

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\04_VVVV User Map Example\Interaction.v4p" systemname="Interaction">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\04_VVVV User Map Example\Interaction.v4p" systemname="Interaction">
    <BOUNDS height="15570" left="2490" top="1110" type="Window" width="17100">
    </BOUNDS>
    <NODE componentmode="InABox" id="25" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -56,7 +56,7 @@
    <PIN pinname="Input 1" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="251" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE componentmode="Hidden" id="251" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="100" left="13215" top="5895" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -304,7 +304,7 @@
    </LINK>
    <LINK dstnodeid="326" dstpinname="Input" srcnodeid="324" srcpinname="Former Slice">
    </LINK>
-   <NODE componentmode="Hidden" id="327" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE componentmode="Hidden" id="327" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="100" left="6600" top="13560" type="Node" width="100">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -1040,16 +1040,6 @@
    </NODE>
    <LINK srcnodeid="424" srcpinname="R" dstnodeid="298" dstpinname="Simulate">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="423">
-   <BOUNDS type="Node" left="15075" top="930" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="423" srcpinname="Device" dstnodeid="424" dstpinname="Keyboard">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="425" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="15435" top="14115" width="795" height="240">
    </BOUNDS>
@@ -1060,4 +1050,16 @@
    </NODE>
    <LINK srcnodeid="421" srcpinname="Device" dstnodeid="425" dstpinname="Input Node">
    </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="423">
+   <BOUNDS type="Node" left="15075" top="930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="423" srcpinname="Device" dstnodeid="424" dstpinname="Keyboard">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
