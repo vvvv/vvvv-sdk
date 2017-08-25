@@ -119,16 +119,16 @@ namespace VVVV.Nodes.Generic
             }
         }
 
+        // We registered at mainloop. So this is called even when node is disabled 
         void HandleOnPrepareGraph(object sender, EventArgs e)
         {
-            // We registered at mainloop. So this is called even when node is disabled (Evaluate = 0)
-            // Let's do not evaluate anything in case of being turned off.
-            if (Stopped)
-                return;
-
             // Might trigger our Evaluate method if no one asked for the data of our outputs yet
             FIOFactory.PluginHost.Evaluate();
 
+            // Let's do not evaluate anything in case of being turned off.
+            if (Stopped)
+                return;
+            
             for (int i = 0; i < FBuffers.SliceCount; i++)
             {
                 var inputSpread = InputContainers[i].IOObject;
