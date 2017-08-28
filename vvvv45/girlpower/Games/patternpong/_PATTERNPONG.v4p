@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\( patternpong )\PATTERNPONG.v4p" componentmode="InAWindow">
-   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\patternpong\_PATTERNPONG.v4p" componentmode="InAWindow">
+   <BOUNDS height="6045" left="1125" top="8160" type="Window" width="9720">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="21" nodename="pong.v4p">
    <BOUNDS height="100" left="1770" top="360" type="Node" width="100">
    </BOUNDS>
-   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+   <BOUNDS height="6045" left="1125" top="8160" type="Window" width="9720">
    </BOUNDS>
    <BOUNDS left="1770" top="360" type="Box">
    </BOUNDS>
@@ -254,32 +254,38 @@
    </NODE>
    <LINK dstnodeid="17" dstpinname="Y Input Value" srcnodeid="15" srcpinname="Output">
    </LINK>
-   <NODE id="6" nodename="R (VALUE)">
+   <NODE id="6" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="5715" top="600" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="ball_out">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK dstnodeid="8" dstpinname="Enabled" srcnodeid="6" srcpinname="Input Value">
    </LINK>
    <LINK dstnodeid="18" dstpinname="Rotate" srcnodeid="10" srcpinname="Position Out">
    </LINK>
-   <NODE id="5" nodename="R (VALUE)">
+   <NODE id="5" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="5025" top="3555" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="ball_out">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="4" nodename="R (VALUE)">
+   <NODE id="4" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="5610" top="3540" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Receive String" slicecount="1" values="beep">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="3" nodename="Beep (Windows)">
@@ -325,13 +331,13 @@
    <LINK dstnodeid="20" dstpinname="Sampler State" srcnodeid="1" srcpinname="Sampler State Out">
    </LINK>
    <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
-   <BOUNDS height="480" left="6870" top="615" type="Node" width="1095">
+   <BOUNDS height="480" left="7005" top="420" type="Node" width="1095">
    </BOUNDS>
-   <BOUNDS height="855" left="6870" top="615" type="Box" width="2250">
+   <BOUNDS height="1980" left="7005" top="420" type="Box" width="2085">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|player 1: Q, Y&cr;&lf;player 2: M, I|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Click in the Renderer and:&cr;&lf;&cr;&lf;player 1: Q, Y&cr;&lf;player 2: M, I|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -340,4 +346,6 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

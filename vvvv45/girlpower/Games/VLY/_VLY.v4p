@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\Games\VLY\VLY.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\VLY\_VLY.v4p" componentmode="InAWindow" scrollx="0" scrolly="0">
    <BOUNDS height="4800" left="900" top="7875" type="Window" width="9720">
    </BOUNDS>
-   <NODE hiddenwhenlocked="0" id="69" managers="" nodename="Counter (Animation)" systemname="Counter (Animation)">
+   <NODE hiddenwhenlocked="0" id="69" managers="" nodename="Counter (Animation)" systemname="Counter (Animation Legacy)">
    <PIN pinname="Up" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="Down" pintype="Input" visible="1">
@@ -30,7 +30,7 @@
    <PIN pinname="Overflow" pintype="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="0" id="68" managers="" nodename="Counter (Animation)" systemname="Counter (Animation)">
+   <NODE hiddenwhenlocked="0" id="68" managers="" nodename="Counter (Animation)" systemname="Counter (Animation Legacy)">
    <PIN pinname="Up" pintype="Input" visible="1">
    </PIN>
    <PIN pinname="Down" pintype="Input" slicecount="1" visible="1" values="0">
@@ -999,15 +999,17 @@
    <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="690" left="75" top="450" type="Node" width="2715">
    </BOUNDS>
-   <BOUNDS height="1410" left="75" top="450" type="Box" width="2745">
+   <BOUNDS height="2850" left="75" top="450" type="Box" width="2820">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|It´s a game !! a kind!!&cr;&lf;use the keyboard arrow &lt;up&gt; to go &cr;&lf;&lt;right&gt; and &lt;left&gt; to turn and &lt;space&gt; to restart&cr;&lf;&cr;&lf;&lt;patch by sanch&gt;|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|It´s a game !! a kind!!&cr;&lf;&cr;&lf;Click in the Renderer and use:&cr;&lf;- the keyboard arrow &lt;up&gt; to go &cr;&lf;- &lt;right&gt; and &lt;left&gt; to turn &cr;&lf;- &lt;space&gt; to restart&cr;&lf;&cr;&lf;&lt;patch by sanch&gt;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="18" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -1314,16 +1316,6 @@
    </LINK>
    <LINK srcnodeid="73" srcpinname="Space" dstnodeid="31" dstpinname="Y Input Value">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="72">
-   <BOUNDS type="Node" left="11265" top="555" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="72" srcpinname="Device" dstnodeid="73" dstpinname="Keyboard">
-   </LINK>
    <NODE id="8" nodename="Intersect (EX9.Geometry Mesh)" systemname="Intersect (EX9.Geometry Mesh)">
    <BOUNDS height="0" left="8835" top="13050" type="Node" width="0">
    </BOUNDS>
@@ -1400,6 +1392,16 @@
    </LINK>
    <LINK dstnodeid="49" dstpinname="Transform Mesh" srcnodeid="24" srcpinname="transform outout">
    </LINK>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="72">
+   <BOUNDS type="Node" left="11265" top="555" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="72" srcpinname="Device" dstnodeid="73" dstpinname="Keyboard">
+   </LINK>
    </PATCH>

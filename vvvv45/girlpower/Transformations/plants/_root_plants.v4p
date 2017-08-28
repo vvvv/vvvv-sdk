@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.6.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Transformations\( plants )\_root_plants.v4p" componentmode="InAWindow">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Transformations\plants\_root_plants.v4p" componentmode="InAWindow">
    <BOUNDS height="4065" left="1410" top="8490" type="Window" width="7800">
    </BOUNDS>
    <NODE componentmode="InABox" id="30" nodename="IOBOX (VALUE ADVANCED)" systemname="IOBox (Value Advanced)">
@@ -403,13 +403,13 @@
    <LINK dstnodeid="29" dstpinname="Random Seed" srcnodeid="8" srcpinname="Output">
    </LINK>
    <NODE id="5" nodename="OnOpen (VVVV)" systemname="OnOpen (VVVV)">
-   <BOUNDS height="0" left="4950" top="2340" type="Node" width="0">
+   <BOUNDS height="0" left="4800" top="2340" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Bang" visible="1">
    </PIN>
    </NODE>
    <NODE id="4" nodename="OR (Boolean)" systemname="OR (Boolean)">
-   <BOUNDS height="0" left="5520" top="2700" type="Node" width="0">
+   <BOUNDS height="0" left="5370" top="2700" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -483,23 +483,15 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="33" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="6555" top="1800" width="1065" height="240">
+   <BOUNDS type="Box" left="6405" top="1800" width="1065" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6555" top="1800" width="0" height="0">
+   <BOUNDS type="Node" left="6405" top="1800" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Input Enum" slicecount="1" values="DownOnly">
    </PIN>
    </NODE>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="35">
-   <BOUNDS type="Node" left="5835" top="1365" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="34">
-   <BOUNDS type="Node" left="5835" top="2175" width="100" height="100">
+   <BOUNDS type="Node" left="5685" top="2175" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
@@ -513,8 +505,6 @@
    <LINK srcnodeid="33" srcpinname="Output Enum" dstnodeid="34" dstpinname="Key Mode">
    </LINK>
    <LINK srcnodeid="34" srcpinname="Space" dstnodeid="4" dstpinname="Input 2">
-   </LINK>
-   <LINK srcnodeid="35" srcpinname="Device" dstnodeid="34" dstpinname="Keyboard">
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="36" systemname="IOBox (String)">
    <BOUNDS type="Box" left="1965" top="6615" width="2010" height="240">
@@ -534,4 +524,30 @@
    </NODE>
    <LINK srcnodeid="36" srcpinname="Output String" dstnodeid="17" dstpinname="Filename">
    </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="35">
+   <BOUNDS type="Node" left="5685" top="1365" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="35" srcpinname="Device" dstnodeid="34" dstpinname="Keyboard">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37">
+   <BOUNDS type="Node" left="5625" top="480" width="4710" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5625" top="480" width="1680" height="705">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Click in the Renderer and hit &apos;Space&apos; for a new random position.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

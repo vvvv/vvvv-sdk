@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor (2d) help.v4p" systemname="dragCorners help" filename="D:\gitHub\DragCorners\dragCorners help.v4p">
-   <BOUNDS type="Window" left="5790" top="600" width="17730" height="9255">
+   <BOUNDS type="Window" left="5565" top="585" width="17730" height="9255">
    </BOUNDS>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="IOBOX (VALUE ADVANCED)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="9">
    <BOUNDS type="Node" left="5955" top="555" width="100" height="100">
@@ -66,18 +66,6 @@
    <PIN pinname="Simulate" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Bang" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="412">
-   <BOUNDS type="Node" left="13635" top="1425" width="1020" height="270">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
-   </PIN>
-   <BOUNDS type="Box" left="13635" top="1425">
-   </BOUNDS>
-   <PIN pinname="Descriptive Name" slicecount="1" values="||">
    </PIN>
    </NODE>
    <NODE id="444" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
@@ -551,7 +539,7 @@
    </PIN>
    <PIN pinname="Shape Selected" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Keyboard" visible="1">
+   <PIN pinname="Keyboard" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Shape Rotation" visible="1" slicecount="1" values="0">
    </PIN>
@@ -587,8 +575,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="399" srcpinname="Bang" dstnodeid="0" dstpinname="Initialize">
-   </LINK>
-   <LINK srcnodeid="412" srcpinname="Device" dstnodeid="0" dstpinname="Keyboard" linkstyle="PolyLine">
    </LINK>
    <INFO author="" description="" tags="">
    </INFO>
@@ -960,7 +946,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="482" componentmode="InAWindow" systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)">
+   <NODE id="482" componentmode="Hidden" systemname="PolygonEditorView (PolygonEditor EX9)" filename="%VVVV%\addonpack\lib\nodes\modules\2d\PolygonEditor\PolygonEditorView (PolygonEditor EX9).v4p" nodename="PolygonEditorView (PolygonEditor EX9)">
    <BOUNDS type="Window" left="8670" top="3915" width="16935" height="9330">
    </BOUNDS>
    <BOUNDS type="Node" left="5445" top="4905" width="100" height="100">
@@ -1081,5 +1067,19 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="535" srcpinname="Color Output" dstnodeid="482" dstpinname="Colors">
+   </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="412">
+   <BOUNDS type="Node" left="13635" top="1425" width="1020" height="270">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS type="Box" left="13635" top="1425">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="412" srcpinname="Device" dstnodeid="0" dstpinname="Keyboard" linkstyle="PolyLine">
    </LINK>
    </PATCH>

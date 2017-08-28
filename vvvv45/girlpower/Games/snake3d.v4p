@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\Anton-Work\Girlpower_UpdatedWithMouse\snake3d.v4p">
-   <BOUNDS height="3885" left="945" top="7875" type="Window" width="9090">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\snake3d.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="3750" left="945" top="7875" type="Window" width="9435">
    </BOUNDS>
    <NODE componentmode="InAWindow" id="109" nodename="RENDERER (EX9)">
    <BOUNDS height="270" left="150" top="21870" type="Node" width="7005">
@@ -88,7 +88,7 @@
    <PIN pinname="Input 2" visible="1">
    </PIN>
    </NODE>
-   <NODE id="104" nodename="FrameDelay (Animation)">
+   <NODE id="104" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="1770" top="14370" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -378,7 +378,7 @@
    <PIN pinname="Matrix Out" visible="1">
    </PIN>
    </NODE>
-   <NODE id="84" nodename="FrameDelay (Animation)">
+   <NODE id="84" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="11760" top="12075" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -765,6 +765,8 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
+   <PIN pinname="Time" slicecount="1" values="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="54" dstpinname="Set" srcnodeid="56" srcpinname="Bang">
    </LINK>
@@ -1100,7 +1102,7 @@
    <LINKPOINT x="13815" y="9000">
    </LINKPOINT>
    </LINK>
-   <NODE id="29" nodename="FrameDelay (Animation)">
+   <NODE id="29" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="8745" top="15945" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -1427,13 +1429,13 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
-   <BOUNDS height="270" left="4305" top="105" type="Node" width="2295">
+   <BOUNDS height="270" left="4245" top="405" type="Node" width="2295">
    </BOUNDS>
-   <BOUNDS height="1530" left="4305" top="105" type="Box" width="4350">
+   <BOUNDS height="1530" left="4245" top="405" type="Box" width="4350">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|control:&cr;&lf;- arrow keys to navigate&cr;&lf;- spacebar to stop and look around but decrease points&cr;&lf;- R to reset|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Click in the Renderer and use:&cr;&lf;- arrow keys to navigate&cr;&lf;- spacebar to stop and look around but decrease points&cr;&lf;- R to reset|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -1624,9 +1626,13 @@
    </LINK>
    <LINK srcnodeid="117" srcpinname="R" dstnodeid="50" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="117" srcpinname="R" dstnodeid="2" dstpinname="Input 2">
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
+   <LINK srcnodeid="50" srcpinname="Output" dstnodeid="2" dstpinname="Input 2">
+   <LINKPOINT x="10455" y="6255">
+   </LINKPOINT>
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="118">
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="118">
    <BOUNDS type="Node" left="8370" top="3825" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Keyboard" visible="1">

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\betahalo.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Spreading\betahalo.v4p">
    <BOUNDS height="7935" left="915" top="4995" type="Window" width="6105">
    </BOUNDS>
    <NODE id="20" nodename="TypoSpread (Spreads)">
@@ -193,7 +193,7 @@
    <NODE id="5" nodename="CHANGE (STRING)">
    <BOUNDS height="0" left="2235" top="840" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="0" values="||">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
@@ -217,7 +217,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1" slicecount="0" values="text">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -278,22 +278,6 @@
    </NODE>
    <LINK dstnodeid="2" dstpinname="Render State" srcnodeid="0" srcpinname="Render State Out">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="22">
-   <BOUNDS type="Node" left="1395" top="285" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="1395" top="285">
-   </BOUNDS>
-   <PIN pinname="Key Name" visible="1">
-   </PIN>
-   <PIN pinname="Key Char" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="22" srcpinname="Key Char" dstnodeid="5" dstpinname="Input">
-   </LINK>
-   <LINK srcnodeid="22" srcpinname="Key Char" dstnodeid="3" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="Vector (2d Join)" nodename="Vector (2d Join)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="1650" top="3360" width="100" height="100">
    </BOUNDS>
@@ -350,4 +334,36 @@
    </LINK>
    <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="15" dstpinname="Alpha" linkstyle="PolyLine">
    </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="1395" top="285" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1395" top="285">
+   </BOUNDS>
+   <PIN pinname="Key Name" visible="1">
+   </PIN>
+   <PIN pinname="Key Char" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Key Char" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Key Char" dstnodeid="3" dstpinname="Input 2">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25">
+   <BOUNDS type="Node" left="3435" top="240" width="2760" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3435" top="240" width="2025" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Click in the Renderer and hit a letter on a keyboard.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
