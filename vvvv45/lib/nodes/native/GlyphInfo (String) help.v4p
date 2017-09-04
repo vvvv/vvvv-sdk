@@ -1,0 +1,227 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.3.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\GlyphInfo (String) help.v4p">
+   <BOUNDS height="7560" left="2235" top="1095" type="Window" width="7455">
+   </BOUNDS>
+   <NODE id="11" nodename="GlyphInfo (String)">
+   <BOUNDS height="270" left="3810" top="4455" type="Node" width="1095">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Character Encoding" visible="1">
+   </PIN>
+   <PIN pinname="Font" visible="1">
+   </PIN>
+   <PIN pinname="IsDefined" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="10" nodename="SpellValue (String)">
+   <BOUNDS height="0" left="2355" top="3390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mode" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1050" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5490" top="6075" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1320" left="1050" top="5070" type="Box" width="1380">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Character Encoding" slicecount="1" values="UTF8">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="50">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|unicode character|" encoded="0">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input String" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE id="8" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="1665" top="2640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="0.08">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3150" top="2925" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13770" top="9585" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3150" top="2925" type="Box" width="1215">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="UnicodeUTF8">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="2520" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="9810" top="10395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1305" left="2520" top="5070" type="Box" width="1350">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|character defined?|" encoded="0">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="270" left="315" top="300" type="Node" width="1695">
+   </BOUNDS>
+   <BOUNDS height="435" left="315" top="300" type="Box" width="3105">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|GlyphInfo (String)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="270" left="315" top="750" type="Node" width="3015">
+   </BOUNDS>
+   <BOUNDS height="1140" left="315" top="750" type="Box" width="3615">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns 1 on the &quot;IsDefined&quot; pin when a character is defined (available) in the selected font.&cr;&lf;The &quot;Width&quot; pin outputs the width of the current character in pixels depending on the chosen font and font size.|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Mode" srcnodeid="7" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="11" srcpinname="IsDefined">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" linkstyle="PolyLine" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3990" top="3840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="14370" top="10185" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3990" top="3840" type="Box" width="1650">
+   </BOUNDS>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Input Enum" slicecount="1" values="Arial">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Font" srcnodeid="2" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5700" top="3840" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="270" left="5700" top="3840" type="Box" width="615">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Font|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="8" srcpinname="Cycles">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4335" top="5070" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4335" top="5070" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="px" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Width" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5190" top="5055" width="1440" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5190" top="5055" width="1440" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Character Width|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4845" top="4110" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4845" top="4110" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="12">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="px" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Size">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5700" top="4095" width="570" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5700" top="4095" width="570" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Size|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1815" top="3420" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1815" top="3420" width="405" height="240">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Cycles" dstnodeid="16" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>

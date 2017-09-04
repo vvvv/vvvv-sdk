@@ -1,0 +1,129 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta25.5.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\AddonsCore\Nodes\_SpreadOperations\Cons (String) help.v4p">
+   <BOUNDS height="5295" left="4275" top="4575" type="Window" width="5370">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="1185" top="810" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7350" top="7305" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1020" left="1185" top="810" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="4" visible="1" values="hello,my,name,is" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="2580" top="825" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7650" top="7605" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1020" left="2580" top="825" type="Box" width="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="v" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="105" top="2745" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7650" top="7605" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2010" left="105" top="2745" type="Box" width="1125">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="8">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="160" left="7950" top="7905" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" visible="1" values="v,v,v" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Show SliceIndex" slicecount="1" values="1">
+   </PIN>
+   <BOUNDS height="0" left="3900" top="840" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1020" left="3900" top="840" type="Box" width="1140">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="240" left="15" top="390" type="Box" width="3690">
+   </BOUNDS>
+   <BOUNDS height="160" left="-30" top="12000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Concatenates all incoming spreads to one spread|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBOX (STRING)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="-30" top="12000" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Cons - String|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE filename="%VVVV%\plugins\SpreadOperations.dll" id="4" nodename="Cons (String Legacy)" systemname="Cons (String Legacy)">
+   <BOUNDS height="0" left="1185" top="2295" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 2" linkstyle="PolyLine" srcnodeid="3" srcpinname="Output String">
+   <LINKPOINT x="2610" y="1980">
+   </LINKPOINT>
+   <LINKPOINT x="1470" y="1980">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="2" dstpinname="Input String" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Input 3" linkstyle="PolyLine" srcnodeid="1" srcpinname="Output String">
+   <LINKPOINT x="3935" y="2115">
+   </LINKPOINT>
+   <LINKPOINT x="1705" y="2115">
+   </LINKPOINT>
+   </LINK>
+   </PATCH>

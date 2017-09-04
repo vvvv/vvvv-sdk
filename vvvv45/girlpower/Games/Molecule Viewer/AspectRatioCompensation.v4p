@@ -1,0 +1,73 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha29.1.dtd" >
+   <PATCH nodename="C:\Work\MoleculeViewer\AspectRatioCompensation.v4p" systemname="AspectRatioCompensation" filename="C:\Work\MoleculeViewer\AspectRatioCompensation.v4p">
+   <NODE systemname="Scale (Transform)" nodename="Scale (Transform)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="4590" top="2745" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Y" visible="1" slicecount="1" values="0.326441794633865">
+   </PIN>
+   <PIN pinname="X" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="R (Value)" nodename="R (Value)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="4800" top="1515" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="2" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="4785" top="1110" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4785" top="1110" width="1470" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="AspectRatioValue">
+   </PIN>
+   </NODE>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="4785" top="1950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="4" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="4590" top="495" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="495" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform In|">
+   </PIN>
+   <PIN pinname="Output Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Node" left="4590" top="3330" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4590" top="3330" width="675" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Transform Out|">
+   </PIN>
+   <PIN pinname="Input Node" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Output Node" dstnodeid="0" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output Enum" dstnodeid="1" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Input Value" dstnodeid="3" dstpinname="XY">
+   </LINK>
+   <BOUNDS type="Window" left="10545" top="8490" width="10605" height="6375">
+   </BOUNDS>
+   <LINK srcnodeid="3" srcpinname="X" dstnodeid="0" dstpinname="Y">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Y" dstnodeid="0" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="5" dstpinname="Input Node">
+   </LINK>
+   </PATCH>
