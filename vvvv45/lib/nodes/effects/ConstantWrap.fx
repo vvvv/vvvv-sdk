@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: draws a mesh with a constant color and spherical mapping
+//@help: Draws a mesh with a constant color and spherical mapping in TexCoords U direction
 //@tags: sphere
 //@credits:
 
@@ -109,7 +109,7 @@ technique TConstantFF
         TextureTransform[0] = (tTex);
         TexCoordIndex[0] = 0;
         TextureTransformFlags[0] = COUNT4 | PROJECTED;
-        //Wrap0 = U;  // useful when mesh is round like a sphere
+        Wrap0 = U;  // useful when mesh is round like a sphere
 
         //lighting
         LightEnable[0] = TRUE;
