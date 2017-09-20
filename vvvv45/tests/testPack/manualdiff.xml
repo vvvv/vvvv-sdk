@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Short Description
+ 
+  This file controls the conversion process when opening patches.
+  This can be used to temporarily do a conversion task for you.
+  
+  The commandline option:
+  /manualdiff "c:\mymanualdiff.xml"
+  
+  You can rename your nodes (plugins, modules) and then use this file to do conversion even if the patches 
+  already are stored with current version.
+   
+  ========================================================================================================
+	  
+  How to edit this file 
+  * add a node tag within the patch tag for the node you want to be converted
+      <NODE old="I (Spread)">
+      </NODE>   
+      
+  * add attribute "new" if you want to change the node name
+      new="J (Value)"
+      
+  * add a pin tag within the node tag if you want to change the pin interface
+      <PIN old="Output"> </PIN>
+      
+  * add attribute "new" if you want to change the pin name
+      new="Integers"
+      
+  * add attribute "olddefault" if you want to change the default value of the pin. 
+    specify the old default value.
+      olddefault="3"
+-->
+<CONVVVVERTER>
+  <NODE old="Foo (Test)" new="Bar (Test)">
+  </NODE>
+</CONVVVVERTER>

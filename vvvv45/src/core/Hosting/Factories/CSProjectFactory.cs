@@ -448,7 +448,9 @@ namespace VVVV.Hosting.Factories
         static string NAME = "Name";
         static string CATEGORY = "Category";
         static string VERSION = "Version";
-        
+        static string HELP = "Help";
+        static string TAGS = "Tags";
+
         private INodeInfo FNodeInfo;
         private string FName;
         private string FCategory;
@@ -549,15 +551,31 @@ namespace VVVV.Hosting.Factories
             Debug.Assert(attribute.Name == PLUGIN_INFO);
             
             var namedArguments = attribute.NamedArguments;
-            
+
+            //when cloning from a template
+            //remove the dummy helps and tags
+            var removeHelpAndTags = false;
             var oldArguments = new List<NamedArgumentExpression>();
             foreach (var argument in namedArguments)
-                if (argument.Name == NAME || argument.Name == CATEGORY || argument.Name == VERSION)
+                if (argument.Name == NAME)
+                {
                     oldArguments.Add(argument);
-            
+                    var expr = (PrimitiveExpression)argument.Expression;
+                    if (expr.StringValue.StartsWith("\"Template"))
+                        removeHelpAndTags = true;
+                }
+                else if (argument.Name == CATEGORY || argument.Name == VERSION || argument.Name == HELP || argument.Name == TAGS)
+                    oldArguments.Add(argument);
+
             foreach (var argument in oldArguments)
-                namedArguments.Remove(argument);
-            
+                if (argument.Name == HELP || argument.Name == TAGS)
+                {
+                    if (removeHelpAndTags)
+                        namedArguments.Remove(argument);
+                }
+                else
+                    namedArguments.Remove(argument);
+
             namedArguments.Insert(0, new NamedArgumentExpression(NAME, new PrimitiveExpression(FName, FName)));
             namedArguments.Insert(1, new NamedArgumentExpression(CATEGORY, new PrimitiveExpression(FCategory, FCategory)));
             if (!string.IsNullOrEmpty(FVersion))

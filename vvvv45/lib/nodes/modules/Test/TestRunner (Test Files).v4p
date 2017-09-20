@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.3.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Files).v4p" systemname="TestRunner (Test Files)" filename="D:\devvvv\vvvv\public\vvvv45\lib\nodes\modules\Test\TestRunner (Test Files).v4p" scrollx="15" scrolly="15">
-   <BOUNDS type="Window" left="4530" top="285" width="13260" height="13020">
+   <BOUNDS type="Window" left="13350" top="0" width="14625" height="16380">
    </BOUNDS>
    <NODE systemname="GetSlice (String)" nodename="GetSlice (String)" componentmode="Hidden" id="101">
    <BOUNDS type="Node" left="810" top="6405" width="100" height="100">
@@ -298,8 +298,6 @@
    </NODE>
    <LINK srcnodeid="101" srcpinname="Output" dstnodeid="151" dstpinname="Filename">
    </LINK>
-   <LINK srcnodeid="151" srcpinname="Shortname" dstnodeid="150" dstpinname="Input String">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="154" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="5280" top="1995" width="480" height="480">
    </BOUNDS>
@@ -329,8 +327,12 @@
    </PIN>
    <PIN pinname="Run" visible="1">
    </PIN>
-   <BOUNDS type="Window" left="1050" top="1380" width="14685" height="14565">
+   <BOUNDS type="Window" left="13350" top="0" width="14625" height="16380">
    </BOUNDS>
+   <PIN pinname="Check for Red Nodes Only" visible="1">
+   </PIN>
+   <PIN pinname="Check for Red Nodes only" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="101" srcpinname="Output" dstnodeid="100" dstpinname="Test Patch" linkstyle="VHV">
    <LINKPOINT x="870" y="6863">
@@ -462,7 +464,7 @@
    <LINKPOINT x="10875" y="8100">
    </LINKPOINT>
    </LINK>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="OR (Boolean)" nodename="OR (Boolean)" componentmode="Hidden" id="173">
    <BOUNDS type="Node" left="4065" top="6510" width="100" height="100">
@@ -546,4 +548,48 @@
    </LINK>
    <INFO author="vvvv group" description="" tags="">
    </INFO>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="176">
+   <BOUNDS type="Box" left="2250" top="6345" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2250" top="6345" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Check for Red Nodes Only|">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="176" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Check for Red Nodes Only">
+   </LINK>
+   <LINK srcnodeid="176" srcpinname="Y Output Value" dstnodeid="100" dstpinname="Check for Red Nodes only">
+   </LINK>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="177">
+   <BOUNDS type="Node" left="1155" top="7950" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="176" srcpinname="Y Output Value" dstnodeid="177" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="101" srcpinname="Output" dstnodeid="177" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="151" srcpinname="Shortname" dstnodeid="177" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="177" srcpinname="Output" dstnodeid="150" dstpinname="Input String">
+   </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha31.5.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv-sdk\vvvv45\girlpower\( patternpong )\pong.v4p">
-   <BOUNDS height="5955" left="1125" top="8160" type="Window" width="9720">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\patternpong\pong.v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="6045" left="1125" top="8160" type="Window" width="9720">
    </BOUNDS>
    <NODE componentmode="Hidden" id="76" nodename="pad2.v4p">
    <PIN pinname="swI2">
@@ -280,7 +280,7 @@
    </LINK>
    <LINK dstnodeid="57" dstpinname="Input 1" srcnodeid="76" srcpinname="hit">
    </LINK>
-   <NODE id="56" nodename="FrameDelay (Animation)">
+   <NODE id="56" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="3255" top="9135" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -434,7 +434,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE id="43" nodename="FrameDelay (Animation)">
+   <NODE id="43" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="1080" top="7380" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -556,7 +556,7 @@
    </LINK>
    <LINK dstnodeid="72" dstpinname="Input 1" srcnodeid="76" srcpinname="speed_limiter">
    </LINK>
-   <NODE id="35" nodename="Counter (Animation)">
+   <NODE id="35" nodename="Counter (Animation)" systemname="Counter (Animation Legacy)">
    <BOUNDS height="0" left="5730" top="1770" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Minimum" slicecount="1" values="5">
@@ -762,12 +762,14 @@
    </LINK>
    <LINK dstnodeid="22" dstpinname="right" srcnodeid="48" srcpinname="Output">
    </LINK>
-   <NODE id="20" nodename="R (VALUE)">
+   <NODE id="20" nodename="R (VALUE)" systemname="R (VALUE)">
    <BOUNDS height="0" left="1605" top="2115" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input Value" visible="1">
    </PIN>
    <PIN pinname="Receive String" slicecount="1" values="running">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="19" nodename="Multiply (Value)">
@@ -806,20 +808,24 @@
    </LINK>
    <LINK dstnodeid="59" dstpinname="Y Input Value" srcnodeid="29" srcpinname="Position Out">
    </LINK>
-   <NODE id="17" nodename="S (VALUE)">
+   <NODE id="17" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="1695" top="7050" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Send String" slicecount="1" values="ball_out">
    </PIN>
    <PIN pinname="Input Value" visible="1">
    </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
    </NODE>
-   <NODE id="16" nodename="S (VALUE)">
+   <NODE id="16" nodename="S (VALUE)" systemname="S (VALUE)">
    <BOUNDS height="0" left="7335" top="10125" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Send String" slicecount="1" values="beep">
    </PIN>
    <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="Input Value" srcnodeid="41" srcpinname="Output">
@@ -872,7 +878,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="FrameDelay (Animation)">
+   <NODE hiddenwhenlocked="0" id="12" managers="" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <PIN pinname="Output 1" pintype="Output" visible="1">
    </PIN>
    <PIN pinname="Input 1" pintype="Input" visible="1">
@@ -1138,14 +1144,6 @@
    </NODE>
    <LINK srcnodeid="82" srcpinname="Left Button" dstnodeid="44" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="79">
-   <BOUNDS type="Node" left="5475" top="5415" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="80">
    <BOUNDS type="Node" left="5460" top="5970" width="100" height="100">
    </BOUNDS>
@@ -1170,6 +1168,16 @@
    </LINK>
    <LINK srcnodeid="80" srcpinname="I" dstnodeid="75" dstpinname="up">
    </LINK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="79">
+   <BOUNDS type="Node" left="5475" top="5415" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
    <LINK srcnodeid="79" srcpinname="Device" dstnodeid="80" dstpinname="Keyboard">
    </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

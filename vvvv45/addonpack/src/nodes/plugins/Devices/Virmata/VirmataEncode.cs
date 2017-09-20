@@ -67,7 +67,7 @@ namespace VVVV.Nodes
 
   #region PluginInfo
   [PluginInfo(Name = "FirmataEncode",
-              Version = "2.x",
+              Version = "2.x Legacy2",
               Category = "Devices",
               Author = "jens a. ewald",
               Help = "Encodes pins, values and commands for Firmata protocol version 2.x",
@@ -431,7 +431,7 @@ namespace VVVV.Nodes
   #region PluginInfo
   [PluginInfo(Name = "I2CEncode",
               Category = "Firmata",
-              Version  = "2.x",
+              Version = "2.x Legacy2",
               Author = "jens a. ewald",
               Help = "Encodes I2C Firmata messages",
               Tags = "arduino")]

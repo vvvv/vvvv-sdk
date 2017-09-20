@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.1.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\.TestMixers.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
-   <BOUNDS height="7500" left="0" top="7035" type="Window" width="13770">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\.TestMixers.v4p" filename="C:\Users\joreg\Desktop\contributions\modules\TextureFX\_Tester.v4p" systemname="_Tester">
+   <BOUNDS height="7500" left="0" top="5175" type="Window" width="13770">
    </BOUNDS>
    <NODE componentmode="Hidden" id="1" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
    <BOUNDS height="100" left="2295" top="1080" type="Node" width="100">
@@ -216,10 +216,12 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="-7" nodename="MainLoop (VVVV)" systemname="MainLoop (VVVV)">
+   <NODE componentmode="Hidden" id="-6" nodename="MainLoop (VVVV)" systemname="MAINLOOP (VVVV)">
    <BOUNDS height="100" left="11535" top="5490" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Maximum forground fps" slicecount="1" values="99999">
+   <PIN pinname="Maximum Foreground FPS" slicecount="1" values="99999">
+   </PIN>
+   <PIN pinname="Increase Timing Precision" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="57" nodename="Switch (Node Input)" systemname="Switch (Node Input)">
@@ -303,32 +305,8 @@
    </BOUNDS>
    <BOUNDS left="2265" top="3720" type="Box">
    </BOUNDS>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Mixer\CombineChannels\CombineChannels (EX9.Texture Mixer).v4p" id="43" nodename="CombineChannels (EX9.Texture Mixer)" systemname="CombineChannels (EX9.Texture Mixer)">
-   <PIN pinname="Texture Out" visible="1">
+   <PIN pinname="Fader" visible="1">
    </PIN>
-   <PIN pinname="Texture A" visible="1">
-   </PIN>
-   <PIN pinname="Texture B" visible="1">
-   </PIN>
-   <PIN pinname="Enabled" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Fader A" slicecount="4" visible="1" values="1,1,1,1">
-   </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Add|">
-   </PIN>
-   <BOUNDS height="6000" left="11055" top="8295" type="Window" width="9000">
-   </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
-   </PIN>
-   <PIN pinname="Input 2" slicecount="1" visible="1" values="||">
-   </PIN>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <BOUNDS height="100" left="4905" top="3720" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS left="4905" top="3720" type="Box">
-   </BOUNDS>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\misc\Preview (EX9.Texture).v4p" id="46" nodename="Preview (EX9.Texture)" systemname="Preview (EX9.Texture)">
    <BOUNDS height="270" left="2340" top="6390" type="Node" width="1125">
@@ -356,13 +334,7 @@
    </LINK>
    <LINK dstnodeid="53" dstpinname="Input 2" srcnodeid="57" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="43" dstpinname="Input 1" srcnodeid="16" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="43" dstpinname="Input 2" srcnodeid="57" srcpinname="Output">
-   </LINK>
    <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="53" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="18" dstpinname="Input 3" srcnodeid="43" srcpinname="Output">
    </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\modules\common\TextureFX\Source\Perlin\Perlin (EX9.Texture Source).v4p" id="41" nodename="Perlin (EX9.Texture Source)" systemname="Perlin (EX9.Texture Source)">
    <BOUNDS height="100" left="5730" top="1125" type="Node" width="100">
@@ -378,16 +350,16 @@
    </LINK>
    <LINK dstnodeid="16" dstpinname="Input 3" srcnodeid="41" srcpinname="Output">
    </LINK>
-   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\modules\common\TextureFX\Mixer\Blender\Blender (EX9.Texture Mixer).v4p" id="61" nodename="Blender (EX9.Texture Mixer)" systemname="Blender (EX9.Texture Mixer)">
+   <NODE componentmode="Hidden" filename="%VVVV%\addonpack\lib\nodes\modules\TextureFX\Mixer\Blend\Blend (EX9.Texture Mixer).v4p" id="61" nodename="Blend (EX9.Texture Mixer)" systemname="Blend (EX9.Texture Mixer)">
    <PIN pinname="Input 1" visible="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Mode" slicecount="1" values="| Normal|">
+   <PIN pinname="Mode" slicecount="1" visible="1" values="Normal">
    </PIN>
-   <PIN pinname="Opacity" slicecount="1" values="1">
+   <PIN pinname="Opacity" slicecount="1" visible="1" values="0.39">
    </PIN>
    <BOUNDS height="100" left="3645" top="3720" type="Node" width="100">
    </BOUNDS>
@@ -400,4 +372,50 @@
    </LINK>
    <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="61" srcpinname="Output">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="63">
+   <BOUNDS type="Box" left="3990" top="3165" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3990" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="63" srcpinname="Y Output Value" dstnodeid="61" dstpinname="Opacity">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="64">
+   <BOUNDS type="Box" left="4980" top="3165" width="1590" height="270">
+   </BOUNDS>
+   <BOUNDS type="Node" left="4980" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Normal">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="Normal">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="64" srcpinname="Output Enum" dstnodeid="61" dstpinname="Mode">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="65">
+   <BOUNDS type="Box" left="2610" top="3165" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2610" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="65" srcpinname="Y Output Value" dstnodeid="53" dstpinname="Fader">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

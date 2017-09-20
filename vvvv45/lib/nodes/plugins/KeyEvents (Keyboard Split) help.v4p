@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\lib\nodes\plugins\KeyEvents (Keyboard Split) help.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\KeyEvents (Keyboard Split) help.v4p">
    <BOUNDS type="Window" left="915" top="825" width="6315" height="8205">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
@@ -48,14 +48,6 @@
    <PIN pinname="Bin Size" pintype="Output" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="1875" top="2265" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="6" srcpinname="Device" dstnodeid="0" dstpinname="Keyboard">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
    <BOUNDS type="Node" left="150" top="1080" width="3870" height="270">
    </BOUNDS>
@@ -250,12 +242,108 @@
    <BOUNDS type="Box" left="2220" top="5580">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="33">
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
+   <NODE id="34" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Node" left="3180" top="5895" width="2085" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3180" top="5895" width="2085" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" pintype="Input" slicecount="1" values="|Keyboard (Devices Window)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0" pintype="Output">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="MultiLine">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Default" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" pintype="Configuration" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Changed" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="1875" top="2265" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Device" dstnodeid="0" dstpinname="Keyboard">
+   </LINK>
+   <NODE id="33" systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="3225" top="5580" width="100" height="100">
    </BOUNDS>
-   <BOUNDS type="Box" left="3225" top="5580">
+   <BOUNDS type="Box" left="3225" top="5580" width="2400" height="1800">
    </BOUNDS>
+   <BOUNDS type="Window" left="0" top="0" width="6000" height="4500">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Index" pintype="Input" visible="-1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Queue Mode" pintype="Input" visible="1" slicecount="1" values="Enqueue">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Window Handle" pintype="Output">
+   </PIN>
+   <PIN pinname="Device" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Device Name" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Device Description" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Key Name" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Name Bin Size" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Code" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Code Bin Size" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Key Char" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Device Count" pintype="Output" visible="-1">
+   </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="32.2.0">
-   </PACK>
    </PATCH>

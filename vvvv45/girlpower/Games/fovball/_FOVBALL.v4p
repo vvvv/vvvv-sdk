@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Games\fovball\_FOVBALL.v4p">
    <BOUNDS height="12420" left="10095" top="0" type="Window" width="11010">
    </BOUNDS>
@@ -315,13 +315,13 @@
    <LINK dstnodeid="4" dstpinname="Input 1" srcnodeid="15" srcpinname="Bang">
    </LINK>
    <NODE componentmode="InABox" id="3" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="915" left="2415" top="1530" type="Node" width="1605">
+   <BOUNDS height="915" left="1725" top="1365" type="Node" width="1605">
    </BOUNDS>
-   <BOUNDS height="675" left="2415" top="1530" type="Box" width="5010">
+   <BOUNDS height="930" left="1725" top="1365" type="Box" width="6225">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|PRESS Y,X,C,V TO SHOOT !|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|CLICK IN THE RENDERER AND&cr;&lf;PRESS Y,X,C,V TO SHOOT !|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -424,16 +424,6 @@
    </NODE>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="7" dstpinname="FIRE">
    </LINK>
-   <NODE systemname="Keyboard (Devices Desktop)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Desktop)" componentmode="Hidden" id="26">
-   <BOUNDS type="Node" left="8490" top="2925" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Keyboard" visible="1">
-   </PIN>
-   <PIN pinname="Device" visible="1">
-   </PIN>
-   <BOUNDS type="Box" left="8490" top="2925">
-   </BOUNDS>
-   </NODE>
    <NODE systemname="KeyMatch (Keyboard)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="KeyMatch (Keyboard)" componentmode="Hidden" id="28">
    <BOUNDS type="Node" left="8490" top="3855" width="870" height="270">
    </BOUNDS>
@@ -462,8 +452,18 @@
    </LINK>
    <LINK srcnodeid="30" srcpinname="Output Enum" dstnodeid="28" dstpinname="Key Mode">
    </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
+   <NODE systemname="Keyboard (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Keyboard (Devices Window)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="8490" top="2925" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Keyboard" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="8490" top="2925">
+   </BOUNDS>
+   </NODE>
    <LINK srcnodeid="26" srcpinname="Device" dstnodeid="28" dstpinname="Keyboard">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
-   </PACK>
    </PATCH>

@@ -33,7 +33,7 @@ namespace VVVV.Nodes
     {
         string FLastSubType;
 
-        protected override void Prepare()
+        public override void Evaluate(int spreadMax)
         {
             var outputPin = FOutputContainer.GetPluginIO() as IPin;
             var subType = outputPin.GetDownstreamSubType();
@@ -44,6 +44,7 @@ namespace VVVV.Nodes
                 (FSpreadContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
                 (FInputContainer.GetPluginIO() as IEnumIn).SetSubType(subType);
             }
+            base.Evaluate(spreadMax);
         }
     }
 	

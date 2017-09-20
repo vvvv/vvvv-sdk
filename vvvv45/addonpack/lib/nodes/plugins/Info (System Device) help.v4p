@@ -1,11 +1,11 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.5.dtd" >
-   <PATCH nodename="D:\work\personal\builds\vvvv\special\dlls\Ready\EnvironmentNodes\Info (System Device) help.v4p">
-   <BOUNDS height="11010" left="210" top="165" type="Window" width="6255">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Info (System Device) help.v4p">
+   <BOUNDS height="11175" left="210" top="165" type="Window" width="6375">
    </BOUNDS>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3540" top="1350" type="Node" width="0">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="3960" top="1335" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="480" left="3540" top="1350" type="Box" width="480">
+   <BOUNDS height="480" left="3960" top="1335" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="7350" top="5505" type="Window" width="215">
    </BOUNDS>
@@ -35,7 +35,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="7200" top="5475" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Processor">
    </PIN>
@@ -77,7 +77,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="2580" top="3735" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="HDD">
    </PIN>
@@ -89,7 +89,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="3540" top="6195" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Sound">
    </PIN>
@@ -101,7 +101,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="4785" top="8025" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" visible="1">
+   <PIN pinname="Input String" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Graphics">
    </PIN>
@@ -120,7 +120,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE nodename="SystemNodes.dll|VVVV.Nodes.InfoDevice" componentmode="Hidden" id="9">
+   <NODE nodename="Info (System Device)" componentmode="Hidden" id="9" systemname="Info (System Device)" filename="%VVVV%\addonpack\lib\nodes\plugins\SystemNodes.dll">
    <BOUNDS type="Node" left="3960" top="2130" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="3960" top="2130" width="0" height="0">
@@ -136,6 +136,8 @@
    <PIN pinname="Graphics" visible="1">
    </PIN>
    <PIN pinname="Sound" visible="1">
+   </PIN>
+   <PIN pinname="Refresh" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Update">
@@ -160,4 +162,8 @@
    <LINKPOINT x="4485" y="4005">
    </LINKPOINT>
    </LINK>
+   <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="9" dstpinname="Refresh">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>
