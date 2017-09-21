@@ -1,0 +1,333 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\PSDFile (Photoshop) help.v4p">
+   <BOUNDS type="Window" left="1080" top="5535" width="11100" height="8355">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|PSDFile (Photoshop)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="4905" height="720">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns layer&apos;s names, positions and size from an .xml file exported by a photoshop script.&cr;&lf;Full credits go to user manuel for his initial version:|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="PSDFile (Photoshop)" componentmode="Hidden" id="0" systemname="PSDFile (Photoshop)" filename="PSDFile (Photoshop).v4p">
+   <BOUNDS type="Node" left="1380" top="3630" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1380" top="3630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Reload" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Layer Path" visible="1">
+   </PIN>
+   <PIN pinname="Layer Count" visible="1">
+   </PIN>
+   <PIN pinname="Layer Name" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" visible="1" values="FitIn">
+   </PIN>
+   </NODE>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1215" top="5505" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="4" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="6" systemname="Renderer (EX9)">
+   <BOUNDS type="Node" left="1215" top="7125" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1215" top="7125" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="1260" top="270" width="6240" height="5085">
+   </BOUNDS>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Background Color" slicecount="1" visible="1" values="|0.03041,0.90251,0.99444,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="1380" top="2115" width="1290" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1380" top="2115" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="..\..\..\..\assets\mario.xml">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="|All Text Formats (*.csv, *.dtd, *.html, *.txt, *.xml)||*.csv;*.dtd;*.html;*.htm;*.txt;*.xml||Text (*.txt)||*.txt||XML (*.xml)||*.xml||CSV (*.csv)||*.csv||DTD (*.dtd)||*.dtd||HTML (*.html, *.htm)||*.html;*.htm|">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output String" dstnodeid="0" dstpinname="Filename">
+   </LINK>
+   <NODE systemname="FileTexture (EX9.Texture)" nodename="FileTexture (EX9.Texture)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1545" top="5010" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Filename" visible="1">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Layer Path" dstnodeid="8" dstpinname="Filename">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Texture Out" dstnodeid="4" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="9" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2265" top="2460" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2265" top="2460" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Reload">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="10" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2820" top="2070" width="915" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2820" top="2070" width="915" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Filename|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="11" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="2820" top="2460" width="765" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2820" top="2460" width="765" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Reload|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3300" top="4575" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3300" top="4575" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Layer Count" dstnodeid="12" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3285" top="4920" width="810" height="1905">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3285" top="4920" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="10">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Layer Name" dstnodeid="13" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="14" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4215" top="4575" width="1140" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4215" top="4575" width="1140" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Layer Count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4215" top="4920" width="1185" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4215" top="4920" width="1185" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Layer Names|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="17" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6435" top="1890" width="4590" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6435" top="1890" width="4110" height="2925">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Usage:&cr;&lf;&cr;&lf;1) Use the &quot;ExportLayerCoordinatesToXML.jsx&quot; script to export layer infos to an .xml file&cr;&lf;&cr;&lf;2) Use the &quot;ExportLayersToFiles.jsx&quot; script to export the individual layers as to a directory with the same name as your .xml file. Here make sure to leave the &quot;Prefix&quot; blank and have &quot;Transparency&quot; and &quot;Crop Layers&quot; checked.&cr;&lf;&cr;&lf;3) Make sure the .xml file has the same name as the directory that holds all the .pngs and also that it is placed right next to it. Then Load it in the &quot;Filename&quot; pin.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="2970" top="7125" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Transform Out" dstnodeid="6" dstpinname="Aspect Ratio">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Width" dstnodeid="18" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Actual Backbuffer Height" dstnodeid="18" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="6" dstpinname="Layers">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="19" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="2190" top="3165" width="885" height="255">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2190" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="FitHeight">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Output Enum" dstnodeid="0" dstpinname="Alignment">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3240" top="3120" width="3450" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3240" top="3120" width="2220" height="915">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; make either width or height  of the original photoshop image fit into 1 vvvv unit|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="22" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6510" top="840" width="420" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6510" top="840" width="1230" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|For scripts see:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="23" systemname="IOBox (Color)">
+   <BOUNDS type="Box" left="1530" top="6480" width="345" height="300">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1530" top="6480" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" visible="1" values="|0.03041,0.90251,0.99444,1.00000|">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Color Output" dstnodeid="6" dstpinname="Background Color">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="24" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="6420" top="5055" width="4215" height="690">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6420" top="5055" width="4230" height="780">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Note:&cr;&lf;&cr;&lf;Don&apos;t use spaces in your layers names. Use - or _ instead.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="25">
+   <BOUNDS type="Node" left="6540" top="1215" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6540" top="1215" width="2520" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="..\..\..\..\assets\PhotoshopScripts">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   </NODE>
+   <PACK Name="dx11" Version="0.7.2">
+   </PACK>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="26">
+   <BOUNDS type="Node" left="705" top="1440" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="705" top="1440" width="4215" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="http://vvvv.org/forum/import-photoshop-layers-info">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Directory">
+   </PIN>
+   </NODE>
+   </PATCH>

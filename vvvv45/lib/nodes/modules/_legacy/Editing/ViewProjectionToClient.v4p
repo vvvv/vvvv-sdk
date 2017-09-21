@@ -1,0 +1,111 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug32.1.dtd" >
+   <PATCH nodename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\3D\ViewProjectionToClient.v4p" systemname="ViewProjectionToClient" filename="D:\dev\v45\vvvv\public\vvvv45\lib\nodes\modules\3D\ViewProjectionToClient.v4p">
+   <BOUNDS type="Window" left="10980" top="8565" width="9000" height="6000">
+   </BOUNDS>
+   <PACK Name="addonpack" Version="31.9.0">
+   </PACK>
+   <NODE systemname="GetMatrix (Transform)" nodename="GetMatrix (Transform)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="2025" top="1380" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GetMatrix (Transform)" nodename="GetMatrix (Transform)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="2865" top="1380" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Matrix Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetMatrix (Transform)" nodename="SetMatrix (Transform)" componentmode="Hidden" id="2" managers="boygroup">
+   <BOUNDS type="Node" left="2025" top="1770" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Matrix In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetMatrix (Transform)" nodename="SetMatrix (Transform)" componentmode="Hidden" id="1" managers="boygroup">
+   <BOUNDS type="Node" left="2880" top="1755" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Matrix In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Matrix Out" dstnodeid="1" dstpinname="Matrix In">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Matrix Out" dstnodeid="2" dstpinname="Matrix In">
+   </LINK>
+   <NODE systemname="Multiply (Transform)" nodename="Multiply (Transform)" componentmode="Hidden" id="0" managers="boygroup">
+   <BOUNDS type="Node" left="525" top="2400" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In 1" visible="1">
+   </PIN>
+   <PIN pinname="Transform In 2" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform In 1">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Transform Out" dstnodeid="0" dstpinname="Transform In 2">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="5" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="1890" top="420" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1890" top="420" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|View Server|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output Node" dstnodeid="4" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="6" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="3045" top="405" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3045" top="405" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Node" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Projection Server|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Output Node" dstnodeid="3" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="7" systemname="IOBox (Node)" managers="boygroup">
+   <BOUNDS type="Box" left="2130" top="3120" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2130" top="3120" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="View">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Transform Out" dstnodeid="7" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="8" systemname="IOBox (Node)" managers="boygroup">
+   <BOUNDS type="Box" left="3345" top="3165" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3345" top="3165" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Projection">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Transform Out" dstnodeid="8" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="9" systemname="IOBox (Node)" managers="boygroup">
+   <BOUNDS type="Box" left="525" top="2955" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="525" top="2955" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|View Projection|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="9" dstpinname="Input Node">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,307 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
+   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\RequestImage (Photoshop).v4p" scrollx="0" scrolly="0" systemname="RequestImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\RequestImage (Photoshop).v4p">
+   <BOUNDS type="Window" left="5820" top="2925" width="11835" height="7965">
+   </BOUNDS>
+   <NODE systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="5625" top="5070" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="|var idNS = stringIDToTypeID( &quot;sendDocumentThumbnailToNetworkClient&quot; );&cr;&lf;var desc1 = new ActionDescriptor();&cr;&lf;desc1.putInteger( stringIDToTypeID( &quot;width&quot; ), &lt;WIDTH&gt;);&cr;&lf;desc1.putInteger( stringIDToTypeID( &quot;height&quot; ), &lt;HEIGHT&gt;);&cr;&lf;desc1.putInteger( stringIDToTypeID( &quot;format&quot; ), &lt;FORMAT&gt; );&cr;&lf;desc1.putInteger( stringIDToTypeID( &quot;id&quot; ), &lt;ID&gt;);&cr;&lf;executeAction( idNS, desc1, DialogModes.NO );|">
+   </PIN>
+   <PIN pinname="To" visible="1" slicecount="4" values=",0,0,200">
+   </PIN>
+   <PIN pinname="From" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="5970" top="3855" width="885" height="945">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5970" top="3855" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" visible="1" values="&lt;WIDTH&gt;,&lt;HEIGHT&gt;,&lt;FORMAT&gt;">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Output String" dstnodeid="4" dstpinname="From">
+   </LINK>
+   <NODE systemname="FormatValue (String)" nodename="FormatValue (String)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="6360" top="3045" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1" slicecount="4" values="0,0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5235" top="540" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5235" top="540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6600" top="540" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6600" top="540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output" dstnodeid="4" dstpinname="To">
+   </LINK>
+   <NODE systemname="Vector (3d Join)" nodename="Vector (3d Join)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="6345" top="2370" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="11" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Y">
+   </LINK>
+   <NODE id="21" nodename="IOBox (String)" componentmode="InABox" systemname="IOBox (String)" hiddenwhenlocked="0" managers="">
+   <BOUNDS type="Box" left="570" top="1890" width="5415" height="1425">
+   </BOUNDS>
+   <BOUNDS type="Node" left="570" top="1890" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" pintype="Input" values="|var idNS = stringIDToTypeID( &quot;sendDocumentThumbnailToNetworkClient&quot; );&cr;&lf;var desc = new ActionDescriptor();&cr;&lf;desc.putInteger( stringIDToTypeID( &quot;width&quot; ), &lt;WIDTH&gt;);&cr;&lf;desc.putInteger( stringIDToTypeID( &quot;height&quot; ), &lt;HEIGHT&gt;);&cr;&lf;desc.putInteger( stringIDToTypeID( &quot;format&quot; ), &lt;FORMAT&gt; );&cr;&lf;executeAction( idNS, desc, DialogModes.NO );|">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" pintype="Configuration" values="|JavaScript Message|">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" pintype="Configuration" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" pintype="Configuration" values="-1">
+   </PIN>
+   <PIN pinname="Output String" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Window" left="0" top="0" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Pin Visibility" pintype="Configuration" slicecount="1" values="True">
+   </PIN>
+   <PIN pinname="SliceCount Mode" pintype="Configuration" slicecount="1" values="Input">
+   </PIN>
+   <PIN pinname="Columns" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Rows" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Pages" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show SliceIndex" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" pintype="Configuration" slicecount="1" values="|Lucida Sans Unicode|">
+   </PIN>
+   <PIN pinname="Size" pintype="Configuration" slicecount="1" values="7">
+   </PIN>
+   <PIN pinname="Show Grid" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" pintype="Configuration" slicecount="1" values="String">
+   </PIN>
+   <PIN pinname="Show Characters [#0..#32,#127]" pintype="Configuration" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="SliceOffset" pintype="Input" visible="-1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="33.3.0">
+   </PACK>
+   <PACK Name="dx11" Version="33.0">
+   </PACK>
+   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="27">
+   <BOUNDS type="Node" left="7845" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
+   </PIN>
+   <PIN pinname="Receive" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="30" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="7860" top="1125" width="1980" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7860" top="1125" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Output Enum" dstnodeid="27" dstpinname="Enum">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="31" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="7800" top="540" width="870" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7800" top="540" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="JPEG">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Format">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="27" dstpinname="Receive">
+   </LINK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="6855" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="32" dstpinname="Enum">
+   </LINK>
+   <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="33">
+   <BOUNDS type="Node" left="6855" top="1980" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Ord Value" dstnodeid="33" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="33" srcpinname="Output" dstnodeid="11" dstpinname="Z">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="10500" top="510" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="10500" top="510" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Send">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="Output String" dstnodeid="4" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="XYZ" dstnodeid="9" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="39" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="5640" top="6450" width="660" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5640" top="6450" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="42" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="510" top="1575" width="765" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="510" top="1575" width="885" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="Command:">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="String">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="44" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="555" top="4110" width="3255" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="4110" width="1965" height="495">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|For more about scripting Photoshop, check:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="AsRaw (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (Photoshop).v4p" nodename="AsRaw (Photoshop)" componentmode="Hidden" id="41">
+   <BOUNDS type="Node" left="5625" top="5745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Command" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Send" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="13005" top="1125" width="11130" height="8610">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="41" srcpinname="Output" dstnodeid="39" dstpinname="Input Node">
+   </LINK>
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="41" dstpinname="Send">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output" dstnodeid="41" dstpinname="Input">
+   </LINK>
+   <INFO author="vvvv group" description="Creates a command for Photoshop requesting an image of the current active document." tags="psd, command">
+   </INFO>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="46">
+   <BOUNDS type="Node" left="555" top="4725" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="555" top="4725" width="2505" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="Filename">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="01_Photoshop_General-Info.v4p">
+   </PIN>
+   </NODE>
+   </PATCH>
