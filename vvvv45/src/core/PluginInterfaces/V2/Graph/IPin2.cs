@@ -124,7 +124,7 @@ namespace VVVV.PluginInterfaces.V2.Graph
 		INode2 ParentNodeByPatch(INode2 patch);
 		        
         /// <summary>
-        /// The changed event occurs when the pins data changed.
+        /// The changed event occurs when the data of the unconnected input pin changes through an user interaction.
         /// </summary>
         event EventHandler Changed;
         

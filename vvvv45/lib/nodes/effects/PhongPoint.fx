@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: basic pixel based lightning with point light
+//@help: Basic pixel based lightning with point light
 //@tags: shading, blinn
 //@credits:
 
