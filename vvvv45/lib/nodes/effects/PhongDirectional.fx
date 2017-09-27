@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: basic pixel based lightning with directional light
+//@help: Basic pixel based lightning with directional light
 //@tags: shading, blinn
 //@credits:
 

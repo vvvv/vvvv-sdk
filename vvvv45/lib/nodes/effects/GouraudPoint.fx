@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: basic vertex based lightning with point light
+//@help: Basic vertex based lightning with point light
 //@tags: shading, blinn
 //@credits:
 

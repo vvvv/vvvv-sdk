@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: basic vertex based lightning with directional light
+//@help: Basic vertex based lightning with directional light
 //@tags: shading, blinn
 //@credits:
 
