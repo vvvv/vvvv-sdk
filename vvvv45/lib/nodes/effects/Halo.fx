@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: creates a dot in the center of the texture coordinates with adjustable edge fading
+//@help: Creates a dot in the center of the texture coordinates with adjustable edge fading
 //@tags: dot
 //@credits:
 

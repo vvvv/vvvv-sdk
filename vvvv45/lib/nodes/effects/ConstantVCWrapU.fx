@@ -1,6 +1,6 @@
 //@author: vvvv group
-//@help: Draws a mesh with a constant color and spherical mapping in TexCoords U direction
-//@tags: sphere
+//@help: Draws a mesh with a constant color taking the VertexColor into account and spherical mapping in TexCoords U direction
+//@tags: template, hlsl
 //@credits:
 
 // --------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ float4x4 tWVP: WORLDVIEWPROJECTION;
 
 //material properties
 float4 cAmb : COLOR <String uiname="Color";>  = {1, 1, 1, 1};
-float Alpha <float uimin=0.0; float uimax=1.0;> = 1;
+float Alpha = 1;
 
 //texture
 texture Tex <string uiname="Texture";>;
@@ -25,13 +25,10 @@ sampler Samp = sampler_state    //sampler for doing the texture-lookup
     MipFilter = LINEAR;         //sampler states
     MinFilter = LINEAR;
     MagFilter = LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
 };
 
 float4x4 tTex: TEXTUREMATRIX <string uiname="Texture Transform";>;
-
-float4x4 tCol <string uiname="Color Transform";>;
+float4x4 tColor <string uiname="Color Transform";>;
 
 //the data structure: vertexshader to pixelshader
 //used as output data with the VS function
@@ -40,6 +37,7 @@ struct vs2ps
 {
     float4 Pos : POSITION;
     float4 TexCd : TEXCOORD0;
+	float4 Color : TEXCOORD1;
 };
 
 // --------------------------------------------------------------------------------------------------
@@ -48,6 +46,7 @@ struct vs2ps
 
 vs2ps VS(
     float4 Pos : POSITION,
+    float4 Color: COLOR0,
     float4 TexCd : TEXCOORD0)
 {
     //inititalize all fields of output struct with 0
@@ -55,6 +54,7 @@ vs2ps VS(
 
     //transform position
     Out.Pos = mul(Pos, tWVP);
+	Out.Color = Color;
 
     //transform texturecoordinates
     Out.TexCd = mul(TexCd, tTex);
@@ -70,10 +70,9 @@ float4 PS(vs2ps In): COLOR
 {
     //In.TexCd = In.TexCd / In.TexCd.w; // for perpective texture projections (e.g. shadow maps) ps_2_0
 
-    float4 col = tex2D(Samp, In.TexCd) * cAmb;
-    col = mul(col, tCol);
-    col.a *= Alpha;
-
+    float4 col = tex2D(Samp, In.TexCd) * In.Color;
+    col = mul(col, tColor);
+	col.a *= Alpha;
     return col;
 }
 
@@ -86,7 +85,7 @@ technique TConstant
     pass P0
     {
         Wrap0 = U;  // useful when mesh is round like a sphere
-        VertexShader = compile vs_1_1 VS();
+        VertexShader = compile vs_2_0 VS();
         PixelShader = compile ps_2_0 PS();
     }
 }

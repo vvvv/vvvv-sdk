@@ -349,6 +349,15 @@ namespace VVVV.Nodes.Texture.HTML
                         FRenderer.OnDocumentSize(frame, width, height);
                     }
                     return true;
+                case "receive-data":
+                    identifier = message.GetFrameIdentifier();
+                    frame = browser.GetFrame(identifier);
+                    if (frame != null)
+                    {
+                        var arguments = message.Arguments;
+                        FRenderer.OnReceiveData(frame, arguments.GetDictionary(2));
+                    }
+                    return true;
                 default:
                     break;
             }

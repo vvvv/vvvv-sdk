@@ -1,5 +1,5 @@
 //@author: vvvv group
-//@help: basic vertex based flat lightning with point light
+//@help: Basic vertex based flat lightning with point light
 //@tags: shading
 //@credits:
 
