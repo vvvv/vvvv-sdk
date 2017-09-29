@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -154,7 +155,8 @@ namespace VVVV.Nodes.Texture.HTML
         {
             class CustomCallbackHandler : CefV8Handler
             {
-                public const string ReportDocumentSize = "cefReportDocumentSize";
+                public const string ReportDocumentSize = "vvvvReportDocumentSize";
+                public const string Send = "vvvvSend";
 
                 private readonly CefBrowser Browser;
                 private readonly CefFrame Frame;
@@ -166,23 +168,116 @@ namespace VVVV.Nodes.Texture.HTML
 
                 protected override bool Execute(string name, CefV8Value obj, CefV8Value[] arguments, out CefV8Value returnValue, out string exception)
                 {
-                    switch (name)
+                    var message = default(CefProcessMessage);
+                    try
                     {
-                        case ReportDocumentSize:
-                            var message = CefProcessMessage.Create("document-size-response");
-                            message.SetFrameIdentifier(Frame.Identifier);
-                            message.Arguments.SetInt(2, arguments[0].GetIntValue());
-                            message.Arguments.SetInt(3, arguments[1].GetIntValue());
-                            Browser.SendProcessMessage(CefProcessId.Browser, message);
-                            returnValue = null;
-                            exception = null;
-                            return true;
-                        default:
-                            returnValue = null;
-                            exception = null;
-                            return false;
+                        CefListValue args;
+                        switch (name)
+                        {
+                            case ReportDocumentSize:
+                                message = CefProcessMessage.Create("document-size-response");
+                                message.SetFrameIdentifier(Frame.Identifier);
+                                using (args = message.Arguments)
+                                {
+                                    args.SetInt(2, arguments[0].GetIntValue());
+                                    args.SetInt(3, arguments[1].GetIntValue());
+                                    Browser.SendProcessMessage(CefProcessId.Browser, message);
+                                }
+                                returnValue = null;
+                                exception = null;
+                                return true;
+                            case Send:
+                                if (arguments.Length != 1)
+                                {
+                                    exception = "Invalid argument; expecting a single dictionary";
+                                    returnValue = null;
+                                    return true;
+                                }
+                                var arg = arguments[0];
+                                if (!arg.IsObject)
+                                {
+                                    exception = "Argument is not an object";
+                                    returnValue = null;
+                                    return true;
+                                }
+                                message = CefProcessMessage.Create("receive-data");
+                                message.SetFrameIdentifier(Frame.Identifier);
+                                using (var disposable = new CompositeDisposable())
+                                using (args = message.Arguments)
+                                {
+                                    var dict = ToDictionaryValue(arg, disposable);
+                                    args.SetDictionary(2, dict);
+                                    Browser.SendProcessMessage(CefProcessId.Browser, message);
+                                }
+                                returnValue = null;
+                                exception = null;
+                                return true;
+                            default:
+                                returnValue = null;
+                                exception = null;
+                                return false;
+                        }
+                    }
+                    finally
+                    {
+                        message?.Dispose();
                     }
                 }
+            }
+
+            static CefDictionaryValue ToDictionaryValue(CefV8Value value, CompositeDisposable disposable)
+            {
+                var result = CefDictionaryValue.Create();
+                foreach (var key in value.GetKeys())
+                {
+                    var val = value.GetValue(key);
+                    if (val.IsBool)
+                        result.SetBool(key, val.GetBoolValue());
+                    else if (val.IsInt)
+                        result.SetInt(key, val.GetIntValue());
+                    else if (val.IsDouble)
+                        result.SetDouble(key, val.GetDoubleValue());
+                    else if (val.IsString)
+                        result.SetString(key, val.GetStringValue());
+                    else if (val.IsNull)
+                        result.SetNull(key);
+                    else if (val.IsArray)
+                        result.SetList(key, ToListValue(val, disposable));
+                    else if (val.IsObject)
+                        result.SetDictionary(key, ToDictionaryValue(val, disposable));
+                }
+                disposable.Add(result);
+                return result;
+            }
+
+            static CefListValue ToListValue(CefV8Value value, CompositeDisposable disposable)
+            {
+                var result = CefListValue.Create();
+                var count = value.GetArrayLength();
+                result.SetSize(count);
+                for (int i = 0; i < count; i++)
+                {
+                    var val = value.GetValue(i);
+                    if (val != null)
+                    {
+                        if (val.IsBool)
+                            result.SetBool(i, val.GetBoolValue());
+                        else if (val.IsInt)
+                            result.SetInt(i, val.GetIntValue());
+                        else if (val.IsDouble)
+                            result.SetDouble(i, val.GetDoubleValue());
+                        else if (val.IsString)
+                            result.SetString(i, val.GetStringValue());
+                        else if (val.IsNull)
+                            result.SetNull(i);
+                        else if (val.IsArray)
+                            result.SetList(i, ToListValue(val, disposable));
+                        else if (val.IsObject)
+                            result.SetDictionary(i, ToDictionaryValue(val, disposable));
+                    }
+                }
+                disposable.Add(result);
+                return result;
             }
 
             protected override void OnRenderThreadCreated(CefListValue extraInfo)
@@ -212,13 +307,16 @@ namespace VVVV.Nodes.Texture.HTML
             {
                 if (frame.IsMain)
                 {
-                    // Retrieve the context's window object and install the "cefReportDocumentSize" function
-                    // used to tell the node about the document size.
+                    // Retrieve the context's window object and install the "vvvvReportDocumentSize" function
+                    // used to tell the node about the document size as well as the "vvvvSend" function
+                    // used to tell the node about variables computed inside the frame.
                     using (var window = context.GetGlobal())
                     {
                         var handler = new CustomCallbackHandler(browser, frame);
                         var reportDocumentSizeFunc = CefV8Value.CreateFunction(CustomCallbackHandler.ReportDocumentSize, handler);
                         window.SetValue(CustomCallbackHandler.ReportDocumentSize, reportDocumentSizeFunc, CefV8PropertyAttribute.None);
+                        var sendFunc = CefV8Value.CreateFunction(CustomCallbackHandler.Send, handler);
+                        window.SetValue(CustomCallbackHandler.Send, sendFunc, CefV8PropertyAttribute.None);
                     }
                 }
                 base.OnContextCreated(browser, frame, context);
@@ -235,19 +333,24 @@ namespace VVVV.Nodes.Texture.HTML
                         {
                             var visitor = new DomVisitor();
                             frame.VisitDom(visitor);
-                            var response = CefProcessMessage.Create("dom-response");
-                            response.SetFrameIdentifier(frame.Identifier);
-                            if (visitor.Result != null)
+                            using (var response = CefProcessMessage.Create("dom-response"))
                             {
-                                response.Arguments.SetBool(2, true);
-                                response.Arguments.SetString(3, visitor.Result.ToString());
+                                response.SetFrameIdentifier(frame.Identifier);
+                                using (var args = response.Arguments)
+                                {
+                                    if (visitor.Result != null)
+                                    {
+                                        args.SetBool(2, true);
+                                        args.SetString(3, visitor.Result.ToString());
+                                    }
+                                    else
+                                    {
+                                        args.SetBool(2, false);
+                                        args.SetString(3, visitor.Exception.ToString());
+                                    }
+                                    browser.SendProcessMessage(sourceProcess, response);
+                                }
                             }
-                            else
-                            {
-                                response.Arguments.SetBool(2, false);
-                                response.Arguments.SetString(3, visitor.Exception.ToString());
-                            }
-                            browser.SendProcessMessage(sourceProcess, response);
                         }
                     },
                     CancellationToken.None,
