@@ -11,6 +11,7 @@ using EX9 = SlimDX.Direct3D9;
 using System.Drawing;
 using System.IO;
 using VVVV.PluginInterfaces.V1;
+using System.Linq;
 
 namespace VVVV.Nodes.Texture.HTML
 {
@@ -97,6 +98,10 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<string> FCurrentUrlOut;
         [Output("Error Text")]
         public ISpread<string> FErrorTextOut;
+        [Output("On Data")]
+        public ISpread<bool> FOnDataOut;
+        [Output("Data")]
+        public ISpread<XElement> FDataOut;
 
         [Import]
         protected ILogger FLogger;
@@ -121,6 +126,8 @@ namespace VVVV.Nodes.Texture.HTML
             FLoadedOut.SliceCount = spreadMax;
             FErrorTextOut.SliceCount = spreadMax;
             FCurrentUrlOut.SliceCount = spreadMax;
+            FOnDataOut.SliceCount = spreadMax;
+            FDataOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
@@ -175,6 +182,15 @@ namespace VVVV.Nodes.Texture.HTML
                     FDocumentHeightOut[i] = documentSize.Height;
                     FCurrentUrlOut[i] = webRenderer.CurrentUrl;
                 }
+
+                XElement outputs;
+                if (webRenderer.TryReceive(out outputs))
+                {
+                    FDataOut[i] = outputs;
+                    FOnDataOut[i] = true;
+                }
+                else
+                    FOnDataOut[i] = false;
             }
 
             FTextureOut.MarkPinAsChanged();
