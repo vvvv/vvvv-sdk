@@ -25,7 +25,7 @@
    </PIN>
    <PIN pinname="Key Event" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="Url" visible="1" slicecount="1" values="https://vvvv.org/sites/default/files/uploads/dontpanic_45beta25_1_0.pdf">
+   <PIN pinname="Url" visible="1" slicecount="1" values="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\10_JavascriptToVVVV\index.html">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -51,9 +51,9 @@
    </PIN>
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
    </NODE>
-   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
-   </LINK>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="5670" top="10470" width="1230" height="270">
    </BOUNDS>
@@ -75,7 +75,7 @@
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
-   <PIN pinname="Blend Mode" slicecount="1" values="Blend">
+   <PIN pinname="Blend Mode" slicecount="1" values="Off" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Output" dstnodeid="3" dstpinname="Texture">
@@ -85,7 +85,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5655" top="11340" width="2400" height="1800">
    </BOUNDS>
-   <BOUNDS type="Window" left="210" top="390" width="4740" height="5085">
+   <BOUNDS type="Window" left="210" top="390" width="4770" height="5115">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
@@ -597,7 +597,7 @@
    </BOUNDS>
    <BOUNDS height="5730" left="630" top="4155" type="Box" width="2925">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Data comes as an XElement:&cr;&lf;&lt;data key=&quot;value&quot;/&gt;&cr;&lf;&cr;&lf;The Element (XElement Split) and the Attribute (XElement Split) split the data into keys and values.&cr;&lf;&cr;&lf;The OnData output bangs when data was received from JavaScript.&cr;&lf;&cr;&lf;Let&apos;s make use of it:&cr;&lf;Pick the &quot;button&quot; and the &quot;action&quot; attributes from the data sent by JavaScript. The S+H (String) passes through values of the &quot;button&quot; attribute only if the &quot;action&quot; attribute is &quot;Click&quot;.&cr;&lf;&cr;&lf;Select a color according to the button&apos;s value.&cr;&lf;&cr;&lf;The Teapot is rendererd as a Wireframe and notice, that it takes the first pin of the Group, so it is rendered behind the Webpage. The webpage&apos;s background is set to transparent one by its CSS.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|The Data comes as an XElement:&cr;&lf;&lt;data key=&quot;value&quot;/&gt;&cr;&lf;&cr;&lf;The Element (XElement Split) and the Attribute (XElement Split) split the data into keys and values.&cr;&lf;&cr;&lf;The OnData output bangs when data was received from JavaScript.&cr;&lf;&cr;&lf;Let&apos;s make use of it:&cr;&lf;Pick the &quot;button&quot; and the &quot;action&quot; attributes from the data sent by JavaScript. The S+H (String) passes through values of the &quot;button&quot; attribute only if the &quot;action&quot; attribute is &quot;Click&quot;.&cr;&lf;&cr;&lf;Select a color according to the button&apos;s value.&cr;&lf;&cr;&lf;The Teapot is rendererd as a Wireframe and notice, that it takes the first pin of the Group, so it is rendered behind the Webpage.&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;&cr;&lf;|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -951,9 +951,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="124" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="180" top="8535" type="Node" width="315">
+   <BOUNDS height="270" left="180" top="8325" type="Node" width="315">
    </BOUNDS>
-   <BOUNDS height="435" left="180" top="8535" type="Box" width="405">
+   <BOUNDS height="435" left="180" top="8325" type="Box" width="405">
    </BOUNDS>
    <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="5.">
    </PIN>
@@ -966,4 +966,22 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="126">
+   <BOUNDS type="Box" left="5205" top="9000" width="765" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5205" top="9000" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Blend">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="Off">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="126" srcpinname="Output Enum" dstnodeid="3" dstpinname="Blend Mode">
+   </LINK>
    </PATCH>
