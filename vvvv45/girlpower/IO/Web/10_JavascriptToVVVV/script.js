@@ -2,15 +2,15 @@ function mouseEnterEvent(obj)
 {
 	// this function sends two key-value pairs as an XElement to VVVV
 	
-	window.vvvvSend({ button : obj.innerHTML, action: "enter" })
+	window.vvvvSend({ button : obj.innerHTML, action: "Enter" })
 }
 
 function mouseLeaveEvent(obj)
 {
-	window.vvvvSend({ button : obj.innerHTML, action: "leave" })
+	window.vvvvSend({ button : obj.innerHTML, action: "Leave" })
 }
 
 function clickEvent(obj)
 {
-	window.vvvvSend({ button : obj.innerHTML, action: "click" })
+	window.vvvvSend({ button : obj.innerHTML, action: "Click" })
 }
