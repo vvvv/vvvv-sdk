@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.1.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\TCP (Network Server) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\TCP (Network Server) help.v4p" systemname="TCP (Network Server) help">
-   <BOUNDS height="8295" left="1635" top="795" type="Window" width="8595">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.7.dtd" >
+   <PATCH nodename="C:\Users\elias\dev\vvvv-develop\public\vvvv45\lib\nodes\native\TCP (Network Server) help.v4p" filename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\TCP (Network Server) help.v4p" systemname="TCP (Network Server) help">
+   <BOUNDS height="8295" left="17829" top="4102" type="Window" width="8589">
    </BOUNDS>
    <NODE componentmode="InABox" id="5" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="0" left="5130" top="3765" type="Node" width="0">
@@ -77,7 +77,7 @@
    </BOUNDS>
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="4445">
+   <PIN pinname="Y Input Value" slicecount="1" values="4444">
    </PIN>
    <PIN pinname="Minimum" slicecount="1" values="0">
    </PIN>
@@ -178,8 +178,6 @@
    </NODE>
    <LINK dstnodeid="0" dstpinname="Enable" srcnodeid="21" srcpinname="Y Output Value">
    </LINK>
-   <LINK dstnodeid="0" dstpinname="Do Send" srcnodeid="20" srcpinname="Y Output Value">
-   </LINK>
    <LINK dstnodeid="0" dstpinname="Local Port" srcnodeid="22" srcpinname="Y Output Value">
    </LINK>
    <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -219,23 +217,19 @@
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0.770158309722319">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="30">
-   <BOUNDS type="Node" left="900" top="1620" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="31" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="31" srcpinname="Output" dstnodeid="0" dstpinname="Input">
    </LINK>
    <NODE systemname="AsValue (Raw)" nodename="AsValue (Raw)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="900" top="4680" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Format" visible="1">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="32" systemname="IOBOX (VALUE ADVANCED)">
@@ -314,4 +308,64 @@
    </PACK>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="38">
+   <BOUNDS type="Box" left="2772" top="756" width="1386" height="238">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2772" top="756" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Single">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="38" srcpinname="Output Enum" dstnodeid="33" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="38" srcpinname="Output Enum" dstnodeid="31" dstpinname="Format">
+   </LINK>
+   <LINK srcnodeid="21" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Do Send">
+   </LINK>
+   <PACK Name="vvvv-Message" Version="2.9.6">
+   </PACK>
+   <NODE systemname="MainLoop (VVVV)" nodename="MainLoop (VVVV)" componentmode="Hidden" id="-6">
+   <BOUNDS type="Node" left="5313" top="595" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Maximum Foreground FPS" visible="1">
+   </PIN>
+   <PIN pinname="Maximum Background FPS" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="39">
+   <BOUNDS type="Box" left="5159" top="210" width="693" height="210">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5159" top="210" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="60">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="-6" dstpinname="Maximum Foreground FPS">
+   </LINK>
+   <LINK srcnodeid="39" srcpinname="Y Output Value" dstnodeid="-6" dstpinname="Maximum Background FPS">
+   </LINK>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="907" top="1445" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Output" dstnodeid="31" dstpinname="Input">
+   </LINK>
    </PATCH>
