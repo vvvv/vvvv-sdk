@@ -267,6 +267,11 @@ namespace VVVV.Nodes.Texture.HTML
             FReceivedData = ToXElement("data", data);
         }
 
+        internal void OnReceiveData(CefFrame frame, CefListValue data)
+        {
+            FReceivedData = ToXElement("data", data);
+        }
+
         static XElement ToXElement(string name, CefDictionaryValue value)
         {
             var result = new XElement(name);
@@ -320,26 +325,27 @@ namespace VVVV.Nodes.Texture.HTML
                     case CefValueType.Invalid:
                         break;
                     case CefValueType.Null:
+                        result.Add(new XElement("item", null));
                         break;
                     case CefValueType.Bool:
-                        result.Add(value.GetBool(i));
+                        result.Add(new XElement("item", value.GetBool(i)));
                         break;
                     case CefValueType.Int:
-                        result.Add(value.GetInt(i));
+                        result.Add(new XElement("item", value.GetInt(i)));
                         break;
                     case CefValueType.Double:
-                        result.Add(value.GetDouble(i));
+                        result.Add(new XElement("item", value.GetDouble(i)));
                         break;
                     case CefValueType.String:
-                        result.Add(value.GetString(i));
+                        result.Add(new XElement("item", value.GetString(i)));
                         break;
                     case CefValueType.Binary:
                         break;
                     case CefValueType.Dictionary:
-                        result.Add(ToXElement("dict", value.GetDictionary(i)));
+                        result.Add(ToXElement("item", value.GetDictionary(i)));
                         break;
                     case CefValueType.List:
-                        result.Add(ToXElement("list", value.GetList(i)));
+                        result.Add(ToXElement("item", value.GetList(i)));
                         break;
                     default:
                         break;

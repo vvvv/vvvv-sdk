@@ -355,7 +355,11 @@ namespace VVVV.Nodes.Texture.HTML
                     if (frame != null)
                     {
                         var arguments = message.Arguments;
-                        FRenderer.OnReceiveData(frame, arguments.GetDictionary(2));
+                        var type = arguments.GetString(2);
+                        if (type == "list")
+                            FRenderer.OnReceiveData(frame, arguments.GetList(3));
+                        else if (type == "dict")
+                            FRenderer.OnReceiveData(frame, arguments.GetDictionary(3));
                     }
                     return true;
                 default:
