@@ -349,6 +349,19 @@ namespace VVVV.Nodes.Texture.HTML
                         FRenderer.OnDocumentSize(frame, width, height);
                     }
                     return true;
+                case "receive-data":
+                    identifier = message.GetFrameIdentifier();
+                    frame = browser.GetFrame(identifier);
+                    if (frame != null)
+                    {
+                        var arguments = message.Arguments;
+                        var type = arguments.GetString(2);
+                        if (type == "list")
+                            FRenderer.OnReceiveData(frame, arguments.GetList(3));
+                        else if (type == "dict")
+                            FRenderer.OnReceiveData(frame, arguments.GetDictionary(3));
+                    }
+                    return true;
                 default:
                     break;
             }

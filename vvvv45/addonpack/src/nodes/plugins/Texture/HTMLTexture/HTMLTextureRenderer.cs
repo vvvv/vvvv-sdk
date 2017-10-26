@@ -45,8 +45,10 @@ namespace VVVV.Nodes.Texture.HTML
         private string FErrorText;
         private Size FSize;
         public ILogger Logger;
+        private XElement FReceivedData;
         private readonly AutoResetEvent FBrowserAttachedEvent = new AutoResetEvent(false);
         private readonly AutoResetEvent FBrowserDetachedEvent = new AutoResetEvent(false);
+        private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
 
         /// <summary>
         /// Create a new texture renderer.
@@ -260,8 +262,108 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
+        internal void OnReceiveData(CefFrame frame, CefDictionaryValue data)
+        {
+            FReceivedData = ToXElement("data", data);
+        }
+
+        internal void OnReceiveData(CefFrame frame, CefListValue data)
+        {
+            FReceivedData = ToXElement("data", data);
+        }
+
+        static XElement ToXElement(string name, CefDictionaryValue value)
+        {
+            var result = new XElement(name);
+            var keys = value.GetKeys();
+            foreach (var key in keys)
+            {
+                var type = value.GetValueType(key);
+                switch (type)
+                {
+                    case CefValueType.Invalid:
+                        break;
+                    case CefValueType.Null:
+                        result.SetAttributeValue(key, null);
+                        break;
+                    case CefValueType.Bool:
+                        result.SetAttributeValue(key, value.GetBool(key));
+                        break;
+                    case CefValueType.Int:
+                        result.SetAttributeValue(key, value.GetInt(key));
+                        break;
+                    case CefValueType.Double:
+                        result.SetAttributeValue(key, value.GetDouble(key));
+                        break;
+                    case CefValueType.String:
+                        result.SetAttributeValue(key, value.GetString(key));
+                        break;
+                    case CefValueType.Binary:
+                        break;
+                    case CefValueType.Dictionary:
+                        result.Add(ToXElement(key, value.GetDictionary(key)));
+                        break;
+                    case CefValueType.List:
+                        result.Add(ToXElement(key, value.GetList(key)));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return result;
+        }
+
+        static XElement ToXElement(string name, CefListValue value)
+        {
+            var result = new XElement(name);
+            var count = value.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var type = value.GetValueType(i);
+                switch (type)
+                {
+                    case CefValueType.Invalid:
+                        break;
+                    case CefValueType.Null:
+                        result.Add(new XElement("item", null));
+                        break;
+                    case CefValueType.Bool:
+                        result.Add(new XElement("item", value.GetBool(i)));
+                        break;
+                    case CefValueType.Int:
+                        result.Add(new XElement("item", value.GetInt(i)));
+                        break;
+                    case CefValueType.Double:
+                        result.Add(new XElement("item", value.GetDouble(i)));
+                        break;
+                    case CefValueType.String:
+                        result.Add(new XElement("item", value.GetString(i)));
+                        break;
+                    case CefValueType.Binary:
+                        break;
+                    case CefValueType.Dictionary:
+                        result.Add(ToXElement("item", value.GetDictionary(i)));
+                        break;
+                    case CefValueType.List:
+                        result.Add(ToXElement("item", value.GetList(i)));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return result;
+        }
+
+        public bool TryReceive(out XElement value)
+        {
+            value = FReceivedData;
+            FReceivedData = null;
+            return value != null;
+        }
+
         public void Reload()
         {
+            FLoaded = false;
             FBrowser.Reload();
         }
 
@@ -585,8 +687,6 @@ namespace VVVV.Nodes.Texture.HTML
                 // Reset computed values like document size or DOM
                 Reset();
         }
-
-        private readonly List<DoubleBufferedTexture> FTextures = new List<DoubleBufferedTexture>();
 
         internal void Paint(CefRectangle[] cefRects, IntPtr buffer, int stride, int width, int height)
         {
