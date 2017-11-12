@@ -9,11 +9,19 @@ using System.Windows.Forms;
 
 namespace VVVV.Utils.IO
 {
-    public class Keyboard// : IDisposable
+    public interface IKeyboard
+    {
+        IObservable<KeyNotification> KeyNotifications { get; }
+    }
+
+    public class Keyboard : IKeyboard // , IDisposable
     {
         public static readonly Keyboard Empty = new Keyboard(Observable.Never<KeyNotification>());
 
         public readonly IObservable<KeyNotification> KeyNotifications;
+
+        IObservable<KeyNotification> IKeyboard.KeyNotifications => KeyNotifications;
+
         //private IDisposable FSubscription;
         private readonly byte[] FKeyStates = new byte[256];
 
@@ -90,7 +98,7 @@ namespace VVVV.Utils.IO
                 // Check if it's a character
                 var chr = keyDown.KeyCode.ToChar(FKeyStates);
                 if (chr.HasValue)
-                    yield return new KeyPressNotification(chr.Value);
+                    yield return new KeyPressNotification(chr.Value, n.Sender);
             }
             else
                 yield return n;

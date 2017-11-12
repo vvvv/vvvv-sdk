@@ -24,11 +24,13 @@ namespace VVVV.Utils.IO
         public readonly MouseNotificationKind Kind;
         public readonly Point Position;
         public readonly Size ClientArea;
-        public MouseNotification(MouseNotificationKind kind, Point position, Size clientArea)
+        public readonly object Sender;
+        public MouseNotification(MouseNotificationKind kind, Point position, Size clientArea, object sender = null)
         {
             Kind = kind;
             Position = position;
             ClientArea = clientArea;
+            Sender = sender;
         }
 
         public bool IsMouseDown { get { return Kind == MouseNotificationKind.MouseDown; } }
@@ -57,8 +59,8 @@ namespace VVVV.Utils.IO
 
     public class MouseMoveNotification : MouseNotification
     {
-        public MouseMoveNotification(Point position, Size clientArea)
-            : base(MouseNotificationKind.MouseMove, position, clientArea)
+        public MouseMoveNotification(Point position, Size clientArea, object sender = null)
+            : base(MouseNotificationKind.MouseMove, position, clientArea, sender)
         {
         }
     }
@@ -66,8 +68,8 @@ namespace VVVV.Utils.IO
     public abstract class MouseButtonNotification : MouseNotification
     {
         public readonly MouseButtons Buttons;
-        public MouseButtonNotification(MouseNotificationKind kind, Point position, Size clientArea, MouseButtons buttons)
-            : base(kind, position, clientArea)
+        public MouseButtonNotification(MouseNotificationKind kind, Point position, Size clientArea, MouseButtons buttons, object sender = null)
+            : base(kind, position, clientArea, sender)
         {
             Buttons = buttons;
         }
@@ -91,16 +93,16 @@ namespace VVVV.Utils.IO
 
     public class MouseDownNotification : MouseButtonNotification
     {
-        public MouseDownNotification(Point position, Size clientArea, MouseButtons buttons)
-            : base(MouseNotificationKind.MouseDown, position, clientArea, buttons)
+        public MouseDownNotification(Point position, Size clientArea, MouseButtons buttons, object sender = null)
+            : base(MouseNotificationKind.MouseDown, position, clientArea, buttons, sender)
         {
         }
     }
 
     public class MouseUpNotification : MouseButtonNotification
     {
-        public MouseUpNotification(Point position, Size clientArea, MouseButtons buttons)
-            : base(MouseNotificationKind.MouseUp, position, clientArea, buttons)
+        public MouseUpNotification(Point position, Size clientArea, MouseButtons buttons, object sender = null)
+            : base(MouseNotificationKind.MouseUp, position, clientArea, buttons, sender)
         {
         }
     }
@@ -108,8 +110,8 @@ namespace VVVV.Utils.IO
     public class MouseClickNotification : MouseButtonNotification
     {
         public readonly int ClickCount;
-        public MouseClickNotification(Point position, Size clientArea, MouseButtons buttons, int clickCount)
-            : base(MouseNotificationKind.MouseClick, position, clientArea, buttons)
+        public MouseClickNotification(Point position, Size clientArea, MouseButtons buttons, int clickCount, object sender = null)
+            : base(MouseNotificationKind.MouseClick, position, clientArea, buttons, sender)
         {
             ClickCount = clickCount;
         }
@@ -135,8 +137,8 @@ namespace VVVV.Utils.IO
     {
         public readonly int WheelDelta;
 
-        public MouseWheelNotification(Point position, Size clientArea, int wheelDelta)
-            : base(MouseNotificationKind.MouseWheel, position, clientArea)
+        public MouseWheelNotification(Point position, Size clientArea, int wheelDelta, object sender = null)
+            : base(MouseNotificationKind.MouseWheel, position, clientArea, sender)
         {
             WheelDelta = wheelDelta;
         }
@@ -161,8 +163,8 @@ namespace VVVV.Utils.IO
     {
         public readonly int WheelDelta;
 
-        public MouseHorizontalWheelNotification(Point position, Size clientArea, int wheelDelta)
-            : base(MouseNotificationKind.MouseHorizontalWheel, position, clientArea)
+        public MouseHorizontalWheelNotification(Point position, Size clientArea, int wheelDelta, object sender = null)
+            : base(MouseNotificationKind.MouseHorizontalWheel, position, clientArea, sender)
         {
             WheelDelta = wheelDelta;
         }

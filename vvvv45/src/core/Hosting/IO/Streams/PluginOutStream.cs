@@ -185,10 +185,10 @@ namespace VVVV.Hosting.IO.Streams
                         var subject = FSubjects[i];
                         var keyDowns = keyboardState.KeyCodes.Except(previousKeyboardState.KeyCodes);
                         foreach (var keyDown in keyDowns)
-                            subject.OnNext(new KeyDownNotification(keyDown));
+                            subject.OnNext(new KeyDownNotification(keyDown, this));
                         var keyUps = previousKeyboardState.KeyCodes.Except(keyboardState.KeyCodes);
                         foreach (var keyUp in keyUps)
-                            subject.OnNext(new KeyUpNotification(keyUp));
+                            subject.OnNext(new KeyUpNotification(keyUp, this));
                     }
                     FKeyboardStates[i] = keyboardState;
                 }
@@ -252,34 +252,34 @@ namespace VVVV.Hosting.IO.Streams
                         var v = new Vector2D(mouseState.X, mouseState.Y);
                         var position = ToMousePoint(v);
                         if (mouseState.X != previousMouseState.X || mouseState.Y != previousMouseState.Y)
-                            subject.OnNext(new MouseMoveNotification(position, FClientArea));
+                            subject.OnNext(new MouseMoveNotification(position, FClientArea, this));
                         if (mouseState.Buttons != previousMouseState.Buttons)
                         {
                             if (mouseState.IsLeft && !previousMouseState.IsLeft)
-                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Left));
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Left, this));
                             else if (!mouseState.IsLeft && previousMouseState.IsLeft)
-                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Left));
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Left, this));
                             if (mouseState.IsMiddle && !previousMouseState.IsMiddle)
-                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Middle));
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Middle, this));
                             else if (!mouseState.IsMiddle && previousMouseState.IsMiddle)
-                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Middle));
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Middle, this));
                             if (mouseState.IsRight && !previousMouseState.IsRight)
-                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Right));
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.Right, this));
                             else if (!mouseState.IsRight && previousMouseState.IsRight)
-                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Right));
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.Right, this));
                             if (mouseState.IsXButton1 && !previousMouseState.IsXButton1)
-                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton1));
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton1, this));
                             else if (!mouseState.IsXButton1 && previousMouseState.IsXButton1)
-                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton1));
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton1, this));
                             if (mouseState.IsXButton2 && !previousMouseState.IsXButton2)
-                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton2));
+                                subject.OnNext(new MouseDownNotification(position, FClientArea, MouseButtons.XButton2, this));
                             else if (!mouseState.IsXButton2 && previousMouseState.IsXButton2)
-                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton2));
+                                subject.OnNext(new MouseUpNotification(position, FClientArea, MouseButtons.XButton2, this));
                         }
                         if (mouseState.MouseWheel != previousMouseState.MouseWheel)
                         {
                             var wheelDelta = previousMouseState.MouseWheel - mouseState.MouseWheel;
-                            subject.OnNext(new MouseWheelNotification(position, FClientArea, wheelDelta * Const.WHEEL_DELTA));
+                            subject.OnNext(new MouseWheelNotification(position, FClientArea, wheelDelta * Const.WHEEL_DELTA, this));
                         }
                     }
                     FMouseStates[i] = mouseState;

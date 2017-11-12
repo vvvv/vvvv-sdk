@@ -18,9 +18,11 @@ namespace VVVV.Utils.IO
     public abstract class KeyNotification
     {
         public readonly KeyNotificationKind Kind;
-        protected KeyNotification(KeyNotificationKind kind)
+        public readonly object Sender;
+        protected KeyNotification(KeyNotificationKind kind, object sender = null)
         {
             Kind = kind;
+            Sender = sender;
         }
 
         public bool IsKeyDown { get { return Kind == KeyNotificationKind.KeyDown; } }
@@ -32,8 +34,8 @@ namespace VVVV.Utils.IO
     public abstract class KeyCodeNotification : KeyNotification
     {
         public readonly Keys KeyCode;
-        public KeyCodeNotification(KeyNotificationKind kind, Keys keyCode)
-            : base(kind)
+        public KeyCodeNotification(KeyNotificationKind kind, Keys keyCode, object sender = null)
+            : base(kind, sender)
         {
             KeyCode = keyCode;
         }
@@ -41,9 +43,9 @@ namespace VVVV.Utils.IO
 
     public class KeyDownNotification : KeyCodeNotification
     {
-        public KeyDownNotification(Keys keyCode) : this(new KeyEventArgs(keyCode)) { }
-        public KeyDownNotification(KeyEventArgs args)
-            : base(KeyNotificationKind.KeyDown, args.KeyCode)
+        public KeyDownNotification(Keys keyCode, object sender = null) : this(new KeyEventArgs(keyCode), sender) { }
+        public KeyDownNotification(KeyEventArgs args, object sender = null)
+            : base(KeyNotificationKind.KeyDown, args.KeyCode, sender)
         {
             origArgs = args;
         }
@@ -55,8 +57,8 @@ namespace VVVV.Utils.IO
     public class KeyPressNotification : KeyNotification
     {
         public readonly char KeyChar;
-        public KeyPressNotification(char keyChar)
-            : base(KeyNotificationKind.KeyPress)
+        public KeyPressNotification(char keyChar, object sender = null)
+            : base(KeyNotificationKind.KeyPress, sender)
         {
             KeyChar = keyChar;
         }
@@ -64,16 +66,16 @@ namespace VVVV.Utils.IO
 
     public class KeyUpNotification : KeyCodeNotification
     {
-        public KeyUpNotification(Keys keyCode)
-            : base(KeyNotificationKind.KeyUp, keyCode)
+        public KeyUpNotification(Keys keyCode, object sender = null)
+            : base(KeyNotificationKind.KeyUp, keyCode, sender)
         {
         }
     }
 
     public class KeyboardLostNotification : KeyNotification
     {
-        public KeyboardLostNotification()
-            : base(KeyNotificationKind.DeviceLost)
+        public KeyboardLostNotification(object sender)
+            : base(KeyNotificationKind.DeviceLost, sender)
         {
         }
     }
