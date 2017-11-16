@@ -80,74 +80,75 @@ namespace VVVV.Nodes.Input
             get { return ResetCursorIn.SliceCount > 0 ? ResetCursorIn[0] : false; }
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var pressedButtons = MouseButtons.None;
             var cycleData = default(CycleData);
 
             var mouseNotifications = windowMessages
-                .Where(e => e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
-                .Select<WMEventArgs, MouseNotification>(e =>
+                .Where(e => e.EventArgs.Message >= WM.MOUSEFIRST && e.EventArgs.Message <= WM.MOUSELAST)
+                .Select<EventPattern<WMEventArgs>, MouseNotification>(e =>
                 {
                     RECT cr;
-                    if (User32.GetClientRect(e.HWnd, out cr))
+                    var a = e.EventArgs;
+                    if (User32.GetClientRect(a.HWnd, out cr))
                     {
-                        var lParam = e.LParam;
+                        var lParam = a.LParam;
                         var position = new Point(lParam.LoWord(), lParam.HiWord());
                         var clientArea = new Size(cr.Width, cr.Height);
-                        var wParam = e.WParam;
+                        var wParam = a.WParam;
 
-                        switch (e.Message)
+                        switch (a.Message)
                         {
                             case WM.MOUSEWHEEL:
                                 unchecked
                                 {
                                     // Position is in screen coordinates
                                     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms645617%28v=vs.85%29.aspx
-                                    if (User32.ScreenToClient(e.HWnd, ref position))
+                                    if (User32.ScreenToClient(a.HWnd, ref position))
                                     {
                                         var wheel = wParam.HiWord();
-                                        return new MouseWheelNotification(position, clientArea, wheel);
+                                        return new MouseWheelNotification(position, clientArea, wheel, e.Sender);
                                     }
                                     break;
                                 }
                             case WM.MOUSEMOVE:
-                                return new MouseMoveNotification(position, clientArea);
+                                return new MouseMoveNotification(position, clientArea, e.Sender);
                             case WM.LBUTTONDOWN:
                             case WM.LBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Left);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Left, e.Sender);
                             case WM.LBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Left);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Left, e.Sender);
                             case WM.MBUTTONDOWN:
                             case WM.MBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Middle);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Middle, e.Sender);
                             case WM.MBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Middle);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Middle, e.Sender);
                             case WM.RBUTTONDOWN:
                             case WM.RBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Right);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Right, e.Sender);
                             case WM.RBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Right);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Right, e.Sender);
                             case WM.XBUTTONDOWN:
                             case WM.XBUTTONDBLCLK:
                                 if ((wParam.HiWord() & 0x0001) > 0)
-                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton1);
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton1, e.Sender);
                                 else
-                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton2);
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton2, e.Sender);
                             case WM.XBUTTONUP:
                                 if ((wParam.HiWord() & 0x0001) > 0)
-                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton1);
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton1, e.Sender);
                                 else
-                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton2);
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton2, e.Sender);
                             case WM.MOUSEHWHEEL:
                                 unchecked
                                 {
                                     // Position is in screen coordinates
                                     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms645614(v=vs.85).aspx
-                                    if (User32.ScreenToClient(e.HWnd, ref position))
+                                    if (User32.ScreenToClient(a.HWnd, ref position))
                                     {
                                         var wheel = wParam.HiWord();
-                                        return new MouseHorizontalWheelNotification(position, clientArea, wheel);
+                                        return new MouseHorizontalWheelNotification(position, clientArea, wheel, e.Sender);
                                     }
                                     break;
                                 }
@@ -213,17 +214,17 @@ namespace VVVV.Nodes.Input
                         switch (n.Kind)
                         {
                             case MouseNotificationKind.MouseDown:
-                                return new MouseDownNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseDownNotification)n).Buttons);
+                                return new MouseDownNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseDownNotification)n).Buttons, n.Sender);
                             case MouseNotificationKind.MouseUp:
-                                return new MouseUpNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseUpNotification)n).Buttons);
+                                return new MouseUpNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseUpNotification)n).Buttons, n.Sender);
                             case MouseNotificationKind.MouseMove:
-                                return new MouseMoveNotification(cycleData.IncrementalPosition, n.ClientArea);
+                                return new MouseMoveNotification(cycleData.IncrementalPosition, n.ClientArea, n.Sender);
                             case MouseNotificationKind.MouseWheel:
-                                return new MouseWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseWheelNotification)n).WheelDelta);
+                                return new MouseWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseWheelNotification)n).WheelDelta, n.Sender);
                             case MouseNotificationKind.MouseHorizontalWheel:
-                                return new MouseHorizontalWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseHorizontalWheelNotification)n).WheelDelta);
+                                return new MouseHorizontalWheelNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseHorizontalWheelNotification)n).WheelDelta, n.Sender);
                             case MouseNotificationKind.MouseClick:
-                                return new MouseClickNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseClickNotification)n).Buttons, ((MouseClickNotification)n).ClickCount);
+                                return new MouseClickNotification(cycleData.IncrementalPosition, n.ClientArea, ((MouseClickNotification)n).Buttons, ((MouseClickNotification)n).ClickCount, n.Sender);
                             default:
                                 break;
                         }
@@ -355,7 +356,7 @@ namespace VVVV.Nodes.Input
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
             var notifications = mouseInput
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
-                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep));
             return new Mouse(notifications);
         }
 
@@ -367,7 +368,7 @@ namespace VVVV.Nodes.Input
             var mouseInput = Observable.FromEventPattern<MouseInputEventArgs>(typeof(Device), "MouseInput")
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
             var notifications = mouseInput
-                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep.EventArgs));
+                    .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep));
             return new Mouse(notifications);
         }
 
@@ -392,11 +393,11 @@ namespace VVVV.Nodes.Input
             {
                 case CycleMode.NoCycle:
                     notifications = mouseInput
-                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep.EventArgs));
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCursorNotifications(mouseData, ep));
                     break;
                 case CycleMode.Cycle:
                     notifications = mouseInput
-                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep.EventArgs));
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateCyclicCursorNotifications(mouseData, ep));
                     break;
                 case CycleMode.IncrementCycle:
                     var incrementalMouseData = new IncrementalMouseData()
@@ -405,7 +406,8 @@ namespace VVVV.Nodes.Input
                         IncrementalPosition = initialPosition
                     };
                     notifications = mouseInput
-                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep.EventArgs));
+                        .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(
+                          ep => GenerateIncrementalCyclicCursorNotifications(incrementalMouseData, ep));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -413,8 +415,9 @@ namespace VVVV.Nodes.Input
             return new Mouse(notifications);
         }
 
-        private IEnumerable<MouseNotification> GenerateMouseNotifications(MouseData mouseData, MouseInputEventArgs args)
+        private IEnumerable<MouseNotification> GenerateMouseNotifications(MouseData mouseData, EventPattern<MouseInputEventArgs> ep)
         {
+            var args = ep.EventArgs;
             var virtualScreenSize = SystemInformation.VirtualScreen.Size;
             var position = mouseData.Position;
             switch (args.Mode)
@@ -446,27 +449,29 @@ namespace VVVV.Nodes.Input
             if (mouseData.Position != position)
             {
                 mouseData.Position = position;
-                yield return new MouseMoveNotification(position, virtualScreenSize);
+                yield return new MouseMoveNotification(position, virtualScreenSize, ep.Sender);
             }
-            foreach (var n in GenerateMouseButtonNotifications(args, position, virtualScreenSize))
+            foreach (var n in GenerateMouseButtonNotifications(ep, position, virtualScreenSize))
                 yield return n;
         }
 
-        private IEnumerable<MouseNotification> GenerateCursorNotifications(MouseData mouseData, MouseInputEventArgs args)
+        private IEnumerable<MouseNotification> GenerateCursorNotifications(MouseData mouseData, EventPattern<MouseInputEventArgs> ep)
         {
+            var args = ep.EventArgs;
             var virtualScreenSize = SystemInformation.VirtualScreen.Size;
             var position = Control.MousePosition;
             if (mouseData.Position != position)
             {
                 mouseData.Position = position;
-                yield return new MouseMoveNotification(position, virtualScreenSize);
+                yield return new MouseMoveNotification(position, virtualScreenSize, ep.Sender);
             }
-            foreach (var n in GenerateMouseButtonNotifications(args, position, virtualScreenSize))
+            foreach (var n in GenerateMouseButtonNotifications(ep, position, virtualScreenSize))
                 yield return n;
         }
 
-        private IEnumerable<MouseNotification> GenerateCyclicCursorNotifications(MouseData mouseData, MouseInputEventArgs args)
+        private IEnumerable<MouseNotification> GenerateCyclicCursorNotifications(MouseData mouseData, EventPattern<MouseInputEventArgs> ep)
         {
+            var args = ep.EventArgs;
             var virtualScreenSize = SystemInformation.VirtualScreen.Size;
             var position = Control.MousePosition;
             var newPosition = position;
@@ -490,14 +495,15 @@ namespace VVVV.Nodes.Input
             if (mouseData.Position != position)
             {
                 mouseData.Position = position;
-                yield return new MouseMoveNotification(position, virtualScreenSize);
+                yield return new MouseMoveNotification(position, virtualScreenSize, ep.Sender);
             }
-            foreach (var n in GenerateMouseButtonNotifications(args, position, virtualScreenSize))
+            foreach (var n in GenerateMouseButtonNotifications(ep, position, virtualScreenSize))
                 yield return n;
         }
 
-        private IEnumerable<MouseNotification> GenerateIncrementalCyclicCursorNotifications(IncrementalMouseData mouseData, MouseInputEventArgs args)
+        private IEnumerable<MouseNotification> GenerateIncrementalCyclicCursorNotifications(IncrementalMouseData mouseData, EventPattern<MouseInputEventArgs> ep)
         {
+            var args = ep.EventArgs;
             var virtualScreenSize = SystemInformation.VirtualScreen.Size;
             var position = Control.MousePosition;
             var delta = new Size(position.X - mouseData.Position.X, position.Y - mouseData.Position.Y);
@@ -535,42 +541,43 @@ namespace VVVV.Nodes.Input
             {
                 mouseData.Position = position;
                 mouseData.IncrementalPosition += delta;
-                yield return new MouseMoveNotification(mouseData.IncrementalPosition, virtualScreenSize);
+                yield return new MouseMoveNotification(mouseData.IncrementalPosition, virtualScreenSize, ep.Sender);
             }
-            foreach (var n in GenerateMouseButtonNotifications(args, mouseData.IncrementalPosition, virtualScreenSize))
+            foreach (var n in GenerateMouseButtonNotifications(ep, mouseData.IncrementalPosition, virtualScreenSize))
                 yield return n;
         }
 
-        private static IEnumerable<MouseNotification> GenerateMouseButtonNotifications(MouseInputEventArgs args, Point position, Size clientArea)
+        private static IEnumerable<MouseNotification> GenerateMouseButtonNotifications(EventPattern<MouseInputEventArgs> ep, Point position, Size clientArea)
         {
+            var args = ep.EventArgs;
             var buttonFlags = args.ButtonFlags;
             if ((buttonFlags & MouseButtonFlags.LeftButtonDown) > 0)
-                yield return new MouseDownNotification(position, clientArea, MouseButtons.Left);
+                yield return new MouseDownNotification(position, clientArea, MouseButtons.Left, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.LeftButtonUp) > 0)
-                yield return new MouseUpNotification(position, clientArea, MouseButtons.Left);
+                yield return new MouseUpNotification(position, clientArea, MouseButtons.Left, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.RightButtonDown) > 0)
-                yield return new MouseDownNotification(position, clientArea, MouseButtons.Right);
+                yield return new MouseDownNotification(position, clientArea, MouseButtons.Right, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.RightButtonUp) > 0)
-                yield return new MouseUpNotification(position, clientArea, MouseButtons.Right);
+                yield return new MouseUpNotification(position, clientArea, MouseButtons.Right, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.MiddleButtonDown) > 0)
-                yield return new MouseDownNotification(position, clientArea, MouseButtons.Middle);
+                yield return new MouseDownNotification(position, clientArea, MouseButtons.Middle, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.MiddleButtonUp) > 0)
-                yield return new MouseUpNotification(position, clientArea, MouseButtons.Middle);
+                yield return new MouseUpNotification(position, clientArea, MouseButtons.Middle, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.Button4Down) > 0)
-                yield return new MouseDownNotification(position, clientArea, MouseButtons.XButton1);
+                yield return new MouseDownNotification(position, clientArea, MouseButtons.XButton1, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.Button4Up) > 0)
-                yield return new MouseUpNotification(position, clientArea, MouseButtons.XButton1);
+                yield return new MouseUpNotification(position, clientArea, MouseButtons.XButton1, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.Button5Down) > 0)
-                yield return new MouseDownNotification(position, clientArea, MouseButtons.XButton2);
+                yield return new MouseDownNotification(position, clientArea, MouseButtons.XButton2, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.Button5Up) > 0)
-                yield return new MouseUpNotification(position, clientArea, MouseButtons.XButton2);
+                yield return new MouseUpNotification(position, clientArea, MouseButtons.XButton2, ep.Sender);
             if ((buttonFlags & MouseButtonFlags.MouseWheel) > 0)
             {
-                yield return new MouseWheelNotification(position, clientArea, args.WheelDelta);
+                yield return new MouseWheelNotification(position, clientArea, args.WheelDelta, ep.Sender);
             }
             if ((buttonFlags & MouseButtonFlags.Hwheel) > 0)
             {
-                yield return new MouseHorizontalWheelNotification(position, clientArea, args.WheelDelta);
+                yield return new MouseHorizontalWheelNotification(position, clientArea, args.WheelDelta, ep.Sender);
             }
         }
 
@@ -685,22 +692,22 @@ namespace VVVV.Nodes.Input
                     switch (EventTypeIn[bin][i])
                     {
                         case MouseNotificationKind.MouseDown:
-                            notification = new MouseDownNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i));
+                            notification = new MouseDownNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), this);
                             break;
                         case MouseNotificationKind.MouseUp:
-                            notification = new MouseUpNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i));
+                            notification = new MouseUpNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), this);
                             break;
                         case MouseNotificationKind.MouseMove:
-                            notification = new MouseMoveNotification(position, MouseExtensions.ClientArea);
+                            notification = new MouseMoveNotification(position, MouseExtensions.ClientArea, this);
                             break;
                         case MouseNotificationKind.MouseWheel:
-                            notification = new MouseWheelNotification(position, MouseExtensions.ClientArea, MouseWheelIn[bin][i]);
+                            notification = new MouseWheelNotification(position, MouseExtensions.ClientArea, MouseWheelIn[bin][i], this);
                             break;
                         case MouseNotificationKind.MouseHorizontalWheel:
-                            notification = new MouseHorizontalWheelNotification(position, MouseExtensions.ClientArea, MouseHWheelIn[bin][i]);
+                            notification = new MouseHorizontalWheelNotification(position, MouseExtensions.ClientArea, MouseHWheelIn[bin][i], this);
                             break;
                         case MouseNotificationKind.MouseClick:
-                            notification = new MouseClickNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1));
+                            notification = new MouseClickNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1), this);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -1086,14 +1093,14 @@ namespace VVVV.Nodes.Input
             MouseOut.SliceCount = 0;
         }
 
-        private static IEnumerable<MouseNotification> GetNotifications(MouseState oldState, MouseState newState)
+        private IEnumerable<MouseNotification> GetNotifications(MouseState oldState, MouseState newState)
         {
             var wheelDelta = newState.MouseWheel - oldState.MouseWheel;
             if (wheelDelta != 0)
-                yield return new MouseWheelNotification(newState.Position, MouseExtensions.ClientArea, wheelDelta * Const.WHEEL_DELTA);
+                yield return new MouseWheelNotification(newState.Position, MouseExtensions.ClientArea, wheelDelta * Const.WHEEL_DELTA, this);
             var hwheelDelta = newState.MouseHWheel - oldState.MouseHWheel;
             if (hwheelDelta != 0)
-                yield return new MouseHorizontalWheelNotification(newState.Position, MouseExtensions.ClientArea, hwheelDelta * Const.WHEEL_DELTA);
+                yield return new MouseHorizontalWheelNotification(newState.Position, MouseExtensions.ClientArea, hwheelDelta * Const.WHEEL_DELTA, this);
             if (newState.IsButtonPressed != oldState.IsButtonPressed)
             {
                 var newButton = newState.IsButtonPressed;
@@ -1101,14 +1108,14 @@ namespace VVVV.Nodes.Input
                 foreach (var button in Buttons)
                 {
                     if (newButton.HasFlag(button) && !oldButton.HasFlag(button))
-                        yield return new MouseDownNotification(newState.Position, MouseExtensions.ClientArea, button);
+                        yield return new MouseDownNotification(newState.Position, MouseExtensions.ClientArea, button, this);
                     if (!newButton.HasFlag(button) && oldButton.HasFlag(button))
-                        yield return new MouseUpNotification(newState.Position, MouseExtensions.ClientArea, button);
+                        yield return new MouseUpNotification(newState.Position, MouseExtensions.ClientArea, button, this);
                 }
             }
             // Send the move last should anyone downstream use a mouse state join with queue mode = discard
             if (newState.Position != oldState.Position)
-                yield return new MouseMoveNotification(newState.Position, MouseExtensions.ClientArea);
+                yield return new MouseMoveNotification(newState.Position, MouseExtensions.ClientArea, this);
         }
 
         public void Evaluate(int spreadMax)
@@ -1162,7 +1169,7 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        private static void NotifyObserver(MouseState oldState, MouseState newState, IObserver<MouseNotification> observer)
+        private void NotifyObserver(MouseState oldState, MouseState newState, IObserver<MouseNotification> observer)
         {
             foreach (var n in GetNotifications(oldState, newState))
                 observer.OnNext(n);

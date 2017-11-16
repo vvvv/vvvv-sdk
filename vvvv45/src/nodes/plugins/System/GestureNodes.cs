@@ -76,11 +76,11 @@ namespace VVVV.Nodes.Input
             base.SubclassCreated(subclass);
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var notifications = windowMessages
-                .Where(e => (e.Message == WM.GESTURENOTIFY) || (e.Message == WM.GESTURE))
-                .SelectMany<WMEventArgs, GestureNotification>(e => GenerateGestureNotifications(e));
+                .Where(e => (e.EventArgs.Message == WM.GESTURENOTIFY) || (e.EventArgs.Message == WM.GESTURE))
+                .SelectMany(e => GenerateGestureNotifications(e));
             GestureDeviceOut[0] = new GestureDevice(notifications);
 
             FEnumerator = GestureDeviceOut[0].Notifications
@@ -88,28 +88,29 @@ namespace VVVV.Nodes.Input
                     .GetEnumerator();
         }
 
-        private IEnumerable<GestureNotification> GenerateGestureNotifications(WMEventArgs e)
+        private IEnumerable<GestureNotification> GenerateGestureNotifications(EventPattern<WMEventArgs> e)
         {
-            if (e.Message == WM.GESTURENOTIFY)
+            var a = e.EventArgs;
+            if (a.Message == WM.GESTURENOTIFY)
             {
-                e.Handled = FEnabledIn[0];
+                a.Handled = FEnabledIn[0];
                 yield break;
             }
             else
             {
                 var gestureInfo = new GESTUREINFO();
                 gestureInfo.cbSize = FGestureInfoSize;
-                if (User32.GetGestureInfo(e.LParam, ref gestureInfo))
+                if (User32.GetGestureInfo(a.LParam, ref gestureInfo))
                 {
                     try
                     {
                         RECT cr;
-                        if (User32.GetClientRect(e.HWnd, out cr))
+                        if (User32.GetClientRect(a.HWnd, out cr))
                         {
                             var position = new Point(gestureInfo.x, gestureInfo.y);
-                            User32.ScreenToClient(e.HWnd, ref position);
+                            User32.ScreenToClient(a.HWnd, ref position);
 
-                            e.Handled = true;
+                            a.Handled = true;
                             switch ((GestureNotificationKind)gestureInfo.dwID)
                             {
                                 case GestureNotificationKind.GestureBegin:
@@ -120,7 +121,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureEnd:
                                     yield return new GestureEndNotification(position,
@@ -130,7 +132,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureZoom:
                                     yield return new GestureZoomNotification(position,
@@ -140,7 +143,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GesturePan:
                                     yield return new GesturePanNotification(position,
@@ -150,7 +154,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureRotate:
                                     yield return new GestureRotateNotification(position,
@@ -160,7 +165,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GesturePressAndTap:
                                     yield return new GesturePressAndTapNotification(position,
@@ -170,7 +176,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureTwoFingerTap:
                                     yield return new GestureTwoFingerTapNotification(position,
@@ -180,7 +187,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 default:
                                     yield break;
@@ -189,7 +197,7 @@ namespace VVVV.Nodes.Input
                     }
                     finally
                     {
-                        e.Handled = false;
+                        a.Handled = false;
                     }
                 }
                 yield break;

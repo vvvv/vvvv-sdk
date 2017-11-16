@@ -52,11 +52,11 @@ namespace VVVV.Nodes.Input
                 FLogger.Log(LogType.Error, "Failed to enabled touch messages for window {0}.", subclass.HWnd);
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var notifications = windowMessages
-                .Where(e => e.Message == WM.TOUCH)
-                .SelectMany<WMEventArgs, TouchNotification>(e => GenerateTouchNotifications(e));
+                .Where(e => e.EventArgs.Message == WM.TOUCH)
+                .SelectMany<EventPattern<WMEventArgs>, TouchNotification>(e => GenerateTouchNotifications(e));
             TouchDeviceOut[0] = new TouchDevice(notifications);
 
             // Create a touch states split node for us and connect our touch device out to its touch device in
@@ -66,25 +66,26 @@ namespace VVVV.Nodes.Input
             ModeIn.Changed += ModeIn_Changed;
         }
 
-        private IEnumerable<TouchNotification> GenerateTouchNotifications(WMEventArgs e)
+        private IEnumerable<TouchNotification> GenerateTouchNotifications(EventPattern<WMEventArgs> e)
         {
-            var touchPointCount = e.WParam.LoWord();
+            var a = e.EventArgs;
+            var touchPointCount = a.WParam.LoWord();
             if (touchPointCount > 0)
             {
                 var touchPoints = new TOUCHINPUT[touchPointCount];
-                if (User32.GetTouchInputInfo(e.LParam, touchPointCount, touchPoints, Marshal.SizeOf(typeof(TOUCHINPUT))))
+                if (User32.GetTouchInputInfo(a.LParam, touchPointCount, touchPoints, Marshal.SizeOf(typeof(TOUCHINPUT))))
                 {
-                    e.Handled = true;
+                    a.Handled = true;
 
                     try
                     {
                         RECT cr;
-                        if (User32.GetClientRect(e.HWnd, out cr))
+                        if (User32.GetClientRect(a.HWnd, out cr))
                         {
                             foreach (var touchPoint in touchPoints)
                             {
                                 var position = new Point(touchPoint.x / 100, touchPoint.y / 100);
-                                User32.ScreenToClient(e.HWnd, ref position);
+                                User32.ScreenToClient(a.HWnd, ref position);
                                 var clientArea = new Size(cr.Width, cr.Height);
                                 var id = touchPoint.dwID;
                                 var primary = (touchPoint.dwFlags & Const.TOUCHEVENTF_PRIMARY) > 0;
@@ -93,17 +94,17 @@ namespace VVVV.Nodes.Input
                                     : Size.Empty;
 
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_DOWN) > 0)
-                                    yield return new TouchDownNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64());
+                                    yield return new TouchDownNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64(), e.Sender);
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_MOVE) > 0)
-                                    yield return new TouchMoveNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64());
+                                    yield return new TouchMoveNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64(), e.Sender);
                                 if ((touchPoint.dwFlags & Const.TOUCHEVENTF_UP) > 0)
-                                    yield return new TouchUpNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64());
+                                    yield return new TouchUpNotification(position, clientArea, id, primary, contactArea, touchPoint.hSource.ToInt64(), e.Sender);
                             }
                         }
                     }
                     finally
                     {
-                        User32.CloseTouchInputHandle(e.LParam);
+                        User32.CloseTouchInputHandle(a.LParam);
                     }
                 }
             }

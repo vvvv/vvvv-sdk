@@ -49,7 +49,7 @@ namespace VVVV.Nodes.Input
                 {
                     var mouseMoves = XIn.ToObservable(slice)
                         .CombineLatest(YIn.ToObservable(slice), (x, y) => new Vector2D(x, y))
-                        .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea));
+                        .Select(v => new MouseMoveNotification(ToMousePoint(v), FClientArea, this));
                     var mouseButtons = Observable.Merge(
                         LeftButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Left)),
                         MiddleButtonIn.ToObservable(slice).Select(x => Tuple.Create(x, MouseButtons.Middle)),
@@ -59,15 +59,15 @@ namespace VVVV.Nodes.Input
                     );
                     var mouseDowns = mouseButtons.Where(x => x.Item1)
                         .Select(x => x.Item2)
-                        .Select(x => new MouseDownNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, x));
+                        .Select(x => new MouseDownNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, x, this));
                     var mouseUps = mouseButtons.Where(x => !x.Item1)
                         .Select(x => x.Item2)
-                        .Select(x => new MouseUpNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, x));
+                        .Select(x => new MouseUpNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, x, this));
                     var mouseWheelDeltas = MouseWheelIn.ToObservable(0)
                         .StartWith(0)
                         .Buffer(2, 1)
                         .Select(b => b[1] - b[0])
-                        .Select(d => new MouseWheelNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, d * Const.WHEEL_DELTA))
+                        .Select(d => new MouseWheelNotification(ToMousePoint(new Vector2D(XIn[slice], YIn[slice])), FClientArea, d * Const.WHEEL_DELTA, this))
                         .Cast<MouseNotification>();
                     var notifications = Observable.Merge<MouseNotification>(
                         mouseMoves,

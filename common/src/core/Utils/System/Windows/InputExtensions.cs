@@ -12,7 +12,7 @@ namespace System.Windows.Input
         {
             var position = args.GetDrawingPosition(relativeTo);
             var clientArea = relativeTo.GetDrawingSize();
-            return new MouseMoveNotification(position, clientArea);
+            return new MouseMoveNotification(position, clientArea, relativeTo);
         }
 
         public static MouseDownNotification ToMouseDownNotification(this MouseButtonEventArgs args, FrameworkElement relativeTo)
@@ -20,7 +20,7 @@ namespace System.Windows.Input
             var position = args.GetDrawingPosition(relativeTo);
             var clientArea = relativeTo.GetDrawingSize();
             var button = args.GetButton();
-            return new MouseDownNotification(position, clientArea, button);
+            return new MouseDownNotification(position, clientArea, button, relativeTo);
         }
 
         public static MouseUpNotification ToMouseUpNotification(this MouseButtonEventArgs args, FrameworkElement relativeTo)
@@ -28,7 +28,7 @@ namespace System.Windows.Input
             var position = args.GetDrawingPosition(relativeTo);
             var clientArea = relativeTo.GetDrawingSize();
             var button = args.GetButton();
-            return new MouseUpNotification(position, clientArea, button);
+            return new MouseUpNotification(position, clientArea, button, relativeTo);
         }
 
         public static MouseWheelNotification ToMouseWheelNotification(this MouseWheelEventArgs args, FrameworkElement relativeTo)
@@ -36,7 +36,7 @@ namespace System.Windows.Input
             var position = args.GetDrawingPosition(relativeTo);
             var clientArea = relativeTo.GetDrawingSize();
             var wheelDelta = args.Delta;
-            return new MouseWheelNotification(position, clientArea, wheelDelta);
+            return new MouseWheelNotification(position, clientArea, wheelDelta, relativeTo);
         }
 
         public static System.Windows.Forms.MouseButtons ToMouseButtons(this MouseButton button)
@@ -75,17 +75,17 @@ namespace System.Windows.Input
 
         public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs)
         {
-            return new KeyDownNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key));
+            return new KeyDownNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key), null);
         }
 
         public static KeyUpNotification ToKeyUpNotification(this KeyEventArgs eventArgs)
         {
-            return new KeyUpNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key));
+            return new KeyUpNotification((Forms.Keys)KeyInterop.VirtualKeyFromKey(eventArgs.Key), null);
         }
 
         public static KeyPressNotification ToKeyPressNotification(this TextCompositionEventArgs eventArgs)
         {
-            return new KeyPressNotification(eventArgs.Text.FirstOrDefault());
+            return new KeyPressNotification(eventArgs.Text.FirstOrDefault(), null);
         }
     }
 }

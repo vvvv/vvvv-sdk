@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -40,16 +41,16 @@ namespace VVVV.Nodes.Input
                 .OfType<Window>()
                 .Where(w => w.UserInputWindow != null && w.UserInputWindow.InputWindowHandle != IntPtr.Zero)
                 .Where(w => !FSubclasses.Any(s => s.HWnd == w.UserInputWindow.InputWindowHandle))
-                .Select(w => Subclass.Create(w.UserInputWindow.InputWindowHandle))
-                .Do(s =>
+                .Select(w => new { subclass = Subclass.Create(w.UserInputWindow.InputWindowHandle), sender = w.UserInputWindow })
+                .Do(_ =>
                     {
-                        s.Disposed += HandleSubclassDisposed;
-                        FSubclasses.Add(s);
-                        SubclassCreated(s);
+                        _.subclass.Disposed += HandleSubclassDisposed;
+                        FSubclasses.Add(_.subclass);
+                        SubclassCreated(_.subclass);
                     }
                 )
-                .SelectMany(s => Observable.FromEventPattern<WMEventArgs>(s, "WindowMessage"))
-                .Select(p => p.EventArgs)
+                .SelectMany(_ => Observable.FromEventPattern<WMEventArgs>(_.subclass, "WindowMessage"), 
+                (_, evp) => new EventPattern<WMEventArgs>(_.sender, evp.EventArgs))
                 .Where(_ => FEnabledIn.SliceCount > 0 && FEnabledIn[0]);
             var disabled = FEnabledIn.ToObservable(1)
                 .DistinctUntilChanged()
@@ -67,7 +68,7 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        protected abstract void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled);
+        protected abstract void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled);
 
         protected virtual void SubclassCreated(Subclass subclass)
         {
