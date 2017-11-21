@@ -17,9 +17,30 @@ namespace VVVV.Core.Model.CS
 
         static CSProject()
         {
-            var options = new Dictionary<string, string>();
-            options.Add("CompilerVersion", "v4.0");
-            FProvider = new CSharpCodeProvider(options);
+            var path = "";
+
+            var args = Environment.GetCommandLineArgs().ToList();
+            var progFiles = Environment.GetEnvironmentVariable("programfiles(x86)");
+            var index = args.IndexOf("/cs6");
+            if (index > -1)
+            {
+                path = Path.Combine(progFiles, @"MSBuild\14.0\Bin");
+
+                if (args.Count > index)
+                    path = Directory.Exists(args[index + 1]) ? args[index + 1] : path;
+            }
+            
+            if (Directory.Exists(path))
+            {
+                Environment.SetEnvironmentVariable("ROSLYN_COMPILER_LOCATION", path);
+                FProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
+            }
+            else
+            {
+                var options = new Dictionary<string, string>();
+                options.Add("CompilerVersion", "v4.0");
+                FProvider = new CSharpCodeProvider(options);
+            }
         }
 
         public CSProject(string path)
