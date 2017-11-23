@@ -41,7 +41,7 @@ namespace VVVV.Nodes.Input
                     var a = e.EventArgs;
                     // Special keys like TAB and ALT have some weired high bits set (WM.APP, WM.USER and some other ones I couldn't relate to any defined window message).
                     // So just filter for what we're interested in.
-                    var msg = a.Message & (WM)0x01FF;
+                    var msg = a.Message /*& (WM)0x01FF*/; //see issue #3269
                     switch (msg)
                     {
                         case WM.KEYDOWN:
