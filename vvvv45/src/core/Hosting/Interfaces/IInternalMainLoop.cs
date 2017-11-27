@@ -51,5 +51,10 @@ namespace VVVV.Hosting.Interfaces
         {
             get;
         }
+
+        IInternalMainLoopEvent OnInitFrame
+        {
+            get;
+        }
     }
 }

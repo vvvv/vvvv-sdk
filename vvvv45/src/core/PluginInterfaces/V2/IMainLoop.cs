@@ -37,5 +37,7 @@ namespace VVVV.PluginInterfaces.V2
         event EventHandler OnNetworkSync;
         
         event EventHandler OnResetCache;
+
+        event EventHandler OnInitFrame;
     }
 }
