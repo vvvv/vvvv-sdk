@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug28.dtd" >
-   <PATCH nodename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Texture (EX9.Texture Split).v4p" systemname="Texture (EX9.Texture Split)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Texture (EX9.Texture Split).v4p">
-   <BOUNDS type="Window" left="13680" top="8985" width="9000" height="6000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9.Texture\Texture (EX9.Texture Split).v4p" systemname="Texture (EX9.Texture Split)" filename="C:\Users\gregsn\Desktop\vvvv\public\vvvv45\lib\nodes\modules\EX9.Texture\Texture (EX9.Texture Split).v4p">
+   <BOUNDS type="Window" left="7575" top="8805" width="9000" height="6000">
    </BOUNDS>
    <NODE systemname="Texture (EX9.Texture Split A32B32G32R32F)" nodename="Texture (EX9.Texture Split A32B32G32R32F)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="2865" top="3570" width="100" height="100">
@@ -30,28 +30,16 @@
    <PIN pinname="Width" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="4">
-   <BOUNDS type="Node" left="2925" top="945" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="2" srcpinname="Format" dstnodeid="4" dstpinname="Enum">
-   </LINK>
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="2895" top="1455" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Input 2" slicecount="1" values="44">
    </PIN>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="4" srcpinname="Ord Value" dstnodeid="5" dstpinname="Input 1">
-   </LINK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="6" systemname="IOBox (Node)">
    <BOUNDS type="Node" left="1035" top="225" width="0" height="0">
    </BOUNDS>
@@ -198,4 +186,20 @@
    </LINK>
    <LINK srcnodeid="2" srcpinname="Height" dstnodeid="11" dstpinname="Height">
    </LINK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="2880" top="1005" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="TextureFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Format" dstnodeid="4" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Ord Value" dstnodeid="5" dstpinname="Input 1">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

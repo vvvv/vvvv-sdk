@@ -1,13 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.7.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
    <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 3d).v4p" systemname="Point (DX9 3d)" filename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\EX9\Point (DX9 3d).v4p" scrollx="0" scrolly="-5631">
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="16">
-   <BOUNDS type="Node" left="8895" top="1185" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="41" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
    <PIN pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
@@ -98,34 +90,12 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="46" srcpinname="Output Enum" dstnodeid="16" dstpinname="Enum">
-   </LINK>
-   <BOUNDS type="Window" left="1860" top="2790" width="16695" height="10545">
+   <BOUNDS type="Window" left="8850" top="4980" width="12870" height="6585">
    </BOUNDS>
    <PACK Name="dx11" Version="0.7.2">
    </PACK>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="50">
-   <BOUNDS type="Node" left="8205" top="1290" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" slicecount="1" visible="1" values="PointType">
-   </PIN>
-   <PIN pinname="Receive" visible="1" slicecount="1" values="(nil)">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="49" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="7920" top="870" width="990" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7920" top="870" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PointType">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="49" srcpinname="Output Enum" dstnodeid="50" dstpinname="Enum">
-   </LINK>
-   <LINK srcnodeid="46" srcpinname="Output Enum" dstnodeid="50" dstpinname="Receive">
-   </LINK>
    <INFO author="" description="Draws points in space facing the camera." tags="rectangle, circle, triangle, sprite, billboard">
    </INFO>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="53" systemname="IOBox (Value Advanced)">
@@ -347,7 +317,7 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="119">
    <BOUNDS type="Node" left="5730" top="4725" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -369,7 +339,7 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="116">
    <BOUNDS type="Node" left="8835" top="4725" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -391,7 +361,7 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="113">
    <BOUNDS type="Node" left="11655" top="4725" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
@@ -784,12 +754,6 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="119" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="116" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="113" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="44" srcpinname="Color Output" dstnodeid="110" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="44" srcpinname="Color Output" dstnodeid="108" dstpinname="Input">
@@ -875,5 +839,23 @@
    <LINK srcnodeid="137" srcpinname="Transform Out" dstnodeid="97" dstpinname="Input Node">
    </LINK>
    <LINK srcnodeid="123" srcpinname="Transform Out" dstnodeid="101" dstpinname="Input Node">
+   </LINK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="8655" top="930" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="PointType">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="46" srcpinname="Output Enum" dstnodeid="16" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="119" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="116" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Ord Value" dstnodeid="113" dstpinname="Input 1">
    </LINK>
    </PATCH>
