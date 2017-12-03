@@ -1,0 +1,139 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug27.2.dtd" >
+   <PATCH nodename="C:\Users\joreg\dev\github\vvvv\public\vvvv45\lib\nodes\native\SetPatch (VVVV) help.v4p">
+   <BOUNDS height="9000" left="555" top="1425" type="Window" width="10995">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="240" top="1005" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="5805" left="240" top="1005" type="Box" width="3240">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Allows you to set actions to a running Patch via VVVV-XML-Descriptions.&cr;&lf;&cr;&lf;E.g. You can set values to pins on any node in a patch.  Or you can create a new node. You also can create a link between 2 nodes.&cr;&lf;&cr;&lf;In other words: This node allowes you to set actions that you usually effect by clicking your mouse.&cr;&lf;&cr;&lf;The example below demonstrates how to set the position to a node and a value to a pin&cr;&lf;&cr;&lf;A raw introduction: &cr;&lf;The root element of every message has to be &lt;PATCH&gt; &cr;&lf;After &lt;PATCH&gt; there can be &lt;BOUNDS&gt; for setting positions and sizes of the patch window or &lt;LINK&gt;  for setting links between two pins of two nodes or &lt;NODE&gt; for setting nodes.&cr;&lf;Inside of the &lt;NODE&gt; Element there &lt;PIN&gt; and &lt;BOUNDS&gt; are allowed to set Pins and position and size of that node&cr;&lf;&cr;&lf;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4230" top="405" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4245" top="9540" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2715" left="4230" top="405" type="Box" width="6375">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Input String" slicecount="2" values="|&lt;PATCH&gt;&cr;&lf;  &lt;BOUNDS type=&quot;Window&quot; height=&quot;9000&quot; /&gt;&cr;&lf;  &lt;NODE id=&quot;4&quot;&gt;&cr;&lf;   &lt;BOUNDS type=&quot;Node&quot; left=&quot;6500&quot; top=&quot;6000&quot; width=&quot;500&quot; height=&quot;560&quot; /&gt;&cr;&lf; &lt;/NODE&gt;&lt;/PATCH&gt;|,|&lt;PATCH&gt;&cr;&lf;   &lt;BOUNDS type=&quot;Window&quot; height=&quot;11000&quot; /&gt;&cr;&lf;  &lt;NODE id=&quot;4&quot;&gt;&cr;&lf;   &lt;BOUNDS type=&quot;Node&quot; left=&quot;5500&quot; top=&quot;6500&quot; width=&quot;2000&quot; height=&quot;560&quot; /&gt;&cr;&lf; &lt;/NODE&gt;&cr;&lf;&lt;/PATCH&gt;|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="LFO (Animation)">
+   <BOUNDS height="0" left="7290" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="2">
+   </PIN>
+   <BOUNDS height="560" left="2500" top="8000" type="Box" width="1015">
+   </BOUNDS>
+   <PIN pinname="Input String">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="PatchAlias (VVVV)">
+   <BOUNDS height="0" left="5625" top="4365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="GetSlice (String)">
+   <BOUNDS height="0" left="6630" top="4365" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Input" linkstyle="VHV" srcnodeid="8" srcpinname="Output String">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Index" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <NODE id="4" nodename="SetPatch (VVVV)">
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="XML Input" visible="1">
+   </PIN>
+   <BOUNDS height="560" left="6500" top="6000" type="Node" width="500">
+   </BOUNDS>
+   <BOUNDS height="560" left="5500" top="6000" type="Box" width="1015">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="XML Input" linkstyle="VHV" srcnodeid="5" srcpinname="Output">
+   <LINKPOINT x="6660" y="5625">
+   </LINKPOINT>
+   <LINKPOINT x="7470" y="5625">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Patch" linkstyle="VHV" srcnodeid="6" srcpinname="Patch">
+   <LINKPOINT x="5700" y="4965">
+   </LINKPOINT>
+   <LINKPOINT x="5925" y="4965">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="560" left="5500" top="6500" type="Node" width="2000">
+   </BOUNDS>
+   <BOUNDS height="420" left="270" top="180" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="160" left="10830" top="40830" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|SetPatch (VVVV)|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="270" left="810" top="7950" type="Node" width="3660">
+   </BOUNDS>
+   <BOUNDS height="390" left="810" top="7950" type="Box" width="3945">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|to learn more about the syntax of VVVV messages see|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="GetPatch (VVVV)">
+   <BOUNDS height="270" left="4815" top="7950" type="Node" width="810">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="5790" top="7965" type="Node" width="3885">
+   </BOUNDS>
+   <BOUNDS height="270" left="5790" top="7965" type="Box" width="4065">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|and check the DTD of VVVV patches in the \lib directory|" encoded="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   </PATCH>
