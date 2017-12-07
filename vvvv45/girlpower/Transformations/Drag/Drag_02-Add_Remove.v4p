@@ -1,10 +1,10 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Transformations\Drag\Drag_02-Add_Remove.v4p" systemname="Drag_02" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_02.v4p" scrollx="0" scrolly="-360">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.10.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Transformations\Drag\Drag_02-Add_Remove.v4p" systemname="Drag_02" filename="C:\Work\vvvv-sdk\vvvv45\girlpower\Transformations\Drag_02.v4p" scrollx="0" scrolly="-360">
    <BOUNDS type="Window" left="720" top="900" width="14805" height="10740">
    </BOUNDS>
    <PACK Name="dx11" Version="33.0">
    </PACK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="31">
    <BOUNDS type="Node" left="5850" top="1350" width="100" height="100">
@@ -44,6 +44,12 @@
    <BOUNDS type="Window" left="20025" top="12060" width="6240" height="5010">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
    </PIN>
    </NODE>
    <NODE systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" id="26">
@@ -715,5 +721,21 @@
    <LINK srcnodeid="27" srcpinname="Layer" dstnodeid="26" dstpinname="Layer 2" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="40" srcpinname="Y Output Value" dstnodeid="27" dstpinname="Size">
+   </LINK>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="60">
+   <BOUNDS type="Node" left="10935" top="8355" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="60" srcpinname="Transform Out" dstnodeid="28" dstpinname="Aspect Ratio">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Actual Backbuffer Width" dstnodeid="60" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Actual Backbuffer Height" dstnodeid="60" dstpinname="Aspect Height">
    </LINK>
    </PATCH>
