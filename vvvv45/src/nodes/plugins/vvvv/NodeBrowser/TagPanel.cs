@@ -450,17 +450,15 @@ namespace VVVV.Nodes.NodeBrowser
 
                                                    var found = false;
                                                    if (FSwizzles.Contains(t))
-                                                   {
                                                        found = displayName.ToLower().Contains(t);
-                                                   }
-                                                   else if (FSingleCharNodes.Contains(t))
-                                                   {
+
+                                                   if (!found && FSingleCharNodes.Contains(t))
                                                        found = displayName.ToLower().StartsWith(t);
-                                                   }
-                                                   else if (t.Length > 1)
+
+                                                   if (!found)
                                                    {
                                                        //first we check case-insensitive if the displayname simply start with the given tag
-                                                       found = displayName.StartsWith(t);
+                                                       found = displayName.ToLower().StartsWith(t);
                                                        if (!found)
                                                        {
                                                            //then we consider the tag a sub-term in the displayname 
@@ -476,8 +474,6 @@ namespace VVVV.Nodes.NodeBrowser
                                                            found = matches.Length > 0;
                                                        }
                                                    }
-                                                   else if (t.Length > 0)
-                                                       found = displayName.IndexOf(t[0]) >= 0;
 
                                                    if (found)
                                                    {
