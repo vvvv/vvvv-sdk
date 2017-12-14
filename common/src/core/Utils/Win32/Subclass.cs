@@ -36,8 +36,7 @@ namespace VVVV.Utils.Win32
         {
             if (FHwnd != IntPtr.Zero)
             {
-                if (!ComCtl32.RemoveWindowSubclass(FHwnd, FSubclassProcDelegate, UIntPtr.Zero))
-                    throw new Exception("RemoveWindowSubclass failed!");
+                ComCtl32.RemoveWindowSubclass(FHwnd, FSubclassProcDelegate, UIntPtr.Zero);                   
                 FHwnd = IntPtr.Zero;
                 if (Disposed != null)
                     Disposed(this, EventArgs.Empty);
