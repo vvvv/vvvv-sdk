@@ -39,9 +39,8 @@ namespace VVVV.Nodes.Input
                 .Select<EventPattern<WMEventArgs>, KeyNotification>(e =>
                 {
                     var a = e.EventArgs;
-                    // Special keys like TAB and ALT have some weired high bits set (WM.APP, WM.USER and some other ones I couldn't relate to any defined window message).
-                    // So just filter for what we're interested in.
-                    var msg = a.Message /*& (WM)0x01FF*/; //see issue #3269
+                    // DX9 does not send regular key up and DX11 does not send regular key down for TAB key - no idea why, so hack it (issue #3269)
+                    var msg = ApplyTabHack(a);
                     switch (msg)
                     {
                         case WM.KEYDOWN:
@@ -71,6 +70,39 @@ namespace VVVV.Nodes.Input
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyStates" && n.Category == "Keyboard" && n.Version == "Split");
             FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
+        }
+
+        private static WM ApplyTabHack(WMEventArgs a)
+        {
+            var msg = a.Message;
+            var filteredMsg = msg & (WM)0x01FF;
+            switch (filteredMsg)
+            {
+                case WM.KEYDOWN:
+                case WM.SYSKEYDOWN:
+                case WM.CHAR:
+                case WM.SYSCHAR:
+                case WM.KEYUP:
+                case WM.SYSKEYUP:
+                    // Check again that it's not the real message
+                    switch (msg)
+                    {
+                        case WM.KEYDOWN:
+                        case WM.SYSKEYDOWN:
+                        case WM.CHAR:
+                        case WM.SYSCHAR:
+                        case WM.KEYUP:
+                        case WM.SYSKEYUP:
+                            break;
+                        default:
+                            // Indeed the weired one - check for tab only
+                            if ((Keys)a.WParam == Keys.Tab)
+                                return filteredMsg;
+                            break;
+                    }
+                    break;
+            }
+            return msg;
         }
 
         public override void Dispose()

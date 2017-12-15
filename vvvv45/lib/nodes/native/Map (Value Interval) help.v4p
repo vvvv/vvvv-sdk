@@ -1,21 +1,21 @@
-<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
-   <PATCH nodename="C:\Dokumente und Einstellungen\meso\Desktop\vvvv_33beta9a\help\Map (Value Interval) help.v4p">
-   <BOUNDS height="6180" left="570" top="990" type="Window" width="11550">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.10.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Map (Value Interval) help.v4p">
+   <BOUNDS height="7260" left="570" top="990" type="Window" width="11550">
    </BOUNDS>
    <NODE id="11" nodename="Map (Value Interval)">
-   <BOUNDS height="0" left="1005" top="3150" type="Node" width="0">
+   <BOUNDS height="0" left="1185" top="3135" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Input Breakpoint" visible="1">
+   <PIN pinname="Input Breakpoint" visible="1" slicecount="5" values="0.08,0.25,0.5,0.75,1">
    </PIN>
-   <PIN pinname="Output Breakpoint" visible="1">
+   <PIN pinname="Output Breakpoint" visible="1" slicecount="5" values="0,0.75,-0.75,0,0.57">
    </PIN>
    </NODE>
    <NODE id="10" nodename="LFO (Animation)">
-   <BOUNDS height="0" left="510" top="1815" type="Node" width="0">
+   <BOUNDS height="0" left="690" top="1800" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -37,19 +37,19 @@
    </PIN>
    </NODE>
    <NODE id="8" nodename="HLine (GDI)">
-   <BOUNDS height="0" left="4815" top="4425" type="Node" width="0">
+   <BOUNDS height="0" left="3855" top="4710" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
    <NODE id="7" nodename="VLine (GDI)">
-   <BOUNDS height="0" left="4185" top="4425" type="Node" width="0">
+   <BOUNDS height="0" left="3225" top="4710" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <NODE id="6" nodename="Point (GDI)">
-   <BOUNDS height="0" left="480" top="4560" type="Node" width="0">
+   <NODE id="6" nodename="POINT (GDI)">
+   <BOUNDS height="0" left="660" top="4545" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Y" visible="1">
    </PIN>
@@ -64,66 +64,26 @@
    </LINK>
    <LINK dstnodeid="6" dstpinname="X" srcnodeid="10" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1935" top="1305" type="Node" width="0">
+   <NODE id="3" nodename="POINT (GDI)">
+   <BOUNDS height="0" left="2265" top="4680" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="160" left="12630" top="7680" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="1305" left="1935" top="1305" type="Box" width="1500">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="5">
+   <PIN pinname="X" visible="1" slicecount="5" values="0.08,0.25,0.5,0.75,1">
    </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   <PIN pinname="Y" visible="1" slicecount="5" values="0,0.75,-0.75,0,0.57">
    </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="5" values="0.08,0.25,0.5,0.75,1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="3555" top="1305" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="160" left="12930" top="7980" type="Window" width="215">
-   </BOUNDS>
-   <BOUNDS height="1305" left="3555" top="1305" type="Box" width="1500">
-   </BOUNDS>
-   <PIN pinname="Rows" slicecount="1" values="5">
-   </PIN>
-   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
-   </PIN>
-   <PIN pinname="Y Output Value" visible="1">
-   </PIN>
-   <PIN pinname="Y Input Value" slicecount="5" values="0,0.75,-0.75,0,0.57">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="11" dstpinname="Input Breakpoint" srcnodeid="5" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="11" dstpinname="Output Breakpoint" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <NODE id="3" nodename="Point (GDI)">
-   <BOUNDS height="0" left="4590" top="3540" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="X" visible="1">
-   </PIN>
-   <PIN pinname="Y" visible="1">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   <PIN pinname="Pen Color" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
    </PIN>
    <PIN pinname="Type" slicecount="1" values="Dot">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="X" srcnodeid="5" srcpinname="Y Output Value">
-   </LINK>
-   <LINK dstnodeid="3" dstpinname="Y" srcnodeid="4" srcpinname="Y Output Value">
-   </LINK>
-   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="1185" top="4005" type="Node" width="0">
+   <NODE componentmode="InABox" id="2" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="1365" top="3990" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8115" top="6945" type="Window" width="215">
    </BOUNDS>
-   <BOUNDS height="240" left="1185" top="4005" type="Box" width="795">
+   <BOUNDS height="240" left="1365" top="3990" type="Box" width="795">
    </BOUNDS>
    <PIN pinname="Y Input Value" visible="1">
    </PIN>
@@ -151,7 +111,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="240" top="12450" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" values="|Map - Value Interval|">
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Map (Value Interval)|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -161,7 +121,7 @@
    </PIN>
    </NODE>
    <NODE nodename="Group (GDI)" id="12">
-   <BOUNDS type="Node" left="3090" top="5145" width="0" height="0">
+   <BOUNDS type="Node" left="2115" top="5235" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Layer Template Count" slicecount="1" values="4">
    </PIN>
@@ -185,11 +145,57 @@
    <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="12" dstpinname="Layer 4">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Layer" dstnodeid="9" dstpinname="Layers">
-   <LINKPOINT x="3105" y="5580">
+   <LINKPOINT x="2374" y="5648">
    </LINKPOINT>
-   <LINKPOINT x="5925" y="5580">
+   <LINKPOINT x="5437" y="5625">
    </LINKPOINT>
-   <LINKPOINT x="5910" y="540">
+   <LINKPOINT x="5666" y="562">
    </LINKPOINT>
    </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="2355" top="1635" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2355" top="1635" width="1560" height="1080">
+   </BOUNDS>
+   <PIN pinname="Slider Alignment" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Slider Constraints" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Show Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Show Connections" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="4" values="0.12621359223301,0.339805825242719,0.66990291262136,0.805825242718447">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" values="-0.35483870967742,0.548387096774193,0.516129032258064,-0.35483870967742">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="13" srcpinname="X Output Value" dstnodeid="11" dstpinname="Input Breakpoint">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Output Breakpoint">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="X Output Value" dstnodeid="3" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Y">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

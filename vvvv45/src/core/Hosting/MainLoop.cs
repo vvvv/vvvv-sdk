@@ -8,6 +8,21 @@ namespace VVVV.Hosting
     [ComVisible(false)]
     class MainLoop : IMainLoop
     {
+        class InitFrameListener : IInternalMainLoopEventListener
+        {
+            private readonly MainLoop FMainLoop;
+
+            public InitFrameListener(MainLoop mainLoop)
+            {
+                FMainLoop = mainLoop;
+            }
+
+            public void HandleEvent()
+            {
+                FMainLoop.CallOnInitFrame(EventArgs.Empty);
+            }
+        }
+
         class PrepareGraphListener : IInternalMainLoopEventListener
         {
             private readonly MainLoop FMainLoop;
@@ -114,6 +129,7 @@ namespace VVVV.Hosting
         }
         
         private readonly IInternalMainLoop FMainLoop;
+        private readonly InitFrameListener FInitFrameListener;
         private readonly PrepareGraphListener FPrepareGraphListener;
         private readonly UpdateViewListener FUpdateViewListener;
         private readonly RenderListener FRenderListener;
@@ -125,6 +141,7 @@ namespace VVVV.Hosting
         public MainLoop(IInternalMainLoop mainLoop)
         {
             FMainLoop = mainLoop;
+            FInitFrameListener = new InitFrameListener(this);
             FPrepareGraphListener = new PrepareGraphListener(this);
             FUpdateViewListener = new UpdateViewListener(this);
             FRenderListener = new RenderListener(this);
@@ -134,6 +151,38 @@ namespace VVVV.Hosting
             FResetCacheListener = new ResetCacheListener(this);
         }
         
+        private int FOnInitFrameCount;
+        private event EventHandler FOnInitFrame;
+        public event EventHandler OnInitFrame
+        {
+            add
+            {
+                if (FOnInitFrameCount == 0)
+                {
+                    FMainLoop.OnInitFrame.Subscribe(FInitFrameListener);
+                }
+                FOnInitFrameCount++;
+                FOnInitFrame += value;
+            }
+            remove
+            {
+                FOnInitFrame -= value;
+                FOnInitFrameCount--;
+                if (FOnInitFrameCount == 0)
+                {
+                    FMainLoop.OnInitFrame.Unsubscribe(FInitFrameListener);
+                }
+            }
+        }
+
+        protected virtual void CallOnInitFrame(EventArgs e)
+        {
+            if (FOnInitFrame != null)
+            {
+                FOnInitFrame(this, e);
+            }
+        }
+
         private int FOnPrepareGraphCount;
         private event EventHandler FOnPrepareGraph;
         public event EventHandler OnPrepareGraph

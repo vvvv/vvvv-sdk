@@ -5,7 +5,7 @@ using System.Text;
 
 namespace VVVV.Hosting.IO
 {
-    class DynamicTypeWrapper
+    public class DynamicTypeWrapper
     {
         public readonly object Value;
 
