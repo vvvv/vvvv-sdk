@@ -1,0 +1,159 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\Transform\AlignToPath (Transform) help.v4p">
+   <BOUNDS type="Window" left="945" top="5925" width="5460" height="6450">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|AlignToPath (Transform)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="AlignToPath (Transform)" componentmode="Hidden" id="0" systemname="AlignToPath (Transform)" filename="%VVVV%\lib\nodes\modules\Transform\AlignToPath (Transform).v4p">
+   <BOUNDS type="Node" left="1755" top="2895" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1755" top="2895" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="PositionXYZ" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Up Vector" slicecount="3" visible="1" values="1,0,0">
+   </PIN>
+   <BOUNDS type="Window" left="3270" top="4575" width="7530" height="8895">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="xyZ (3d XY)" nodename="xyZ (3d XY)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="1740" top="2280" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="XYZ" dstnodeid="0" dstpinname="PositionXYZ">
+   </LINK>
+   <NODE systemname="Axis (DX9)" filename="%VVVV%\lib\nodes\modules\EX9\Axis (DX9).v4p" nodename="Axis (DX9)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="1470" top="4590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="8">
+   <BOUNDS type="Node" left="1470" top="5190" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1470" top="5190" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="885" top="600" width="5520" height="5415">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Layer" dstnodeid="8" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="UniformScale (Transform)" nodename="UniformScale (Transform)" componentmode="Hidden" id="9">
+   <BOUNDS type="Node" left="1755" top="4065" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="1" values="0.2">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="9" dstpinname="Transform In">
+   </LINK>
+   <LINK srcnodeid="9" srcpinname="Transform Out" dstnodeid="7" dstpinname="Transform">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="3195" top="2025" width="375" height="645">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3195" top="2025" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="0,0,1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Vector Size" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Up Vector">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2790" top="1365" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2790" top="1365" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="2430" top="4590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="View" dstnodeid="8" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Projection" dstnodeid="8" dstpinname="Projection">
+   </LINK>
+   <NODE systemname="SpiralSpread (Spreads 2d)" filename="..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Spreads.vl" nodename="SpiralSpread (Spreads 2d)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1740" top="1875" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" visible="1" values="20">
+   </PIN>
+   <PIN pinname="Factor" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SizeXY" slicecount="2" values="1,1">
+   </PIN>
+   <PIN pinname="Phase" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="OutputXY" dstnodeid="5" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Count">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Spread Count">
+   </LINK>
+   </PATCH>
