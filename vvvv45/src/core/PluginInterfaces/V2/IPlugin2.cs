@@ -69,5 +69,44 @@ namespace VVVV.PluginInterfaces.V2
     {
         RGBAColor BackgroundColor { get; }
     }
-	#endregion basic interfaces
+
+    /// <summary>
+    /// Implement this interface on your gui plugin if this has a notion of a projection space.
+    /// You can use the aspect ratio of your window or viewport to do the math or have an explicit aspect ratio transform input.
+    /// </summary>
+    [Guid("9FFDA595-CB41-4B60-9132-2E907A777D94"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IProjectionSpace
+    {
+        /// <summary>
+        /// Transforms a position in pixels into 
+        /// * a position in normalized projection space ((bottom, left = -1, -1) .. (top, right = 1, 1)) 
+        /// * a position in projection space (typically one that respects the aspect ratio of the window)
+        /// so you might need to "undo" the last 2 or 3 transformations in that chain:
+        ///             World T.          View T.          Proj T.          AspectR. T.           Crop T.        Viewport Placement
+        /// Object Space  -->  World Space  -->  View Space  -->  PROJ SPACE  -->  NORM PROJ SPACE  -->  Viewport Space  -->  Pixel Space
+        /// </summary>
+        void MapFromPixels(Point inPixels, out Vector2D inNormalizedProjection, out Vector2D inProjection);
+    }
+
+    /// <summary>
+    /// Implement this interface on your gui plugin if you a notion of a projection space.
+    /// You can use the aspect ratio of your window to do the math or have an explicit aspect ratio transform input.
+    /// </summary>
+    [Guid("60BC056A-518B-4015-B0DF-4C2E8A0FA04A"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IProjectionSpace2
+    {
+        /// <summary>
+        /// Transforms a position in pixels into 
+        /// * a position in normalized projection space ((bottom, left = -1, -1) .. (top, right = 1, 1)) 
+        /// * a position in projection space (typically one that respects the aspect ratio of the window)
+        /// so you might need to "undo" the last 2 or 3 transformations in that chain:         
+        ///             World T.          View T.          Proj T.          AspectR. T.           Crop T.        Viewport Placement
+        /// Object Space  -->  World Space  -->  View Space  -->  PROJ SPACE  -->  NORM PROJ SPACE  -->  Viewport Space  -->  Pixel Space
+        /// </summary>
+        void MapFromPixels(int xInPix, int yInPix,
+            out double xInNormalizedProjection, out double yInNormalizedProjection, out double xInProjection, out double yInProjection);
+    }
+    #endregion basic interfaces
 }

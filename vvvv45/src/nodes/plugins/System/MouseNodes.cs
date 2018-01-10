@@ -16,6 +16,7 @@ using VVVV.Hosting.IO;
 using VVVV.Hosting.Pins.Input;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.IO;
 using VVVV.Utils.IO;
 using VVVV.Utils.Streams;
 using VVVV.Utils.VMath;
@@ -647,6 +648,7 @@ namespace VVVV.Nodes.Input
         public ISpread<ISpread<bool>> X1ButtonIn;
         public ISpread<ISpread<bool>> X2ButtonIn;
         public IIOContainer<IInStream<int>> BinSizePin;
+        public ISpread<ISpread<Vector2D>> ClientAreaIn;
         public ISpread<Mouse> MouseOut;
 
         private readonly Spread<Subject<MouseNotification>> FSubjects = new Spread<Subject<MouseNotification>>();
@@ -665,6 +667,8 @@ namespace VVVV.Nodes.Input
             RightButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("Right Button"));
             X1ButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("X1 Button"));
             X2ButtonIn = BinSizePin.CreateBinSizeSpread<bool>(new InputAttribute("X2 Button"));
+            ClientAreaIn = BinSizePin.CreateBinSizeSpread<Vector2D>(new InputAttribute("Client Area ")
+                { DefaultValues = new double[] { short.MaxValue, short.MaxValue }, Visibility = PinVisibility.OnlyInspector });
             MouseOut = factory.CreateSpread<Mouse>(new OutputAttribute("Mouse"));
             MouseOut.SliceCount = 0;
         }
@@ -678,6 +682,7 @@ namespace VVVV.Nodes.Input
 
         public void Evaluate(int spreadMax)
         {
+
             var binCount = BinSizePin.IOObject.Length;
             FSubjects.ResizeAndDispose(binCount);
             MouseOut.ResizeAndDismiss(binCount, slice => new Mouse(FSubjects[slice]));
@@ -687,27 +692,29 @@ namespace VVVV.Nodes.Input
                 var notificationCount = EventTypeIn[bin].SliceCount;
                 for (int i = 0; i < notificationCount; i++)
                 {
-                    var position = PositionIn[bin][i].ToMousePoint();
+                    var a = ClientAreaIn[bin][i];
+                    var clientArea = new Size((int)a.x, (int)a.y);
+                    var position = PositionIn[bin][i].DoMapPositionInNormalizedProjectionToPixels(clientArea);
                     MouseNotification notification;
                     switch (EventTypeIn[bin][i])
                     {
                         case MouseNotificationKind.MouseDown:
-                            notification = new MouseDownNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), this);
+                            notification = new MouseDownNotification(position, clientArea, GetMouseButtons(bin, i), this);
                             break;
                         case MouseNotificationKind.MouseUp:
-                            notification = new MouseUpNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), this);
+                            notification = new MouseUpNotification(position, clientArea, GetMouseButtons(bin, i), this);
                             break;
                         case MouseNotificationKind.MouseMove:
-                            notification = new MouseMoveNotification(position, MouseExtensions.ClientArea, this);
+                            notification = new MouseMoveNotification(position, clientArea, this);
                             break;
                         case MouseNotificationKind.MouseWheel:
-                            notification = new MouseWheelNotification(position, MouseExtensions.ClientArea, MouseWheelIn[bin][i], this);
+                            notification = new MouseWheelNotification(position, clientArea, MouseWheelIn[bin][i], this);
                             break;
                         case MouseNotificationKind.MouseHorizontalWheel:
-                            notification = new MouseHorizontalWheelNotification(position, MouseExtensions.ClientArea, MouseHWheelIn[bin][i], this);
+                            notification = new MouseHorizontalWheelNotification(position, clientArea, MouseHWheelIn[bin][i], this);
                             break;
                         case MouseNotificationKind.MouseClick:
-                            notification = new MouseClickNotification(position, MouseExtensions.ClientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1), this);
+                            notification = new MouseClickNotification(position, clientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1), this);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -740,6 +747,9 @@ namespace VVVV.Nodes.Input
         public ISpread<Mouse> MouseIn;
         public ISpread<ISpread<MouseNotificationKind>> EventTypeOut;
         public ISpread<ISpread<Vector2D>> PositionOut;
+        public ISpread<ISpread<Vector2D>> PositionPixelOut;
+        public ISpread<ISpread<Vector2D>> PositionInProjectionSpaceOut;
+        public ISpread<ISpread<Vector2D>> PositionInNormalizedProjectionOut;
         public ISpread<ISpread<int>> MouseWheelDeltaOut;
         public ISpread<ISpread<int>> MouseHWheelDeltaOut;
         public ISpread<ISpread<int>> ClickCountOut;
@@ -759,7 +769,10 @@ namespace VVVV.Nodes.Input
             MouseIn = factory.CreateSpread<Mouse>(new InputAttribute("Mouse"));
             BinSizePin = factory.CreateBinSizeOutput(new OutputAttribute("Bin Size") { Order = int.MaxValue });
             EventTypeOut = BinSizePin.CreateBinSizeSpread<MouseNotificationKind>(new OutputAttribute("Event Type"));
-            PositionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position"));
+            PositionPixelOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position (Pixel) ") { Visibility = PinVisibility.Hidden });
+            PositionInProjectionSpaceOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position (Projection) "));
+            PositionInNormalizedProjectionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position (Normalized Projection) ") { Visibility = PinVisibility.OnlyInspector });
+            PositionOut = BinSizePin.CreateBinSizeSpread<Vector2D>(new OutputAttribute("Position (Normalized Window) ") { Visibility = PinVisibility.OnlyInspector });
             MouseWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Mouse Wheel Delta"));
             MouseHWheelDeltaOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Horizontal Mouse Wheel Delta"));
             ClickCountOut = BinSizePin.CreateBinSizeSpread<int>(new OutputAttribute("Click Count"));
@@ -806,6 +819,9 @@ namespace VVVV.Nodes.Input
 
             EventTypeOut.SliceCount = spreadMax;
             PositionOut.SliceCount = spreadMax;
+            PositionPixelOut.SliceCount = spreadMax;
+            PositionInProjectionSpaceOut.SliceCount = spreadMax;
+            PositionInNormalizedProjectionOut.SliceCount = spreadMax;
             MouseWheelDeltaOut.SliceCount = spreadMax;
             MouseHWheelDeltaOut.SliceCount = spreadMax;
             ClickCountOut.SliceCount = spreadMax;
@@ -832,6 +848,9 @@ namespace VVVV.Nodes.Input
 
                 EventTypeOut[bin].SliceCount = notifications.Count;
                 PositionOut[bin].SliceCount = notifications.Count;
+                PositionPixelOut.SliceCount = notifications.Count;
+                PositionInProjectionSpaceOut[bin].SliceCount = notifications.Count;
+                PositionInNormalizedProjectionOut[bin].SliceCount = notifications.Count;
                 MouseWheelDeltaOut[bin].SliceCount = notifications.Count;
                 MouseHWheelDeltaOut[bin].SliceCount = notifications.Count;
                 ClickCountOut[bin].SliceCount = notifications.Count;
@@ -845,7 +864,17 @@ namespace VVVV.Nodes.Input
                 {
                     var n = notifications[i];
                     EventTypeOut[bin][i] = n.Kind;
-                    PositionOut[bin][i] = n.Position.FromMousePoint(n.ClientArea);
+
+                    Vector2D inNormalizedProjection, inProjection;
+
+                    SpaceHelpers.MapFromPixels(n.Position, n.Sender, n.ClientArea,
+                        out inNormalizedProjection, out inProjection);
+
+                    PositionPixelOut[bin][i] = new Vector2D(n.Position.X, n.Position.Y);
+                    PositionOut[bin][i] = MouseExtensions.GetLegacyMousePositon(n.Position, n.ClientArea);
+                    PositionInNormalizedProjectionOut[bin][i] = inNormalizedProjection;
+                    PositionInProjectionSpaceOut[bin][i] = inProjection;
+
                     switch (n.Kind)
                     {
                         case MouseNotificationKind.MouseDown:
@@ -925,10 +954,14 @@ namespace VVVV.Nodes.Input
         [Input("Queue Mode", DefaultEnumEntry = "Discard")]
         public ISpread<QueueMode> QueueModeIn;
 
-        [Output("Position")]
-        public ISpread<Vector2D> PositionOut;
-        [Output("Position in Pixel", Visibility = PinVisibility.OnlyInspector)]
+        [Output("Position (Pixel) ", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ")]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionOut;
         [Output("Client Area", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> ClientAreaOut;
         [Output("Mouse Wheel")]
@@ -960,6 +993,8 @@ namespace VVVV.Nodes.Input
         public void Evaluate(int spreadMax)
         {
             PositionOut.SliceCount = spreadMax;
+            PositionInProjectionSpaceOut.SliceCount = spreadMax;
+            PositionInNormalizedProjectionOut.SliceCount = spreadMax;
             PositionPixelOut.SliceCount = spreadMax;
             ClientAreaOut.SliceCount = spreadMax;
             MouseWheelOut.SliceCount = spreadMax;
@@ -978,6 +1013,8 @@ namespace VVVV.Nodes.Input
                 {
                     // Reset states
                     PositionOut[slice] = Vector2D.Zero;
+                    PositionInProjectionSpaceOut[slice] = Vector2D.Zero;
+                    PositionInNormalizedProjectionOut[slice] = Vector2D.Zero;
                     PositionPixelOut[slice] = Vector2D.Zero;
                     ClientAreaOut[slice] = Vector2D.Zero;
                     MouseWheelOut[slice] = 0;
@@ -1018,7 +1055,15 @@ namespace VVVV.Nodes.Input
                                 X2ButtonOut[i] = isDown;
                             break;
                         case MouseNotificationKind.MouseMove:
-                            PositionOut[i] = n.Position.FromMousePoint(n.ClientArea);
+                            Vector2D inNormalizedProjection, inProjection;
+
+                            SpaceHelpers.MapFromPixels(n.Position, n.Sender, n.ClientArea, 
+                                out inNormalizedProjection, out inProjection);
+
+                            PositionOut[i] = MouseExtensions.GetLegacyMousePositon(n.Position, n.ClientArea);
+                            PositionInProjectionSpaceOut[i] = inProjection;
+                            PositionInNormalizedProjectionOut[i] = inNormalizedProjection;
+
                             PositionPixelOut[i] = new Vector2D(n.Position.X, n.Position.Y);
                             ClientAreaOut[i] = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
                             break;
@@ -1060,6 +1105,7 @@ namespace VVVV.Nodes.Input
         {
             public static readonly MouseState Empty = new MouseState();
             public Point Position;
+            public Size ClientArea;
             public int MouseWheel;
             public int MouseHWheel;
             public MouseButtons IsButtonPressed;
@@ -1082,6 +1128,8 @@ namespace VVVV.Nodes.Input
         public IDiffSpread<bool> X1ButtonIn;
         [Input("X2 Button")]
         public IDiffSpread<bool> X2ButtonIn;
+        [Input("Client Area ", DefaultValues = new double[] { short.MaxValue, short.MaxValue }, Visibility = PinVisibility.OnlyInspector)]
+        public IDiffSpread<Vector2D> ClientAreaIn;
 
         [Output("Mouse")]
         public ISpread<Mouse> MouseOut;
@@ -1095,12 +1143,13 @@ namespace VVVV.Nodes.Input
 
         private IEnumerable<MouseNotification> GetNotifications(MouseState oldState, MouseState newState)
         {
+            var clientArea = newState.ClientArea;
             var wheelDelta = newState.MouseWheel - oldState.MouseWheel;
             if (wheelDelta != 0)
-                yield return new MouseWheelNotification(newState.Position, MouseExtensions.ClientArea, wheelDelta * Const.WHEEL_DELTA, this);
+                yield return new MouseWheelNotification(newState.Position, clientArea, wheelDelta * Const.WHEEL_DELTA, this);
             var hwheelDelta = newState.MouseHWheel - oldState.MouseHWheel;
             if (hwheelDelta != 0)
-                yield return new MouseHorizontalWheelNotification(newState.Position, MouseExtensions.ClientArea, hwheelDelta * Const.WHEEL_DELTA, this);
+                yield return new MouseHorizontalWheelNotification(newState.Position, clientArea, hwheelDelta * Const.WHEEL_DELTA, this);
             if (newState.IsButtonPressed != oldState.IsButtonPressed)
             {
                 var newButton = newState.IsButtonPressed;
@@ -1108,18 +1157,19 @@ namespace VVVV.Nodes.Input
                 foreach (var button in Buttons)
                 {
                     if (newButton.HasFlag(button) && !oldButton.HasFlag(button))
-                        yield return new MouseDownNotification(newState.Position, MouseExtensions.ClientArea, button, this);
+                        yield return new MouseDownNotification(newState.Position, clientArea, button, this);
                     if (!newButton.HasFlag(button) && oldButton.HasFlag(button))
-                        yield return new MouseUpNotification(newState.Position, MouseExtensions.ClientArea, button, this);
+                        yield return new MouseUpNotification(newState.Position, clientArea, button, this);
                 }
             }
             // Send the move last should anyone downstream use a mouse state join with queue mode = discard
             if (newState.Position != oldState.Position)
-                yield return new MouseMoveNotification(newState.Position, MouseExtensions.ClientArea, this);
+                yield return new MouseMoveNotification(newState.Position, clientArea, this);
         }
 
         public void Evaluate(int spreadMax)
         {
+
             // Save the previous slice count
             var oldSliceCount = MouseStates.SliceCount;
             // Set the new slice count
@@ -1127,6 +1177,8 @@ namespace VVVV.Nodes.Input
             MouseOut.SliceCount = spreadMax;
             for (int i = 0; i < spreadMax; i++)
             {
+                var a = ClientAreaIn[i];
+                var clientArea = new Size((int)a.x, (int)a.y);
                 // Get the old mouse state
                 var oldState = i < oldSliceCount
                     ? MouseStates[i]
@@ -1134,7 +1186,8 @@ namespace VVVV.Nodes.Input
                 // Create the new mouse state
                 var newState = new MouseState()
                 {
-                    Position = PositionIn[i].ToMousePoint(),
+                    Position = PositionIn[i].DoMapPositionInNormalizedProjectionToPixels(clientArea),
+                    ClientArea = clientArea,
                     MouseWheel = MouseWheelIn[i],
                     MouseHWheel = MouseHWheelIn[i],
                     IsButtonPressed =
@@ -1205,7 +1258,16 @@ namespace VVVV.Nodes.Input
         [Output("Detected", IsBang = true)]
         public ISpread<bool> DetectedOut;
 
-        [Output("Position")]
+        [Output("Position (Pixel) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+
+        [Output("Position (Projection) ")]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+
+        [Output("Position (Normalized Projection) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+
+        [Output("Position (Normalized Window) ", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
 
         [Import]
@@ -1220,7 +1282,10 @@ namespace VVVV.Nodes.Input
                 () => new Subscription2<Mouse, MouseNotification>(mouse => mouse.MouseNotifications));
 
             DetectedOut.SliceCount = spreadMax;
+            PositionPixelOut.SliceCount = spreadMax;
             PositionOut.SliceCount = spreadMax;
+            PositionInProjectionSpaceOut.SliceCount = spreadMax;
+            PositionInNormalizedProjectionOut.SliceCount = spreadMax;
 
             for (int i = 0; i < spreadMax; i++)
             {
@@ -1250,12 +1315,23 @@ namespace VVVV.Nodes.Input
                 if (detectedNotification != null)
                 {
                     DetectedOut[i] = true;
-                    PositionOut[i] = detectedNotification.Position.FromMousePoint(detectedNotification.ClientArea);
+                    Vector2D inNormalizedProjection, inProjection;
+
+                    SpaceHelpers.MapFromPixels(detectedNotification.Position, detectedNotification.Sender, detectedNotification.ClientArea,
+                        out inNormalizedProjection, out inProjection);
+
+                    PositionPixelOut[i] = new Vector2D(detectedNotification.Position.X, detectedNotification.Position.Y);
+                    PositionOut[i] = MouseExtensions.GetLegacyMousePositon(detectedNotification.Position, detectedNotification.ClientArea);
+                    PositionInProjectionSpaceOut[i] = inProjection;
+                    PositionInNormalizedProjectionOut[i] = inNormalizedProjection;
                 }
                 else
                 {
                     DetectedOut[i] = false;
+                    PositionPixelOut[i] = Vector2D.Zero;
                     PositionOut[i] = Vector2D.Zero;
+                    PositionInProjectionSpaceOut[i] = Vector2D.Zero;
+                    PositionInNormalizedProjectionOut[i] = Vector2D.Zero;
                 }
                 //For debugging only
                 //foreach (var n in Subscriptions[i].ConsumeAll(MouseIn[i]).OfType<MouseClickNotification>())
@@ -1302,20 +1378,28 @@ namespace VVVV.Nodes.Input
 
     static class MouseExtensions
     {
+        [Obsolete]
         public static readonly Size ClientArea = new Size(short.MaxValue, short.MaxValue);
 
+        [Obsolete]
         public static Point ToMousePoint(this Vector2D normV)
-        {
+        { 
             var clientArea = new Vector2D(ClientArea.Width - 1, ClientArea.Height - 1);
             var v = VMath.Map(normV, new Vector2D(-1, 1), new Vector2D(1, -1), Vector2D.Zero, clientArea, TMapMode.Float);
             return new Point((int)v.x, (int)v.y);
         }
 
+        [Obsolete]
         public static Vector2D FromMousePoint(this Point point, Size clientArea)
         {
             var position = new Vector2D(point.X, point.Y);
             var ca = new Vector2D(clientArea.Width - 1, clientArea.Height - 1);
             return VMath.Map(position, Vector2D.Zero, ca, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
         }
+
+        public static Vector2D GetLegacyMousePositon(this Point point, Size clientArea)
+            => FromMousePoint(point, clientArea);
+
+        
     }
 }
