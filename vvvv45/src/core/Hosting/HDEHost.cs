@@ -166,35 +166,7 @@ namespace VVVV.Hosting
             //add repository paths from commandline
             //from commandline
             var repoArg = "/package-repositories";
-
-            var packageRepositories = AssemblyLoader.ParseCommandLine(repoArg);
-
-            //from args.txt
-            var argsFile = Path.Combine(ExePath, "args.txt");
-            if (File.Exists(argsFile))
-            {
-                var args = File.ReadAllText(argsFile).Trim('\r', '\n', ' ').Split(' ');
-                var sourcesIndex = Array.IndexOf(args, repoArg);
-                if (sourcesIndex >= 0 && args.Length > sourcesIndex + 1)
-                {
-                    var sourcesString = args[sourcesIndex + 1].Trim('"');
-                    var repoPaths = sourcesString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    for (int i = 0; i < repoPaths.Length; i++)
-                    {
-                        repoPaths[i] = repoPaths[i].Trim('"', '\\');
-                    }
-
-                    packageRepositories = packageRepositories.Union(repoPaths).ToArray();
-                }
-            }
-
-            //make relative paths absolute
-            for (int i = 0; i < packageRepositories.Length; i++)
-            {
-                if (Path.IsPathRooted(packageRepositories[i]))
-                    packageRepositories[i] = Path.Combine(ExePath, packageRepositories[i]);
-            }
-
+            var packageRepositories = ExtractPaths(repoArg);
             AssemblyLoader.AddPackageRepositories(packageRepositories);
 
             //the built-in one
@@ -203,7 +175,6 @@ namespace VVVV.Hosting
             //the one where the user is supposed to install packages
             if (Directory.Exists(UserPacksPatch))
                 AssemblyLoader.AddPackageRepository(UserPacksPatch);
-            
 
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
@@ -226,6 +197,29 @@ namespace VVVV.Hosting
 
             // Will tell Windows Forms that a message loop is indeed running
             Application.RegisterMessageLoop(IsSendingMessages);
+        }
+
+        private string[] ExtractPaths(string key)
+        {
+            //from commandline
+            var paths = AssemblyLoader.ParseCommandLine(key);
+
+            //from args.txt
+            var argsFile = Path.Combine(ExePath, "args.txt");
+            if (File.Exists(argsFile))
+            {
+                var args = File.ReadAllText(argsFile).Split(new Char[] { ' ', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+                paths = paths.Concat(AssemblyLoader.ParseLines(args, key)).ToArray();
+            }
+
+            //make relative paths absolute
+            for (int i = 0; i < paths.Length; i++)
+            {
+                if (Path.IsPathRooted(paths[i]))
+                    paths[i] = Path.Combine(ExePath, paths[i]);
+            }
+
+            return paths;
         }
 
         private HashSet<ProxyNodeInfo> LoadNodeInfos(string filename, string arguments)
