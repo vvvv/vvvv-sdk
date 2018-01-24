@@ -12,16 +12,24 @@ namespace VVVV.PluginInterfaces.V2.IO
             return new Point((int)v.x, (int)v.y);
         }
 
-        public static void DoMapFromPixels(Point inPixels, Size clientArea, out Vector2D inNormalizedProjection, out Vector2D inProjection)
+        internal static void DoMapFromPixels(Point inPixels, Size clientArea, out Vector2D inNormalizedProjection, out Vector2D inProjection)
         {
             inNormalizedProjection = new Vector2D(
                 -1 + 2 * ((float)inPixels.X / (clientArea.Width - 1)),
                  1 - 2 * ((float)inPixels.Y / (clientArea.Height - 1)));
 
-            if (clientArea.Width < clientArea.Height)
-                inProjection = new Vector2D(inNormalizedProjection.x, inNormalizedProjection.y * clientArea.Height / clientArea.Width);
+            //let's not overdo it. let's return the normalized position as projeciton position in case interface is not implemented
+            const bool autoAspect = false;
+
+            if (autoAspect)
+            {
+                if (clientArea.Width < clientArea.Height)
+                    inProjection = new Vector2D(inNormalizedProjection.x, inNormalizedProjection.y * clientArea.Height / clientArea.Width);
+                else
+                    inProjection = new Vector2D(inNormalizedProjection.x * clientArea.Width / clientArea.Height, inNormalizedProjection.y);
+            }
             else
-                inProjection = new Vector2D(inNormalizedProjection.x * clientArea.Width / clientArea.Height, inNormalizedProjection.y);
+                inProjection = inNormalizedProjection;
         }
 
         public static void MapFromPixels(Point inPixels, object sender, Size clientArea, out Vector2D inNormalizedProjection, out Vector2D inProjection)
