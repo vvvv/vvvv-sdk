@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\StreamTexture.v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.15.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\StreamTexture.v4p" systemname="StreamImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\StreamImage (Photoshop).v4p" scrollx="0" scrolly="0">
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="11" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7470" top="675" width="795" height="240">
    </BOUNDS>
@@ -66,7 +66,7 @@
    </NODE>
    <BOUNDS type="Window" left="1665" top="1455" width="16740" height="14715">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="39" systemname="IOBox (String)">
    <BOUNDS type="Node" left="27990" top="150" width="7080" height="2790">
@@ -146,24 +146,14 @@
    </LINK>
    <LINK srcnodeid="70" srcpinname="OnChange" dstnodeid="68" dstpinname="Input 2">
    </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="71">
-   <BOUNDS type="Node" left="9120" top="1275" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1" slicecount="1" values="(nil)">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Change (Animation)" nodename="Change (Animation)" componentmode="Hidden" id="72">
    <BOUNDS type="Node" left="9120" top="1680" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="OnChange" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="71" srcpinname="Ord Value" dstnodeid="72" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="72" srcpinname="OnChange" dstnodeid="68" dstpinname="Input 3">
    </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="88" systemname="IOBox (Enumerations)">
@@ -422,28 +412,6 @@
    </LINK>
    <LINK srcnodeid="88" srcpinname="Output Enum" dstnodeid="131" dstpinname="Event">
    </LINK>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="136">
-   <BOUNDS type="Node" left="10170" top="1680" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
-   </PIN>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="136" dstpinname="Receive">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="71" dstpinname="Enum">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="137" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="10170" top="1275" width="1935" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="10170" top="1275" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="137" srcpinname="Output Enum" dstnodeid="136" dstpinname="Enum">
-   </LINK>
    <NODE systemname="RequestImage (Photoshop)" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\RequestImage (Photoshop).v4p" nodename="RequestImage (Photoshop)" componentmode="Hidden" id="130">
    <BOUNDS type="Node" left="7470" top="10500" width="100" height="100">
    </BOUNDS>
@@ -489,5 +457,19 @@
    <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 3">
    </LINK>
    <LINK srcnodeid="76" srcpinname="Output" dstnodeid="81" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="9120" top="1275" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1" slicecount="1" values="(nil)">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="PhotoshopImageFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Ord Value" dstnodeid="72" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="44" srcpinname="Output Enum" dstnodeid="71" dstpinname="Enum">
    </LINK>
    </PATCH>
