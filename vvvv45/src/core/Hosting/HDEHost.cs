@@ -267,6 +267,7 @@ namespace VVVV.Hosting
 
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
+            MainLoop.OnUpdateView += MainLoop_OnUpdateView;
 
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
 
@@ -345,6 +346,11 @@ namespace VVVV.Hosting
             if (Directory.Exists(packsPath))
                 LoadNodesFromLegacyPackages(packsPath);
             LoadNodesFromPackages();
+        }
+
+        private void MainLoop_OnUpdateView(object sender, EventArgs e)
+        {
+            Application.RaiseIdle(EventArgs.Empty);
         }
 
         bool IsSendingMessages()
