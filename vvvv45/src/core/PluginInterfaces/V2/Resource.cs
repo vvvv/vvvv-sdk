@@ -28,7 +28,7 @@ namespace VVVV.PluginInterfaces.V2
         {
             Metadata = metadata;
             FCreateResourceFunc = createResourceFunc;
-            FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
+            FUpdateResourceFunc = updateResourceFunc;
             FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
             NeedsUpdate = true;
         }
@@ -73,12 +73,12 @@ namespace VVVV.PluginInterfaces.V2
             {
                 if (NeedsUpdate)
                 {
-                    FUpdateResourceFunc(Metadata, resource);
+                    FUpdateResourceFunc?.Invoke(Metadata, resource);
                 }
             }
             else
             {
-                FUpdateResourceFunc(Metadata, this[device]);
+                FUpdateResourceFunc?.Invoke(Metadata, this[device]);
             }
         }
         
@@ -100,11 +100,6 @@ namespace VVVV.PluginInterfaces.V2
             }
             
             FResources.Clear();
-        }
-        
-        private static void UpdateResource(TMetadata metadata, TResource resource)
-        {
-            // Do nothing
         }
         
         private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)
