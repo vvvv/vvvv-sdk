@@ -14,6 +14,7 @@ using VVVV.Hosting;
 using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.IO;
 using VVVV.Utils.IO;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
@@ -146,7 +147,13 @@ namespace VVVV.Nodes.Input
 
         [Output("Event Type")]
         public ISpread<TouchNotificationKind> FEventTypeOut;
-        [Output("Position")]
+        [Output("Position (Pixel) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ")]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
         [Output("Id")]
         public ISpread<int> IdOut;
@@ -181,6 +188,9 @@ namespace VVVV.Nodes.Input
                 ? FEnumerator.Current
                 : FEmptyList;
             FEventTypeOut.SliceCount = notifications.Count;
+            PositionPixelOut.SliceCount = notifications.Count;
+            PositionInProjectionSpaceOut.SliceCount = notifications.Count;
+            PositionInNormalizedProjectionOut.SliceCount = notifications.Count;
             PositionOut.SliceCount = notifications.Count;
             IdOut.SliceCount = notifications.Count;
             PrimaryOut.SliceCount = notifications.Count;
@@ -191,9 +201,16 @@ namespace VVVV.Nodes.Input
             {
                 var n = notifications[i];
                 FEventTypeOut[i] = n.Kind;
-                var position = new Vector2D(n.Position.X, n.Position.Y);
-                var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
-                PositionOut[i] = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                Vector2D inNormalizedProjection, inProjection;
+
+                SpaceHelpers.MapFromPixels(n.Position, n.Sender, n.ClientArea,
+                    out inNormalizedProjection, out inProjection);
+
+                PositionOut[i] = MouseExtensions.GetLegacyMousePositon(n.Position, n.ClientArea);
+                PositionInProjectionSpaceOut[i] = inProjection;
+                PositionInNormalizedProjectionOut[i] = inNormalizedProjection;
+
+                PositionPixelOut[i] = new Vector2D(n.Position.X, n.Position.Y);
                 IdOut[i] = n.Id;
                 PrimaryOut[i] = n.Primary;
                 ContactAreaOut[i] = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
@@ -234,7 +251,13 @@ namespace VVVV.Nodes.Input
         [Input("Queue Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
         public ISpread<QueueMode> QueueModeIn;
 
-        [Output("Position")]
+        [Output("Position (Pixel) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ")]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
         [Output("Id")]
         public ISpread<int> IdOut;
@@ -253,6 +276,9 @@ namespace VVVV.Nodes.Input
 
         public void OnImportsSatisfied()
         {
+            PositionPixelOut.SliceCount = 0;
+            PositionInProjectionSpaceOut.SliceCount = 0;
+            PositionInNormalizedProjectionOut.SliceCount = 0;
             PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
             PrimaryOut.SliceCount = 0;
@@ -267,9 +293,12 @@ namespace VVVV.Nodes.Input
                 },
                 (touchDevice, n) =>
                 {
-                    var position = new Vector2D(n.Position.X, n.Position.Y);
-                    var clientArea = new Vector2D(n.ClientArea.Width, n.ClientArea.Height);
-                    var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                    Vector2D inNormalizedProjection, inProjection;
+                    SpaceHelpers.MapFromPixels(n.Position, n.Sender, n.ClientArea,
+                        out inNormalizedProjection, out inProjection);
+                    var normalizedPosition = MouseExtensions.GetLegacyMousePositon(n.Position, n.ClientArea);
+                    var inPixels = new Vector2D(n.Position.X, n.Position.Y);
+
                     var contactArea = new Vector2D(n.ContactArea.Width, n.ContactArea.Height);
                     var index = IdOut.IndexOf(n.Id);
                     var primary = n.Primary;
@@ -280,6 +309,9 @@ namespace VVVV.Nodes.Input
                             if (index < 0)
                             {
                                 IdOut.Add(n.Id);
+                                PositionPixelOut.Add(inPixels);
+                                PositionInProjectionSpaceOut.Add(inProjection);
+                                PositionInNormalizedProjectionOut.Add(inNormalizedProjection);
                                 PositionOut.Add(normalizedPosition);
                                 PrimaryOut.Add(primary);
                                 ContactAreaOut.Add(contactArea);
@@ -291,6 +323,9 @@ namespace VVVV.Nodes.Input
                             if (index >= 0)
                             {
                                 IdOut.RemoveAt(index);
+                                PositionPixelOut.RemoveAt(index);
+                                PositionInProjectionSpaceOut.RemoveAt(index);
+                                PositionInNormalizedProjectionOut.RemoveAt(index);
                                 PositionOut.RemoveAt(index);
                                 PrimaryOut.RemoveAt(index);
                                 ContactAreaOut.RemoveAt(index);
@@ -301,6 +336,9 @@ namespace VVVV.Nodes.Input
                         case TouchNotificationKind.TouchMove:
                             if (index >= 0)
                             {
+                                PositionPixelOut[index] = inPixels;
+                                PositionInProjectionSpaceOut[index] = inProjection;
+                                PositionInNormalizedProjectionOut[index] = inNormalizedProjection;
                                 PositionOut[index] = normalizedPosition;
                                 PrimaryOut[index] = primary;
                                 ContactAreaOut[index] = contactArea;

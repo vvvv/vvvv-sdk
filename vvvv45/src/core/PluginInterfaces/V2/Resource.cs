@@ -19,7 +19,6 @@ namespace VVVV.PluginInterfaces.V2
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
         private readonly Action<TMetadata, TResource, DestroyReason> FDestroyResourceAction;
         private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
-		private readonly TMetadata FMetadata;
         
         public Resource(
             TMetadata metadata, 
@@ -27,9 +26,9 @@ namespace VVVV.PluginInterfaces.V2
             Action<TMetadata, TResource> updateResourceFunc = null, 
             Action<TMetadata, TResource, DestroyReason> destroyResourceAction = null)
         {
-            FMetadata = metadata;
+            Metadata = metadata;
             FCreateResourceFunc = createResourceFunc;
-            FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
+            FUpdateResourceFunc = updateResourceFunc;
             FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
             NeedsUpdate = true;
         }
@@ -37,7 +36,7 @@ namespace VVVV.PluginInterfaces.V2
         /// <summary>
         /// Some arbitrary data associated with this resource.
         /// </summary>
-        public TMetadata Metadata { get { return FMetadata; } }
+        public TMetadata Metadata { get; set; }
 
         /// <summary>
         /// Whether or not the Update method has to be called for this resource.
@@ -52,7 +51,7 @@ namespace VVVV.PluginInterfaces.V2
                 TResource result;
                 if (!FResources.TryGetValue(device, out result))
                 {
-                    result = CreateResoure(FMetadata, device);
+                    result = CreateResoure(Metadata, device);
                     NeedsUpdate = true;
                     FResources[device] = result;
                 }
@@ -74,12 +73,12 @@ namespace VVVV.PluginInterfaces.V2
             {
                 if (NeedsUpdate)
                 {
-                    FUpdateResourceFunc(FMetadata, resource);
+                    FUpdateResourceFunc?.Invoke(Metadata, resource);
                 }
             }
             else
             {
-                FUpdateResourceFunc(FMetadata, this[device]);
+                FUpdateResourceFunc?.Invoke(Metadata, this[device]);
             }
         }
         
@@ -89,7 +88,7 @@ namespace VVVV.PluginInterfaces.V2
             if (FResources.TryGetValue(device, out resource))
             {
                 FResources.Remove(device);
-                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
+                FDestroyResourceAction(Metadata, resource, DestroyReason.DeviceLost);
             }
         }
         
@@ -97,15 +96,10 @@ namespace VVVV.PluginInterfaces.V2
         {
             foreach (var resource in FResources.Values)
             {
-                FDestroyResourceAction(FMetadata, resource, DestroyReason.Dispose);
+                FDestroyResourceAction(Metadata, resource, DestroyReason.Dispose);
             }
             
             FResources.Clear();
-        }
-        
-        private static void UpdateResource(TMetadata metadata, TResource resource)
-        {
-            // Do nothing
         }
         
         private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)

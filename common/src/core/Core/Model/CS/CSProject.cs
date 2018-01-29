@@ -7,6 +7,7 @@ using ICSharpCode.SharpDevelop.Dom;
 using VVVV.Core.Logging;
 using Microsoft.CSharp;
 using System.IO;
+using NuGetAssemblyLoader;
 
 namespace VVVV.Core.Model.CS
 {
@@ -17,18 +18,8 @@ namespace VVVV.Core.Model.CS
 
         static CSProject()
         {
-            var path = "";
-
-            var args = Environment.GetCommandLineArgs().ToList();
-            var progFiles = Environment.GetEnvironmentVariable("programfiles(x86)");
-            var index = args.IndexOf("/cs6");
-            if (index > -1)
-            {
-                path = Path.Combine(progFiles, @"MSBuild\14.0\Bin");
-
-                if (args.Count > index)
-                    path = Directory.Exists(args[index + 1]) ? args[index + 1] : path;
-            }
+            var compilersPackage = AssemblyLoader.FindPackageAndCacheResult("Microsoft.Net.Compilers");
+            var path = Path.Combine(AssemblyLoader.GetPathOfPackage(compilersPackage), "tools");
             
             if (Directory.Exists(path))
             {

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.106.dtd" >
-   <PATCH nodename="D:\develop\vvvv\public\vvvv45\lib\nodes\plugins\Gesture (Devices Window) help.v4p" scrollx="8" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.13.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\lib\nodes\plugins\Gesture (Devices Window) help.v4p" scrollx="8" scrolly="0">
    <BOUNDS type="Window" left="2272" top="2040" width="8056" height="6000">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3">
@@ -24,7 +24,7 @@
    <PIN pinname="Output String" slicecount="1" visible="0" values="||">
    </PIN>
    </NODE>
-   <NODE nodename="Gesture (Devices Window)" componentmode="Hidden" id="0">
+   <NODE nodename="Gesture (Devices Window)" componentmode="Hidden" id="0" systemname="GESTURE (DEVICES WINDOW)">
    <BOUNDS type="Node" left="1864" top="1112" width="0" height="0">
    </BOUNDS>
    <BOUNDS type="Box" left="1864" top="1112" width="0" height="0">
@@ -52,17 +52,19 @@
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
-   <NODE systemname="ZoomState (Gesture Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="ZoomState (Gesture Split)" componentmode="Hidden" id="8">
+   <NODE systemname="ZOOMSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="ZoomState (Gesture Split)" componentmode="Hidden" id="8">
    <BOUNDS type="Node" left="1872" top="1984" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Gesture Device" visible="1">
    </PIN>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
    </PIN>
    <PIN pinname="Distance" visible="1">
    </PIN>
    <BOUNDS type="Box" left="1872" top="1984">
    </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Device" dstnodeid="8" dstpinname="Gesture Device">
    </LINK>
@@ -81,7 +83,7 @@
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="11">
    <BOUNDS type="Node" left="2136" top="2624" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Select" slicecount="1" values="2" visible="1">
+   <PIN pinname="Select" slicecount="1" visible="1" values="2">
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
@@ -91,8 +93,6 @@
    <LINK srcnodeid="8" srcpinname="Distance" dstnodeid="11" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="11" srcpinname="Output" dstnodeid="10" dstpinname="ScaleXY">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="PositionXY" dstnodeid="10" dstpinname="TranslateXY">
    </LINK>
    <NODE systemname="Cons (Transform)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Transform)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="1064" top="3720" width="1264" height="256">
@@ -130,21 +130,21 @@
    <BOUNDS type="Window" left="2848" top="9312" width="5368" height="3704">
    </BOUNDS>
    </NODE>
-   <NODE systemname="PanState (Gesture Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PanState (Gesture Split)" componentmode="Hidden" id="23">
+   <NODE systemname="PANSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PanState (Gesture Split)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="664" top="1984" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Gesture Device" visible="1">
    </PIN>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
    </PIN>
    <PIN pinname="Distance" visible="1">
    </PIN>
    <BOUNDS type="Box" left="664" top="1984">
    </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Device" dstnodeid="23" dstpinname="Gesture Device">
-   </LINK>
-   <LINK srcnodeid="23" srcpinname="PositionXY" dstnodeid="22" dstpinname="TranslateXY">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Output" dstnodeid="20" dstpinname="Input">
    </LINK>
@@ -168,12 +168,12 @@
    <PIN pinname="Rotate" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="RotateState (Gesture Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="RotateState (Gesture Split)" componentmode="Hidden" id="26">
+   <NODE systemname="ROTATESTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="RotateState (Gesture Split)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="3080" top="1984" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Gesture Device" visible="1">
    </PIN>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
    </PIN>
    <PIN pinname="Distance" visible="1">
    </PIN>
@@ -181,10 +181,10 @@
    </PIN>
    <BOUNDS type="Box" left="3080" top="1984">
    </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="0" srcpinname="Device" dstnodeid="26" dstpinname="Gesture Device">
-   </LINK>
-   <LINK srcnodeid="26" srcpinname="PositionXY" dstnodeid="25" dstpinname="TranslateXY">
    </LINK>
    <LINK srcnodeid="26" srcpinname="Rotate" dstnodeid="25" dstpinname="Rotate">
    </LINK>
@@ -234,19 +234,19 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="PressAndTapState (Gesture Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PressAndTapState (Gesture Split)" componentmode="Hidden" id="31">
+   <NODE systemname="PRESSANDTAPSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PressAndTapState (Gesture Split)" componentmode="Hidden" id="31">
    <BOUNDS type="Node" left="6184" top="3904" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="6184" top="3904">
    </BOUNDS>
    </NODE>
-   <NODE systemname="TwoFingerTapState (Gesture Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="TwoFingerTapState (Gesture Split)" componentmode="Hidden" id="32">
+   <NODE systemname="TWOFINGERTAPSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="TwoFingerTapState (Gesture Split)" componentmode="Hidden" id="32">
    <BOUNDS type="Node" left="4528" top="3904" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="4528" top="3904">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="33">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="33">
    <BOUNDS type="Node" left="896" top="4872" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="896" top="4872" width="2088" height="1568">
@@ -255,11 +255,19 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
    </NODE>
    <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="33" dstpinname="Layers">
    </LINK>
    <INFO author="woei" description="" tags="">
    </INFO>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
+   <LINK srcnodeid="26" srcpinname="Position (Projection) XY" dstnodeid="25" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Position (Projection) XY" dstnodeid="10" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Position (Projection) XY" dstnodeid="22" dstpinname="TranslateXY">
+   </LINK>
    </PATCH>
