@@ -267,7 +267,7 @@ namespace VVVV.Hosting
 
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
-            MainLoop.OnUpdateView += MainLoop_OnUpdateView;
+            MainLoop.OnInitFrame += MainLoop_OnInitFrame;
 
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
 
@@ -348,7 +348,7 @@ namespace VVVV.Hosting
             LoadNodesFromPackages();
         }
 
-        private void MainLoop_OnUpdateView(object sender, EventArgs e)
+        private void MainLoop_OnInitFrame(object sender, EventArgs e)
         {
             Application.RaiseIdle(EventArgs.Empty);
         }
