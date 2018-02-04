@@ -13,12 +13,11 @@ namespace VVVV.PluginInterfaces.V2
     
     [ComVisible(false)]
     public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable 
-        where TResource : IDisposable
+        where TResource : class, IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
         private readonly Action<TMetadata, TResource, DestroyReason> FDestroyResourceAction;
-        private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
         
         public Resource(
             TMetadata metadata, 
@@ -39,6 +38,11 @@ namespace VVVV.PluginInterfaces.V2
         public TMetadata Metadata { get; set; }
 
         /// <summary>
+        /// The resources per device.
+        /// </summary>
+        public Dictionary<TDevice, TResource> Resources { get; set; } = new Dictionary<TDevice, TResource>();
+
+        /// <summary>
         /// Whether or not the Update method has to be called for this resource.
         /// By default this flag is true.
         /// Note: The Update method will always get called for new resources.
@@ -49,27 +53,27 @@ namespace VVVV.PluginInterfaces.V2
             get
             {
                 TResource result;
-                if (!FResources.TryGetValue(device, out result))
+                if (!Resources.TryGetValue(device, out result))
                 {
                     result = CreateResoure(Metadata, device);
                     NeedsUpdate = true;
-                    FResources[device] = result;
+                    Resources[device] = result;
                 }
                 return result;
             }
         }
 
-        public IEnumerable<TResource> DeviceResources { get { return FResources.Values; } }
+        public IEnumerable<TResource> DeviceResources { get { return Resources.Values; } }
 
         protected virtual TResource CreateResoure(TMetadata metadata, TDevice device)
         {
-            return FCreateResourceFunc(metadata, device);
+            return FCreateResourceFunc?.Invoke(metadata, device);
         }
         
         public void UpdateResource(TDevice device)
         {
             TResource resource;
-            if (FResources.TryGetValue(device, out resource))
+            if (Resources.TryGetValue(device, out resource))
             {
                 if (NeedsUpdate)
                 {
@@ -85,21 +89,21 @@ namespace VVVV.PluginInterfaces.V2
         public void DestroyResource(TDevice device)
         {
             TResource resource;
-            if (FResources.TryGetValue(device, out resource))
+            if (Resources.TryGetValue(device, out resource))
             {
-                FResources.Remove(device);
+                Resources.Remove(device);
                 FDestroyResourceAction(Metadata, resource, DestroyReason.DeviceLost);
             }
         }
         
         public void Dispose()
         {
-            foreach (var resource in FResources.Values)
+            foreach (var resource in Resources.Values)
             {
                 FDestroyResourceAction(Metadata, resource, DestroyReason.Dispose);
             }
             
-            FResources.Clear();
+            Resources.Clear();
         }
         
         private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)
