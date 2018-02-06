@@ -32,6 +32,9 @@ namespace VVVV.PluginInterfaces.V2
             NeedsUpdate = true;
         }
 
+        public event EventHandler<TDevice> DeviceAdded;
+        public event EventHandler<TDevice> DeviceRemoved;
+
         /// <summary>
         /// Some arbitrary data associated with this resource.
         /// </summary>
@@ -83,6 +86,7 @@ namespace VVVV.PluginInterfaces.V2
             else
             {
                 FUpdateResourceFunc?.Invoke(Metadata, this[device]);
+                DeviceAdded?.Invoke(this, device);
             }
         }
         
@@ -93,6 +97,7 @@ namespace VVVV.PluginInterfaces.V2
             {
                 Resources.Remove(device);
                 FDestroyResourceAction(Metadata, resource, DestroyReason.DeviceLost);
+                DeviceRemoved?.Invoke(this, device);
             }
         }
         
@@ -104,6 +109,8 @@ namespace VVVV.PluginInterfaces.V2
             }
             
             Resources.Clear();
+            DeviceAdded = null;
+            DeviceRemoved = null;
         }
         
         private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)
