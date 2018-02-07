@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40beta21.dtd" >
-   <PATCH nodename="D:\vvvv\sourceforge\plugins\wrk\TimerFlop\TimerFlop (Animation) help.v4p">
-   <BOUNDS height="6795" left="8115" top="1410" type="Window" width="4605">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\TimerFlop (Animation) help.v4p">
+   <BOUNDS height="7260" left="8115" top="1410" type="Window" width="4620">
    </BOUNDS>
    <NODE componentmode="InABox" id="12" nodename="IOBox (String)">
    <BOUNDS height="270" left="270" top="210" type="Node" width="3660">
@@ -18,14 +18,10 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="-8" nodename="MainLoop (VVVV)">
-   <BOUNDS height="0" left="3105" top="6540" type="Node" width="0">
+   <NODE componentmode="InABox" id="7" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="840" top="4725" type="Node" width="0">
    </BOUNDS>
-   </NODE>
-   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="420" top="4620" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="420" top="4620" type="Box" width="480">
+   <BOUNDS height="480" left="840" top="4725" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="9045" top="4710" type="Window" width="215">
    </BOUNDS>
@@ -39,13 +35,13 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Output">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="5" nodename="MonoFlop (Animation)">
-   <BOUNDS height="270" left="840" top="3330" type="Node" width="1185">
+   <BOUNDS height="270" left="840" top="3330" type="Node" width="825">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
    </PIN>
@@ -54,28 +50,10 @@
    <PIN pinname="Time" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="4" nodename=":PLUGINS:\TimerFlop.dll">
-   <BOUNDS height="270" left="840" top="4290" type="Node" width="1980">
+   <NODE componentmode="InABox" id="3" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="2760" top="4725" type="Node" width="0">
    </BOUNDS>
-   <PIN pinname="Output" visible="1">
-   </PIN>
-   <PIN pinname="Active" visible="1">
-   </PIN>
-   <PIN pinname="Set" visible="1">
-   </PIN>
-   <PIN pinname="Time" visible="1">
-   </PIN>
-   <PIN pinname="Reset" slicecount="1" values="0">
-   </PIN>
-   <BOUNDS type="Box" left="840" top="4290">
-   </BOUNDS>
-   </NODE>
-   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
-   </LINK>
-   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="2340" top="4620" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="480" left="2340" top="4620" type="Box" width="480">
+   <BOUNDS height="480" left="2760" top="4725" type="Box" width="480">
    </BOUNDS>
    <BOUNDS height="160" left="9345" top="5010" type="Window" width="215">
    </BOUNDS>
@@ -89,17 +67,15 @@
    </PIN>
    <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
    </PIN>
-   <PIN pinname="Y Input Value" visible="1">
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="Active">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Active">
-   </LINK>
-   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
-   <BOUNDS height="0" left="990" top="3030" type="Node" width="0">
+   <NODE componentmode="InABox" id="0" nodename="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="990" top="2745" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="240" left="990" top="3030" type="Box" width="660">
+   <BOUNDS height="240" left="990" top="2745" type="Box" width="660">
    </BOUNDS>
    <BOUNDS height="160" left="10740" top="3585" type="Window" width="215">
    </BOUNDS>
@@ -111,41 +87,27 @@
    <LINK dstnodeid="5" dstpinname="Time" srcnodeid="0" srcpinname="Y Output Value">
    </LINK>
    <NODE nodename="LFO (Animation)" componentmode="Hidden" id="13">
-   <BOUNDS type="Node" left="135" top="1905" width="0" height="0">
+   <BOUNDS type="Node" left="495" top="1680" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Cycles" visible="1">
    </PIN>
-   </NODE>
-   <NODE nodename="Change (Animation)" componentmode="Hidden" id="14">
-   <BOUNDS type="Node" left="825" top="2190" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input" visible="1">
-   </PIN>
-   <PIN pinname="OnChange" visible="1">
+   <PIN pinname="Change" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="13" srcpinname="Cycles" dstnodeid="14" dstpinname="Input">
-   </LINK>
    <NODE nodename="Random (Value)" componentmode="Hidden" id="15">
-   <BOUNDS type="Node" left="1590" top="2685" width="0" height="0">
+   <BOUNDS type="Node" left="990" top="2370" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Enabled" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="14" srcpinname="OnChange" dstnodeid="15" dstpinname="Enabled">
-   </LINK>
-   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="4" dstpinname="Set">
-   </LINK>
-   <LINK srcnodeid="14" srcpinname="OnChange" dstnodeid="5" dstpinname="Set">
-   </LINK>
    <LINK srcnodeid="15" srcpinname="Output" dstnodeid="0" dstpinname="Y Input Value">
    </LINK>
-   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
-   <BOUNDS type="Node" left="1245" top="3825" width="0" height="0">
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="1725" top="3915" width="0" height="0">
    </BOUNDS>
-   <BOUNDS type="Box" left="1245" top="3825" width="615" height="240">
+   <BOUNDS type="Box" left="1725" top="3915" width="615" height="240">
    </BOUNDS>
    <BOUNDS type="Window" left="9060" top="3510" width="215" height="160">
    </BOUNDS>
@@ -156,8 +118,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Time">
    </PIN>
    </NODE>
-   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Time">
-   </LINK>
    <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
    <BOUNDS height="255" left="315" top="900" type="Node" width="570">
    </BOUNDS>
@@ -173,9 +133,9 @@
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="18">
-   <BOUNDS type="Node" left="2985" top="5700" width="915" height="270">
+   <BOUNDS type="Node" left="3135" top="6090" width="915" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="2985" top="5700" width="915" height="270">
+   <BOUNDS type="Box" left="3135" top="6090" width="915" height="270">
    </BOUNDS>
    <BOUNDS type="Window" left="0" top="0" width="215" height="160">
    </BOUNDS>
@@ -205,7 +165,37 @@
    </BOUNDS>
    </NODE>
    <NODE nodename="FlipFlop (Animation)" componentmode="Hidden" id="21">
-   <BOUNDS type="Node" left="1290" top="6030" width="0" height="0">
+   <BOUNDS type="Node" left="1290" top="6015" width="0" height="0">
    </BOUNDS>
    </NODE>
+   <LINK srcnodeid="13" srcpinname="Change" dstnodeid="5" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="13" srcpinname="Change" dstnodeid="15" dstpinname="Enabled">
+   </LINK>
+   <NODE componentmode="InAWindow" id="4" nodename="TimerFlop (Animation)" systemname="TimerFlop (Animation)" filename="%VVVV%\addonpack\lib\nodes\plugins\TimerFlop.dll">
+   <BOUNDS height="270" left="840" top="4290" type="Node" width="1980">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Active" visible="1">
+   </PIN>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Time" visible="1">
+   </PIN>
+   <PIN pinname="Reset" slicecount="1" values="0">
+   </PIN>
+   <BOUNDS type="Box" left="840" top="4290">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Y Input Value" srcnodeid="4" srcpinname="Active">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="4" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Y Output Value" dstnodeid="4" dstpinname="Time">
+   </LINK>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
    </PATCH>
