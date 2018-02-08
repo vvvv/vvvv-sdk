@@ -1,0 +1,257 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\PatchAlias (VVVV) help.v4p">
+   <BOUNDS type="Window" left="1050" top="705" width="8820" height="9015">
+   </BOUNDS>
+   <NODE nodename="PatchAlias (VVVV)" id="0" systemname="PatchAlias (VVVV)">
+   <BOUNDS type="Node" left="4740" top="2070" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Parent Level" visible="1">
+   </PIN>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="GetPatch (VVVV)" id="6" systemname="GetPatch (VVVV)">
+   <BOUNDS type="Node" left="4740" top="3150" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1">
+   </PIN>
+   <PIN pinname="Patch Description" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Patch" dstnodeid="6" dstpinname="Patch">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="7" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4740" top="3885" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="14400" top="8040" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4740" top="3885" width="3105" height="1785">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Patch Description" dstnodeid="7" dstpinname="Input String" linkstyle="VHV">
+   </LINK>
+   <NODE nodename="IOBOX (VALUE ADVANCED)" componentmode="InABox" id="10" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="4740" top="1605" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="9480" top="5670" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4740" top="1605" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="10" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Parent Level">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="225" top="240" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="420" left="225" top="240" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="160" left="10530" top="40530" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|PatchAlias (VVVV)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="1305" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="1800" left="240" top="1305" type="Box" width="3225">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|This node is just a control node.&cr;&lf;It returns only a link to a running patch.&cr;&lf;&cr;&lf;Select a parent level to select a patch.&cr;&lf;&cr;&lf;0 = Itself&cr;&lf;1 = Its parent&cr;&lf;2 = Its grand parent|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="34.101.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="285" top="6615" width="750" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="285" top="6615" width="750" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="SetPatch (VVVV)" nodename="SetPatch (VVVV)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="345" top="7770" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="16" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1275" top="7005" width="1350" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="7005" width="2160" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|PatchAlias (VVVV ActivePatch)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="15" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1275" top="7380" width="1350" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="7380" width="1845" height="255">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|PatchAlias (VVVV Name)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="PatchAlias (VVVV Name)" filename="" nodename="PatchAlias (VVVV Name)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="345" top="7380" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4680" top="1305" width="990" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4680" top="1305" width="990" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Parent Level|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="PatchAlias (VVVV ActivePatch)" filename="" nodename="PatchAlias (VVVV ActivePatch)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="345" top="7005" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4830" top="2625" width="675" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4830" top="2625" width="675" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Patch|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="Multiply (2d Vector)" filename="%VVVV%\lib\nodes\modules\2D\Multiply (2d Vector).v4p" nodename="Multiply (2d Vector)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="315" top="4680" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Patch" visible="1" pintype="Output">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="24" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="255" top="3495" type="Node" width="6870">
+   </BOUNDS>
+   <BOUNDS height="915" left="255" top="3495" type="Box" width="3090">
+   </BOUNDS>
+   <BOUNDS height="160" left="300" top="300" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|If you want to get a link of a Child-Patch (Subpatch) select the Subpatch and use the&cr;&lf;Inspektor to make the hidden &apos;Patch&apos; Output Pin visible.&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="25" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="1275" top="4635" width="3045" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1275" top="4635" width="1830" height="570">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; The &apos;Patch&apos; Output Pin is set to visible here.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Node)" componentmode="InABox" id="26" systemname="IOBox (Node)">
+   <BOUNDS type="Box" left="315" top="5790" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="315" top="5790" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="23" srcpinname="Patch" dstnodeid="26" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="405" top="5220" width="675" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="405" top="5220" width="675" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Patch|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="28" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="210" top="3180" width="5700" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="210" top="3180" width="3345" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="-------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="255" top="6225" width="5700" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="255" top="6225" width="3345" height="285">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="-------------------------------------------">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="31" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="225" top="600" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="600" width="4455" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Get patch by hierarchie; useful in combination with SetPatch.|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   </PATCH>

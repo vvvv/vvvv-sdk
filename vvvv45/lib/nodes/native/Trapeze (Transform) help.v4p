@@ -1,0 +1,111 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha9.0.dtd" >
+   <PATCH nodename="V:\releases\vvvv_33beta9a\help\Trapeze (Transform) help.v4p">
+   <BOUNDS height="6555" left="750" top="2835" type="Window" width="4935">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="7" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="330" top="3060" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4500" left="6645" top="6195" type="Window" width="6000">
+   </BOUNDS>
+   <BOUNDS height="2820" left="330" top="3060" type="Box" width="3930">
+   </BOUNDS>
+   <PIN pinname="View Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="345" top="2415" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" visible="1" values="|0.58971,1.00000,0.46000,0.09000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="5" nodename="Trapeze (Transform)">
+   <BOUNDS height="0" left="495" top="1965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.85">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="6" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="4" nodename="LinearSpread (Spreads)">
+   <BOUNDS height="0" left="720" top="900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="11">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="-2.89">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="495" top="1395" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="1.01">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="X" srcnodeid="4" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Transform In" srcnodeid="3" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="2" nodename="Scale (Transform Vector)">
+   <BOUNDS height="0" left="3720" top="2400" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" slicecount="3" values="0.19,0.19,0.19">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="View Transform" srcnodeid="2" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="15" top="390" type="Box" width="4470">
+   </BOUNDS>
+   <BOUNDS height="160" left="10200" top="44460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Squeezes the incoming transformation to a trapezoidal shape|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10200" top="44460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Trapeze - Transform|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Layers" srcnodeid="6" srcpinname="Layer">
+   </LINK>
+   </PATCH>
