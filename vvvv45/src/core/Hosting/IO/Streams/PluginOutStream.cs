@@ -482,7 +482,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             get
             {
-                return this[slice][device];
+                return this[slice]?[device];
             }
         }
     }
