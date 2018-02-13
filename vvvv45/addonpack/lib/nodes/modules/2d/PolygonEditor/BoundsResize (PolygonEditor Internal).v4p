@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor Internal).v4p" systemname="BoundsResize (PolygonEditor Internal)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor Internal).v4p" scrollx="3465" scrolly="5535">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.15.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor Internal).v4p" systemname="BoundsResize (PolygonEditor Internal)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\2d\PolygonEditor\BoundsResize (PolygonEditor Internal).v4p" scrollx="7910" scrolly="12844">
    <BOUNDS type="Window" left="4470" top="495" width="21540" height="13725">
    </BOUNDS>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="Bounds (Spectral Vector)" filename="%VVVV%\addonpack\lib\nodes\plugins\VectorSized.dll" nodename="Bounds (Spectral Vector)" componentmode="Hidden" id="7">
    <BOUNDS type="Node" left="11715" top="3510" width="100" height="100">
@@ -565,7 +565,7 @@
    </PIN>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Input Enum" visible="1" slicecount="1" values="(nil)">
+   <PIN pinname="Input Enum" visible="1" slicecount="1" values="Pointer">
    </PIN>
    </NODE>
    <NODE systemname="FlipFlop (Animation)" nodename="FlipFlop (Animation)" componentmode="Hidden" id="221">
@@ -1002,12 +1002,12 @@
    <PIN pinname="Output Node" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="MouseStates (Mouse Split)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="275">
+   <NODE systemname="MOUSESTATES (MOUSE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="MouseStates (Mouse Split)" componentmode="Hidden" id="275">
    <BOUNDS type="Node" left="15720" top="2505" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="PositionXY" visible="1">
+   <PIN pinname="Position (Projection) XY" visible="1">
    </PIN>
    <PIN pinname="Left Button" visible="1">
    </PIN>
@@ -1028,7 +1028,7 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="275" srcpinname="PositionXY" dstnodeid="288" dstpinname="Input" linkstyle="VHV">
+   <LINK srcnodeid="275" srcpinname="Position (Projection) XY" dstnodeid="288" dstpinname="Input" linkstyle="VHV">
    <LINKPOINT x="15750" y="3075">
    </LINKPOINT>
    <LINKPOINT x="16770" y="3075">
@@ -1422,26 +1422,6 @@
    </LINK>
    <LINK srcnodeid="416" srcpinname="Output" dstnodeid="400" dstpinname="Epsilon">
    </LINK>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="424">
-   <BOUNDS type="Node" left="16155" top="24960" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   <PIN pinname="Enum" slicecount="1" values="CursorType">
-   </PIN>
-   </NODE>
-   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="425">
-   <BOUNDS type="Node" left="16935" top="24330" width="810" height="270">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="425" srcpinname="Enum" dstnodeid="217" dstpinname="Input Enum">
-   </LINK>
-   <LINK srcnodeid="205" srcpinname="Output" dstnodeid="425" dstpinname="Ord Value">
-   </LINK>
-   <LINK srcnodeid="425" srcpinname="Enum" dstnodeid="424" dstpinname="Receive">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="427" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="13080" top="24570" width="480" height="480">
    </BOUNDS>
@@ -1610,7 +1590,7 @@
    </LINK>
    <LINK srcnodeid="7" srcpinname="Maximum" dstnodeid="440" dstpinname="Bounds MaximumXY">
    </LINK>
-   <LINK srcnodeid="275" srcpinname="PositionXY" dstnodeid="440" dstpinname="MouseXY">
+   <LINK srcnodeid="275" srcpinname="Position (Projection) XY" dstnodeid="440" dstpinname="MouseXY">
    </LINK>
    <LINK srcnodeid="440" srcpinname="Output" dstnodeid="224" dstpinname="Input 1">
    </LINK>
@@ -1676,91 +1656,91 @@
    </LINK>
    <LINK srcnodeid="7" srcpinname="Width" dstnodeid="440" dstpinname="Bounds Width">
    </LINK>
-   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="67">
+   <NODE systemname="SELECT (2D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="67">
    <BOUNDS type="Node" left="10725" top="12300" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Vector Size" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="InputXY" visible="1">
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
    <PIN pinname="Bin Size" slicecount="1" values="1">
    </PIN>
    <BOUNDS type="Box" left="10725" top="12300">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Minimum" dstnodeid="67" dstpinname="Input">
+   <LINK srcnodeid="7" srcpinname="Minimum" dstnodeid="67" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="67" srcpinname="Output" dstnodeid="25" dstpinname="Source Minimum">
+   <LINK srcnodeid="67" srcpinname="OutputXY" dstnodeid="25" dstpinname="Source Minimum">
    </LINK>
    <LINK srcnodeid="272" srcpinname="Y Output Value" dstnodeid="67" dstpinname="Select" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="68">
+   <NODE systemname="SELECT (2D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="68">
    <BOUNDS type="Node" left="11385" top="12300" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Vector Size" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="InputXY" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
    <BOUNDS type="Box" left="11385" top="12300">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="7" srcpinname="Maximum" dstnodeid="68" dstpinname="Input">
+   <LINK srcnodeid="7" srcpinname="Maximum" dstnodeid="68" dstpinname="InputXY">
    </LINK>
-   <LINK srcnodeid="68" srcpinname="Output" dstnodeid="25" dstpinname="Source Maximum">
+   <LINK srcnodeid="68" srcpinname="OutputXY" dstnodeid="25" dstpinname="Source Maximum">
    </LINK>
    <LINK srcnodeid="272" srcpinname="Y Output Value" dstnodeid="68" dstpinname="Select" hiddenwhenlocked="1">
    </LINK>
-   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="69">
+   <NODE systemname="SELECT (2D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="69">
    <BOUNDS type="Node" left="12465" top="12285" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1" slicecount="8" values="-0.847947814106858,-0.372120728835444,-0.683166905989251,-0.0804545855951334,,,,">
+   <PIN pinname="InputXY" visible="1" slicecount="8" values="-0.847947814106858,-0.372120728835444,-0.683166905989251,-0.0804545855951334,,,,">
    </PIN>
    <PIN pinname="Select" visible="1">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="2">
    </PIN>
    <BOUNDS type="Box" left="12465" top="12285">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="25" dstpinname="Destination Minimum">
+   <LINK srcnodeid="69" srcpinname="OutputXY" dstnodeid="25" dstpinname="Destination Minimum">
    </LINK>
    <LINK srcnodeid="272" srcpinname="Y Output Value" dstnodeid="69" dstpinname="Select" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="69" srcpinname="Output" dstnodeid="399" dstpinname="Input 1">
+   <LINK srcnodeid="69" srcpinname="OutputXY" dstnodeid="399" dstpinname="Input 1">
    </LINK>
-   <LINK srcnodeid="333" srcpinname="Output 1" dstnodeid="69" dstpinname="Input">
+   <LINK srcnodeid="333" srcpinname="Output 1" dstnodeid="69" dstpinname="InputXY">
    </LINK>
-   <NODE systemname="Select (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="70">
+   <NODE systemname="SELECT (2D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (2d)" componentmode="Hidden" id="70">
    <BOUNDS type="Node" left="13875" top="12285" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Select" visible="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="2">
    </PIN>
-   <PIN pinname="Input" visible="1" slicecount="8" values="0.770858774449328,0.545455497027936,0.770858774449328,0.545455497027936,,,,">
+   <PIN pinname="InputXY" visible="1" slicecount="8" values="0.770858774449328,0.545455497027936,0.770858774449328,0.545455497027936,,,,">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXY" visible="1">
    </PIN>
    <BOUNDS type="Box" left="13875" top="12285">
    </BOUNDS>
    </NODE>
-   <LINK srcnodeid="70" srcpinname="Output" dstnodeid="25" dstpinname="Destination Maximum">
+   <LINK srcnodeid="70" srcpinname="OutputXY" dstnodeid="25" dstpinname="Destination Maximum">
    </LINK>
    <LINK srcnodeid="272" srcpinname="Y Output Value" dstnodeid="70" dstpinname="Select" hiddenwhenlocked="1">
    </LINK>
-   <LINK srcnodeid="70" srcpinname="Output" dstnodeid="399" dstpinname="Input 2">
+   <LINK srcnodeid="70" srcpinname="OutputXY" dstnodeid="399" dstpinname="Input 2">
    </LINK>
-   <LINK srcnodeid="333" srcpinname="Output 2" dstnodeid="70" dstpinname="Input">
+   <LINK srcnodeid="333" srcpinname="Output 2" dstnodeid="70" dstpinname="InputXY">
    </LINK>
    <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="358">
    <BOUNDS type="Node" left="11565" top="14010" width="100" height="100">
@@ -1783,5 +1763,17 @@
    </LINKPOINT>
    <LINKPOINT x="11595" y="13245">
    </LINKPOINT>
+   </LINK>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="425">
+   <BOUNDS type="Node" left="16935" top="24330" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="CursorType">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="425" srcpinname="Enum" dstnodeid="217" dstpinname="Input Enum">
+   </LINK>
+   <LINK srcnodeid="205" srcpinname="Output" dstnodeid="425" dstpinname="Ord Value">
    </LINK>
    </PATCH>

@@ -430,7 +430,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             foreach (var resource in this)
             {
-                resource.UpdateResource(device);
+                resource?.UpdateResource(device);
             }
         }
 
@@ -439,6 +439,8 @@ namespace VVVV.Hosting.IO.Streams
             var isDx9ExDevice = device is DeviceEx;
             foreach (var resource in this)
             {
+                if (resource == null)
+                    continue;
                 // If we should destroy only unmanaged resources (those in the default pool)
                 // do so only if we're on DirectX9 and the resource is in the default pool.
                 // In case of DirectX9Ex where all resources are in the default pool we don't
@@ -480,7 +482,7 @@ namespace VVVV.Hosting.IO.Streams
         {
             get
             {
-                return this[slice][device];
+                return this[slice]?[device];
             }
         }
     }

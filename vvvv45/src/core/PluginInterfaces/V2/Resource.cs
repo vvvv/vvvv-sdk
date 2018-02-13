@@ -13,13 +13,11 @@ namespace VVVV.PluginInterfaces.V2
     
     [ComVisible(false)]
     public abstract class Resource<TDevice, TResource, TMetadata> : IDisposable 
-        where TResource : IDisposable
+        where TResource : class, IDisposable
     {
         private readonly Func<TMetadata, TDevice, TResource> FCreateResourceFunc;
         private readonly Action<TMetadata, TResource> FUpdateResourceFunc;
         private readonly Action<TMetadata, TResource, DestroyReason> FDestroyResourceAction;
-        private readonly Dictionary<TDevice, TResource> FResources = new Dictionary<TDevice, TResource>();
-		private readonly TMetadata FMetadata;
         
         public Resource(
             TMetadata metadata, 
@@ -27,17 +25,25 @@ namespace VVVV.PluginInterfaces.V2
             Action<TMetadata, TResource> updateResourceFunc = null, 
             Action<TMetadata, TResource, DestroyReason> destroyResourceAction = null)
         {
-            FMetadata = metadata;
+            Metadata = metadata;
             FCreateResourceFunc = createResourceFunc;
-            FUpdateResourceFunc = updateResourceFunc ?? UpdateResource;
+            FUpdateResourceFunc = updateResourceFunc;
             FDestroyResourceAction = destroyResourceAction ?? DestroyResource;
             NeedsUpdate = true;
         }
 
+        public event EventHandler<TDevice> DeviceAdded;
+        public event EventHandler<TDevice> DeviceRemoved;
+
         /// <summary>
         /// Some arbitrary data associated with this resource.
         /// </summary>
-        public TMetadata Metadata { get { return FMetadata; } }
+        public TMetadata Metadata { get; set; }
+
+        /// <summary>
+        /// The resources per device.
+        /// </summary>
+        public Dictionary<TDevice, TResource> Resources { get; set; } = new Dictionary<TDevice, TResource>();
 
         /// <summary>
         /// Whether or not the Update method has to be called for this resource.
@@ -50,62 +56,61 @@ namespace VVVV.PluginInterfaces.V2
             get
             {
                 TResource result;
-                if (!FResources.TryGetValue(device, out result))
+                if (!Resources.TryGetValue(device, out result))
                 {
-                    result = CreateResoure(FMetadata, device);
+                    result = CreateResoure(Metadata, device);
                     NeedsUpdate = true;
-                    FResources[device] = result;
+                    Resources[device] = result;
                 }
                 return result;
             }
         }
 
-        public IEnumerable<TResource> DeviceResources { get { return FResources.Values; } }
+        public IEnumerable<TResource> DeviceResources { get { return Resources.Values; } }
 
         protected virtual TResource CreateResoure(TMetadata metadata, TDevice device)
         {
-            return FCreateResourceFunc(metadata, device);
+            return FCreateResourceFunc?.Invoke(metadata, device);
         }
         
         public void UpdateResource(TDevice device)
         {
             TResource resource;
-            if (FResources.TryGetValue(device, out resource))
+            if (Resources.TryGetValue(device, out resource))
             {
                 if (NeedsUpdate)
                 {
-                    FUpdateResourceFunc(FMetadata, resource);
+                    FUpdateResourceFunc?.Invoke(Metadata, resource);
                 }
             }
             else
             {
-                FUpdateResourceFunc(FMetadata, this[device]);
+                FUpdateResourceFunc?.Invoke(Metadata, this[device]);
+                DeviceAdded?.Invoke(this, device);
             }
         }
         
         public void DestroyResource(TDevice device)
         {
             TResource resource;
-            if (FResources.TryGetValue(device, out resource))
+            if (Resources.TryGetValue(device, out resource))
             {
-                FResources.Remove(device);
-                FDestroyResourceAction(FMetadata, resource, DestroyReason.DeviceLost);
+                Resources.Remove(device);
+                FDestroyResourceAction(Metadata, resource, DestroyReason.DeviceLost);
+                DeviceRemoved?.Invoke(this, device);
             }
         }
         
         public void Dispose()
         {
-            foreach (var resource in FResources.Values)
+            foreach (var resource in Resources.Values)
             {
-                FDestroyResourceAction(FMetadata, resource, DestroyReason.Dispose);
+                FDestroyResourceAction(Metadata, resource, DestroyReason.Dispose);
             }
             
-            FResources.Clear();
-        }
-        
-        private static void UpdateResource(TMetadata metadata, TResource resource)
-        {
-            // Do nothing
+            Resources.Clear();
+            DeviceAdded = null;
+            DeviceRemoved = null;
         }
         
         private static void DestroyResource(TMetadata metadata, TResource resource, DestroyReason reason)

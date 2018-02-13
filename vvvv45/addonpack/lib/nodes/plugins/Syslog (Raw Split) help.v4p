@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta32.0.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" systemname="Syslog (Raw Split) help" filename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" systemname="Syslog (Raw Split) help" filename="C:\vvvv\vvvv_45beta32_x86_dev\addonpack\lib\nodes\plugins\Syslog (Raw Split) help.v4p" locked="0">
    <BOUNDS type="Window" left="210" top="285" width="21780" height="12315">
    </BOUNDS>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1" systemname="IOBox (Value Advanced)">
@@ -232,7 +232,7 @@
    </NODE>
    <PACK Name="VVVV.Packs" Version="0.1.0">
    </PACK>
-   <PACK Name="addonpack" Version="31.9.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE systemname="Syslog (Raw Join)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Syslog.dll" nodename="Syslog (Raw Join)" componentmode="Hidden" id="19">
    <BOUNDS type="Node" left="2025" top="4440" width="12420" height="270">
@@ -309,7 +309,7 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" values="Kernel,Daemons">
+   <PIN pinname="Input String" slicecount="2" visible="1" values="Kernel,Daemons">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="60" systemname="IOBox (String)">
@@ -331,7 +331,7 @@
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="1">
    </PIN>
-   <PIN pinname="Input String" slicecount="2" values="Emergency,Error">
+   <PIN pinname="Input String" slicecount="1" values="Emergency">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="62" systemname="IOBox (String)">
@@ -901,6 +901,8 @@
    </PIN>
    <PIN pinname="Input" visible="1">
    </PIN>
+   <PIN pinname="Facility" visible="1">
+   </PIN>
    </NODE>
    <LINK srcnodeid="118" srcpinname="Message" dstnodeid="62" dstpinname="Input String">
    </LINK>
@@ -915,22 +917,6 @@
    <LINK srcnodeid="118" srcpinname="Structured Data Name" dstnodeid="101" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="118" srcpinname="Structured Data Value Bin Size" dstnodeid="87" dstpinname="Y Input Value">
-   </LINK>
-   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="119">
-   <BOUNDS type="Node" left="4245" top="8985" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="119" srcpinname="String Value" dstnodeid="60" dstpinname="Input String">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Severity" dstnodeid="119" dstpinname="Enum">
-   </LINK>
-   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="120">
-   <BOUNDS type="Node" left="2385" top="8985" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="120" srcpinname="String Value" dstnodeid="59" dstpinname="Input String">
-   </LINK>
-   <LINK srcnodeid="118" srcpinname="Facility" dstnodeid="120" dstpinname="Enum">
    </LINK>
    <NODE id="104" systemname="Add (String Spectral)" nodename="Add (String Spectral)" componentmode="Hidden">
    <PIN pinname="Bin Size" visible="1">
@@ -1045,5 +1031,29 @@
    <LINK srcnodeid="19" srcpinname="Output" dstnodeid="126" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="19" srcpinname="Output" dstnodeid="65" dstpinname="Input" hiddenwhenlocked="1">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="130">
+   <BOUNDS type="Node" left="2370" top="8985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enumeration" slicecount="1" values="VVVV.Nodes.Syslog.SyslogFacility">
+   </PIN>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="String Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="118" srcpinname="Facility" dstnodeid="130" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="130" srcpinname="String Value" dstnodeid="59" dstpinname="Input String">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="119">
+   <BOUNDS type="Node" left="4245" top="8985" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enumeration" slicecount="1" values="VVVV.Nodes.Syslog.SyslogSeverity">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="119" srcpinname="String Value" dstnodeid="60" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="118" srcpinname="Severity" dstnodeid="119" dstpinname="Enum">
    </LINK>
    </PATCH>

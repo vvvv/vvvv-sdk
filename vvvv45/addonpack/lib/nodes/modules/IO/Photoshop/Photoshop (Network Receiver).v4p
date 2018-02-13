@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.9.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.15.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\Photoshop (Network Receiver).v4p" systemname="Photoshop (Network Receiver)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\Photoshop (Network Receiver).v4p" scrollx="0" scrolly="0">
    <NODE systemname="DecryptMessage" filename="DecryptMessage.v4p" nodename="DecryptMessage.v4p" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="1305" top="9420" width="100" height="100">
    </BOUNDS>
@@ -104,34 +104,6 @@
    </LINK>
    <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="28" dstpinname="Input 3">
    </LINK>
-   <NODE systemname="R (Node)" nodename="R (Node)" componentmode="Hidden" id="35">
-   <BOUNDS type="Node" left="1305" top="3240" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Receive String" visible="1" slicecount="1" values="(nil)">
-   </PIN>
-   <PIN pinname="Input Value" visible="1">
-   </PIN>
-   <PIN pinname="Display Channel" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="38">
-   <BOUNDS type="Node" left="1635" top="3240" width="555" height="270">
-   </BOUNDS>
-   <PIN pinname="Enum" slicecount="1" visible="1" values="NodeSendChannels">
-   </PIN>
-   <PIN pinname="Receive" visible="1" slicecount="1" values="(nil)">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="39" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="1635" top="2865" width="1650" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="1635" top="2865" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="NodeSendChannels">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="39" srcpinname="Output Enum" dstnodeid="38" dstpinname="Enum">
-   </LINK>
    <LINK srcnodeid="9" srcpinname="Output String" dstnodeid="2" dstpinname="Password">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="56" systemname="IOBox (Value Advanced)">
@@ -168,16 +140,6 @@
    </NODE>
    <INFO author="vvvv group" description="Receives responses from Photoshop." tags="psd">
    </INFO>
-   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="91">
-   <BOUNDS type="Node" left="1305" top="2250" width="100" height="100">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="91" dstpinname="String Value">
-   </LINK>
-   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
-   </LINK>
-   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="38" dstpinname="Receive">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="92" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="3195" top="10200" width="480" height="480">
    </BOUNDS>
@@ -261,7 +223,7 @@
    <NODE systemname="Tokenizer (Raw LengthPrefix)" filename="..\..\..\..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw LengthPrefix)" componentmode="Hidden" id="123">
    <BOUNDS type="Node" left="1290" top="6705" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Data" visible="1">
+   <PIN pinname="Data" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Result" visible="1">
    </PIN>
@@ -277,8 +239,6 @@
    <LINK srcnodeid="89" srcpinname="Output" dstnodeid="2" dstpinname="Decrypt">
    </LINK>
    <LINK srcnodeid="89" srcpinname="Output" dstnodeid="92" dstpinname="Y Input Value">
-   </LINK>
-   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="123" dstpinname="Data">
    </LINK>
    <LINK srcnodeid="113" srcpinname="Output" dstnodeid="2" dstpinname="Input">
    </LINK>
@@ -321,13 +281,11 @@
    <NODE systemname="Length (Raw)" nodename="Length (Raw)" componentmode="Hidden" id="128">
    <BOUNDS type="Node" left="3195" top="4080" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input" visible="1">
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="128" dstpinname="Input">
-   </LINK>
    <LINK srcnodeid="128" srcpinname="Count" dstnodeid="127" dstpinname="Input 1">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="129">
@@ -389,5 +347,43 @@
    <LINK srcnodeid="135" srcpinname="Result" dstnodeid="113" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="7" srcpinname="Y Output Value" dstnodeid="135" dstpinname="Reset">
+   </LINK>
+   <NODE id="91" systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Enumeration" slicecount="1" pintype="Configuration" values="NodeSendChannels">
+   </PIN>
+   <BOUNDS type="Node" left="1305" top="2250" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Tag" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="String Value" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Evaluate" pintype="Input" visible="-1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Enum" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Valid Input" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <NODE id="35" systemname="R (Node)" nodename="R (Node)" componentmode="Hidden">
+   <PIN pinname="Receive String" slicecount="1" visible="1" values="PSDatalocalhostvvvvvv">
+   </PIN>
+   <BOUNDS type="Node" left="1305" top="3240" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="91" srcpinname="Enum" dstnodeid="35" dstpinname="Receive String">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="128" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Input Value" dstnodeid="123" dstpinname="Data">
+   </LINK>
+   <LINK srcnodeid="28" srcpinname="Output" dstnodeid="91" dstpinname="String Value">
    </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\Work\ParasiticDesign\01_P\P_2_1_1_01 Arrangement in a Grid\Stroke (EX9).v4p" filename="C:\Work\Study\stroke_study.v4p" systemname="stroke_study">
-   <BOUNDS height="15270" left="9585" top="210" type="Window" width="21750">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\EX9\Stroke (EX9).v4p" filename="C:\Work\Study\stroke_study.v4p" systemname="stroke_study">
+   <BOUNDS height="15270" left="-4335" top="1350" type="Window" width="21750">
    </BOUNDS>
    <NODE componentmode="Hidden" id="4" nodename="Mesh (EX9.Geometry Split)" systemname="Mesh (EX9.Geometry Split)">
    <BOUNDS height="270" left="15480" top="4755" type="Node" width="1215">
@@ -94,12 +94,14 @@
    <PIN pinname="Output Bin Size" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="50" nodename="Mesh (EX9.Geometry Join)" systemname="Mesh (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="50" nodename="Mesh (EX9.Geometry Join)" systemname="MESH (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="12570" top="20880" type="Node" width="4965">
    </BOUNDS>
    <PIN pinname="Indices" visible="1">
    </PIN>
    <PIN pinname="Vertex Buffer">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" filename="%VVVV%\plugins\SpreadOperations.dll" id="51" nodename="Cons (Spreads)" systemname="Cons (Spreads)">
@@ -1440,14 +1442,6 @@
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Enabled">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="194" nodename="Enum2Ord (Enumerations)" systemname="Enum2Ord (Enumerations)">
-   <BOUNDS height="100" left="13080" top="1590" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="198" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
    <BOUNDS height="0" left="13845" top="375" type="Node" width="0">
    </BOUNDS>
@@ -1460,8 +1454,6 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="194" dstpinname="Enum" srcnodeid="198" srcpinname="Output Enum">
-   </LINK>
    <NODE componentmode="Hidden" id="199" nodename="GetSpread (Spreads)" systemname="GetSpread (Spreads)">
    <BOUNDS height="100" left="12015" top="1815" type="Node" width="100">
    </BOUNDS>
@@ -1536,7 +1528,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="211" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VertexBuffer (EX9.Geometry Join)">
+   <NODE componentmode="Hidden" id="211" nodename="VertexBuffer (EX9.Geometry Join)" systemname="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
    <BOUNDS height="270" left="12555" top="20475" type="Node" width="2415">
    </BOUNDS>
    <PIN pinname="Enable Diffuse Color" slicecount="1" values="1">
@@ -1546,6 +1538,8 @@
    <PIN pinname="Enable Texture Coordinate 0" slicecount="1" values="|No TexCoords|">
    </PIN>
    <PIN pinname="Diffuse Color" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK dstnodeid="50" dstpinname="Vertex Buffer" srcnodeid="211" srcpinname="Vertex Buffer">
@@ -1853,15 +1847,13 @@
    <NODE componentmode="Hidden" id="247" nodename="EQ (Value)" systemname="EQ (Value)">
    <BOUNDS height="270" left="12765" top="2385" type="Node" width="795">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" values="2">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="247" dstpinname="Input 1" srcnodeid="194" srcpinname="Ord Value">
-   </LINK>
    <NODE componentmode="Hidden" id="248" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="100" left="12765" top="2760" type="Node" width="100">
    </BOUNDS>
@@ -1895,15 +1887,13 @@
    <NODE componentmode="Hidden" id="250" nodename="EQ (Value)" systemname="EQ (Value)">
    <BOUNDS height="270" left="13740" top="2385" type="Node" width="795">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK dstnodeid="250" dstpinname="Input 1" srcnodeid="194" srcpinname="Ord Value">
-   </LINK>
    <NODE componentmode="Hidden" id="253" nodename="Select (Value)" systemname="Select (Value)">
    <BOUNDS height="100" left="14025" top="5235" type="Node" width="100">
    </BOUNDS>
@@ -2450,28 +2440,6 @@
    </NODE>
    <LINK dstnodeid="281" dstpinname="Strings" srcnodeid="280" srcpinname="Output String">
    </LINK>
-   <NODE componentmode="Hidden" id="286" nodename="NULL (Enumerations)" systemname="NULL (Enumerations)">
-   <BOUNDS height="100" left="14055" top="1575" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="285" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
-   <BOUNDS height="100" left="14040" top="1185" type="Node" width="100">
-   </BOUNDS>
-   <BOUNDS height="240" left="14040" top="1185" type="Box" width="1005">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" values="StrokeCap">
-   </PIN>
-   <PIN pinname="Output Enum" visible="1">
-   </PIN>
-   </NODE>
-   <LINK dstnodeid="286" dstpinname="Enum" srcnodeid="285" srcpinname="Output Enum">
-   </LINK>
-   <LINK srcnodeid="198" srcpinname="Output Enum" dstnodeid="286" dstpinname="Receive">
-   </LINK>
    <NODE componentmode="Hidden" id="292" nodename="DrawFixed (EX9.Effect)" systemname="DrawFixed (EX9.Effect)">
    <BOUNDS height="100" left="12405" top="21690" type="Node" width="100">
    </BOUNDS>
@@ -2496,4 +2464,22 @@
    <LINKPOINT x="10575" y="15345">
    </LINKPOINT>
    </LINK>
+   <NODE componentmode="Hidden" id="194" nodename="Enum2Ord (Enumerations)" systemname="Enum2Ord (Enumerations)">
+   <BOUNDS height="100" left="13080" top="1590" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="StrokeCap">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="194" dstpinname="Enum" srcnodeid="198" srcpinname="Output Enum">
+   </LINK>
+   <LINK dstnodeid="247" dstpinname="Input 1" srcnodeid="194" srcpinname="Ord Value">
+   </LINK>
+   <LINK dstnodeid="250" dstpinname="Input 1" srcnodeid="194" srcpinname="Ord Value">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

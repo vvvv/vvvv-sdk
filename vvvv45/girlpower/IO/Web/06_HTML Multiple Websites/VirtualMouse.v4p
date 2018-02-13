@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha32.2.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\girlpower\IO\Web\06_HTML Multiple Websites\VirtualMouse.v4p" systemname="VirtualMouse" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\VirtualMouse.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\IO\Web\06_HTML Multiple Websites\VirtualMouse.v4p" systemname="VirtualMouse" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\VirtualMouse.v4p">
    <NODE id="9" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="|Mouse Transformed|">
    </PIN>
@@ -542,16 +542,6 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="136">
-   <BOUNDS type="Node" left="6225" top="3090" width="810" height="270">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="82" srcpinname="Event Type" dstnodeid="136" dstpinname="Enum">
-   </LINK>
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="138">
    <BOUNDS type="Node" left="6225" top="3810" width="100" height="100">
    </BOUNDS>
@@ -562,8 +552,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="136" srcpinname="Ord Value" dstnodeid="138" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="S+H (Animation)" nodename="S+H (Animation)" componentmode="Hidden" id="139">
    <BOUNDS type="Node" left="5880" top="4215" width="100" height="100">
    </BOUNDS>
@@ -610,6 +598,20 @@
    <PIN pinname="Size" slicecount="1" values="16">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="32.2.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="136">
+   <BOUNDS type="Node" left="6225" top="2955" width="810" height="270">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="VVVV.Utils.IO.MouseNotificationKind">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="82" srcpinname="Event Type" dstnodeid="136" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="136" srcpinname="Ord Value" dstnodeid="138" dstpinname="Input 1">
+   </LINK>
    </PATCH>

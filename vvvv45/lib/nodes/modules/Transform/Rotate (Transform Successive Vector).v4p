@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\lib\nodes\modules\Transform\Rotate (Transform Successive Vector).v4p">
-   <BOUNDS height="6000" left="10485" top="7005" type="Window" width="9000">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\Transform\Rotate (Transform Successive Vector).v4p">
+   <BOUNDS height="6000" left="7950" top="3105" type="Window" width="9000">
    </BOUNDS>
-   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="27" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="2430" top="480" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="2610" top="825" type="Window" width="215">
@@ -42,7 +42,7 @@
    <PIN pinname="Quaternion XYZW" visible="1">
    </PIN>
    </NODE>
-   <NODE id="24" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation)">
+   <NODE id="24" nodename="FrameDelay (Animation)" systemname="FrameDelay (Animation Legacy)">
    <BOUNDS height="0" left="3105" top="5295" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
@@ -64,7 +64,7 @@
    <PIN pinname="Transform In" slicecount="1" visible="1" values="||">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="1" id="22" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="1" id="22" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7815" top="3885" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3015" top="3855" type="Window" width="215">
@@ -118,7 +118,7 @@
    <PIN pinname="Quaternion XYZW" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="19" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4920" top="510" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="3315" top="4155" type="Window" width="215">
@@ -166,7 +166,7 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="Quaternion XYZW" srcnodeid="18" srcpinname="Output">
    </LINK>
-   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="4260" top="5835" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="8985" top="7485" type="Window" width="215">
@@ -266,7 +266,7 @@
    <PIN pinname="Quaternion XYZW" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6030" top="2055" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="160" left="6480" top="7980" type="Window" width="215">
@@ -282,7 +282,7 @@
    </LINK>
    <LINK dstnodeid="18" dstpinname="Input 1" srcnodeid="11" srcpinname="Quaternion XYZW">
    </LINK>
-   <NODE componentmode="InABox" hiddenwhenlocked="0" id="9" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="9" managers="" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" pintype="Output" visible="1">
    </PIN>
    <PIN pinname="Y Input Value" pintype="Input" slicecount="3" visible="1" values="0,0,0">
@@ -342,10 +342,10 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" hiddenwhenlocked="0" id="8" managers="" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" hiddenwhenlocked="0" id="8" managers="" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <PIN pinname="Y Output Value" pintype="Output" visible="1">
    </PIN>
-   <PIN pinname="Y Input Value" pintype="Input" slicecount="1" visible="1" values="0">
+   <PIN pinname="Y Input Value" pintype="Input" slicecount="3" visible="1" values="0,0.5,0">
    </PIN>
    <BOUNDS height="0" left="8580" top="3690" type="Node" width="0">
    </BOUNDS>
@@ -427,27 +427,11 @@
    <LINK dstnodeid="18" dstpinname="Input 2" srcnodeid="6" srcpinname="Quaternion XYZW">
    </LINK>
    <NODE id="5" nodename="CreateEnum (Enumerations)" systemname="CreateEnum (Enumerations)">
-   <BOUNDS height="0" left="45" top="4185" type="Node" width="0">
+   <BOUNDS height="0" left="180" top="4020" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Strings" slicecount="2" values="Global,Local">
    </PIN>
    <PIN pinname="Enum Name" slicecount="1" values="|Succ Rotate Coordinate System|">
-   </PIN>
-   </NODE>
-   <NODE id="4" nodename="Enum2Ord (Enumerations)" systemname="Enum2Ord (Enumerations)">
-   <BOUNDS height="0" left="195" top="3570" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <NODE id="3" nodename="NULL (Enumerations)" systemname="NULL (Enumerations)">
-   <BOUNDS height="0" left="360" top="3210" type="Node" width="0">
-   </BOUNDS>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   <PIN pinname="Enum" slicecount="1" values="|Succ Rotate Coordinate System|">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="2" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
@@ -464,10 +448,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Coordinate System|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="3" dstpinname="Receive" srcnodeid="2" srcpinname="Output Enum">
-   </LINK>
-   <LINK dstnodeid="4" dstpinname="Enum" srcnodeid="2" srcpinname="Output Enum">
-   </LINK>
    <NODE id="1" nodename="Switch (Value Input)" systemname="Switch (Value Input)">
    <BOUNDS height="0" left="2655" top="3990" type="Node" width="0">
    </BOUNDS>
@@ -477,7 +457,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Switch" visible="1">
+   <PIN pinname="Switch" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="0" nodename="Multiply (Quaternion)" systemname="Multiply (Quaternion)">
@@ -512,6 +492,20 @@
    </LINK>
    <LINK dstnodeid="11" dstpinname="Quaternion 1 XYZW" srcnodeid="1" srcpinname="Output">
    </LINK>
+   <NODE id="4" nodename="Enum2Ord (Enumerations)" systemname="Enum2Ord (Enumerations)">
+   <BOUNDS height="0" left="195" top="3570" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="|Succ Rotate Coordinate System|">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Enum" srcnodeid="2" srcpinname="Output Enum">
+   </LINK>
    <LINK dstnodeid="1" dstpinname="Switch" srcnodeid="4" srcpinname="Ord Value">
    </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

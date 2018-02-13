@@ -59,7 +59,7 @@ namespace VVVV.PluginInterfaces.V2.EX9
     {
         public TextureResource(
             TMetadata metadata, 
-            Func<TMetadata, Device, Texture> createResourceFunc,
+            Func<TMetadata, Device, Texture> createResourceFunc = null,
             Action<TMetadata, Texture> updateResourceFunc = null,
             Action<TMetadata, Texture, DestroyReason> destroyResourceAction = null)
             : base(metadata, createResourceFunc, updateResourceFunc, destroyResourceAction)

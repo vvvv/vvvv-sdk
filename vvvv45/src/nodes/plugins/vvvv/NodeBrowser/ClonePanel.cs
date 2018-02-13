@@ -8,6 +8,7 @@ using System.Linq;
 using System.IO;
 
 using VVVV.PluginInterfaces.V2;
+using Ookii.Dialogs;
 #endregion usings
 
 namespace VVVV.Nodes.NodeBrowser
@@ -168,27 +169,32 @@ namespace VVVV.Nodes.NodeBrowser
         
         void FPathButtonClick(object sender, EventArgs e)
         {
-        	FFolderBrowserDialog.SelectedPath = FPathTextBox.Text;
-        	var result = FFolderBrowserDialog.ShowDialog();
-        	if (result == DialogResult.OK)
-        	{
-        		var path = FFolderBrowserDialog.SelectedPath;
-        		if (FCloneInfo.Type == NodeType.Effect)
-        		{
-        			if (!path.EndsWith("effects"))
-        				path = Path.Combine(path, "effects");
-        		}
-                else if (FCloneInfo.Type == NodeType.VL)
+            using (var dialog = new VistaFolderBrowserDialog())
+            {
+                if (Directory.Exists(FPathTextBox.Text))
+                    dialog.SelectedPath = FPathTextBox.Text;
+
+                var result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
                 {
-                    if (!path.EndsWith("vl"))
-                        path = Path.Combine(path, "vl");
-                }
-        		else if (!path.EndsWith("plugins"))
-        			path = Path.Combine(path, "plugins");
+        	        var path = dialog.SelectedPath;
+        	        if (FCloneInfo.Type == NodeType.Effect)
+        	        {
+        		        if (!path.EndsWith("effects"))
+        			        path = Path.Combine(path, "effects");
+        	        }
+                    else if (FCloneInfo.Type == NodeType.VL)
+                    {
+                        if (!path.EndsWith("vl"))
+                            path = Path.Combine(path, "vl");
+                    }
+        	        else if (!path.EndsWith("plugins"))
+        		        path = Path.Combine(path, "plugins");
         			
-        		FPathTextBox.Text = path;
-        		CheckNodeName();
-        	}
+        	        FPathTextBox.Text = path;
+        	        CheckNodeName();
+                }
+            }
         }
     }
 }

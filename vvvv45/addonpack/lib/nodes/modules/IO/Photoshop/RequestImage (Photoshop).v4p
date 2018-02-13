@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\RequestImage (Photoshop).v4p" scrollx="0" scrolly="0" systemname="RequestImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\RequestImage (Photoshop).v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\RequestImage (Photoshop).v4p" scrollx="0" scrolly="0" systemname="RequestImage (Photoshop)" filename="C:\Work\Anton-work\Adobe Photoshop vs vvvv\Patches\RequestImage (Photoshop).v4p">
    <BOUNDS type="Window" left="5820" top="2925" width="11835" height="7965">
    </BOUNDS>
    <NODE systemname="Substitute (String)" nodename="Substitute (String)" componentmode="Hidden" id="4">
@@ -150,28 +150,10 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <PACK Name="dx11" Version="33.0">
    </PACK>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="27">
-   <BOUNDS type="Node" left="7845" top="1590" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
-   </PIN>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   </NODE>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="30" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="7860" top="1125" width="1980" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="7860" top="1125" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="30" srcpinname="Output Enum" dstnodeid="27" dstpinname="Enum">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="31" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="7800" top="540" width="870" height="240">
    </BOUNDS>
@@ -184,30 +166,16 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="27" dstpinname="Receive">
-   </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="32">
-   <BOUNDS type="Node" left="6855" top="1590" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="32" dstpinname="Enum">
-   </LINK>
    <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="33">
    <BOUNDS type="Node" left="6855" top="1980" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Ord Value" dstnodeid="33" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="33" srcpinname="Output" dstnodeid="11" dstpinname="Z">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36" systemname="IOBox (Value Advanced)">
@@ -304,4 +272,18 @@
    <PIN pinname="Input String" slicecount="1" values="01_Photoshop_General-Info.v4p">
    </PIN>
    </NODE>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="6855" top="1590" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="PhotoshopImageFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Output Enum" dstnodeid="32" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="32" srcpinname="Ord Value" dstnodeid="33" dstpinname="Input 1">
+   </LINK>
    </PATCH>

@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug33.8.dtd" >
-   <PATCH nodename="C:\Users\joreg\dev\repos\vvvv\public\vvvv45\lib\nodes\modules\String\Ellipsis (String).v4p" systemname="Ellipsis (String)" filename="C:\Work\Anton-work\Blaupause\Ellipsis (String).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\modules\String\Ellipsis (String).v4p" systemname="Ellipsis (String)" filename="C:\Work\Anton-work\Blaupause\Ellipsis (String).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="12525" top="3690" width="9000" height="9000">
    </BOUNDS>
    <NODE systemname="Pad (String)" nodename="Pad (String)" componentmode="Hidden" id="12">
@@ -70,22 +70,12 @@
    <LINKPOINT x="6690" y="3405">
    </LINKPOINT>
    </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="6">
-   <BOUNDS type="Node" left="6210" top="1275" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Output Enum" dstnodeid="6" dstpinname="Enum">
-   </LINK>
    <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="5">
    <BOUNDS type="Node" left="3165" top="6255" width="2565" height="270">
    </BOUNDS>
    <PIN pinname="Input Count" slicecount="1" values="3">
    </PIN>
-   <PIN pinname="Switch" visible="1">
+   <PIN pinname="Switch" visible="1" slicecount="3" values="0,1,2">
    </PIN>
    <PIN pinname="Input 1" visible="1">
    </PIN>
@@ -96,10 +86,6 @@
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Ord Value" dstnodeid="5" dstpinname="Switch">
-   <LINKPOINT x="3195" y="4515">
-   </LINKPOINT>
-   </LINK>
    <NODE systemname="Add (String)" nodename="Add (String)" componentmode="Hidden" id="4">
    <BOUNDS type="Node" left="4005" top="5790" width="100" height="100">
    </BOUNDS>
@@ -206,7 +192,7 @@
    </LINK>
    <INFO author="vvvv group" description="Clips the string to the desired number of characters (including ellipsis characters)." tags="clip">
    </INFO>
-   <PACK Name="addonpack" Version="33.8.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <LINK srcnodeid="0" srcpinname="Output String" dstnodeid="9" dstpinname="Input 1">
    </LINK>
@@ -317,15 +303,13 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="25">
    <BOUNDS type="Node" left="5850" top="2160" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="3" values="0,1,2">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="6" srcpinname="Ord Value" dstnodeid="25" dstpinname="Input 1">
-   </LINK>
    <NODE systemname="Multiply (Value)" nodename="Multiply (Value)" componentmode="Hidden" id="26">
    <BOUNDS type="Node" left="5580" top="3030" width="100" height="100">
    </BOUNDS>
@@ -418,4 +402,22 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="6210" top="1275" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="HorizontalAlign">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output Enum" dstnodeid="6" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Ord Value" dstnodeid="5" dstpinname="Switch">
+   <LINKPOINT x="3195" y="4515">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="6" srcpinname="Ord Value" dstnodeid="25" dstpinname="Input 1">
+   </LINK>
    </PATCH>

@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta33.1.dtd" >
-   <PATCH nodename="X:\BlurAlpha\Blur (EX9.Texture Filter).v4p" scrollx="0" scrolly="0">
-   <BOUNDS height="9900" left="12360" top="4800" type="Window" width="11160">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\Blur\Blur (EX9.Texture Filter).v4p" scrollx="0" scrolly="0">
+   <BOUNDS height="10140" left="4395" top="4350" type="Window" width="11160">
    </BOUNDS>
    <NODE componentmode="Hidden" filename="Blur.fx" id="24" nodename="Blur.fx" systemname="Blur (EX9.Effect)">
    <BOUNDS height="270" left="1935" top="5865" type="Node" width="5055">
@@ -243,7 +243,7 @@
    </BOUNDS>
    <PIN pinname="Output Enum" visible="1">
    </PIN>
-   <PIN pinname="Input Enum" slicecount="1" values="| Clamp|">
+   <PIN pinname="Input Enum" slicecount="1" values="Clamp">
    </PIN>
    <PIN encoded="0" pinname="Descriptive Name" slicecount="1" values="Mode">
    </PIN>
@@ -414,20 +414,10 @@
    <PIN pinname="Pin Visibility" slicecount="1" values="OnlyInspector">
    </PIN>
    </NODE>
-   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="35">
-   <BOUNDS type="Node" left="6495" top="2205" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   <PIN pinname="String Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="34">
    <BOUNDS type="Node" left="6630" top="3015" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1" slicecount="1" values="3">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="|No Specific|">
    </PIN>
    <PIN pinname="Switch" visible="1">
    </PIN>
@@ -450,8 +440,6 @@
    </NODE>
    <LINK srcnodeid="34" srcpinname="Output" dstnodeid="36" dstpinname="String Value">
    </LINK>
-   <LINK srcnodeid="35" srcpinname="String Value" dstnodeid="34" dstpinname="Input 1">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="37" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="3960" top="1575" width="1590" height="270">
    </BOUNDS>
@@ -462,12 +450,10 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="37" srcpinname="Output Enum" dstnodeid="35" dstpinname="Enum">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="38" systemname="IOBox (String)">
-   <BOUNDS type="Box" left="6975" top="2610" width="1290" height="240">
+   <BOUNDS type="Box" left="7140" top="2670" width="1290" height="240">
    </BOUNDS>
-   <BOUNDS type="Node" left="6975" top="2610" width="0" height="0">
+   <BOUNDS type="Node" left="7140" top="2670" width="0" height="0">
    </BOUNDS>
    <PIN pinname="Default" slicecount="1" values="||">
    </PIN>
@@ -490,12 +476,12 @@
    </LINK>
    <LINK srcnodeid="36" srcpinname="Enum" dstnodeid="18" dstpinname="Format">
    </LINK>
-   <PACK Name="addonpack" Version="33.0.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE componentmode="Hidden" filename="AlphaPremultiply.fx" id="30" nodename="AlphaPremultiply (EX9.Effect)" systemname="AlphaPremultiply (EX9.Effect)">
    <BOUNDS height="100" left="2115" top="3195" type="Node" width="100">
    </BOUNDS>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Layer" visible="1">
    </PIN>
@@ -543,5 +529,19 @@
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="30" dstpinname="PreMultiply">
    </LINK>
    <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="24" dstpinname="PreMultiply">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="46">
+   <BOUNDS type="Node" left="6870" top="2250" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1" slicecount="1" values="|No Specific|">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="TextureFormat">
+   </PIN>
+   <PIN pinname="String Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="37" srcpinname="Output Enum" dstnodeid="46" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="46" srcpinname="String Value" dstnodeid="34" dstpinname="Input 1">
    </LINK>
    </PATCH>
