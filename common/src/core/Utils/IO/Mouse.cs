@@ -7,12 +7,19 @@ using System.Windows.Forms;
 
 namespace VVVV.Utils.IO
 {
-    public class Mouse
+    public interface IMouse
+    {
+        IObservable<MouseNotification> MouseNotifications { get; }
+    }
+
+    public class Mouse : IMouse
     {
         public static readonly Mouse Empty = new Mouse(Observable.Never<MouseNotification>(), false, false);
 
         public readonly IObservable<MouseNotification> MouseNotifications;
         private MouseButtons FPressedButtons;
+
+        IObservable<MouseNotification> IMouse.MouseNotifications => MouseNotifications;
 
         public Mouse(IObservable<MouseNotification> mouseNotifications, bool injectMouseClicks = true, bool keepSingleSubscription = true)
         {
@@ -62,7 +69,7 @@ namespace VVVV.Utils.IO
                         .Where(b => b.Buttons == down.Buttons &&
                                     Math.Abs(b.Position.X - down.Position.X) <= SystemInformation.DoubleClickSize.Width &&
                                     Math.Abs(b.Position.Y - down.Position.Y) <= SystemInformation.DoubleClickSize.Height)
-                        .Select(x => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, 1), i));
+                        .Select(x => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, 1, down.Sender), i));
                     var subsequentClicks =
                             notifications.OfType<MouseDownNotification>()
                                 .TakeWhile(n => n.Buttons == down.Buttons &&
@@ -70,7 +77,7 @@ namespace VVVV.Utils.IO
                                             Math.Abs(n.Position.Y - down.Position.Y) <= SystemInformation.DoubleClickSize.Height)
                                 .TimeInterval()
                                 .TakeWhile(x => x.Interval.TotalMilliseconds <= SystemInformation.DoubleClickTime)
-                                .Select((x, j) => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, j + 2), i));
+                                .Select((x, j) => Tuple.Create(new MouseClickNotification(down.Position, down.ClientArea, down.Buttons, j + 2, down.Sender), i));
                     return singleClick.Concat(subsequentClicks);
                 }
                 )

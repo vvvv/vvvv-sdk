@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SelectEvent.v4p" scrollx="0" scrolly="0" systemname="SelectEvent" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SelectEvent.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SelectEvent.v4p" scrollx="0" scrolly="0" systemname="SelectEvent" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\SelectEvent.v4p">
    <BOUNDS type="Window" left="9255" top="1455" width="7425" height="7815">
    </BOUNDS>
    <NODE systemname="Unzip (String)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Unzip (String)" componentmode="Hidden" id="15">
@@ -12,7 +12,7 @@
    <PIN pinname="Output 2" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="Separate (String)" nodename="Separate (String)" componentmode="Hidden" id="14">
+   <NODE systemname="Separate (String Legacy)" nodename="Separate (String)" componentmode="Hidden" id="14">
    <BOUNDS type="Node" left="1020" top="2305" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Output" visible="1">
@@ -39,21 +39,13 @@
    </BOUNDS>
    <PIN pinname="Input 1" visible="1">
    </PIN>
-   <PIN pinname="Input 2" visible="1">
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
    <LINK srcnodeid="15" srcpinname="Output 1" dstnodeid="11" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="10">
-   <BOUNDS type="Node" left="4815" top="1065" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="9" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="3735" top="375" width="1590" height="270">
    </BOUNDS>
@@ -66,30 +58,6 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="10" dstpinname="Receive">
-   </LINK>
-   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="8">
-   <BOUNDS type="Node" left="3720" top="1065" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1">
-   </PIN>
-   <PIN pinname="String Value" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="8" dstpinname="Enum">
-   </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="7" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="4830" top="690" width="1590" height="270">
-   </BOUNDS>
-   <BOUNDS type="Node" left="4830" top="690" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopEvents">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="7" srcpinname="Output Enum" dstnodeid="10" dstpinname="Enum">
-   </LINK>
-   <LINK srcnodeid="8" srcpinname="String Value" dstnodeid="11" dstpinname="Input 2">
-   </LINK>
    <NODE systemname="AsValue (String)" nodename="AsValue (String)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="2790" top="3690" width="100" height="100">
    </BOUNDS>
@@ -178,7 +146,7 @@
    </NODE>
    <LINK srcnodeid="1" srcpinname="Y Output Value" dstnodeid="3" dstpinname="Input 1">
    </LINK>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="17" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="1020" top="495" width="795" height="240">
@@ -201,5 +169,19 @@
    <LINK srcnodeid="17" srcpinname="Output Node" dstnodeid="16" dstpinname="Input">
    </LINK>
    <LINK srcnodeid="16" srcpinname="Output" dstnodeid="14" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Enum2String (Enumerations)" nodename="Enum2String (Enumerations)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="3720" top="1065" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="String Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="PhotoshopEvents">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="9" srcpinname="Output Enum" dstnodeid="8" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="String Value" dstnodeid="11" dstpinname="Input 2">
    </LINK>
    </PATCH>

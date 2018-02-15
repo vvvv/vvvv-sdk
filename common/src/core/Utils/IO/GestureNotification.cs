@@ -17,7 +17,7 @@ namespace VVVV.Utils.IO
         GesturePressAndTap = 7
     }
 
-    public class GestureNotification
+    public class GestureNotification : Notification
     {
         public readonly GestureNotificationKind Kind;
         public readonly Point Position;
@@ -42,6 +42,20 @@ namespace VVVV.Utils.IO
             ExtraArguments = cbExtraArgs;
         }
 
+        public GestureNotification(GestureNotificationKind kind, Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(sender)
+        {
+            Kind = kind;
+            Position = position;
+            ClientArea = clientArea;
+            Id = id;
+            SequenceId = sequenceId;
+            GestureDeviceID = gestureDeviceID;
+            Flags = flags;
+            Arguments = ullArguments;
+            ExtraArguments = cbExtraArgs;
+        }
+
         public bool IsGestureBegin { get { return Kind == GestureNotificationKind.GestureBegin; } }
         public bool IsGestureEnd { get { return Kind == GestureNotificationKind.GestureEnd; } }
         public bool IsGestureZoom { get { return Kind == GestureNotificationKind.GestureZoom; } }
@@ -53,56 +67,56 @@ namespace VVVV.Utils.IO
 
     public class GestureBeginNotification : GestureNotification
     {
-        public GestureBeginNotification( Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GestureBegin, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GestureBeginNotification( Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GestureBegin, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GestureEndNotification : GestureNotification
     {
-        public GestureEndNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GestureEnd, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GestureEndNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GestureEnd, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GestureZoomNotification : GestureNotification
     {
-        public GestureZoomNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GestureZoom, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GestureZoomNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GestureZoom, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GesturePanNotification : GestureNotification
     {
-        public GesturePanNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GesturePan, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GesturePanNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GesturePan, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GestureRotateNotification : GestureNotification
     {
-        public GestureRotateNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GestureRotate, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GestureRotateNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GestureRotate, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GestureTwoFingerTapNotification : GestureNotification
     {
-        public GestureTwoFingerTapNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GestureTwoFingerTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GestureTwoFingerTapNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GestureTwoFingerTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }
 
     public class GesturePressAndTapNotification : GestureNotification
     {
-        public GesturePressAndTapNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs)
-            : base(GestureNotificationKind.GesturePressAndTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs)
+        public GesturePressAndTapNotification(Point position, Size clientArea, int id, int sequenceId, long gestureDeviceID, int flags, Int64 ullArguments, int cbExtraArgs, object sender)
+            : base(GestureNotificationKind.GesturePressAndTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
     }

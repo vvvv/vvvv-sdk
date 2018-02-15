@@ -2,9 +2,6 @@
 using SlimDX;
 using VVVV.Utils.VMath;
 
-/// <summary>
-/// Contains Utils to work with SlimDX.
-/// </summary>
 namespace VVVV.Utils.SlimDX
 {
 	/// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -105,10 +106,10 @@ namespace VVVV.Nodes.Input
                         .ToList();
                     var keyDowns = keys.Except(FLastLegacyInputKeys);
                     foreach (var keyDown in keyDowns)
-                        FLegacyInputKeyboardSubject.OnNext(new KeyDownNotification(keyDown));
+                        FLegacyInputKeyboardSubject.OnNext(new KeyDownNotification(keyDown, this));
                     var keyUps = FLastLegacyInputKeys.Except(keys);
                     foreach (var keyUp in keyUps)
-                        FLegacyInputKeyboardSubject.OnNext(new KeyUpNotification(keyUp));
+                        FLegacyInputKeyboardSubject.OnNext(new KeyUpNotification(keyUp, this));
                     FLastLegacyInputKeys = keys;
                     inputKeyboard = FLegacyInputKeyboard;
                 }
@@ -130,7 +131,7 @@ namespace VVVV.Nodes.Input
                         if (isNewKeyDown)
                         {
                             foreach (var keyDown in FKeyDowns)
-                                FKeyNotificationSubject.OnNext(new KeyDownNotification(keyDown));
+                                FKeyNotificationSubject.OnNext(new KeyDownNotification(keyDown, this));
                             FLegacyKeyBufferOut.AssignFrom(FKeyDowns.Select(k => LegacyKeyboardHelper.VirtualKeycodeToString(k)));
                         }
                         else
@@ -155,10 +156,10 @@ namespace VVVV.Nodes.Input
 
                     var keyDowns = keyboardState.KeyCodes.Except(FLastKeyboardState.KeyCodes);
                     foreach (var keyDown in keyDowns)
-                        FKeyNotificationSubject.OnNext(new KeyDownNotification(keyDown));
+                        FKeyNotificationSubject.OnNext(new KeyDownNotification(keyDown, this));
                     var keyUps = FLastKeyboardState.KeyCodes.Except(keyboardState.KeyCodes);
                     foreach (var keyUp in keyUps)
-                        FKeyNotificationSubject.OnNext(new KeyUpNotification(keyUp));
+                        FKeyNotificationSubject.OnNext(new KeyUpNotification(keyUp, this));
                     FKeyboardOut[0].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
 
                     // Simulate legacy output
@@ -203,22 +204,23 @@ namespace VVVV.Nodes.Input
             base.Dispose();
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var keyNotifications = windowMessages
-                .Select<WMEventArgs, KeyNotification>(e =>
+                .Select<EventPattern<WMEventArgs>, KeyNotification>(e =>
                 {
-                    switch (e.Message)
+                    var a = e.EventArgs;
+                    switch (a.Message)
                     {
                         case WM.KEYDOWN:
                         case WM.SYSKEYDOWN:
-                            return new KeyDownNotification((Keys)e.WParam);
+                            return new KeyDownNotification((Keys)a.WParam, this);
                         case WM.CHAR:
                         case WM.SYSCHAR:
-                            return new KeyPressNotification((char)e.WParam);
+                            return new KeyPressNotification((char)a.WParam, this);
                         case WM.KEYUP:
                         case WM.SYSKEYUP:
-                            return new KeyUpNotification((Keys)e.WParam);
+                            return new KeyUpNotification((Keys)a.WParam, this);
                     }
                     return null;
                 }

@@ -13,7 +13,7 @@ namespace VVVV.Utils.IO
         TouchMove
     }
 
-    public class TouchNotification
+    public class TouchNotification : Notification
     {
         public readonly TouchNotificationKind Kind;
         public readonly Point Position;
@@ -33,7 +33,19 @@ namespace VVVV.Utils.IO
             ContactArea = contactArea;
             TouchDeviceID = touchDeviceID;
         }
-        
+
+        public TouchNotification(TouchNotificationKind kind, Point position, Size clientArea, int id, bool primary, Size contactArea, long touchDeviceID, object sender)
+            : base(sender)
+        {
+            Kind = kind;
+            Position = position;
+            ClientArea = clientArea;
+            Id = id;
+            Primary = primary;
+            ContactArea = contactArea;
+            TouchDeviceID = touchDeviceID;
+        }
+
         public bool IsTouchDown { get { return Kind == TouchNotificationKind.TouchDown; } }
         public bool IsTouchUp { get { return Kind == TouchNotificationKind.TouchUp; } }
         public bool IsTouchMove { get { return Kind == TouchNotificationKind.TouchMove; } }
@@ -45,6 +57,14 @@ namespace VVVV.Utils.IO
             : base(TouchNotificationKind.TouchDown, position, clientArea, id, primary, contactArea, touchDeviceID)
         {
         }
+
+        public TouchDownNotification(Point position, Size clientArea, int id, bool primary, Size contactArea, long touchDeviceID, object sender)
+            : base(TouchNotificationKind.TouchDown, position, clientArea, id, primary, contactArea, touchDeviceID, sender)
+        {
+        }
+
+        public override INotification WithSender(object sender)
+            => new TouchDownNotification(Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
     }
 
     public class TouchMoveNotification : TouchNotification
@@ -53,6 +73,14 @@ namespace VVVV.Utils.IO
             : base(TouchNotificationKind.TouchMove, position, clientArea, id, primary, contactArea, touchDeviceID)
         {
         }
+
+        public TouchMoveNotification(Point position, Size clientArea, int id, bool primary, Size contactArea, long touchDeviceID, object sender)
+            : base(TouchNotificationKind.TouchMove, position, clientArea, id, primary, contactArea, touchDeviceID, sender)
+        {
+        }
+
+        public override INotification WithSender(object sender)
+            => new TouchMoveNotification(Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
     }
 
     public class TouchUpNotification : TouchNotification
@@ -61,5 +89,13 @@ namespace VVVV.Utils.IO
             : base(TouchNotificationKind.TouchUp, position, clientArea, id, primary, contactArea, touchDeviceID)
         {
         }
+
+        public TouchUpNotification(Point position, Size clientArea, int id, bool primary, Size contactArea, long touchDeviceID, object sender)
+            : base(TouchNotificationKind.TouchUp, position, clientArea, id, primary, contactArea, touchDeviceID, sender)
+        {
+        }
+
+        public override INotification WithSender(object sender)
+            => new TouchMoveNotification(Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
     }
 }

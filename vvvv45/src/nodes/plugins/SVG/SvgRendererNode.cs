@@ -22,6 +22,8 @@ using VVVV.Utils.SlimDX;
 using VVVV.Utils.ManagedVCL;
 using Svg;
 using Svg.Transforms;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 
 #endregion usings
 
@@ -58,8 +60,29 @@ namespace VVVV.Nodes
 		
 		[Input("Size", StepSize = 1)]
 		IDiffSpread<Vector2> FSizeIn;
-		
-		[Output("Document")]
+
+        [Input("Smoothing Mode", DefaultEnumEntry = "AntiAlias", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<SmoothingMode> FSmoothingModeIn;
+
+        [Input("Compositing Quality", DefaultEnumEntry = "HighQuality", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<CompositingQuality> FCompositingQualityIn;
+
+        [Input("Compositing Mode", DefaultEnumEntry = "SourceOver", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<CompositingMode> FCompositingModeIn;
+
+        [Input("Pixel Offset Mode", DefaultEnumEntry = "Half", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<PixelOffsetMode> FPixelOffsetModeIn;
+
+        [Input("Interpolation Mode", DefaultEnumEntry = "Default", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<InterpolationMode> FInterpolationModeIn;
+
+        [Input("Text Rendering Hint", DefaultEnumEntry = "AntiAlias", Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<TextRenderingHint> FTextRenderingHintIn;
+
+        [Input("Text Contrast", DefaultValue = 1, Visibility = PinVisibility.OnlyInspector)]
+        IDiffSpread<int> FTextContrastIn;
+
+        [Output("Document")]
 		ISpread<SvgDocument> FOutput;
 		
 		[Output("Size")]
@@ -169,15 +192,13 @@ namespace VVVV.Nodes
 				}
 				
 				//clear bitmap
-				var g = Graphics.FromImage(FBitMap);
-				g.Clear(FBackgroundIn[0].Color);
-				g.Dispose();
-				
+
 				//also set controls backcolor so it does not flash when going fullscreen
 				if (FBackgroundIn.IsChanged)
 					this.BackColor = FBackgroundIn[0].Color;
-				
-				FSVGDoc.Draw(FBitMap);
+
+                Draw(FSVGDoc, FBitMap);
+
 				FPicBox.Image = FBitMap;
 			}
 		}
@@ -191,7 +212,33 @@ namespace VVVV.Nodes
 		{
 			get { return FBackgroundIn[0]; }
 		}
-	}
+
+        /// <summary>
+        /// Renders the <see cref="SvgDocument"/> into a given Bitmap <see cref="Bitmap"/>.
+        /// </summary>
+        public virtual void Draw(SvgDocument doc, Bitmap bitmap)
+        {
+            //Trace.TraceInformation("Begin Render");
+
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                g.Clear(FBackgroundIn[0].Color);
+
+                g.TextRenderingHint = FTextRenderingHintIn[0];
+                g.TextContrast = FTextContrastIn[0];
+                g.PixelOffsetMode = FPixelOffsetModeIn[0];
+                g.CompositingQuality = FCompositingQualityIn[0];
+                g.CompositingMode = FCompositingModeIn[0];
+                g.SmoothingMode = FSmoothingModeIn[0];
+                g.InterpolationMode = FInterpolationModeIn[0];
+
+                doc.Draw(g);
+            }
+
+            //Trace.TraceInformation("End Render");
+        }
+
+    }
 	
 	#region PluginInfo
 	[PluginInfo(Name = "AsDocument",

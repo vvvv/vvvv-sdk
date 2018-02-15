@@ -52,10 +52,10 @@ namespace VVVV.Nodes.Input
                     var subject = FSubjects[i];
                     var keyDowns = keyboardState.KeyCodes.Except(previousKeyboardState.KeyCodes);
                     foreach (var keyDown in keyDowns)
-                        subject.OnNext(new KeyDownNotification(keyDown));
+                        subject.OnNext(new KeyDownNotification(keyDown, this));
                     var keyUps = previousKeyboardState.KeyCodes.Except(keyboardState.KeyCodes);
                     foreach (var keyUp in keyUps)
-                        subject.OnNext(new KeyUpNotification(keyUp));
+                        subject.OnNext(new KeyUpNotification(keyUp, this));
                 }
                 FKeyboardStates[i] = keyboardState;
             }

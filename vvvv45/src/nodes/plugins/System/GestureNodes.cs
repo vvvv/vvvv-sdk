@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using VVVV.PluginInterfaces.V2.IO;
 using VVVV.Utils.IO;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
@@ -28,7 +29,13 @@ namespace VVVV.Nodes.Input
 
         [Output("Event Type")]
         public ISpread<GestureNotificationKind> GestureTypeOut;
-        [Output("Position")]
+        [Output("Position (Pixel) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ")]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
         [Output("Id")]
         public ISpread<int> IdOut;
@@ -50,6 +57,9 @@ namespace VVVV.Nodes.Input
             FGestureInfoSize = Marshal.SizeOf(new GESTUREINFO());
 
             GestureTypeOut.SliceCount = 0;
+            PositionPixelOut.SliceCount = 0;
+            PositionInProjectionSpaceOut.SliceCount = 0;
+            PositionInNormalizedProjectionOut.SliceCount = 0;
             PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
             DeviceIDOut.SliceCount = 0;
@@ -76,11 +86,11 @@ namespace VVVV.Nodes.Input
             base.SubclassCreated(subclass);
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var notifications = windowMessages
-                .Where(e => (e.Message == WM.GESTURENOTIFY) || (e.Message == WM.GESTURE))
-                .SelectMany<WMEventArgs, GestureNotification>(e => GenerateGestureNotifications(e));
+                .Where(e => (e.EventArgs.Message == WM.GESTURENOTIFY) || (e.EventArgs.Message == WM.GESTURE))
+                .SelectMany(e => GenerateGestureNotifications(e));
             GestureDeviceOut[0] = new GestureDevice(notifications);
 
             FEnumerator = GestureDeviceOut[0].Notifications
@@ -88,28 +98,29 @@ namespace VVVV.Nodes.Input
                     .GetEnumerator();
         }
 
-        private IEnumerable<GestureNotification> GenerateGestureNotifications(WMEventArgs e)
+        private IEnumerable<GestureNotification> GenerateGestureNotifications(EventPattern<WMEventArgs> e)
         {
-            if (e.Message == WM.GESTURENOTIFY)
+            var a = e.EventArgs;
+            if (a.Message == WM.GESTURENOTIFY)
             {
-                e.Handled = FEnabledIn[0];
+                a.Handled = FEnabledIn[0];
                 yield break;
             }
             else
             {
                 var gestureInfo = new GESTUREINFO();
                 gestureInfo.cbSize = FGestureInfoSize;
-                if (User32.GetGestureInfo(e.LParam, ref gestureInfo))
+                if (User32.GetGestureInfo(a.LParam, ref gestureInfo))
                 {
                     try
                     {
                         RECT cr;
-                        if (User32.GetClientRect(e.HWnd, out cr))
+                        if (User32.GetClientRect(a.HWnd, out cr))
                         {
                             var position = new Point(gestureInfo.x, gestureInfo.y);
-                            User32.ScreenToClient(e.HWnd, ref position);
+                            User32.ScreenToClient(a.HWnd, ref position);
 
-                            e.Handled = true;
+                            a.Handled = true;
                             switch ((GestureNotificationKind)gestureInfo.dwID)
                             {
                                 case GestureNotificationKind.GestureBegin:
@@ -120,7 +131,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureEnd:
                                     yield return new GestureEndNotification(position,
@@ -130,7 +142,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureZoom:
                                     yield return new GestureZoomNotification(position,
@@ -140,7 +153,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GesturePan:
                                     yield return new GesturePanNotification(position,
@@ -150,7 +164,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureRotate:
                                     yield return new GestureRotateNotification(position,
@@ -160,7 +175,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GesturePressAndTap:
                                     yield return new GesturePressAndTapNotification(position,
@@ -170,7 +186,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 case GestureNotificationKind.GestureTwoFingerTap:
                                     yield return new GestureTwoFingerTapNotification(position,
@@ -180,7 +197,8 @@ namespace VVVV.Nodes.Input
                                                                 gestureInfo.hwndTarget.ToInt64(),
                                                                 gestureInfo.dwFlags,
                                                                 gestureInfo.ullArguments,
-                                                                gestureInfo.cbExtraArgs);
+                                                                gestureInfo.cbExtraArgs,
+                                                                e.Sender);
                                     break;
                                 default:
                                     yield break;
@@ -189,7 +207,7 @@ namespace VVVV.Nodes.Input
                     }
                     finally
                     {
-                        e.Handled = false;
+                        a.Handled = false;
                     }
                 }
                 yield break;
@@ -204,18 +222,28 @@ namespace VVVV.Nodes.Input
 
             GestureTypeOut.SliceCount = notifications.Count;
             PositionOut.SliceCount = notifications.Count;
+            PositionInProjectionSpaceOut.SliceCount = notifications.Count;
+            PositionInNormalizedProjectionOut.SliceCount = notifications.Count;
+            PositionPixelOut.SliceCount = notifications.Count;
             IdOut.SliceCount = notifications.Count;
             DeviceIDOut.SliceCount = notifications.Count;
             for (int i=0; i<notifications.Count; i++)
             {
-                GestureTypeOut[i] = notifications[i].Kind;
-                PositionOut[i] = VMath.Map(new Vector2D(notifications[i].Position.X,notifications[i].Position.Y), 
-                                            Vector2D.Zero,
-                                            new Vector2D(notifications[i].ClientArea.Width, notifications[i].ClientArea.Width), 
-                                            new Vector2D(-1, 1), 
-                                            new Vector2D(1, -1), TMapMode.Float);
-                IdOut[i] = notifications[i].Id;
-                DeviceIDOut[i] = notifications[i].GestureDeviceID;
+                var n = notifications[i];
+                GestureTypeOut[i] = n.Kind;
+
+                Vector2D inNormalizedProjection, inProjection;
+
+                SpaceHelpers.MapFromPixels(n.Position, n.Sender, n.ClientArea,
+                    out inNormalizedProjection, out inProjection);
+
+                PositionOut[i] = MouseExtensions.GetLegacyMousePositon(n.Position, n.ClientArea);
+                PositionInProjectionSpaceOut[i] = inProjection;
+                PositionInNormalizedProjectionOut[i] = inNormalizedProjection;
+                PositionPixelOut[i] = new Vector2D(n.Position.X, n.Position.Y);
+
+                IdOut[i] = n.Id;
+                DeviceIDOut[i] = n.GestureDeviceID;
             }
         }
 
@@ -235,7 +263,13 @@ namespace VVVV.Nodes.Input
         [Input("Gesture Device", IsSingle = true)]
         public ISpread<GestureDevice> FInput;
 
-        [Output("Position", Order = -1)]
+        [Output("Position (Pixel) ", Order = -4, Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ", Order = -3)]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Order = -2, Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Order = -1, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
 
         [Output("Id")]
@@ -280,16 +314,26 @@ namespace VVVV.Nodes.Input
             UseGestures(gestures);
 
             PositionOut.SliceCount = gestures.Count;
+            PositionInProjectionSpaceOut.SliceCount = gestures.Count;
+            PositionInNormalizedProjectionOut.SliceCount = gestures.Count;
+            PositionPixelOut.SliceCount = gestures.Count;
             IdOut.SliceCount = gestures.Count;
             DeviceIDOut.SliceCount = gestures.Count;
             for (int i = 0; i < gestures.Count; i++)
             {
-                var position = new Vector2D(gestures[i].Position.X, gestures[i].Position.Y);
-                var clientArea = new Vector2D(gestures[i].ClientArea.Width, gestures[i].ClientArea.Height);
-                var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
-                PositionOut[i] = normalizedPosition;
-                IdOut[i] = gestures[i].Id;
-                DeviceIDOut[i] = gestures[i].GestureDeviceID;
+                var g = gestures[i];
+                Vector2D inNormalizedProjection, inProjection;
+
+                SpaceHelpers.MapFromPixels(g.Position, g.Sender, g.ClientArea,
+                    out inNormalizedProjection, out inProjection);
+
+                PositionOut[i] = MouseExtensions.GetLegacyMousePositon(g.Position, g.ClientArea);
+                PositionInProjectionSpaceOut[i] = inProjection;
+                PositionInNormalizedProjectionOut[i] = inNormalizedProjection;
+                PositionPixelOut[i] = new Vector2D(g.Position.X, g.Position.Y);
+
+                IdOut[i] = g.Id;
+                DeviceIDOut[i] = g.GestureDeviceID;
             }
         }
 
@@ -437,7 +481,13 @@ namespace VVVV.Nodes.Input
         [Input("Queue Mode", IsSingle = true, DefaultEnumEntry = "Discard")]
         public ISpread<QueueMode> QueueModeIn;
 
-        [Output("Position", Order = -1)]
+        [Output("Position (Pixel) ", Order = -4, Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionPixelOut;
+        [Output("Position (Projection) ", Order = -3)]
+        public ISpread<Vector2D> PositionInProjectionSpaceOut;
+        [Output("Position (Normalized Projection) ", Order = -2, Visibility = PinVisibility.OnlyInspector)]
+        public ISpread<Vector2D> PositionInNormalizedProjectionOut;
+        [Output("Position (Normalized Window) ", Order = -1, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<Vector2D> PositionOut;
 
         [Output("Id")]
@@ -454,6 +504,9 @@ namespace VVVV.Nodes.Input
         {
             FGestureFilterKind = SetGestureKindFilter();
 
+            PositionPixelOut.SliceCount = 0;
+            PositionInProjectionSpaceOut.SliceCount = 0;
+            PositionInNormalizedProjectionOut.SliceCount = 0;
             PositionOut.SliceCount = 0;
             IdOut.SliceCount = 0;
             DeviceIDOut.SliceCount = 0;
@@ -470,18 +523,27 @@ namespace VVVV.Nodes.Input
                     UseGesture(g, isFilterMatch, index);
                     if (isFilterMatch)
                     {
-                        var position = new Vector2D(g.Position.X, g.Position.Y);
-                        var clientArea = new Vector2D(g.ClientArea.Width, g.ClientArea.Height);
-                        var normalizedPosition = VMath.Map(position, Vector2D.Zero, clientArea, new Vector2D(-1, 1), new Vector2D(1, -1), TMapMode.Float);
+                        Vector2D inNormalizedProjection, inProjection;
+                        SpaceHelpers.MapFromPixels(g.Position, g.Sender, g.ClientArea,
+                            out inNormalizedProjection, out inProjection);
+                        var normalizedPosition = MouseExtensions.GetLegacyMousePositon(g.Position, g.ClientArea);
+                        var inPixels = new Vector2D(g.Position.X, g.Position.Y);
 
                         if (index < 0)
                         {
+                            PositionPixelOut.Add(inPixels);
+                            PositionInProjectionSpaceOut.Add(inProjection);
+                            PositionInNormalizedProjectionOut.Add(inNormalizedProjection);
                             PositionOut.Add(normalizedPosition);
+
                             IdOut.Add(g.Id);
                             DeviceIDOut.Add(g.GestureDeviceID);
                         }
                         else
                         {
+                            PositionPixelOut[index] = inPixels;
+                            PositionInProjectionSpaceOut[index] = inProjection;
+                            PositionInNormalizedProjectionOut[index] = inNormalizedProjection;
                             PositionOut[index] = normalizedPosition;
                             IdOut[index] = g.Id;
                             DeviceIDOut[index] = g.GestureDeviceID;
@@ -489,6 +551,9 @@ namespace VVVV.Nodes.Input
                     }
                     else if (index >= 0)
                     {
+                        PositionPixelOut.RemoveAt(index);
+                        PositionInProjectionSpaceOut.RemoveAt(index);
+                        PositionInNormalizedProjectionOut.RemoveAt(index);
                         PositionOut.RemoveAt(index);
                         IdOut.RemoveAt(index);
                         DeviceIDOut.RemoveAt(index);

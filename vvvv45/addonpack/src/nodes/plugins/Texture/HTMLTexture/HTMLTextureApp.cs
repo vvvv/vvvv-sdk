@@ -205,8 +205,18 @@ namespace VVVV.Nodes.Texture.HTML
                                 using (var disposable = new CompositeDisposable())
                                 using (args = message.Arguments)
                                 {
-                                    var dict = ToDictionaryValue(arg, disposable);
-                                    args.SetDictionary(2, dict);
+                                    if (arg.IsArray)
+                                    {
+                                        var value = ToListValue(arg, disposable);
+                                        args.SetString(2, "list");
+                                        args.SetList(3, value);
+                                    }
+                                    else
+                                    {
+                                        var value = ToDictionaryValue(arg, disposable);
+                                        args.SetString(2, "dict");
+                                        args.SetDictionary(3, value);
+                                    }
                                     Browser.SendProcessMessage(CefProcessId.Browser, message);
                                 }
                                 returnValue = null;

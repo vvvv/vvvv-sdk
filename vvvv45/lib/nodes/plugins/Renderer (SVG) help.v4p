@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45debug26.1.dtd" >
-   <PATCH nodename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (SVG) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (SVG) help.v4p" systemname="Renderer (SVG) help">
-   <BOUNDS height="6765" left="12615" top="2010" type="Window" width="7560">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (SVG) help.v4p" filename="C:\Users\Joreg\dev\github\vvvv\public\vvvv45\lib\nodes\plugins\Renderer (SVG) help.v4p" systemname="Renderer (SVG) help">
+   <BOUNDS height="8415" left="6435" top="2145" type="Window" width="8475">
    </BOUNDS>
    <NODE componentmode="InABox" id="1" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="195" top="495" type="Node" width="570">
@@ -32,14 +32,14 @@
    <PIN pinname="Size" slicecount="1" values="12">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="16" nodename="Renderer (SVG)" systemname="Renderer (SVG)">
+   <NODE componentmode="InABox" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" id="16" nodename="Renderer (SVG)" systemname="RENDERER (SVG)">
    <BOUNDS height="100" left="510" top="3360" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="2940" left="510" top="3360" type="Box" width="3855">
    </BOUNDS>
    <BOUNDS height="4500" left="14745" top="5955" type="Window" width="6000">
    </BOUNDS>
-   <PIN pinname="Layer" visible="1">
+   <PIN pinname="Layers" visible="1">
    </PIN>
    <PIN pinname="Document" visible="1">
    </PIN>
@@ -64,7 +64,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="13" componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Group (SVG)" systemname="Group (SVG)">
+   <NODE id="13" componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Group (SVG)" systemname="GROUP (SVG)">
    <BOUNDS type="Node" height="100" left="5805" top="5805" width="100">
    </BOUNDS>
    </NODE>
@@ -105,7 +105,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" values="0,0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -125,7 +125,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" values="2.66666666666667,2">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -143,7 +143,7 @@
    </BOUNDS>
    <PIN pinname="Y Input Value" slicecount="2" values="0.5,0">
    </PIN>
-   <PIN pinname="Units" slicecount="1" values="||" encoded="0">
+   <PIN pinname="Units" slicecount="1" encoded="0" values="||">
    </PIN>
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
@@ -159,7 +159,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5415" top="2940" width="1560" height="270">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Background Color|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Background Color|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -173,7 +173,7 @@
    </BOUNDS>
    <BOUNDS type="Box" left="5415" top="2070" width="1995" height="660">
    </BOUNDS>
-   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Size. If 0/0 renderers windowsize is taken|" encoded="0">
+   <PIN pinname="Input String" visible="0" slicecount="1" encoded="0" values="|&lt; Size. If 0/0 renderers windowsize is taken|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -186,6 +186,36 @@
    <BOUNDS height="0" left="510" top="2595" type="Node" width="0">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="16" dstpinname="Layer" srcnodeid="32" srcpinname="Layer">
+   <LINK dstnodeid="16" dstpinname="Layers" srcnodeid="32" srcpinname="Layer">
    </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="33">
+   <BOUNDS type="Node" left="795" top="7050" width="7005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="795" top="7050" width="7005" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="https://msdn.microsoft.com/en-us/library/system.drawing.graphics_properties(v=vs.110).aspx">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Url">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34">
+   <BOUNDS type="Node" left="375" top="6540" width="10695" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="375" top="6540" width="7035" height="480">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|If you select the Renderer and open the Inspektor (CTRL+I) you can change the rendering quality. See this link for the documentation of the rendering properties:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
    </PATCH>

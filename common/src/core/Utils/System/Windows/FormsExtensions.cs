@@ -33,39 +33,39 @@ namespace System.Windows.Forms
             return (buttons & MouseButtons.XButton2) != 0;
         }
 
-        public static MouseMoveNotification ToMouseMoveNotification(this MouseEventArgs args, Control relativeTo)
+        public static MouseMoveNotification ToMouseMoveNotification(this MouseEventArgs args, Control relativeTo, object sender = null)
         {
-            return new MouseMoveNotification(args.Location, relativeTo.ClientSize);
+            return new MouseMoveNotification(args.Location, relativeTo.ClientSize, sender);
         }
 
-        public static MouseDownNotification ToMouseDownNotification(this MouseEventArgs args, Control relativeTo)
+        public static MouseDownNotification ToMouseDownNotification(this MouseEventArgs args, Control relativeTo, object sender = null)
         {
-            return new MouseDownNotification(args.Location, relativeTo.ClientSize, args.Button);
+            return new MouseDownNotification(args.Location, relativeTo.ClientSize, args.Button, sender);
         }
 
-        public static MouseUpNotification ToMouseUpNotification(this MouseEventArgs args, Control relativeTo)
+        public static MouseUpNotification ToMouseUpNotification(this MouseEventArgs args, Control relativeTo, object sender = null)
         {
-            return new MouseUpNotification(args.Location, relativeTo.ClientSize, args.Button);
+            return new MouseUpNotification(args.Location, relativeTo.ClientSize, args.Button, sender);
         }
 
-        public static MouseWheelNotification ToMouseWheelNotification(this MouseEventArgs args, Control relativeTo)
+        public static MouseWheelNotification ToMouseWheelNotification(this MouseEventArgs args, Control relativeTo, object sender = null)
         {
-            return new MouseWheelNotification(args.Location, relativeTo.ClientSize, args.Delta);
+            return new MouseWheelNotification(args.Location, relativeTo.ClientSize, args.Delta, sender);
         }
 
-        public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs)
+        public static KeyDownNotification ToKeyDownNotification(this KeyEventArgs eventArgs, object sender = null)
         {
-            return new KeyDownNotification(eventArgs);
+            return new KeyDownNotification(eventArgs, sender);
         }
 
-        public static KeyUpNotification ToKeyUpNotification(this KeyEventArgs eventArgs)
+        public static KeyUpNotification ToKeyUpNotification(this KeyEventArgs eventArgs, object sender = null)
         {
-            return new KeyUpNotification(eventArgs.KeyCode);
+            return new KeyUpNotification(eventArgs.KeyCode, sender);
         }
 
-        public static KeyPressNotification ToKeyPressNotification(this KeyPressEventArgs eventArgs)
+        public static KeyPressNotification ToKeyPressNotification(this KeyPressEventArgs eventArgs, object sender = null)
         {
-            return new KeyPressNotification(eventArgs.KeyChar);
+            return new KeyPressNotification(eventArgs.KeyChar, sender);
         }
     }
 }

@@ -33,25 +33,25 @@ namespace VVVV.Nodes.Input
 
         private PluginContainer FKeyboardStatesSplitNode;
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var keyNotifications = windowMessages
-                .Select<WMEventArgs, KeyNotification>(e =>
+                .Select<EventPattern<WMEventArgs>, KeyNotification>(e =>
                 {
-                    // Special keys like TAB and ALT have some weired high bits set (WM.APP, WM.USER and some other ones I couldn't relate to any defined window message).
-                    // So just filter for what we're interested in.
-                    var msg = e.Message & (WM)0x01FF;
+                    var a = e.EventArgs;
+                    // DX9 does not send regular key up and DX11 does not send regular key down for TAB key - no idea why, so hack it (issue #3269)
+                    var msg = ApplyTabHack(a);
                     switch (msg)
                     {
                         case WM.KEYDOWN:
                         case WM.SYSKEYDOWN:
-                            return new KeyDownNotification((Keys)e.WParam);
+                            return new KeyDownNotification((Keys)a.WParam, e.Sender);
                         case WM.CHAR:
                         case WM.SYSCHAR:
-                            return new KeyPressNotification((char)e.WParam);
+                            return new KeyPressNotification((char)a.WParam, e.Sender);
                         case WM.KEYUP:
                         case WM.SYSKEYUP:
-                            return new KeyUpNotification((Keys)e.WParam);
+                            return new KeyUpNotification((Keys)a.WParam, e.Sender);
                     }
                     return null;
                 }
@@ -63,13 +63,46 @@ namespace VVVV.Nodes.Input
                 .Select(w => w.UserInputWindow != null)
                 .DistinctUntilChanged()
                 .Where(assigned => !assigned)
-                .Select(_ => new KeyboardLostNotification());
-            var disabledNotifications = disabled.Select(_ => new KeyboardLostNotification());
+                .Select(_ => new KeyboardLostNotification(null));
+            var disabledNotifications = disabled.Select(_ => new KeyboardLostNotification(null));
             KeyboardOut[0] = new Keyboard(keyNotifications.Merge(deviceLostNotifications).Merge(disabledNotifications));
 
             // Create a keyboard states node for us and connect our keyboard out to its keyboard in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "KeyStates" && n.Category == "Keyboard" && n.Version == "Split");
             FKeyboardStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Keyboard", c => KeyboardOut);
+        }
+
+        private static WM ApplyTabHack(WMEventArgs a)
+        {
+            var msg = a.Message;
+            var filteredMsg = msg & (WM)0x01FF;
+            switch (filteredMsg)
+            {
+                case WM.KEYDOWN:
+                case WM.SYSKEYDOWN:
+                case WM.CHAR:
+                case WM.SYSCHAR:
+                case WM.KEYUP:
+                case WM.SYSKEYUP:
+                    // Check again that it's not the real message
+                    switch (msg)
+                    {
+                        case WM.KEYDOWN:
+                        case WM.SYSKEYDOWN:
+                        case WM.CHAR:
+                        case WM.SYSCHAR:
+                        case WM.KEYUP:
+                        case WM.SYSKEYUP:
+                            break;
+                        default:
+                            // Indeed the weired one - check for tab only
+                            if ((Keys)a.WParam == Keys.Tab)
+                                return filteredMsg;
+                            break;
+                    }
+                    break;
+            }
+            return msg;
         }
 
         public override void Dispose()
@@ -104,8 +137,8 @@ namespace VVVV.Nodes.Input
             var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
                 .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
                 .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
-                .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
-                .Where(args => args != null)
+                .Select(ep => new EventPattern<KeyboardInputEventArgs>(ep.Sender, ep.EventArgs.GetCorrectedKeyboardInputEventArgs()))
+                .Where(ep => ep.EventArgs != null)
                 .SelectMany(args => GenerateKeyNotifications(args, slice));
             var deviceLostNotifications = GetKeyboardLostNotifications(slice);
             return new Keyboard(notifications.Merge(deviceLostNotifications), true);
@@ -115,8 +148,8 @@ namespace VVVV.Nodes.Input
         {
             var notifications = Observable.FromEventPattern<KeyboardInputEventArgs>(typeof(Device), "KeyboardInput")
                 .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice])
-                .Select(ep => ep.EventArgs.GetCorrectedKeyboardInputEventArgs())
-                .Where(args => args != null)
+                .Select(ep => new EventPattern<KeyboardInputEventArgs>(ep.Sender, ep.EventArgs.GetCorrectedKeyboardInputEventArgs()))
+                .Where(ep => ep.EventArgs != null)
                 .SelectMany(args => GenerateKeyNotifications(args, slice));
             var deviceLostNotifications = GetKeyboardLostNotifications(slice);
             return new Keyboard(notifications.Merge(deviceLostNotifications), true);
@@ -132,11 +165,12 @@ namespace VVVV.Nodes.Input
             return EnabledIn.ToObservable(slice)
                 .DistinctUntilChanged()
                 .Where(enabled => !enabled)
-                .Select(_ => new KeyboardLostNotification());
+                .Select(_ => new KeyboardLostNotification(this));
         }
 
-        private IEnumerable<KeyNotification> GenerateKeyNotifications(KeyboardInputEventArgs args, int slice)
+        private IEnumerable<KeyNotification> GenerateKeyNotifications(EventPattern<KeyboardInputEventArgs> ep, int slice)
         {
+            var args = ep.EventArgs;
             DeviceOut[slice].CapsLock = Control.IsKeyLocked(Keys.CapsLock);
             var key = args.Key;
             switch (args.State)
@@ -147,18 +181,18 @@ namespace VVVV.Nodes.Input
                     {
                         // We need to add the CONTROL key in case of right ALT key
                         if ((args.ScanCodeFlags & ScanCodeFlags.E0) > 0)
-                            yield return new KeyDownNotification(Keys.ControlKey);
+                            yield return new KeyDownNotification(Keys.ControlKey, ep.Sender);
                     }
-                    yield return new KeyDownNotification(key);
+                    yield return new KeyDownNotification(key, ep.Sender);
                     break;
                 case KeyState.KeyUp:
                 case KeyState.SystemKeyUp:
-                    yield return new KeyUpNotification(key);
+                    yield return new KeyUpNotification(key, ep.Sender);
                     if (key == Keys.Menu)
                     {
                         // We need to add the CONTROL key in case of right ALT key
                         if ((args.ScanCodeFlags & ScanCodeFlags.E0) > 0)
-                            yield return new KeyUpNotification(Keys.ControlKey);
+                            yield return new KeyUpNotification(Keys.ControlKey, ep.Sender);
                     }
                     break;
             }
@@ -213,19 +247,19 @@ namespace VVVV.Nodes.Input
                     switch (EventTypeIn[bin][i])
                     {
                         case KeyNotificationKind.KeyDown:
-                            notification = new KeyDownNotification((Keys)KeyCodeIn[bin][i]);
+                            notification = new KeyDownNotification((Keys)KeyCodeIn[bin][i], this);
                             break;
                         case KeyNotificationKind.KeyPress:
                             var s = KeyCharIn[bin][i];
                             notification = s.Length > 0
-                                ? new KeyPressNotification(s[0])
+                                ? new KeyPressNotification(s[0], this)
                                 : null;
                             break;
                         case KeyNotificationKind.KeyUp:
-                            notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i]);
+                            notification = new KeyUpNotification((Keys)KeyCodeIn[bin][i], this);
                             break;
                         case KeyNotificationKind.DeviceLost:
-                            notification = new KeyboardLostNotification();
+                            notification = new KeyboardLostNotification(this);
                             break;
                         default:
                             throw new NotImplementedException();

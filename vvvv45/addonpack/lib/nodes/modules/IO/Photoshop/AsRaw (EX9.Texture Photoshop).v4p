@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha33.5.dtd" >
-   <PATCH nodename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (EX9.Texture Photoshop).v4p" systemname="AsRaw (EX9.Texture Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (EX9.Texture Photoshop).v4p" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.10.dtd" >
+   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (EX9.Texture Photoshop).v4p" systemname="AsRaw (EX9.Texture Photoshop)" filename="C:\Work\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\IO\Photoshop\AsRaw (EX9.Texture Photoshop).v4p" scrollx="0" scrolly="0">
    <BOUNDS type="Window" left="8580" top="3825" width="11610" height="11415">
    </BOUNDS>
-   <PACK Name="addonpack" Version="33.3.0">
+   <PACK Name="addonpack" Version="35.9.0">
    </PACK>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="1" systemname="IOBox (Node)">
    <BOUNDS type="Box" left="5640" top="690" width="795" height="240">
@@ -74,26 +74,16 @@
    </NODE>
    <LINK srcnodeid="77" srcpinname="Output" dstnodeid="74" dstpinname="Input 1">
    </LINK>
-   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="89">
-   <BOUNDS type="Node" left="5370" top="1710" width="870" height="270">
-   </BOUNDS>
-   <PIN pinname="Enum" visible="1" slicecount="1" values="(nil)">
-   </PIN>
-   <PIN pinname="Ord Value" visible="1">
-   </PIN>
-   </NODE>
    <NODE systemname="Add (Value)" nodename="Add (Value)" componentmode="Hidden" id="98">
    <BOUNDS type="Node" left="4185" top="4230" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" visible="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="98" dstpinname="Input 1">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="99" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4455" top="3900" width="405" height="240">
    </BOUNDS>
@@ -110,14 +100,6 @@
    </LINK>
    <LINK srcnodeid="98" srcpinname="Output" dstnodeid="77" dstpinname="Input">
    </LINK>
-   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="100" systemname="IOBox (Enumerations)">
-   <BOUNDS type="Box" left="6510" top="1335" width="1935" height="240">
-   </BOUNDS>
-   <BOUNDS type="Node" left="6510" top="1335" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input Enum" slicecount="1" visible="1" values="PhotoshopImageFormat">
-   </PIN>
-   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="105" systemname="IOBox (String)">
    <BOUNDS type="Node" left="2325" top="4800" width="3240" height="270">
    </BOUNDS>
@@ -374,14 +356,6 @@
    </LINK>
    <INFO author="vvvv group" description="Prepares a texture for Photoshop." tags="psd">
    </INFO>
-   <NODE systemname="NULL (Enumerations)" nodename="NULL (Enumerations)" componentmode="Hidden" id="139">
-   <BOUNDS type="Node" left="6510" top="1725" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Receive" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="100" srcpinname="Output Enum" dstnodeid="139" dstpinname="Enum">
-   </LINK>
    <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="140" systemname="IOBox (Enumerations)">
    <BOUNDS type="Box" left="6915" top="690" width="870" height="270">
    </BOUNDS>
@@ -394,10 +368,6 @@
    <PIN pinname="Output Enum" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="140" srcpinname="Output Enum" dstnodeid="139" dstpinname="Receive">
-   </LINK>
-   <LINK srcnodeid="140" srcpinname="Output Enum" dstnodeid="89" dstpinname="Enum">
-   </LINK>
    <NODE systemname="AsPixmap" filename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsPixmap.v4p" nodename="%VVVV%\addonpack\lib\nodes\modules\IO\Photoshop\AsPixmap.v4p" componentmode="Hidden" id="141">
    <BOUNDS type="Node" left="8805" top="3780" width="1335" height="270">
    </BOUNDS>
@@ -421,7 +391,7 @@
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
-   <PIN pinname="Switch" visible="1">
+   <PIN pinname="Switch" visible="1" slicecount="1" values="0">
    </PIN>
    </NODE>
    <LINK srcnodeid="141" srcpinname="Output" dstnodeid="142" dstpinname="Input 2">
@@ -451,8 +421,6 @@
    <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="144" dstpinname="Set">
    </LINK>
    <LINK srcnodeid="144" srcpinname="Output" dstnodeid="142" dstpinname="Input 1">
-   </LINK>
-   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="142" dstpinname="Switch">
    </LINK>
    <LINK srcnodeid="1" srcpinname="Output Node" dstnodeid="60" dstpinname="Texture">
    </LINK>
@@ -501,15 +469,13 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="148">
    <BOUNDS type="Node" left="10095" top="2790" width="720" height="270">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="148" dstpinname="Input 1">
-   </LINK>
    <LINK srcnodeid="148" srcpinname="Output" dstnodeid="147" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="147" srcpinname="Output" dstnodeid="141" dstpinname="Apply">
@@ -531,15 +497,13 @@
    <NODE systemname="EQ (Value)" nodename="EQ (Value)" componentmode="Hidden" id="151">
    <BOUNDS type="Node" left="7620" top="2790" width="100" height="100">
    </BOUNDS>
-   <PIN pinname="Input 1" visible="1">
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="0">
    </PIN>
    <PIN pinname="Input 2" slicecount="1" visible="1" values="1">
    </PIN>
    <PIN pinname="Output" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="151" dstpinname="Input 1">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="150" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="7830" top="2415" width="390" height="240">
    </BOUNDS>
@@ -569,5 +533,25 @@
    <LINK srcnodeid="151" srcpinname="Output" dstnodeid="152" dstpinname="Input 1">
    </LINK>
    <LINK srcnodeid="152" srcpinname="Output" dstnodeid="60" dstpinname="Read">
+   </LINK>
+   <NODE systemname="Enum2Ord (Enumerations)" nodename="Enum2Ord (Enumerations)" componentmode="Hidden" id="89">
+   <BOUNDS type="Node" left="5370" top="1710" width="870" height="270">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1" slicecount="1" values="(nil)">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="PhotoshopImageFormat">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="98" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="140" srcpinname="Output Enum" dstnodeid="89" dstpinname="Enum">
+   </LINK>
+   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="142" dstpinname="Switch">
+   </LINK>
+   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="148" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="89" srcpinname="Ord Value" dstnodeid="151" dstpinname="Input 1">
    </LINK>
    </PATCH>

@@ -93,33 +93,33 @@ namespace VVVV.Nodes.Input
                             TMapMode.Float);
                         var position = new Point((int)vInScreenCoordinates.x, (int)vInScreenCoordinates.y);
                     if (mouseState.X != FLastMouseState.X || mouseState.Y != FLastMouseState.Y)
-                        FMouseNotificationSubject.OnNext(new MouseMoveNotification(position, virtualScreenSize));
+                        FMouseNotificationSubject.OnNext(new MouseMoveNotification(position, virtualScreenSize, this));
 
                     if (mouseState.IsLeft && !FLastMouseState.IsLeft)
-                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Left));
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Left, this));
                     else if (!mouseState.IsLeft && FLastMouseState.IsLeft)
-                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Left));
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Left, this));
                     if (mouseState.IsMiddle && !FLastMouseState.IsMiddle)
-                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Middle));
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Middle, this));
                     else if (!mouseState.IsMiddle && FLastMouseState.IsMiddle)
-                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Middle));
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Middle, this));
                     if (mouseState.IsRight && !FLastMouseState.IsRight)
-                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Right));
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.Right, this));
                     else if (!mouseState.IsRight && FLastMouseState.IsRight)
-                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Right));
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.Right, this));
                     if (mouseState.IsXButton1 && !FLastMouseState.IsXButton1)
-                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton1));
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton1, this));
                     else if (!mouseState.IsXButton1 && FLastMouseState.IsXButton1)
-                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton1));
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton1, this));
                     if (mouseState.IsXButton2 && !FLastMouseState.IsXButton2)
-                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton2));
+                        FMouseNotificationSubject.OnNext(new MouseDownNotification(position, virtualScreenSize, MouseButtons.XButton2, this));
                     else if (!mouseState.IsXButton2 && FLastMouseState.IsXButton2)
-                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton2));
+                        FMouseNotificationSubject.OnNext(new MouseUpNotification(position, virtualScreenSize, MouseButtons.XButton2, this));
 
                     if (mouseState.MouseWheel != FLastMouseState.MouseWheel)
                     {
                         var delta = mouseState.MouseWheel - FLastMouseState.MouseWheel;
-                        FMouseNotificationSubject.OnNext(new MouseWheelNotification(position, virtualScreenSize, delta * Const.WHEEL_DELTA));
+                        FMouseNotificationSubject.OnNext(new MouseWheelNotification(position, virtualScreenSize, delta * Const.WHEEL_DELTA, this));
                     }
 
                     FLastMouseState = mouseState;
@@ -147,57 +147,58 @@ namespace VVVV.Nodes.Input
             base.Dispose();
         }
 
-        protected override void Initialize(IObservable<WMEventArgs> windowMessages, IObservable<bool> disabled)
+        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
         {
             var mouseNotifications = windowMessages
-                .Where(e => e.Message >= WM.MOUSEFIRST && e.Message <= WM.MOUSELAST)
-                .Select<WMEventArgs, MouseNotification>(e =>
+                .Where(e => e.EventArgs.Message >= WM.MOUSEFIRST && e.EventArgs.Message <= WM.MOUSELAST)
+                .Select<EventPattern<WMEventArgs>, MouseNotification>(e =>
                 {
                     RECT cr;
-                    if (User32.GetClientRect(e.HWnd, out cr))
+                    var a = e.EventArgs;
+                    if (User32.GetClientRect(a.HWnd, out cr))
                     {
-                        var pos = e.LParam.ToInt32();
-                        var lParam = e.LParam;
-                        var wParam = e.WParam;
+                        var pos = a.LParam.ToInt32();
+                        var lParam = a.LParam;
+                        var wParam = a.WParam;
                         var position = new Point(lParam.LoWord(), lParam.HiWord());
                         var clientArea = new Size(cr.Width, cr.Height);
 
-                        switch (e.Message)
+                        switch (a.Message)
                         {
                             case WM.MOUSEWHEEL:
                                 unchecked
                                 {
                                     var wheel = wParam.HiWord();
-                                    return new MouseWheelNotification(position, clientArea, wheel);
+                                    return new MouseWheelNotification(position, clientArea, wheel, this);
                                 }
                             case WM.MOUSEMOVE:
-                                return new MouseMoveNotification(position, clientArea);
+                                return new MouseMoveNotification(position, clientArea, this);
                             case WM.LBUTTONDOWN:
                             case WM.LBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Left);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Left, this);
                             case WM.LBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Left);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Left, this);
                             case WM.MBUTTONDOWN:
                             case WM.MBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Middle);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Middle, this);
                             case WM.MBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Middle);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Middle, this);
                             case WM.RBUTTONDOWN:
                             case WM.RBUTTONDBLCLK:
-                                return new MouseDownNotification(position, clientArea, MouseButtons.Right);
+                                return new MouseDownNotification(position, clientArea, MouseButtons.Right, this);
                             case WM.RBUTTONUP:
-                                return new MouseUpNotification(position, clientArea, MouseButtons.Right);
+                                return new MouseUpNotification(position, clientArea, MouseButtons.Right, this);
                             case WM.XBUTTONDOWN:
                             case WM.XBUTTONDBLCLK:
                                 if ((wParam.HiWord() & 0x0001) > 0)
-                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton1);
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton1, this);
                                 else
-                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton2);
+                                    return new MouseDownNotification(position, clientArea, MouseButtons.XButton2, this);
                             case WM.XBUTTONUP:
                                 if ((wParam.HiWord() & 0x0001) > 0)
-                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton1);
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton1, this);
                                 else
-                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton2);
+                                    return new MouseUpNotification(position, clientArea, MouseButtons.XButton2, this);
                         }
                     }
                     return null;
