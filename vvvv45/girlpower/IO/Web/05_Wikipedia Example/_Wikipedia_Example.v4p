@@ -1,0 +1,323 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.5.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Web\05_Wikipedia Example\_Wikipedia_Example.v4p" systemname="_root" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\IO\Web\01_WikipediaParcer\_root.v4p">
+   <BOUNDS type="Window" left="0" top="0" width="10155" height="7170">
+   </BOUNDS>
+   <NODE systemname="WikipediaParser" filename="WikipediaParser.v4p" nodename="WikipediaParser.v4p" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="6795" top="2955" width="2025" height="270">
+   </BOUNDS>
+   <PIN pinname="From Article" visible="1">
+   </PIN>
+   <PIN pinname="To Article" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="10515" top="645" width="15960" height="14580">
+   </BOUNDS>
+   <PIN pinname="Rescan" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="1" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="6795" top="1065" width="555" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6795" top="1065" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="vvvv">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output String" dstnodeid="0" dstpinname="Title of Article">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="2" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="7455" top="2265" width="450" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7455" top="2265" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="6">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Page Link Limit">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8115" top="2265" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8115" top="2265" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Max Links Followed">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="8760" top="1590" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="8760" top="1590" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="24" systemname="Renderer (HTML String)" nodename="Renderer (HTML String)" componentmode="InAWindow">
+   <BOUNDS type="Node" left="6255" top="4785" width="960" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6255" top="4785" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10200" top="0" width="5565" height="7140">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Base" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="CreateHTML" filename="CreateHTML.v4p" componentmode="Hidden" id="100" nodename="CreateHTML.v4p">
+   <BOUNDS type="Node" left="6795" top="3840" width="1170" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6795" top="3840" width="4800" height="3600">
+   </BOUNDS>
+   <BOUNDS type="Window" left="570" top="990" width="16845" height="13620">
+   </BOUNDS>
+   <PIN pinname="Text1" visible="1">
+   </PIN>
+   <PIN pinname="Text2" visible="1">
+   </PIN>
+   <PIN pinname="HTML" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="From Article" dstnodeid="100" dstpinname="Left Column">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="To Article" dstnodeid="100" dstpinname="Right Column">
+   </LINK>
+   <LINK srcnodeid="100" srcpinname="HTML" dstnodeid="24" dstpinname="Input">
+   </LINK>
+   <NODE componentmode="InABox" id="117" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="585" top="195" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="435" left="585" top="195" type="Box" width="6780">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Request Wikipedia and create your own HTML|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="116" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="615" top="1950" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="2700" left="615" top="1950" type="Box" width="4080">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|This subpatch sends HTTP GET request to Wikipedia and asks it about titles of the pages connected to the article defined on the &apos;Title of Article&apos; pin. Please right click this subpatch for more details.&cr;&lf;&cr;&lf;A simple HTML document with a CSS stylesheet is constructed here using the data from Wikipedia. Check the innards of this subpatch to learn how to create HTML documents.&cr;&lf;&cr;&lf;The HTML document is rendered to the window.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="115" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="1935" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="240" top="1935" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="113" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="615" top="720" width="390" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="615" top="720" width="4170" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|This is how to retrieve and parse data from Wikipedia, construct your own HTML and render it to a window.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="110" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="615" top="5565" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="240" left="615" top="5565" type="Box" width="1035">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Wikipedia API:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (String)" nodename="IOBox (String)" componentmode="InABox" id="106">
+   <BOUNDS type="Node" left="615" top="5865" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="615" top="5865" width="2895" height="240">
+   </BOUNDS>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" values="http://www.mediawiki.org/wiki/API">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="118" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6315" top="2865" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6315" top="2865" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="119" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="6315" top="3765" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="6315" top="3765" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="120" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5775" top="4710" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="5775" top="4710" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="121" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="2970" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="240" top="2970" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="122" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="240" top="3990" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="240" top="3990" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="3.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="124" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="7440" top="990" width="2535" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7440" top="990" width="2550" height="510">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; try a different search term here and Rescan|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="125" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="9240" top="1650" width="780" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="9240" top="1650" width="780" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Rescan|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE systemname="OnOpen (VVVV)" nodename="OnOpen (VVVV)" componentmode="Hidden" id="126">
+   <BOUNDS type="Node" left="8775" top="2445" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Simulate" visible="1">
+   </PIN>
+   <PIN pinname="Bang" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="126" dstpinname="Simulate">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Bang" dstnodeid="0" dstpinname="Rescan">
+   </LINK>
+   </PATCH>

@@ -1,0 +1,283 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Merge (Differential) help.v4p">
+   <BOUNDS height="6435" left="3180" top="2925" type="Window" width="5760">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1050" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5445" top="5685" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1050" top="4170" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position Out|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2205" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5745" top="5985" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2205" top="4170" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity Out|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="315" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6285" top="3795" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="315" top="2595" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="5.00000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In1|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1230" top="2595" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1230" top="2595" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="30.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity In1|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3720" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6585" top="4095" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3720" top="2610" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Position In2|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4620" top="2610" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6885" top="4395" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4620" top="2610" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Velocity In2|">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="LFO (Differential)">
+   <BOUNDS height="0" left="4455" top="2070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="VelocityBased">
+   </PIN>
+   <PIN pinname="Velocity" slicecount="1" values="0.10000">
+   </PIN>
+   <PIN pinname="Period" slicecount="1" values="1.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Y Input Value" srcnodeid="9" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="10" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="9" srcpinname="Velocity Out">
+   <LINKPOINT x="4770" y="2475">
+   </LINKPOINT>
+   <LINKPOINT x="5385" y="2475">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2370" top="1680" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="5850" top="3750" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="570" left="2370" top="1680" type="Box" width="1635">
+   </BOUNDS>
+   <PIN pinname="Slider Constraints" slicecount="1" values="scY">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Slider">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.50000">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0.32973">
+   </PIN>
+   <PIN pinname="X Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="Subtract (Value)">
+   <BOUNDS height="0" left="2145" top="2955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Input 2" srcnodeid="8" srcpinname="X Output Value">
+   </LINK>
+   <NODE id="5" nodename="Blend (Color)">
+   <BOUNDS height="0" left="150" top="5505" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE id="4" nodename="InputMorph (Value)">
+   <BOUNDS height="0" left="810" top="5505" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (String)">
+   <BOUNDS height="255" left="150" top="5175" type="Node" width="855">
+   </BOUNDS>
+   <BOUNDS height="255" left="150" top="5175" type="Box" width="855">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|see also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2355" top="1350" type="Node" width="810">
+   </BOUNDS>
+   <BOUNDS height="315" left="2355" top="1350" type="Box" width="1485">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Weight Crossfader|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="Merge (Differential)">
+   <BOUNDS height="0" left="1800" top="3615" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position In 2" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In 2" visible="1">
+   </PIN>
+   <PIN pinname="Position In 1" visible="1">
+   </PIN>
+   <PIN pinname="Velocity In 1" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   <PIN pinname="Velocity Out" visible="1">
+   </PIN>
+   <PIN pinname="Weight Velocity 1" slicecount="1">
+   </PIN>
+   <PIN pinname="Weight 1" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Weight 2" slicecount="1" visible="1">
+   </PIN>
+   <PIN pinname="Count" slicecount="1" values="2.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Position In 2" linkstyle="PolyLine" srcnodeid="11" srcpinname="Y Output Value">
+   <LINKPOINT x="4485" y="3315">
+   </LINKPOINT>
+   <LINKPOINT x="2340" y="3315">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Velocity In 2" linkstyle="PolyLine" srcnodeid="10" srcpinname="Y Output Value">
+   <LINKPOINT x="5385" y="3435">
+   </LINKPOINT>
+   <LINKPOINT x="2505" y="3435">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Position In 1" linkstyle="PolyLine" srcnodeid="13" srcpinname="Y Output Value">
+   <LINKPOINT x="1080" y="3225">
+   </LINKPOINT>
+   <LINKPOINT x="1815" y="3225">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Velocity In 1" linkstyle="VHV" srcnodeid="12" srcpinname="Y Output Value">
+   <LINKPOINT x="1995" y="3225">
+   </LINKPOINT>
+   <LINKPOINT x="1995" y="3225">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="15" dstpinname="Y Input Value" srcnodeid="1" srcpinname="Position Out">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="1" srcpinname="Velocity Out">
+   <LINKPOINT x="2670" y="4020">
+   </LINKPOINT>
+   <LINKPOINT x="2970" y="4020">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Weight 1" srcnodeid="7" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Weight 2" linkstyle="VHV" srcnodeid="8" srcpinname="X Output Value">
+   <LINKPOINT x="2400" y="2700">
+   </LINKPOINT>
+   <LINKPOINT x="2670" y="2700">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="0" nodename="DynamicMerge (Differential)">
+   <BOUNDS height="0" left="1860" top="5505" type="Node" width="0">
+   </BOUNDS>
+   </NODE>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="4500">
+   </BOUNDS>
+   <BOUNDS height="160" left="270" top="12240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|With Merge you can smoothly blend between 2 or more (add more inputs with the Inspector) Position/Velocity values|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="16" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="15" top="15" type="Box" width="4095">
+   </BOUNDS>
+   <BOUNDS height="160" left="270" top="12240" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Merge - Differential|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
