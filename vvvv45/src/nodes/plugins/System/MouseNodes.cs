@@ -848,7 +848,7 @@ namespace VVVV.Nodes.Input
 
                 EventTypeOut[bin].SliceCount = notifications.Count;
                 PositionOut[bin].SliceCount = notifications.Count;
-                PositionPixelOut.SliceCount = notifications.Count;
+                PositionPixelOut[bin].SliceCount = notifications.Count;
                 PositionInProjectionSpaceOut[bin].SliceCount = notifications.Count;
                 PositionInNormalizedProjectionOut[bin].SliceCount = notifications.Count;
                 MouseWheelDeltaOut[bin].SliceCount = notifications.Count;
