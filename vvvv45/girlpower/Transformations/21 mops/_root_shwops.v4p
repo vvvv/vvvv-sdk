@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.9.dtd" >
-   <PATCH nodename="C:\dev\vvvv\vvvv45\girlpower\( 21 mops )\_root_shwops.v4p" componentmode="InAWindow" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Transformations\21 mops\_root_shwops.v4p" componentmode="InAWindow" locked="0">
    <BOUNDS height="11175" left="105" top="240" type="Window" width="9105">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="31" nodename="Renderer (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InAWindow" id="31" nodename="Renderer (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="900" top="10080" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="1800" left="900" top="10080" type="Box" width="2400">
@@ -11,17 +11,25 @@
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
    </PIN>
-   <PIN pinname="View Transform" visible="1">
+   <PIN pinname="View" visible="1">
    </PIN>
-   <PIN pinname="Projection Transform" visible="1">
+   <PIN pinname="Projection" visible="1">
    </PIN>
-   <PIN pinname="Aspect Ratio Transform" visible="1">
+   <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
    <PIN pinname="Background Color" slicecount="1" values="|0.69725,0.69725,0.69725,1.00000|">
    </PIN>
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="30" nodename="Billboard (Transform)" systemname="Billboard (Transform)">
@@ -54,7 +62,7 @@
    </NODE>
    <LINK dstnodeid="31" dstpinname="Layers" srcnodeid="29" srcpinname="Layer">
    </LINK>
-   <NODE componentmode="Hidden" id="28" nodename="billboard object.v4p" systemname="billboard object" filename="%VVVV%\girlpower\( 21 mops )\billboard object.v4p" path="C:\dev\vvvv\vvvv45\girlpower\( 21 mops )\">
+   <NODE componentmode="Hidden" id="28" nodename="billboard object.v4p" systemname="billboard object" filename="%VVVV%\girlpower\( 21 mops )\billboard object.v4p">
    <BOUNDS height="100" left="4125" top="6105" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="3600" left="4125" top="6105" type="Box" width="4800">
@@ -68,7 +76,7 @@
    <PIN pinname="Count" visible="1">
    </PIN>
    </NODE>
-   <NODE componentmode="Hidden" id="27" nodename="AspectRatio (Transform)" systemname="AspectRatio (Transform)">
+   <NODE componentmode="Hidden" id="27" nodename="AspectRatio (Transform)" systemname="ASPECTRATIO (TRANSFORM)">
    <BOUNDS height="0" left="3045" top="9465" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Aspect Width" slicecount="1" values="5">
@@ -80,7 +88,7 @@
    <PIN pinname="Alignment" slicecount="1" values="FitOut">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Aspect Ratio Transform" srcnodeid="27" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="Aspect Ratio" srcnodeid="27" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="26" nodename="RandomSpread (Spreads Legacy)" systemname="RandomSpread (Spreads Legacy)">
    <BOUNDS height="0" left="4050" top="3480" type="Node" width="0">
@@ -124,7 +132,7 @@
    <PIN pinname="Dolly &amp; Size" slicecount="1" values="8.61">
    </PIN>
    </NODE>
-   <LINK dstnodeid="31" dstpinname="Projection Transform" srcnodeid="23" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="Projection" srcnodeid="23" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="22" nodename="LFO (Animation)" systemname="LFO (Animation)">
    <BOUNDS height="0" left="2055" top="8415" type="Node" width="0">
@@ -169,7 +177,7 @@
    </PIN>
    <PIN pinname="Color Transform" pintype="Input" slicecount="1" visible="-1" values="||">
    </PIN>
-   <PIN pinname="Technique" pintype="Input" slicecount="1" visible="-1" values="| TPhongDirectional|">
+   <PIN pinname="Technique" pintype="Input" slicecount="1" visible="-1" values="TPhongDirectional">
    </PIN>
    <PIN pinname="Technique Pass" pintype="Input" slicecount="1" visible="-1" values="-1">
    </PIN>
@@ -258,7 +266,7 @@
    </NODE>
    <LINK dstnodeid="15" dstpinname="Source" srcnodeid="24" srcpinname="Transform Out">
    </LINK>
-   <LINK dstnodeid="31" dstpinname="View Transform" srcnodeid="15" srcpinname="Transform Out">
+   <LINK dstnodeid="31" dstpinname="View" srcnodeid="15" srcpinname="Transform Out">
    </LINK>
    <NODE componentmode="Hidden" id="14" nodename="Translate (Transform)" systemname="Translate (Transform)">
    <BOUNDS height="0" left="4110" top="5265" type="Node" width="0">
@@ -274,37 +282,7 @@
    </LINK>
    <LINK dstnodeid="28" dstpinname="Transform" srcnodeid="14" srcpinname="Transform Out">
    </LINK>
-   <NODE componentmode="Hidden" id="13" nodename="Text (EX9)" systemname="Text (EX9)" filename="%VVVV%\plugins\DrawText.dll">
-   <BOUNDS height="0" left="6240" top="7740" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="6240" top="7740" type="Box" width="0">
-   </BOUNDS>
-   <BOUNDS height="0" left="7515" top="11325" type="Window" width="0">
-   </BOUNDS>
-   <PIN pinname="Text" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Normalize" slicecount="1" values="None">
-   </PIN>
-   <PIN pinname="Horizontal Align" slicecount="1" values="Left">
-   </PIN>
-   <PIN pinname="Vertical Align" slicecount="1" values="Bottom">
-   </PIN>
-   <PIN pinname="Size" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Font" slicecount="1" values="|Courier New|">
-   </PIN>
-   <PIN pinname="Bold" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Color" slicecount="1" values="|0.98165,0.99027,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="RectangleXY" slicecount="2" values="-1.6,-1.6">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="12" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="7230" top="2505" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="405" left="7230" top="2505" type="Box" width="810">
@@ -348,7 +326,7 @@
    <PIN pinname="Intersperse" slicecount="1" values="Space">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="6015" top="2505" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="405" left="6015" top="2505" type="Box" width="810">
@@ -384,8 +362,6 @@
    <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="29" dstpinname="Layer 4" srcnodeid="13" srcpinname="Layer">
-   </LINK>
    <NODE componentmode="Hidden" id="6" nodename="Billboard (Transform)" systemname="Billboard (Transform)">
    <BOUNDS height="0" left="4995" top="7380" type="Node" width="0">
    </BOUNDS>
@@ -396,8 +372,6 @@
    <PIN pinname="Object Space" slicecount="1" values="Pixel">
    </PIN>
    </NODE>
-   <LINK dstnodeid="13" dstpinname="Transform" srcnodeid="6" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="Hidden" id="5" nodename="Transform (Transform 2d)" systemname="Transform (Transform 2d)">
    <BOUNDS height="0" left="4995" top="7035" type="Node" width="0">
    </BOUNDS>
@@ -423,8 +397,6 @@
    <LINK dstnodeid="10" dstpinname="Input 2" srcnodeid="7" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="10" dstpinname="Input 4" srcnodeid="11" srcpinname="Output">
-   </LINK>
-   <LINK dstnodeid="13" dstpinname="Text" srcnodeid="10" srcpinname="Output">
    </LINK>
    <LINK dstnodeid="8" dstpinname="Input 2" srcnodeid="9" srcpinname="Y Output Value">
    </LINK>
@@ -510,4 +482,42 @@
    <PIN pinname="ID" pintype="Output" visible="-1">
    </PIN>
    </NODE>
+   <NODE componentmode="Hidden" id="13" nodename="Text (EX9)" systemname="Text (EX9)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="6240" top="7740" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="6240" top="7740" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="7515" top="11325" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Normalize" slicecount="1" values="None">
+   </PIN>
+   <PIN pinname="Horizontal Align" slicecount="1" values="Left">
+   </PIN>
+   <PIN pinname="Vertical Align" slicecount="1" values="Bottom">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Font" slicecount="1" values="|Courier New|">
+   </PIN>
+   <PIN pinname="Bold" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.98165,0.99027,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="RectangleXY" slicecount="2" values="-1.6,-1.6">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="29" dstpinname="Layer 4" srcnodeid="13" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Transform" srcnodeid="6" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Text" srcnodeid="10" srcpinname="Output">
+   </LINK>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
    </PATCH>

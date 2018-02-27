@@ -1,15 +1,15 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Add And Delete Bangs.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo With Add And Delete Bangs.v4p" systemname="_Animation Slot Demo With Add And Delete Bangs" scrollx="195" scrolly="2985">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Add And Delete Bangs.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo With Add And Delete Bangs.v4p" systemname="_Animation Slot Demo With Add And Delete Bangs" scrollx="0" scrolly="0">
    <BOUNDS height="15060" left="1890" top="0" type="Window" width="13080">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="53" nodename="Renderer (EX9)" systemname="Renderer (EX9)" hiddenwhenlocked="1">
+   <NODE componentmode="InAWindow" id="53" nodename="Renderer (EX9)" systemname="RENDERER (EX9)" hiddenwhenlocked="1">
    <BOUNDS height="100" left="9135" top="14490" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="9135" top="14490" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="9105" left="15270" top="0" type="Window" width="10155">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
@@ -27,19 +27,7 @@
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" hiddenwhenlocked="1" id="105" nodename="Text (EX9)" systemname="Text (EX9 Legacy)">
-   <BOUNDS height="100" left="9165" top="13305" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Text" visible="1">
-   </PIN>
-   <PIN pinname="Color" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
-   </PIN>
-   <PIN pinname="Horizontal Align" slicecount="1" values="Center">
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="107" nodename="AsString (Value)" systemname="AsString (Value)">
@@ -52,8 +40,6 @@
    <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="105" dstpinname="Text" hiddenwhenlocked="0" srcnodeid="107" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="Damper (Value Stopable).v4p" id="177" nodename="Damper (Value Stopable)" systemname="Damper (Value Stopable)">
    <BOUNDS height="100" left="7065" top="11235" type="Node" width="100">
    </BOUNDS>
@@ -112,8 +98,6 @@
    <PIN pinname="Scale XYZ" slicecount="3" values="2.38,2.38,2.38">
    </PIN>
    </NODE>
-   <LINK dstnodeid="105" dstpinname="Transform" srcnodeid="108" srcpinname="Transform Out">
-   </LINK>
    <NODE componentmode="InABox" hiddenwhenlocked="1" id="209" nodename="IOBox (Value Advanced)" systemname="IOBox (Value Advanced)">
    <BOUNDS height="100" left="7260" top="7800" type="Node" width="100">
    </BOUNDS>
@@ -178,7 +162,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="36.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="247" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="8310" top="4350" width="795" height="240">
@@ -243,8 +227,6 @@
    <LINK srcnodeid="253" srcpinname="Y Output Value" dstnodeid="187" dstpinname="Index">
    <LINKPOINT x="9300" y="7958">
    </LINKPOINT>
-   </LINK>
-   <LINK srcnodeid="105" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="256" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1635" top="2115" width="660" height="630">
@@ -650,18 +632,38 @@
    </LINK>
    <LINK dstnodeid="53" dstpinname="Projection" srcnodeid="111" srcpinname="Projection">
    </LINK>
-   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="249">
+   <NODE systemname="SELECT (3D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="249">
    <BOUNDS type="Node" left="4530" top="6135" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Select" visible="1" slicecount="1" values="300">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXYZ" visible="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="3">
    </PIN>
    </NODE>
    <LINK srcnodeid="247" srcpinname="Y Output Value" dstnodeid="249" dstpinname="Select">
    </LINK>
-   <LINK srcnodeid="249" srcpinname="Output" dstnodeid="271" dstpinname="Default 1">
+   <LINK srcnodeid="249" srcpinname="OutputXYZ" dstnodeid="271" dstpinname="Default 1">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" hiddenwhenlocked="1" id="105" nodename="Text (EX9)" systemname="Text (EX9)">
+   <BOUNDS height="100" left="9165" top="13305" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1" slicecount="1" values="|1.00000,1.00000,1.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Horizontal Align" slicecount="1" values="Center">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="105" dstpinname="Text" hiddenwhenlocked="0" srcnodeid="107" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="105" dstpinname="Transform" srcnodeid="108" srcpinname="Transform Out">
+   </LINK>
+   <LINK srcnodeid="105" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
    </LINK>
    </PATCH>
