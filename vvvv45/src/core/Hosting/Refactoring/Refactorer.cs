@@ -211,7 +211,7 @@ namespace VVVV.Hosting
 					{
 						if (!IOpins.ContainsKey(ident))
 						{
-							IOpins.Add(ident, newNodeID);
+							IOpins.Add(ident, FOldID2NewID[node.ID]);
 							oldPinToNewPin.Add(ident, node.LabelPin[0]);
 						}
 					}
