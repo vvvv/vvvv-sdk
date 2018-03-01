@@ -18,12 +18,18 @@ namespace VVVV.Nodes
 	            Category = "Enumerations", 
 	            Version = "Dynamic",
 	            Help = "Basic template with dynamic custom enumeration",
-	            Tags = "c#")]
+	            Tags = "c#",
+				AutoEvaluate = true)]
 	#endregion PluginInfo
 	public class Template : IPluginEvaluate
 	{
-		#region fields & pins
-		[Input("Input", EnumName = "MyDynamicEnum")]
+		#region fields & pins		
+		const bool CUpdateInFirstFrame = false;
+		const string CMyEnumName = "MyDynamicEnum";
+		
+		bool FFirstFrame = true;
+		
+		[Input("Input", EnumName = CMyEnumName)]
         public IDiffSpread<EnumEntry> FInput;
 
 		[Input("UpdateEnum", IsBang = true)]
@@ -49,7 +55,7 @@ namespace VVVV.Nodes
 			var s = new string[]{"one", "two"};
 			//Please rename your Enum Type to avoid 
 			//numerous "MyDynamicEnum"s in the system
-		    EnumManager.UpdateEnum("MyDynamicEnum", "two", s);  
+		    EnumManager.UpdateEnum(CMyEnumName, "two", s);  
 		}
 
 		//called when data for any output pin is requested
@@ -58,9 +64,11 @@ namespace VVVV.Nodes
 			FNameOutput.SliceCount = FInput.SliceCount;
 			FOrdOutput.SliceCount = FInput.SliceCount;
 			
-			if ((FChangeEnum[0]) && (FEnumStrings.SliceCount > 0))
+			var update = FChangeEnum[0] || (CUpdateInFirstFrame && FFirstFrame);
+		
+			if (update && FEnumStrings.SliceCount > 0)
 			{
-				EnumManager.UpdateEnum("MyDynamicEnum", 
+				EnumManager.UpdateEnum(CMyEnumName, 
 					FEnumStrings[0], FEnumStrings.ToArray());				
 			}
 
@@ -74,6 +82,8 @@ namespace VVVV.Nodes
 
 				Flogger.Log(LogType.Debug, "Input was changed");
 			}
+			
+			FFirstFrame = false;
 		}
 	}
 }
