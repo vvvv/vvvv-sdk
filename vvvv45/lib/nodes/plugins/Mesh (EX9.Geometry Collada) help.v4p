@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\plugins\Mesh (EX9.Geometry Collada) help.v4p">
-   <BOUNDS height="13800" left="6060" top="495" type="Window" width="10875">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\Mesh (EX9.Geometry Collada) help.v4p">
+   <BOUNDS height="13050" left="6060" top="495" type="Window" width="11895">
    </BOUNDS>
    <NODE componentmode="InABox" id="35" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="255" left="15" top="390" type="Node" width="570">
@@ -9,7 +9,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="-435" top="9480" type="Window" width="215">
    </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Loads meshes specified by index and returns additional information stored in the collada file such as color, texture and transformation matrices.&cr;&lf;&cr;&lf;Use a bin size of -1 to select all meshes contained in the collada file. Note that the bin size pin can&apos;t be spreaded.&cr;&lf;&cr;&lf;All animations stored in the collada file are applied to each transformation dependent on the values specified by the time input pin.|">
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Loads meshes specified by index and returns additional information stored in the collada file such as color, texture and transformation matrices.&cr;&lf;&cr;&lf;Use a bin size of -1 to select all meshes contained in the collada file. Note that the bin size pin can&apos;t be spreaded.&cr;&lf;&cr;&lf;All animations stored in the collada file are applied to each transformation depending on the time input.|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -33,9 +33,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="32" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="4530" top="180" type="Node" width="1905">
+   <BOUNDS height="270" left="7395" top="450" type="Node" width="1905">
    </BOUNDS>
-   <BOUNDS height="270" left="4530" top="180" type="Box" width="1905">
+   <BOUNDS height="270" left="7395" top="450" type="Box" width="1905">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -47,7 +47,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="31" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
-   <BOUNDS height="0" left="5445" top="3270" type="Node" width="0">
+   <BOUNDS height="0" left="6210" top="3285" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
@@ -122,20 +122,6 @@
    <PIN pinname="String Type" slicecount="1" values="Filename">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="22" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="270" left="4650" top="5325" type="Node" width="4410">
-   </BOUNDS>
-   <BOUNDS height="915" left="4650" top="5325" type="Box" width="4470">
-   </BOUNDS>
-   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Note: Connecting the diffuse material color with the ambient color input of the effect node is actually not correct. For correct results you would have to use an effect node, which could handle material properties in the shading equation.|">
-   </PIN>
-   <PIN pinname="Output String" visible="0">
-   </PIN>
-   <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
    <NODE componentmode="InABox" id="21" nodename="IOBox (String)" systemname="IOBox (String)">
    <BOUNDS height="270" left="300" top="6465" type="Node" width="8910">
    </BOUNDS>
@@ -148,36 +134,6 @@
    <PIN pinname="Output String" visible="0">
    </PIN>
    <PIN pinname="Show Grid" slicecount="1" values="0">
-   </PIN>
-   </NODE>
-   <NODE componentmode="InAWindow" id="20" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
-   <BOUNDS height="0" left="210" top="12465" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="2925" left="210" top="12465" type="Box" width="3900">
-   </BOUNDS>
-   <BOUNDS height="5010" left="0" top="7395" type="Window" width="6240">
-   </BOUNDS>
-   <PIN pinname="Layers" visible="1">
-   </PIN>
-   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
-   </PIN>
-   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
-   </PIN>
-   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Width" visible="1">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Height" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -211,9 +167,9 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="16" nodename="Skinning (EX9.Effect)" systemname="Skinning (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Skinning.fx">
-   <BOUNDS height="0" left="4815" top="12090" type="Node" width="0">
+   <BOUNDS height="0" left="4815" top="10755" type="Node" width="0">
    </BOUNDS>
-   <BOUNDS height="6000" left="4815" top="12090" type="Box" width="6000">
+   <BOUNDS height="6000" left="4815" top="10755" type="Box" width="6000">
    </BOUNDS>
    <BOUNDS height="12000" left="10845" top="1410" type="Window" width="12000">
    </BOUNDS>
@@ -223,19 +179,23 @@
    </PIN>
    <PIN pinname="Transform" visible="1">
    </PIN>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Ambient Color" visible="1">
+   <PIN pinname="Ambient Color" visible="1" slicecount="1" values="|0.15000,0.15000,0.15000,1.00000|">
    </PIN>
-   <PIN pinname="Diffuse Color">
+   <PIN pinname="Diffuse Color" slicecount="1" values="|0.85000,0.85000,0.85000,1.00000|">
    </PIN>
-   <PIN pinname="Specular Color">
+   <PIN pinname="Specular Color" slicecount="1" values="|0.35000,0.35000,0.35000,1.00000|">
    </PIN>
    <PIN pinname="WorldMatrices" visible="1">
    </PIN>
    <PIN pinname="SkinningMatrices" visible="1">
    </PIN>
    <PIN pinname="LightDirection " visible="1">
+   </PIN>
+   <PIN pinname="Light Direction XYZ" visible="1">
+   </PIN>
+   <PIN pinname="JointMatrices" visible="1">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="15" nodename="Mesh (EX9.Geometry Collada)" systemname="Mesh (EX9.Geometry Collada)" filename="%VVVV%\addonpack\lib\nodes\plugins\ColladaLoader.dll">
@@ -303,7 +263,7 @@
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" id="12" nodename="FileTexture (EX9.Texture)" systemname="FileTexture (EX9.Texture)">
-   <BOUNDS height="0" left="5430" top="10290" type="Node" width="0">
+   <BOUNDS height="0" left="5910" top="10245" type="Node" width="0">
    </BOUNDS>
    <PIN pinname="Filename" visible="1">
    </PIN>
@@ -464,16 +424,10 @@
    </LINK>
    <LINK dstnodeid="16" dstpinname="Transform" srcnodeid="4" srcpinname="Transforms">
    </LINK>
-   <LINK dstnodeid="16" dstpinname="Texture" linkstyle="VHV" srcnodeid="12" srcpinname="Texture Out">
-   <LINKPOINT x="5460" y="11745">
-   </LINKPOINT>
-   <LINKPOINT x="6105" y="11745">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="16" dstpinname="SkinningMatrices" linkstyle="VHV" srcnodeid="4" srcpinname="Skinning Transforms">
-   <LINKPOINT x="5310" y="11880">
+   <LINKPOINT x="5310" y="11435">
    </LINKPOINT>
-   <LINKPOINT x="5940" y="11880">
+   <LINKPOINT x="5940" y="10990">
    </LINKPOINT>
    </LINK>
    <NODE componentmode="Hidden" id="2" nodename="..\modules\vvvv group\EX9\Light (EX9 Direction).v4p" systemname="Light (EX9 Direction)" filename="%VVVV%\lib\nodes\modules\EX9\Light (EX9 Direction).v4p">
@@ -485,17 +439,17 @@
    </BOUNDS>
    <PIN pinname="Light Direction Out" visible="1">
    </PIN>
-   <PIN pinname="Pitch" slicecount="1" values="-0.48">
+   <PIN pinname="Pitch" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Yaw" slicecount="1" values="-0.25">
+   <PIN pinname="Yaw" slicecount="1" values="0.25">
    </PIN>
    </NODE>
    <LINK dstnodeid="16" dstpinname="LightDirection " srcnodeid="2" srcpinname="Light Direction Out">
    </LINK>
    <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
-   <BOUNDS height="1110" left="6810" top="2715" type="Node" width="6315">
+   <BOUNDS height="1110" left="7605" top="3225" type="Node" width="6315">
    </BOUNDS>
-   <BOUNDS height="1425" left="6810" top="2715" type="Box" width="3690">
+   <BOUNDS height="1425" left="7605" top="3225" type="Box" width="3690">
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
@@ -506,12 +460,6 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="Layers" linkstyle="VHV" srcnodeid="16" srcpinname="Layer">
-   <LINKPOINT x="4815" y="12398">
-   </LINKPOINT>
-   <LINKPOINT x="270" y="12398">
-   </LINKPOINT>
-   </LINK>
    <NODE componentmode="Hidden" id="37" nodename="GouraudDirectional (EX9.Effect)" systemname="GouraudDirectional (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\GouraudDirectional.fx">
    <BOUNDS height="100" left="4815" top="4395" type="Node" width="100">
    </BOUNDS>
@@ -525,7 +473,7 @@
    </PIN>
    <PIN pinname="Transform" visible="1" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Texture" visible="1">
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Ambient Color" slicecount="1" visible="1" values="|0.25271,0.25271,0.25271,1.00000|">
    </PIN>
@@ -538,12 +486,6 @@
    </NODE>
    <LINK dstnodeid="37" dstpinname="Mesh" srcnodeid="15" srcpinname="Mesh">
    </LINK>
-   <LINK dstnodeid="37" dstpinname="Texture" linkstyle="VHV" srcnodeid="31" srcpinname="Texture Out">
-   <LINKPOINT x="5475" y="4230">
-   </LINKPOINT>
-   <LINKPOINT x="6285" y="4230">
-   </LINKPOINT>
-   </LINK>
    <LINK dstnodeid="37" dstpinname="Light Direction XYZ" srcnodeid="2" srcpinname="Light Direction Out">
    </LINK>
    <LINK dstnodeid="4" dstpinname="Time" linkstyle="VHV" srcnodeid="6" srcpinname="Output">
@@ -552,7 +494,7 @@
    <LINKPOINT x="5460" y="9113">
    </LINKPOINT>
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="36.0.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="38" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="2820" top="3630" width="495" height="240">
@@ -566,32 +508,6 @@
    <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
    </NODE>
-   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="39">
-   <BOUNDS type="Node" left="2010" top="4935" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Aspect Width" visible="1" slicecount="1" values="400">
-   </PIN>
-   <PIN pinname="Aspect Height" visible="1" slicecount="1" values="295">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="40">
-   <BOUNDS type="Node" left="1950" top="12465" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="Aspect Width" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Height" visible="1">
-   </PIN>
-   <PIN pinname="Transform Out" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="20" srcpinname="Actual Backbuffer Width" dstnodeid="40" dstpinname="Aspect Width">
-   </LINK>
-   <LINK srcnodeid="20" srcpinname="Actual Backbuffer Height" dstnodeid="40" dstpinname="Aspect Height">
-   </LINK>
-   <LINK srcnodeid="40" srcpinname="Transform Out" dstnodeid="20" dstpinname="Aspect Ratio">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="41" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="1680" top="3180" width="795" height="720">
    </BOUNDS>
@@ -620,39 +536,9 @@
    <BOUNDS height="6000" left="9555" top="17640" type="Window" width="9000">
    </BOUNDS>
    </NODE>
-   <LINK dstnodeid="20" dstpinname="View" srcnodeid="43" srcpinname="View">
-   </LINK>
-   <LINK dstnodeid="20" dstpinname="Projection" srcnodeid="43" srcpinname="Projection">
-   </LINK>
    <LINK srcnodeid="38" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Initial Distance">
    </LINK>
    <LINK srcnodeid="41" srcpinname="Y Output Value" dstnodeid="43" dstpinname="Initial InterestXYZ">
-   </LINK>
-   <NODE id="47" componentmode="InAWindow" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
-   <BOUNDS type="Node" height="0" left="285" top="4980" width="0">
-   </BOUNDS>
-   <BOUNDS type="Box" height="2925" left="285" top="4980" width="3900">
-   </BOUNDS>
-   <BOUNDS type="Window" height="5010" left="0" top="495" width="6240">
-   </BOUNDS>
-   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="43" srcpinname="Projection" dstnodeid="47" dstpinname="Projection">
-   </LINK>
-   <LINK srcnodeid="43" srcpinname="View" dstnodeid="47" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="39" srcpinname="Transform Out" dstnodeid="47" dstpinname="Aspect Ratio">
-   </LINK>
-   <LINK srcnodeid="47" srcpinname="Actual Backbuffer Height" dstnodeid="39" dstpinname="Aspect Height">
-   </LINK>
-   <LINK srcnodeid="47" srcpinname="Actual Backbuffer Width" dstnodeid="39" dstpinname="Aspect Width">
-   </LINK>
-   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="47" dstpinname="Layers" linkstyle="VHV">
-   <LINKPOINT x="4840" y="4803">
-   </LINKPOINT>
-   <LINKPOINT x="320" y="4813">
-   </LINKPOINT>
    </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="48" systemname="IOBox (String)">
    <BOUNDS type="Node" left="5985" top="1815" width="255" height="270">
@@ -688,4 +574,48 @@
    <PIN pinname="Size" slicecount="1" values="37">
    </PIN>
    </NODE>
+   <LINK srcnodeid="2" srcpinname="Light Direction Out" dstnodeid="16" dstpinname="Light Direction XYZ">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Skinning Transforms" dstnodeid="16" dstpinname="JointMatrices">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Texture Out" dstnodeid="16" dstpinname="Texture">
+   </LINK>
+   <NODE id="52" componentmode="InAWindow" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS type="Node" height="0" left="285" top="4980" width="0">
+   </BOUNDS>
+   <BOUNDS type="Box" height="2925" left="285" top="4980" width="3900">
+   </BOUNDS>
+   <BOUNDS type="Window" height="5010" left="0" top="495" width="6240">
+   </BOUNDS>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Projection" dstnodeid="52" dstpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="43" srcpinname="View" dstnodeid="52" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="37" srcpinname="Layer" dstnodeid="52" dstpinname="Layers" linkstyle="VHV">
+   <LINKPOINT x="4840" y="4803">
+   </LINKPOINT>
+   <LINKPOINT x="320" y="4813">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InAWindow" id="53" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
+   <BOUNDS height="0" left="270" top="11475" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="2925" left="270" top="11475" type="Box" width="3900">
+   </BOUNDS>
+   <BOUNDS height="5010" left="0" top="7395" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="53" dstpinname="View" srcnodeid="43" srcpinname="View">
+   </LINK>
+   <LINK dstnodeid="53" dstpinname="Projection" srcnodeid="43" srcpinname="Projection">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Texture Out" dstnodeid="37" dstpinname="Texture">
+   </LINK>
    </PATCH>

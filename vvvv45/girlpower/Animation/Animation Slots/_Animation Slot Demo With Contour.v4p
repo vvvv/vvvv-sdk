@@ -1,15 +1,15 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.107.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Contour.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo.v4p" systemname="_Animation Slot Demo" scrollx="0" scrolly="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Animation\Animation Slots\_Animation Slot Demo With Contour.v4p" filename="C:\Users\gregsn\Desktop\damper variable spread size\explicit static animation slots\_Animation Slot Demo.v4p" systemname="_Animation Slot Demo" scrollx="0" scrolly="0">
    <BOUNDS height="14040" left="1215" top="405" type="Window" width="13080">
    </BOUNDS>
-   <NODE componentmode="InAWindow" id="53" nodename="Renderer (EX9)" systemname="Renderer (EX9)" hiddenwhenlocked="1">
+   <NODE componentmode="InAWindow" id="53" nodename="Renderer (EX9)" systemname="RENDERER (EX9)" hiddenwhenlocked="1">
    <BOUNDS height="100" left="8130" top="13395" type="Node" width="100">
    </BOUNDS>
    <BOUNDS height="1800" left="8130" top="13395" type="Box" width="2400">
    </BOUNDS>
    <BOUNDS height="9105" left="14595" top="2985" type="Window" width="10155">
    </BOUNDS>
-   <PIN pinname="Layers" visible="1">
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="View" visible="1" slicecount="1" values="||">
    </PIN>
@@ -27,17 +27,7 @@
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
    </PIN>
-   </NODE>
-   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" hiddenwhenlocked="1" id="105" nodename="Text (EX9)" systemname="Text (EX9 Legacy)">
-   <BOUNDS height="100" left="8130" top="11910" type="Node" width="100">
-   </BOUNDS>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="Text" visible="1">
-   </PIN>
-   <PIN pinname="Color" visible="1">
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="Hidden" hiddenwhenlocked="0" id="107" nodename="AsString (Value)" systemname="AsString (Value)">
@@ -50,8 +40,6 @@
    <PIN pinname="SubType" slicecount="1" values="|Integer (0 .. MaxInt)|">
    </PIN>
    </NODE>
-   <LINK dstnodeid="105" dstpinname="Text" hiddenwhenlocked="0" srcnodeid="107" srcpinname="Output">
-   </LINK>
    <NODE componentmode="Hidden" filename="%VVVV%\girlpower\Animation\Animation Slots\ContourTracker.v4p" hiddenwhenlocked="0" id="115" managers="" nodename="%VVVV%\girlpower\Animation\Animation Slots\ContourTracker.v4p" systemname="ContourTracker">
    <PIN pinname="X" visible="1">
    </PIN>
@@ -170,10 +158,6 @@
    </NODE>
    <LINK dstnodeid="108" dstpinname="Translate XYZ" srcnodeid="187" srcpinname="Output">
    </LINK>
-   <LINK dstnodeid="105" dstpinname="Transform" srcnodeid="108" srcpinname="Transform Out">
-   </LINK>
-   <LINK dstnodeid="105" dstpinname="Color" srcnodeid="115" srcpinname="Colors">
-   </LINK>
    <LINK dstnodeid="191" dstpinname="Input 1" srcnodeid="177" srcpinname="Position Out">
    </LINK>
    <LINK dstnodeid="187" dstpinname="Input" srcnodeid="191" srcpinname="Output">
@@ -266,7 +250,7 @@
    <PIN pinname="Show Grid" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <PACK Name="addonpack" Version="35.0.0">
+   <PACK Name="addonpack" Version="36.0.0">
    </PACK>
    <NODE id="216" systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox">
    <BOUNDS type="Node" left="6060" top="6150" width="100" height="100">
@@ -392,8 +376,6 @@
    </LINK>
    <LINK srcnodeid="183" srcpinname="Output" dstnodeid="177" dstpinname="Go">
    </LINK>
-   <LINK srcnodeid="105" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
-   </LINK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="254" systemname="IOBox (String)">
    <BOUNDS type="Node" left="10080" top="7755" width="2700" height="270">
    </BOUNDS>
@@ -486,18 +468,38 @@
    </LINK>
    <LINK srcnodeid="277" srcpinname="Y Output Value" dstnodeid="111" dstpinname="Initial FOV">
    </LINK>
-   <NODE systemname="Select (3d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="273">
+   <NODE systemname="SELECT (3D)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (3d)" componentmode="Hidden" id="273">
    <BOUNDS type="Node" left="4275" top="5205" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Select" visible="1" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Output" visible="1">
+   <PIN pinname="OutputXYZ" visible="1">
    </PIN>
    <PIN pinname="Vector Size" slicecount="1" values="3">
    </PIN>
    </NODE>
    <LINK srcnodeid="247" srcpinname="Y Output Value" dstnodeid="273" dstpinname="Select">
    </LINK>
-   <LINK srcnodeid="273" srcpinname="Output" dstnodeid="180" dstpinname="Spread">
+   <LINK srcnodeid="273" srcpinname="OutputXYZ" dstnodeid="180" dstpinname="Spread">
+   </LINK>
+   <NODE componentmode="Hidden" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" hiddenwhenlocked="1" id="105" nodename="Text (EX9)" systemname="Text (EX9)">
+   <BOUNDS height="100" left="8130" top="11910" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Text" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="105" dstpinname="Text" hiddenwhenlocked="0" srcnodeid="107" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="105" dstpinname="Transform" srcnodeid="108" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="105" dstpinname="Color" srcnodeid="115" srcpinname="Colors">
+   </LINK>
+   <LINK srcnodeid="105" srcpinname="Layer" dstnodeid="53" dstpinname="Layers">
    </LINK>
    </PATCH>
