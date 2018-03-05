@@ -10,6 +10,7 @@ namespace VVVV.Utils.IO
     public interface IMouse
     {
         IObservable<MouseNotification> MouseNotifications { get; }
+        MouseButtons PressedButtons { get; }
     }
 
     public class Mouse : IMouse
