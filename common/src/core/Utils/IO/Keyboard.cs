@@ -12,6 +12,8 @@ namespace VVVV.Utils.IO
     public interface IKeyboard
     {
         IObservable<KeyNotification> KeyNotifications { get; }
+        Keys Modifiers { get; }
+        bool CapsLock { get; }
     }
 
     public class Keyboard : IKeyboard // , IDisposable
