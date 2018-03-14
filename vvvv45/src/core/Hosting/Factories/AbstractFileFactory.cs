@@ -14,6 +14,7 @@ using VVVV.Core;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
+using System.Collections.Concurrent;
 
 namespace VVVV.Hosting.Factories
 {
@@ -23,6 +24,12 @@ namespace VVVV.Hosting.Factories
     [ComVisible(false)]
     public abstract class AbstractFileFactory<TNodeHost> : IDisposable, IAddonFactory where TNodeHost: INode
     {
+        public class TimestampedFile
+        {
+            public DateTime Time;
+            public string Filename;
+        }
+
         #region fields and constructor
         
         [Import]
@@ -41,6 +48,9 @@ namespace VVVV.Hosting.Factories
         private List<FileSystemWatcher> FDirectoryWatcher = new List<FileSystemWatcher>();
         
         private GenericSynchronizingObject FSyncContext;
+
+        private ConcurrentQueue<TimestampedFile> FNewFilesQueue = new ConcurrentQueue<TimestampedFile>();
+        private System.Timers.Timer FNewFilesTimer = new System.Timers.Timer(1000);
         
         public AbstractFileFactory(string fileExtension)
         {
@@ -48,8 +58,30 @@ namespace VVVV.Hosting.Factories
             FFileExtension.AddRange(fileExtension.Split(new char[]{';'}, StringSplitOptions.RemoveEmptyEntries));
             Debug.Assert(SynchronizationContext.Current != null, "SynchronizationContext not set.");
             FSyncContext = new GenericSynchronizingObject();
+
+            FNewFilesTimer.SynchronizingObject = FSyncContext;
+            FNewFilesTimer.Elapsed += FNewFilesTimer_Elapsed;
         }
-        
+
+        private void FNewFilesTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            TimestampedFile file;
+            while (FNewFilesQueue.TryPeek(out file))
+            {
+                //dequeue a file only if is has been in the queue for at least 1s 
+                if (DateTime.Now - file.Time > TimeSpan.FromSeconds(1))
+                {
+                    if (FNewFilesQueue.TryDequeue(out file))
+                        AddFile(file.Filename);
+                }
+                else //don't check any more files in the queue for now if the latest one is not yet old enough
+                    break;
+            }
+
+            //keep the timer active as long as there are items in the queue
+            FNewFilesTimer.Enabled = FNewFilesQueue.Any();
+        }
+
         #endregion fields and constructor
         public abstract string JobStdSubPath
         {
@@ -271,13 +303,16 @@ namespace VVVV.Hosting.Factories
 			else
 				DirectoryChanged(e.FullPath);*/
         }
-        
+
         protected void FDirectoryWatcher_Created(object sender, FileSystemEventArgs e)
         {
             if (File.Exists(e.FullPath))
-                AddFile(e.FullPath);
+            {
+                FNewFilesQueue.Enqueue(new TimestampedFile() { Time = DateTime.Now, Filename = e.FullPath });
+                FNewFilesTimer.Enabled = true;
+            }
         }
-        
+
         protected void FDirectoryWatcher_Deleted(object sender, FileSystemEventArgs e)
         {
             if (!File.Exists(e.FullPath))
@@ -385,7 +420,8 @@ namespace VVVV.Hosting.Factories
         
         public virtual void Dispose()
         {
-
+            FNewFilesTimer.Enabled = false;
+            FNewFilesTimer.Dispose();
         }
     }
 }
