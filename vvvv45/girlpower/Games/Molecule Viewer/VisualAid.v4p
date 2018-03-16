@@ -1,0 +1,117 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\MoleculeViewer\000_MoleculeViewer_FinalApp\VisualAid.v4p" systemname="VisualAid" filename="C:\Work\MoleculeViewer\VisualAid.v4p">
+   <NODE systemname="Cursor (DX9 Legacy 2)" filename="%VVVV%\lib\nodes\modules\EX9\Cursor (DX9).v4p" nodename="Cursor (DX9)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="720" top="1041" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <BOUNDS type="Box" left="720" top="1041">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7485" top="4860" width="15735" height="9570">
+   </BOUNDS>
+   <PIN pinname="Cursor Type" slicecount="1" values="Cross" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="1" systemname="Group (EX9)" nodename="Group (EX9)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Layer 2" visible="1" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <BOUNDS type="Node" left="720" top="1527" width="1800" height="270">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer Template Count" pintype="Configuration" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="0" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="PerfMeter (Debug)" filename="%VVVV%\lib\nodes\modules\Debug\PerfMeter (Debug).v4p" nodename="PerfMeter (Debug)" componentmode="Hidden" id="2">
+   <BOUNDS type="Node" left="1590" top="1047" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Evaluate" visible="1" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="R (VALUE)" nodename="R (Value)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="2055" top="666" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Receive String">
+   </PIN>
+   <PIN pinname="Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Display Channel" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Node" left="2058" top="315" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2058" top="315" width="1125" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="PerfMeterOn">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="1" dstpinname="Layer 3">
+   </LINK>
+   <NODE id="6" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
+   </PIN>
+   <BOUNDS type="Box" left="720" top="2297" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="720" top="2297" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="6" dstpinname="Input Node">
+   </LINK>
+   <NODE id="7" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
+   </PIN>
+   <BOUNDS type="Box" left="720" top="230" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="720" top="230" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="7" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <LINK srcnodeid="3" srcpinname="Input Value" dstnodeid="2" dstpinname="Enabled">
+   </LINK>
+   <LINK srcnodeid="4" srcpinname="Output Enum" dstnodeid="3" dstpinname="Receive String">
+   </LINK>
+   <BOUNDS type="Window" left="4440" top="5835" width="3735" height="3615">
+   </BOUNDS>
+   <LINK srcnodeid="0" srcpinname="Layer" dstnodeid="1" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="1" dstpinname="Layer 2">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="8">
+   <BOUNDS type="Box" left="885" top="630" width="615" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="885" top="630" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="Cross">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="Cross">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Output Enum" dstnodeid="0" dstpinname="Cursor Type">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   </PATCH>

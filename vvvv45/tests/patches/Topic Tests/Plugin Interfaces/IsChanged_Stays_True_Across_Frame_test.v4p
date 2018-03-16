@@ -1,0 +1,187 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.9.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\tests\patches\Topic Tests\Plugin Interfaces\IsChanged_Stays_True_Across_Frame_test.v4p" systemname="DiffSpread_IsChanged_Stays_True_Across_Frame_test" filename="D:\devvvv\vvvv\public\vvvv45\tests\patches\Plugin Interfaces\DiffSpread_IsChanged_Stays_True_Across_Frame_test.v4p">
+   <BOUNDS type="Window" left="1665" top="2160" width="7965" height="7470">
+   </BOUNDS>
+   <PACK Name="testPack" Version="0.1.0">
+   </PACK>
+   <NODE systemname="MonoFlop (Animation)" nodename="MonoFlop (Animation)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="5415" top="2205" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Set" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Time">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="5415" top="3885" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5415" top="3885" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="Running">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Sticky Slider" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="16" dstpinname="Y Input Value" hiddenwhenlocked="0">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5415" top="1125" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5415" top="1125" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Bang">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Run">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="14" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="6405" top="1500" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6405" top="1500" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="s">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="14" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Time">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="24" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1305" top="5565" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1305" top="5565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Success">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="23" systemname="IOBox (String)">
+   <BOUNDS type="Box" left="3600" top="5565" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3600" top="5565" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="text">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Message">
+   </PIN>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AreEqual (Test Value)" filename="%VVVV%\lib\nodes\modules\Test\AreEqual (Test Value).v4p" nodename="AreEqual (Test Value)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="1305" top="4005" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Expected" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Actual" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Epsilon" slicecount="1" visible="1" values="0.01">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Success" visible="1">
+   </PIN>
+   <PIN pinname="Message" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1305" top="4005">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output" dstnodeid="22" dstpinname="Enabled">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="26" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1875" top="3495" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1875" top="3495" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="0.0001">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="26" srcpinname="Y Output Value" dstnodeid="22" dstpinname="Epsilon">
+   </LINK>
+   <PACK Name="addonpack" Version="35.9.0">
+   </PACK>
+   <NODE systemname="IsChangedStaysTrueAcrossFrame (Value)" filename="%VVVV%\tests\patches\Plugin Interfaces\plugins\ValueIsChangedStaysTrueAcrossFrame\ValueIsChangedStaysTrueAcrossFrame.csproj" nodename="IsChangedStaysTrueAcrossFrame (Value)" componentmode="Hidden" id="52">
+   <BOUNDS type="Node" left="1320" top="2490" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" slicecount="1" visible="1" values="0.372748354682699">
+   </PIN>
+   <PIN pinname="Evaluate" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Render" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="FrameDelay (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="FrameDelay (Value)" componentmode="Hidden" id="56">
+   <BOUNDS type="Node" left="1305" top="3030" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="56" srcpinname="Output 1" dstnodeid="22" dstpinname="Expected">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Render" dstnodeid="22" dstpinname="Actual">
+   </LINK>
+   <NODE systemname="Random (Value)" nodename="Random (Value)" componentmode="Hidden" id="55">
+   <BOUNDS type="Node" left="1305" top="1440" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Prevent from doubles" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Is Integer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Scale" slicecount="1" values="50">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="55" srcpinname="Output" dstnodeid="52" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Success" dstnodeid="24" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Message" dstnodeid="23" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Y Output Value" dstnodeid="17" dstpinname="Set">
+   </LINK>
+   <LINK srcnodeid="52" srcpinname="Output" dstnodeid="56" dstpinname="Input 1">
+   </LINK>
+   </PATCH>

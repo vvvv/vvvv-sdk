@@ -1,0 +1,215 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta24.1.dtd" >
+   <PATCH nodename="C:\Users\Joreg\Desktop\gradient\Gradient (EX9.Effect) help.v4p">
+   <BOUNDS height="8715" left="915" top="5070" type="Window" width="7785">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="0" nodename="Renderer (EX9)">
+   <BOUNDS height="100" left="2370" top="7425" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2370" top="7425" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="5010" left="945" top="0" type="Window" width="6240">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="2" nodename="Grid (EX9.Geometry)">
+   <BOUNDS height="100" left="1005" top="4815" type="Node" width="100">
+   </BOUNDS>
+   <BOUNDS height="0" left="1005" top="4815" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="11805" top="7860" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="8" nodename="Gradient.fx">
+   <BOUNDS height="270" left="1125" top="5460" type="Node" width="1350">
+   </BOUNDS>
+   <BOUNDS height="0" left="1125" top="5460" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="14025" top="12015" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Transform">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Texture Transform" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Color 2" visible="1">
+   </PIN>
+   <PIN pinname="Color 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Mesh" srcnodeid="2" srcpinname="Mesh">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="2340" top="4245" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2340" top="4245" width="1455" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5040" top="9975" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="2" values="| TGradientLinear|,| TGradientCosine|">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="Input">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="11" srcpinname="Output Enum" dstnodeid="8" dstpinname="Technique">
+   </LINK>
+   <NODE nodename="Group (EX9)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="2370" top="6585" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2370" top="6585" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3675" top="12120" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="14" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
+   </LINK>
+   <NODE componentmode="Hidden" id="15" nodename="Gradient.fx">
+   <BOUNDS height="270" left="3255" top="5430" type="Node" width="1365">
+   </BOUNDS>
+   <BOUNDS height="0" left="3255" top="5430" type="Box" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="14025" top="12015" type="Window" width="0">
+   </BOUNDS>
+   <PIN pinname="Technique" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Color 2" visible="1">
+   </PIN>
+   <PIN pinname="Color 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Layer" dstnodeid="14" dstpinname="Layer 2">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Mesh" dstnodeid="15" dstpinname="Mesh">
+   </LINK>
+   <NODE nodename="Translate (Transform)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="1635" top="4815" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1635" top="4800" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4035" top="9285" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="X" slicecount="1" values="-0.5">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="8" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="Translate (Transform)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="3585" top="4815" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3585" top="4755" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4035" top="9285" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="-1.73472347597681E-017">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Transform Out" dstnodeid="15" dstpinname="Transform">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="18">
+   <BOUNDS type="Node" left="4605" top="4290" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4605" top="4290" width="1500" height="240">
+   </BOUNDS>
+   <BOUNDS type="Window" left="5925" top="9870" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" values="| TGradientCosine|">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Output Enum" dstnodeid="15" dstpinname="Technique">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="19">
+   <BOUNDS type="Node" left="3885" top="2430" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3885" top="2430" width="2250" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4230" top="9030" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.77205,0.73405,0.42079,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Color 2|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Color Output" dstnodeid="8" dstpinname="Color 2">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Color Output" dstnodeid="15" dstpinname="Color 2">
+   </LINK>
+   <NODE nodename="IOBox (Color)" componentmode="InABox" id="20">
+   <BOUNDS type="Node" left="1455" top="2430" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1455" top="2430" width="2250" height="480">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4320" top="7860" width="215" height="160">
+   </BOUNDS>
+   <PIN pinname="Color Input" slicecount="1" values="|0.05418,0.11098,0.18166,1.00000|">
+   </PIN>
+   <PIN pinname="Color Output" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Color 1|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Color Output" dstnodeid="8" dstpinname="Color 1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Color Output" dstnodeid="15" dstpinname="Color 1">
+   </LINK>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="255" left="165" top="540" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="315" left="165" top="540" type="Box" width="4425">
+   </BOUNDS>
+   <BOUNDS height="160" left="10380" top="44940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Renders a color gradient with linear or cosine interpolation.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="21" nodename="IOBox (String)">
+   <BOUNDS height="270" left="165" top="165" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="165" top="165" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10380" top="44940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gradient - EX9 Effect|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

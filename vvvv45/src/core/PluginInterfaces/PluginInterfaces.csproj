@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" />
+  <Import Project="..\Default.Core.Project.settings" />
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
+    <AssemblyName>VVVV.PluginInterfaces</AssemblyName>
+    <AssemblyDescription>The VVVV Plugin Interfaces Library</AssemblyDescription>
+    <ProjectGuid>{837C740A-485C-424C-8C38-086ED3DC73CB}</ProjectGuid>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoWarn>1591 1587</NoWarn>
+    <DocumentationFile>$(OutputPath)\VVVV.PluginInterfaces.xml</DocumentationFile>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InteropServices\EX9\DeviceMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\MeshMarshaler.cs" />
+    <Compile Include="InteropServices\EX9\TextureMarshaler.cs" />
+    <Compile Include="Properties\AssemblyInfo.generated.cs" />
+    <Compile Include="V1\Enumerations1.cs" />
+    <Compile Include="V1\IPlugin1.cs" />
+    <Compile Include="V1\IPluginHost1.cs" />
+    <Compile Include="V1\IPluginPins1.cs" />
+    <Compile Include="V1\PluginInfo.cs" />
+    <Compile Include="V2\ConfigAttribute.cs" />
+    <Compile Include="V2\EditorInfoAttribute.cs" />
+    <Compile Include="V2\Enumerations2.cs" />
+    <Compile Include="V2\EnumManager.cs" />
+    <Compile Include="V2\EX9\MeshResource.cs" />
+    <Compile Include="V2\EX9\DeviceData.cs" />
+    <Compile Include="V2\EX9\DXResource.cs" />
+    <Compile Include="V2\EX9\DXLayerPluginBase.cs" />
+    <Compile Include="V2\EX9\DXMeshPluginBase.cs" />
+    <Compile Include="V2\EX9\DXResourcePluginBase.cs" />
+    <Compile Include="V2\EX9\DXTexturePluginBase.cs" />
+    <Compile Include="V2\EX9\IDXDeviceService.cs" />
+    <Compile Include="V2\EX9\TextureResource.cs" />
+    <Compile Include="V2\Graph\INode2.cs" />
+    <Compile Include="V2\Graph\IPin2.cs" />
+    <Compile Include="V2\Graph\IWindow2.cs" />
+    <Compile Include="V2\IActivatableControl.cs" />
+    <Compile Include="V2\IAddonFactory.cs" />
+    <Compile Include="V2\IDiffSpread.cs" />
+    <Compile Include="V2\IEffectHost.cs" />
+    <Compile Include="V2\IExposedNodeService.cs" />
+    <Compile Include="V2\IMainLoop.cs" />
+    <Compile Include="V2\IHDE2.cs" />
+    <Compile Include="V2\INodeInfoFactory.cs" />
+    <Compile Include="V2\InputAttribute.cs" />
+    <Compile Include="V2\IO\IIOFactory.cs" />
+    <Compile Include="V2\IO\IIOContainer.cs" />
+    <Compile Include="V2\IO\IIORegistry.cs" />
+    <Compile Include="V2\IO\IOBuildContext.cs" />
+    <Compile Include="V2\IO\SpaceHelpers.cs" />
+    <Compile Include="V2\IPluginContainer.cs" />
+    <Compile Include="V2\IPluginHost2.cs" />
+    <Compile Include="V2\IPlugin2.cs" />
+    <Compile Include="V2\NonGenericISpread.cs" />
+    <Compile Include="V2\PluginHostExtensions.cs" />
+    <Compile Include="V2\IStartable.cs" />
+    <Compile Include="V2\IStartableRegistry.cs" />
+    <Compile Include="V2\PointerInterfaces.cs" />
+    <Compile Include="V2\Resource.cs" />
+    <Compile Include="V2\NodeCollection.cs" />
+    <Compile Include="V2\NodeInfo.cs" />
+    <Compile Include="V2\ISpread.cs" />
+    <Compile Include="V2\OutputAttribute.cs" />
+    <Compile Include="V2\Pin.cs" />
+    <Compile Include="V2\PinAttribute.cs" />
+    <Compile Include="V2\PluginInfoAttribute.cs" />
+    <Compile Include="V2\Spread.cs" />
+    <Compile Include="V2\SpreadUtils.cs" />
+    <Compile Include="V2\StartableAttribute.cs" />
+    <Compile Include="V2\ValueTypeFormat.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition.CodePlex, Version=4.1.2.0, Culture=neutral, PublicKeyToken=13e5ffd4e05db186, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.ComponentModel.Composition.Codeplex.2.5.0\lib\net40\System.ComponentModel.Composition.CodePlex.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive">
+      <HintPath>..\..\..\..\packages\System.Reactive.4.0.0-preview00001\lib\net46\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
+      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">
+      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="PluginInterfaces.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Target Name="BeforeBuild" DependsOnTargets="Version" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.props'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets'))" />
+    <Error Condition="!Exists('..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets'))" />
+  </Target>
+  <Import Project="..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets" Condition="Exists('..\..\..\..\packages\VVVV.SlimDX.1.0.2\build\net40\VVVV.SlimDX.targets')" />
+  <Import Project="..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets" Condition="Exists('..\..\..\..\packages\NuProj.Common.0.10.4-beta\build\NuProj.Common.targets')" />
+</Project>
