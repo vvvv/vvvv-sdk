@@ -1,6 +1,6 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.106.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\EX9\Triangle (DX9 3d) help.v4p" systemname="Triangle (DX9 3d) help" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\EX9\Triangle (DX9 3d) help.v4p">
-   <BOUNDS type="Window" left="585" top="6210" width="7500" height="7425">
+   <BOUNDS type="Window" left="585" top="6210" width="8265" height="7425">
    </BOUNDS>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="3" systemname="IOBox (String)">
    <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
@@ -58,12 +58,34 @@
    <PIN pinname="Layer 2" visible="1">
    </PIN>
    </NODE>
-   <NODE systemname="RandomSpread (Spreads 3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (3d).v4p" nodename="RandomPoints (3d)" componentmode="Hidden" id="6">
+   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="5" systemname="Renderer (EX9)">
+   <BOUNDS type="Node" left="2310" top="5850" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2310" top="5850" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="540" top="990" width="6240" height="5085">
+   </BOUNDS>
+   <PIN pinname="View" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Aspect Ratio" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Width" visible="1">
+   </PIN>
+   <PIN pinname="Actual Backbuffer Height" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="5" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="RandomPoints (3d)" filename="%VVVV%\lib\nodes\modules\2D\RandomPoints (3d).v4p" nodename="RandomPoints (3d)" componentmode="Hidden" id="6">
    <BOUNDS type="Node" left="2505" top="1815" width="100" height="100">
    </BOUNDS>
    <PIN pinname="XYZ" visible="1">
    </PIN>
-   <PIN pinname="Spread Count" slicecount="1" visible="1" values="43">
+   <PIN pinname="Count" slicecount="1" visible="1" values="43">
    </PIN>
    <PIN pinname="SizeXYZ" slicecount="3" values="2,2,2">
    </PIN>
@@ -80,7 +102,7 @@
    </NODE>
    <LINK srcnodeid="7" srcpinname="Render State Out" dstnodeid="0" dstpinname="Render State">
    </LINK>
-   <PACK Name="addonpack" Version="36.0.0">
+   <PACK Name="addonpack" Version="34.101.0">
    </PACK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="12" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="4020" top="1335" width="510" height="240">
@@ -98,18 +120,18 @@
    <PIN pinname="Y Output Value" visible="1">
    </PIN>
    </NODE>
-   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Spread Count">
+   <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Count">
    </LINK>
    <NODE nodename="IOBox (Color)" componentmode="InABox" id="13" systemname="IOBox (Color)">
-   <BOUNDS type="Box" left="4005" top="2940" width="885" height="720">
+   <BOUNDS type="Box" left="4365" top="2220" width="930" height="1110">
    </BOUNDS>
-   <BOUNDS type="Node" left="4005" top="2940" width="0" height="0">
+   <BOUNDS type="Node" left="4365" top="2220" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Color Input" slicecount="3" visible="1" values="|0.28005,0.70612,0.84714,1.00000|,|0.89953,0.01349,0.04680,1.00000|,|0.40183,0.73578,0.25300,1.00000|">
+   <PIN pinname="Color Input" slicecount="5" visible="1" values="|0.50536,0.69325,0.80543,1.00000|,|0.92958,0.55218,0.00000,1.00000|,|0.73586,0.77579,0.48676,1.00000|,|0.17788,0.30116,0.45698,1.00000|,|0.23133,0.69980,0.14333,1.00000|">
    </PIN>
    <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
    </PIN>
-   <PIN pinname="Rows" slicecount="1" values="3">
+   <PIN pinname="Rows" slicecount="1" values="5">
    </PIN>
    <PIN pinname="Show Value" slicecount="1" values="0">
    </PIN>
@@ -142,6 +164,22 @@
    <PIN pinname="Initial Longitude" visible="1">
    </PIN>
    </NODE>
+   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="4050" top="5850" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Width" visible="1">
+   </PIN>
+   <PIN pinname="Aspect Height" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="16" srcpinname="Transform Out" dstnodeid="5" dstpinname="Aspect Ratio">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Actual Backbuffer Width" dstnodeid="16" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="5" srcpinname="Actual Backbuffer Height" dstnodeid="16" dstpinname="Aspect Height">
+   </LINK>
    <NODE systemname="AxisAndGrid (DX9)" filename="..\..\..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\DX9\AxisAndGrid (DX9).v4p" nodename="AxisAndGrid (DX9)" componentmode="Hidden" id="17">
    <BOUNDS type="Node" left="720" top="4140" width="100" height="100">
    </BOUNDS>
@@ -164,6 +202,40 @@
    </NODE>
    <LINK srcnodeid="18" srcpinname="Output" dstnodeid="15" dstpinname="Initial Longitude">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="19" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="5160" top="3465" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5160" top="3465" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="19" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Color Per Vertex">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="20" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="5715" top="3585" width="1470" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5715" top="3585" width="1470" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt; Color Per Vertex|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="21" systemname="IOBox (String)">
    <BOUNDS type="Node" left="4575" top="1335" width="4065" height="270">
    </BOUNDS>
@@ -180,6 +252,10 @@
    </NODE>
    <LINK srcnodeid="6" srcpinname="XYZ" dstnodeid="0" dstpinname="Point XYZ">
    </LINK>
+   <LINK srcnodeid="15" srcpinname="View" dstnodeid="5" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="15" srcpinname="Projection" dstnodeid="5" dstpinname="Projection">
+   </LINK>
    <NODE systemname="I (Spreads)" filename="" nodename="I (Spreads)" componentmode="Hidden" id="23">
    <BOUNDS type="Node" left="3195" top="3240" width="100" height="100">
    </BOUNDS>
@@ -191,21 +267,5 @@
    <LINK srcnodeid="23" srcpinname="Output" dstnodeid="0" dstpinname="Indices">
    </LINK>
    <LINK srcnodeid="12" srcpinname="Y Output Value" dstnodeid="23" dstpinname=".. To [">
-   </LINK>
-   <PACK Name="VVVV.Packs" Version="0.2.0">
-   </PACK>
-   <NODE nodename="Renderer (EX9)" componentmode="InAWindow" id="25" systemname="RENDERER (EX9)">
-   <BOUNDS type="Node" left="2310" top="5850" width="0" height="0">
-   </BOUNDS>
-   <BOUNDS type="Box" left="2310" top="5850" width="2400" height="1800">
-   </BOUNDS>
-   <BOUNDS type="Window" left="540" top="990" width="6240" height="5085">
-   </BOUNDS>
-   </NODE>
-   <LINK srcnodeid="4" srcpinname="Layer" dstnodeid="25" dstpinname="Layers">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="View" dstnodeid="25" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="15" srcpinname="Projection" dstnodeid="25" dstpinname="Projection">
    </LINK>
    </PATCH>
