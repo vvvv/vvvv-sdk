@@ -219,7 +219,10 @@ namespace VVVV.Utils.Win32
                             FProgressLabel.BackColor = Color.LightGreen;
 
                             FProgressBar.Show();
-                            FProgressBar.SetDesktopLocation(windowRect.Left, windowRect.Bottom + 10);
+
+                            var subX = FSubrect.HasValue ? FSubrect.Value.X : 0;
+                            var subY = FSubrect.HasValue ? FSubrect.Value.Y + FSubrect.Value.Height : 0;
+                            FProgressBar.SetDesktopLocation(windowRect.Left + subX, windowRect.Top + subY + 30);
                         }
 
                         FProgressLabel.Text = "Frame Count: " + FFrames.Count.ToString();

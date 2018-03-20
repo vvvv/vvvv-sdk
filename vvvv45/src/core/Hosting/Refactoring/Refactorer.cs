@@ -165,22 +165,22 @@ namespace VVVV.Hosting
 			//make connections in the selection
 			//for each selected nodes input pin...
 			foreach (var node in nodes)
-				foreach (var pin in node.Pins)
-					foreach (var cpin in pin.ConnectedPins)
-						if (!cpin.Name.Contains("ROUTER DON'T USE")) //hack for S/R nodes 
+				foreach (var pin in node.Pins.Where(p => p.Direction != PinDirection.Configuration))
+					foreach (var cPin in pin.ConnectedPins)
+						if (!cPin.Name.Contains("ROUTER DON'T USE")) //hack for S/R nodes 
 			{
 				//..if there is a connection to another selected node in the same patch
 				//(pins of IOboxes can also be connected to nodes in parentpatches!)
-				var parent = cpin.ParentNodeByPatch(node.Parent);
-				if (parent != null)
-					if (FOldID2NewID.ContainsKey(parent.ID))
+				var cNode = cPin.ParentNodeByPatch(node.Parent);
+				if (cNode != null)
+					if (FOldID2NewID.ContainsKey(cNode.ID))
 				{
 					//this needs only be done for inputs
 					if (pin.Direction == PinDirection.Input)
 					{
-						var fromID = parent.ID;
+						var fromID = cNode.ID;
 						var toID = pin.ParentNodeByPatch(node.Parent).ID;
-						var fromName = cpin.NameByParent(parent);
+						var fromName = cPin.NameByParent(cNode);
 						var toName = pin.NameByParent(node);
 						
 						//copy over complete link (including linkpoints)
@@ -203,7 +203,7 @@ namespace VVVV.Hosting
 					//- if the connected pin belongs to a (preexisting) labeled iobox
 					string ident = "";
 					if (pin.Direction == PinDirection.Input)
-						ident = parent.ID.ToString() + cpin.NameByParent(parent);
+						ident = cNode.ID.ToString() + cPin.NameByParent(cNode);
 					else if (pin.Direction == PinDirection.Output)
 						ident = node.ID.ToString() + pin.NameByParent(node);
 
@@ -211,7 +211,7 @@ namespace VVVV.Hosting
 					{
 						if (!IOpins.ContainsKey(ident))
 						{
-							IOpins.Add(ident, newNodeID);
+							IOpins.Add(ident, FOldID2NewID[node.ID]);
 							oldPinToNewPin.Add(ident, node.LabelPin[0]);
 						}
 					}
@@ -237,7 +237,7 @@ namespace VVVV.Hosting
 							//that in turn is connected to multiple inputs
 							//in those cases name the iobox by concatenating the names of all those pins (which are in the selection!)
 							//but leave out duplicates
-							var pinName = GetNameForInput(node.Parent, cpin);
+							var pinName = GetNameForInput(node.Parent, cPin);
 							pinName = GetUniqueInputName(pinName);
 							oldPinToNewPin.Add(ident, pinName);
 							labelPin.SetAttribute("values", "|" + pinName + "|");
@@ -274,7 +274,7 @@ namespace VVVV.Hosting
 						var srcID = IOpins[ident];
 						//this needs only be done for inputs
 						if (pin.Direction == PinDirection.Input)
-							patch.AddLink(srcID, GetIOBoxPinName(cpin.Type, false), FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
+							patch.AddLink(srcID, GetIOBoxPinName(cPin.Type, false), FOldID2NewID[pin.ParentNodeByPatch(node.Parent).ID], pin.NameByParent(node));
 					}
 				}
 			}
@@ -295,7 +295,7 @@ namespace VVVV.Hosting
 			patch = new PatchMessage("");
 			
 			foreach (var node in selectedNodes)
-				foreach (var pin in node.Pins)
+				foreach (var pin in node.Pins.Where(p => p.Direction != PinDirection.Configuration))
 					foreach (var cpin in pin.ConnectedPins)
 						if (!cpin.Name.Contains("ROUTER DON'T USE"))  //hack for S/R nodes 
 						//..if there is a connection to a not selected node..

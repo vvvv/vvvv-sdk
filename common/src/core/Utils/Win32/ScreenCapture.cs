@@ -29,7 +29,7 @@ namespace VVVV.Utils.Win32
         /// <param name="rect">Defines a subrect of the given window handle to capture</param>
         /// <param name="addCursor">Render the cursor into the image</param>
         /// <returns></returns>
-        public Image CaptureWindow(IntPtr handle, bool removeBorders = true, Rectangle? subrect = null, bool addCursor = true)
+        public Image CaptureWindow(IntPtr handle, bool removeBorders = true, Rectangle? subrect = null, bool addCursor = true, Point? cursorPos = null)
         {
             // get the size
             RECT windowRect;
@@ -42,10 +42,10 @@ namespace VVVV.Utils.Win32
             int cdX = 0;
             int cdY = 0;
             int cdC = 0;
-            var left = windowRect.Left + cdX;
-            var top = windowRect.Top + cdY + cdC;
-            var width = windowRect.Width - 2 * cdX;
-            var height = windowRect.Height - (2 * cdY + cdC);
+            var left = windowRect.Left;
+            var top = windowRect.Top;
+            var width = windowRect.Width;
+            var height = windowRect.Height;
 
             if (removeBorders)
             {
@@ -62,13 +62,12 @@ namespace VVVV.Utils.Win32
                 height -= (2 * cdY + cdC);
             }
 
-            if (subrect != null)
+            if (subrect.HasValue)
             {
-                var sr = (Rectangle)subrect;
-                left += Math.Max(0, sr.Left);
-                top += Math.Max(0, sr.Top);
-                width = Math.Min(width, sr.Width);
-                height = Math.Min(height, sr.Height);
+                left += Math.Max(0, subrect.Value.Left);
+                top += Math.Max(0, subrect.Value.Top);
+                width = Math.Min(width, subrect.Value.Width);
+                height = Math.Min(height, subrect.Value.Height);
             }
 
             var bmp = new Bitmap(width, height);
@@ -81,10 +80,20 @@ namespace VVVV.Utils.Win32
                 //draw cursor
                 if (addCursor && Cursor.Current != null)
                 {
-                    var x = Cursor.Position.X -left - Cursor.Current.HotSpot.X;
-                    var y = Cursor.Position.Y - top - Cursor.Current.HotSpot.Y;
-                    var rect = new Rectangle(new Point(x, y), Cursor.Current.Size);
-                    Cursor.Current.Draw(g, rect);
+                    var x = Cursor.Position.X - left;
+                    var y = Cursor.Position.Y - top;
+                    if (cursorPos.HasValue)
+                    {
+                        x = cursorPos.Value.X;
+                        y = cursorPos.Value.Y;
+                    }
+                    x -= Cursor.Current.HotSpot.X;
+                    y -= Cursor.Current.HotSpot.Y;
+                    var cursorRect = new Rectangle(new Point(x, y), Cursor.Current.Size);
+
+                    var capturedRect = new Rectangle(0, 0, width, height);
+                    if (capturedRect.Contains(cursorRect))
+                        Cursor.Current.Draw(g, cursorRect);
                 }
             }
 
