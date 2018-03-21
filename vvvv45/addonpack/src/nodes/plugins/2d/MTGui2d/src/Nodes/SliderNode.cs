@@ -155,6 +155,7 @@ namespace VVVV.Nodes
 			    || FSizeXIn.PinIsChanged
 			    || FSizeYIn.PinIsChanged
 			    || FIsXSliderIn.PinIsChanged
+                || FIsLongSliderIn.PinIsChanged
 			    || FSizeSliderIn.PinIsChanged
 			    || FTransformIn.PinIsChanged
 			    || FSliderSpeedIn.PinIsChanged)
