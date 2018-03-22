@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.103.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\lib\nodes\native\Renderer (EX9) help.v4p" scrollx="0" scrolly="-9795">
-   <BOUNDS height="16980" left="2085" top="330" type="Window" width="18075">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug36.1.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\lib\nodes\native\Renderer (EX9) help.v4p" scrollx="0" scrolly="-360">
+   <BOUNDS height="12642" left="6881" top="735" type="Window" width="17640">
    </BOUNDS>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="36.0.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="267" systemname="IOBox (String)">
    <BOUNDS type="Node" left="7050" top="21465" width="3225" height="1110">
@@ -18,16 +18,20 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="265">
-   <BOUNDS type="Node" left="4200" top="3270" width="4440" height="270">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="Hidden" id="265">
+   <BOUNDS type="Node" left="4193" top="3270" width="4440" height="270">
    </BOUNDS>
-   <BOUNDS type="Box" left="4200" top="3270" width="3585" height="795">
+   <BOUNDS type="Box" left="4193" top="3270" width="3585" height="795">
    </BOUNDS>
    <BOUNDS type="Window" left="15885" top="3225" width="4200" height="4035">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Descriptive Name" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="default">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Node)" componentmode="InABox" id="264" systemname="IOBox (Node)">
@@ -422,7 +426,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="234">
+   <NODE systemname="MOUSE (DEVICES WINDOW)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Mouse (Devices Window)" componentmode="Hidden" id="234">
    <BOUNDS type="Node" left="7110" top="22665" width="100" height="100">
    </BOUNDS>
    </NODE>
@@ -690,7 +694,7 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="214">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="214">
    <BOUNDS type="Node" left="585" top="8265" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="585" top="8265" width="2025" height="1665">
@@ -698,6 +702,10 @@
    <BOUNDS type="Window" left="1980" top="9330" width="6240" height="5010">
    </BOUNDS>
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="213" systemname="IOBox (String)">
@@ -778,7 +786,7 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="206">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="206">
    <BOUNDS type="Node" left="6570" top="9060" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="6570" top="9060" width="2400" height="1800">
@@ -788,6 +796,10 @@
    <PIN pinname="Layers" visible="1" slicecount="1" values="||">
    </PIN>
    <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="205" systemname="IOBox (Value Advanced)">
@@ -1050,7 +1062,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE id="185" systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
+   <NODE id="185" systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InABox" hiddenwhenlocked="0" managers="">
    <BOUNDS type="Node" left="540" top="16335" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="540" top="16335" width="2355" height="2445">
@@ -1093,7 +1105,7 @@
    </PIN>
    <PIN pinname="Clip Device" pintype="Configuration" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="Presentation Interval" pintype="Configuration" slicecount="1" values="default">
+   <PIN pinname="Presentation Interval" pintype="Configuration" slicecount="1" values="immediately">
    </PIN>
    <PIN pinname="Clear Depth Buffer" pintype="Configuration" slicecount="1" values="1">
    </PIN>
@@ -1138,6 +1150,8 @@
    <PIN pinname="EX9 Out" pintype="Output" visible="1">
    </PIN>
    <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="184" systemname="IOBox (String)">
@@ -1432,7 +1446,7 @@
    <PIN pinname="Size" slicecount="1" values="14">
    </PIN>
    </NODE>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="164">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="164">
    <BOUNDS type="Node" left="7545" top="16350" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="7545" top="16350" width="1500" height="1095">
@@ -1440,6 +1454,10 @@
    <BOUNDS type="Window" left="1980" top="9330" width="6240" height="5010">
    </BOUNDS>
    <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
    </PIN>
    </NODE>
    <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="163">
@@ -1450,7 +1468,7 @@
    </NODE>
    <LINK srcnodeid="163" srcpinname="Layer" dstnodeid="164" dstpinname="Layers">
    </LINK>
-   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="162">
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InABox" id="162">
    <BOUNDS type="Node" left="9390" top="16350" width="100" height="100">
    </BOUNDS>
    <BOUNDS type="Box" left="9390" top="16350" width="1500" height="1095">
@@ -1465,10 +1483,14 @@
    </PIN>
    <PIN pinname="Aspect Ratio" visible="1">
    </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Presentation Interval" slicecount="1" values="immediately">
+   </PIN>
    </NODE>
    <LINK srcnodeid="163" srcpinname="Layer" dstnodeid="162" dstpinname="Layers">
    </LINK>
-   <NODE systemname="AspectRatio (Transform)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="161">
+   <NODE systemname="ASPECTRATIO (TRANSFORM)" nodename="AspectRatio (Transform)" componentmode="Hidden" id="161">
    <BOUNDS type="Node" left="10230" top="17730" width="100" height="100">
    </BOUNDS>
    <PIN pinname="Aspect Width" visible="1">
@@ -1476,6 +1498,8 @@
    <PIN pinname="Aspect Height" visible="1">
    </PIN>
    <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Alignment" slicecount="1" values="FitIn">
    </PIN>
    </NODE>
    <LINK srcnodeid="162" srcpinname="Actual Backbuffer Width" dstnodeid="161" dstpinname="Aspect Width">
@@ -2986,4 +3010,6 @@
    </NODE>
    <LINK srcnodeid="187" srcpinname="Layer" dstnodeid="185" dstpinname="Layers">
    </LINK>
+   <PACK Name="dx11" Version="1.2">
+   </PACK>
    </PATCH>
