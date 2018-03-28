@@ -96,6 +96,6 @@ namespace VVVV.Utils.IO
         }
 
         public override INotification WithSender(object sender)
-            => new TouchMoveNotification(Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
+            => new TouchUpNotification(Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
     }
 }
