@@ -50,20 +50,17 @@ namespace VVVV.Nodes.Generic
             var input = FInputContainer.IOObject;
 
             var count = outputSpread.SliceCount = inputSpread.SliceCount;
+            for (int c = 0; c < count; c++) //copy in to out first
+                outputSpread[c].AssignFrom(inputSpread[c]);
+
             var incr = 0;
-            for (int i = 0; i < count; i++)
+            for (int i=0; i<FIndex.SliceCount; i++) //loop through all indices to set
             {
-                var output = outputSpread[i];
                 var ind = VMath.Zmod(FIndex[i], count);
-                if (i != ind)
-                    output.AssignFrom(inputSpread[i]);
-                else
-                {
-                    var osCount = output.SliceCount = inputSpread[i].SliceCount;
-                    for (int s = 0; s < osCount; s++)
-                        output[s] = input[incr + s];
-                    incr += osCount;
-                }
+                var osCount = outputSpread[ind].SliceCount = inputSpread[ind].SliceCount;
+                for (int s = 0; s < osCount; s++)
+                    outputSpread[ind][s] = input[incr + s];
+                incr += osCount;
             }
         }
     }
