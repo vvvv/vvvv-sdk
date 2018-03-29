@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha34.102.dtd" >
-   <PATCH nodename="C:\Work\vvvv-private\public\vvvv45\girlpower\Strings\05_Parsing_using_RegularExpressions.v4p" systemname="World Cities Parser" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\World Cities Parser.v4p">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta35.8.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\Strings\05_Parsing_using_RegularExpressions.v4p" systemname="World Cities Parser" filename="C:\Work\anton-vvvv-sdk\vvvv45\girlpower\Strings\World Cities Parser.v4p">
    <BOUNDS height="14355" left="6150" top="0" type="Window" width="17445">
    </BOUNDS>
    <NODE id="21" nodename="RegExpr (String)" systemname="RegExpr (String)">
@@ -429,9 +429,9 @@
    </BOUNDS>
    <PIN pinname="Transform Out" visible="1">
    </PIN>
-   <PIN pinname="Aspect Height" slicecount="1" visible="1" values="4">
+   <PIN pinname="Aspect Height" slicecount="1" visible="1" values="285">
    </PIN>
-   <PIN pinname="Aspect Width" slicecount="1" visible="1" values="3">
+   <PIN pinname="Aspect Width" slicecount="1" visible="1" values="392">
    </PIN>
    <PIN pinname="Uniform Scale" slicecount="1" values="1">
    </PIN>
@@ -476,36 +476,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" encoded="0" values="cities">
    </PIN>
    </NODE>
-   <NODE componentmode="InAWindow" id="44" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
-   <BOUNDS height="0" left="11820" top="12000" type="Node" width="0">
-   </BOUNDS>
-   <BOUNDS height="4860" left="0" top="0" type="Window" width="6120">
-   </BOUNDS>
-   <BOUNDS height="1800" left="11820" top="12000" type="Box" width="2400">
-   </BOUNDS>
-   <PIN pinname="View" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Projection" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layers" visible="1">
-   </PIN>
-   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D16">
-   </PIN>
-   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
-   </PIN>
-   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Width" visible="1">
-   </PIN>
-   <PIN pinname="Actual Backbuffer Height" visible="1">
-   </PIN>
-   <PIN pinname="Aspect Ratio" visible="1">
-   </PIN>
-   </NODE>
    <NODE id="43" nodename="Group (EX9)" systemname="Group (EX9)">
    <BOUNDS height="0" left="11805" top="11235" type="Node" width="0">
    </BOUNDS>
@@ -521,8 +491,6 @@
    <LINK dstnodeid="43" dstpinname="Layer 1" srcnodeid="45" srcpinname="Layer">
    </LINK>
    <LINK dstnodeid="43" dstpinname="Layer 2" srcnodeid="51" srcpinname="Layer">
-   </LINK>
-   <LINK dstnodeid="44" dstpinname="Layers" srcnodeid="43" srcpinname="Layer">
    </LINK>
    <NODE id="42" nodename="UniformScale (Transform)" systemname="UniformScale (Transform)">
    <BOUNDS height="0" left="10575" top="10110" type="Node" width="0">
@@ -629,12 +597,6 @@
    </PIN>
    </NODE>
    <LINK srcnodeid="52" srcpinname="Output String" dstnodeid="50" dstpinname="Filename">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Actual Backbuffer Width" dstnodeid="49" dstpinname="Aspect Width">
-   </LINK>
-   <LINK srcnodeid="44" srcpinname="Actual Backbuffer Height" dstnodeid="49" dstpinname="Aspect Height">
-   </LINK>
-   <LINK srcnodeid="49" srcpinname="Transform Out" dstnodeid="44" dstpinname="Aspect Ratio">
    </LINK>
    <LINK srcnodeid="21" srcpinname="Match 4" dstnodeid="9" dstpinname="Input">
    </LINK>
@@ -1506,7 +1468,7 @@
    </LINK>
    <PACK Name="testPack" Version="0.1.0">
    </PACK>
-   <NODE id="48" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="Camera (Transform Softimage)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
+   <NODE id="48" componentmode="Hidden" nodename="Camera (Transform Softimage)" systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="..\..\..\..\public-vl\VL.EditingFramework\vvvv\nodes\modules\Camera (Transform Softimage).v4p">
    <BOUNDS type="Node" height="100" left="12780" top="11580" width="100">
    </BOUNDS>
    <BOUNDS type="Window" height="6000" left="16125" top="4725" width="9000">
@@ -1528,10 +1490,6 @@
    <PIN pinname="Initial FOV" slicecount="1" visible="1" values="0.2">
    </PIN>
    </NODE>
-   <LINK srcnodeid="48" srcpinname="View" dstnodeid="44" dstpinname="View">
-   </LINK>
-   <LINK srcnodeid="48" srcpinname="Projection" dstnodeid="44" dstpinname="Projection">
-   </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="125" systemname="IOBox (Value Advanced)">
    <BOUNDS type="Box" left="13605" top="11175" width="420" height="240">
    </BOUNDS>
@@ -1546,6 +1504,32 @@
    </NODE>
    <LINK srcnodeid="125" srcpinname="Y Output Value" dstnodeid="48" dstpinname="Initial FOV">
    </LINK>
-   <PACK Name="addonpack" Version="34.101.0">
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE componentmode="InAWindow" id="126" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <BOUNDS height="0" left="11820" top="12000" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="0" top="0" type="Window" width="6120">
+   </BOUNDS>
+   <BOUNDS height="1800" left="11820" top="12000" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D24X8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="126" dstpinname="Layers" srcnodeid="43" srcpinname="Layer">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Actual Backbuffer Width" dstnodeid="49" dstpinname="Aspect Width">
+   </LINK>
+   <LINK srcnodeid="126" srcpinname="Actual Backbuffer Height" dstnodeid="49" dstpinname="Aspect Height">
+   </LINK>
+   <LINK srcnodeid="49" srcpinname="Transform Out" dstnodeid="126" dstpinname="Aspect Ratio">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="View" dstnodeid="126" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="48" srcpinname="Projection" dstnodeid="126" dstpinname="Projection">
+   </LINK>
+   <PACK Name="VVVV.Packs" Version="0.2.0">
    </PACK>
    </PATCH>
