@@ -1,0 +1,137 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45alpha28.5.dtd" >
+   <PATCH nodename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\Resize (EX9.Texture) help.v4p" systemname="Resize (EX9.Texture) help" filename="C:\Program Files (x86)\Git\vvvv-sdk\vvvv45\addonpack\lib\nodes\modules\TextureFX\misc\Resize (EX9.Texture) help.v4p">
+   <BOUNDS type="Window" left="12900" top="6465" width="6240" height="3885">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="30">
+   <BOUNDS type="Node" left="165" top="2610" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="165" top="2610" width="2400" height="1800">
+   </BOUNDS>
+   <BOUNDS type="Window" left="12915" top="1470" width="6240" height="5010">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="15" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="33" top="405" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="495" left="33" top="405" type="Box" width="3285">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Re-render texture with different size|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="33" top="30" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="390" left="33" top="30" type="Box" width="3585">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Resize - EX9.Texture|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|see also|">
+   </PIN>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="4188" top="2070" type="Box" width="825">
+   </BOUNDS>
+   <BOUNDS height="255" left="4188" top="2070" type="Node" width="825">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Palette (EX9.Texture Source)" filename="..\Source\Palette\Palette (EX9.Texture Source).v4p" nodename="Palette (EX9.Texture Source)" componentmode="Hidden" id="34">
+   <BOUNDS type="Node" left="150" top="1200" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Mode" slicecount="1" values="| RADIAL_HSV|">
+   </PIN>
+   <BOUNDS type="Window" left="8955" top="4665" width="13215" height="8190">
+   </BOUNDS>
+   <PIN pinname="Format" slicecount="1" values="A32B32G32R32F">
+   </PIN>
+   <BOUNDS type="Box" left="150" top="1200">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="FullscreenQuad (DX9)" filename="FullscreenQuad (DX9).v4p" nodename="FullscreenQuad (DX9)" componentmode="Hidden" id="71">
+   <BOUNDS type="Node" left="165" top="2235" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="165" top="2235">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="71" srcpinname="Layer" dstnodeid="30" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="Resize (EX9.Texture)" filename="Resize (EX9.Texture).v4p" nodename="Resize (EX9.Texture)" componentmode="Hidden" id="78">
+   <BOUNDS type="Node" left="150" top="1770" width="3135" height="270">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Output" dstnodeid="78" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="78" srcpinname="Output" dstnodeid="71" dstpinname="Texture">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="79" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="1155" top="1260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1155" top="1260" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="29">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Width">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="79" srcpinname="Y Output Value" dstnodeid="78" dstpinname="Width">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="80" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="2175" top="1260" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2175" top="1260" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="22">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Height">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="80" srcpinname="Y Output Value" dstnodeid="78" dstpinname="Height">
+   </LINK>
+   <NODE systemname="ChangeFormat (EX9.Texture)" filename="ChangeFormat (EX9.Texture).v4p" nodename="ChangeFormat (EX9.Texture)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="4200" top="2550" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   </PATCH>

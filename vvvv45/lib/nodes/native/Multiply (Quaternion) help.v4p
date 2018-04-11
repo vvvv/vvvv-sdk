@@ -1,0 +1,185 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Multiply (Quaternion) help.v4p">
+   <BOUNDS height="7440" left="5715" top="2160" type="Window" width="6510">
+   </BOUNDS>
+   <NODE id="8" nodename="Multiply (Quaternion)">
+   <BOUNDS height="0" left="1230" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Quaternion 1 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion 2 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="450" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7950" top="6360" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="450" top="1155" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="1.00000,0.00000,0.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Quaternion 1 XYZW" srcnodeid="7" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1695" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="6660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="1695" top="1155" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="2.00000,1.00000,1.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Quaternion 2 XYZW" linkstyle="VHV" srcnodeid="6" srcpinname="Y Output Value">
+   <LINKPOINT x="2490" y="2910">
+   </LINKPOINT>
+   <LINKPOINT x="1500" y="2910">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="465" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="6660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="465" top="3990" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Quaternion XYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="255" top="5415" type="Node" width="840">
+   </BOUNDS>
+   <BOUNDS height="1560" left="255" top="5415" type="Box" width="6045">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Unlike real or complex numbers, multiplication of quaternions is not commutative: e.g. ij = k, ji = -k, jk = i, kj = -i, ki = j, ik = -j. The quaternions are an example of a division ring, an algebraic structure similar to a field except for commutativity of multiplication. In particular, multiplication is still associative and every non-zero element has a unique inverse.&cr;&lf;&cr;&lf;http://en.wikipedia.org/wiki/Quaternions|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Multiply (Quaternion)">
+   <BOUNDS height="0" left="4020" top="3315" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Quaternion 1 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion 2 XYZW" visible="1">
+   </PIN>
+   <PIN pinname="Quaternion XYZW" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3240" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8250" top="6660" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="3240" top="1155" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="1.00000,1.00000,1.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Quaternion 1 XYZW" srcnodeid="2" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="4485" top="1155" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8550" top="6960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="4485" top="1155" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1" values="1.00000,1.00000,1.00000,1.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Quaternion 2 XYZW" linkstyle="VHV" srcnodeid="1" srcpinname="Y Output Value">
+   <LINKPOINT x="5280" y="2910">
+   </LINKPOINT>
+   <LINKPOINT x="4290" y="2910">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3255" top="3990" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="8550" top="6960" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="1350" left="3255" top="3990" type="Box" width="825">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="4.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="4" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="SliceCount Mode" slicecount="1" values="ColsRowsPages">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="0" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Quaternion XYZW">
+   </LINK>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="480" left="15" top="390" type="Box" width="3840">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="15480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|calculate the combined rotation out of two rotations.&cr;&lf;not commutative (rotation order is important).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="4440">
+   </BOUNDS>
+   <BOUNDS height="160" left="-60" top="15480" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Multiply - Quaternion|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

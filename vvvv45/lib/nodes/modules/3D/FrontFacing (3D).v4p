@@ -1,0 +1,93 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug33.9.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\FrontFacing (3D).v4p" systemname="FrontFacing (3D)" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\modules\3D\FrontFacing (3D).v4p">
+   <NODE systemname="Multiply (3d Dot)" nodename="Multiply (3d Dot)" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="1560" top="2310" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input1 XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Input2 XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="GT (Value)" nodename="GT (Value)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="1560" top="2745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="2" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="NormalXYZ">
+   </PIN>
+   <BOUNDS type="Box" left="1560" top="1305" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1560" top="1305" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Input1 XYZ">
+   </LINK>
+   <NODE id="3" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Camera PositionXYZ|">
+   </PIN>
+   <BOUNDS type="Box" left="2460" top="1310" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2460" top="1310" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Input2 XYZ">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="1" dstpinname="Input 1">
+   </LINK>
+   <BOUNDS type="Window" left="10725" top="6930" width="5655" height="5775">
+   </BOUNDS>
+   <INFO author="" description="Returns wether a given normal is pointing at the camera or not." tags="normal, camera, view">
+   </INFO>
+   <NODE systemname="NOT (Boolean)" nodename="NOT (Boolean)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="2820" top="3195" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="5" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="6" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="2820" top="3720" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2820" top="3720" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Inverse Output|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Output" dstnodeid="6" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="7" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Box" left="1560" top="3720" width="480" height="480">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1560" top="3720" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Output">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="7" dstpinname="Y Input Value">
+   </LINK>
+   </PATCH>
