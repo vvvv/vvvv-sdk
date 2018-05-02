@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug36.1.dtd" >
    <PATCH nodename="C:\dev\vvvv\public\vvvv45\tests\patches\Topic Tests\Graph tests\EnumDepndingOnItself test.v4p" systemname="EnumDepndingOnItself" filename="C:\dev\vvvv\public\vvvv45\tests\patches\Topic Tests\Graph tests\EnumDepndingOnItself.v4p" scrollx="0" scrolly="-360">
-   <BOUNDS type="Window" left="14490" top="1050" width="9534" height="8813">
+   <BOUNDS type="Window" left="5110" top="2114" width="9534" height="8813">
    </BOUNDS>
    <NODE systemname="CreateEnum (Enumerations)" nodename="CreateEnum (Enumerations)" componentmode="Hidden" id="2">
    <BOUNDS type="Node" left="4004" top="2443" width="100" height="100">
@@ -250,8 +250,24 @@
    <PIN pinname="Maximum Foreground FPS" slicecount="1" values="7">
    </PIN>
    </NODE>
-   <LINK srcnodeid="8" srcpinname="Input" dstnodeid="2" dstpinname="Strings">
-   </LINK>
    <LINK srcnodeid="30" srcpinname="Output" dstnodeid="16" dstpinname="Enabled">
+   </LINK>
+   <NODE systemname="Switch (String Input)" nodename="Switch (String Input)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="3997" top="2079" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Switch" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" slicecount="1" values="huh">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Output" dstnodeid="2" dstpinname="Strings">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Input" dstnodeid="32" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Bang" dstnodeid="32" dstpinname="Switch">
    </LINK>
    </PATCH>
