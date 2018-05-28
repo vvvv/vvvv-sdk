@@ -83,6 +83,16 @@ namespace VVVV.Nodes.Texture.HTML
                 if (!FRenderer.IsLoading)
                     FRenderer.UpdateDocumentSize();
             }
+
+            protected override CefAccessibilityHandler GetAccessibilityHandler()
+            {
+                return null;
+            }
+
+            protected override void OnImeCompositionRangeChanged(CefBrowser browser, CefRange selectedRange, CefRectangle[] characterBounds)
+            {
+                
+            }
         }
 
         class RequestHandler : CefRequestHandler
@@ -249,10 +259,28 @@ namespace VVVV.Nodes.Texture.HTML
                 FRenderer = renderer;
             }
 
-            protected override bool OnConsoleMessage(CefBrowser browser, string message, string source, int line)
+            protected override bool OnConsoleMessage(CefBrowser browser, CefLogSeverity level, string message, string source, int line)
             {
-                FRenderer.Logger.Log(LogType.Message, string.Format("{0} ({1}:{2})", message, source, line));
-                return base.OnConsoleMessage(browser, message, source, line);
+                FRenderer.Logger.Log(ToLogType(level), string.Format("{0} ({1}:{2})", message, source, line));
+                return base.OnConsoleMessage(browser, level, message, source, line);
+            }
+
+            static LogType ToLogType(CefLogSeverity level)
+            {
+                switch (level)
+                {
+                    case CefLogSeverity.Verbose:
+                        return LogType.Debug;
+                    case CefLogSeverity.Info:
+                        return LogType.Message;
+                    case CefLogSeverity.Warning:
+                        return LogType.Warning;
+                    case CefLogSeverity.Error:
+                    case CefLogSeverity.ErrorReport:
+                        return LogType.Error;
+                    default:
+                        return LogType.Message;
+                }
             }
         }
 

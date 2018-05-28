@@ -393,7 +393,7 @@ namespace VVVV.Nodes.Texture.HTML
 
         protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
         {
-            registrar.AddCustomScheme(SchemeHandlerFactory.SCHEME_NAME, false, true, false);
+            registrar.AddCustomScheme(SchemeHandlerFactory.SCHEME_NAME, false, true, false, false, false, true);
             base.OnRegisterCustomSchemes(registrar);
         }
 
