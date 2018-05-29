@@ -1,22 +1,19 @@
 ﻿using System;
-using VVVV.PluginInterfaces.V2;
-using VVVV.PluginInterfaces.V2.EX9;
-using Xilium.CefGlue;
-using VVVV.Utils.VMath;
-using VVVV.Core.Logging;
 using System.ComponentModel.Composition;
-using VVVV.Utils.IO;
 using System.Xml.Linq;
-using EX9 = SlimDX.Direct3D9;
 using System.Drawing;
 using System.IO;
+using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V1;
-using System.Linq;
+using VVVV.PluginInterfaces.V2;
+using VVVV.Utils.IO;
+using VVVV.Utils.VMath;
+using VL.Lib.Basics.Imaging;
 
 namespace VVVV.Nodes.Texture.HTML
 {
-	[PluginInfo(Name = "HTMLTexture", 
-                Category = "EX9.Texture", 
+    [PluginInfo(Name = "HTMLTexture", 
+                Category = "Image", 
                 Version = "String", 
                 Credits = "Development sponsored by http://meso.net",
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
@@ -38,7 +35,7 @@ namespace VVVV.Nodes.Texture.HTML
     }
 
     [PluginInfo(Name = "HTMLTexture", 
-                Category = "EX9.Texture", 
+                Category = "Image", 
                 Version = "URL", 
                 Credits = "Development sponsored by http://meso.net",
                 Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
@@ -53,7 +50,7 @@ namespace VVVV.Nodes.Texture.HTML
         }
     }
 
-    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification, IPluginDXTexture2
+    public abstract class HTMLTextureNode : IPluginEvaluate, IDisposable, IPartImportsSatisfiedNotification
     {
         [Input("Reload", IsBang = true)]
         public ISpread<bool> FReloadIn;
@@ -81,7 +78,7 @@ namespace VVVV.Nodes.Texture.HTML
         public ISpread<bool> FEnabledIn;
 
         [Output("Output")]
-        public IDXTextureOut FTextureOut;
+        public ISpread<IObservable<IImage>> FImageOut;
         [Output("Root Element")]
         public ISpread<XElement> FRootElementOut;
         [Output("Document")]
@@ -110,14 +107,14 @@ namespace VVVV.Nodes.Texture.HTML
 
         public virtual void OnImportsSatisfied()
         {
-            FTextureOut.SliceCount = 0;
+            FImageOut.SliceCount = 0;
         }
 
         public void Evaluate(int spreadMax)
         {
             FWebRenderers.ResizeAndDispose(spreadMax, (i) => new HTMLTextureRenderer(FLogger, FFrameRateIn[i]));
 
-            FTextureOut.SliceCount = spreadMax;
+            FImageOut.SliceCount = spreadMax;
             FRootElementOut.SliceCount = spreadMax;
             FDomOut.SliceCount = spreadMax;
             FDocumentWidthOut.SliceCount = spreadMax;
@@ -164,6 +161,7 @@ namespace VVVV.Nodes.Texture.HTML
                     webRenderer.Reload();
 
                 // Set outputs
+                FImageOut[i] = webRenderer.Images;
                 FErrorTextOut[i] = webRenderer.CurrentError;
                 FIsLoadingOut[i] = webRenderer.IsLoading;
                 FLoadedOut[i] = webRenderer.Loaded;
@@ -192,8 +190,6 @@ namespace VVVV.Nodes.Texture.HTML
                 else
                     FOnDataOut[i] = false;
             }
-
-            FTextureOut.MarkPinAsChanged();
         }
 
         protected abstract void LoadContent(HTMLTextureRenderer renderer, Size size, int slice);
@@ -202,24 +198,6 @@ namespace VVVV.Nodes.Texture.HTML
         {
             foreach (var renderer in FWebRenderers)
                 renderer.Dispose();
-        }
-
-        EX9.Texture IPluginDXTexture2.GetTexture(IDXTextureOut pin, EX9.Device device, int slice)
-        {
-            var renderer = FWebRenderers[slice];
-            return renderer.GetTexture(device);
-        }
-
-        void IPluginDXResource.UpdateResource(IPluginOut pin, EX9.Device device)
-        {
-            foreach (var renderer in FWebRenderers)
-                renderer.UpdateResources(device);
-        }
-
-        void IPluginDXResource.DestroyResource(IPluginOut pin, EX9.Device device, bool onlyUnmanaged)
-        {
-            foreach (var renderer in FWebRenderers)
-                renderer.DestroyResources(device);
         }
     }
 }
