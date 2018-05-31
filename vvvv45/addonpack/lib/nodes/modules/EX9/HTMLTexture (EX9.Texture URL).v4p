@@ -1,6 +1,6 @@
 <!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug36.1.dtd" >
-   <PATCH nodename="C:\Users\elias\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\EX9\HTMLTexture (EX9.Texture URL).v4p" systemname="HTMLTexture (EX9.Texture String)" filename="C:\Users\elias\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\EX9\HTMLTexture (EX9.Texture String).v4p">
-   <BOUNDS type="Window" left="2345" top="1785" width="17220" height="11599">
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\EX9\HTMLTexture (EX9.Texture URL).v4p" systemname="HTMLTexture (EX9.Texture String)" filename="C:\Users\elias\dev\vvvv\public\vvvv45\addonpack\lib\nodes\modules\EX9\HTMLTexture (EX9.Texture String).v4p">
+   <BOUNDS type="Window" left="2340" top="1785" width="16785" height="8865">
    </BOUNDS>
    <PACK Name="addonpack" Version="36.0.0">
    </PACK>
@@ -340,7 +340,25 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Data">
    </PIN>
    </NODE>
-   <NODE systemname="HTMLTexture (Image URL)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.exe" nodename="HTMLTexture (Image URL)" componentmode="Hidden" id="0">
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27">
+   <BOUNDS type="Box" left="1505" top="2296" width="693" height="210">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1505" top="2296" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Url">
+   </PIN>
+   </NODE>
+   <INFO author="vvvv group" description="Renders a url to an EX9 texture" tags="browser, web, javascript, chrome, chromium, flash, webgl">
+   </INFO>
+   <NODE systemname="HTMLView (Image URL)" filename="%VVVV%\addonpack\lib\nodes\plugins\VVVV.Nodes.Texture.HTML.exe" nodename="HTMLView (Image URL)" componentmode="Hidden" id="0">
    <BOUNDS type="Node" left="1498" top="3808" width="13104" height="252">
    </BOUNDS>
    <BOUNDS type="Box" left="1498" top="3808" width="1400" height="1400">
@@ -444,22 +462,6 @@
    </LINK>
    <LINK srcnodeid="0" srcpinname="Data" dstnodeid="26" dstpinname="Input Node">
    </LINK>
-   <NODE nodename="IOBox (String)" componentmode="InABox" id="27">
-   <BOUNDS type="Box" left="1505" top="2296" width="693" height="210">
-   </BOUNDS>
-   <BOUNDS type="Node" left="1505" top="2296" width="0" height="0">
-   </BOUNDS>
-   <PIN pinname="Input String" slicecount="1" visible="1" values="http://vvvv.org">
-   </PIN>
-   <PIN pinname="Default" slicecount="1" values="http://vvvv.org">
-   </PIN>
-   <PIN pinname="File Mask" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
-   </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="Url">
-   </PIN>
-   </NODE>
    <LINK srcnodeid="27" srcpinname="Output String" dstnodeid="0" dstpinname="Url">
    </LINK>
    </PATCH>

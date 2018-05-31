@@ -12,11 +12,11 @@ using VL.Lib.Basics.Imaging;
 
 namespace VVVV.Nodes.Texture.HTML
 {
-    [PluginInfo(Name = "HTMLTexture", 
+    [PluginInfo(Name = "HTMLView", 
                 Category = "Image", 
                 Version = "String", 
                 Credits = "Development sponsored by http://meso.net",
-                Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
+                Tags = "browser, web, javascript, chrome, chromium, flash, webgl")]
     public class HTMLTextureStringNode : HTMLTextureNode
     {
         [Input("HTML", DefaultString = HTMLTextureRenderer.DEFAULT_CONTENT)]
@@ -34,11 +34,11 @@ namespace VVVV.Nodes.Texture.HTML
         }
     }
 
-    [PluginInfo(Name = "HTMLTexture", 
+    [PluginInfo(Name = "HTMLView", 
                 Category = "Image", 
                 Version = "URL", 
                 Credits = "Development sponsored by http://meso.net",
-                Tags = "browser, web, html, javascript, chrome, chromium, flash, webgl")]
+                Tags = "browser, web, javascript, chrome, chromium, flash, webgl")]
     public class HTMLTextureUrlNode : HTMLTextureNode
     {
         [Input("Url", DefaultString = HTMLTextureRenderer.DEFAULT_URL)]
