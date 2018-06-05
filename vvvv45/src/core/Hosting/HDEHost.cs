@@ -30,6 +30,9 @@ using VVVV.Utils.Linq;
 using VVVV.Utils.Network;
 using NuGetAssemblyLoader;
 using Nito.Async;
+using VVVV.Utils.Reflection;
+using System.Collections;
+using System.Text;
 
 namespace VVVV.Hosting
 {
@@ -1003,6 +1006,59 @@ namespace VVVV.Hosting
         public void EnumChangeCB(string enumName)
         {
             OnEnumChanged(new EnumEventArgs(enumName));
+        }
+
+        public string GetInfoString([MarshalAs(UnmanagedType.IUnknown)] object obj)
+        {
+            return string.Format(" [{0}]{1}", GetDataType(obj).GetCSharpName(), GetValueRendering(obj));
+        }
+
+        Type GetDataType(object obj) => GetDataType(GetType(obj));
+
+        static Type GetDataType(Type ioType)
+        {
+            // this should probably be spelled out specifically.
+            // it's about getting rid of ISpread<> and alikes not about any generic type.
+            if (ioType.IsGenericType)
+                return ioType.GetGenericArguments()[0];
+            return GetDataType(ioType.BaseType);
+        }
+
+        static Type GetType(object obj)
+        {
+            var wrapper = obj as DynamicTypeWrapper;
+            if (wrapper != null)
+                return wrapper.Value.GetType();
+            return obj.GetType();
+        }
+
+        static string GetValueRendering(object obj)
+        {
+            var enumerable = obj as IEnumerable;
+            if (enumerable == null)
+            {
+                var wrapper = obj as DynamicTypeWrapper;
+                if (wrapper != null)
+                    enumerable = wrapper.Value as IEnumerable;
+            }
+            if (enumerable != null)
+            {
+                var enumerator = enumerable.GetEnumerator();
+                if (enumerator.MoveNext())
+                {
+                    var slice = enumerator.Current;
+                    if (slice == null)
+                        return " : null";
+                    var s = slice.ToString();
+                    var defaultRendering = slice.GetType()?.ToString();
+                    if (s == defaultRendering)
+                        return "";
+                    return $" : {s}";
+                }
+                else
+                    return " : Ø";
+            }
+            return "";
         }
 
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
-using System.Text;
 using VVVV.PluginInterfaces.V1;
 using VVVV.Utils.Reflection;
-using VVVV.Utils.Streams;
 
 namespace VVVV.Hosting.IO
 {
@@ -32,12 +29,12 @@ namespace VVVV.Hosting.IO
 		
 		public string GetFriendlyNameForSink(object sink)
 		{
-			return string.Format(" [{0}]{1}", GetSinkDataType(sink).GetCSharpName(), GetValueRendering(sink));
+			return string.Format(" [{0}]", GetSinkDataType(sink).GetCSharpName());
 		}
 		
 		public string GetFriendlyNameForSource(object source)
 		{
-			return string.Format(" [{0}]{1}", GetSourceDataType(source).GetCSharpName(), GetValueRendering(source));
+			return string.Format(" [{0}]", GetSourceDataType(source).GetCSharpName());
 		}
 
         private static Type GetType(object value)
@@ -46,34 +43,6 @@ namespace VVVV.Hosting.IO
             if (wrapper != null)
                 return wrapper.Value.GetType();
             return value.GetType();
-        }
-
-        private static string GetValueRendering(object value)
-        {
-            var enumerable = value as IEnumerable;
-            ISynchronizable sync = null;
-            if (enumerable == null)
-            {
-                var wrapper = value as DynamicTypeWrapper;
-                if (wrapper != null)
-                    enumerable = wrapper.Value as IEnumerable;
-            }
-            sync = enumerable as ISynchronizable;
-
-            if (sync != null)
-            {
-                sync.Sync();
-                var enumerator = enumerable.GetEnumerator();
-                var b = new StringBuilder(" : ");
-                if (enumerator.MoveNext())
-                    b.Append(enumerator.Current.ToString());
-                else
-                    return " : empty";
-                if (enumerator.MoveNext())
-                    b.Append(", ..");
-                return b.ToString();
-            }
-            return ""; // value.ToString();
         }
 
         private static Type GetDataType(Type ioType)
