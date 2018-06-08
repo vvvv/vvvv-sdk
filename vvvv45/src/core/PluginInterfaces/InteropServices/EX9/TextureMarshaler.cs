@@ -32,12 +32,15 @@ namespace VVVV.PluginInterfaces.InteropServices.EX9
             Texture texture = ManagedObj as Texture;
             if (texture != null)
             {
-                // TODO: We need to do this. Find out why!
-                Marshal.AddRef(texture.ComPointer);
-                return texture.ComPointer;
+                var ptr = texture.ComPointer;
+                if (ptr != IntPtr.Zero)
+                {
+                    // TODO: We need to do this. Find out why!
+                    Marshal.AddRef(ptr);
+                    return ptr;
+                }
             }
-            else    
-                return IntPtr.Zero;
+            return IntPtr.Zero;
         }
         
         public void CleanUpNativeData(IntPtr pNativeData)

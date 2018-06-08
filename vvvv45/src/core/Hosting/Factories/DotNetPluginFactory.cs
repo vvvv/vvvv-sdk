@@ -513,48 +513,56 @@ namespace VVVV.Hosting.Factories
         // From http://www.anastasiosyal.com/archive/2007/04/17/3.aspx
         private static bool IsDotNetAssembly(string fileName)
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            if (string.IsNullOrWhiteSpace(fileName))
+                return false;
+            try
             {
-                try
+                using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
-                    using (BinaryReader binReader = new BinaryReader(fs))
+                    try
                     {
-                        try
+                        using (BinaryReader binReader = new BinaryReader(fs))
                         {
-                            fs.Position = 0x3C; //PE Header start offset
-                            uint headerOffset = binReader.ReadUInt32();
-
-                            fs.Position = headerOffset + 0x18;
-                            UInt16 magicNumber = binReader.ReadUInt16();
-
-                            int dictionaryOffset;
-                            switch (magicNumber)
+                            try
                             {
-                                case 0x010B: dictionaryOffset = 0x60; break;
-                                case 0x020B: dictionaryOffset = 0x70; break;
-                                default:
-                                    return false;
+                                fs.Position = 0x3C; //PE Header start offset
+                                uint headerOffset = binReader.ReadUInt32();
+
+                                fs.Position = headerOffset + 0x18;
+                                UInt16 magicNumber = binReader.ReadUInt16();
+
+                                int dictionaryOffset;
+                                switch (magicNumber)
+                                {
+                                    case 0x010B: dictionaryOffset = 0x60; break;
+                                    case 0x020B: dictionaryOffset = 0x70; break;
+                                    default:
+                                        return false;
+                                }
+
+                                //position to RVA 15
+                                fs.Position = headerOffset + 0x18 + dictionaryOffset + 0x70;
+
+
+                                //Read the value
+                                uint rva15value = binReader.ReadUInt32();
+                                return rva15value != 0;
                             }
-
-                            //position to RVA 15
-                            fs.Position = headerOffset + 0x18 + dictionaryOffset + 0x70;
-
-
-                            //Read the value
-                            uint rva15value = binReader.ReadUInt32();
-                            return rva15value != 0;
-                        }
-                        finally
-                        {
-                            binReader.Close();
+                            finally
+                            {
+                                binReader.Close();
+                            }
                         }
                     }
+                    finally
+                    {
+                        fs.Close();
+                    }
                 }
-                finally
-                {
-                    fs.Close();
-                }
-
+            }
+            catch (FileNotFoundException)
+            {
+                return false;
             }
         }
     }

@@ -29,8 +29,10 @@ namespace VVVV.PluginInterfaces.V1
 	public interface IConnectionHandler
 	{
 		bool Accepts([In, MarshalAs(UnmanagedType.IUnknown)] object source, [In, MarshalAs(UnmanagedType.IUnknown)] object sink);
+        [Obsolete("Not used anymore. Now handled by IInternalHDEHost.GetInfoString.")]
 		string GetFriendlyNameForSink([In, MarshalAs(UnmanagedType.IUnknown)] object sink);
-		string GetFriendlyNameForSource([In, MarshalAs(UnmanagedType.IUnknown)] object source);
+        [Obsolete("Not used anymore. Now handled by IInternalHDEHost.GetInfoString.")]
+        string GetFriendlyNameForSource([In, MarshalAs(UnmanagedType.IUnknown)] object source);
 	}
 	
 	/// <summary>
