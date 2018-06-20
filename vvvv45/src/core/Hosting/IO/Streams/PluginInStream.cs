@@ -552,6 +552,9 @@ namespace VVVV.Hosting.IO.Streams
                                         var hwheel = (int)Math.Round((float)FRawMouseHWheels[slice] / Const.WHEEL_DELTA);
                                         mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel, hwheel);
                                         break;
+                                    case MouseNotificationKind.DeviceLost:
+                                        mouseState = new MouseState();
+                                        break;
                                 }
                                 SetMouseState(slice, ref mouseState);
                             }
