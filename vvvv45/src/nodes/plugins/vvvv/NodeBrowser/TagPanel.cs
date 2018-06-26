@@ -21,7 +21,7 @@ namespace VVVV.Nodes.NodeBrowser
         private int FVisibleLines = 20;
         private Color CLabelColor = Color.FromArgb(255, 154, 154, 154);
         private Color CHoverColor = Color.FromArgb(255, 216, 216, 216);
-        private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}}\viewkind4\uc1\pard\f0\fs17 ";
+        private const string CRTFHeader = @"{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Verdana;}\deftab300}\viewkind4\uc1\pard\f0\fs17 ";
         private int CLineHeight = 13; //dip-ified in constructor!
         private int CLineLength = 200; //dip-ified in constructor!
         private int FHoverLine;
@@ -741,7 +741,24 @@ namespace VVVV.Nodes.NodeBrowser
                     sb.Append(s[i]);
                 
                 n = sb.ToString();
-                FRTFSelectionList.Add(n.PadRight(CLineLength + markupChars) + "\\par ");
+
+                FRTFSelectionList.Add(GetNodeTypePrefix(nodeInfo) + "\t" + n.PadRight(CLineLength + markupChars) + "\\par ");
+            }
+        }
+
+        string GetNodeTypePrefix(INodeInfo nodeInfo)
+        {
+            switch (nodeInfo.Type)
+            {
+                case NodeType.Native: return "";
+                case NodeType.Module: return " m";
+                case NodeType.Plugin: return " p";
+                case NodeType.Dynamic: return " d";
+                case NodeType.Freeframe: return " f";
+                case NodeType.Effect: return " x";
+                case NodeType.VST: return " a";
+                case NodeType.VL: return " v";
+                default: return " t";
             }
         }
 
@@ -758,13 +775,11 @@ namespace VVVV.Nodes.NodeBrowser
             //seems mono adds a \par here automatically, so remove one
             string rtf = rtfBuilder.ToString();
             rtf = rtf.TrimEnd(new char[5]{'\\', 'p', 'a', 'r', ' '});// + "}";
-            
+
             if (FRichTextBox.InvokeRequired)
                 FRichTextBox.Invoke(new MethodInvoker(() => { FRichTextBox.Rtf = rtf; }));
             else
                 FRichTextBox.Rtf = rtf;
-            
-            FNodeTypePanel.Invalidate();
         }
 
         public void Redraw()
@@ -871,7 +886,6 @@ namespace VVVV.Nodes.NodeBrowser
             
             //make sure the selection is also drawn in the NodeTypePanel
             FRichTextBox.Invalidate();
-            FNodeTypePanel.Invalidate();
         }
 
         void FScrollBarValueChanged(object sender, EventArgs e)
@@ -879,75 +893,6 @@ namespace VVVV.Nodes.NodeBrowser
             FScrolledLine = FScrollBar.Value;
             UpdateRichTextBox();
             FToolTip.Hide(FRichTextBox);
-        }
-
-        void FNodeTypePanelPaint(object sender, PaintEventArgs e)
-        {
-            e.Graphics.Clear(Color.Silver);
-            
-            int maxLine = Math.Min(FVisibleLines, FSelectionList.Count);
-            for (int i = 0; i < maxLine; i++)
-            {
-                int index = Math.Min(i + ScrolledLine, FSelectionList.Count-1);
-                int y = (i * CLineHeight) + DIPY(4);
-                
-                if (FHoverLine == i)
-                    using (SolidBrush b = new SolidBrush(CHoverColor))
-                		e.Graphics.FillRectangle(b, new Rectangle(0, y-DIPY(4), DIPX(21), CLineHeight));
-                
-                var nodeType = FSelectionList[index].Type;
-                {
-                    using (SolidBrush b = new SolidBrush(Color.Black))
-                        switch (nodeType)
-                    {
-                        case NodeType.Native:
-                            {
-                                break;
-                            }
-                        case NodeType.Module:
-                            {
-                    			e.Graphics.DrawString("m", FRichTextBox.Font, b, DIPX(5), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.Plugin:
-                            {
-                    			e.Graphics.DrawString("p", FRichTextBox.Font, b, DIPX(6), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.Dynamic:
-                            {
-                    			e.Graphics.DrawString("d", FRichTextBox.Font, b, DIPX(6), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.Freeframe:
-                            {
-                    			e.Graphics.DrawString(" f", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.Effect:
-                            {
-                    			e.Graphics.DrawString(" x", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.VST:
-                            {
-                    			e.Graphics.DrawString(" a", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                        case NodeType.VL:
-                            {
-                                e.Graphics.DrawString(" v", FRichTextBox.Font, b, DIPX(4), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                            // Added code:
-                        default:
-                            {
-                            	e.Graphics.DrawString("t", FRichTextBox.Font, b, DIPX(5), y-DIPY(3), StringFormat.GenericDefault);
-                                break;
-                            }
-                    }
-                }
-            }
         }
 
         void HandleRichTextBoxResize(object sender, EventArgs e)
