@@ -19,6 +19,14 @@ namespace VVVV.Nodes.Texture.HTML
             }
         }
 
+        class ContextMenuHandler : CefContextMenuHandler
+        {
+            protected override void OnBeforeContextMenu(CefBrowser browser, CefFrame frame, CefContextMenuParams state, CefMenuModel model)
+            {
+                model.Clear();
+            }
+        }
+
         class RenderHandler : CefRenderHandler
         {
             private readonly HTMLTextureRenderer FRenderer;
@@ -291,6 +299,7 @@ namespace VVVV.Nodes.Texture.HTML
         private readonly CefLoadHandler FLoadHandler;
         private readonly CefKeyboardHandler FKeyboardHandler;
         private readonly CefDisplayHandler FDisplayHandler;
+        private readonly CefContextMenuHandler FContextMenuHandler;
         
         public WebClient(HTMLTextureRenderer renderer)
         {
@@ -301,8 +310,14 @@ namespace VVVV.Nodes.Texture.HTML
             FLoadHandler = new LoadHandler(renderer);
             FKeyboardHandler = new KeyboardHandler();
             FDisplayHandler = new DisplayHandler(renderer);
+            FContextMenuHandler = new ContextMenuHandler();
         }
-        
+
+        protected override CefContextMenuHandler GetContextMenuHandler()
+        {
+            return FContextMenuHandler;
+        }
+
         protected override CefDisplayHandler GetDisplayHandler()
         {
             return FDisplayHandler;
