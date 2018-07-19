@@ -399,6 +399,8 @@ namespace VVVV.PluginInterfaces.V2
         /// The version of vvvv. Will for example return "35.5.0.0" for the officially called beta 35.5
         /// </summary>
         Version Version { get; }
+
+        void ShowVLEditor();
     }
     #endregion IHDEHost
 

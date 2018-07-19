@@ -1061,6 +1061,11 @@ namespace VVVV.Hosting
             return "";
         }
 
+        public void ShowVLEditor()
+        {
+            FVVVVHost.ShowVLEditor();
+        }
+
         public double OriginalFrameTime => FVVVVHost.GetOriginalFrameTime();
 
         public Version Version

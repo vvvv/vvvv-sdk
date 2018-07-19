@@ -222,6 +222,8 @@ namespace VVVV.Hosting
         /// By using this you can potenitally reduce latency.
         /// </summary>
         void SetTimeProvider(ITimeProvider timeProvider);
+
+        void ShowVLEditor();
     }
 
     #region Listeners
