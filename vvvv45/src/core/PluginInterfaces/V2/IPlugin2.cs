@@ -53,7 +53,7 @@ namespace VVVV.PluginInterfaces.V2
      InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IVLHost
     {
-        void CloseActiveDocument();
+        void CloseActiveTab(out bool windowIsGone);
         bool OpenDocument(string filename);
     }
 
