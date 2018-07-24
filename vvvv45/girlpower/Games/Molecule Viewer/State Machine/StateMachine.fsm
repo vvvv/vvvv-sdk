@@ -1,0 +1,50 @@
+<?xml version='1.0'?>
+<!DOCTYPE qfsmproject SYSTEM 'qfsm.dtd'>
+<qfsmproject version="0.53" author="Qfsm">
+  <machine nummooreout="0" transfontitalic="0" draw_it="1" statefontsize="8" transfont="Helvetica" statefontitalic="0" author="" description="" version="" name="MoleculeViewer_FSM" arrowtype="1" numbits="2" statefontweight="50" statefont="Helvetica" numin="0" transfontsize="8" transfontweight="50" type="2" numout="0" initialstate="0">
+    <outputnames_moore></outputnames_moore>
+    <inputnames></inputnames>
+    <outputnames></outputnames>
+    <itransition ypos="191" endx="233" xpos="173" endy="191"/>
+    <state pencolor="0" radius="40" description="" finalstate="0" moore_outputs="" ypos="191" code="0" xpos="273" linewidth="1">Idle</state>
+    <state pencolor="0" radius="40" description="" finalstate="0" moore_outputs="" ypos="393" code="1" xpos="302" linewidth="1">CameraMoving</state>
+    <state pencolor="0" radius="40" description="" finalstate="0" moore_outputs="" ypos="122" code="2" xpos="506" linewidth="1">SliderMoving</state>
+    <state pencolor="0" radius="40" description="" finalstate="0" moore_outputs="" ypos="343" code="3" xpos="464" linewidth="1">AtomMoving</state>
+    <transition c1x="364.3710377767523" c2y="150.8317033585115" c1y="169.6682859561521" description="" straight="1" type="2" ypos="188.5048685537928" endx="467.2689070516257" xpos="312.9221031393155" endy="131.9951207608708" c2x="415.819972414189">
+      <from>0</from>
+      <to>2</to>
+      <inputs default="0" any="0" invert="0">OnSlider</inputs>
+      <outputs>DoSliderMove</outputs>
+    </transition>
+    <transition c1x="351.399467513917" c2y="280.1533397132946" c1y="242.162467866671" description="" straight="1" type="2" ypos="204.1715960200474" endx="432.6600928364186" xpos="310.7691548526661" endy="318.1442115599182" c2x="392.0297801751677">
+      <from>0</from>
+      <to>3</to>
+      <inputs default="0" any="0" invert="0">OnShelf</inputs>
+      <outputs>DoAtomMove</outputs>
+    </transition>
+    <transition c1x="283.5791595182117" c2y="312.6898823105562" c1y="271.6825744489951" description="" straight="1" type="2" ypos="230.675266587434" endx="294.564333275806" xpos="278.0865726394146" endy="353.6971901721173" c2x="289.0717463970088">
+      <from>0</from>
+      <to>1</to>
+      <inputs default="0" any="0" invert="0">OnRoll</inputs>
+      <outputs>DoCameraMove</outputs>
+    </transition>
+    <transition c1x="180.9755526851478" c2y="263.8636990299499" c1y="413.5262044189004" description="" straight="0" type="2" ypos="420.7456674826348" endx="251.9054855288743" xpos="273.1871914603407" endy="224.9856066479248" c2x="160.3024760073026">
+      <from>1</from>
+      <to>0</to>
+      <inputs default="0" any="0" invert="0">OnMouseRelease</inputs>
+      <outputs>DoIdle</outputs>
+    </transition>
+    <transition c1x="511.7201516065649" c2y="64.58597165367247" c1y="20.27618901044627" description="" straight="0" type="2" ypos="83.0243521722152" endx="284.1223230616423" xpos="497.0056197320496" endy="152.5774294234175" c2x="296.4734899499885">
+      <from>2</from>
+      <to>0</to>
+      <inputs default="0" any="0" invert="0">OnMouseRelease</inputs>
+      <outputs>DoIdle</outputs>
+    </transition>
+    <transition c1x="490.3491863332333" c2y="184.5510543105612" c1y="260.060887712067" description="" straight="0" type="2" ypos="303.020795426412" endx="312.768281902634" xpos="462.7103482395617" endy="195.2992737192037" c2x="430.8151129426433">
+      <from>3</from>
+      <to>0</to>
+      <inputs default="0" any="0" invert="0">OnMouseRelease</inputs>
+      <outputs>DoIdle</outputs>
+    </transition>
+  </machine>
+</qfsmproject>

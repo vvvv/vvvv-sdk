@@ -1,0 +1,239 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\dev\vvvv\public\vvvv45\lib\nodes\native\Enum2Ord (Enumerations) help.v4p">
+   <BOUNDS type="Window" left="1290" top="1605" width="11160" height="7545">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="225" top="225" width="5100" height="450">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="225" width="4215" height="810">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Enum2Ord (Enumerations)&cr;&lf;Enum2String (Enumerations)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="225" top="1095" width="5100" height="600">
+   </BOUNDS>
+   <BOUNDS type="Box" left="225" top="1095" width="5565" height="315">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Converts an enumerated value to its corresponding numeric or string value.|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (Value Advanced)" systemname="IOBOX (VALUE ADVANCED)">
+   <BOUNDS height="0" left="465" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="465" top="4170" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="6795" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" visible="1" slicecount="1" values="3">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="0" left="4920" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="4920" top="4170" type="Box" width="795">
+   </BOUNDS>
+   <BOUNDS height="160" left="8385" top="5460" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1" slicecount="1" values="kicher">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="7125" top="3150" type="Node" width="7740">
+   </BOUNDS>
+   <BOUNDS height="1170" left="7125" top="3150" type="Box" width="2685">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|&lt; Open Inspektor for these nodes and specify the &apos;Enumeration&apos; you want to use, in this case &quot;BlinkStyle&quot;. The IOBox connected to these nodes will show the entries.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Enumerations)" systemname="IOBox (Enumerations)">
+   <BOUNDS height="0" left="3585" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="240" left="3585" top="2115" type="Box" width="1515">
+   </BOUNDS>
+   <BOUNDS height="160" left="7530" top="12180" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="OkeyDokey">
+   </PIN>
+   <PIN pinname="Output Enum" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="5" nodename="Enum2Ord (Enumerations)" systemname="Enum2Ord (Enumerations Explicit)">
+   <BOUNDS height="270" left="765" top="3210" type="Node" width="2145">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="Ord Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="BlinkStyle">
+   </PIN>
+   <PIN pinname="Enum Name" visible="1">
+   </PIN>
+   <PIN pinname="Enum Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Y Input Value" srcnodeid="5" srcpinname="Ord Value">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Enum" srcnodeid="6" srcpinname="Output Enum">
+   </LINK>
+   <NODE componentmode="Hidden" id="4" nodename="Enum2String (Enumerations)" systemname="Enum2String (Enumerations Explicit)">
+   <BOUNDS height="270" left="4920" top="3195" type="Node" width="1890">
+   </BOUNDS>
+   <PIN pinname="Enum" visible="1">
+   </PIN>
+   <PIN pinname="String Value" visible="1">
+   </PIN>
+   <PIN pinname="Enumeration" slicecount="1" values="BlinkStyle">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Input String" srcnodeid="4" srcpinname="String Value">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Enum" srcnodeid="6" srcpinname="Output Enum">
+   </LINK>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="390" top="5910" width="765" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="390" top="5910" width="765" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|See Also:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="11">
+   <BOUNDS type="Node" left="420" top="4455" width="840" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="420" top="4455" width="840" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Ord Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="12">
+   <BOUNDS type="Node" left="4875" top="4455" width="1005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4875" top="4455" width="1005" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|String Value|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="13">
+   <BOUNDS type="Box" left="1800" top="4170" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1800" top="4170" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Default" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="File Mask" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Maximum Characters" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="Multiline">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Enum Name" dstnodeid="13" dstpinname="Input String">
+   </LINK>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="14">
+   <BOUNDS type="Node" left="1740" top="4455" width="975" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1740" top="4455" width="975" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enum Name|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="15">
+   <BOUNDS type="Box" left="3090" top="4170" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3090" top="4170" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Enum Count" dstnodeid="15" dstpinname="Y Input Value">
+   </LINK>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="16">
+   <BOUNDS type="Node" left="3045" top="4455" width="1005" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3045" top="4455" width="1005" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Enum Count|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="CreateEnum (Enumerations)" nodename="CreateEnum (Enumerations)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="1260" top="5910" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="String2Enum (Enumerations)" nodename="String2Enum (Enumerations)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="2400" top="5910" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Ord2Enum (Enumerations)" nodename="Ord2Enum (Enumerations)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="3570" top="5910" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="21">
+   <BOUNDS type="Node" left="224" top="1393" width="3031" height="210">
+   </BOUNDS>
+   <BOUNDS type="Box" left="224" top="1393" width="5082" height="448">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|The explicit version allows to select the enumeration type manually.&cr;&lf;See Inspector&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="dx11" Version="1.2">
+   </PACK>
+   </PATCH>

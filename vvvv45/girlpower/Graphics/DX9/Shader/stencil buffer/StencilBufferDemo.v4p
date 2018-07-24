@@ -1,0 +1,383 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.108.dtd" >
+   <PATCH nodename="E:\dev\vvvv\public\vvvv45\girlpower\Graphics\DX9\Shader\stencil buffer\StencilBufferDemo.v4p" scrollx="0" scrolly="0" systemname="stencilTest" filename="D:\temp\stencilTest.v4p">
+   <BOUNDS type="Window" left="5055" top="645" width="9960" height="7080">
+   </BOUNDS>
+   <NODE systemname="Renderer (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="0">
+   <BOUNDS type="Node" left="472" top="5688" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="472" top="5688" width="2088" height="1568">
+   </BOUNDS>
+   <BOUNDS type="Window" left="4136" top="7744" width="5416" height="4432">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="D24S8">
+   </PIN>
+   <PIN pinname="Clear Depth Buffer" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="D16">
+   </PIN>
+   <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="CAMERA (TRANSFORM SOFTIMAGE)" filename="%VVVV%\lib\nodes\modules\Transform\Camera (Transform Softimage).v4p" nodename="Camera (Transform Softimage)" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="1392" top="5216" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="View" visible="1">
+   </PIN>
+   <PIN pinname="Projection" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="View" dstnodeid="0" dstpinname="View">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Projection" dstnodeid="0" dstpinname="Projection">
+   </LINK>
+   <NODE nodename="Group (EX9)" id="2" systemname="Group (EX9)">
+   <BOUNDS type="Node" left="480" top="4728" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="480" top="4728" width="2240" height="1680">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Enabled" visible="-1" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Layer" dstnodeid="0" dstpinname="Layers">
+   </LINK>
+   <NODE systemname="StencilDemo (EX9.Effect)" filename="effects\StencilDemo.fx" nodename="StencilDemo (EX9.Effect)" componentmode="Hidden" id="3">
+   <BOUNDS type="Node" left="960" top="4352" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Color" slicecount="1" values="|0.51195,0.00768,0.00768,1.00000|">
+   </PIN>
+   <PIN pinname="Technique" slicecount="1" visible="1" values="| TConstantObj|">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Teapot (EX9.Geometry)" nodename="Teapot (EX9.Geometry)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="1120" top="4032" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Mesh" dstnodeid="3" dstpinname="Mesh">
+   </LINK>
+   <NODE systemname="Rotate (Transform)" nodename="Rotate (Transform)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="792" top="1376" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0.1">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" visible="1" values="-0.13">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 2">
+   </LINK>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="16" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="1696" top="2800" width="1072" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1696" top="2800" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="| TConstant|">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="17" systemname="IOBox (Enumerations)">
+   <BOUNDS type="Box" left="2184" top="4040" width="1272" height="224">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2184" top="4040" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Input Enum" slicecount="1" visible="1" values="| TStencilMasked|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="17" srcpinname="Output Enum" dstnodeid="3" dstpinname="Technique">
+   </LINK>
+   <NODE systemname="Box (EX9.Geometry)" nodename="Box (EX9.Geometry)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="272" top="2352" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="LinearSpread (Spreads)" nodename="LinearSpread (Spreads)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="1568" top="1384" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Spread Count" slicecount="1" values="7">
+   </PIN>
+   </NODE>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="1144" top="1032" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Period" slicecount="1" values="15">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Fill (EX9.RenderState)" nodename="Fill (EX9.RenderState)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="960" top="3728" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="25" srcpinname="Render State Out" dstnodeid="3" dstpinname="Render State">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="27">
+   <BOUNDS type="Node" left="896" top="6128" width="5648" height="216">
+   </BOUNDS>
+   <BOUNDS type="Box" left="896" top="6128" width="5648" height="216">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="https://msdn.microsoft.com/de-de/library/windows/desktop/bb172599(v=vs.85).aspx">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Output" dstnodeid="7" dstpinname="Y">
+   </LINK>
+   <NODE systemname="Sign (Value)" nodename="Sign (Value)" componentmode="Hidden" id="30">
+   <BOUNDS type="Node" left="1568" top="1696" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Absolute Part" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="30" dstpinname="Input">
+   </LINK>
+   <NODE systemname="Subtract (Value)" nodename="Subtract (Value)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="1696" top="1992" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="30" srcpinname="Absolute Part" dstnodeid="31" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Transform (Transform 3d)" nodename="Transform (Transform 3d)" componentmode="Hidden" id="24">
+   <BOUNDS type="Node" left="784" top="2360" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="ScaleX" slicecount="1" visible="1" values="0.06">
+   </PIN>
+   <PIN pinname="TranslateX" visible="1">
+   </PIN>
+   <PIN pinname="ScaleY" visible="1" slicecount="5" values="-0.4,-0.2,0,0.2,0.4">
+   </PIN>
+   <PIN pinname="ScaleZ" visible="1">
+   </PIN>
+   <PIN pinname="Yaw" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Pitch" slicecount="1" visible="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="24" dstpinname="TranslateX">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="ScaleY">
+   </LINK>
+   <LINK srcnodeid="31" srcpinname="Output" dstnodeid="24" dstpinname="ScaleZ">
+   </LINK>
+   <LINK srcnodeid="7" srcpinname="Transform Out" dstnodeid="24" dstpinname="Transform In">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="34">
+   <BOUNDS type="Node" left="5176" top="992" width="2600" height="5976">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5176" top="992" width="2776" height="2808">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|RenderState Types:&cr;&lf;&cr;&lf;STENCILENABLE : true||false&cr;&lf;&cr;&lf;STENCILFAIL : StencilOp&cr;&lf;STENCILZFAIL : StencilOp&cr;&lf;STENCILPASS : StencilOp&cr;&lf;STENCILFUNC : CompareFunction&cr;&lf;STENCILREF : int&cr;&lf;STENCILMASK : int&cr;&lf;STENCILWRITEMASK : int&cr;&lf;&cr;&lf;TWOSIDEDSTENCILMODE : true||false&cr;&lf;CCW_STENCILFAIL : StencilOp    &cr;&lf;CCW_STENCILZFAIL : StencilOp   &cr;&lf;CCW_STENCILPASS : StencilOp    &cr;&lf;CCW_STENCILFUNC : CompareFunction&cr;&lf;&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="35">
+   <BOUNDS type="Node" left="8184" top="1032" width="1096" height="1656">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8184" top="1032" width="1336" height="1680">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|StencilOps:&cr;&lf;KEEP         &cr;&lf;ZERO         &cr;&lf;REPLACE      &cr;&lf;INCRSAT      &cr;&lf;DECRSAT      &cr;&lf;INVERT       &cr;&lf;INCR         &cr;&lf;DECR         &cr;&lf;FORCE_DWORD|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="36">
+   <BOUNDS type="Node" left="8184" top="2872" width="1328" height="1656">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8184" top="2872" width="1328" height="1656">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|CompareFunctions:&cr;&lf;NEVER         &cr;&lf;LESS          &cr;&lf;EQUAL         &cr;&lf;LESSEQUAL     &cr;&lf;GREATER       &cr;&lf;NOTEQUAL      &cr;&lf;GREATEREQUAL  &cr;&lf;ALWAYS        &cr;&lf;FORCE_DWORD|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="37">
+   <BOUNDS type="Node" left="2808" top="3168" width="1864" height="216">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2808" top="3168" width="2296" height="544">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- writing to stencil buffer&cr;&lf;sets buffer to 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="38">
+   <BOUNDS type="Node" left="2672" top="4360" width="1864" height="216">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2672" top="4360" width="3184" height="416">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- using stencil buffer&cr;&lf;just rendered where stencil buffer has value 1|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="39" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="344" top="248" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="344" top="248" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="2190" top="35100" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" encoded="0" values="|Stencil Buffer Demo|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="40">
+   <BOUNDS type="Node" left="2184" top="5704" width="1864" height="216">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2184" top="5704" width="2312" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|&lt;- Depth buffer is set to D24S8|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   <NODE systemname="Stencil (EX9.RenderState)" nodename="Stencil (EX9.RenderState)" componentmode="Hidden" id="42">
+   <BOUNDS type="Node" left="3525" top="1620" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Reference Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Stencil Pass Function" slicecount="1" values="Replace">
+   </PIN>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Render State In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="ZWriteEnable (EX9.RenderState)" nodename="ZWriteEnable (EX9.RenderState)" componentmode="Hidden" id="43">
+   <BOUNDS type="Node" left="3540" top="975" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="ZWrite Enable" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="43" srcpinname="Render State Out" dstnodeid="42" dstpinname="Render State In">
+   </LINK>
+   <NODE id="28" systemname="Constant (EX9.Effect)" filename="%VVVV%\lib\nodes\effects\Constant.fx" nodename="Constant (EX9.Effect)" componentmode="Hidden" hiddenwhenlocked="0" managers="">
+   <PIN pinname="Render State" visible="1" slicecount="1" pintype="Input" values="||">
+   </PIN>
+   <BOUNDS type="Node" left="480" top="3128" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Color" slicecount="1" pintype="Input" visible="1" values="|0.51195,0.51195,0.51195,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1" pintype="Output">
+   </PIN>
+   <PIN pinname="Descriptive Name" pintype="Configuration" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Select Next Valid Technique" pintype="Configuration" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Mesh" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Transform" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Texture" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Color Transform" pintype="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Technique" pintype="Input" visible="1">
+   </PIN>
+   <PIN pinname="Technique Pass" pintype="Input" visible="1" slicecount="1" values="-1">
+   </PIN>
+   <PIN pinname="Space" pintype="Input" slicecount="1" values="World">
+   </PIN>
+   <PIN pinname="Enabled" pintype="Input" visible="1" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Compiled" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Technique Valid" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="Description" pintype="Output" visible="1">
+   </PIN>
+   <PIN pinname="ID" pintype="Output" visible="-1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Layer" dstnodeid="2" dstpinname="Layer 1">
+   </LINK>
+   <LINK srcnodeid="24" srcpinname="Transform Out" dstnodeid="28" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="18" srcpinname="Mesh" dstnodeid="28" dstpinname="Mesh">
+   </LINK>
+   <LINK srcnodeid="16" srcpinname="Output Enum" dstnodeid="28" dstpinname="Technique">
+   </LINK>
+   <LINK srcnodeid="42" srcpinname="Render State Out" dstnodeid="28" dstpinname="Render State">
+   </LINK>
+   </PATCH>
