@@ -37,6 +37,9 @@ namespace VVVV.Utils.IO
                                 var mouseUp = n as MouseUpNotification;
                                 FPressedButtons &= ~mouseUp.Buttons;
                                 break;
+                            case MouseNotificationKind.DeviceLost:
+                                FPressedButtons = MouseButtons.None;
+                                break;
                             default:
                                 break;
                         }

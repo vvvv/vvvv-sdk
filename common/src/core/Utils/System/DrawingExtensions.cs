@@ -85,6 +85,14 @@ namespace System.Drawing
         }
 
         /// <summary>
+        /// Returns a <see cref="Rectangle">Rectangle</see> by casting the float components to integer.
+        /// </summary>
+        public static Rectangle ToRectangle(this RectangleF rect)
+        {
+            return new Rectangle(rect.Location.ToPoint(), rect.Size.ToSize());
+        }
+
+        /// <summary>
         /// Returns a <see cref="Point">Point</see> by casting the float components to integer.
         /// </summary>
         public static Point ToPoint(this PointF p1)

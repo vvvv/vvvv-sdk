@@ -449,19 +449,19 @@ namespace VVVV.Hosting.IO.Streams
 
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
-                var upstreamInterface = usI as IGenericIO;
+                var stream = usI as MemoryIOStream<Keyboard>;
 
                 for (int i = 0; i < Length; i++)
                 {
                     int usS;
                     var keyboard = Keyboard.Empty;
-                    if (upstreamInterface != null)
+                    if (stream != null)
                     {
                         FNodeIn.GetUpsreamSlice(i, out usS);
-                        keyboard = (Keyboard)upstreamInterface.GetSlice(usS);
+                        keyboard = stream[usS];
                     }
-                    SetKeyboardState(i, KeyboardState.Empty);
-                    FSubscriptions[i].Update(keyboard);
+                    if (FSubscriptions[i].Update(keyboard))
+                        SetKeyboardState(i, KeyboardState.Empty);
                 }
             }
             return base.Sync();
@@ -552,6 +552,9 @@ namespace VVVV.Hosting.IO.Streams
                                         var hwheel = (int)Math.Round((float)FRawMouseHWheels[slice] / Const.WHEEL_DELTA);
                                         mouseState = new MouseState(normalizedPosition.x, normalizedPosition.y, mouseState.Buttons, mouseState.MouseWheel, hwheel);
                                         break;
+                                    case MouseNotificationKind.DeviceLost:
+                                        mouseState = new MouseState();
+                                        break;
                                 }
                                 SetMouseState(slice, ref mouseState);
                             }
@@ -561,20 +564,22 @@ namespace VVVV.Hosting.IO.Streams
 
                 object usI;
                 FNodeIn.GetUpstreamInterface(out usI);
-                var upstreamInterface = usI as IGenericIO;
+                var stream = usI as MemoryIOStream<Mouse>;
 
-                var emptyMouseState = new MouseState();
                 for (int i = 0; i < Length; i++)
                 {
                     int usS;
                     var mouse = Mouse.Empty;
-                    if (upstreamInterface != null)
+                    if (stream != null)
                     {
                         FNodeIn.GetUpsreamSlice(i, out usS);
-                        mouse = (Mouse)upstreamInterface.GetSlice(usS);
+                        mouse = stream[usS];
                     }
-                    SetMouseState(i, ref emptyMouseState);
-                    FSubscriptions[i].Update(mouse);
+                    if (FSubscriptions[i].Update(mouse))
+                    {
+                        var emptyMouseState = new MouseState();
+                        SetMouseState(i, ref emptyMouseState);
+                    }
                 }
             }
             return base.Sync();

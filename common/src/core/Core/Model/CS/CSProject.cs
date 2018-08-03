@@ -19,7 +19,7 @@ namespace VVVV.Core.Model.CS
         static CSProject()
         {
             var compilersPackage = AssemblyLoader.FindPackageAndCacheResult("Microsoft.Net.Compilers");
-            var path = Path.Combine(AssemblyLoader.GetPathOfPackage(compilersPackage), "tools");
+            var path = compilersPackage != null ? Path.Combine(AssemblyLoader.GetPathOfPackage(compilersPackage), "tools") : "";
             
             if (Directory.Exists(path))
             {

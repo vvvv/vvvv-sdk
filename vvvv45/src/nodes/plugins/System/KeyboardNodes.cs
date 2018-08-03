@@ -162,9 +162,7 @@ namespace VVVV.Nodes.Input
 
         private IObservable<KeyboardLostNotification> GetKeyboardLostNotifications(int slice)
         {
-            return EnabledIn.ToObservable(slice)
-                .DistinctUntilChanged()
-                .Where(enabled => !enabled)
+            return base.GetDisabledNotifications(slice)
                 .Select(_ => new KeyboardLostNotification(this));
         }
 
