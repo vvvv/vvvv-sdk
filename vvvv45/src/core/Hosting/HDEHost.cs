@@ -202,7 +202,7 @@ namespace VVVV.Hosting
             Application.RegisterMessageLoop(IsSendingMessages);
         }
 
-        private string[] ExtractPaths(string key)
+        private List<string> ExtractPaths(string key)
         {
             //from commandline
             var paths = AssemblyLoader.ParseCommandLine(key);
@@ -212,11 +212,11 @@ namespace VVVV.Hosting
             if (File.Exists(argsFile))
             {
                 var args = File.ReadAllText(argsFile).Split(new Char[] { ' ', '\r' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
-                paths = paths.Concat(AssemblyLoader.ParseLines(args, key)).ToArray();
+                paths.AddRange(AssemblyLoader.ParseLines(args, key));
             }
 
             //make relative paths absolute
-            for (int i = 0; i < paths.Length; i++)
+            for (int i = 0; i < paths.Count; i++)
             {
                 if (Path.IsPathRooted(paths[i]))
                     paths[i] = Path.Combine(ExePath, paths[i]);
