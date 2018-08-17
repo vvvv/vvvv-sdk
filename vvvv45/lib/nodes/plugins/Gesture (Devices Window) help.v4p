@@ -1,0 +1,273 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\plugins\Gesture (Devices Window) help.v4p" scrollx="8" scrolly="0">
+   <BOUNDS type="Window" left="2265" top="2040" width="8055" height="6840">
+   </BOUNDS>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="208" top="208" width="4760" height="424">
+   </BOUNDS>
+   <BOUNDS type="Box" left="208" top="208" width="4760" height="424">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Gesture (Devices Window)|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" visible="1" values="14">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="208" top="560" width="4760" height="560">
+   </BOUNDS>
+   <BOUNDS type="Box" left="208" top="560" width="3616" height="248">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns the gesture device of current render windows.|">
+   </PIN>
+   <PIN pinname="Output String" slicecount="1" visible="0" values="||">
+   </PIN>
+   </NODE>
+   <NODE nodename="Gesture (Devices Window)" componentmode="Hidden" id="0" systemname="GESTURE (DEVICES WINDOW)">
+   <BOUNDS type="Node" left="1864" top="1112" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1864" top="1112" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Event Type" visible="1">
+   </PIN>
+   <PIN pinname="Device" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Enumerations)" componentmode="InABox" id="4">
+   <BOUNDS type="Box" left="3032" top="1512" width="1368" height="232">
+   </BOUNDS>
+   <BOUNDS type="Node" left="3032" top="1512" width="0" height="0">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Event Type" dstnodeid="4" dstpinname="Input Enum">
+   </LINK>
+   <NODE systemname="Quad (DX9)" nodename="Quad (DX9)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="896" top="4512" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1" slicecount="1" values="||">
+   </PIN>
+   </NODE>
+   <NODE systemname="ZOOMSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="ZoomState (Gesture Split)" componentmode="Hidden" id="8">
+   <BOUNDS type="Node" left="1872" top="1984" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Gesture Device" visible="1">
+   </PIN>
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="1872" top="1984">
+   </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Device" dstnodeid="8" dstpinname="Gesture Device">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="10">
+   <BOUNDS type="Node" left="1680" top="3072" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1">
+   </PIN>
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Select (Value)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Select (Value)" componentmode="Hidden" id="11">
+   <BOUNDS type="Node" left="2136" top="2624" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Select" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="8" srcpinname="Distance" dstnodeid="11" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="11" srcpinname="Output" dstnodeid="10" dstpinname="ScaleXY">
+   </LINK>
+   <NODE systemname="Cons (Transform)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="Cons (Transform)" componentmode="Hidden" id="19">
+   <BOUNDS type="Node" left="1064" top="3720" width="1264" height="256">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="22">
+   <BOUNDS type="Node" left="480" top="3072" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1" slicecount="2" values="1,1">
+   </PIN>
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="AvoidNIL (Node)" filename="%VVVV%\lib\nodes\modules\Node\AvoidNIL (Node).v4p" nodename="AvoidNIL (Node)" componentmode="Hidden" id="20">
+   <BOUNDS type="Node" left="1056" top="4120" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <BOUNDS type="Window" left="2848" top="9312" width="5368" height="3704">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="PANSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PanState (Gesture Split)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="664" top="1984" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Gesture Device" visible="1">
+   </PIN>
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="664" top="1984">
+   </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Device" dstnodeid="23" dstpinname="Gesture Device">
+   </LINK>
+   <LINK srcnodeid="19" srcpinname="Output" dstnodeid="20" dstpinname="Input">
+   </LINK>
+   <LINK srcnodeid="20" srcpinname="Output" dstnodeid="6" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="22" srcpinname="Transform Out" dstnodeid="19" dstpinname="Input 1">
+   </LINK>
+   <LINK srcnodeid="10" srcpinname="Transform Out" dstnodeid="19" dstpinname="Input 2">
+   </LINK>
+   <NODE systemname="Transform (Transform 2d Vector)" nodename="Transform (Transform 2d Vector)" componentmode="Hidden" id="25">
+   <BOUNDS type="Node" left="2888" top="3072" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="TranslateXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="ScaleXY" visible="1" slicecount="2" values="1,1">
+   </PIN>
+   <PIN pinname="CenterXY" visible="1" slicecount="2" values="0,0">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="ROTATESTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="RotateState (Gesture Split)" componentmode="Hidden" id="26">
+   <BOUNDS type="Node" left="3080" top="1984" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Gesture Device" visible="1">
+   </PIN>
+   <PIN pinname="Position (Normalized Window) XY" visible="1">
+   </PIN>
+   <PIN pinname="Distance" visible="1">
+   </PIN>
+   <PIN pinname="Rotate" visible="1">
+   </PIN>
+   <BOUNDS type="Box" left="3080" top="1984">
+   </BOUNDS>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Device" dstnodeid="26" dstpinname="Gesture Device">
+   </LINK>
+   <LINK srcnodeid="26" srcpinname="Rotate" dstnodeid="25" dstpinname="Rotate">
+   </LINK>
+   <LINK srcnodeid="25" srcpinname="Transform Out" dstnodeid="19" dstpinname="Input 3">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="28">
+   <BOUNDS type="Box" left="2608" top="2352" width="280" height="224">
+   </BOUNDS>
+   <BOUNDS type="Node" left="2608" top="2352" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="2">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="28" srcpinname="Y Output Value" dstnodeid="11" dstpinname="Select">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="29" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="4664" top="1224" width="645" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4664" top="1224" width="2928" height="2112">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|These nodes directly return the predefined touch gestures generated by windows for touch enabled devices.&cr;&lf;&cr;&lf;Available gestures are Pan, Zoom, Rotate, TwoFingerTap, and PressAndTap&cr;&lf;&cr;&lf;You can either use the GestureStates, which return all the parameters for the time of the gesture combined, or listen directly to the single events via the GestureEvent nodes|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="30" systemname="IOBox (String)">
+   <BOUNDS type="Node" left="3040" top="4552" width="645" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="3040" top="4552" width="3960" height="1245">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Notes:&cr;&lf;- Won&apos;t work with a DX11 renderer&cr;&lf;- Only works for devices with windows touch drivers available/installed&cr;&lf;- Windows only returns either Touch or Gestures&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="PRESSANDTAPSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="PressAndTapState (Gesture Split)" componentmode="Hidden" id="31">
+   <BOUNDS type="Node" left="6184" top="3904" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6184" top="3904">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="TWOFINGERTAPSTATE (GESTURE SPLIT)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll" nodename="TwoFingerTapState (Gesture Split)" componentmode="Hidden" id="32">
+   <BOUNDS type="Node" left="4528" top="3904" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="4528" top="3904">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="RENDERER (EX9)" nodename="Renderer (EX9)" componentmode="InAWindow" id="33">
+   <BOUNDS type="Node" left="896" top="4872" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="896" top="4872" width="2088" height="1568">
+   </BOUNDS>
+   <BOUNDS type="Window" left="10240" top="2040" width="5416" height="4432">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="6" srcpinname="Layer" dstnodeid="33" dstpinname="Layers">
+   </LINK>
+   <INFO author="woei" description="" tags="">
+   </INFO>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
+   <LINK srcnodeid="26" srcpinname="Position (Projection) XY" dstnodeid="25" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="8" srcpinname="Position (Projection) XY" dstnodeid="10" dstpinname="TranslateXY">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Position (Projection) XY" dstnodeid="22" dstpinname="TranslateXY">
+   </LINK>
+   </PATCH>

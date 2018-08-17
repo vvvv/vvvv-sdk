@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\src\vvvv45.props" />
+  
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">.\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+
+  <!-- Override vvvvv45.props -->
+  <!-- Build -->
+  <PropertyGroup>
+    <AddonCoreDir>$(MSBuildThisFileDirectory)..\lib\core\</AddonCoreDir>
+    <AddonPluginsDir>$(MSBuildThisFileDirectory)..\lib\nodes\plugins\</AddonPluginsDir>
+  </PropertyGroup>
+  
+  <!-- Deploy -->
+  <PropertyGroup>
+    <DeployPrefix>addons</DeployPrefix>
+    <DeployDir>$(DeployBaseDir)addonpack\</DeployDir>
+    <DeployInclude>..\**\*.*</DeployInclude>
+    <DeployExclude>..\**\.gitignore;..\**\*.pdb;..\src\**\*.*;..\tests\**\*.*;..\lib\nodes\plugins\*\bin\**\*.*</DeployExclude>
+    <!-- Files to exclude for platform specific builds -->
+    <DeployExclude Condition=" '$(Platform)' == 'x86' ">$(DeployExclude)</DeployExclude>
+    <DeployExclude Condition=" '$(Platform)' == 'x64' ">$(DeployExclude);..\lib\nodes\freeframes\*.*</DeployExclude>
+    <DeployReadOnlyFiles>lib\nodes\*.*</DeployReadOnlyFiles>
+  </PropertyGroup>
+</Project>
