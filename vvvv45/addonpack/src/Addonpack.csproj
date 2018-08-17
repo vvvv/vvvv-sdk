@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="Addonpack.props" />
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{AA8072CA-3343-4199-AC22-62B9E352BAE9}</ProjectGuid>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <OutputPath>..\lib\</OutputPath>
   </PropertyGroup>
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
@@ -601,6 +602,10 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Import Project="Addonpack.targets" />
   <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
