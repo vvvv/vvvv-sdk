@@ -3,13 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
-    <MSBuildCommunityTasksPath>$(MSBuildThisFileDirectory)\.build</MSBuildCommunityTasksPath>
         <!-- Suppress missing XML documentation warning -->
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
   
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -57,38 +55,4 @@
     <AssemblyProduct Condition=" '$(AssemblyProduct)' == '' ">vvvv</AssemblyProduct>
     <AssemblyDescription Condition=" '$(AssemblyDescription)' == '' ">$(AssemblyName)</AssemblyDescription>
   </PropertyGroup>
-  
-  <Target Name="_SetYearProperty_">
-    <Time>
-      <Output TaskParameter="Year" PropertyName="Year" />
-    </Time>
-  </Target>
-  
-  <Target Name="Version" DependsOnTargets="_SetYearProperty_">
-    <Message Text="AssemblyVersion: $(AssemblyVersion)"/>
-    <Message Text="FileVersion: $(FileVersion)"/>
-    <Message Text="InformationalVersion: $(InformationalVersion)"/>
-
-    <Attrib Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs" ReadOnly="False" />
-
-    <AssemblyInfo CodeLanguage="CS"
-                  OutputFile="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs"
-                  GenerateClass="true"
-                  AssemblyCopyright="$(AssemblyCopyright)"
-                  AssemblyConfiguration="$(Configuration)"
-                  AssemblyCompany="$(AssemblyCompany)"
-                  AssemblyDescription="$(AssemblyDescription)"
-                  AssemblyProduct="$(AssemblyProduct)"
-                  AssemblyTitle="$(AssemblyName)"
-                  AssemblyVersion="$(AssemblyVersion)"
-                  AssemblyFileVersion="$(FileVersion)"
-                  AssemblyInformationalVersion="$(InformationalVersion)" />
-                  
-    <!-- Remove stupid comment -->
-    <FileUpdate Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.generated.cs"
-                Regex="\/\/ &lt;auto-generated&gt;.*?\/\/ &lt;\/auto-generated&gt;"
-                Singleline="true"
-                Multiline="true"
-                ReplacementText="// Auto-generated. Do not modify." />
-  </Target>
 </Project>
