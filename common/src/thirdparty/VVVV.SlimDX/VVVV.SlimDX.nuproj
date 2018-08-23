@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>VVVV.SlimDX</PackageId>
-    <PackageVersion Condition="'$(PackageVersion)' == ''">1.0.6</PackageVersion>
+    <PackageVersion Condition="'$(PackageVersion)' == ''">1.0.12</PackageVersion>
     <Title>VVVV.SlimDX</Title>
     <Authors>SlimDX Group</Authors>
     <Owners>vvvv group</Owners>
@@ -30,7 +30,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
   <ItemGroup>
     <PackageReference Include="NuGet.Build.Packaging">
-      <Version>0.2.5-dev.1</Version>
+      <Version>0.2.5-pr160.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -42,7 +42,7 @@
     <PackageFile Include="lib\net40\x64\*.dll" Kind="Runtimes">
       <TargetPath>win-x64\native\%(Filename)%(Extension)</TargetPath>
     </PackageFile>
-    <PackageFile Include="lib\net40\x64\*" Kind="Ref">
+    <PackageFile Include="lib\net40\x86\*" Kind="Ref">
       <TargetPath>net40\%(Filename)%(Extension)</TargetPath>
     </PackageFile>
   </ItemGroup>

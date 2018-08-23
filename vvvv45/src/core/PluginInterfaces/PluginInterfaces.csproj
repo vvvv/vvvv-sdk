@@ -6,19 +6,17 @@
     <RootNamespace>VVVV.PluginInterfaces</RootNamespace>
     <AssemblyName>VVVV.PluginInterfaces</AssemblyName>
     <AssemblyDescription>The VVVV Plugin Interfaces Library</AssemblyDescription>
+    <PackageId>VVVV.PluginInterfaces</PackageId>
+    <Description>$(AssemblyDescription)</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="VVVV.SlimDX" Version="1.0.6" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.5-pr160.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
-      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core</Name>
-      <PrivateAssets>all</PrivateAssets>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj" />
   </ItemGroup>
 </Project>
