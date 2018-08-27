@@ -22,28 +22,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="IO\SystemIOExtensions.Gen.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SystemIOExtensions.Gen.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Streams\StreamExtensions.Gen.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StreamExtensions.Gen.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="IO\SystemIOExtensions.Gen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SystemIOExtensions.Gen.cs</LastGenOutput>
-    </None>
-    <None Include="Streams\StreamExtensions.Gen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StreamExtensions.Gen.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="System.Interactive">
       <Version>3.2.0</Version>
     </PackageReference>
@@ -52,6 +30,31 @@
     </PackageReference>
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.1" />
     <PackageReference Include="VVVV.SlimDX" Version="1.0.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="IO\SystemIOExtensions.Gen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SystemIOExtensions.Gen.cs</LastGenOutput>
+    </None>
+    <None Update="Streams\StreamExtensions.Gen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StreamExtensions.Gen.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="IO\SystemIOExtensions.Gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SystemIOExtensions.Gen.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Streams\StreamExtensions.Gen.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StreamExtensions.Gen.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Target Name="BeforeBuild" DependsOnTargets="Version" />
 </Project>
