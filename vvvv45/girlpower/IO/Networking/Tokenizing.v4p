@@ -1,0 +1,175 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug36.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Networking\Tokenizing.v4p" systemname="Tokenizing" filename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\girlpower\IO\Networking\Tokenizing.v4p" scrollx="0" scrolly="0">
+   <BOUNDS type="Window" left="2805" top="1755" width="15465" height="8310">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="420" top="330" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="510" left="420" top="330" type="Box" width="2445">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Tokenizing">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="1">
+   <BOUNDS type="Node" left="510" top="885" width="5865" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="510" top="885" width="3480" height="1005">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|When sending data via TCP you&apos;re responsible for your own &quot;message framing&quot;.&cr;&lf;&cr;&lf;Please read this excellent explanation about it: |">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="2">
+   <BOUNDS type="Node" left="495" top="1830" width="4695" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="495" top="1830" width="4695" height="270">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="http://blog.stephencleary.com/2009/04/message-framing.html">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="URL">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="570" top="2460" width="20070" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="570" top="2460" width="3960" height="2625">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|In short: TCP is a stream-based protocol as opposed to a package based protocol like UDP. This means that on the receiving end you don&apos;t get handed complete packages but you have to collect incoming bytes yourself and somehow know when you&apos;ve reached the end of one package.&cr;&lf;&cr;&lf;This means that when sending a package of bytes you need to &quot;frame&quot; them in a way so that on the receiving end you can use your knowledge about the framing to know when you&apos;ve received the whole package. This act, we call &quot;tokenizing&quot;.&cr;&lf;&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE systemname="PostfixBytes (Raw)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="PostfixBytes (Raw)" componentmode="Hidden" id="4">
+   <BOUNDS type="Node" left="7245" top="4110" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7245" top="4110">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="PrefixLength (Raw)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="PrefixLength (Raw)" componentmode="Hidden" id="5">
+   <BOUNDS type="Node" left="5880" top="4110" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5880" top="4110">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="FrameBytes (Raw)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="FrameBytes (Raw)" componentmode="Hidden" id="6">
+   <BOUNDS type="Node" left="8610" top="4110" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8610" top="4110">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Tokenizer (Raw LengthPrefix)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw LengthPrefix)" componentmode="Hidden" id="7">
+   <BOUNDS type="Node" left="5895" top="6900" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5895" top="6900">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="10">
+   <BOUNDS type="Node" left="5790" top="2925" width="4530" height="1110">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5790" top="2925" width="4950" height="1185">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There are basic ways of framing:&cr;&lf;- prefix length&cr;&lf;- postfix&cr;&lf;- frame (=prefix+postfix)&cr;&lf;Use the repective nodes to frame your packages as you desire:|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5805" top="2415" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="465" left="5805" top="2415" type="Box" width="2850">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Framing messages|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="13">
+   <BOUNDS type="Node" left="5865" top="5610" width="4530" height="1110">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5865" top="5610" width="4530" height="1110">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|Depending on the message framing in place, you have to use the corresponding Tokenizer:&cr;&lf;- Tokenizer (Raw LengthPrefix)&cr;&lf;- Tokenizer (Raw Postfix)&cr;&lf;- Tokenizer (Raw Frame)&cr;&lf;|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5865" top="5130" type="Node" width="945">
+   </BOUNDS>
+   <BOUNDS height="465" left="5865" top="5130" type="Box" width="2850">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="Tokenizing">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="15">
+   </PIN>
+   </NODE>
+   <NODE systemname="Tokenizer (Raw Postfix)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw Postfix)" componentmode="Hidden" id="14">
+   <BOUNDS type="Node" left="7170" top="6900" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7170" top="6900">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Tokenizer (Raw Frame)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw Frame)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="8430" top="6900" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="8430" top="6900">
+   </BOUNDS>
+   </NODE>
+   <NODE systemname="Tokenizer (Raw FixedLength)" filename="..\..\..\..\..\public-vl\VL.CoreLib.VVVV\vvvv\nodes\vl\VVVV.Raw.vl" nodename="Tokenizer (Raw FixedLength)" componentmode="Hidden" id="16">
+   <BOUNDS type="Node" left="11025" top="6840" width="100" height="100">
+   </BOUNDS>
+   </NODE>
+   <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="17">
+   <BOUNDS type="Node" left="10980" top="5595" width="10830" height="480">
+   </BOUNDS>
+   <BOUNDS type="Box" left="10980" top="5595" width="3900" height="1140">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="0" slicecount="1" values="|There is a 4th way of message-framing, where simply know that every message will have exactly the same number of bytes. In this case you can use the:&cr;&lf;- Tokenizer (Raw FixedLength)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <PACK Name="dx11" Version="1.3.1">
+   </PACK>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
+   </PATCH>
