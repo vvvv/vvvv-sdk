@@ -1,0 +1,85 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv33beta13.1.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\gregsn\Desktop\patches\coverbox\label.v4p">
+   <BOUNDS type="Window" left="4200" top="4515" width="9000" height="6000">
+   </BOUNDS>
+   <NODE id="2" nodename="AsString (Value)">
+   <BOUNDS height="0" left="2610" top="1305" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (MinInt .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="AsString (Value)">
+   <BOUNDS height="0" left="3510" top="1605" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="SubType" slicecount="1" values="|Integer (MinInt .. MaxInt)|">
+   </PIN>
+   </NODE>
+   <NODE id="0" nodename="Add (String)">
+   <BOUNDS height="0" left="2625" top="2115" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1" slicecount="1" values="|Node |">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="3">
+   <BOUNDS type="Node" left="1860" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6030" top="5445" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1860" top="540" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="x">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="3" srcpinname="Y Output Value" dstnodeid="2" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="4">
+   <BOUNDS type="Node" left="2760" top="540" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="6330" top="5745" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="2760" top="540" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="y">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="4" srcpinname="Y Output Value" dstnodeid="1" dstpinname="Input">
+   </LINK>
+   <NODE nodename="IOBox (String)" componentmode="InABox" id="6">
+   <BOUNDS type="Node" left="1905" top="2970" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Window" left="7755" top="9540" width="215" height="160">
+   </BOUNDS>
+   <BOUNDS type="Box" left="1905" top="2970" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="nodename">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Output" dstnodeid="6" dstpinname="Input String">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Output" dstnodeid="0" dstpinname="Input 3">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Output" dstnodeid="0" dstpinname="Input 2">
+   </LINK>
+   </PATCH>

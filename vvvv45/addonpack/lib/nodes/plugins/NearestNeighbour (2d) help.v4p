@@ -1,0 +1,307 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta27.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_45beta27\myplugins\lib\nodes\plugins\NearestNeighbour (2d) help.v4p">
+   <BOUNDS height="9750" left="1830" top="855" type="Window" width="9000">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="7" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="2145" top="2445" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="ReferenceXY" linkstyle="Bezier" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="2205" y="3263">
+   </LINKPOINT>
+   <LINKPOINT x="4545" y="3263">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="6" nodename="Point (GDI)">
+   <BOUNDS height="0" left="3375" top="5730" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Pen Color" slicecount="1" visible="1" values="|1.00000,0.00000,0.00000,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InAWindow" id="5" nodename="Renderer (GDI)">
+   <BOUNDS height="0" left="2775" top="8535" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2775" top="8535" type="Box" width="2400">
+   </BOUNDS>
+   <BOUNDS height="4860" left="10815" top="885" type="Window" width="6120">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="4" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="3150" top="4965" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="XY" linkstyle="Bezier" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="2190" y="3840">
+   </LINKPOINT>
+   <LINKPOINT x="3165" y="3840">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="X" linkstyle="VHV" srcnodeid="4" srcpinname="X">
+   <LINKPOINT x="3195" y="5483">
+   </LINKPOINT>
+   <LINKPOINT x="3390" y="5483">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" linkstyle="VHV" srcnodeid="4" srcpinname="Y">
+   <LINKPOINT x="3735" y="5475">
+   </LINKPOINT>
+   <LINKPOINT x="3570" y="5475">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="3" nodename="Group (GDI)">
+   <BOUNDS height="0" left="2775" top="7920" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Layer Template Count" slicecount="1" values="3">
+   </PIN>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 3" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layer 2" linkstyle="Bezier" srcnodeid="6" srcpinname="Layer">
+   <LINKPOINT x="4250" y="7155">
+   </LINKPOINT>
+   <LINKPOINT x="2125" y="6750">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Layers" srcnodeid="3" srcpinname="Layer">
+   </LINK>
+   <NODE componentmode="Hidden" id="9" nodename="GetSlice (Spreads)">
+   <BOUNDS height="0" left="3885" top="4260" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Index" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Bin Size" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Input" linkstyle="Bezier" srcnodeid="7" srcpinname="Output">
+   <LINKPOINT x="2205" y="3473">
+   </LINKPOINT>
+   <LINKPOINT x="3870" y="3473">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Index" linkstyle="VHV" srcnodeid="8" srcpinname="Output">
+   <LINKPOINT x="3165" y="2865">
+   </LINKPOINT>
+   <LINKPOINT x="4980" y="2865">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="10" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="4410" top="6525" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="XY" linkstyle="Bezier" srcnodeid="9" srcpinname="Output">
+   <LINKPOINT x="3915" y="5520">
+   </LINKPOINT>
+   <LINKPOINT x="4425" y="5520">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="11" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="2280" top="5280" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="12" nodename="Point (GDI)">
+   <BOUNDS height="0" left="1545" top="7320" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Pen Color" slicecount="1" visible="1" values="|0.00000,1.00000,0.00000,1.00000|">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="Layer 1" linkstyle="Bezier" srcnodeid="12" srcpinname="Layer">
+   <LINKPOINT x="1605" y="7740">
+   </LINKPOINT>
+   <LINKPOINT x="2775" y="7740">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="X" linkstyle="Bezier" srcnodeid="11" srcpinname="X">
+   <LINKPOINT x="2280" y="6435">
+   </LINKPOINT>
+   <LINKPOINT x="1575" y="6435">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="12" dstpinname="Y" linkstyle="Bezier" srcnodeid="11" srcpinname="Y">
+   <LINKPOINT x="2850" y="6435">
+   </LINKPOINT>
+   <LINKPOINT x="1755" y="6435">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="Hidden" id="14" nodename="Line (GDI)">
+   <BOUNDS height="0" left="4320" top="7230" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X1" visible="1">
+   </PIN>
+   <PIN pinname="Y1" visible="1">
+   </PIN>
+   <PIN pinname="X2" visible="1">
+   </PIN>
+   <PIN pinname="Y2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Y1" linkstyle="Bezier" srcnodeid="11" srcpinname="Y">
+   <LINKPOINT x="2910" y="6383">
+   </LINKPOINT>
+   <LINKPOINT x="4485" y="6383">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="X2" linkstyle="VHV" srcnodeid="10" srcpinname="X">
+   <LINKPOINT x="4455" y="7013">
+   </LINKPOINT>
+   <LINKPOINT x="4650" y="7013">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Y2" linkstyle="VHV" srcnodeid="10" srcpinname="Y">
+   <LINKPOINT x="4980" y="7013">
+   </LINKPOINT>
+   <LINKPOINT x="4830" y="7013">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="3" dstpinname="Layer 3" linkstyle="Bezier" srcnodeid="14" srcpinname="Layer">
+   <LINKPOINT x="4320" y="7695">
+   </LINKPOINT>
+   <LINKPOINT x="3195" y="7695">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="X1" linkstyle="Bezier" srcnodeid="11" srcpinname="X">
+   <LINKPOINT x="2340" y="6368">
+   </LINKPOINT>
+   <LINKPOINT x="4305" y="6368">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InAWindow" filename="NearestNeighbour.dll" id="8" nodename="NearestNeighbour (2d)" systemname="NearestNeighbour (2d)">
+   <BOUNDS height="100" left="4545" top="3840" type="Node" width="100">
+   </BOUNDS>
+   <PIN pinname="ReferenceXY" visible="1">
+   </PIN>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Reference" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Nearest Index" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Index" srcnodeid="8" srcpinname="Nearest Index">
+   </LINK>
+   <NODE systemname="RandomSpread (Spreads)" nodename="RandomSpread (Spreads)" componentmode="Hidden" id="15">
+   <BOUNDS type="Node" left="5010" top="2115" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="1.46">
+   </PIN>
+   <PIN pinname="Random Seed" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="Newton (Animation)" nodename="Newton (Animation)" componentmode="Hidden" id="17">
+   <BOUNDS type="Node" left="5025" top="2700" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Go To Position" visible="1">
+   </PIN>
+   <PIN pinname="Position Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="15" srcpinname="Output" dstnodeid="17" dstpinname="Go To Position">
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Position Out" dstnodeid="8" dstpinname="InputXY" linkstyle="Bezier">
+   <LINKPOINT x="5085" y="3360">
+   </LINKPOINT>
+   <LINKPOINT x="5820" y="3420">
+   </LINKPOINT>
+   </LINK>
+   <LINK srcnodeid="17" srcpinname="Position Out" dstnodeid="11" dstpinname="XY" linkstyle="Bezier">
+   <LINKPOINT x="5025" y="4110">
+   </LINKPOINT>
+   <LINKPOINT x="2340" y="4110">
+   </LINKPOINT>
+   </LINK>
+   <NODE systemname="LFO (Animation)" nodename="LFO (Animation)" componentmode="Hidden" id="18">
+   <BOUNDS type="Node" left="5055" top="1455" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Period" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Cycles" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="18" srcpinname="Cycles" dstnodeid="15" dstpinname="Random Seed">
+   </LINK>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="3795">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|Finds nearest neighbour between set of points|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10290" top="35940" type="Window" width="215">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|NearestNeighbour (2d)|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>

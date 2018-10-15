@@ -1,0 +1,1 @@
+Manual build of version d700d181a7604930d9316d6f82eea3ca446a5004 with https://github.com/loresoft/msbuildtasks/pull/269 applied.
