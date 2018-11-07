@@ -1,0 +1,173 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Vector (3d Join) help.v4p">
+   <BOUNDS height="6000" left="4680" top="3225" type="Window" width="5670">
+   </BOUNDS>
+   <NODE id="9" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="1635" top="3870" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="8" nodename="Vector (3d Split)">
+   <BOUNDS height="0" left="1635" top="1980" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1">
+   </PIN>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="270" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10470" top="5610" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="270" top="2835" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="X">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="6" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="1200" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10935" top="5490" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="1200" top="2835" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Y">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="2130" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="11640" top="5475" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="2130" top="2835" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Descriptive Name" slicecount="1" values="Z">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="8" srcpinname="X">
+   <LINKPOINT x="1665" y="2535">
+   </LINKPOINT>
+   <LINKPOINT x="1035" y="2535">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y Input Value" srcnodeid="8" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y Input Value" linkstyle="VHV" srcnodeid="8" srcpinname="Z">
+   <LINKPOINT x="2235" y="2535">
+   </LINKPOINT>
+   <LINKPOINT x="2895" y="2535">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="X" linkstyle="VHV" srcnodeid="7" srcpinname="Y Output Value">
+   <LINKPOINT x="1035" y="3465">
+   </LINKPOINT>
+   <LINKPOINT x="1665" y="3465">
+   </LINKPOINT>
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="6" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Z" linkstyle="VHV" srcnodeid="5" srcpinname="Y Output Value">
+   <LINKPOINT x="2895" y="3465">
+   </LINKPOINT>
+   <LINKPOINT x="2235" y="3465">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="825" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10485" top="7350" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="825" top="4455" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="Y Input Value" srcnodeid="9" srcpinname="XYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="3" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="855" top="870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10785" top="7650" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="885" left="855" top="870" type="Box" width="855">
+   </BOUNDS>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="3" visible="1" values="1.00000,2.00000,3.00000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="XYZ" srcnodeid="3" srcpinname="Y Output Value">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="255" left="2280" top="1995" type="Node" width="825">
+   </BOUNDS>
+   <BOUNDS height="360" left="2280" top="1995" type="Box" width="3150">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Returns cartesian coordinates of a Vector.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="300" left="15" top="390" type="Box" width="4620">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="44910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Builds a Vector out of its ingredients (the catesian coordinates).|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3765">
+   </BOUNDS>
+   <BOUNDS height="160" left="10770" top="44910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Vector - 3d Join|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>

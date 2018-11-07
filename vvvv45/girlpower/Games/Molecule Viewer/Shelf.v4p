@@ -1,0 +1,199 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.6.dtd" >
+   <PATCH nodename="C:\Work\MoleculeViewer\000_MoleculeViewer_FinalApp\Shelf.v4p" systemname="Shelf" filename="C:\Work\MoleculeViewer\Shelf.v4p" bgcolor="15132390">
+   <NODE systemname="ShelfController" filename="ShelfController.v4p" nodename="ShelfController.v4p" componentmode="Hidden" id="0">
+   <BOUNDS type="Node" left="5655" top="1740" width="1485" height="270">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5655" top="1740" width="7015" height="8970">
+   </BOUNDS>
+   <BOUNDS type="Window" left="2505" top="3015" width="11490" height="10515">
+   </BOUNDS>
+   <PIN pinname="Mouse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Selected Atom" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Shelf Atom Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="AtomTyp" visible="1">
+   </PIN>
+   <PIN pinname="ViewProjectionInverse" visible="1">
+   </PIN>
+   <PIN pinname="Atom Names" visible="1">
+   </PIN>
+   <PIN pinname="Titles Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE systemname="ShelfView" filename="ShelfView.v4p" nodename="ShelfView.v4p" componentmode="Hidden" id="1">
+   <BOUNDS type="Node" left="6174" top="2685" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Window" left="3120" top="8520" width="15135" height="6000">
+   </BOUNDS>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="Alpha" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="ViewProjectionInverse" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Titles Text" visible="1">
+   </PIN>
+   <PIN pinname="Titles Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="Mesh" dstnodeid="0" dstpinname="Mesh" linkstyle="Bezier">
+   <LINKPOINT x="5681" y="3965">
+   </LINKPOINT>
+   <LINKPOINT x="4813" y="1135">
+   </LINKPOINT>
+   </LINK>
+   <NODE id="2" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Mouse">
+   </PIN>
+   <BOUNDS type="Box" left="6360" top="1040" width="660" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="6360" top="1040" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="Output Node" dstnodeid="0" dstpinname="Mouse">
+   </LINK>
+   <NODE id="3" systemname="IOBox (Value Advanced)" componentmode="InABox" nodename="IOBox (Value Advanced)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Selected Atom|">
+   </PIN>
+   <BOUNDS type="Box" left="5655" top="3645" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="5655" top="3645" width="750" height="240">
+   </BOUNDS>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Selected Atom" dstnodeid="3" dstpinname="Y Input Value">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Transform Out" dstnodeid="1" dstpinname="Transform">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Shelf Atom Alpha" dstnodeid="1" dstpinname="Alpha">
+   </LINK>
+   <NODE id="4" systemname="IOBox (Node)" componentmode="InABox" nodename="IOBox (Node)">
+   <PIN pinname="Descriptive Name" slicecount="1" values="Layer">
+   </PIN>
+   <BOUNDS type="Box" left="7077" top="3675" width="750" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7077" top="3675" width="750" height="240">
+   </BOUNDS>
+   <PIN pinname="Input Node" visible="1">
+   </PIN>
+   </NODE>
+   <BOUNDS type="Window" left="4200" top="3645" width="10185" height="6090">
+   </BOUNDS>
+   <LINK srcnodeid="0" srcpinname="ViewProjectionInverse" dstnodeid="1" dstpinname="ViewProjectionInverse">
+   </LINK>
+   <LINK srcnodeid="1" srcpinname="Layer" dstnodeid="4" dstpinname="Input Node">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="5" systemname="IOBox (Value Advanced)">
+   <BOUNDS type="Node" left="7650" top="825" width="0" height="0">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7650" top="825" width="480" height="480">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Boolean">
+   </PIN>
+   <PIN pinname="Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Shelf Enable|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="0" dstpinname="Shelf Enable">
+   </LINK>
+   <NODE componentmode="InABox" id="11" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="615" top="465" type="Node" width="7425">
+   </BOUNDS>
+   <BOUNDS height="5055" left="615" top="465" type="Box" width="3090">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|ShelfController places atoms of the shelf on the screen, sets their scale and transparency. In response to mouse movements it changes transformation for one or the other atom.&cr;&lf;&cr;&lf;It needs a Mesh (used in ShelfView to draw the atoms) to perform a test whether the mouse is placed over an atom.&cr;&lf;&cr;&lf;&apos;Shelf Enable&apos; says whether the shelf atoms should react to the mouse or not. &cr;&lf;(For example if one atom is already picked from the shelf, other atoms should not respond to the mouse.)&cr;&lf;&cr;&lf;ShelfView being just the view-part of the MVC design pattern does not perform any logic operations, it just gets transformations and alpha values from the ShelfController, receives global constants (like colors) and draws the atoms.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="10" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="435" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="165" top="435" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="9" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="165" top="3828" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="165" top="3828" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="12" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="4830" top="1650" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="390" left="4830" top="1650" type="Box" width="405">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="1.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="13" nodename="IOBox (String)" systemname="IOBox (String)">
+   <BOUNDS height="270" left="5733" top="2613" type="Node" width="315">
+   </BOUNDS>
+   <BOUNDS height="405" left="5733" top="2613" type="Box" width="420">
+   </BOUNDS>
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="2.">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="String Type" slicecount="1" values="MultiLine">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="16">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="0" srcpinname="Titles Text" dstnodeid="1" dstpinname="Titles Text">
+   </LINK>
+   <LINK srcnodeid="0" srcpinname="Titles Transform" dstnodeid="1" dstpinname="Titles Transform">
+   </LINK>
+   <PACK Name="addonpack" Version="35.0.0">
+   </PACK>
+   </PATCH>

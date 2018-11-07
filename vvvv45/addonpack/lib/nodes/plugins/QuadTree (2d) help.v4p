@@ -1,0 +1,347 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv40alpha19.2.dtd" >
+   <PATCH nodename="D:\repositories\vvvv\plugins\c#\Spreads\NTree\trunk\QuadTree (2d) help.v4p">
+   <BOUNDS height="10515" left="525" top="2025" type="Window" width="12765">
+   </BOUNDS>
+   <NODE componentmode="InAWindow" id="21" nodename="Renderer (EX9)">
+   <BOUNDS height="0" left="3720" top="9480" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="5265" left="13500" top="2910" type="Window" width="5850">
+   </BOUNDS>
+   <BOUNDS height="1800" left="3720" top="9480" type="Box" width="2400">
+   </BOUNDS>
+   <PIN pinname="Layers" visible="1">
+   </PIN>
+   <PIN pinname="Projection Transform" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="20" nodename="Perspective (Transform)">
+   <BOUNDS height="0" left="5715" top="8070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="19" nodename="Translate (Transform)">
+   <BOUNDS height="0" left="5430" top="8820" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="19" dstpinname="Transform In" srcnodeid="20" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Projection Transform" srcnodeid="19" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="18" nodename="Rotate (Transform)">
+   <BOUNDS height="0" left="6045" top="7500" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   <PIN pinname="X" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Y" slicecount="1" values="0.5">
+   </PIN>
+   <PIN pinname="Z" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="20" dstpinname="Transform In" srcnodeid="18" srcpinname="Transform Out">
+   </LINK>
+   <NODE componentmode="InABox" id="17" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="3675" top="2235" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6285" top="4635" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="240" left="3675" top="2235" type="Box" width="795">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" values="3000">
+   </PIN>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   </NODE>
+   <NODE componentmode="Hidden" id="16" nodename=":MODULES:\vvvv group\Debug\PerfMeter (Debug).v4p" path="C:\vvvv_plugintest\modules\vvvv group\Debug\">
+   <BOUNDS height="0" left="3510" top="8145" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="6000" left="7035" top="6765" type="Window" width="9000">
+   </BOUNDS>
+   <BOUNDS height="3600" left="3510" top="8145" type="Box" width="4800">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Enabled" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="15" nodename="Group (EX9 Priority)">
+   <BOUNDS height="0" left="3030" top="8655" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer 1" visible="1">
+   </PIN>
+   <PIN pinname="Layer 2" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Layer 2" srcnodeid="16" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="21" dstpinname="Layers" srcnodeid="15" srcpinname="Layer">
+   </LINK>
+   <NODE id="14" nodename="Multiply (Value)">
+   <BOUNDS height="0" left="3645" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input Count" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1">
+   </PIN>
+   <PIN pinname="Input 3" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="HSL (Color Join)">
+   <BOUNDS height="0" left="4455" top="6945" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Hue" visible="1">
+   </PIN>
+   <PIN pinname="Saturation" visible="1">
+   </PIN>
+   <PIN pinname="Lightness" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="12" nodename="Bounds (Spectral)">
+   <BOUNDS height="0" left="5205" top="4545" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Maximum" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Input" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="11" nodename="Map (Value)">
+   <BOUNDS height="0" left="5385" top="5640" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Source Minimum" visible="1">
+   </PIN>
+   <PIN pinname="Source Maximum" visible="1">
+   </PIN>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Destination Minimum" slicecount="1" values="0.4">
+   </PIN>
+   <PIN pinname="Destination Maximum" slicecount="1" values="0.8">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Source Minimum" srcnodeid="12" srcpinname="Minimum">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Source Maximum" srcnodeid="12" srcpinname="Maximum">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Input" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Lightness" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <NODE id="10" nodename="Count (Value)">
+   <BOUNDS height="0" left="3555" top="5265" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input" visible="1">
+   </PIN>
+   <PIN pinname="Count" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="10" dstpinname="Input" srcnodeid="14" srcpinname="Output">
+   </LINK>
+   <NODE id="9" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3390" top="6015" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" values="20">
+   </PIN>
+   <PIN pinname="Input" slicecount="1" values="0.5">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="9" dstpinname="Spread Count" srcnodeid="10" srcpinname="Count">
+   </LINK>
+   <NODE id="8" nodename="Quad (DX9)">
+   <BOUNDS height="0" left="2400" top="7380" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Color" visible="1">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="15" dstpinname="Layer 1" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Color" srcnodeid="13" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="Hidden" id="7" nodename=":PLUGINS:\NTrees.dll|VVVV.Nodes.QuadTreeNode">
+   <BOUNDS height="0" left="1950" top="3900" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2280" top="6510" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="1950" top="3900" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="InputXY" visible="1">
+   </PIN>
+   <PIN pinname="Width" visible="1">
+   </PIN>
+   <PIN pinname="Height" visible="1">
+   </PIN>
+   <PIN pinname="CentersXY" visible="1">
+   </PIN>
+   <PIN pinname="Maximum Elements" slicecount="1" values="1">
+   </PIN>
+   </NODE>
+   <NODE id="6" nodename="Vector (2d Join)">
+   <BOUNDS height="0" left="2040" top="3360" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="InputXY" srcnodeid="6" srcpinname="XY">
+   </LINK>
+   <NODE id="5" nodename="Scale (Transform)">
+   <BOUNDS height="0" left="2715" top="6900" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Transform In" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="14" dstpinname="Input 1" srcnodeid="7" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="14" dstpinname="Input 2" srcnodeid="7" srcpinname="Height">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="X" srcnodeid="7" srcpinname="Width">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Y" srcnodeid="7" srcpinname="Height">
+   </LINK>
+   <NODE id="4" nodename="Transform (Transform 2d)">
+   <BOUNDS height="0" left="780" top="5955" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="CenterX" visible="1">
+   </PIN>
+   <PIN pinname="CenterY" visible="1">
+   </PIN>
+   <PIN pinname="Transform Out" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Vector (2d Split)">
+   <BOUNDS height="0" left="1380" top="4620" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="XY" srcnodeid="7" srcpinname="CentersXY">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="CenterX" srcnodeid="3" srcpinname="X">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="CenterY" srcnodeid="3" srcpinname="Y">
+   </LINK>
+   <LINK dstnodeid="5" dstpinname="Transform In" srcnodeid="4" srcpinname="Transform Out">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Transform" srcnodeid="5" srcpinname="Transform Out">
+   </LINK>
+   <NODE id="2" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="1890" top="2850" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="-324270030427">
+   </PIN>
+   </NODE>
+   <NODE id="1" nodename="RandomSpread (Spreads)">
+   <BOUNDS height="0" left="3540" top="2835" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="Random Seed" slicecount="1" visible="1" values="591">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Width" slicecount="1" values="2">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Spread Count" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="1" dstpinname="Spread Count" srcnodeid="17" srcpinname="Y Output Value">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="Y" srcnodeid="1" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="6" dstpinname="X" srcnodeid="2" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Saturation" srcnodeid="11" srcpinname="Output">
+   </LINK>
+   <LINK dstnodeid="13" dstpinname="Hue" srcnodeid="9" srcpinname="Output">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6990" top="615" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="10935" top="8250" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="3360" left="6990" top="615" type="Box" width="5040">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" values="|This node outputs the all resulting boxes, and all the boxes matching the entry points.&cr;&lf;&cr;&lf;To install, just copy the dll in the vvvv plugin folder&cr;&lf;&cr;&lf;If you experience any problem, or have any question about this plugin:&cr;&lf;&cr;&lf;Email: julien@mrvux.com&cr;&lf;&cr;&lf;or send me an message in vvvv website (username: vux)&cr;&lf;|">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="23" nodename="IOBox (String)">
+   <BOUNDS height="255" left="240" top="495" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="945" left="240" top="495" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6210" top="14910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Calculates the QuadTree from a set of 2d points.|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="22" nodename="IOBox (String)">
+   <BOUNDS height="270" left="240" top="135" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="360" left="240" top="135" type="Box" width="4335">
+   </BOUNDS>
+   <BOUNDS height="160" left="6210" top="14910" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|QuadTree - 2d|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12">
+   </PIN>
+   </NODE>
+   </PATCH>
