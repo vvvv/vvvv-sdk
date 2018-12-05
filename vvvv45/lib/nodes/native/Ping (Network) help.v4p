@@ -1,0 +1,133 @@
+<!DOCTYPE VVVV  SYSTEM "http://vvvv.meso.net/versions/vvvv33alpha7.8.dtd" >
+   <PATCH nodename="C:\Dokumente und Einstellungen\AmpOp\Eigene Dateien\meso\dev\vvvv33\help\Ping (Network) help.v4p">
+   <BOUNDS height="4155" left="4065" top="3465" type="Window" width="3510">
+   </BOUNDS>
+   <NODE componentmode="InABox" id="5" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1350" top="870" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6165" top="3975" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="825" left="1350" top="870" type="Box" width="1305">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="3" visible="1" values="217.160.136.80,80.243.163.38,207.46.245.156">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
+   <BOUNDS height="255" left="390" top="1395" type="Node" width="795">
+   </BOUNDS>
+   <BOUNDS height="300" left="390" top="1395" type="Box" width="930">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|IP&apos;s to Ping|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE id="3" nodename="Ping (Network)">
+   <BOUNDS height="0" left="1350" top="2160" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="IP" visible="1">
+   </PIN>
+   <PIN pinname="Status" visible="1">
+   </PIN>
+   <PIN pinname="Reachable" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="3" dstpinname="IP" srcnodeid="5" srcpinname="Output String">
+   </LINK>
+   <NODE componentmode="InABox" id="2" nodename="IOBox (String)">
+   <BOUNDS height="0" left="1455" top="2790" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="6465" top="4275" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="750" left="1455" top="2790" type="Box" width="1770">
+   </BOUNDS>
+   <PIN pinname="Input String" visible="1">
+   </PIN>
+   <PIN pinname="Output String" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="2" dstpinname="Input String" linkstyle="VHV" srcnodeid="3" srcpinname="Status">
+   <LINKPOINT x="1815" y="2610">
+   </LINKPOINT>
+   <LINKPOINT x="3195" y="2610">
+   </LINKPOINT>
+   </LINK>
+   <NODE componentmode="InABox" id="1" nodename="IOBox (Value Advanced)">
+   <BOUNDS height="0" left="945" top="2805" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4935" top="6420" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="735" left="945" top="2805" type="Box" width="465">
+   </BOUNDS>
+   <PIN pinname="Show Value" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Show Slider" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Minimum" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Maximum" slicecount="1" values="1.00000">
+   </PIN>
+   <PIN pinname="Slider Behavior" slicecount="1" values="Toggle">
+   </PIN>
+   <PIN pinname="Y Input Value" visible="1">
+   </PIN>
+   <PIN pinname="Rows" slicecount="1" values="3.00000">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="1" dstpinname="Y Input Value" srcnodeid="3" srcpinname="Reachable">
+   </LINK>
+   <NODE componentmode="InABox" id="0" nodename="IOBox (String)">
+   <BOUNDS height="255" left="90" top="2955" type="Node" width="900">
+   </BOUNDS>
+   <BOUNDS height="315" left="90" top="2955" type="Box" width="810">
+   </BOUNDS>
+   <BOUNDS height="160" left="0" top="0" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="reachable">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="8" nodename="IOBox (String)">
+   <BOUNDS height="255" left="15" top="390" type="Node" width="570">
+   </BOUNDS>
+   <BOUNDS height="330" left="15" top="390" type="Box" width="2520">
+   </BOUNDS>
+   <BOUNDS height="160" left="2550" top="37980" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|sends pings to clients in spread|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="7" nodename="IOBox (String)">
+   <BOUNDS height="270" left="15" top="15" type="Node" width="915">
+   </BOUNDS>
+   <BOUNDS height="375" left="15" top="15" type="Box" width="3135">
+   </BOUNDS>
+   <BOUNDS height="160" left="2550" top="37980" type="Window" width="215">
+   </BOUNDS>
+   <PIN pinname="Input String" slicecount="1" visible="0" values="|Ping - Network|">
+   </PIN>
+   <PIN pinname="Output String" visible="0">
+   </PIN>
+   <PIN pinname="Show Grid" slicecount="1" values="0.00000">
+   </PIN>
+   <PIN pinname="Size" slicecount="1" values="12.00000">
+   </PIN>
+   </NODE>
+   </PATCH>
