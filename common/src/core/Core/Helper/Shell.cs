@@ -1,13 +1,11 @@
-﻿extern alias Codeplex;
-
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Linq;
 using System.ComponentModel;
-using Codeplex::System.ComponentModel.Composition;
-using Codeplex::System.ComponentModel.Composition.Hosting;
-using Codeplex::System.ComponentModel.Composition.Primitives;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 
 using Microsoft.Practices.Unity;
 
@@ -71,7 +69,7 @@ namespace VVVV.Core
             	return FInstance;
             }
         }
-        
+
         public CompositionContainer Container { get; private set; }
         
         public CommandLineArguments CommandLineArguments { get; private set; }
