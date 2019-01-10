@@ -20,6 +20,7 @@
   <Target Name="VVVV_GenerateFileNames" DependsOnTargets="VVVV_VersionInfo">
     <PropertyGroup>
       <CoreDir>$(RootDir)lib\core\</CoreDir>
+      <CommonDir>$(RootDir)..\common\</CommonDir>
       <PluginsDir>$(RootDir)lib\nodes\plugins\</PluginsDir>
       <EditorsDir>$(RootDir)lib\nodes\editors\</EditorsDir>
       <DeployName>$(DeployPrefix)_$(VVVV_VersionAndPlatform)</DeployName>
@@ -27,19 +28,20 @@
       <DeployedVVVVExe>$(DeployDir)vvvv.exe</DeployedVVVVExe>
       <ZipFileName>$(DeployBaseDir)$(DeployName).zip</ZipFileName>
     </PropertyGroup>
-    <CreateItem Include="$(CoreDir)**\*.*">
-      <Output TaskParameter="Include" ItemName="CoreFiles" />
-    </CreateItem>
   </Target>
 
   <!-- Build -->
-  <Target Name="VVVV_Build" DependsOnTargets="VVVV_GenerateFileNames">
+  <Target Name="VVVV_Build" DependsOnTargets="VVVV_GenerateFileNames" AfterTargets="Build">
     <!-- Copy shared dependencies to lib/core -->
-    <CreateItem Include="$(PluginsDir)Sanford*">
-      <Output TaskParameter="Include" ItemName="_SharedDependencies_" />
-    </CreateItem>
+    <ItemGroup>
+      <_SharedDependencies_ Include="$(PluginsDir)Sanford*" />
+      <_SharedDependencies_ Include="$(CommonDir)src\thirdparty\*" />
+    </ItemGroup>
     <Copy SourceFiles="@(_SharedDependencies_)" DestinationFolder="$(CoreDir)" />
     <!-- Delete all files which are already in lib/core -->
+    <CreateItem Include="$(CoreDir)**\*.*">
+      <Output TaskParameter="Include" ItemName="CoreFiles" />
+    </CreateItem>
     <Delete Files="@(CoreFiles->'$(PluginsDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <Delete Files="@(CoreFiles->'$(EditorsDir)%(RecursiveDir)%(Filename)%(Extension)')" />
     <!-- Create lib/*.dtd file -->
@@ -48,10 +50,14 @@
     </ItemGroup>
     <Delete Files="@(DTDFiles)" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(RootDir)lib\$(VVVV_VersionInfo).dtd" />
+    <ItemGroup>
+      <DummyFiles Include="$(OutputPath)vvvv45.*" />
+    </ItemGroup>
+    <Delete Files="@(DummyFiles)" />
   </Target>
   
   <!-- Deploy -->
-  <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build">
+  <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" AfterTargets="Build" Condition=" '$(Configuration)' == 'Deploy' ">
     <!-- Let's not remove the directory since VL solution will also install its package there before vvvv45 solution is built.
          VL is built before vvvv so we can set the read-only flags here at one central point and don't have to copy all these
          tasks over to the VL solution. -->
