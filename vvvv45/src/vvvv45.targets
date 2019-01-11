@@ -63,6 +63,38 @@
          tasks over to the VL solution. -->
     <!--<RemoveDir Directories="$(DeployDir)" />-->
     <Message Text="Deploying to $(DeployDir)" Importance="High" />
+    <!-- Build and install our VL packages -->
+    <PropertyGroup>
+      <_RepoRootDir>$(MsBuildThisFileDirectory)..\..\..\</_RepoRootDir>
+      <_VLRootDir>$(_RepoRootDir)vvvv50\</_VLRootDir>
+      <_VLIntegrationProject>VVVV.VLIntegration</_VLIntegrationProject>
+      <_VLIntegrationProperties>Configuration=Release;Platform=AnyCPU</_VLIntegrationProperties>
+      <_PackageInstallDirectory>$(DeployDir)lib\packs\</_PackageInstallDirectory>
+      <_PackageSourceDirectory>$(_RepoRootDir)public-vl\packages-build\</_PackageSourceDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <_VLIntegrationProjectFile Include="$(_VLRootDir)$(_VLIntegrationProject)\src\$(_VLIntegrationProject).csproj" />
+      <_PackagesToInstall Include="VVVV.VLIntegration" />
+    </ItemGroup>
+    <RemoveDir Directories="$(_PackageInstallDirectory)" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)"
+             Targets="Build"
+             BuildInParallel="true"
+             Properties="$(_VLIntegrationProperties)" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)"
+             Targets="GetPackageVersion"
+             Properties="$(_VLIntegrationProperties)" >
+      <Output TaskParameter="TargetOutputs"
+              PropertyName="_VLIntegrationVersion" />
+    </MSBuild>
+    <NuGetInstall StandardOutputImportance="high" 
+                  ToolPath="$(NugetExePath)" 
+                  Package="%(_PackagesToInstall.Identity)" 
+                  Version="$(_VLIntegrationVersion)" 
+                  Source="$(_PackageSourceDirectory);nuget.org" 
+                  OutputDirectory="$(_PackageInstallDirectory)" 
+                  PackageSaveMode="nuspec" 
+                  PreRelease="true" />
     <!-- Copy files to deploy directory (public/build/vvvv_VERSION) -->
     <CreateItem Include="$(DeployInclude)" Exclude="$(DeployExclude)">
       <Output ItemName="FilesToDeploy" TaskParameter="Include" />
