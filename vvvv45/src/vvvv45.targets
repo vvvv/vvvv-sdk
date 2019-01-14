@@ -78,7 +78,7 @@
     </ItemGroup>
     <RemoveDir Directories="$(_PackageInstallDirectory)" />
     <MSBuild Projects="@(_VLIntegrationProjectFile)"
-             Targets="Build"
+             Targets="Restore;Build"
              BuildInParallel="true"
              Properties="$(_VLIntegrationProperties)" />
     <MSBuild Projects="@(_VLIntegrationProjectFile)"
