@@ -103,7 +103,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="vvvv45.props" />
-    <None Include="vvvv45.targets" />
+    <None Include="vvvv45.targets">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -116,6 +118,29 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Import Project="vvvv45.targets" />
+  <Target Name="BuildAndInstallVLIntegration" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" BeforeTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' ">
+    <!-- Build and install our VL packages -->
+    <PropertyGroup>
+      <_RepoRootDir>$(MsBuildThisFileDirectory)..\..\..\</_RepoRootDir>
+      <_VLRootDir>$(_RepoRootDir)vvvv50\</_VLRootDir>
+      <_VLIntegrationProject>VVVV.VLIntegration</_VLIntegrationProject>
+      <_VLIntegrationProperties>Configuration=Release;Platform=AnyCPU</_VLIntegrationProperties>
+      <_PackageInstallDirectory>$(DeployDir)lib\packs\</_PackageInstallDirectory>
+      <_PackageSourceDirectory>$(_RepoRootDir)public-vl\packages-build\</_PackageSourceDirectory>
+    </PropertyGroup>
+    <ItemGroup>
+      <_VLIntegrationProjectFile Include="$(_VLRootDir)$(_VLIntegrationProject)\src\$(_VLIntegrationProject).csproj" />
+      <_PackagesToInstall Include="VVVV.VLIntegration" />
+    </ItemGroup>
+    <Message Text="Building and installing VL integration to $(_PackageInstallDirectory)" Importance="High" />
+    <RemoveDir Directories="$(_PackageInstallDirectory)" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Restore" Properties="$(_VLIntegrationProperties)" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties);DUMMY=ForceReEvaluation" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="GetPackageVersion" Properties="$(_VLIntegrationProperties)">
+      <Output TaskParameter="TargetOutputs" PropertyName="_VLIntegrationVersion" />
+    </MSBuild>
+    <NuGetInstall StandardOutputImportance="high" ToolPath="$(NugetExePath)" Package="%(_PackagesToInstall.Identity)" Version="$(_VLIntegrationVersion)" Source="$(_PackageSourceDirectory);nuget.org" OutputDirectory="$(_PackageInstallDirectory)" PackageSaveMode="nuspec" PreRelease="true" />
+  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
