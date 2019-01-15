@@ -134,8 +134,7 @@
     </ItemGroup>
     <Message Text="Building and installing VL integration to $(_PackageInstallDirectory)" Importance="High" />
     <RemoveDir Directories="$(_PackageInstallDirectory)" />
-    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Restore" Properties="$(_VLIntegrationProperties)" />
-    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties);DUMMY=ForceReEvaluation" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties)" />
     <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="GetPackageVersion" Properties="$(_VLIntegrationProperties)">
       <Output TaskParameter="TargetOutputs" PropertyName="_VLIntegrationVersion" />
     </MSBuild>
