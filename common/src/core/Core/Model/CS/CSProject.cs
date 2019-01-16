@@ -7,32 +7,13 @@ using ICSharpCode.SharpDevelop.Dom;
 using VVVV.Core.Logging;
 using Microsoft.CSharp;
 using System.IO;
-using NuGetAssemblyLoader;
 
 namespace VVVV.Core.Model.CS
 {
     // TODO: Parsing of references and documents is not complete. Missing events (doc added/removed, ref added/removed..)
     public class CSProject : MsBuildProject
     {
-        private static CSharpCodeProvider FProvider;
-
-        static CSProject()
-        {
-            var compilersPackage = AssemblyLoader.FindPackageAndCacheResult("Microsoft.Net.Compilers");
-            var path = compilersPackage != null ? Path.Combine(AssemblyLoader.GetPathOfPackage(compilersPackage), "tools") : "";
-            
-            if (Directory.Exists(path))
-            {
-                Environment.SetEnvironmentVariable("ROSLYN_COMPILER_LOCATION", path);
-                FProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
-            }
-            else
-            {
-                var options = new Dictionary<string, string>();
-                options.Add("CompilerVersion", "v4.0");
-                FProvider = new CSharpCodeProvider(options);
-            }
-        }
+        private static readonly CSharpCodeProvider FProvider = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
 
         public CSProject(string path)
             : base(path)
