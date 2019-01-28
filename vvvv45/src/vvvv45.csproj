@@ -139,6 +139,14 @@
       <Output TaskParameter="TargetOutputs" PropertyName="_VLIntegrationVersion" />
     </MSBuild>
     <NuGetInstall StandardOutputImportance="high" ToolPath="$(NugetExePath)" Package="%(_PackagesToInstall.Identity)" Version="$(_VLIntegrationVersion)" Source="$(_PackageSourceDirectory);nuget.org" OutputDirectory="$(_PackageInstallDirectory)" PackageSaveMode="nuspec" PreRelease="true" />
+
+    <!-- Delete all non VL packages -->
+    <ItemGroup>
+      <_PackageFoldersToDelete
+        Include="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)'))"
+        Exclude="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)', 'VL.*'))" />
+    </ItemGroup>
+    <RemoveDir Directories="@(_PackageFoldersToDelete)" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
