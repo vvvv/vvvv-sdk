@@ -124,7 +124,7 @@
       <_RepoRootDir>$(MsBuildThisFileDirectory)..\..\..\</_RepoRootDir>
       <_VLRootDir>$(_RepoRootDir)vvvv50\</_VLRootDir>
       <_VLIntegrationProject>VVVV.VLIntegration</_VLIntegrationProject>
-      <_VLIntegrationProperties>Configuration=Release;Platform=AnyCPU</_VLIntegrationProperties>
+      <_VLIntegrationProperties>Configuration=Release;Platform=AnyCPU;BuildingInsideVisualStudio=false</_VLIntegrationProperties>
       <_PackageInstallDirectory>$(DeployDir)lib\packs\</_PackageInstallDirectory>
       <_PackageSourceDirectory>$(_RepoRootDir)public-vl\packages-build\</_PackageSourceDirectory>
     </PropertyGroup>
@@ -134,18 +134,17 @@
     </ItemGroup>
     <Message Text="Building and installing VL integration to $(_PackageInstallDirectory)" Importance="High" />
     <RemoveDir Directories="$(_PackageInstallDirectory)" />
-    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties)" />
+    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties)" ToolsVersion="15.0" BuildInParallel="true" />
     <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="GetPackageVersion" Properties="$(_VLIntegrationProperties)">
       <Output TaskParameter="TargetOutputs" PropertyName="_VLIntegrationVersion" />
     </MSBuild>
     <NuGetInstall StandardOutputImportance="high" ToolPath="$(NugetExePath)" Package="%(_PackagesToInstall.Identity)" Version="$(_VLIntegrationVersion)" Source="$(_PackageSourceDirectory);nuget.org" OutputDirectory="$(_PackageInstallDirectory)" PackageSaveMode="nuspec" PreRelease="true" />
 
-    <!-- Delete all non VL packages -->
+    <!-- Delete SharpDX packages but keep System.* for now -->
     <ItemGroup>
-      <_PackageFoldersToDelete
-        Include="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)'))"
-        Exclude="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)', 'VL.*'))" />
+      <_PackageFoldersToDelete Include="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)', 'SharpDX*'))" />
     </ItemGroup>
+    <Message Text="Deleting packages @(_PackageFoldersToDelete)" Importance="high" />
     <RemoveDir Directories="@(_PackageFoldersToDelete)" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
