@@ -85,26 +85,6 @@
     </CombinePath>
     <Exec Command="attrib +H &quot;%(_DeployHiddenFiles.Identity)&quot;" />
   </Target>
-
-  <Target Name="GenerateNodeList" AfterTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' AND '$(DeployGenerateNodeList)' == 'true' ">    
-    <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
-    <!-- Call /nodelist without any arguments to include native nodes -->
-    <Exec Condition="Exists('$(DeployedVVVVExe)')"
-          Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist" />
-    <!-- Call /nodelist with arguments to filter for specific directory -->
-    <Exec Condition="!Exists('$(DeployedVVVVExe)')" 
-          Command="&quot;$(VVVVExe)&quot; /allowmultiple /nodelist &quot;$(DeployDir)lib\nodes&quot;" />
-    <!-- Generate a nodelist.xml file for each VL integration pack -->
-    <PropertyGroup>
-      <_InternalPacksDirectory>$(DeployDir)lib\packs</_InternalPacksDirectory>
-    </PropertyGroup>
-    <ItemGroup>
-      <_VLPacksDirectories Condition="Exists('$(_InternalPacksDirectory)')" 
-                           Include="$([System.IO.Directory]::GetDirectories(&quot;$(_InternalPacksDirectory)&quot;, &quot;VL.*&quot;))" />
-    </ItemGroup>
-    <Exec Condition="Exists('$(DeployedVVVVExe)') AND Exists('$(_InternalPacksDirectory)') AND Exists('%(_VLPacksDirectories.Identity)\vvvv\nodes') AND !Exists('%(_VLPacksDirectories.Identity)\vvvv\nodes\nodelist.ignore')"
-          Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist &quot;%(_VLPacksDirectories.Identity)\vvvv\nodes&quot;" />
-  </Target>
   
   <!-- Zip -->
   <Target Name="Zip" DependsOnTargets="VVVV_GenerateFileNames">

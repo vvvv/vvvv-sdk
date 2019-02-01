@@ -608,9 +608,16 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
+  
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <Import Project="Addonpack.targets" />
   <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />
+
+  <Target Name="GenerateAddonpackNodeList" AfterTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' AND '$(DeployGenerateNodeList)' == 'true' ">
+    <!-- Call /nodelist with arguments to filter for specific directory -->
+    <Exec Condition="!Exists('$(DeployedVVVVExe)')"
+          Command="&quot;$(VVVVExe)&quot; /allowmultiple /nodelist &quot;$(DeployDir)lib\nodes&quot;" />
+  </Target>
 </Project>
