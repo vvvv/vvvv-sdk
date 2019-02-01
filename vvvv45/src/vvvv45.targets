@@ -32,6 +32,9 @@
 
   <!-- Build -->
   <Target Name="VVVV_Build" DependsOnTargets="VVVV_GenerateFileNames" AfterTargets="Build">
+    <PropertyGroup>
+      <_ExeConfigFile>$(OutputPath)vvvv45.exe.config</_ExeConfigFile>
+    </PropertyGroup>
     <!-- Copy shared dependencies to lib/core -->
     <ItemGroup>
       <_SharedDependencies_ Include="$(PluginsDir)Sanford*" />
@@ -50,7 +53,7 @@
     </ItemGroup>
     <Delete Files="@(DTDFiles)" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(RootDir)lib\$(VVVV_VersionInfo).dtd" />
-    <Copy SourceFiles="$(OutputPath)vvvv45.exe.config" DestinationFiles="$(OutputPath)..\..\vvvv.exe.config" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(_ExeConfigFile)" DestinationFiles="$(OutputPath)..\..\vvvv.exe.config" SkipUnchangedFiles="true" Condition="Exists('$(_ExeConfigFile)')" />
     <ItemGroup>
       <DummyFiles Include="$(OutputPath)vvvv45.*" />
     </ItemGroup>
