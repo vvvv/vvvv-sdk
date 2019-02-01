@@ -3,7 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <StartAction>Program</StartAction>
 
     <RootDir>$(MSBuildThisFileDirectory)..\</RootDir>
@@ -58,7 +57,8 @@
     <!-- The files to not copy to the deploy directory -->
     <DeployExclude />
     <DeployReadOnlyFiles />
-    <DeployHiddenFiles />    
+    <DeployHiddenFiles />
+    <DeployGenerateNodeList>true</DeployGenerateNodeList>
   </PropertyGroup>
 
   <!-- Zip -->
@@ -67,18 +67,4 @@
   <PropertyGroup>
     <SevenZip>$(ProgramFiles)\7-Zip\7z.exe</SevenZip>
   </PropertyGroup>
-
-  <!-- ARToolKitPlus -->
-  <PropertyGroup>
-    <ARToolKitPlus>thirdparty\ARToolKitPlus\</ARToolKitPlus>
-    <ARToolKitPlusOutputPath>$(ARToolKitPlus)lib\Win32\</ARToolKitPlusOutputPath>
-    <ARToolKitPlusLibFile>$(ARToolKitPlusOutputPath)\libARToolKitPlus.a</ARToolKitPlusLibFile>
-    <ARToolKitPlusCompilerOptions>-O2 -W -fexceptions -DWIN32 -DNDEBUG -D_MBCS -D_LIB -DLIBRPP_STATIC</ARToolKitPlusCompilerOptions>
-    <ARToolKitPlusCompilerIncludes>-I$(ARToolKitPlus)include</ARToolKitPlusCompilerIncludes>
-  </PropertyGroup>
-  <ItemGroup>
-    <ARToolKitPlusSourceFiles Include="$(ARToolKitPlus)\src\**\*.cpp"
-                              Exclude="$(ARToolKitPlus)\src\**\MATLAB\*.cpp" />
-    <ARToolKitPlusObjectFiles Include="@(ARToolKitPlusSourceFiles->'%(RootDir)%(Directory)%(Filename).o')" />
-  </ItemGroup>
 </Project>

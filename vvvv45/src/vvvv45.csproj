@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
-  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <Import Project="vvvv45.props" />
+<Project Sdk="Microsoft.NET.Sdk">
   <!-- Project specific properties -->
   <PropertyGroup>
-    <ProjectGuid>{FA8072CA-3343-4199-AC22-62B9E352BAE8}</ProjectGuid>
-    <RestorePackages>true</RestorePackages>
+    <TargetFramework>net472</TargetFramework>
     <OutputPath>..\lib\core\</OutputPath>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RootNamespace>VVVV</RootNamespace>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <OutputType>WinExe</OutputType>
+    <Configurations>Debug;Release;Deploy</Configurations>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
+  <Import Project="vvvv45.props" />
   <!-- Override vvvvv45.props -->
   <!-- Deploy -->
   <PropertyGroup>
@@ -23,136 +23,54 @@
     <DeployReadOnlyFiles>lib\nodes\*.*;lib\packs\VL.*</DeployReadOnlyFiles>
     <DeployHiddenFiles>vvvv.exe.config;vvvv.jdbg</DeployHiddenFiles>
   </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>VVVV</RootNamespace>
-  </PropertyGroup>
-  <!-- Freeframe and DirectShow -->
   <ItemGroup>
-    <FreeframeProjects Include="$(MSBuildThisFileDirectory)nodes\freeframes\**\*.cbp" Exclude="$(MSBuildThisFileDirectory)nodes\freeframes\Template*\**\*.cbp">
-      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\freeframes\</OutputDir>
-    </FreeframeProjects>
-    <DirectShowFilterProjects Include="$(MSBuildThisFileDirectory)nodes\directshowfilter\**\*.dproj">
-      <OutputDir>$(MSBuildThisFileDirectory)..\lib\nodes\directshowfilter\</OutputDir>
-    </DirectShowFilterProjects>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\common\src\core\Core\Core.csproj">
-      <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core %28core\Core%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\common\src\core\UtilsIL\UtilsIL.csproj">
-      <Project>{93cdb07f-0bb6-4891-b793-9c02114a88ae}</Project>
-      <Name>UtilsIL</Name>
-    </ProjectReference>
-    <ProjectReference Include="core\Hosting\Hosting.csproj">
-      <Project>{F9A754A6-EEA5-4761-9446-C2AAF9CF8B31}</Project>
-      <Name>Hosting</Name>
-    </ProjectReference>
-    <ProjectReference Include="core\PluginInterfaces\PluginInterfaces.csproj">
-      <Project>{837C740A-485C-424C-8C38-086ED3DC73CB}</Project>
-      <Name>PluginInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="core\Utils3rdParty\Utils3rdParty.csproj">
-      <Project>{87863121-C124-4585-B3BB-7706F03ECC64}</Project>
-      <Name>Utils3rdParty</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\common\src\core\Utils\Utils.csproj">
-      <Project>{C3773330-81FA-4253-823E-1BDE1529AA99}</Project>
-      <Name>Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\common\src\gui\PiccoloGraphicalEditor\PiccoloGraphicalEditor.csproj">
-      <Project>{304E1C6A-585F-4748-8E3B-33558E35B0D4}</Project>
-      <Name>PiccoloGraphicalEditor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\common\src\gui\WinFormsViewer\WinFormsViewer.csproj">
-      <Project>{98936436-EA28-437E-A2A4-CC7CAA532658}</Project>
-      <Name>WinFormsViewer</Name>
-    </ProjectReference>
-    <ProjectReference Include="nodes\editors\CodeEditor\CodeEditor.csproj">
-      <Project>{A63D2EA4-D87C-459B-B57F-19A76A7ADAF0}</Project>
-      <Name>CodeEditor</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Animation\Timeliner\Timeliner.csproj">
-      <Project>{639A1C44-DA07-4F08-8A90-8B8845515BF4}</Project>
-      <Name>Timeliner</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Devices\Leap\Leap.csproj">
-      <Project>{e0c5b55a-37ea-48d6-95b9-5eef07c4ad8e}</Project>
-      <Name>Leap</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\File\FileNodes\FileNodes.csproj">
-      <Project>{e051bb88-5211-4ef7-962b-59657d171297}</Project>
-      <Name>FileNodes</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\Mesh\ColladaLoader\PluginColladaLoader.csproj">
-      <Project>{8B9D2C28-4394-4C86-A14C-B0021EC29089}</Project>
-      <Name>PluginColladaLoader</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="nodes\plugins\NativePlugins.csproj">
-      <Project>{716F4773-5590-4DD6-A9BC-3FE905D22DA5}</Project>
-      <Name>NativePlugins</Name>
-      <Private>False</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="vvvv45.props" />
-    <None Include="vvvv45.targets">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <None Include="Properties\*" />
+    <None Include="app.config" />
+    <None Include="NuGet.config" />
+    <None Include="vvvv45.dtd" />
+    <None Include="vvvv45.nuspec" />
+    <None Include="vvvv45.props" />
+    <None Include="vvvv45.targets" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="2.0.1" />
+    <PackageReference Include="MSBuildTasks" Version="1.5.0.276">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\src\core\Core\Core.csproj" />
+    <ProjectReference Include="..\..\common\src\core\UtilsIL\UtilsIL.csproj" />
+    <ProjectReference Include="core\Hosting\Hosting.csproj" />
+    <ProjectReference Include="core\PluginInterfaces\PluginInterfaces.csproj" />
+    <ProjectReference Include="core\Utils3rdParty\Utils3rdParty.csproj" />
+    <ProjectReference Include="..\..\common\src\core\Utils\Utils.csproj" />
+    <ProjectReference Include="..\..\common\src\gui\PiccoloGraphicalEditor\PiccoloGraphicalEditor.csproj" />
+    <ProjectReference Include="..\..\common\src\gui\WinFormsViewer\WinFormsViewer.csproj" />
+    <ProjectReference Include="integration\VVVV.VLIntegration\src\VVVV.VLIntegration.csproj" />
+    <ProjectReference Include="nodes\editors\CodeEditor\CodeEditor.csproj" />
+    <ProjectReference Include="nodes\plugins\Animation\Timeliner\Timeliner.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Devices\Leap\Leap.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\File\FileNodes\FileNodes.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\Mesh\ColladaLoader\PluginColladaLoader.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="nodes\plugins\NativePlugins.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="vvvv45.targets" />
-  <Target Name="BuildAndInstallVLIntegration" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" BeforeTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' ">
-    <!-- Build and install our VL packages -->
-    <PropertyGroup>
-      <_RepoRootDir>$(MsBuildThisFileDirectory)..\..\..\</_RepoRootDir>
-      <_VLRootDir>$(_RepoRootDir)vvvv50\</_VLRootDir>
-      <_VLIntegrationProject>VVVV.VLIntegration</_VLIntegrationProject>
-      <_VLIntegrationProperties>Configuration=Release;Platform=AnyCPU;BuildingInsideVisualStudio=false</_VLIntegrationProperties>
-      <_PackageInstallDirectory>$(DeployDir)lib\packs\</_PackageInstallDirectory>
-      <_PackageSourceDirectory>$(_RepoRootDir)public-vl\packages-build\</_PackageSourceDirectory>
-    </PropertyGroup>
-    <ItemGroup>
-      <_VLIntegrationProjectFile Include="$(_VLRootDir)$(_VLIntegrationProject)\src\$(_VLIntegrationProject).csproj" />
-      <_PackagesToInstall Include="VVVV.VLIntegration" />
-    </ItemGroup>
-    <Message Text="Building and installing VL integration to $(_PackageInstallDirectory)" Importance="High" />
-    <RemoveDir Directories="$(_PackageInstallDirectory)" />
-    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="Build" Properties="$(_VLIntegrationProperties)" ToolsVersion="15.0" BuildInParallel="true" />
-    <MSBuild Projects="@(_VLIntegrationProjectFile)" Targets="GetPackageVersion" Properties="$(_VLIntegrationProperties)">
-      <Output TaskParameter="TargetOutputs" PropertyName="_VLIntegrationVersion" />
-    </MSBuild>
-    <NuGetInstall StandardOutputImportance="high" ToolPath="$(NugetExePath)" Package="%(_PackagesToInstall.Identity)" Version="$(_VLIntegrationVersion)" Source="$(_PackageSourceDirectory);nuget.org" OutputDirectory="$(_PackageInstallDirectory)" PackageSaveMode="nuspec" PreRelease="true" />
-
-    <!-- Delete SharpDX packages but keep System.* for now -->
-    <ItemGroup>
-      <_PackageFoldersToDelete Include="$([System.IO.Directory]::GetDirectories('$(_PackageInstallDirectory)', 'SharpDX*'))" />
-    </ItemGroup>
-    <Message Text="Deleting packages @(_PackageFoldersToDelete)" Importance="high" />
-    <RemoveDir Directories="@(_PackageFoldersToDelete)" />
-  </Target>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('..\..\packages\MSBuildTasks.1.5.0.260\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSBuildTasks.1.5.0.260\build\MSBuildTasks.targets'))" />
-  </Target>
-  <Import Project="..\..\packages\MSBuildTasks.1.5.0.260\build\MSBuildTasks.targets" Condition="Exists('..\..\packages\MSBuildTasks.1.5.0.260\build\MSBuildTasks.targets')" />
 </Project>
