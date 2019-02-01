@@ -55,7 +55,7 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="IncludeVLPackages">
+  <Target Name="IncludeVLPackages" Condition=" '$(NuGetPackageRoot)' != '' ">
     <ItemGroup>
       <_VLMetaPackage Include="@(PackageReference-&gt;WithMetadataValue('Identity', 'VL.Meta.Gamma'))" />
     </ItemGroup>
