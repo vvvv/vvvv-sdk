@@ -76,6 +76,7 @@ namespace VVVV.VL.Hosting
         private readonly RuntimeHost FRuntimeHost;
         private readonly IPluginHost2 FPluginHost;
         private readonly IIORegistry FIORegistry;
+        private readonly ElementId FInstanceId;
 
         private readonly MemoryIOStream<object> FInstances = new MemoryIOStream<object>();
         private readonly List<IIOContainer<IInStream>> FInputs = new List<IIOContainer<IInStream>>();
@@ -89,6 +90,7 @@ namespace VVVV.VL.Hosting
 
         public NodePlugin(Host vlHost, RuntimeHost runtimeHost, NodeId nodeId, IPluginHost2 pluginHost, IIORegistry ioRegistry)
         {
+            FInstanceId = Element.ProduceNewIdentity();
             FVlHost = vlHost;
             FRuntimeHost = runtimeHost;
             NodeId = nodeId;
@@ -215,7 +217,7 @@ namespace VVVV.VL.Hosting
                             }
                             else
                             {
-                                var newInstance = instanceType != null ? buildResult.Factory.CreateInstance(instanceType, Element.ProduceNewIdentity()) : null;
+                                var newInstance = instanceType != null ? buildResult.Factory.CreateInstance(instanceType, FInstanceId) : null;
                                 writer.Write(newInstance);
                             }
                         }
@@ -399,7 +401,7 @@ namespace VVVV.VL.Hosting
                 {
                     var instanceType = buildResult.InstanceType;
                     if (instanceType != null)
-                        FInstances.Resize(spreadMax, () => buildResult.Factory.CreateInstance(instanceType, Element.ProduceNewIdentity()), value => Dispose(value));
+                        FInstances.Resize(spreadMax, () => buildResult.Factory.CreateInstance(instanceType, FInstanceId), value => Dispose(value));
                     else
                         FInstances.Resize(spreadMax, () => null, value => Dispose(value));
                 }
