@@ -62,8 +62,9 @@
     <PropertyGroup>
       <_PackageTargetPrefix>..\packs\</_PackageTargetPrefix>
       <VLVersion>@(_VLMetaPackage->'%(Version)')</VLVersion>
+      <VLMetaNuspec>$(NuGetPackageRoot)VL.Meta.Gamma\$(VLVersion)\VL.Meta.Gamma.nuspec</VLMetaNuspec>
     </PropertyGroup>
-    <XmlPeek Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd'/&gt;" XmlInputPath="$(NuGetPackageRoot)VL.Meta.Gamma\$(VLVersion)\VL.Meta.Gamma.nuspec" Query="/n:package/n:metadata/n:dependencies/n:group/n:dependency/@id">
+    <XmlPeek Condition="Exists('$(VLMetaNuspec)')" Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd'/&gt;" XmlInputPath="$(VLMetaNuspec)" Query="/n:package/n:metadata/n:dependencies/n:group/n:dependency/@id">
       <Output TaskParameter="Result" ItemName="VLPackage" />
     </XmlPeek>
     <ItemGroup>
