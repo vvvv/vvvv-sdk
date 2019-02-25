@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" InitialTargets="IncludeVLPackages">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -55,12 +55,14 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="IncludeVLPackages" Condition=" '$(NuGetPackageRoot)' != '' ">
+  <Target Name="IncludeVLPackages" BeforeTargets="AssignTargetPaths">
     <ItemGroup>
       <_VLMetaPackage Include="@(PackageReference-&gt;WithMetadataValue('Identity', 'VL.Meta.Gamma'))" />
     </ItemGroup>
     <PropertyGroup>
+      <!-- Final output folder is lib\core -->
       <_PackageTargetPrefix>..\packs\</_PackageTargetPrefix>
+      <_GirlpowerPackageTargetPrefix>..\..\girlpower\VL\</_GirlpowerPackageTargetPrefix>
       <VLVersion>@(_VLMetaPackage->'%(Version)')</VLVersion>
       <VLMetaNuspec>$(NuGetPackageRoot)VL.Meta.Gamma\$(VLVersion)\VL.Meta.Gamma.nuspec</VLMetaNuspec>
     </PropertyGroup>
@@ -79,9 +81,17 @@
       </_PackContent>
     </ItemGroup>
     <ItemGroup>
+      <_GirlpowerPackContent Include="$(NuGetPackageRoot)%(VLPackage.Identity)\$(VLVersion)\vvvv\girlpower\**" />
+    </ItemGroup>
+    <ItemGroup>
       <None Include="@(_PackContent)">
         <!-- Project specific metadata -->
         <Link>$(_PackageTargetPrefix)%(_PackContent.PackageId)-%(_PackContent.PackageVersion)\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Include="@(_GirlpowerPackContent)">
+        <!-- Project specific metadata -->
+        <Link>$(_GirlpowerPackageTargetPrefix)%(RecursiveDir)%(Filename)%(Extension)</Link>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
