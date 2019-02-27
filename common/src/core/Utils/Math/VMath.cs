@@ -1211,21 +1211,21 @@ namespace VVVV.Utils.VMath
             double sqy = q.y * q.y;
             double sqz = q.z * q.z;
             double unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
-            double test = q.x * q.y + q.z * q.w;
+            double test = q.x * q.w - q.y * q.z;
 
-            if (test > 0.49999 * unit)
+            if (test > 0.4999 * unit)
             { // singularity at north pole
-                pitch = 0;
+                pitch = Math.PI / 2;
                 yaw = 2 * Math.Atan2(q.y, q.w);
-                roll = Math.PI / 2;
+                roll = 0;
                 return;
             }
 
-            if (test < -0.49999 * unit)
+            if (test < -0.4999 * unit)
             { // singularity at south pole
-                pitch = 0;
+                pitch = -Math.PI / 2;
                 yaw = -2 * Math.Atan2(q.y, q.w);
-                roll = -Math.PI / 2;
+                roll = 0;
                 return;
             }
 
