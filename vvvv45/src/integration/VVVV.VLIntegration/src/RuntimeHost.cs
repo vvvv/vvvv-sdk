@@ -112,9 +112,15 @@ namespace VVVV.VL.Hosting
 
         public RuntimeHost(Platform platform)
         {
-            ImplicitEntryPointInstanceManager = new ImplicitEntryPointInstanceManager(); 
+            ImplicitEntryPointInstanceManager = new ImplicitEntryPointInstanceManager();
+            ImplicitEntryPointInstanceManager.OnException += ImplicitEntryPointInstanceManager_OnException;
             Platform = platform;
             Mode = RunMode.Running;
+        }
+
+        private void ImplicitEntryPointInstanceManager_OnException(object sender, Exception e)
+        {
+            RaiseOnException(e);
         }
 
         // Called on main thread
