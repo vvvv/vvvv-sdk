@@ -282,6 +282,9 @@ namespace VVVV.Hosting
             var catalog = new AggregateCatalog();
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(HDEHost).Assembly.Location));
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(NodeCollection).Assembly.Location));
+            var vlIntegrationFile = Path.Combine(Path.GetDirectoryName(typeof(HDEHost).Assembly.Location), "VVVV.VLIntegration.dll");
+            if (File.Exists(vlIntegrationFile))
+                catalog.Catalogs.Add(new AssemblyCatalog(vlIntegrationFile));
             //allow plugin writers to add their own factories (deprecated, see below)
             var factoriesPath = ExePath.ConcatPath(@"lib\factories");
             if (Directory.Exists(factoriesPath))

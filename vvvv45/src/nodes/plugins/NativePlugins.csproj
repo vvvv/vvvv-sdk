@@ -27,11 +27,6 @@
       <HintPath>..\..\..\..\packages\Ookii.Dialogs.WindowsForms.1.0\lib\net35\Ookii.Dialogs.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ParallelExtensionsExtras, Version=1.2.3.0, Culture=neutral, PublicKeyToken=665f4d61f853b5a9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\packages\ParallelExtensionsExtras.1.2.0.0\lib\net40\ParallelExtensionsExtras.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="RCPSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\core\RCPSharp.dll</HintPath>
@@ -71,13 +66,11 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Interactive, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Ix-Main.1.2.5\lib\net45\System.Interactive.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Interactive, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\System.Interactive.3.2.0\lib\net45\System.Interactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Reactive">
       <HintPath>..\..\..\..\packages\System.Reactive.4.0.0\lib\net46\System.Reactive.dll</HintPath>
       <Private>True</Private>
@@ -112,6 +105,7 @@
     <Compile Include="Network\RCP\ParameterNodes.cs" />
     <Compile Include="Network\RCP\RCPClientNode.cs" />
     <Compile Include="Network\RCP\RCPServerNode.cs" />
+    <Compile Include="Quaternion\QuaternionToEuler.cs" />
     <Compile Include="Spreads\VectorSized\AddVectorNode.cs" />
     <Compile Include="Spreads\VectorSized\BoundsVectorNode.cs" />
     <Compile Include="Spreads\VectorSized\CARVectorNode.cs" />
@@ -349,7 +343,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\common\src\core\Core\Core.csproj">
       <Project>{6AD35106-187B-4A3A-A801-E665CD12E020}</Project>
-      <Name>Core %28core\Core%29</Name>
+      <Name>Core</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\common\src\core\Utils\Utils.csproj">

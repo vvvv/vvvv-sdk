@@ -53,69 +53,61 @@ namespace VVVV.HDE.ProjectExplorer
             ILogger logger,
             IHDEHost hdeHost)
         {
-            try
-            {
-                FRootNode = hdeHost.RootNode;
-                
-                Solution = solution;
-                FLogger = logger;
-                
-                FHideUnusedProjectsIn = showUnloadedProjectsIn;
-                FHideUnusedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FHideUnusedProjectsIn_Changed);
-                FBuildConfigIn = buildConfigIn;
-                FBuildConfigIn.Changed += FBuildConfigIn_Changed;
-                
-                FMappingRegistry = new MappingRegistry();
-                FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
-                FMappingRegistry.RegisterDefaultMapping<IParent, DefaultParentProvider>();
-                // Do not allow drag'n drop except for references.
-//				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
-                FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
-                FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
-                FMappingRegistry.RegisterDefaultInstance(FLogger);
-                FMappingRegistry.RegisterDefaultInstance(FRootNode);
-                
-                if (showUnloadedProjectsIn[0])
-                    FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
-                else
-                    FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
-                FMappingRegistry.RegisterMapping<IEditableIDList<IReference>, DefaultDragDropProvider>();
-                
-                FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
-                // Do not enumerate IDocument
-                FMappingRegistry.RegisterInstance<IDocument, IEnumerable>(Empty.Enumerable);
-                FMappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
-                FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
-                FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
-                // Allow drag drop only in MsBuildProject
-                FMappingRegistry.RegisterMapping<MsBuildProject, IDroppable, DefaultDragDropProvider>();
-                FMappingRegistry.RegisterMapping<IReference, ReferenceViewProvider>();
-                FMappingRegistry.RegisterMapping<Document, DocumentViewProvider>();
-                FMappingRegistry.RegisterMapping<MissingDocument, MissingDocumentViewProvider>();
-                FMappingRegistry.RegisterMapping<IReference, IDescripted, ReferenceViewProvider>();
-                
-                InitializeComponent();
-                
-                FBuildConfigComboBox.Items.AddRange((object[]) Enum.GetNames(typeof(BuildConfiguration)));
-                FBuildConfigComboBox.SelectedIndex = 0;
-                
-                FHideUnusedProjectsCheckBox.CheckedChanged += FHideUnusedProjectsCheckBox_CheckedChanged;
-                FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
+            FRootNode = hdeHost.RootNode;
 
-                FTreeViewer.Registry = FMappingRegistry;
-                FTreeViewer.Input = Solution;
-                
-                // Workaround because config pins do not send changed on reload :/
-                FHideUnusedProjectsIn.Sync();
-                FBuildConfigIn.Sync();
+            Solution = solution;
+            FLogger = logger;
 
-                Solution.Projects.Added += Projects_Added;
-            }
-            catch (Exception e)
-            {
-                logger.Log(e);
-                throw e;
-            }
+            FHideUnusedProjectsIn = showUnloadedProjectsIn;
+            FHideUnusedProjectsIn.Changed += new SpreadChangedEventHander<bool>(FHideUnusedProjectsIn_Changed);
+            FBuildConfigIn = buildConfigIn;
+            FBuildConfigIn.Changed += FBuildConfigIn_Changed;
+
+            FMappingRegistry = new MappingRegistry();
+            FMappingRegistry.RegisterDefaultMapping<INamed, DefaultNameProvider>();
+            FMappingRegistry.RegisterDefaultMapping<IParent, DefaultParentProvider>();
+            // Do not allow drag'n drop except for references.
+            //				FMappingRegistry.RegisterDefaultMapping<IDraggable, DefaultDragDropProvider>();
+            FMappingRegistry.RegisterDefaultMapping<IMenuEntry, DefaultContextMenuProvider>();
+            FMappingRegistry.RegisterDefaultMapping<AddMenuEntry, DefaultAddMenuEntry>();
+            FMappingRegistry.RegisterDefaultInstance(FLogger);
+            FMappingRegistry.RegisterDefaultInstance(FRootNode);
+
+            if (showUnloadedProjectsIn[0])
+                FMappingRegistry.RegisterMapping<ISolution, SolutionViewProvider>();
+            else
+                FMappingRegistry.RegisterMapping<ISolution, LoadedProjectsSolutionViewProvider>();
+            FMappingRegistry.RegisterMapping<IEditableIDList<IReference>, DefaultDragDropProvider>();
+
+            FMappingRegistry.RegisterMapping<IProject, ProjectViewProvider>();
+            // Do not enumerate IDocument
+            FMappingRegistry.RegisterInstance<IDocument, IEnumerable>(Empty.Enumerable);
+            FMappingRegistry.RegisterMapping<MsBuildProject, MsBuildProjectViewProvider>();
+            FMappingRegistry.RegisterMapping<FXProject, FXProjectViewProvider>();
+            FMappingRegistry.RegisterMapping<IProject, IDescripted, DescriptedProjectViewProvider>();
+            // Allow drag drop only in MsBuildProject
+            FMappingRegistry.RegisterMapping<MsBuildProject, IDroppable, DefaultDragDropProvider>();
+            FMappingRegistry.RegisterMapping<IReference, ReferenceViewProvider>();
+            FMappingRegistry.RegisterMapping<Document, DocumentViewProvider>();
+            FMappingRegistry.RegisterMapping<MissingDocument, MissingDocumentViewProvider>();
+            FMappingRegistry.RegisterMapping<IReference, IDescripted, ReferenceViewProvider>();
+
+            InitializeComponent();
+
+            FBuildConfigComboBox.Items.AddRange((object[])Enum.GetNames(typeof(BuildConfiguration)));
+            FBuildConfigComboBox.SelectedIndex = 0;
+
+            FHideUnusedProjectsCheckBox.CheckedChanged += FHideUnusedProjectsCheckBox_CheckedChanged;
+            FTreeViewer.DoubleClick += FTreeViewer_DoubleClick;
+
+            FTreeViewer.Registry = FMappingRegistry;
+            FTreeViewer.Input = Solution;
+
+            // Workaround because config pins do not send changed on reload :/
+            FHideUnusedProjectsIn.Sync();
+            FBuildConfigIn.Sync();
+
+            Solution.Projects.Added += Projects_Added;
         }
 
         void Projects_Added(IViewableCollection<IProject> collection, IProject item)
@@ -131,7 +123,7 @@ namespace VVVV.HDE.ProjectExplorer
         {
             var query =
                 from node in FRootNode.AsDepthFirstEnumerable()
-                where node.NodeInfo.UserData == project
+                where node.NodeInfo?.UserData == project
                 select node;
             
             return query.Any();

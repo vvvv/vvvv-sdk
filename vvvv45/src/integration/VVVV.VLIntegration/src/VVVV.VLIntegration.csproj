@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <VLPackageBasePath>..\</VLPackageBasePath>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Description>Provides support for VVVV to patch nodes in VL.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Composition.Codeplex" Version="2.5.1" Pack="false">
+      <Alias>Codeplex</Alias>
+    </PackageReference>
+    <PackageReference Include="VL.CoreLib.VVVV" Version="0.98.11-g614c88a1ee" />
+    <PackageReference Include="VL.Meta.Gamma" Version="0.98.11-g614c88a1ee" />
+    <PackageReference Include="VL.UI.Forms" Version="0.98.11-g614c88a1ee" />
+    <PackageReference Include="VL.VVVV.DirectX11" Version="0.98.11-g614c88a1ee" />
+    <PackageReference Include="VVVV.NuGetAssemblyLoader" Version="0.1.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\core\Hosting\Hosting.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Cci.CodeModel">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.CodeModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataHelper">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.MetadataHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MetadataModel">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.MetadataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.MutableMetadataModel">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.MutableMetadataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.PeReader">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.PeReader.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cci.SourceModel">
+      <HintPath>..\..\VL.Microsoft.Cci\lib\net46\Microsoft.Cci.SourceModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  <!-- Workaround to specifiy aliases for PackageReference - taken from https://github.com/NuGet/Home/issues/4989 -->
+  <Target Name="AddPackageAliases" BeforeTargets="ResolveReferences" Outputs="%(PackageReference.Identity)">
+    <PropertyGroup>
+      <AliasPackageReference>@(PackageReference->'%(Identity)')</AliasPackageReference>
+      <AliasName>@(PackageReference->'%(Alias)')</AliasName>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ReferencePath Condition="'%(FileName)'=='$(AliasPackageReference)'">
+        <Aliases>$(AliasName)</Aliases>
+      </ReferencePath>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="IncludeVLPackages" BeforeTargets="AssignTargetPaths">
+    <ItemGroup>
+      <_VLMetaPackage Include="@(PackageReference-&gt;WithMetadataValue('Identity', 'VL.Meta.Gamma'))" />
+    </ItemGroup>
+    <PropertyGroup>
+      <!-- Final output folder is lib\core -->
+      <_PackageTargetPrefix>..\packs\</_PackageTargetPrefix>
+      <_GirlpowerPackageTargetPrefix>..\..\girlpower\VL\</_GirlpowerPackageTargetPrefix>
+      <VLVersion>@(_VLMetaPackage->'%(Version)')</VLVersion>
+      <VLMetaNuspec>$(NuGetPackageRoot)VL.Meta.Gamma\$(VLVersion)\VL.Meta.Gamma.nuspec</VLMetaNuspec>
+    </PropertyGroup>
+    <XmlPeek Condition="Exists('$(VLMetaNuspec)')" Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd'/&gt;" XmlInputPath="$(VLMetaNuspec)" Query="/n:package/n:metadata/n:dependencies/n:group/n:dependency/@id">
+      <Output TaskParameter="Result" ItemName="VLPackage" />
+    </XmlPeek>
+    <ItemGroup>
+      <VLPackage Include="@(PackageReference-&gt;WithMetadataValue('Identity', 'VL.CoreLib.VVVV'))" />
+      <VLPackage Include="@(PackageReference-&gt;WithMetadataValue('Identity', 'VL.VVVV.DirectX11'))" />
+    </ItemGroup>
+    <Message Importance="high" Text="Using VL ($(VLVersion)) packages: @(VLPackage)" />
+    <ItemGroup>
+      <_PackContent Include="$(NuGetPackageRoot)%(VLPackage.Identity)\$(VLVersion)\**" Exclude="$(NuGetPackageRoot)%(VLPackage.Identity)\$(VLVersion)\*.nupkg*">
+        <PackageId>%(VLPackage.Identity)</PackageId>
+        <PackageVersion>$(VLVersion)</PackageVersion>
+      </_PackContent>
+    </ItemGroup>
+    <ItemGroup>
+      <_GirlpowerPackContent Include="$(NuGetPackageRoot)%(VLPackage.Identity)\$(VLVersion)\vvvv\girlpower\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="@(_PackContent)">
+        <!-- Project specific metadata -->
+        <Link>$(_PackageTargetPrefix)%(_PackContent.PackageId)-%(_PackContent.PackageVersion)\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Include="@(_GirlpowerPackContent)">
+        <!-- Project specific metadata -->
+        <Link>$(_GirlpowerPackageTargetPrefix)%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+  </Target>
+</Project>

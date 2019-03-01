@@ -467,12 +467,16 @@ namespace VVVV.Hosting
 		
 		public INodeInfo ToProxy(INodeInfo nodeInfo)
 		{
-			return FInternalToProxyMap[nodeInfo];
+            if (nodeInfo != null)
+			    return FInternalToProxyMap[nodeInfo];
+            return null;
 		}
 		
 		public INodeInfo ToInternal(INodeInfo nodeInfo)
 		{
-			return FProxyToInternalMap[nodeInfo];
+            if (nodeInfo != null)
+			    return FProxyToInternalMap[nodeInfo];
+            return null;
 		}
 		
 		public INodeInfo CreateNodeInfo(string name, string category, string version, string filename, bool beginUpdate)

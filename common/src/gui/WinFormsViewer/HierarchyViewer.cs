@@ -1,24 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections;
 using System.Collections.Generic;
 
 using VVVV.Core;
-using VVVV.Core.Logging;
-using VVVV.Core.Collections.Sync;
-using VVVV.Core.Commands;
-using VVVV.Core.Menu;
-using VVVV.Core.View;
 using VVVV.Core.Viewer;
-
-using VVVV.HDE.GraphicalEditing;
 using VVVV.Core.Viewer.GraphicalEditor;
-using VVVV.Core.View.GraphicalEditor;
 
 namespace VVVV.HDE.Viewer.WinFormsViewer
 {
