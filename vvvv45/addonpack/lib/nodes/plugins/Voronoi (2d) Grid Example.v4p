@@ -1,0 +1,291 @@
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha35.18.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\plugins\Voronoi (2d) Grid Example.v4p">
+   <BOUNDS height="9525" left="7740" top="3450" type="Window" width="11640">
+   </BOUNDS>
+   <NODE componentmode="Hidden" id="17" nodename=":PLUGINS:\Voronoi.dll|vvvv.Nodes.VoronoiNode">
+   <BOUNDS height="0" left="2115" top="3330" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="8205" top="7665" type="Window" width="0">
+   </BOUNDS>
+   <BOUNDS height="0" left="2115" top="3330" type="Box" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1" slicecount="20" values="-0.047456083445473,-0.525031955073251,1.10715065654494,-0.447544405328704,0.621349841730075,-0.220280359591021,1.15131535697855,0.95929708695166,0.505569128693418,0.0504845780333147,-0.248470565861686,1.1825487929409,0.683906134591775,1.00842136228584,0.651769004204647,1.13300926229112,0.164943451435642,-0.530607828030957,0.296091054940002,0">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Vertices X" visible="1">
+   </PIN>
+   <PIN pinname="Vertices Y" visible="1">
+   </PIN>
+   <PIN pinname="Edges X1" visible="1">
+   </PIN>
+   <PIN pinname="Edges Y1" visible="1">
+   </PIN>
+   <PIN pinname="Edges X2" visible="1">
+   </PIN>
+   <PIN pinname="Edges Y2" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="14" nodename="Grid (EX9.Geometry)">
+   <BOUNDS height="0" left="4395" top="3690" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Resolution X" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Resolution Y" slicecount="1" values="5">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   </NODE>
+   <NODE id="13" nodename="Mesh (EX9.Geometry Split)">
+   <BOUNDS height="0" left="4395" top="4170" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="13" dstpinname="Mesh" srcnodeid="14" srcpinname="Mesh">
+   </LINK>
+   <NODE id="12" nodename="VertexBuffer (EX9.Geometry Split)">
+   <BOUNDS height="0" left="4395" top="4680" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Enable Texture Coordinate 0" slicecount="1" values="|2D TexCoords|">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="12" dstpinname="Vertex Buffer" srcnodeid="13" srcpinname="Vertex Buffer">
+   </LINK>
+   <NODE id="11" nodename="VERTEXBUFFER (EX9.GEOMETRY JOIN)">
+   <BOUNDS height="0" left="4500" top="5460" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Position XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Normal XYZ" visible="1">
+   </PIN>
+   <PIN pinname="Texture Coordinate 0 XY" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE id="9" nodename="Vector (3d Join)">
+   <BOUNDS height="0" left="3240" top="4455" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="XYZ" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Z" visible="1" slicecount="25" values="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="11" dstpinname="Position XYZ" srcnodeid="9" srcpinname="XYZ">
+   </LINK>
+   <NODE componentmode="Hidden" id="8" nodename=":EFFECTS:\GouraudDirectional.fx">
+   <BOUNDS height="0" left="2610" top="7470" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="12000" left="8580" top="7770" type="Window" width="12000">
+   </BOUNDS>
+   <BOUNDS height="6000" left="2610" top="7470" type="Box" width="6000">
+   </BOUNDS>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Render State" visible="1">
+   </PIN>
+   <PIN pinname="Texture" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Ambient Color" slicecount="1" values="|0.76647,0.76647,0.76647,1.00000|">
+   </PIN>
+   </NODE>
+   <NODE id="7" nodename="MESH (EX9.GEOMETRY JOIN)">
+   <BOUNDS height="0" left="4500" top="6390" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Vertex Buffer" visible="1">
+   </PIN>
+   <PIN pinname="Mesh" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   <PIN pinname="Apply On Device Change" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="7" dstpinname="Vertex Buffer" srcnodeid="11" srcpinname="Vertex Buffer">
+   </LINK>
+   <LINK dstnodeid="8" dstpinname="Mesh" srcnodeid="7" srcpinname="Mesh">
+   </LINK>
+   <NODE id="5" nodename="Fill (EX9.RenderState)">
+   <BOUNDS height="0" left="2205" top="6975" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Render State Out" visible="1">
+   </PIN>
+   <PIN pinname="Fill Mode" slicecount="1" values="WireFrame">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="8" dstpinname="Render State" srcnodeid="5" srcpinname="Render State Out">
+   </LINK>
+   <NODE id="4" nodename="Delaunay (2d)">
+   <BOUNDS height="0" left="2100" top="5070" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Indices" visible="1">
+   </PIN>
+   </NODE>
+   <LINK dstnodeid="4" dstpinname="X" srcnodeid="17" srcpinname="Vertices X">
+   </LINK>
+   <LINK dstnodeid="4" dstpinname="Y" srcnodeid="17" srcpinname="Vertices Y">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="X" srcnodeid="17" srcpinname="Vertices X">
+   </LINK>
+   <LINK dstnodeid="9" dstpinname="Y" srcnodeid="17" srcpinname="Vertices Y">
+   </LINK>
+   <LINK dstnodeid="7" dstpinname="Indices" srcnodeid="4" srcpinname="Indices">
+   </LINK>
+   <LINK dstnodeid="11" dstpinname="Texture Coordinate 0 XY" srcnodeid="12" srcpinname="Texture Coordinate 0 XY">
+   </LINK>
+   <LINK srcnodeid="12" srcpinname="Normal XYZ" dstnodeid="11" dstpinname="Normal XYZ">
+   </LINK>
+   <NODE componentmode="InABox" id="18" nodename="IOBox (String)">
+   <BOUNDS height="0" left="6255" top="3030" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="13005" top="5910" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="2910" left="6255" top="3030" type="Box" width="5115">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Voronoi (2d)&cr;&lf;&cr;&lf;Creates a Voronoi graph given a set of points.&cr;&lf;&cr;&lf;Based on Fortune&apos;s algorithm&cr;&lf;http://www.codeproject.com/KB/recipes/fortunevoronoi.aspx&cr;&lf;&cr;&lf;&cr;&lf;Any comment, question, please send me a message on the tiki &cr;&lf;(user name: vux) &cr;&lf;or at this email address:&cr;&lf;julien@mrvux.com|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="19" nodename="IOBox (String)">
+   <BOUNDS height="0" left="4140" top="1500" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="7290" top="3480" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="495" left="4140" top="1500" type="Box" width="3135">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|&lt;-- Add mouse position to the spread so you can move graph real time|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <NODE componentmode="InABox" id="20" nodename="IOBox (String)">
+   <BOUNDS height="0" left="15" top="4875" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="160" left="4140" top="8370" type="Window" width="215">
+   </BOUNDS>
+   <BOUNDS height="525" left="15" top="4875" type="Box" width="1950">
+   </BOUNDS>
+   <PIN pinname="SliceOffset" pintype="Input" slicecount="1" visible="-1" values="0">
+   </PIN>
+   <PIN pinname="Input String" pintype="Input" slicecount="1" visible="-1" values="|Use Delaunay to connect Indices for the mesh --&gt;|">
+   </PIN>
+   <PIN pinname="Output String" pintype="Output" visible="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="RandomSpread (Spreads 2d)" filename="%VVVV%\lib\nodes\modules\2D\RandomSpread (Spreads 2d).v4p" nodename="RandomSpread (Spreads 2d)" componentmode="Hidden" id="21">
+   <BOUNDS type="Node" left="960" top="1800" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="Spread Count" visible="1">
+   </PIN>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="SizeXY" slicecount="2" values="2,2">
+   </PIN>
+   </NODE>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="22">
+   <BOUNDS type="Box" left="1860" top="1365" width="435" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="1860" top="1365" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="19">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Value Type" slicecount="1" values="Integer">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="22" srcpinname="Y Output Value" dstnodeid="21" dstpinname="Spread Count">
+   </LINK>
+   <NODE id="1" nodename="Cons (2d)" systemname="Cons (2d)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS height="0" left="2115" top="2340" type="Node" width="0">
+   </BOUNDS>
+   <PIN pinname="Input 1" visible="1">
+   </PIN>
+   <PIN pinname="Input 2" visible="1" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Output" visible="1">
+   </PIN>
+   <PIN pinname="Input 1XY" visible="1">
+   </PIN>
+   <PIN pinname="Input 2XY" visible="1">
+   </PIN>
+   <PIN pinname="OutputXY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="21" srcpinname="XY" dstnodeid="1" dstpinname="Input 1XY">
+   </LINK>
+   <NODE id="2" nodename="Mouse (Devices Window)" systemname="Mouse (Devices Window)" filename="%VVVV%\lib\nodes\plugins\VVVV.Nodes.dll">
+   <BOUNDS type="Node" height="0" left="2625" top="1470" width="0">
+   </BOUNDS>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   <PIN pinname="Position (Projection) XY" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="2" srcpinname="X" dstnodeid="1" dstpinname="Input 2">
+   </LINK>
+   <LINK srcnodeid="2" srcpinname="Position (Projection) XY" dstnodeid="1" dstpinname="Input 2XY">
+   </LINK>
+   <NODE systemname="Vector (2d Split)" nodename="Vector (2d Split)" componentmode="Hidden" id="23">
+   <BOUNDS type="Node" left="2115" top="2745" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="XY" visible="1">
+   </PIN>
+   <PIN pinname="X" visible="1">
+   </PIN>
+   <PIN pinname="Y" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1" srcpinname="OutputXY" dstnodeid="23" dstpinname="XY">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="X" dstnodeid="17" dstpinname="X">
+   </LINK>
+   <LINK srcnodeid="23" srcpinname="Y" dstnodeid="17" dstpinname="Y">
+   </LINK>
+   <NODE componentmode="InAWindow" id="24" nodename="RENDERER (EX9)">
+   <BOUNDS height="0" left="2610" top="8055" type="Node" width="0">
+   </BOUNDS>
+   <BOUNDS height="4860" left="540" top="6075" type="Window" width="6225">
+   </BOUNDS>
+   <BOUNDS height="1800" left="2610" top="8055" type="Box" width="2400">
+   </BOUNDS>
+   </NODE>
+   <LINK dstnodeid="24" dstpinname="Layers" srcnodeid="8" srcpinname="Layer">
+   </LINK>
+   <PACK Name="addonpack" Version="36.0.0">
+   </PACK>
+   </PATCH>
