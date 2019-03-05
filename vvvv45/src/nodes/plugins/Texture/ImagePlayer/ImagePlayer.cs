@@ -10,7 +10,6 @@ using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using System.Threading.Tasks.Schedulers;
 using VVVV.Core.Logging;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.EX9;
@@ -48,7 +47,6 @@ namespace VVVV.Nodes.ImagePlayer
             int threadsIO,
             int threadsTexture,
             ILogger logger,
-            IOTaskScheduler ioTaskScheduler,
             MemoryPool memoryPool,
             TexturePool texturePool,
             IDXDeviceService deviceService
@@ -67,7 +65,6 @@ namespace VVVV.Nodes.ImagePlayer
             var filePreloaderOptions = new ExecutionDataflowBlockOptions()
             {
                 MaxDegreeOfParallelism = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : threadsIO,
-                TaskScheduler = ioTaskScheduler,
                 BoundedCapacity = threadsIO <= 0 ? DataflowBlockOptions.Unbounded : 2 * threadsIO
             };
             
@@ -173,7 +170,7 @@ namespace VVVV.Nodes.ImagePlayer
             // Wait till an ongoing directory scan is complete
             if (FScanTask != null)
             {
-                FScanTask.WaitForCompletionStatus();
+                FScanTask.Wait();
             }
             FScanTask = ScanDirectoriesAsync(Directories, Filemasks)
                 .ContinueWith(t =>

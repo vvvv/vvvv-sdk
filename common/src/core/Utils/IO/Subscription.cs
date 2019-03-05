@@ -24,14 +24,16 @@ namespace VVVV.Utils.IO
             FScheduler = scheduler;
         }
 
-        public void Update(TSource source)
+        public bool Update(TSource source)
         {
             if (source != FSource)
             {
                 Unsubscribe();
                 FSource = source;
                 Subscribe();
+                return true;
             }
+            return false;
         }
 
         public void UpdateSelector(Func<TSource, IObservable<TNotification>> selector)

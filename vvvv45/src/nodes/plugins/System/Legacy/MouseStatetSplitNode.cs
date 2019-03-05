@@ -91,6 +91,17 @@ namespace VVVV.Nodes.Input
                                     FRawMouseWheel[slice] += mouseWheel.WheelDelta;
                                     MouseWheelOut[slice] = (int)Math.Round((float)FRawMouseWheel[slice] / Const.WHEEL_DELTA);
                                     break;
+                                case MouseNotificationKind.DeviceLost:
+                                    XOut[slice] = 0;
+                                    YOut[slice] = 0;
+                                    LeftButtonOut[slice] = false;
+                                    MiddleButtonOut[slice] = false;
+                                    RightButtonOut[slice] = false;
+                                    X1ButtonOut[slice] = false;
+                                    X2ButtonOut[slice] = false;
+                                    FRawMouseWheel[slice] = 0;
+                                    MouseWheelOut[slice] = 0;
+                                    break;
                                 default:
                                     break;
                             }

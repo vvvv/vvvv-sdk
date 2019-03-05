@@ -25,10 +25,12 @@ namespace VVVV.HDE.Viewer.WinFormsViewer
         public event OrderChangedHandler OrderChanged;
         public event CollectionDelegate Added;
         public event CollectionDelegate Removed;
+#pragma warning disable CS0067
         public event CollectionUpdateDelegate Cleared;
         public event CollectionUpdateDelegate UpdateBegun;
         public event CollectionUpdateDelegate Updated;
-        
+#pragma warning restore
+
         public MapperTreeNode(ModelMapper mapper)
             :base()
         {

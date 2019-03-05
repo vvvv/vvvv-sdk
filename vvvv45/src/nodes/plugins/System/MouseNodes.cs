@@ -233,7 +233,8 @@ namespace VVVV.Nodes.Input
                     return n;
                 });
             // Without the Publish().RefCount() the click injection breaks (issue #2365)
-            MouseOut[0] = new Mouse(mouseNotifications.Publish().RefCount());
+            var deviceLostNotifications = disabled.Select(_ => new MouseLostNotification());
+            MouseOut[0] = new Mouse(mouseNotifications.Merge(deviceLostNotifications).Publish().RefCount());
 
             // Create a mouse states split node for us and connect our mouse out to its mouse in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "MouseStates" && n.Category == "Mouse" && n.Version == "Split");
@@ -358,7 +359,8 @@ namespace VVVV.Nodes.Input
             var notifications = mouseInput
                     .Where(ep => ep.EventArgs.Device == deviceInfo.Handle)
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep));
-            return new Mouse(notifications);
+            var deviceLostNotifications = GetDeviceLostNotifications(slice);
+            return new Mouse(notifications.Merge(deviceLostNotifications));
         }
 
         protected override Mouse CreateMergedDevice(int slice)
@@ -370,7 +372,13 @@ namespace VVVV.Nodes.Input
                     .Where(_ => EnabledIn.SliceCount > 0 && EnabledIn[slice]);
             var notifications = mouseInput
                     .SelectMany<EventPattern<MouseInputEventArgs>, MouseNotification>(ep => GenerateMouseNotifications(mouseData, ep));
-            return new Mouse(notifications);
+            var deviceLostNotifications = GetDeviceLostNotifications(slice);
+            return new Mouse(notifications.Merge(deviceLostNotifications));
+        }
+
+        private IObservable<MouseLostNotification> GetDeviceLostNotifications(int slice)
+        {
+            return GetDisabledNotifications(slice).Select(_ => new MouseLostNotification());
         }
 
         protected override Mouse CreateDummy()
@@ -413,7 +421,8 @@ namespace VVVV.Nodes.Input
                 default:
                     throw new NotImplementedException();
             }
-            return new Mouse(notifications);
+            var deviceLostNotifications = GetDeviceLostNotifications(0);
+            return new Mouse(notifications.Merge(deviceLostNotifications));
         }
 
         private IEnumerable<MouseNotification> GenerateMouseNotifications(MouseData mouseData, EventPattern<MouseInputEventArgs> ep)
@@ -716,6 +725,9 @@ namespace VVVV.Nodes.Input
                         case MouseNotificationKind.MouseClick:
                             notification = new MouseClickNotification(position, clientArea, GetMouseButtons(bin, i), Math.Max(ClickCountIn[bin][i], 1), this);
                             break;
+                        case MouseNotificationKind.DeviceLost:
+                            notification = new MouseLostNotification(this);
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -932,6 +944,20 @@ namespace VVVV.Nodes.Input
                             X1ButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.XButton1) > 0;
                             X2ButtonOut[bin][i] = (mouseClick.Buttons & MouseButtons.XButton2) > 0;
                             break;
+                        case MouseNotificationKind.DeviceLost:
+                            PositionOut[bin][i] = Vector2D.Zero;
+                            PositionPixelOut[bin][i] = Vector2D.Zero;
+                            PositionInProjectionSpaceOut[bin][i] = Vector2D.Zero;
+                            PositionInNormalizedProjectionOut[bin][i] = Vector2D.Zero;
+                            MouseWheelDeltaOut[bin][i] = 0;
+                            MouseHWheelDeltaOut[bin][i] = 0;
+                            ClickCountOut[bin][i] = 0;
+                            LeftButtonOut[bin][i] = false;
+                            MiddleButtonOut[bin][i] = false;
+                            RightButtonOut[bin][i] = false;
+                            X1ButtonOut[bin][i] = false;
+                            X2ButtonOut[bin][i] = false;
+                            break;
                         default:
                             throw new NotImplementedException();
                     }
@@ -1012,20 +1038,7 @@ namespace VVVV.Nodes.Input
                 slice =>
                 {
                     // Reset states
-                    PositionOut[slice] = Vector2D.Zero;
-                    PositionInProjectionSpaceOut[slice] = Vector2D.Zero;
-                    PositionInNormalizedProjectionOut[slice] = Vector2D.Zero;
-                    PositionPixelOut[slice] = Vector2D.Zero;
-                    ClientAreaOut[slice] = Vector2D.Zero;
-                    MouseWheelOut[slice] = 0;
-                    FRawMouseWheel[slice] = 0;
-                    MouseHWheelOut[slice] = 0;
-                    FRawMouseHWheel[slice] = 0;
-                    LeftButtonOut[slice] = false;
-                    MiddleButtonOut[slice] = false;
-                    RightButtonOut[slice] = false;
-                    X1ButtonOut[slice] = false;
-                    X2ButtonOut[slice] = false;
+                    ResetStates(slice);
                     return new Subscription2<Mouse, MouseNotification>(m => m.MouseNotifications);
                 }
             );
@@ -1077,11 +1090,32 @@ namespace VVVV.Nodes.Input
                             FRawMouseHWheel[i] += mouseHWheel.WheelDelta;
                             MouseHWheelOut[i] = (int)Math.Round((float)FRawMouseHWheel[i] / Const.WHEEL_DELTA);
                             break;
+                        case MouseNotificationKind.DeviceLost:
+                            ResetStates(i);
+                            break;
                         default:
                             break;
                     }
                 }
             }
+        }
+
+        private void ResetStates(int slice)
+        {
+            PositionOut[slice] = Vector2D.Zero;
+            PositionInProjectionSpaceOut[slice] = Vector2D.Zero;
+            PositionInNormalizedProjectionOut[slice] = Vector2D.Zero;
+            PositionPixelOut[slice] = Vector2D.Zero;
+            ClientAreaOut[slice] = Vector2D.Zero;
+            MouseWheelOut[slice] = 0;
+            FRawMouseWheel[slice] = 0;
+            MouseHWheelOut[slice] = 0;
+            FRawMouseHWheel[slice] = 0;
+            LeftButtonOut[slice] = false;
+            MiddleButtonOut[slice] = false;
+            RightButtonOut[slice] = false;
+            X1ButtonOut[slice] = false;
+            X2ButtonOut[slice] = false;
         }
     }
 

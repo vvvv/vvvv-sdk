@@ -51,7 +51,7 @@ namespace VVVV.HDE.ProjectExplorer
 			foreach (var node in item)
 				node_Added(item, node);
 			
-			var project = item.NodeInfo.UserData as IProject;
+			var project = item.NodeInfo?.UserData as IProject;
 			if (project != null && !FLoadedProjects.Contains(project))
 			{
 			    FLoadedProjects.Add(project);
@@ -66,7 +66,7 @@ namespace VVVV.HDE.ProjectExplorer
 			foreach (var node in item)
 				node_Removed(item, node);
 			
-			var project = item.NodeInfo.UserData as IProject;
+			var project = item.NodeInfo?.UserData as IProject;
 			if (project != null && !IsProjectInUse(project))
 			{
 				FLoadedProjects.Remove(project);
@@ -77,7 +77,7 @@ namespace VVVV.HDE.ProjectExplorer
 		{
 			var query =
 				from node in FRootNode.AsDepthFirstEnumerable()
-				where node.NodeInfo.UserData == project
+				where node.NodeInfo?.UserData == project
 				select node;
 			
 			return query.Any();

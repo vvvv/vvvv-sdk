@@ -16,7 +16,8 @@ namespace VVVV.Utils.IO
         MouseMove,
         MouseWheel,
         MouseHorizontalWheel,
-        MouseClick
+        MouseClick,
+        DeviceLost
     }
 
     public abstract class MouseNotification : Notification
@@ -251,5 +252,21 @@ namespace VVVV.Utils.IO
 
         public override INotification WithSender(object sender)
             => new MouseHorizontalWheelNotification(Position, ClientArea, WheelDelta, sender);
+    }
+
+    public sealed class MouseLostNotification : MouseNotification
+    {
+        public MouseLostNotification()
+            : base(MouseNotificationKind.DeviceLost, Point.Empty, Size.Empty)
+        {
+        }
+
+        public MouseLostNotification(object sender)
+            : base(MouseNotificationKind.DeviceLost, Point.Empty, Size.Empty, sender)
+        {
+        }
+
+        public override INotification WithSender(object sender)
+            => new MouseLostNotification(sender);
     }
 }

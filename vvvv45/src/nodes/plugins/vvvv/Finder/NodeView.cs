@@ -57,43 +57,47 @@ namespace VVVV.Nodes.Finder
             
             // Set flags
             Flags = FilterFlags.None;
-            switch (FNode.NodeInfo.Type)
+            var nodeInfo = FNode.NodeInfo;
+            if (nodeInfo != null)
             {
-                case NodeType.Native:
-                    Flags |= FilterFlags.Native;
-                    break;
-                case NodeType.Patch:
-                    Flags |= FilterFlags.Patch;
-                    break;
-                case NodeType.Module:
-                    Flags |= FilterFlags.Module;
-                    break;
-                case NodeType.Freeframe:
-                    Flags |= FilterFlags.Freeframe;
-                    break;
-                case NodeType.VST:
-                    Flags |= FilterFlags.VST;
-                    break;
-                case NodeType.Effect:
-                    Flags |= FilterFlags.Effect;
-                    break;
-                case NodeType.Plugin:
-                    Flags |= FilterFlags.Plugin;
-                    break;
-                case NodeType.Dynamic:
-                    Flags |= FilterFlags.Dynamic;
-                    break;
-                case NodeType.VL:
-                    Flags |= FilterFlags.VL;
-                    break;
-                case NodeType.Text:
-                    Flags |= FilterFlags.Text;
-                    break;
-                case NodeType.Unknown:
-                    Flags |= FilterFlags.Unknown;
-                    break;
-                default:
-                    throw new Exception("Invalid value for NodeType");
+                switch (nodeInfo.Type)
+                {
+                    case NodeType.Native:
+                        Flags |= FilterFlags.Native;
+                        break;
+                    case NodeType.Patch:
+                        Flags |= FilterFlags.Patch;
+                        break;
+                    case NodeType.Module:
+                        Flags |= FilterFlags.Module;
+                        break;
+                    case NodeType.Freeframe:
+                        Flags |= FilterFlags.Freeframe;
+                        break;
+                    case NodeType.VST:
+                        Flags |= FilterFlags.VST;
+                        break;
+                    case NodeType.Effect:
+                        Flags |= FilterFlags.Effect;
+                        break;
+                    case NodeType.Plugin:
+                        Flags |= FilterFlags.Plugin;
+                        break;
+                    case NodeType.Dynamic:
+                        Flags |= FilterFlags.Dynamic;
+                        break;
+                    case NodeType.VL:
+                        Flags |= FilterFlags.VL;
+                        break;
+                    case NodeType.Text:
+                        Flags |= FilterFlags.Text;
+                        break;
+                    case NodeType.Unknown:
+                        Flags |= FilterFlags.Unknown;
+                        break;
+                    default:
+                        throw new Exception("Invalid value for NodeType");
+                }
             }
             
             if (FNode.HasGUI)
@@ -190,7 +194,7 @@ namespace VVVV.Nodes.Finder
             NodeView nodeView = null;
             
             var nodeInfo = node.NodeInfo;
-            switch (nodeInfo.Name)
+            switch (nodeInfo?.Name)
             {
                 case "IOBox":
                     nodeView = new IONodeView(this, node, FFilter, FDepth + 1);
@@ -206,7 +210,7 @@ namespace VVVV.Nodes.Finder
                         nodeView = new NodeView(this, node, FFilter, FDepth + 1, true);
                     else
                     {
-                        switch (nodeInfo.Type)
+                        switch (nodeInfo?.Type)
                         {
                             case NodeType.Module:
                                 nodeView = new ModuleNodeView(this, node, FFilter, FDepth + 1);

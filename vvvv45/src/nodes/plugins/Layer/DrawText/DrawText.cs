@@ -149,7 +149,7 @@ namespace VVVV.Nodes
 			FSpreadMax = spreadMax;
 			FSizeOutput.SliceCount = spreadMax;
 			
-			if (FEnabledInput[0])
+			if (FEnabledInput.SliceCount > 0 && FEnabledInput[0])
 				foreach (var kv in FFonts)
 					kv.Value.Tag = null;
 			

@@ -4,6 +4,7 @@
   <!-- Project specific properties -->
   <PropertyGroup>
     <ProjectGuid>{AA8072CA-3343-4199-AC22-62B9E352BAE9}</ProjectGuid>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
   <!-- Freeframe and DirectShow -->
   <ItemGroup>
@@ -80,8 +81,10 @@
       <Name>VVVV.Assimp.Nodes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="Addonpack.targets" />
-
   <Target Name="Build" DependsOnTargets="AddonpackBuild;$(VVVV_BuildDependsOn)" />
   <Target Name="Rebuild" DependsOnTargets="Clean;Build" />
   <Target Name="Clean" DependsOnTargets="$(CleanDependsOn)" />

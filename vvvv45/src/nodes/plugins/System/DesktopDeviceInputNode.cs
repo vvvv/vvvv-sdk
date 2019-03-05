@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using VVVV.Hosting.IO;
 using VVVV.Nodes.Input;
@@ -126,6 +127,13 @@ namespace VVVV.Nodes.Input
         protected abstract TDevice CreateDevice(DeviceInfo deviceInfo, int slice);
         protected abstract TDevice CreateMergedDevice(int slice);
         protected abstract TDevice CreateDummy();
+
+        protected IObservable<bool> GetDisabledNotifications(int slice)
+        {
+            return EnabledIn.ToObservable(slice)
+                .DistinctUntilChanged()
+                .Where(enabled => !enabled);
+        }
 
         public void Evaluate(int spreadMax)
         {

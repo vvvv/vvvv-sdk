@@ -17,7 +17,7 @@ namespace VVVV.Nodes
                 Help = "Casts any type to a type of this category, so be sure the input is of the required type",
                 Tags = "convert, as, generic"
                 )]
-    public class REPLACEME_CLASSCastNode : Cons<REPLACEME_CLASS> {}
+    public class REPLACEME_CLASSCastNode : Cast<REPLACEME_CLASS> {}
     
     #endregion SingleValue
     

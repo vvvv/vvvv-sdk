@@ -49,6 +49,14 @@ namespace VVVV.PluginInterfaces.V2
 		bool DeleteMe();
 	}
 
+    [Guid("C0EB9C47-DB39-4DC6-9B6D-032348E6F7EA"),
+     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IVLHost
+    {
+        void CloseActiveTab(out bool windowIsGone);
+        bool OpenDocument(string filename);
+    }
+
     /// <summary>
     /// Implement this interface on your gui-plugin if the Mouse (System Window)
     /// or Keyboard (System Window) nodes should output data for it.

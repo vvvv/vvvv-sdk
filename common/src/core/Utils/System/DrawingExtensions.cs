@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 
 namespace System.Drawing
@@ -14,24 +15,17 @@ namespace System.Drawing
         /// </summary>
         public static RectangleF GetBounds(this IEnumerable<PointF> points)
         {
-            return GetBounds(points.ToArray());
-        }
-
-        /// <summary>
-        /// Returns the bounds of the given point cloud.
-        /// </summary>
-        public static RectangleF GetBounds(this PointF[] points)
-        {
-            if (points.Length > 0)
+            var min = new Vector2(float.MaxValue, float.MaxValue);
+            var max = new Vector2(float.MinValue, float.MinValue);
+            foreach (var p in points)
             {
-                var top = points.Min(p => p.Y);
-                var bottom = points.Max(p => p.Y);
-                var left = points.Min(p => p.X);
-                var right = points.Max(p => p.X);
-                return RectangleF.FromLTRB(left, top, right, bottom);
+                var v = new Vector2(p.X, p.Y);
+                min = Vector2.Min(min, v);
+                max = Vector2.Max(max, v);
             }
-            else
-                return RectangleF.Empty;
+            if (min.X != float.MaxValue)
+                return RectangleF.FromLTRB(min.X, min.Y, max.X, max.Y);
+            return RectangleF.Empty;
         }
 
         /// <summary>
@@ -39,17 +33,16 @@ namespace System.Drawing
         /// </summary>
         public static RectangleF GetBounds(this IEnumerable<RectangleF> bounds)
         {
-            var cachedBounds = bounds.ToArray();
-            if (cachedBounds.Length > 0)
+            var minTopLeft = new Vector2(float.MaxValue, float.MaxValue);
+            var maxBottomRight = new Vector2(float.MinValue, float.MinValue);
+            foreach (var r in bounds)
             {
-                var top = cachedBounds.Min(b => b.Top);
-                var bottom = cachedBounds.Max(b => b.Bottom);
-                var left = cachedBounds.Min(b => b.Left);
-                var right = cachedBounds.Max(b => b.Right);
-                return RectangleF.FromLTRB(left, top, right, bottom);
+                minTopLeft = Vector2.Min(minTopLeft, new Vector2(r.Left, r.Top));
+                maxBottomRight = Vector2.Max(maxBottomRight, new Vector2(r.Right, r.Bottom));
             }
-            else
-                return RectangleF.Empty;
+            if (minTopLeft.X != float.MaxValue)
+                return RectangleF.FromLTRB(minTopLeft.X, minTopLeft.Y, maxBottomRight.X, maxBottomRight.Y);
+            return RectangleF.Empty;
         }
 
         /// <summary>
@@ -82,6 +75,14 @@ namespace System.Drawing
         public static RectangleF GetRectangleForCenterAndSize(this PointF centerPosition, SizeF size)
         {
             return new RectangleF(centerPosition.X - size.Width * 0.5f, centerPosition.Y - size.Height * 0.5f, size.Width, size.Height);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="Rectangle">Rectangle</see> by casting the float components to integer.
+        /// </summary>
+        public static Rectangle ToRectangle(this RectangleF rect)
+        {
+            return new Rectangle(rect.Location.ToPoint(), rect.Size.ToSize());
         }
 
         /// <summary>
