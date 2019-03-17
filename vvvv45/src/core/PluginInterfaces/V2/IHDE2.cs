@@ -208,6 +208,16 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+
+        /// <summary>
+        /// The current frame time difference to the previous frame.
+        /// useful for timebased calculations since it provides the correct value
+        /// already on creation of plugins and regardless of whether the plugin was previously evaluated or not
+        /// </summary>
+        double FrameTimeDelta
+        {
+            get;
+        }
 		
 		/// <summary>
 		/// The realtime in seconds since the IHDEHost was created. On boygroup clients this ist the time 

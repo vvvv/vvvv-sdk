@@ -271,6 +271,7 @@ namespace VVVV.Hosting
             DeviceService = new DeviceService(vvvvHost.DeviceService);
             MainLoop = new MainLoop(vvvvHost.MainLoop);
             MainLoop.OnInitFrame += MainLoop_OnInitFrame;
+            MainLoop.OnPrepareGraph += MainLoop_OnPrepareGraph;
 
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
 
@@ -725,6 +726,19 @@ namespace VVVV.Hosting
                 FVVVVHost.GetCurrentTime(out currentTime);
                 return currentTime;
             }
+        }
+        private double lastFrameTime = -1;
+        private void MainLoop_OnPrepareGraph(object sender, EventArgs e)
+        {
+            if (lastFrameTime < 0)
+                lastFrameTime = FrameTime;
+            FrameTimeDelta = FrameTime - lastFrameTime;
+            lastFrameTime = FrameTime;
+        }
+        public double FrameTimeDelta
+        {
+            get;
+            private set;
         }
 
         public double RealTime
