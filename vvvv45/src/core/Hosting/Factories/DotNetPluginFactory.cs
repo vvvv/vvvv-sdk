@@ -43,14 +43,14 @@ namespace VVVV.Hosting.Factories
         protected IHDEHost FHost;
 
         [Import]
-        private StartableRegistry FStartableRegistry;
+        protected StartableRegistry FStartableRegistry;
 
         [Import]
-        private IORegistry FIORegistry; 
+        protected IORegistry FIORegistry; 
 #pragma warning restore
         
-        private readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
-        private readonly CompositionContainer FParentContainer;
+        protected readonly Dictionary<IPluginBase, PluginContainer> FPluginContainers;
+        protected readonly CompositionContainer FParentContainer;
         private readonly Type FReflectionOnlyPluginBaseType;
         
         public Dictionary<string, IPluginBase> FNodesPath = new Dictionary<string, IPluginBase>();
@@ -316,7 +316,7 @@ namespace VVVV.Hosting.Factories
             return nodeInfo;
         }
 
-        public Type GetPluginType(INodeInfo nodeInfo)
+        public virtual Type GetPluginType(INodeInfo nodeInfo)
         {
             string assemblyLocation = string.Empty;
             var isUpToDate = GetAssemblyLocation(nodeInfo, out assemblyLocation);
@@ -324,7 +324,7 @@ namespace VVVV.Hosting.Factories
             return assembly.GetType(nodeInfo.Arguments);
         }
         
-        public IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
+        public virtual IPluginBase CreatePlugin(INodeInfo nodeInfo, IPluginHost2 pluginHost)
         {
             IPluginBase plugin = null;
             
@@ -407,7 +407,7 @@ namespace VVVV.Hosting.Factories
             return plugin;
         }
         
-        public void DisposePlugin(IPluginBase plugin)
+        public virtual void DisposePlugin(IPluginBase plugin)
         {
             //Send event before delete
             if (this.PluginDeleted != null) { this.PluginDeleted(plugin); }
@@ -465,7 +465,7 @@ namespace VVVV.Hosting.Factories
             }
         }
         
-        private static void AssignOptionalPluginInterfaces(IInternalPluginHost pluginHost, IPluginBase pluginBase)
+        protected static void AssignOptionalPluginInterfaces(IInternalPluginHost pluginHost, IPluginBase pluginBase)
         {
             var win32Window = pluginBase as IWin32Window;
             if (win32Window != null)
