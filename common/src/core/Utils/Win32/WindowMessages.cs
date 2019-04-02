@@ -7,7 +7,7 @@ namespace VVVV.Utils.Win32
 {
     /// <summary>
     /// Windows Messages
-    /// Defined in winuser.h from Windows SDK v6.1
+    /// Defined in winuser.h from Windows SDK v8.1
     /// Documentation pulled from MSDN.
     /// </summary>
     public enum WM : uint
@@ -438,6 +438,9 @@ namespace VVVV.Utils.Win32
         /// This message filters for keyboard messages.
         /// </summary>
         KEYLAST = 0x0109,
+
+        //UNICODE_NOCHAR = 0xFFFF,
+
         /// <summary>
         /// Sent immediately before the IME generates the composition string as a result of a keystroke. A window receives this message through its WindowProc function.
         /// </summary>
@@ -563,6 +566,10 @@ namespace VVVV.Utils.Win32
         /// A static control, or an edit control that is read-only or disabled, sends the WM_CTLCOLORSTATIC message to its parent window when the control is about to be drawn. By responding to this message, the parent window can use the specified device context handle to set the text and background colors of the static control.
         /// </summary>
         CTLCOLORSTATIC = 0x0138,
+        /// <summary>
+        /// Retrieves the menu handle for the current window.
+        /// </summary>
+        GETHMENU = 0x01E1,
         /// <summary>
         /// Use WM_MOUSEFIRST to specify the first mouse message. Use the PeekMessage() Function.
         /// </summary>
@@ -729,9 +736,77 @@ namespace VVVV.Utils.Win32
         /// </summary>
         MDIREFRESHMENU = 0x0234,
         /// <summary>
+        /// Sent to a window when there is a change in the settings of a monitor that has a digitizer attached to it. This message contains information regarding the scaling of the display mode.
+        /// </summary>
+        POINTERDEVICECHANGE = 0x238,
+        /// <summary>
+        /// Sent to a window when a pointer device is detected within range of an input digitizer. This message contains information regarding the device and its proximity.
+        /// </summary>
+        POINTERDEVICEINRANGE = 0x239,
+        /// <summary>
+        /// Sent to a window when a pointer device has departed the range of an input digitizer. This message contains information regarding the device and its proximity.
+        /// </summary>
+        POINTERDEVICEOUTOFRANGE = 0x23A,
+        /// <summary>
         /// Notifies the window when one or more touch points, such as a finger or pen, touches a touch-sensitive digitizer surface.
         /// </summary>
         TOUCH = 0x0240,
+        /// <summary>
+        /// Posted to provide an update on a pointer that made contact over the non-client area of a window or when a hovering uncaptured contact moves over the non-client area of a window. While the pointer is hovering, the message targets whichever window the pointer happens to be over. While the pointer is in contact with the surface, the pointer is implicitly captured to the window over which the pointer made contact and that window continues to receive input for the pointer until it breaks contact.
+        /// </summary>
+        NCPOINTERUPDATE = 0x0241,
+        /// <summary>
+        /// Posted when a pointer makes contact over the non-client area of a window. The message targets the window over which the pointer makes contact. The pointer is implicitly captured to the window so that the window continues to receive input for the pointer until it breaks contact.
+        /// </summary>
+        NCPOINTERDOWN = 0x0242,
+        /// <summary>
+        /// Posted when a pointer that made contact over the non-client area of a window breaks contact. The message targets the window over which the pointer makes contact and the pointer is, at that point, implicitly captured to the window so that the window continues to receive input for the pointer until it breaks contact, including the WM_NCPOINTERUP notification.
+        /// </summary>
+        NCPOINTERUP = 0x0243,
+        /// <summary>
+        /// Posted to provide an update on a pointer that made contact over the client area of a window or on a hovering uncaptured pointer over the client area of a window. While the pointer is hovering, the message targets whichever window the pointer happens to be over. While the pointer is in contact with the surface, the pointer is implicitly captured to the window over which the pointer made contact and that window continues to receive input for the pointer until it breaks contact.
+        /// </summary>
+        POINTERUPDATE = 0x0245,
+        /// <summary>
+        /// Posted when a pointer makes contact over the client area of a window. This input message targets the window over which the pointer makes contact, and the pointer is implicitly captured to the window so that the window continues to receive input for the pointer until it breaks contact.
+        /// </summary>
+        POINTERDOWN = 0x0246,
+        /// <summary>
+        /// Posted when a pointer that made contact over the client area of a window breaks contact. This input message targets the window over which the pointer makes contact and the pointer is, at that point, implicitly captured to the window so that the window continues to receive input messages including the WM_POINTERUP notification for the pointer until it breaks contact.
+        /// </summary>
+        POINTERUP = 0x0247,
+        /// <summary>
+        /// Sent to a window when a new pointer enters detection range over the window (hover) or when an existing pointer moves within the boundaries of the window.
+        /// </summary>
+        POINTERENTER = 0x0249,
+        /// <summary>
+        /// Sent to a window when a pointer leaves detection range over the window (hover) or when a pointer moves outside the boundaries of the window.
+        /// </summary>
+        POINTERLEAVE = 0x024A,
+        /// <summary>
+        /// Sent to an inactive window when a primary pointer generates a WM_POINTERDOWN over the window. As long as the message remains unhandled, it travels up the parent window chain until it is reaches the top-level window. Applications can respond to this message to specify whether they wish to be activated.
+        /// </summary>
+        POINTERACTIVATE = 0x024B,
+        /// <summary>
+        /// Sent to a window that is losing capture of an input pointer.    
+        /// </summary>
+        POINTERCAPTURECHANGED = 0x024C,
+        /// <summary>
+        /// Sent to a window on a touch down in order to determine the most probable touch target.     
+        /// </summary>
+        TOUCHHITTESTING = 0x024D,
+        /// <summary>
+        /// Posted to the window with foreground keyboard focus when a scroll wheel is rotated.      
+        /// </summary>
+        POINTERWHEEL = 0x024E,
+        /// <summary>
+        /// Posted to the window with foreground keyboard focus when a horizontal scroll wheel is rotated.      
+        /// </summary>
+        POINTERHWHEEL = 0x024F,
+        /// <summary>
+        /// Sent to a window, when pointer input is first detected, in order to determine the most probable input target for Direct Manipulation.      
+        /// </summary>
+        POINTERHITTEST = 0x0250,
         /// <summary>
         /// Sent to an application when a window is activated. A window receives this message through its WindowProc function.
         /// </summary>
@@ -790,6 +865,10 @@ namespace VVVV.Utils.Win32
         WTSSESSION_CHANGE = 0x02B1,
         TABLET_FIRST = 0x02c0,
         TABLET_LAST = 0x02df,
+        /// <summary>
+        /// Sent when the effective dots per inch (dpi) for a window has changed. The DPI is the scale factor for a window. There are multiple events that can cause the DPI to change. The following list indicates the possible causes for the change in DPI.
+        /// </summary>
+        DPICHANGED = 0x02E0,
         /// <summary>
         /// An application sends a WM_CUT message to an edit control or combo box to delete (cut) the current selection, if any, in the edit control and copy the deleted text to the clipboard in CF_TEXT format.
         /// </summary>
@@ -903,6 +982,14 @@ namespace VVVV.Utils.Win32
         /// WM_DWMWINDOWMAXIMIZEDCHANGE will let you know when a DWM composed window is maximized. You also have to register for this message as well. You'd have other windowd go opaque when this message is sent.
         /// </summary>
         DWMWINDOWMAXIMIZEDCHANGE = 0x0321,
+        /// <summary>
+        /// Instructs a window to provide a static bitmap to use as a thumbnail representation of that window.
+        /// </summary>
+        DWMSENDICONICTHUMBNAIL = 0x0323,
+        /// <summary>
+        /// Instructs a window to provide a static bitmap to use as a live preview (also known as a Peek preview) of that window.
+        /// </summary>
+        DWMSENDICONICLIVEPREVIEWBITMAP = 0x0326,
         /// <summary>
         /// Sent to request extended title bar information. A window receives this message through its WindowProc function.
         /// </summary>
