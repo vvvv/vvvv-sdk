@@ -170,43 +170,17 @@ namespace VVVV.VL.Hosting
             PatchEditor?.CloseActiveTab(out windowIsGone);
         }
 
-        // TODO
-        class DummySplash : ISplashForm
-        {
-            public void BringToFront()
-            {
-            }
-
-            public void Dispose()
-            {
-            }
-
-            public void SetActionText(string text)
-            {
-            }
-
-            public void SetHeaderText(string text)
-            {
-            }
-
-            public void SetPercentageText(string text)
-            {
-            }
-
-            public void Show()
-            {
-            }
-        }
-
         public bool OpenDocument(string filename)
         {
             var provider = PatchEditor?.NavigationMenu?.Provider;
             if (provider != null)
             {
-                // TODO: Splash screen
-                var document = AsyncPump.Run(() => Session.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashCreator: () => new DummySplash()));
-                PatchEditor.ShowDocument(document);
-                return document != null;
+                using (var splashScreen = new SplashForm())
+                {
+                    var document = AsyncPump.Run(() => Session.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashScreen: splashScreen));
+                    PatchEditor.ShowDocument(document);
+                    return document != null;
+                }
             }
             return false;
         }
