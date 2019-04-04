@@ -23,6 +23,7 @@ using VVVV.VL.Hosting.IO.Streams;
 using Symbols = VL.Lang.Symbols;
 using Microsoft.Threading;
 using VVVV.PluginInterfaces.V2.Graph;
+using VL.UI.Core;
 
 namespace VVVV.VL.Factories
 {
@@ -47,14 +48,27 @@ namespace VVVV.VL.Factories
             }
 
             public string SerializedId { get; }
-
+            static bool SplashShown;
             public NodeId NodeDefinitionId => InterlockedHelper.CacheNoLock(ref FNodeDefinitionId, () =>
             {
                 return AsyncPump.Run(async () =>
                 {
-                    var document = await VLSession.Instance.GetOrAddDocument(NodeInfo.Filename, createNew: false);
-                    NodeFactory.FSyncedSolution = document.Solution;
-                    return document.AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId);
+                    if (SplashShown)
+                    {
+                        var document = await VLSession.Instance.GetOrAddDocument(NodeInfo.Filename, createNew: false);
+                        NodeFactory.FSyncedSolution = document.Solution;
+                        return document.AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId);
+                    }
+                    else
+                    {
+                        using (var sf = new SplashForm())
+                        {
+                            var document = await VLSession.Instance.GetOrAddDocumentWithSplashScreen(NodeInfo.Filename, createNew: false, splashScreen: sf);
+                            NodeFactory.FSyncedSolution = document.Solution;
+                            SplashShown = true;
+                            return document.AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId);
+                        }
+                    }
                 });
             });
 

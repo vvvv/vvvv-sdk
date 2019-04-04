@@ -22,12 +22,7 @@ namespace VVVV.VL.Hosting
         public Host()
         {
             //setup session
-#if DEBUG
-            var isPreview = true;
-#else
-            var isPreview = false;
-#endif
-            Session = new VLSession("beta", isPreview, SynchronizationContext.Current);
+            Session = new VLSession("beta", SynchronizationContext.Current);
             // Use our own implementation
             var platform = Session.TargetPlatform as Platform;
             platform.RuntimeHost.Dispose();
