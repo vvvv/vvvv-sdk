@@ -2,7 +2,7 @@
 using SharpDX;
 using VL.Lib.IO.Notifications;
 using Drawing = System.Drawing;
-using VL.Core.Properties;
+using VL.UI.Core;
 using VL.Lib.IO;
 
 namespace VVVV.VL.Hosting.IO
@@ -36,7 +36,7 @@ namespace VVVV.VL.Hosting.IO
 
         public DIPNotificationSpaceTransformer()
         {
-            Scaling = 1 / Settings.DIPFactor();
+            Scaling = 1 / DIPHelpers.DIPFactor();
         }
 
         public Vector2 Transform(Drawing.Size size)

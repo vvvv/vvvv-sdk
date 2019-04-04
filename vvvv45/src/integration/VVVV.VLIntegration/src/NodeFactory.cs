@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VL.Core;
-using VL.Core.Properties;
 using VL.Lang;
 using VL.Model;
 using VVVV.Core.Logging;
@@ -347,15 +346,15 @@ namespace VVVV.VL.Factories
 
 			var n = (IInternalPluginHost) node.InternalCOMInterf;
 			var path = (n.Plugin as NodePlugin)?.Object?.Context?.Path;
-			var patchHandle = path != null
-				? new PatchHandle(path)
+			var patchHandle = path.HasValue
+				? new PatchHandle(path.Value)
 				: null;
             Host.OpenPatchEditor(export.CurrentNodeDefinition, FHDEHost, patchHandle);
         }
 
 		private void PatchEditor_OpenHostingView(uint obj)
 		{
-			var app = Host.RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path?.Stack?.Peek() == obj) as NodePlugin;
+			var app = Host.RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path.Stack?.Peek() == obj) as NodePlugin;
 			if (app != null)
 			{
 				var node = FHDEHost.GetNodeFromPath(app.PluginHost.GetNodePath(false));

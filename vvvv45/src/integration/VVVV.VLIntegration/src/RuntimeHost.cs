@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
-using VL.Core;
-using VL.Core.Properties;
-using VL.HDE.Forms;
-using VL.Lang;
 using VL.Lang.Helper;
 using VL.Lang.Platforms.CIL;
 using VL.Lang.Platforms.CIL.Runtime;
 using VL.Lang.Symbols;
 using VL.Lib.Animation;
 using VL.Model;
+using VL.UI.Core;
 using VVVV.Core.Logging;
 using VVVV.Hosting.Interfaces;
 using VVVV.PluginInterfaces.V2;
-using static VL.Lang.Symbols.SymbolRendering;
 
 namespace VVVV.VL.Hosting
 {

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using VL.Core;
 using VL.Lang;
 using VL.Lang.Platforms.CIL;
@@ -19,7 +18,6 @@ namespace VVVV.VL.Hosting
     using global::VL.Lang.Platforms.CIL.Runtime;
     using global::VL.Lib.Animation;
     using System.Collections.Immutable;
-    using System.Threading;
     using EvalAction = Action<int, MemoryIOStream<object>, IInStream[], IOutStream[]>;
 
     public class NodePlugin : IPlugin, IDisposable, IIOFactory, IRuntimeInstance

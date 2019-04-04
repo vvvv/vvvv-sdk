@@ -1,23 +1,17 @@
 ﻿using System;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using VL.Core;
-using VL.Core.Properties;
-using VL.Core.Viewer;
 using VL.HDE.Forms;
-using VL.HDE.SymbolBrowsers;
 using VL.HDE.PatchEditor;
 using VL.Lang.Platforms.CIL;
 using VVVV.PluginInterfaces.V2;
-using NuGet;
-using System.Linq;
 using VL.Model;
 using VL.Lang.Symbols;
-using System.Collections.Generic;
 using Microsoft.Cci;
 using System.Threading;
 using Microsoft.Threading;
+using VL.UI.Core;
+using VVVV.Core.Logging;
 
 namespace VVVV.VL.Hosting
 {
@@ -27,17 +21,20 @@ namespace VVVV.VL.Hosting
         
         public Host()
         {
-            // Need to set before static ctor of Settings class is called
-            SettingsHACK.CustomSettingsFile = CommandLineArguments.Instance.SettingsFile;
             //setup session
-            Session = new VLSession(SynchronizationContext.Current);
+#if DEBUG
+            var isPreview = true;
+#else
+            var isPreview = false;
+#endif
+            Session = new VLSession("beta", isPreview, SynchronizationContext.Current);
             // Use our own implementation
             var platform = Session.TargetPlatform as Platform;
             platform.RuntimeHost.Dispose();
             platform.RuntimeHost = new RuntimeHost(platform);
         }
 
-        public Host Initialize(IHDEHost hdeHost, Core.Logging.ILogger logger)
+        public Host Initialize(IHDEHost hdeHost, ILogger logger)
         {
             RuntimeHost.Initialize(this, hdeHost, logger);
             return this;
@@ -62,7 +59,7 @@ namespace VVVV.VL.Hosting
                 {
                     // TODO: Please find an easier way to setup all the dependencies
                     var formManager = new FormManager(Session);
-                    FPatchEditor = new EditorControl(Session, formManager, false);
+                    FPatchEditor = new EditorControl(Session, formManager);
                     FPatchEditor.Disposed += patchEditor_Disposed;
 
                     formManager.PatchEditor = this.FPatchEditor;
@@ -78,7 +75,7 @@ namespace VVVV.VL.Hosting
             {
                 if (this.utilsAssembly == null)
                 {
-                    var assemblyIdentity = UnitHelper.GetAssemblyIdentity(typeof(VVVV.Utils.VMath.VMath).Assembly.GetName(), CciHost);
+                    var assemblyIdentity = UnitHelper.GetAssemblyIdentity(typeof(global::VVVV.Utils.VMath.VMath).Assembly.GetName(), CciHost);
                     this.utilsAssembly = new Microsoft.Cci.Immutable.AssemblyReference(CciHost, assemblyIdentity);
                 }
                 return utilsAssembly;
@@ -147,12 +144,12 @@ namespace VVVV.VL.Hosting
                 FPatchEditor.Tooltip.Recreate();
         }
 
-        #region IQueryDelete implementation
+#region IQueryDelete implementation
         public bool DeleteMe()
         {
             return PatchEditor.QueryClose();
         }
-        #endregion    
+#endregion
         
         //simply implementing IWin32Window here wasn't enough, so redirecting it to PatchEditor
         public CustomQueryInterfaceResult GetInterface(ref Guid iid, out IntPtr ppv)
@@ -173,12 +170,41 @@ namespace VVVV.VL.Hosting
             PatchEditor?.CloseActiveTab(out windowIsGone);
         }
 
+        // TODO
+        class DummySplash : ISplashForm
+        {
+            public void BringToFront()
+            {
+            }
+
+            public void Dispose()
+            {
+            }
+
+            public void SetActionText(string text)
+            {
+            }
+
+            public void SetHeaderText(string text)
+            {
+            }
+
+            public void SetPercentageText(string text)
+            {
+            }
+
+            public void Show()
+            {
+            }
+        }
+
         public bool OpenDocument(string filename)
         {
             var provider = PatchEditor?.NavigationMenu?.Provider;
             if (provider != null)
             {
-                var document = AsyncPump.Run(() => Session.GetOrAddDocumentWithSplashScreen(filename, createNew: false));
+                // TODO: Splash screen
+                var document = AsyncPump.Run(() => Session.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashCreator: () => new DummySplash()));
                 PatchEditor.ShowDocument(document);
                 return document != null;
             }
