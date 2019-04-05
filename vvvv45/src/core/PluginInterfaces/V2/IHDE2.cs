@@ -8,6 +8,7 @@ using VVVV.Core.Model;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2.EX9;
 using VVVV.PluginInterfaces.V2.Graph;
+using VVVV.PluginInterfaces.V2.Win32;
 
 namespace VVVV.PluginInterfaces.V2
 {
@@ -333,6 +334,14 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
+
+        /// <summary>
+        /// Provides access to window system messages
+        /// </summary>
+        IWindowMessageService WindowMessageService
+        {
+            get;
+        }
 		
 		/// <summary>
 		/// Indicates whether this IHDEHost is a client in a boygroup.

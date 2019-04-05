@@ -33,6 +33,7 @@ using Nito.Async;
 using VVVV.Utils.Reflection;
 using System.Collections;
 using System.Text;
+using VVVV.PluginInterfaces.V2.Win32;
 
 namespace VVVV.Hosting
 {
@@ -274,6 +275,8 @@ namespace VVVV.Hosting
             MainLoop.OnPrepareGraph += MainLoop_OnPrepareGraph;
 
             ExposedNodeService = new ExposedNodeService(vvvvHost.ExposedNodeService, NodeInfoFactory);
+
+            WindowMessageService = new WindowMessageService(this);
 
             NodeBrowserHost = new ProxyNodeBrowserHost(nodeBrowserHost, NodeInfoFactory);
             WindowSwitcherHost = windowSwitcherHost;
@@ -855,7 +858,14 @@ namespace VVVV.Hosting
             get;
             private set;
         }
-        
+
+        [Export(typeof(IWindowMessageService))]
+        public IWindowMessageService WindowMessageService
+        {
+            get;
+            private set;
+        }
+
         public bool IsBoygroupClient 
         {
             get; 
