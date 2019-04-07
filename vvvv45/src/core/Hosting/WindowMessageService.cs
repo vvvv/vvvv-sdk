@@ -49,11 +49,7 @@ namespace VVVV.Hosting
                     if (SubclassCreated != null)
                         SubclassCreated.Invoke(s, EventArgs.Empty);
                 })
-                .SelectMany(s => Observable.FromEventPattern<WMEventArgs>(s, "WindowMessage")
-                    .Select(m => new EventPattern<WMEventArgs>(m.Sender, 
-                        new WMEventArgs(m.EventArgs.HWnd, m.EventArgs.Message, m.EventArgs.WParam, m.EventArgs.LParam)
-                    ))
-                )
+                .SelectMany(s => Observable.FromEventPattern<WMEventArgs>(s, "WindowMessage"))
                 .Publish();
             FWMConnection = hotObservable.Connect();
             MessageNotifications = hotObservable;
