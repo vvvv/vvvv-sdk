@@ -66,6 +66,10 @@ namespace VVVV.Utils.Win32
 
         [DllImport("user32")]
         [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnregisterTouchWindow(System.IntPtr hWnd);
+
+        [DllImport("user32")]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetTouchInputInfo(System.IntPtr hTouchInput, int cInputs, [In, Out] TOUCHINPUT[] pInputs, int cbSize);
 
         [DllImport("user32")]
