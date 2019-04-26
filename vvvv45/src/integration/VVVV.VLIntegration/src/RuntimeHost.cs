@@ -54,56 +54,6 @@ namespace VVVV.VL.Hosting
             public Time Time => FHDEHost.RealTime;
         }
 
-        public class HDEFrameClock : IFrameClock
-        {
-            Time FFrameTime;
-            ulong FCurrentTick = 1;
-            Subject<FrameTimeMessage> ObservableTime;
-            bool FInitialized;
-
-            public HDEFrameClock(IHDEHost host)
-            {
-                ObservableTime = new Subject<FrameTimeMessage>();
-            }
-
-            /// can be set by host
-            public Time FrameTime
-            {
-                get
-                {
-                    return FFrameTime;
-                }
-                internal set
-                {
-                    if (FFrameTime != value)
-                    {
-                        if (FInitialized)
-                            FTimeDifference = Math.Max(value.Seconds - FFrameTime.Seconds, 0);
-                        else
-                            FTimeDifference = 0;
-
-                        FFrameTime = value;
-                        FInitialized = true;
-
-                        ObservableTime.OnNext(new FrameTimeMessage(FFrameTime, FCurrentTick++));
-                    }
-                }
-            }
-
-            public Time Time => FrameTime;
-            double FTimeDifference;
-
-            public double TimeDifference
-            {
-                get
-                {
-                    return FTimeDifference;
-                }
-            }
-
-            public IObservable<FrameTimeMessage> GetTicks() => ObservableTime;
-        }
-
         public RuntimeHost(Platform platform)
         {
             ImplicitEntryPointInstanceManager = new ImplicitEntryPointInstanceManager();
@@ -128,13 +78,12 @@ namespace VVVV.VL.Hosting
             FHDEHost.MainLoop.OnResetCache += HandleMainLoopOnResetCache;
             FCompilation = FPlatform.LatestCompilation;
             Clocks.FRealTimeClock = new HDERealTimeClock(FHDEHost);
-            Clocks.FFrameClock = new HDEFrameClock(FHDEHost);
             FHDEHost.MainLoop.OnInitFrame += MainLoop_OnInitFrame;
         }
 
         private void MainLoop_OnInitFrame(object sender, EventArgs e)
         {
-            ((HDEFrameClock)Clocks.FFrameClock).FrameTime = FHDEHost.FrameTime;
+            Clocks.FFrameClock.SetFrameTime(FHDEHost.FrameTime);
 
             if (Mode == RunMode.Running || Mode == RunMode.Stepping)
                 ClearRuntimeMessages();
@@ -236,7 +185,7 @@ namespace VVVV.VL.Hosting
         public bool IsRunning => Mode == RunMode.Running || Mode == RunMode.Stepping;
         public IEnumerable<IRuntimeInstance> HostingAppInstances => FInstances;
         public IEnumerable<IRuntimeInstance> ImplicitEntryPointInstances => ImplicitEntryPointInstanceManager.Instances;
-        public int Frame { get; private set; }
+        public ulong Frame { get; private set; }
         public VLSession Session => FVlHost.Session;
 
         RunMode FMode;
