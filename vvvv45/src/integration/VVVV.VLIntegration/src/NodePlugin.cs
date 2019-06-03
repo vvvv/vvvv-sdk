@@ -41,7 +41,7 @@ namespace VVVV.VL.Hosting
             public NodePlugin Plugin { get; }
             public CilCompilation Compilation { get; }
             public DocSymbols Scope => InterlockedHelper.CacheNoLock(ref FScope, () => Compilation.GetCurrent(Operation.DocSymbols));
-            public IVLFactory Factory => Compilation.Platform.Factory;
+            public IVLFactory Factory => Compilation.Platform.UserFactory;
             public IOperationDefinitionSymbol Operation { get; }
             public IMethodDefinition MethodToCall { get; }
             public MethodInfo ClrMethodToCall { get; }

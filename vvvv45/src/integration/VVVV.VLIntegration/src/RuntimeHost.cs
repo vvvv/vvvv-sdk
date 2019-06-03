@@ -37,6 +37,7 @@ namespace VVVV.VL.Hosting
         private CilCompilation FCompilation;
         private IObservable<EventPattern<FrameCompletedEventArgs>> FFrames;
         private IObservable<EventPattern<TargetCompilationUpdateEventArgs>> FUpdates;
+        private IObservable<EventPattern<Exception>> FExceptions;
         private Exception FException;
         private bool FBusy;
 
@@ -316,6 +317,9 @@ namespace VVVV.VL.Hosting
 
         public IObservable<EventPattern<TargetCompilationUpdateEventArgs>> Updates => InterlockedHelper.CacheNoLock(ref FUpdates,
             () => Observable.FromEventPattern<TargetCompilationUpdateEventArgs>(this, nameof(IRuntimeHost.Updated)));
+
+        public IObservable<EventPattern<Exception>> Exceptions => InterlockedHelper.CacheNoLock(ref FExceptions,
+            () => Observable.FromEventPattern<Exception>(this, nameof(OnException)));
 
         protected virtual void OnFrameCompleted(double elapsed)
         {
