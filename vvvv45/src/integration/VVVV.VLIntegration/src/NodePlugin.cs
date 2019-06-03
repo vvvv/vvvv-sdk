@@ -210,7 +210,7 @@ namespace VVVV.VL.Hosting
                             var oldInstance = reader.Read();
                             if (oldInstance != null)
                             {
-                                var newInstance = swapper.Swap(oldInstance, buildResult.Scope);
+                                var newInstance = swapper.Swap(oldInstance, buildResult.Scope, buildResult.Factory);
                                 writer.Write(newInstance);
                             }
                             else
