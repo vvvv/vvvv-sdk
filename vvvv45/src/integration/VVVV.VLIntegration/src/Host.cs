@@ -12,6 +12,7 @@ using System.Threading;
 using Microsoft.Threading;
 using VL.UI.Core;
 using VVVV.Core.Logging;
+using VVVV.NuGetAssemblyLoader;
 
 namespace VVVV.VL.Hosting
 {
@@ -27,6 +28,9 @@ namespace VVVV.VL.Hosting
             var platform = Session.TargetPlatform as Platform;
             platform.RuntimeHost.Dispose();
             platform.RuntimeHost = new RuntimeHost(platform);
+
+            var filename = AssemblyLoader.FindFile("HDE.ElementViewers.vl");
+            Session.GetOrAddDocument(filename, createNew: true, isSystemDoc: false);
         }
 
         public Host Initialize(IHDEHost hdeHost, ILogger logger)
