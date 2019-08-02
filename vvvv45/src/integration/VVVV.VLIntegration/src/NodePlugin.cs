@@ -27,7 +27,8 @@ namespace VVVV.VL.Hosting
             string FSymbolError;
             DocSymbols FScope;
 
-            public BuildResult(NodePlugin plugin, CilCompilation compilation, IOperationDefinitionSymbol operation, IMethodDefinition methodToCall, MethodInfo clrMethodToCall, EvalAction evaluateAction, string error)
+            public BuildResult(NodePlugin plugin, CilCompilation compilation, IOperationDefinitionSymbol operation, IMethodDefinition methodToCall, 
+                MethodInfo clrMethodToCall, EvalAction evaluateAction, string error)
             {
                 Plugin = plugin;
                 Compilation = compilation;
@@ -51,7 +52,7 @@ namespace VVVV.VL.Hosting
             {
                 var message = Operation.Messages.FirstOrDefault(m => m.Severity == MessageSeverity.Error);
                 if (message != null)
-                    return message.Text;
+                    return message.What;
                 return string.Empty;
             });
 
@@ -321,7 +322,7 @@ namespace VVVV.VL.Hosting
             var errorMessage = exception.ToString();
             FPluginHost.Log(TLogType.Error, errorMessage);
             FPluginHost.LastRuntimeError = errorMessage;
-            FMessages.AddError(NodeId, errorMessage);
+            FMessages.Add(NodeId, MessageSeverity.Error, errorMessage);
         }
 
         public void Stop()
@@ -383,7 +384,7 @@ namespace VVVV.VL.Hosting
             if (runtimeHost.Mode == RunMode.Paused || runtimeHost.Mode == RunMode.Stopped)
             {
                 if (FMessages.Errors.Any())
-                    PluginHost.LastRuntimeError = FMessages.Errors.FirstOrDefault().Text;
+                    PluginHost.LastRuntimeError = FMessages.Errors.FirstOrDefault().What;
                 return;
             }
 
@@ -410,7 +411,7 @@ namespace VVVV.VL.Hosting
             {
                 // Collect the exception messages
                 foreach (var p in exception.ExtractElementMessages(runtimeHost.Compilation.Compilation))
-                    FMessages.AddError(p.Key.TracingId, p.Value);
+                    FMessages.Add(p.Key.TracingId, MessageSeverity.Error, p.Value);
                 // Let others know about it
                 runtimeHost.RaiseOnException(exception);
                 // And finally tell vvvv about it
