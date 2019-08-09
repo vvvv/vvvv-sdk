@@ -24,6 +24,7 @@ using Symbols = VL.Lang.Symbols;
 using Microsoft.Threading;
 using VVVV.PluginInterfaces.V2.Graph;
 using VL.UI.Core;
+using VVVV.NuGetAssemblyLoader;
 
 namespace VVVV.VL.Factories
 {
@@ -48,29 +49,9 @@ namespace VVVV.VL.Factories
             }
 
             public string SerializedId { get; }
-            static bool SplashShown;
-            public NodeId NodeDefinitionId => InterlockedHelper.CacheNoLock(ref FNodeDefinitionId, () =>
-            {
-                return AsyncPump.Run(async () =>
-                {
-                    if (SplashShown)
-                    {
-                        var document = await VLSession.Instance.GetOrAddDocument(NodeInfo.Filename, createNew: false);
-                        NodeFactory.FSyncedSolution = document.Solution;
-                        return document.AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId);
-                    }
-                    else
-                    {
-                        using (var sf = new SplashForm())
-                        {
-                            var document = await VLSession.Instance.GetOrAddDocumentWithSplashScreen(NodeInfo.Filename, createNew: false, splashScreen: sf);
-                            NodeFactory.FSyncedSolution = document.Solution;
-                            SplashShown = true;
-                            return document.AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId);
-                        }
-                    }
-                });
-            });
+
+            public NodeId NodeDefinitionId => InterlockedHelper.CacheNoLock(ref FNodeDefinitionId, () =>            
+                AsyncPump.Run(async () => (await NodeFactory.LoadDocumentAsync(NodeInfo.Filename)).AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId)));
 
             public Node CurrentNodeDefinition => InterlockedHelper.CacheNoLock(ref FCurrentNodeDefinition, () =>
             {
@@ -180,6 +161,7 @@ namespace VVVV.VL.Factories
         {
             var host = Host = new Host();
             FSyncedSolution = host.Session.CurrentSolution;
+            AsyncPump.Run(() => LoadDocumentAsync(AssemblyLoader.FindFile("HDE.ElementViewers.vl")));
             host.Session.SolutionUpdated += HandleSolutionUpdated;
         }
 
@@ -215,6 +197,27 @@ namespace VVVV.VL.Factories
         public override string JobStdSubPath
         {
             get { return "vl"; }
+        }
+
+        static bool SplashShown;
+        internal async Task<Document> LoadDocumentAsync(string filename)
+        {
+            if (SplashShown)
+            {
+                var document = await VLSession.Instance.GetOrAddDocument(filename, createNew: false);
+                FSyncedSolution = document.Solution;
+                return document;
+            }
+            else
+            {
+                using (var sf = new SplashForm())
+                {
+                    var document = await VLSession.Instance.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashScreen: sf);
+                    FSyncedSolution = document.Solution;
+                    SplashShown = true;
+                    return document;
+                }
+            }
         }
 
         public string NodeFactoryPath

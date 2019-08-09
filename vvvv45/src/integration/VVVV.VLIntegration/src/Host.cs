@@ -29,8 +29,6 @@ namespace VVVV.VL.Hosting
             platform.RuntimeHost.Dispose();
             platform.RuntimeHost = new RuntimeHost(platform);
 
-            var filename = AssemblyLoader.FindFile("HDE.ElementViewers.vl");
-            Session.GetOrAddDocument(filename, createNew: true, isSystemDoc: false);
         }
 
         public Host Initialize(IHDEHost hdeHost, ILogger logger)
