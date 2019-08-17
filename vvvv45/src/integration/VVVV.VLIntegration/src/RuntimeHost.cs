@@ -189,6 +189,21 @@ namespace VVVV.VL.Hosting
         public ulong Frame { get; private set; }
         public VLSession Session => FVlHost.Session;
 
+
+        bool FCompilationNeededBeforeRestarting;
+        public bool CompilationNeededBeforeRestarting
+        {
+            get => FCompilationNeededBeforeRestarting;
+            set { FCompilationNeededBeforeRestarting |= value; }
+        }
+
+        async Task CompileThenSetMode(RunMode mode)
+        {
+            await Session.UpdateCompilationAsync(Session.CurrentSolution, progress: null, incremental: true);
+            FCompilationNeededBeforeRestarting = false;
+            Mode = mode;
+        }
+
         RunMode FMode;
         public RunMode Mode
         {
@@ -197,8 +212,13 @@ namespace VVVV.VL.Hosting
             {
                 if (FMode != value)
                 {
-                    //if ((FMode == RunMode.Stopped || FMode == RunMode.Paused) && (value == RunMode.Stepping || value == RunMode.Running) && (Session.IsWaitingForDelayedHotSwap))
-                    //    Session.HotSwapNow();
+                    //if ((FMode == RunMode.Stopped || FMode == RunMode.Paused) && (value == RunMode.Stepping || value == RunMode.Running) && (FSession.IsWaitingForDelayedHotSwap))
+                    //    FSession.HotSwapNow();
+                    if (FCompilationNeededBeforeRestarting)
+                    {
+                        CompileThenSetMode(value);
+                        return;
+                    }
 
                     FMode = value;
                     ModeChanged?.Invoke(this, EventArgs.Empty);
