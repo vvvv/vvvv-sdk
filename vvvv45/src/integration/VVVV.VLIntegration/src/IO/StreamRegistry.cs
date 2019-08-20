@@ -3,7 +3,7 @@ using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.Utils.Streams;
-using SharpDX;
+using Xenko.Core.Mathematics;
 using System.Collections.Generic;
 using VVVV.Utils.VColor;
 using VL.Lib.Basics.Resources;

@@ -174,10 +174,10 @@ namespace VVVV.VL.Factories
             FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
 
             Host.Initialize(FHDEHost, FLogger);
-			Host.PatchEditor.OpenHostingView += PatchEditor_OpenHostingView;
+            Host.PatchEditor.OpenHostingView += PatchEditor_OpenHostingView;
 
-			// Add our IO factory to the registry
-			var registry = new StreamRegistry();
+            // Add our IO factory to the registry
+            var registry = new StreamRegistry();
             FIORegistry.Register(registry, true);
 
             SynchronizationContext.Current.Post(_ => { FHDEHost.FiftyEditor = Host; }, null);
@@ -361,30 +361,30 @@ namespace VVVV.VL.Factories
             var export = GetExport(nodeInfo);
             if (export == null) return;
 
-			var n = (IInternalPluginHost) node.InternalCOMInterf;
-			var path = (n.Plugin as NodePlugin)?.Object?.Context?.Path;
-			var patchHandle = path.HasValue
-				? new PatchHandle(path.Value)
-				: null;
+            var n = (IInternalPluginHost) node.InternalCOMInterf;
+            var path = (n.Plugin as NodePlugin)?.Object?.Context?.Path;
+            var patchHandle = path.HasValue
+                ? new PatchHandle(path.Value)
+                : null;
             Host.OpenPatchEditor(export.CurrentNodeDefinition, FHDEHost, patchHandle);
         }
 
-		private void PatchEditor_OpenHostingView(uint obj)
-		{
-			var app = Host.RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path.Stack?.Peek() == obj) as NodePlugin;
-			if (app != null)
-			{
-				var node = FHDEHost.GetNodeFromPath(app.PluginHost.GetNodePath(false));
-				var patch = FHDEHost.GetNodeFromPath(app.PluginHost.ParentNode.GetNodePath(false));
-				if (patch != null)
-				{
-					FHDEHost.ShowEditor(patch);
-					FHDEHost.SelectNodes(new INode2[1] { node });
-				}
-			}
-		}
+        private void PatchEditor_OpenHostingView(uint obj)
+        {
+            var app = Host.RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path.Stack?.Peek() == obj) as NodePlugin;
+            if (app != null)
+            {
+                var node = FHDEHost.GetNodeFromPath(app.PluginHost.GetNodePath(false));
+                var patch = FHDEHost.GetNodeFromPath(app.PluginHost.ParentNode.GetNodePath(false));
+                if (patch != null)
+                {
+                    FHDEHost.ShowEditor(patch);
+                    FHDEHost.SelectNodes(new INode2[1] { node });
+                }
+            }
+        }
 
-		void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
+        void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
         {
             Host.HideTooltip();
         }

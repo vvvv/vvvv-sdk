@@ -1,4 +1,4 @@
-﻿using SharpDX;
+﻿using Xenko.Core.Mathematics;
 using System;
 using VVVV.Hosting.IO.Streams;
 using VVVV.Utils.Streams;
@@ -186,10 +186,10 @@ namespace VVVV.VL.Hosting.IO.Streams
 
                     for (int i = 0; i < length; i++)
                     {
-                        dst->Red = (float)src->R;
-                        dst->Green = (float)src->G;
-                        dst->Blue = (float)src->B;
-                        dst->Alpha = (float)src->A;
+                        dst->R = (float)src->R;
+                        dst->G = (float)src->G;
+                        dst->B = (float)src->B;
+                        dst->A = (float)src->A;
                         dst++;
                         src += stride;
                     }

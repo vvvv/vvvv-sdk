@@ -1,5 +1,4 @@
-﻿using SharpDX;
-using System;
+﻿using System;
 using VVVV.Utils.IO;
 
 namespace VVVV.VL.Hosting.IO

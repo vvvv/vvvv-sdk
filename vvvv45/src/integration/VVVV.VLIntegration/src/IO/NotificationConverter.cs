@@ -1,5 +1,5 @@
 ﻿using System;
-using SharpDX;
+using Xenko.Core.Mathematics;
 using VL.Lib.IO.Notifications;
 using Drawing = System.Drawing;
 using VL.UI.Core;

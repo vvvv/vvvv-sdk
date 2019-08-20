@@ -1,6 +1,6 @@
 ﻿using System;
 using VVVV.Utils.Streams;
-using SharpDX;
+using Xenko.Core.Mathematics;
 using VVVV.Hosting.IO.Streams;
 using VVVV.Utils.VColor;
 
@@ -165,10 +165,10 @@ namespace VVVV.VL.Hosting.IO.Streams
             public override void Write(Color4 value, int stride)
             {
                 RGBAColor* dst = FPDst + Position;
-                dst->R = value.Red;
-                dst->G = value.Green;
-                dst->B = value.Blue;
-                dst->A = value.Alpha;
+                dst->R = value.R;
+                dst->G = value.G;
+                dst->B = value.B;
+                dst->A = value.A;
                 Position += stride;
             }
 
@@ -181,10 +181,10 @@ namespace VVVV.VL.Hosting.IO.Streams
 
                     for (int i = 0; i < length; i++)
                     {
-                        dst->R = src->Red;
-                        dst->G = src->Green;
-                        dst->B = src->Blue;
-                        dst->A = src->Alpha;
+                        dst->R = src->R;
+                        dst->G = src->G;
+                        dst->B = src->B;
+                        dst->A = src->A;
                         src++;
                         dst += stride;
                     }

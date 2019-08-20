@@ -124,13 +124,13 @@ namespace VVVV.VL.Hosting
         void patchEditor_Disposed(object sender, EventArgs e)
         {
             FPatchEditor.Disposed -= patchEditor_Disposed;
- 	        FPatchEditor = null;
+            FPatchEditor = null;
         }
 
         public void OpenPatchEditor(Node node, IHDEHost hdeHost, PatchHandle patchHandle = null)
         {
             PatchEditor.OpenCanvasOfNode(node, patchHandle);
-			//setting the control also brings the window to front
+            //setting the control also brings the window to front
             hdeHost.FiftyEditor = this;
             hdeHost.ShowVLEditor();
         }

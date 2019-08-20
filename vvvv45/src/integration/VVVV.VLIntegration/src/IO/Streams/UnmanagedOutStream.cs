@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using VVVV.Utils.Streams;
-using SharpDX;
+using Xenko.Core.Mathematics;
 using VVVV.Hosting.IO.Streams;
 
 namespace VVVV.VL.Hosting.IO.Streams
