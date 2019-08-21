@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VVVV.Utils.Streams;
 using Xenko.Core.Mathematics;
 using VVVV.Hosting.IO.Streams;
+using System.Runtime.CompilerServices;
 
 namespace VVVV.VL.Hosting.IO.Streams
 {
@@ -41,6 +42,7 @@ namespace VVVV.VL.Hosting.IO.Streams
                 }
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             static void TransposeCopy(Matrix* src, Matrix* dst)
             {
                 dst->M11 = src->M11; dst->M21 = src->M12; dst->M31 = src->M13; dst->M41 = src->M14;
