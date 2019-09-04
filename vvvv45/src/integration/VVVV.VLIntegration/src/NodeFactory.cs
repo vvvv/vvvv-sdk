@@ -25,6 +25,7 @@ using Microsoft.Threading;
 using VVVV.PluginInterfaces.V2.Graph;
 using VL.UI.Core;
 using VVVV.NuGetAssemblyLoader;
+using VL.Lang.Platforms.CIL;
 
 namespace VVVV.VL.Factories
 {
@@ -161,7 +162,6 @@ namespace VVVV.VL.Factories
         {
             var host = Host = new Host();
             FSyncedSolution = host.Session.CurrentSolution;
-            AsyncPump.Run(() => LoadDocumentAsync(AssemblyLoader.FindFile("HDE.ElementViewers.vl")));
             host.Session.SolutionUpdated += HandleSolutionUpdated;
         }
 
@@ -174,13 +174,12 @@ namespace VVVV.VL.Factories
             FHDEHost.WindowSelectionChanged += HandleWindowSelectionChanged;
 
             Host.Initialize(FHDEHost, FLogger);
-            Host.PatchEditor.OpenHostingView += PatchEditor_OpenHostingView;
 
             // Add our IO factory to the registry
             var registry = new StreamRegistry();
             FIORegistry.Register(registry, true);
 
-            SynchronizationContext.Current.Post(_ => { FHDEHost.FiftyEditor = Host; }, null);
+            Host.Platform.CompilationUpdated += Platform_CompilationUpdated;
         }
 
         public override void Dispose()
@@ -188,8 +187,14 @@ namespace VVVV.VL.Factories
             FHDEHost.WindowSelectionChanged -= HandleWindowSelectionChanged;
             FHDEHost.MouseDown -= HandleMouseDown;
             Host.Session.SolutionUpdated -= HandleSolutionUpdated;
+            Host.Platform.CompilationUpdated -= Platform_CompilationUpdated;
             Host.Dispose();
             base.Dispose();
+        }
+
+        private async Task Platform_CompilationUpdated(object sender, TargetCompilationUpdateEventArgs e)
+        {
+            await Host.RuntimeHost.UpdateAsync((CilCompilation)e.Compilation, e.Token);
         }
 
         private Host Host { get; }
@@ -260,11 +265,35 @@ namespace VVVV.VL.Factories
             if (this.isInCreateNode)
                 return true;
             this.isInCreateNode = true;
+
+            Host.Platform.CompilationUpdated -= Platform_CompilationUpdated;
             try
             {
                 var export = GetExport(nodeInfo);
                 if (export != null)
                 {
+                    // Load all entry points as it is very likely more nodes of the document will get used in subsequent calls
+                    var platform = Host.Platform;
+                    var entryPoints = platform.LatestCompilation.EntryPointIds.ToBuilder();
+                    var changed = false;
+                    foreach (var e in GetExports(nodeInfo.Filename))
+                    {
+                        // Accessing the NodeDefinitionId has side-effects leading to a new compilation
+                        changed |= entryPoints.Add(e.NodeDefinitionId);
+                    }
+
+                    if (changed)
+                    {
+                        AsyncPump.Run(async () =>
+                        {
+                        // Fetch the latest compilation (previous calls had side-effects)
+                        var compilation = await platform.UpdateCompilation(
+                                CancellationToken.None,
+                                platform.LatestCompilation.WithEntryPoints(entryPoints));
+                            await Host.RuntimeHost.UpdateAsync(compilation, CancellationToken.None);
+                        });
+                    }
+
                     // It's ok to not use the CurrentNodeDefinition -> works on NodeId internally
                     pluginHost.Plugin = Host.RuntimeHost.CreateInstance(export.CurrentNodeDefinition, pluginHost, FIORegistry);
                     return true;
@@ -273,6 +302,7 @@ namespace VVVV.VL.Factories
             }
             finally
             {
+                Host.Platform.CompilationUpdated += Platform_CompilationUpdated;
                 this.isInCreateNode = false;
             }
         }
@@ -367,21 +397,6 @@ namespace VVVV.VL.Factories
                 ? new PatchHandle(path.Value)
                 : null;
             Host.OpenPatchEditor(export.CurrentNodeDefinition, FHDEHost, patchHandle);
-        }
-
-        private void PatchEditor_OpenHostingView(uint obj)
-        {
-            var app = Host.RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path.Stack?.Peek() == obj) as NodePlugin;
-            if (app != null)
-            {
-                var node = FHDEHost.GetNodeFromPath(app.PluginHost.GetNodePath(false));
-                var patch = FHDEHost.GetNodeFromPath(app.PluginHost.ParentNode.GetNodePath(false));
-                if (patch != null)
-                {
-                    FHDEHost.ShowEditor(patch);
-                    FHDEHost.SelectNodes(new INode2[1] { node });
-                }
-            }
         }
 
         void HandleWindowSelectionChanged(object sender, WindowEventArgs args)

@@ -73,7 +73,7 @@ namespace VVVV.VL.Hosting
         {
             FVlHost = vlHost;
             FPlatform = (Platform)FVlHost.Session.TargetPlatform;
-            FPlatform.CompilationUpdated += Platform_CompilationUpdated;
+            
             FHDEHost = hdeHost;
             FLogger = logger;
             FHDEHost.MainLoop.OnResetCache += HandleMainLoopOnResetCache;
@@ -96,37 +96,7 @@ namespace VVVV.VL.Hosting
                 i.ClearRuntimeMessages();
         }
 
-        private async Task Platform_CompilationUpdated(object sender, TargetCompilationUpdateEventArgs e)
-        {
-            await UpdateAsync((CilCompilation)e.Compilation, e.Token);
-        }
-
-        private void Update(CilCompilation compilation)
-        {
-            try
-            {
-                using (var swapper = new HotSwapper(Compilation, compilation, CancellationToken.None))
-                {
-                    foreach (var instance in FInstances)
-                    {
-                        var buildResult = instance.Update(compilation);
-                        instance.SyncPinsAndRestoreState(buildResult, swapper);
-                    }
-
-                    ImplicitEntryPointInstanceManager.Update(swapper);
-                }
-            }
-            catch (Exception e)
-            {
-                LogAndStop(e);
-            }
-            finally
-            {
-                Compilation = compilation;
-            }
-        }
-
-        private async Task UpdateAsync(CilCompilation compilation, CancellationToken token)
+        public async Task UpdateAsync(CilCompilation compilation, CancellationToken token)
         {
             try
             {
@@ -173,7 +143,7 @@ namespace VVVV.VL.Hosting
         public CilCompilation Compilation
         {
             get { return FCompilation; }
-            set
+            private set
             {
                 if (value != Compilation)
                 {
@@ -244,7 +214,6 @@ namespace VVVV.VL.Hosting
         public void Dispose()
         {
             FHDEHost.MainLoop.OnResetCache -= HandleMainLoopOnResetCache;
-            FPlatform.CompilationUpdated -= Platform_CompilationUpdated;
             FInstances = FInstances.Clear();
             FrameCompleted = null;
         }
@@ -304,19 +273,13 @@ namespace VVVV.VL.Hosting
 
         public NodePlugin CreateInstance(Node node, IInternalPluginHost nodeHost, IIORegistry ioRegistry)
         {
-            FPlatform.CompilationUpdated -= Platform_CompilationUpdated;
-            try
-            {
-                var compilation = AsyncHelpers.RunSync(() => FPlatform.AddEntryPoint(CancellationToken.None, node));
-                var instance = new NodePlugin(FVlHost, this, node.Identity, nodeHost, ioRegistry);
-                FInstances = FInstances.Add(instance);
-                Update(compilation);
-                return instance;
-            }
-            finally
-            {
-                FPlatform.CompilationUpdated += Platform_CompilationUpdated;
-            }
+            var instance = new NodePlugin(FVlHost, this, node.Identity, nodeHost, ioRegistry);
+            FInstances = FInstances.Add(instance);
+
+            var buildResult = instance.Update(Compilation);
+            instance.SyncPinsAndRestoreState(buildResult, swapper: null);
+
+            return instance;
         }
 
         public void DeleteInstance(NodePlugin instance)

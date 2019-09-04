@@ -13,12 +13,15 @@ using Microsoft.Threading;
 using VL.UI.Core;
 using VVVV.Core.Logging;
 using VVVV.NuGetAssemblyLoader;
+using System.Linq;
+using VVVV.PluginInterfaces.V2.Graph;
 
 namespace VVVV.VL.Hosting
 {
     public partial class Host : IDisposable, IQueryDelete, ICustomQueryInterface, IVLHost
     {
         public readonly VLSession Session;
+        IHDEHost FHDEHost;
         
         public Host()
         {
@@ -33,18 +36,23 @@ namespace VVVV.VL.Hosting
 
         public Host Initialize(IHDEHost hdeHost, ILogger logger)
         {
+            FHDEHost = hdeHost;
             RuntimeHost.Initialize(this, hdeHost, logger);
+            SynchronizationContext.Current.Post(_ => { FHDEHost.FiftyEditor = this; }, null);
             return this;
         }
 
         public void Dispose()
         {
             if (FPatchEditor != null)
+            {
+                FPatchEditor.OpenHostingView -= PatchEditor_OpenHostingView;
                 FPatchEditor.Dispose();
+            }
             RuntimeHost.Dispose();
         }
 
-        public IPlatform Platform => Session.TargetPlatform;
+        public Platform Platform => (Platform)Session.TargetPlatform;
         public RuntimeHost RuntimeHost => (RuntimeHost)Platform.RuntimeHost;
         public HostEnvironment CciHost => Platform.Host;
 
@@ -57,7 +65,20 @@ namespace VVVV.VL.Hosting
                     // TODO: Please find an easier way to setup all the dependencies
                     var formManager = new FormManager(Session);
                     FPatchEditor = new EditorControl(Session, formManager);
-                    FPatchEditor.Disposed += patchEditor_Disposed;
+                    FPatchEditor.OpenHostingView += PatchEditor_OpenHostingView;
+
+                    var extensionsLoaded = false;
+                    FPatchEditor.VisibleChanged += (s, e) =>
+                    {
+                        if (!extensionsLoaded)
+                        {
+                            extensionsLoaded = true;
+                            using (var sf = new SplashForm())
+                            {
+                                AsyncPump.Run(() => Session.LoadExtensionDocuments(sf));
+                            }
+                        }
+                    };
 
                     formManager.PatchEditor = this.FPatchEditor;
                 }
@@ -121,12 +142,6 @@ namespace VVVV.VL.Hosting
         }
         INamedTypeReference streamUtilsType;
 
-        void patchEditor_Disposed(object sender, EventArgs e)
-        {
-            FPatchEditor.Disposed -= patchEditor_Disposed;
-            FPatchEditor = null;
-        }
-
         public void OpenPatchEditor(Node node, IHDEHost hdeHost, PatchHandle patchHandle = null)
         {
             PatchEditor.OpenCanvasOfNode(node, patchHandle);
@@ -180,6 +195,21 @@ namespace VVVV.VL.Hosting
                 }
             }
             return false;
+        }
+
+        private void PatchEditor_OpenHostingView(uint obj)
+        {
+            var app = RuntimeHost.HostingAppInstances.FirstOrDefault(x => x.Object?.Context?.Path.Stack?.Peek() == obj) as NodePlugin;
+            if (app != null)
+            {
+                var node = FHDEHost.GetNodeFromPath(app.PluginHost.GetNodePath(false));
+                var patch = FHDEHost.GetNodeFromPath(app.PluginHost.ParentNode.GetNodePath(false));
+                if (patch != null)
+                {
+                    FHDEHost.ShowEditor(patch);
+                    FHDEHost.SelectNodes(new INode2[1] { node });
+                }
+            }
         }
     }
 }
