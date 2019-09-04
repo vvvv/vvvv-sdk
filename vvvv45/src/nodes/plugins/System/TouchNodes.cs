@@ -15,6 +15,7 @@ using VVVV.Hosting.IO;
 using VVVV.PluginInterfaces.V1;
 using VVVV.PluginInterfaces.V2;
 using VVVV.PluginInterfaces.V2.IO;
+using VVVV.PluginInterfaces.V2.Win32;
 using VVVV.Utils.IO;
 using VVVV.Utils.VMath;
 using VVVV.Utils.Win32;
@@ -25,8 +26,14 @@ namespace VVVV.Nodes.Input
                 Category = "Devices", 
                 Version = "Window",
                 Help = "Returns the touch device of the current render window.")]
-    public class WindowTouchNode : WindowMessageNode, IPluginEvaluate
+    public class WindowTouchNode : IPluginEvaluate, IPartImportsSatisfiedNotification, IDisposable
     {
+        [Input("Handle", DefaultValue = -1)]
+        public IDiffSpread<int> HandleIn;
+
+        [Input("Enabled", DefaultBoolean = true, Order = int.MinValue)]
+        public IDiffSpread<bool> FEnabledIn;
+
         [Input("Mode", IsSingle = true)]
         public IDiffSpread<User32.TouchWindowFlags> ModeIn;
 
@@ -36,35 +43,119 @@ namespace VVVV.Nodes.Input
         [Import]
         protected ILogger FLogger;
 
+        [Import]
+        protected IOFactory FIOFactory;
+
+        [Import]
+        IWindowMessageService FWMService;
+
+        HashSet<Subclass> TouchEnabledWindows = new HashSet<Subclass>();
+
         private PluginContainer FTouchStatesSplitNode;
 
-        protected override void SubclassCreated(Subclass subclass)
+        public void OnImportsSatisfied()
         {
-            var mode = ModeIn.SliceCount > 0
-                ? ModeIn[0]
-                : User32.TouchWindowFlags.None;
-            TryEnabledTouchMessage(subclass, mode);
-            base.SubclassCreated(subclass);
-        }
+            HandleIn.Changed += InputPinChanged;
+            FEnabledIn.Changed += InputPinChanged;
+            ModeIn.Changed += InputPinChanged;
 
-        private void TryEnabledTouchMessage(Subclass subclass, User32.TouchWindowFlags mode)
-        {
-            if (!User32.RegisterTouchWindow(subclass.HWnd, mode))
-                FLogger.Log(LogType.Error, "Failed to enabled touch messages for window {0}.", subclass.HWnd);
-        }
-
-        protected override void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled)
-        {
-            var notifications = windowMessages
+            var notifications = FWMService.MessageNotifications
                 .Where(e => e.EventArgs.Message == WM.TOUCH)
-                .SelectMany<EventPattern<WMEventArgs>, TouchNotification>(e => GenerateTouchNotifications(e));
+                .SelectMany(e => GenerateTouchNotifications(e));
             TouchDeviceOut[0] = new TouchDevice(notifications);
 
             // Create a touch states split node for us and connect our touch device out to its touch device in
             var nodeInfo = FIOFactory.NodeInfos.First(n => n.Name == "TouchStates" && n.Category == "Touch" && n.Version == "Split");
             FTouchStatesSplitNode = FIOFactory.CreatePlugin(nodeInfo, c => c.IOAttribute.Name == "Touch Device", c => TouchDeviceOut);
 
-            ModeIn.Changed += ModeIn_Changed;
+            FWMService.SubclassCreated += FWMService_SubclassCreated;
+            FWMService.SubclassDestroyed += FWMService_SubclassDestroyed;
+        }
+
+        private void FWMService_SubclassDestroyed(object sender, EventArgs e)
+        {
+            TouchEnabledWindows.Remove(sender as Subclass);
+        }
+
+        private void FWMService_SubclassCreated(object sender, EventArgs e)
+        {
+            InputPinChanged(null);
+        }
+
+        private void InputPinChanged(object _)
+        {
+            if (HandleIn != null && FEnabledIn != null && ModeIn != null)
+            {
+                int spreadMax = HandleIn.CombineWith(FEnabledIn).CombineWith(ModeIn);
+                if (spreadMax > 0)
+                {
+                    if (HandleIn.Any(i => i < 0)) //handle any window
+                    {
+                        if (FEnabledIn[0])
+                        {
+                            foreach (var s in FWMService.Subclasses)
+                                if (TryRegisterTouch(s, ModeIn[0]))
+                                    TouchEnabledWindows.Add(s);
+                        }
+                        else
+                        {
+                            var disabled = new List<Subclass>();
+                            foreach (var s in TouchEnabledWindows)
+                                if (TryUnregisterTouch(s))
+                                    disabled.Add(s);
+                            foreach (var s in disabled)
+                                TouchEnabledWindows.Remove(s);
+                        }
+                    }
+                    else
+                    {
+                        var former = new HashSet<Subclass>(TouchEnabledWindows);
+                        TouchEnabledWindows.Clear();
+                        for (int i = 0; i < spreadMax; i++)
+                        {
+                            var selected = FWMService.Subclasses.Where(s => s.HWnd.ToInt32() == HandleIn[i]).FirstOrDefault();
+                            if (selected != null)
+                            {
+                                if (FEnabledIn[i])
+                                {
+                                    if (TryRegisterTouch(selected, ModeIn[i]))
+                                    {
+                                        TouchEnabledWindows.Add(selected);
+                                        former.Remove(selected);
+                                    }
+                                }
+                            }
+                        }
+                        foreach (var s in former)
+                            if (!TryUnregisterTouch(s))
+                                TouchEnabledWindows.Add(s);
+                    }
+                }
+            }
+        }
+
+        private bool TryRegisterTouch(Subclass subclass, User32.TouchWindowFlags mode)
+        {
+            if (User32.RegisterTouchWindow(subclass.HWnd, mode))
+            {
+                TouchEnabledWindows.Add(subclass);
+                return true;
+            }
+            else
+            {
+                FLogger.Log(LogType.Error, "Failed to enable touch messages for window {0}.", subclass.HWnd);
+                return false;
+            }
+        }
+
+        private bool TryUnregisterTouch(Subclass subclass)
+        {
+            if (!User32.UnregisterTouchWindow(subclass.HWnd))
+            {
+                FLogger.Log(LogType.Error, "Failed to disable touch messages for window {0}.", subclass.HWnd);
+                return false;
+            }
+            return true;    
         }
 
         private IEnumerable<TouchNotification> GenerateTouchNotifications(EventPattern<WMEventArgs> e)
@@ -112,19 +203,12 @@ namespace VVVV.Nodes.Input
             yield break;
         }
 
-        void ModeIn_Changed(IDiffSpread<User32.TouchWindowFlags> spread)
+        public void Dispose()
         {
-            var mode = ModeIn.SliceCount > 0
-                ? ModeIn[0]
-                : User32.TouchWindowFlags.None;
-            foreach (var subclass in Subclasses)
-                TryEnabledTouchMessage(subclass, mode);
-        }
-
-        public override void Dispose()
-        {
-            FTouchStatesSplitNode.Dispose();
-            base.Dispose();
+            FWMService.SubclassCreated -= FWMService_SubclassCreated;
+            FWMService.SubclassDestroyed -= FWMService_SubclassDestroyed;
+            foreach (var s in TouchEnabledWindows)
+                TryUnregisterTouch(s);
         }
 
         public void Evaluate(int spreadMax)
