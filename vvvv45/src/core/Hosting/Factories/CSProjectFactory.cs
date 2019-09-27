@@ -39,9 +39,12 @@ namespace VVVV.Hosting.Factories
         protected ISolution FSolution;
         
         [ImportingConstructor]
-        public CSProjectFactory(CompositionContainer parentContainer, INodeInfoFactory nodeInfoFactory)
+        public CSProjectFactory(CompositionContainer parentContainer, INodeInfoFactory nodeInfoFactory, IHDEHost host)
             : base(parentContainer, ".csproj")
         {
+            // Set path to roslyn
+            var roslyLocation = Path.Combine(host.ExePath, "lib", "core", "roslyn");
+            Environment.SetEnvironmentVariable("ROSLYN_COMPILER_LOCATION", roslyLocation);
             // Listen to stuff added by nodelist.xml
             nodeInfoFactory.NodeInfoAdded += HandleNodeInfoAdded;
         }
