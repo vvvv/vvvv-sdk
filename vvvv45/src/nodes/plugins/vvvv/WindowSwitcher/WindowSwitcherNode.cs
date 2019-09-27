@@ -159,11 +159,16 @@ namespace VVVV.Nodes.WindowSwitcher
             FHierarchyViewer.Focus();
         }
         
+        private bool IsReservedCaption(string caption)
+        {
+            return FWindowLIFO[FSelectedWindowIndex].Caption == "VL" || FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator";
+        }
+
         public void Up()
         {
             FSelectedWindowIndex = (FWindowLIFO.Count + (FSelectedWindowIndex - 1)) % FWindowLIFO.Count;
             //special treatment for Kommunikator and FiftyEditor: leave em always out for now
-            if (string.IsNullOrEmpty(FWindowLIFO[FSelectedWindowIndex].Caption) || (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator"))
+            if (IsReservedCaption(FWindowLIFO[FSelectedWindowIndex].Caption))
                 Up();
             else
                 SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
@@ -173,7 +178,7 @@ namespace VVVV.Nodes.WindowSwitcher
         {
             FSelectedWindowIndex = (FSelectedWindowIndex + 1) % FWindowLIFO.Count;
             //special treatment for Kommunikator and FiftyEditor: leave em always out for now
-            if (string.IsNullOrEmpty(FWindowLIFO[FSelectedWindowIndex].Caption) || (FWindowLIFO[FSelectedWindowIndex].Caption == "Kommunikator"))
+            if (IsReservedCaption(FWindowLIFO[FSelectedWindowIndex].Caption))
                 Down();
             else
                 SelectNode(FWindowLIFO[FSelectedWindowIndex].Node);
