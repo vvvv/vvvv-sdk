@@ -62,6 +62,9 @@
   
   <!-- Deploy -->
   <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" AfterTargets="Build" Condition=" '$(Configuration)' == 'Deploy' ">
+    <PropertyGroup>
+      <VVVVCertFile>..\..\..\vvvv-cert.p12</VVVVCertFile>
+    </PropertyGroup>
     <!-- Let's not remove the directory since BuildAndInstallVLIntegration installed its packages there. -->
     <!--<RemoveDir Directories="$(DeployDir)" />-->
     <Message Text="Deploying to $(DeployDir)" Importance="High" />
@@ -74,6 +77,11 @@
           SkipUnchangedFiles="true" 
           OverwriteReadOnlyFiles="true" 
           ContinueOnError="true" />
+    <!-- Sign the exe -->
+    <Exec Command="signtool sign /f &quot;$(VVVVCertFile)&quot; /t http://timestamp.verisign.com/scripts/timstamp.dll &quot;$(DeployDir)vvvv.exe&quot;"
+          Condition=" Exists('$(VVVVCertFile)') And Exists('$(DeployDir)vvvv.exe') " />
+    <Exec Command="signtool sign /f &quot;$(VVVVCertFile)&quot; /t http://timestamp.verisign.com/scripts/timstamp.dll &quot;$(DeployDir)setup.exe&quot;"
+          Condition=" Exists('$(VVVVCertFile)') And Exists('$(DeployDir)setup.exe') " />
     <!-- Set read-only flags -->
     <CombinePath BasePath="$(DeployDir)" Paths="$(DeployReadOnlyFiles)">
       <Output TaskParameter="CombinedPaths" ItemName="_DeployReadOnlyFiles"/>
