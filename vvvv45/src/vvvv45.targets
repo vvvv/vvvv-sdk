@@ -63,7 +63,7 @@
   <!-- Deploy -->
   <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" AfterTargets="Build" Condition=" '$(Configuration)' == 'Deploy' ">
     <PropertyGroup>
-      <VVVVCertFile>..\..\..\vvvv-cert.snk</VVVVCertFile>
+      <VVVVCertFile>..\..\..\vvvv-cert.p12</VVVVCertFile>
     </PropertyGroup>
     <!-- Let's not remove the directory since BuildAndInstallVLIntegration installed its packages there. -->
     <!--<RemoveDir Directories="$(DeployDir)" />-->
