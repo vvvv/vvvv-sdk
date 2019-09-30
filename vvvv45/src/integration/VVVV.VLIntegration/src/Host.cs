@@ -47,6 +47,7 @@ namespace VVVV.VL.Hosting
             if (FPatchEditor != null)
             {
                 FPatchEditor.OpenHostingView -= PatchEditor_OpenHostingView;
+                FPatchEditor.VisibleChanged -= PatchEditor_VisibleChanged;
                 FPatchEditor.Dispose();
             }
             RuntimeHost.Dispose();
@@ -66,25 +67,14 @@ namespace VVVV.VL.Hosting
                     var formManager = new FormManager(Session);
                     FPatchEditor = new EditorControl(Session, formManager);
                     FPatchEditor.OpenHostingView += PatchEditor_OpenHostingView;
-
-                    var extensionsLoaded = false;
-                    FPatchEditor.VisibleChanged += (s, e) =>
-                    {
-                        if (!extensionsLoaded)
-                        {
-                            extensionsLoaded = true;
-                            using (var sf = new SplashForm())
-                            {
-                                AsyncPump.Run(() => Session.LoadExtensionDocuments(sf));
-                            }
-                        }
-                    };
+                    FPatchEditor.VisibleChanged += PatchEditor_VisibleChanged;
 
                     formManager.PatchEditor = this.FPatchEditor;
                 }
                 return FPatchEditor;
             }
         }
+
         EditorControl FPatchEditor;
 
         public IAssemblyReference UtilsAssembly
@@ -211,5 +201,18 @@ namespace VVVV.VL.Hosting
                 }
             }
         }
+
+        private void PatchEditor_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!extensionsLoaded)
+            {
+                extensionsLoaded = true;
+                using (var sf = new SplashForm())
+                {
+                    AsyncPump.Run(() => Session.LoadExtensionDocuments(sf));
+                }
+            }
+        }
+        bool extensionsLoaded;
     }
 }
