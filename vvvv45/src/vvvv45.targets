@@ -80,11 +80,16 @@
           SkipUnchangedFiles="true" 
           OverwriteReadOnlyFiles="true" 
           ContinueOnError="true" />
+    
     <!-- Sign the exe -->
     <ItemGroup>
       <_SignExeFiles Include="$(DeployDir)*.exe" />
     </ItemGroup>
-    <SignTool SignFiles="@(_SignExeFiles)" PfxFile="$(VVVVCertFile)" TimestampServer="$(SignToolTimestampServers)" />
+    <SignTool SignFiles="@(_SignExeFiles)" 
+              PfxFile="$(VVVVCertFile)" 
+              TimestampServer="$(SignToolTimestampServers)" 
+              Condition=" '$(DeploySignFiles)' == 'true' " />
+    
     <!-- Set read-only flags -->
     <CombinePath BasePath="$(DeployDir)" Paths="$(DeployReadOnlyFiles)">
       <Output TaskParameter="CombinedPaths" ItemName="_DeployReadOnlyFiles"/>
