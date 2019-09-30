@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="signtool.targets" />
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetPlatformFromBinary" />
 
@@ -63,7 +64,9 @@
   <!-- Deploy -->
   <Target Name="VVVV_Deploy" DependsOnTargets="VVVV_GenerateFileNames;VVVV_Build" AfterTargets="Build" Condition=" '$(Configuration)' == 'Deploy' ">
     <PropertyGroup>
+      <!-- Signing properties - not to be confused with strong name signing -->
       <VVVVCertFile>..\..\..\vvvv-cert.p12</VVVVCertFile>
+      <SignToolTimestampServers>http://timestamp.comodoca.com/authenticode;http://timestamp.verisign.com/scripts/timstamp.dll;http://timestamp.globalsign.com/scripts/timstamp.dll</SignToolTimestampServers>
     </PropertyGroup>
     <!-- Let's not remove the directory since BuildAndInstallVLIntegration installed its packages there. -->
     <!--<RemoveDir Directories="$(DeployDir)" />-->
@@ -78,10 +81,11 @@
           OverwriteReadOnlyFiles="true" 
           ContinueOnError="true" />
     <!-- Sign the exe -->
-    <Exec Command="signtool sign /f &quot;$(VVVVCertFile)&quot; /t http://timestamp.verisign.com/scripts/timstamp.dll &quot;$(DeployDir)vvvv.exe&quot;"
-          Condition=" Exists('$(VVVVCertFile)') And Exists('$(DeployDir)vvvv.exe') " />
-    <Exec Command="signtool sign /f &quot;$(VVVVCertFile)&quot; /t http://timestamp.verisign.com/scripts/timstamp.dll &quot;$(DeployDir)setup.exe&quot;"
-          Condition=" Exists('$(VVVVCertFile)') And Exists('$(DeployDir)setup.exe') " />
+    <ItemGroup>
+      <_SignExeFiles Include="$(DeployDir)vvvv.exe" />
+      <_SignExeFiles Include="$(DeployDir)setup.exe" />
+    </ItemGroup>
+    <SignTool SignFiles="@(_SignExeFiles)" PfxFile="$(VVVVCertFile)" TimestampServer="$(SignToolTimestampServers)" />
     <!-- Set read-only flags -->
     <CombinePath BasePath="$(DeployDir)" Paths="$(DeployReadOnlyFiles)">
       <Output TaskParameter="CombinedPaths" ItemName="_DeployReadOnlyFiles"/>

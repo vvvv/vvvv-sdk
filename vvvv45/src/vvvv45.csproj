@@ -34,6 +34,7 @@
     <None Include="Properties\*" />
     <None Include="app.config" />
     <None Include="NuGet.config" />
+    <None Include="signtool.targets" />
     <None Include="vvvv45.dtd" />
     <None Include="vvvv45.nuspec" />
     <None Include="vvvv45.props" />
@@ -81,7 +82,6 @@
   <Target Name="GenerateNodeList" AfterTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' AND '$(DeployGenerateNodeList)' == 'true' ">
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
     <!-- Call /nodelist without any arguments to include native nodes -->
-    <Exec Condition="Exists('$(DeployedVVVVExe)')"
-          Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist" />
+    <Exec Condition="Exists('$(DeployedVVVVExe)')" Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist" />
   </Target>
 </Project>

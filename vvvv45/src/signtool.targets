@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- From: https://gist.github.com/gregmac/4cfacea5aaf702365724 -->
+  <!-- 
+       Sign .exe files using signtool.exe.
+       
+       (c) 2014 Greg MacLellan, Licensed under MIT http://opensource.org/licenses/MIT
+       
+       Features:
+       * Hides password from being displayed in build output 
+       * Retries against multiple timestamp servers if the server returns an invalid response (fairly common)
+       
+      Usage:
+        <SignTool  SignFiles="file1.exe;file2.exe" PfxFile="cert.pfx" PfxPassword="$(SECRET_CERTIFICATE_KEY)" />
+        
+        or:
+        
+        <ItemGroup>
+          <SignFiles Include="**\bin\*.exe" />
+        </ItemGroup>
+        <PropertyGroup>
+          <SignToolTimestampServers Condition="'$(Configuration)'=='Release'">http://timestamp.comodoca.com/authenticode;http://timestamp.verisign.com/scripts/timstamp.dll;http://timestamp.globalsign.com/scripts/timstamp.dll</SignToolTimestampServers>
+        </PropertyGroup>
+        <SignTool  SignFiles="@(SignFiles)"  
+          PfxFile="cert.pfx" PfxPassword="$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\MyCompanyDev@cert.pfx)" 
+          TimestampServer="$(SignToolTimestampServers)" />
+    
+    -->
+  <UsingTask TaskName="SignTool" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <SignToolExe ParameterType="System.String" Required="false" />
+      <PfxFile ParameterType="System.String" Required="true" />
+      <PfxPassword ParameterType="System.String" Required="false" />
+      <TimestampServer ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="false" />
+      <Description ParameterType="System.String" Required="false" />
+      <SignFiles ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Web"/>
+      <Code Type="Class" Language="cs">
+        <![CDATA[
+                using System;
+                using System.Linq;
+                using System.IO;
+                using System.Collections.Generic;
+                using System.Text.RegularExpressions;
+                using System.Diagnostics;
+                using Microsoft.Build.Framework;
+                
+
+                 public class SignTool : Microsoft.Build.Utilities.Task
+                {
+                    /// <summary>
+                    /// Ugly hack-- if signtool.exe has an error specifically with the timestamp servers, it just exits with errorcode 1 
+                    /// like it does with every other error. Since I specifically want to loop on timestamp errors, I needed to be able to 
+                    /// detect that error. Instead of throwing an exception (slow), or making a more complex return type, I choose to 
+                    /// make it look like signtool.exe exits with a different error code (which, IMHO, is what it should be doing).
+                    /// </summary>
+                    private const int FakeTimestampServerExitCode = 90909;
+                    
+                    public ITaskItem[] SignFiles { get; set; }
+                    public string SignToolExe { get; set; }
+                    public string PfxFile { get; set; }
+                    public string PfxPassword { get; set; }
+                    public ITaskItem[] TimestampServer { get; set; }
+                    public string Description { get; set; }
+                    
+                    private string[] TimestampServers { get; set; }
+                    
+                    public override bool Execute()
+                    {
+                        if (TimestampServer != null) {
+                          TimestampServers = TimestampServer.Select(x => x.ItemSpec).ToArray();
+                        } else {
+                          TimestampServers = new string[] { null };
+                        }
+                        
+                      	if (!FindSignToolExe()) {
+                            Log.LogError("Could not find signtool.exe");
+                            return false;
+                        }
+                        
+                        int lastExitCode = -1;
+                        foreach (var timestampServer in TimestampServers) {
+                          lastExitCode = ExecuteSigntool(SignFiles.Select(x => x.ItemSpec), PfxFile, PfxPassword, Description, timestampServer);
+                          if (lastExitCode != FakeTimestampServerExitCode) break; // only continue looping on timestamp errors
+                        }
+                        return lastExitCode == 0;
+                    }
+                    
+                    private bool FindSignToolExe() 
+                    {
+                        if (string.IsNullOrEmpty(SignToolExe)) {
+                            SignToolExe = new[] { 
+                              Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),"Windows Kits","8.1","bin","x86","signtool.exe"),
+                              Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),"Microsoft SDKs","Windows","v7.0A","bin","signtool.exe"),
+                              Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"Windows Kits","8.1","bin","x86","signtool.exe"),
+                              Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),"Microsoft SDKs","Windows","v7.0A","bin","signtool.exe"),
+                            }.FirstOrDefault(x => File.Exists(x));
+                        }
+                        return File.Exists(SignToolExe);
+                    }
+                    
+                    private void LogCensoredMessage(string format, params object[] values) 
+                    {
+                        if (!string.IsNullOrEmpty(PfxPassword))
+                        {
+                            var censored = new String('*', PfxPassword.Length);
+                            Log.LogMessage(string.Format(
+                                format.Replace(PfxPassword,censored), 
+                                values.Select(x => x.ToString().Replace(PfxPassword,censored)).ToArray()));
+                        }
+                        else
+                            Log.LogMessage(string.Format(format, values));
+                    }
+
+                    private void LogCensoredError(string format, params object[] values) 
+                    {
+                        if (!string.IsNullOrEmpty(PfxPassword))
+                        {
+                            var censored = new String('*', PfxPassword.Length);
+                            Log.LogError(string.Format(
+                                format.Replace(PfxPassword,censored), 
+                                values.Select(x => x.ToString().Replace(PfxPassword,censored)).ToArray()));
+                        }
+                        else
+                            Log.LogMessage(string.Format(format, values));
+                    }
+
+                    private int ExecuteSigntool(IEnumerable<string> files, string pfxFile, string pfxPassword = null, string description = null, string timestampServer = null) 
+                    {
+                        var signtoolParams = "sign /f "+EncodeParameterArgument(pfxFile);
+                        if (!string.IsNullOrEmpty(pfxPassword)) signtoolParams += " /p "+EncodeParameterArgument(pfxPassword);
+                        if (!string.IsNullOrEmpty(timestampServer)) signtoolParams += " /t "+EncodeParameterArgument(timestampServer);
+                        if (!string.IsNullOrEmpty(description)) signtoolParams += " /d "+EncodeParameterArgument(description);
+                        
+                        signtoolParams += " " + string.Join(" ", files.Select(x => EncodeParameterArgument(x)));
+                        
+                        LogCensoredMessage(string.Format("Executing: {0} {1}", SignToolExe, signtoolParams));
+                        
+                        using (var proc = new Process())
+                        {
+                            var startInfo = new ProcessStartInfo(SignToolExe, signtoolParams)
+                            {
+                                UseShellExecute = false,
+                                CreateNoWindow = true,
+                                WorkingDirectory = System.IO.Directory.GetCurrentDirectory(),
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true
+                            };
+                            
+                            var timestampError = false;
+                            
+                            // stderr is logged as errors
+                            proc.ErrorDataReceived += (sender, e) =>
+                                                          {
+                                                              if (e.Data != null) {
+                                                                LogCensoredError(e.Data);
+                                                                // "Error: The specified timestamp server could not be reached. "
+                                                                // "Error: The specified timestamp server either could not be reached or returned an invalid response."
+                                                                if (e.Data.Contains("timestamp server") && e.Data.Contains("could not be reached")) {
+                                                                  timestampError = true;
+                                                                }
+                                                              }
+                                                          };
+                                                          
+                            var nullReceived = false;
+                            proc.OutputDataReceived += (sender, e) =>
+                                                          {
+                                                              if (e.Data != null) LogCensoredMessage(e.Data);
+                                                              else nullReceived = true;
+                                                          };
+                                                          
+                            proc.StartInfo = startInfo;
+                            proc.Start();
+                            
+                            proc.BeginOutputReadLine();
+                            proc.BeginErrorReadLine();
+                            
+                            proc.WaitForExit(int.MaxValue);
+                            // note, WaitForExit does not mean we're done reading output, so we wait until we get a NULL
+                            while (!nullReceived) System.Threading.Thread.Sleep(100);
+                            
+                
+                            if (proc.ExitCode != 0)
+                            {
+                                LogCensoredError("Signtool exited code {0}", proc.ExitCode);
+                            } 
+                            else 
+                            {
+                                LogCensoredMessage("Signtool exited code {0}", proc.ExitCode);
+                            }
+                            return timestampError ? FakeTimestampServerExitCode : proc.ExitCode;
+                        }
+                        
+                    }
+                    
+                    /// from http://stackoverflow.com/a/12364234/7913
+                    /// <summary>
+                    /// Encodes an argument for passing into a program
+                    /// </summary>
+                    /// <param name="original">The value that should be received by the program</param>
+                    /// <returns>The value which needs to be passed to the program for the original value 
+                    /// to come through</returns>
+                    public static string EncodeParameterArgument(string original)
+                    {
+                        if( string.IsNullOrEmpty(original))
+                            return original;
+                        string value = Regex.Replace(original, @"(\\*)" + "\"", @"$1\$0");
+                        value = Regex.Replace(value, @"^(.*\s.*?)(\\*)$", "\"$1$2$2\"");
+                        return value;
+                    }
+                    
+                }
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>
