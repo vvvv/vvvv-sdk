@@ -82,8 +82,7 @@
           ContinueOnError="true" />
     <!-- Sign the exe -->
     <ItemGroup>
-      <_SignExeFiles Include="$(DeployDir)vvvv.exe" />
-      <_SignExeFiles Include="$(DeployDir)setup.exe" />
+      <_SignExeFiles Include="$(DeployDir)*.exe" />
     </ItemGroup>
     <SignTool SignFiles="@(_SignExeFiles)" PfxFile="$(VVVVCertFile)" TimestampServer="$(SignToolTimestampServers)" />
     <!-- Set read-only flags -->
