@@ -6,11 +6,11 @@ to the TERMS OF USAGE enclosed in license.txt
 -------------------------------------------------------------------
 
 
-install:
+manual install:
 - extract the vvvv directory from the .zip archive to a
   nice place on your harddisk.
 
-- start at least once setup.exe (needs admin rights!)
+- start at least once config.exe (needs admin rights!)
 
 - if you face troubles, see:
     http://vvvv.org/documentation/troubleshooting
