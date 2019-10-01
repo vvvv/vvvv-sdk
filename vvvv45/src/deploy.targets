@@ -216,4 +216,25 @@
       </Code>
     </Task>
   </UsingTask>
+
+  <!-- From https://stackoverflow.com/questions/12039434/obtain-file-sizes-in-msbuild-script -->
+  <UsingTask TaskName="GetFileSize" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <TotalSize ParameterType="System.Int64" Output="true"/>
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO"/>
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+        long l = 0;
+        foreach (var item in Files) {
+            var fi = new FileInfo(item.ItemSpec);
+            l += fi.Length;
+        }
+        TotalSize = l;
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
 </Project>

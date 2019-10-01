@@ -81,7 +81,8 @@ namespace VVVV.Tools
             }
             
             var vi = FileVersionInfo.GetVersionInfo(filename);
-            var version = string.Format("50{0}{1}", vi.ProductVersion, vi.FileMajorPart);
+            // Same as in delphi GVersionInfoString
+            var version = string.Format("{0} {1}", vi.ProductVersion, vi.FileMajorPart);
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
             if (vi.FilePrivatePart > 0)

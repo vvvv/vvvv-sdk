@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="signtool.targets" />
+  <Import Project="deploy.targets" />
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetVersionInfo" />
   <UsingTask AssemblyFile="$(MSBuildThisFileDirectory)\..\..\tools\VersionInfo.exe" TaskName="VVVV.Tools.MSBuild.GetPlatformFromBinary" />
 
   <!-- VVVV_VersionInfo -->
   <Target Name="VVVV_VersionInfo">
     <GetVersionInfo File="$(VVVVExe)">
+      <!-- beta-preview 38.2 -->
       <Output TaskParameter="ReturnValue" PropertyName="VVVV_VersionInfo" />
     </GetVersionInfo>
     <GetPlatformFromBinary File="$(VVVVExe)">
+      <!-- x64 -->
       <Output TaskParameter="ReturnValue" PropertyName="VVVV_Platform" />
     </GetPlatformFromBinary>
     <PropertyGroup>
-      <VVVV_VersionAndPlatform>$(VVVV_VersionInfo)_$(VVVV_Platform)</VVVV_VersionAndPlatform>
+      <!-- beta-preview -->
+      <VVVV_Environment>$(VVVV_VersionInfo.Substring(0, $(VVVV_VersionInfo.IndexOf(' '))))</VVVV_Environment>
+      <!-- beta-preview_38.2 -->
+      <VVVV_Version_OnDisk>$(VVVV_VersionInfo.Replace(' ', '_'))</VVVV_Version_OnDisk>
+      <!-- beta-preview 38.2 x64 -->
+      <VVVV_VersionAndPlatform>$(VVVV_VersionInfo) $(VVVV_Platform)</VVVV_VersionAndPlatform>
+      <!-- beta-preview_38.2_x64 -->
+      <VVVV_VersionAndPlatform_OnDisk>$(VVVV_VersionAndPlatform.Replace(' ', '_'))</VVVV_VersionAndPlatform_OnDisk>
+
+      <!-- vvvv beta-preview -->
+      <VVVV_AppName>vvvv $(VVVV_Environment)</VVVV_AppName>
+      <!-- vvvv beta-preview 38.2 -->
+      <VVVV_AppNameWithVersion>$(Product) $(VVVV_VersionInfo) $(VVVV_Platform)</VVVV_AppNameWithVersion>
+      <!-- vvvv_beta-preview_38.2_x64 -->
+      <VVVV_NameVersionPlatform_OnDisk>vvvv_$(VVVV_VersionAndPlatform_OnDisk)</VVVV_NameVersionPlatform_OnDisk>
+      <!-- addons_beta-preview_38.2_x64 -->
+      <Addons_NameVersionPlatform_OnDisk>addons_$(VVVV_VersionAndPlatform_OnDisk)</Addons_NameVersionPlatform_OnDisk>
     </PropertyGroup>
   </Target>
 
@@ -24,7 +42,8 @@
       <CommonDir>$(RootDir)..\common\</CommonDir>
       <PluginsDir>$(RootDir)lib\nodes\plugins\</PluginsDir>
       <EditorsDir>$(RootDir)lib\nodes\editors\</EditorsDir>
-      <DeployName>$(DeployPrefix)_$(VVVV_VersionAndPlatform)</DeployName>
+      <!-- vvvv_beta-preview_38.2_x64 -->
+      <DeployName>$(DeployPrefix)_$(VVVV_VersionAndPlatform_OnDisk)</DeployName>
       <DeployDir Condition="'$(DeployDir)' == ''">$(DeployBaseDir)$(DeployName)\</DeployDir>
       <DeployedVVVVExe>$(DeployDir)vvvv.exe</DeployedVVVVExe>
       <ZipFileName>$(DeployBaseDir)$(DeployName).zip</ZipFileName>

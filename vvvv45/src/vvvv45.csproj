@@ -11,6 +11,10 @@
     <Configurations>Debug;Release;Deploy</Configurations>
     <Platforms>x86;x64</Platforms>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+
+    <!-- Needed for online installer which needs URL to zip file -->
+    <InnoSetupExe>$(MSBuildProgramFiles32)\Inno Setup 5\ISCC.exe</InnoSetupExe>
+    <BuildId></BuildId>
   </PropertyGroup>
   <Import Project="vvvv45.props" />
   <!-- Override vvvvv45.props -->
@@ -34,7 +38,7 @@
     <None Include="Properties\*" />
     <None Include="app.config" />
     <None Include="NuGet.config" />
-    <None Include="signtool.targets" />
+    <None Include="deploy.targets" />
     <None Include="vvvv45.dtd" />
     <None Include="vvvv45.nuspec" />
     <None Include="vvvv45.props" />
@@ -83,5 +87,38 @@
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
     <!-- Call /nodelist without any arguments to include native nodes -->
     <Exec Condition="Exists('$(DeployedVVVVExe)')" Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist" />
+  </Target>
+
+  <Target Name="BuildInstaller" AfterTargets="Zip" DependsOnTargets="VVVV_VersionInfo" Condition="Exists('$(InnoSetupExe)')">
+    <CreateItem Include="$(DeployInclude)" Exclude="$(DeployExclude)">
+      <Output ItemName="FilesToDeploy" TaskParameter="Include" />
+    </CreateItem>
+    <GetFileSize Files="@(FilesToDeploy)">
+      <Output TaskParameter="TotalSize" PropertyName="_InstallerFolderSizeInBytes" />
+    </GetFileSize>
+    <PropertyGroup>
+      <_InstallerFolder>$(RepoRootDir)Installer_Beta\</_InstallerFolder>
+      <_InstallerArguments>/DMyAppArchitecture="$(VVVV_Platform)" /DMyAppVersion="$(VVVV_Version_OnDisk)" /DMyAppDiskName="$(VVVV_NameVersionPlatform_OnDisk)" /DMyEnvironment="$(VVVV_Environment)" /DMyAppName="$(VVVV_AppName)" /DMyAppNameWithVersion="$(VVVV_AppNameWithVersion)" /DMyFolderSizeInBytes="$(_InstallerFolderSizeInBytes)"</_InstallerArguments>
+      <_InstallerZipUrl></_InstallerZipUrl>
+      <_InstallerOutputFileName>$(VVVV_NameVersionPlatform_OnDisk)_setup</_InstallerOutputFileName>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(BuildId)' != '' ">
+      <_InstallerZipUrl>http://teamcity.vvvv.org/guestAuth/app/rest/builds/id:$(BuildId)/artifacts/content/$(VVVV_NameVersionPlatform_OnDisk).zip</_InstallerZipUrl>
+      <_InstallerAddonsZipUrl>http://teamcity.vvvv.org/guestAuth/app/rest/builds/id:$(BuildId)/artifacts/content/$(Addons_NameVersionPlatform_OnDisk).zip</_InstallerAddonsZipUrl>
+      <_InstallerArguments>$(_InstallerArguments) /DZipDownloadURL=$(_InstallerZipUrl) /DZipDownloadURLAddonpack=$(_InstallerAddonsZipUrl)</_InstallerArguments>
+    </PropertyGroup>
+    <!-- Go for offline installer if no BuildId is given -->
+    <PropertyGroup Condition=" '$(_InstallerZipUrl)' == '' ">
+      <_InstallerArguments>$(_InstallerArguments) /DOffline</_InstallerArguments>
+      <_InstallerOutputFileName>$(VVVV_NameVersionPlatform_OnDisk)_setup_offline</_InstallerOutputFileName>
+    </PropertyGroup>
+    <Exec Command="&quot;$(InnoSetupExe)&quot; $(_InstallerArguments) vvvv_beta.iss" ConsoleToMsBuild="true" WorkingDirectory="$(_InstallerFolder)" />
+  </Target>
+
+  <Target Name="SignInstaller" AfterTargets="BuildInstaller" Condition="Exists('$(VVVVCertFile)')">
+    <ItemGroup>
+      <_SignSetupFiles Include="$(DeployBaseDir)$(_InstallerOutputFileName).exe" />
+    </ItemGroup>
+    <SignTool SignFiles="@(_SignSetupFiles)" PfxFile="$(VVVVCertFile)" TimestampServer="$(SignToolTimestampServers)" />
   </Target>
 </Project>
