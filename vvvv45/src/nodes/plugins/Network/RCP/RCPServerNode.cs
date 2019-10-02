@@ -71,7 +71,7 @@ namespace VVVV.Nodes
 		Dictionary<string, IPin2> FCachedPins = new Dictionary<string, IPin2>();
 		//userid -> IParameter
 		Dictionary<string, Parameter> FCachedParams = new Dictionary<string, Parameter>();
-		readonly Dictionary<IPin2, IOBox> FWatchedIOBoxes = new Dictionary<IPin2, IOBox>();
+		readonly Dictionary<INode2, IOBox> FWatchedIOBoxes = new Dictionary<INode2, IOBox>();
 		#endregion fields & pins
 		  
 		public RCPRabbitNode()
@@ -191,28 +191,28 @@ namespace VVVV.Nodes
 			}
 
 			var anyOutBoxChanged = false;
-			foreach (var pin in FWatchedIOBoxes.Keys)
+			foreach (var node in FWatchedIOBoxes.Keys)
             {
-            	if (pin.IsConnected())
+                var ioBox = FWatchedIOBoxes[node];
+            	if (ioBox.InputPin.GetConnectedPins().Any())
             	{
-            		var ioBox = FWatchedIOBoxes[pin];
             		if (ioBox.Sync())
                 	{
                 		anyOutBoxChanged = true;
-						var userId = IdFromPin(pin);
+						var userId = IdFromNode(node);
 						var param = FCachedParams[userId];
 						//in case of enum pin we also update the full definition here
 						//which may have changed in the meantime
 						//TODO: subscribe to enum-changes on the host and update all related
 						//parameters as changes happen, so a client can update its gui accordingly
-						if (pin.Type == "Enumeration")
+						if (ioBox.InputPin.Type == "Enumeration")
 						{
-							var subtype = pin.SubType.Split(',').Select(s => s.Trim()).ToArray();
+							var subtype = ioBox.InputPin.SubType.Split(',').Select(s => s.Trim()).ToArray();
 							var enumName = subtype[1].Trim();
 							var dflt = subtype[2].Trim();
 							var newDef = GetEnumDefinition(enumName, dflt);
 							IEnumDefinition paramDef;
-							if (pin.SliceCount == 1)
+							if (ioBox.InputPin.SliceCount == 1)
 								paramDef = param.TypeDefinition as IEnumDefinition;
 							else
 								paramDef = (param.TypeDefinition as IArrayDefinition).ElementDefinition as IEnumDefinition;
@@ -220,7 +220,7 @@ namespace VVVV.Nodes
 							paramDef.Entries = newDef.Entries;
 							//FLogger.Log(LogType.Debug, "count: " + pin.Spread);
 						}
-						RCP.Helpers.StringToValue(param, pin.Spread);
+						RCP.Helpers.StringToValue(param, ioBox.InputPin.GetSpread());
                 	}
                 }
             	
@@ -235,16 +235,14 @@ namespace VVVV.Nodes
         {
             var ioBox = IOBox.Wrap(node);
             if (ioBox != null)
-                FWatchedIOBoxes.Add(pin, ioBox);
+                FWatchedIOBoxes.Add(node, ioBox);
             else
                 FLogger.Log(LogType.Error, "Wrapper for IO box " + node + " not implemented.");
         }
 
         void Remove(INode2 node)
         {
-        	var pinName = PinNameFromNode(node);
-			var pin = node.FindPin(pinName);
-            FWatchedIOBoxes.Remove(pin);
+            FWatchedIOBoxes.Remove(node);
         }
 		
 		private void NodeAddedCB(INode2 node)
@@ -288,13 +286,16 @@ namespace VVVV.Nodes
 			
 			var pinName = PinNameFromNode(node);
 			var pin = node.FindPin(pinName);
-			pin.Changed -= PinValueChanged;
-			pin.SubtypeChanged -= SubtypeChanged;
-			node.LabelPin.Changed -= LabelChanged;
-			var tagPin = node.FindPin("Tag");
-			tagPin.Changed -= TagChanged;
+            if (pin != null)
+            {
+			    pin.Changed -= PinValueChanged;
+			    pin.SubtypeChanged -= SubtypeChanged;
+			    node.LabelPin.Changed -= LabelChanged;
+			    var tagPin = node.FindPin("Tag");
+			    tagPin.Changed -= TagChanged;
+            }
 			
-			var userId = IdFromPin(pin);
+			var userId = IdFromNode(node);
 			FCachedPins.Remove(userId);
 			var param = FCachedParams[userId];
 			param.ValueUpdated -= ParameterUpdated;
@@ -310,8 +311,15 @@ namespace VVVV.Nodes
 			var pinpath = pin.ParentNode.GetNodePath(false) + "/" + pinname;
 			return pinpath;
 		}
-		
-		private string ParentIdFromNode(INode2 node)
+
+        private string IdFromNode(INode2 node)
+        {
+            var pinname = PinNameFromNode(node);
+            var pinpath = node.GetNodePath(false) + "/" + pinname;
+            return pinpath;
+        }
+
+        private string ParentIdFromNode(INode2 node)
 		{
 			var path = node.GetNodePath(false);
 			var ids = path.Split('/'); 
