@@ -58,7 +58,7 @@ namespace VVVV.Tools
             }
 
             var filename = args[0];
-            Console.WriteLine($"{GetVersionInfo(filename)}_{GetPlatform(filename)}");
+            Console.WriteLine($"{GetNewVersionString(filename)}_{GetPlatform(filename)}");
             
             return 0;
         }
@@ -68,7 +68,8 @@ namespace VVVV.Tools
             Console.WriteLine("Usage: VersionInfo.exe file");
         }
         
-        public static string GetVersionInfo(string filename)
+        // Same as in delphi GVersionInfoString
+        public static string GetNewVersionString(string filename)
         {
             if (!Path.IsPathRooted(filename))
             {
@@ -80,9 +81,61 @@ namespace VVVV.Tools
                 throw new ArgumentException(string.Format("Can't find file '{0}'.", filename));
             }
             
-            var vi = FileVersionInfo.GetVersionInfo(filename);
-            // Same as in delphi GVersionInfoString
-            var version = string.Format("{0} {1}", vi.ProductVersion, vi.FileMajorPart);
+            return GetNewVersionString(FileVersionInfo.GetVersionInfo(filename));
+        }
+
+        public static string GetNewVersionString(FileVersionInfo vi)
+        {
+            // beta 38
+            var version = $"{vi.ProductVersion} {vi.FileMajorPart}";
+
+            // beta 38.2
+            if (vi.FileMinorPart > 0)
+                version += "." + vi.FileMinorPart;
+            // beta 38.2.1
+            if (vi.FilePrivatePart > 0)
+                version += "." + vi.FilePrivatePart;
+            // beta 38.2.1-4322
+            if (vi.FileBuildPart > 0 && (vi.IsDebug || vi.IsPreRelease || vi.IsSpecialBuild))
+                version += "-" + vi.FileBuildPart;
+
+            // beta 38.2.1-4322 preview
+            if (vi.IsDebug)
+                version += " debug";
+            else if (vi.IsPreRelease)
+                version += " preview";
+            else if (vi.IsSpecialBuild)
+                version += " special";
+
+            return version;
+        }
+
+        public static string GetOldVersionString(string filename)
+        {
+            if (!Path.IsPathRooted(filename))
+            {
+                filename = Path.GetFullPath(filename);
+            }
+
+            if (!File.Exists(filename))
+            {
+                throw new ArgumentException(string.Format("Can't find file '{0}'.", filename));
+            }
+
+            return GetOldVersionString(FileVersionInfo.GetVersionInfo(filename));
+        }
+
+        public static string GetOldVersionString(FileVersionInfo vi)
+        {
+            // Same as in delphi GetOldVersionString
+            var pv = "beta";
+            if (vi.IsDebug)
+                pv = "debug";
+            else if (vi.IsPreRelease)
+                pv = "alpha";
+            else if (vi.IsSpecialBuild)
+                pv = "special";
+            var version = string.Format("50{0}{1}", pv, vi.FileMajorPart);
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
             if (vi.FilePrivatePart > 0)

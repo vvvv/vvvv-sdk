@@ -18,6 +18,12 @@
   </PropertyGroup>
   <Import Project="vvvv45.props" />
   <!-- Override vvvvv45.props -->
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+  </PropertyGroup>
   <!-- Deploy -->
   <PropertyGroup>
     <DeployInclude>$(RootDir)**\*.*</DeployInclude>
