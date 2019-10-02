@@ -176,9 +176,12 @@ namespace VVVV.Hosting
             //the built-in one
             if (Directory.Exists(PacksPath))
                 AssemblyLoader.AddPackageRepository(PacksPath);
-            //the one where the user is supposed to install packages
-            if (Directory.Exists(UserPacksPatch))
-                AssemblyLoader.AddPackageRepository(UserPacksPatch);
+            //the one where the user is supposed to install packages to share it between vvvversions
+            if (Directory.Exists(UserPacksPath))
+                AssemblyLoader.AddPackageRepository(UserPacksPath);
+            //the legacy path
+            if (Directory.Exists(UserPacksPathLegacy))
+                AssemblyLoader.AddPackageRepository(UserPacksPathLegacy);
 
             // Set name to vvvv thread for easier debugging.
             Thread.CurrentThread.Name = "vvvv";
@@ -300,9 +303,10 @@ namespace VVVV.Hosting
 
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
-            var packsPath = Path.Combine(ExePath, "packs");
-            if (Directory.Exists(packsPath))
-                LoadFactoriesFromLegacyPackages(packsPath, catalog);
+            if (Directory.Exists(UserPacksPath))
+                LoadFactoriesFromLegacyPackages(UserPacksPath, catalog);
+            if (Directory.Exists(UserPacksPathLegacy))
+                LoadFactoriesFromLegacyPackages(UserPacksPathLegacy, catalog);
             //new package loading system
             LoadFactoriesFromPackages(catalog);
 
@@ -353,8 +357,10 @@ namespace VVVV.Hosting
 
             //now that all basics are set up, see if there are any node search paths to add
             //from the installed packs
-            if (Directory.Exists(packsPath))
-                LoadNodesFromLegacyPackages(packsPath);
+            if (Directory.Exists(UserPacksPathLegacy))
+                LoadNodesFromLegacyPackages(UserPacksPathLegacy);
+            if (Directory.Exists(UserPacksPath))
+                LoadNodesFromLegacyPackages(UserPacksPath);
             LoadNodesFromPackages();
         }
 
@@ -822,8 +828,11 @@ namespace VVVV.Hosting
         }
 
         public string PacksPath => Path.Combine(ExePath, "lib", "packs");
-        public string UserPacksPatch => Path.Combine(ExePath, "packs");
-        
+        public string UserPacksPathLegacy => Path.Combine(ExePath, "packs");
+
+        string UserAppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "vvvv", IsPreview ? $"beta-preview" : "beta");
+        public string UserPacksPath => Path.Combine(UserAppDataFolder, "packs" + (Environment.Is64BitProcess ? "_x64" : "_x86"));
+
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
         {
@@ -1115,5 +1124,14 @@ namespace VVVV.Hosting
             }
         }
         Version FVersion;
+        public bool IsPreview
+        {
+            get
+            {
+                var p = Path.Combine(ExePath, "vvvv.exe");
+                var versionInfo = FileVersionInfo.GetVersionInfo(p);
+                return versionInfo.IsPreRelease || versionInfo.IsDebug;
+            }
+        }
     }
 }
