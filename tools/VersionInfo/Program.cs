@@ -90,6 +90,35 @@ namespace VVVV.Tools
             return version;
         }
 
+        public static string GetOldVersionInfo(string filename)
+        {
+            if (!Path.IsPathRooted(filename))
+            {
+                filename = Path.GetFullPath(filename);
+            }
+
+            if (!File.Exists(filename))
+            {
+                throw new ArgumentException(string.Format("Can't find file '{0}'.", filename));
+            }
+
+            var vi = FileVersionInfo.GetVersionInfo(filename);
+            // Same as in delphi GetOldVersionString
+            var pv = "beta";
+            if (vi.IsDebug)
+                pv = "debug";
+            else if (vi.IsPreRelease)
+                pv = "alpha";
+            else if (vi.IsSpecialBuild)
+                pv = "special";
+            var version = string.Format("50{0}{1}", pv, vi.FileMajorPart);
+            if (vi.FileMinorPart > 0)
+                version += "." + vi.FileMinorPart;
+            if (vi.FilePrivatePart > 0)
+                version += "." + vi.FilePrivatePart;
+            return version;
+        }
+
         public static string GetPlatform(string filename)
         {
             var result = GetBinaryType(filename);
