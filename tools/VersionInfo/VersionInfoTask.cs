@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -14,7 +15,7 @@ namespace VVVV.Tools.MSBuild
         }
         
         [Output]
-        public string ReturnValue
+        public string NewVersionString
         {
             get;
             private set;
@@ -27,12 +28,21 @@ namespace VVVV.Tools.MSBuild
             private set;
         }
 
+        [Output]
+        public bool IsPreview
+        {
+            get;
+            private set;
+        }
+
         public override bool Execute()
         {
             try 
             {
-                ReturnValue = VersionInfo.GetVersionInfo(File);
-                OldVersionString = VersionInfo.GetOldVersionInfo(File);
+                var vi = FileVersionInfo.GetVersionInfo(File);
+                NewVersionString = VersionInfo.GetNewVersionString(vi);
+                OldVersionString = VersionInfo.GetOldVersionString(vi);
+                IsPreview = vi.IsDebug || vi.IsPreRelease || vi.IsSpecialBuild;
             } 
             catch (Exception e)
             {

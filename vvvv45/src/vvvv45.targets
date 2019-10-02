@@ -7,33 +7,44 @@
   <!-- VVVV_VersionInfo -->
   <Target Name="VVVV_VersionInfo">
     <GetVersionInfo File="$(VVVVExe)">
-      <!-- beta-preview 38.2 -->
-      <Output TaskParameter="ReturnValue" PropertyName="VVVV_VersionInfo" />
+      <!-- beta 38.2-4322 preview -->
+      <Output TaskParameter="NewVersionString" PropertyName="VVVV_VersionInfo" />
       <!-- 50alpha38.2 -->
       <Output TaskParameter="OldVersionString" PropertyName="VVVV_VersionInfo_Old" />
+      <Output TaskParameter="IsPreview" PropertyName="VVVV_IsPreview" />
     </GetVersionInfo>
     <GetPlatformFromBinary File="$(VVVVExe)">
       <!-- x64 -->
       <Output TaskParameter="ReturnValue" PropertyName="VVVV_Platform" />
     </GetPlatformFromBinary>
+    
     <PropertyGroup>
-      <!-- beta-preview -->
-      <VVVV_Environment>$(VVVV_VersionInfo.Substring(0, $(VVVV_VersionInfo.IndexOf(' '))))</VVVV_Environment>
-      <!-- beta-preview_38.2 -->
+      <!-- beta -->
+      <VVVV_Environment>beta</VVVV_Environment>
+      <!-- beta_38.2-4322_preview -->
       <VVVV_Version_OnDisk>$(VVVV_VersionInfo.Replace(' ', '_'))</VVVV_Version_OnDisk>
-      <!-- beta-preview 38.2 x64 -->
+      <!-- beta 38.2-4322 preview x64 -->
       <VVVV_VersionAndPlatform>$(VVVV_VersionInfo) $(VVVV_Platform)</VVVV_VersionAndPlatform>
-      <!-- beta-preview_38.2_x64 -->
+      <!-- beta_38.2-4322_preview_x64 -->
       <VVVV_VersionAndPlatform_OnDisk>$(VVVV_VersionAndPlatform.Replace(' ', '_'))</VVVV_VersionAndPlatform_OnDisk>
+    </PropertyGroup>
 
-      <!-- vvvv beta-preview -->
-      <VVVV_AppName>vvvv $(VVVV_Environment)</VVVV_AppName>
-      <!-- vvvv beta-preview 38.2 -->
-      <VVVV_AppNameWithVersion>$(Product) $(VVVV_VersionInfo) $(VVVV_Platform)</VVVV_AppNameWithVersion>
-      <!-- vvvv_beta-preview_38.2_x64 -->
+    <PropertyGroup>
+      <!-- vvvv beta -->
+      <VVVV_AppName>vvvv beta</VVVV_AppName>
+      <!-- vvvv beta 38.2 preview -->
+      <VVVV_AppNameWithVersion>vvvv $(VVVV_VersionInfo) $(VVVV_Platform)</VVVV_AppNameWithVersion>
+      <!-- vvvv_beta_38.2-4322_preview_x64 -->
       <VVVV_NameVersionPlatform_OnDisk>vvvv_$(VVVV_VersionAndPlatform_OnDisk)</VVVV_NameVersionPlatform_OnDisk>
-      <!-- addons_beta-preview_38.2_x64 -->
+      <!-- addons_beta_38.2-4322_preview_x64 -->
       <Addons_NameVersionPlatform_OnDisk>addons_$(VVVV_VersionAndPlatform_OnDisk)</Addons_NameVersionPlatform_OnDisk>
+    </PropertyGroup>
+  
+    <PropertyGroup Condition="$(VVVV_IsPreview)">
+      <!-- beta-preview -->
+      <VVVV_Environment>beta-preview</VVVV_Environment>
+      <!-- vvvv beta -->
+      <VVVV_AppName>vvvv beta preview</VVVV_AppName>
     </PropertyGroup>
   </Target>
 
