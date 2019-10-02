@@ -93,11 +93,11 @@ namespace VVVV.Tools
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
             // beta 38.2.1
-            if (vi.FilePrivatePart > 0)
-                version += "." + vi.FilePrivatePart;
+            if (vi.FileBuildPart > 0)
+                version += "." + vi.FileBuildPart;
             // beta 38.2.1-4322
-            if (vi.FileBuildPart > 0 && (vi.IsDebug || vi.IsPreRelease || vi.IsSpecialBuild))
-                version += "-" + vi.FileBuildPart;
+            if (vi.FilePrivatePart > 0 && (vi.IsDebug || vi.IsPreRelease || vi.IsSpecialBuild))
+                version += "-" + vi.FilePrivatePart;
 
             // beta 38.2.1-4322 preview
             if (vi.IsDebug)
@@ -138,8 +138,8 @@ namespace VVVV.Tools
             var version = string.Format("50{0}{1}", pv, vi.FileMajorPart);
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
-            if (vi.FilePrivatePart > 0)
-                version += "." + vi.FilePrivatePart;
+            if (vi.FileBuildPart > 0)
+                version += "." + vi.FileBuildPart;
             return version;
         }
 
