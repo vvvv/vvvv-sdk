@@ -19,12 +19,20 @@ namespace VVVV.Tools.MSBuild
             get;
             private set;
         }
-        
+
+        [Output]
+        public string OldVersionString
+        {
+            get;
+            private set;
+        }
+
         public override bool Execute()
         {
             try 
             {
-                ReturnValue = VVVV.Tools.VersionInfo.GetVersionInfo(File);
+                ReturnValue = VersionInfo.GetVersionInfo(File);
+                OldVersionString = VersionInfo.GetOldVersionInfo(File);
             } 
             catch (Exception e)
             {

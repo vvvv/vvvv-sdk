@@ -9,6 +9,8 @@
     <GetVersionInfo File="$(VVVVExe)">
       <!-- beta-preview 38.2 -->
       <Output TaskParameter="ReturnValue" PropertyName="VVVV_VersionInfo" />
+      <!-- 50alpha38.2 -->
+      <Output TaskParameter="OldVersionString" PropertyName="VVVV_VersionInfo_Old" />
     </GetVersionInfo>
     <GetPlatformFromBinary File="$(VVVVExe)">
       <!-- x64 -->
@@ -72,7 +74,7 @@
       <DTDFiles Include="$(RootDir)lib\*.dtd" />
     </ItemGroup>
     <Delete Files="@(DTDFiles)" />
-    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(RootDir)lib\$(VVVV_VersionInfo).dtd" />
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)vvvv45.dtd" DestinationFiles="$(RootDir)lib\$(VVVV_VersionInfo_Old).dtd" />
     <Copy SourceFiles="$(_ExeConfigFile)" DestinationFiles="$(OutputPath)..\..\vvvv.exe.config" SkipUnchangedFiles="true" Condition="Exists('$(_ExeConfigFile)')" />
     <ItemGroup>
       <DummyFiles Include="$(OutputPath)vvvv45.*" />
