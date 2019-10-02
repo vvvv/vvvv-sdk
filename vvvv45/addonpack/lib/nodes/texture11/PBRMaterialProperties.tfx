@@ -1,0 +1,50 @@
+//@author: flux
+//@help: joins multiple textures into PBR material properties
+//@tags: join, parameter, packing
+//@credits:
+
+Texture2D Metalmask <string uiname="Metalmask";>;
+Texture2D Roughness <string uiname="Roughness";>;
+Texture2D AnisoUV <string uiname="Anisotropy UV";>;
+
+SamplerState linearSampler : IMMUTABLE
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Clamp;
+    AddressV = Clamp;
+};
+
+struct psInput
+{
+	float4 p : SV_Position;
+	float2 uv : TEXCOORD0;
+};
+
+cbuffer cbPerObj : register(b0)
+{
+	float metallic <float uimin=0.0; float uimax=1.0; String uiname="dielectric_metallic";> = 0;
+	float rough <float uimin=0.0; float uimax=1.0; String uiname="smooth_rough";> = 0.5;
+	float aniso <float uimin=-1.0; float uimax=1.0; String uiname="anisotropic";> = 0;
+};
+
+float4 PS(psInput input) : SV_Target
+{
+	float4 c;
+	c = Metalmask.Sample(linearSampler,input.uv).x * metallic ;
+	c.y = Roughness.Sample(linearSampler,input.uv).x * rough;
+	c.z = AnisoUV.Sample(linearSampler,input.uv).x * max(0,aniso);
+	c.w = AnisoUV.Sample(linearSampler,input.uv).x * abs(min(0,aniso));
+	
+	return c;
+}
+
+technique10 MaterialProperties
+{
+	pass P0 <bool mips=true;>
+	{
+		SetPixelShader(CompileShader(ps_5_0,PS()));
+	}
+}
+
+
+
