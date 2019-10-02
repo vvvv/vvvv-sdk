@@ -86,20 +86,20 @@ namespace VVVV.Tools
 
         public static string GetNewVersionString(FileVersionInfo vi)
         {
-            // beta 38
-            var version = $"{vi.ProductVersion} {vi.FileMajorPart}";
+            // 38
+            var version = $"{vi.FileMajorPart}";
 
-            // beta 38.2
+            // 38.2
             if (vi.FileMinorPart > 0)
                 version += "." + vi.FileMinorPart;
-            // beta 38.2.1
+            // 38.2.1
             if (vi.FileBuildPart > 0)
                 version += "." + vi.FileBuildPart;
-            // beta 38.2.1-4322
+            // 38.2.1-4322
             if (vi.FilePrivatePart > 0 && (vi.IsDebug || vi.IsPreRelease || vi.IsSpecialBuild))
                 version += "-" + vi.FilePrivatePart;
 
-            // beta 38.2.1-4322 preview
+            // 38.2.1-4322 preview
             if (vi.IsDebug)
                 version += " debug";
             else if (vi.IsPreRelease)
