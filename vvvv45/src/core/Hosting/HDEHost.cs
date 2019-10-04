@@ -827,7 +827,7 @@ namespace VVVV.Hosting
             private set;
         }
 
-        public string PacksPath => Path.Combine(ExePath, "lib", "packs");
+        public string PacksPath => Path.Combine(ExePath, "lib", "nugets");
         public string UserPacksPathLegacy => Path.Combine(ExePath, "packs");
 
         string UserAppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "vvvv", IsPreview ? $"beta-preview" : "beta");
