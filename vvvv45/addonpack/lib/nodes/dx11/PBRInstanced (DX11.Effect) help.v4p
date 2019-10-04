@@ -1,4 +1,4 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug38.2.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha38.2.dtd" >
    <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\dx11\PBRInstanced (DX11.Effect) help.v4p" systemname="PBRInstanced (DX11.Effect) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\packs\GGX\nodes\dx11\PBRInstanced (DX11.Effect) help.v4p" scrollx="0" scrolly="0" locked="0">
    <BOUNDS type="Window" left="0" top="0" width="15900" height="13065">
    </BOUNDS>
@@ -800,34 +800,6 @@
    <PIN pinname="Size" slicecount="1" values="10">
    </PIN>
    </NODE>
-   <NODE systemname="PBRInstanced (DX11.Effect)" filename="%VVVV%\packs\GGX\nodes\dx11\PBRInstanced.fx" nodename="PBRInstanced (DX11.Effect)" componentmode="Hidden" id="1111">
-   <BOUNDS type="Node" left="1185" top="5625" width="8280" height="270">
-   </BOUNDS>
-   <PIN pinname="Transform In" visible="1" slicecount="1" pintype="Input" values="||">
-   </PIN>
-   <PIN pinname="Transform" visible="1">
-   </PIN>
-   <PIN pinname="AlbedoColor" visible="1">
-   </PIN>
-   <PIN pinname="MaterialProperties" visible="1">
-   </PIN>
-   <PIN pinname="TransformINV" visible="1">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="1131" srcpinname="Y Output Value" dstnodeid="1111" dstpinname="DiffuseBRDF" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="1118" srcpinname="Geometry Out" dstnodeid="1111" dstpinname="Geometry" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="1121" srcpinname="Buffer" dstnodeid="1111" dstpinname="Transform" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="1120" srcpinname="Buffer" dstnodeid="1111" dstpinname="AlbedoColor" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="1116" srcpinname="Buffer" dstnodeid="1111" dstpinname="MaterialProperties" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="1119" srcpinname="Buffer" dstnodeid="1111" dstpinname="TransformINV" linkstyle="PolyLine" hiddenwhenlocked="1">
-   </LINK>
    <LINK srcnodeid="1039" srcpinname="Color Output" dstnodeid="1120" dstpinname="Data">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1133">
@@ -944,7 +916,7 @@
    <PIN pinname="String Type" slicecount="1" values="MultiLine">
    </PIN>
    </NODE>
-   <NODE systemname="Lights (DX11.Layer PBR)" filename="%VVVV%\packs\GGX\nodes\modules\Lights (DX11.Layer PBR).v4p" nodename="Lights (DX11.Layer PBR)" componentmode="Hidden" id="1092">
+   <NODE systemname="Lights (DX11.Layer PBR)" filename="%VVVV%\addonpack\lib\nodes\modules\DX11\Lights (DX11.Layer PBR).v4p" nodename="Lights (DX11.Layer PBR)" componentmode="Hidden" id="1092">
    <BOUNDS type="Node" left="1185" top="9210" width="10620" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="0" top="6247" width="10425" height="5919">
@@ -977,7 +949,7 @@
    </PIN>
    <PIN pinname="Light Enabled" visible="1">
    </PIN>
-   <PIN pinname="Layer In" visible="1">
+   <PIN pinname="Layer In" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="1092" srcpinname="Layer Out" dstnodeid="926" dstpinname="Layer 1">
@@ -1007,6 +979,34 @@
    <LINK srcnodeid="1107" srcpinname="Y Output Value" dstnodeid="1092" dstpinname="Spot Direction XYZ" hiddenwhenlocked="1" linkstyle="PolyLine">
    </LINK>
    <LINK srcnodeid="1110" srcpinname="Y Output Value" dstnodeid="1092" dstpinname="Light Enabled" linkstyle="PolyLine">
+   </LINK>
+   <NODE systemname="PBRInstanced (DX11.Effect)" filename="%VVVV%\addonpack\lib\nodes\dx11\PBRInstanced.fx" nodename="PBRInstanced (DX11.Effect)" componentmode="Hidden" id="1111">
+   <BOUNDS type="Node" left="1185" top="5625" width="8280" height="270">
+   </BOUNDS>
+   <PIN pinname="Transform In" visible="1" slicecount="1" pintype="Input" values="||">
+   </PIN>
+   <PIN pinname="Transform" visible="1">
+   </PIN>
+   <PIN pinname="AlbedoColor" visible="1">
+   </PIN>
+   <PIN pinname="MaterialProperties" visible="1">
+   </PIN>
+   <PIN pinname="TransformINV" visible="1">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1131" srcpinname="Y Output Value" dstnodeid="1111" dstpinname="DiffuseBRDF" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1118" srcpinname="Geometry Out" dstnodeid="1111" dstpinname="Geometry" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1121" srcpinname="Buffer" dstnodeid="1111" dstpinname="Transform" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1120" srcpinname="Buffer" dstnodeid="1111" dstpinname="AlbedoColor" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1116" srcpinname="Buffer" dstnodeid="1111" dstpinname="MaterialProperties" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="1119" srcpinname="Buffer" dstnodeid="1111" dstpinname="TransformINV" linkstyle="PolyLine" hiddenwhenlocked="1">
    </LINK>
    <LINK srcnodeid="1111" srcpinname="Layer" dstnodeid="1092" dstpinname="Layer In">
    </LINK>

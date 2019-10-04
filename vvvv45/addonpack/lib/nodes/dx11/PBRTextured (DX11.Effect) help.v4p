@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug38.2.dtd" >
-   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\packs\GGX\nodes\dx11\PBRTextured (DX11.Effect) help.v4p" systemname="PBRTextured (DX11.Effect) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\packs\GGX\nodes\dx11\PBRTextured (DX11.Effect) help.v4p" scrollx="0" scrolly="0" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50alpha38.2.dtd" >
+   <PATCH nodename="C:\Dev\vvvv\vvvv\public\vvvv45\addonpack\lib\nodes\dx11\PBRTextured (DX11.Effect) help.v4p" systemname="PBRTextured (DX11.Effect) help" filename="C:\Dev\vvvv\vvvv\public\vvvv45\packs\GGX\nodes\dx11\PBRTextured (DX11.Effect) help.v4p" scrollx="0" scrolly="0" locked="0">
    <BOUNDS type="Window" left="0" top="0" width="16485" height="13710">
    </BOUNDS>
    <PACK Name="addonpack" Version="38.1.0">
@@ -482,40 +482,6 @@
    </NODE>
    <PACK Name="dx11" Version="1.3.1">
    </PACK>
-   <NODE systemname="PBRTextured (DX11.Effect)" filename="%VVVV%\packs\GGX\nodes\dx11\PBRTextured.fx" nodename="PBRTextured (DX11.Effect)" componentmode="Hidden" id="1054">
-   <BOUNDS type="Node" left="1200" top="6165" width="9600" height="270">
-   </BOUNDS>
-   <PIN pinname="NormalMap Strength" visible="1">
-   </PIN>
-   <PIN pinname="light" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Layer" visible="1">
-   </PIN>
-   <PIN pinname="Albedo" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Albedo Color" visible="1">
-   </PIN>
-   <PIN pinname="Roughness" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="199" srcpinname="Output Enum" dstnodeid="1054" dstpinname="Technique" linkstyle="Bezier">
-   </LINK>
-   <LINK srcnodeid="163" srcpinname="Output" dstnodeid="1054" dstpinname="Defines" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="322" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="DiffuseBRDF">
-   </LINK>
-   <LINK srcnodeid="901" srcpinname="Output" dstnodeid="1054" dstpinname="Geometry" linkstyle="PolyLine">
-   </LINK>
-   <LINK srcnodeid="958" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="Metalness">
-   </LINK>
-   <LINK srcnodeid="1022" srcpinname="Transform Out" dstnodeid="1054" dstpinname="Transform In" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="1037" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="AnisotropyUV">
-   </LINK>
-   <LINK srcnodeid="1026" srcpinname="Texture Out" dstnodeid="1054" dstpinname="Normal Map" hiddenwhenlocked="1">
-   </LINK>
-   <LINK srcnodeid="1061" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="NormalMap Strength">
-   </LINK>
    <LINK srcnodeid="1018" srcpinname="Texture Out" dstnodeid="1026" dstpinname="Texture In">
    </LINK>
    <NODE systemname="Renderer (DX11)" filename="%VVVV%\packs\dx11\nodes\plugins\base\VVVV.DX11.Nodes.dll" nodename="Renderer (DX11)" componentmode="InAWindow" id="1111">
@@ -1024,8 +990,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="|Albedo Color|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1114" srcpinname="Color Output" dstnodeid="1054" dstpinname="Albedo Color">
-   </LINK>
    <LINK srcnodeid="1105" srcpinname="Layer" dstnodeid="1104" dstpinname="Layer 2">
    </LINK>
    <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="1115">
@@ -1042,8 +1006,6 @@
    <PIN pinname="Descriptive Name" slicecount="1" values="Roughness">
    </PIN>
    </NODE>
-   <LINK srcnodeid="1115" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="Roughness">
-   </LINK>
    <LINK srcnodeid="1025" srcpinname="Output" dstnodeid="1115" dstpinname="Y Input Value">
    </LINK>
    <NODE nodename="IOBox (String)" systemname="IOBox (String)" componentmode="InABox" id="1119">
@@ -1078,7 +1040,77 @@
    <BOUNDS type="Box" left="6015" top="12195">
    </BOUNDS>
    </NODE>
-   <NODE systemname="Lights (DX11.Layer PBR)" filename="%VVVV%\packs\GGX\nodes\modules\Lights (DX11.Layer PBR).v4p" nodename="Lights (DX11.Layer PBR)" componentmode="Hidden" id="1101">
+   <NODE systemname="MaterialPropertiesPBR (DX11.TextureFX)" filename="%VVVV%\addonpack\lib\nodes\texture11\MaterialPropertiesPBR.tfx" nodename="MaterialPropertiesPBR (DX11.TextureFX)" componentmode="Hidden" id="972">
+   <BOUNDS type="Node" left="8655" top="4320" width="100" height="100">
+   </BOUNDS>
+   <PIN pinname="dielectric_metallic" visible="-1" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="smooth_rough" visible="-1" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="anisotropic" visible="-1" pintype="Input" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Default SizeXY" visible="-1" pintype="Input" slicecount="2" values="256,256">
+   </PIN>
+   <PIN pinname="Use Default Size" visible="-1" pintype="Input" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="Texture In" visible="-1" pintype="Input" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Texture Out" visible="1">
+   </PIN>
+   <PIN pinname="Roughness" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Metalmask" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Mips On Last Pass" slicecount="1" values="1">
+   </PIN>
+   <PIN pinname="Anisotropy UV" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="1018" srcpinname="Texture Out" dstnodeid="972" dstpinname="Metalmask">
+   </LINK>
+   <LINK srcnodeid="1113" srcpinname="Texture Out" dstnodeid="972" dstpinname="Anisotropy UV">
+   </LINK>
+   <NODE systemname="PBRTextured (DX11.Effect)" filename="%VVVV%\addonpack\lib\nodes\dx11\PBRTextured.fx" nodename="PBRTextured (DX11.Effect)" componentmode="Hidden" id="1054">
+   <BOUNDS type="Node" left="1200" top="6165" width="9600" height="270">
+   </BOUNDS>
+   <PIN pinname="NormalMap Strength" visible="1">
+   </PIN>
+   <PIN pinname="light" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Layer" visible="1">
+   </PIN>
+   <PIN pinname="Albedo" visible="1" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Albedo Color" visible="1">
+   </PIN>
+   <PIN pinname="Roughness" visible="1">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="199" srcpinname="Output Enum" dstnodeid="1054" dstpinname="Technique" linkstyle="Bezier">
+   </LINK>
+   <LINK srcnodeid="163" srcpinname="Output" dstnodeid="1054" dstpinname="Defines" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="322" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="DiffuseBRDF">
+   </LINK>
+   <LINK srcnodeid="901" srcpinname="Output" dstnodeid="1054" dstpinname="Geometry" linkstyle="PolyLine">
+   </LINK>
+   <LINK srcnodeid="958" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="Metalness">
+   </LINK>
+   <LINK srcnodeid="1022" srcpinname="Transform Out" dstnodeid="1054" dstpinname="Transform In" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="1037" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="AnisotropyUV">
+   </LINK>
+   <LINK srcnodeid="1026" srcpinname="Texture Out" dstnodeid="1054" dstpinname="Normal Map" hiddenwhenlocked="1">
+   </LINK>
+   <LINK srcnodeid="1061" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="NormalMap Strength">
+   </LINK>
+   <LINK srcnodeid="1114" srcpinname="Color Output" dstnodeid="1054" dstpinname="Albedo Color">
+   </LINK>
+   <LINK srcnodeid="1115" srcpinname="Y Output Value" dstnodeid="1054" dstpinname="Roughness">
+   </LINK>
+   <LINK srcnodeid="972" srcpinname="Texture Out" dstnodeid="1054" dstpinname="Material Properties">
+   </LINK>
+   <NODE systemname="Lights (DX11.Layer PBR)" filename="%VVVV%\addonpack\lib\nodes\modules\DX11\Lights (DX11.Layer PBR).v4p" nodename="Lights (DX11.Layer PBR)" componentmode="Hidden" id="1101">
    <BOUNDS type="Node" left="1215" top="9735" width="10620" height="270">
    </BOUNDS>
    <BOUNDS type="Box" left="30" top="6772" width="10425" height="5919">
@@ -1111,7 +1143,7 @@
    </PIN>
    <PIN pinname="Light Enabled" visible="1">
    </PIN>
-   <PIN pinname="Layer In" visible="1">
+   <PIN pinname="Layer In" visible="1" slicecount="1" values="||">
    </PIN>
    </NODE>
    <LINK srcnodeid="1101" srcpinname="Layer Out" dstnodeid="1104" dstpinname="Layer 1">
@@ -1143,37 +1175,5 @@
    <LINK srcnodeid="1087" srcpinname="Y Output Value" dstnodeid="1101" dstpinname="Light Enabled">
    </LINK>
    <LINK srcnodeid="1054" srcpinname="Layer" dstnodeid="1101" dstpinname="Layer In">
-   </LINK>
-   <NODE systemname="PBRMaterialProperties (DX11.TextureFX)" filename="%VVVV%\packs\GGX\nodes\texture11\PBRMaterialProperties.tfx" nodename="PBRMaterialProperties (DX11.TextureFX)" componentmode="Hidden" id="972">
-   <BOUNDS type="Node" left="8655" top="4320" width="100" height="100">
-   </BOUNDS>
-   <PIN pinname="dielectric_metallic" visible="-1" pintype="Input" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="smooth_rough" visible="-1" pintype="Input" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="anisotropic" visible="-1" pintype="Input" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Default SizeXY" visible="-1" pintype="Input" slicecount="2" values="256,256">
-   </PIN>
-   <PIN pinname="Use Default Size" visible="-1" pintype="Input" slicecount="1" values="0">
-   </PIN>
-   <PIN pinname="Texture In" visible="-1" pintype="Input" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Texture Out" visible="1">
-   </PIN>
-   <PIN pinname="Roughness" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Metalmask" visible="1" slicecount="1" values="||">
-   </PIN>
-   <PIN pinname="Mips On Last Pass" slicecount="1" values="1">
-   </PIN>
-   <PIN pinname="Anisotropy UV" visible="1">
-   </PIN>
-   </NODE>
-   <LINK srcnodeid="972" srcpinname="Texture Out" dstnodeid="1054" dstpinname="Material Properties">
-   </LINK>
-   <LINK srcnodeid="1018" srcpinname="Texture Out" dstnodeid="972" dstpinname="Metalmask">
-   </LINK>
-   <LINK srcnodeid="1113" srcpinname="Texture Out" dstnodeid="972" dstpinname="Anisotropy UV">
    </LINK>
    </PATCH>
