@@ -8,18 +8,20 @@ namespace VVVV.Utils.Win32
 {
     public class Subclass : IDisposable
     {
-        public static Subclass Create(IntPtr hwnd)
+        public static Subclass Create(IntPtr hwnd, object sender)
         {
-            return new Subclass(hwnd);
+            return new Subclass(hwnd, sender);
         }
 
         private IntPtr FHwnd;
+        private object FSender;
         public IntPtr HWnd { get { return FHwnd; } }
         private readonly ComCtl32.SubClassProc FSubclassProcDelegate;
 
-        private Subclass(IntPtr hwnd)
+        private Subclass(IntPtr hwnd, object sender)
         {
             FHwnd = hwnd;
+            FSender = sender;
             FSubclassProcDelegate = SubclassProc;
             if (!ComCtl32.SetWindowSubclass(FHwnd, FSubclassProcDelegate, UIntPtr.Zero, IntPtr.Zero))
                 throw new Exception("SetWindowSubclass failed!");
@@ -38,6 +40,7 @@ namespace VVVV.Utils.Win32
             {
                 ComCtl32.RemoveWindowSubclass(FHwnd, FSubclassProcDelegate, UIntPtr.Zero);                   
                 FHwnd = IntPtr.Zero;
+                FSender = null;
                 if (Disposed != null)
                     Disposed(this, EventArgs.Empty);
                 WindowMessage = null;
@@ -55,7 +58,7 @@ namespace VVVV.Utils.Win32
             if (WindowMessage != null)
             {
                 var args = new WMEventArgs(hWnd, msg, wParam, lParam);
-                WindowMessage(this, args);
+                WindowMessage(FSender, args);
                 handled = args.Handled;
             }
             if (msg == WM.NCDESTROY)

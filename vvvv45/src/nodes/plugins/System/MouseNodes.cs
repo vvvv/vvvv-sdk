@@ -60,7 +60,7 @@ namespace VVVV.Nodes.Input
             }
         }
 
-        [Input("Cycle On Mouse Down", DefaultBoolean = true, Visibility = PinVisibility.OnlyInspector)]
+        [Input("Cycle On Mouse Down", DefaultBoolean = false, Visibility = PinVisibility.OnlyInspector)]
         public ISpread<bool> CycleEnabledIn;
 
         [Input("Reset Cursor After Cycle", DefaultBoolean = false, Visibility = PinVisibility.OnlyInspector)]
