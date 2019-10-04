@@ -102,7 +102,7 @@ namespace VVVV.Hosting
                 {
                     if (!FSubclasses.Any(s => s.HWnd == handle))
                     {
-                        var subclass = Subclass.Create(handle);
+                        var subclass = Subclass.Create(handle, window.UserInputWindow);
                         FSubclasses.Add(subclass);
                         SubclassCreated(window);
                         subclass.WindowMessage += HandleSubclassWindowMessage;
