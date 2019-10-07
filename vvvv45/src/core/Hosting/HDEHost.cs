@@ -514,6 +514,15 @@ namespace VVVV.Hosting
         public bool CreateNode(INode node)
         {
             var nodeInfo = NodeInfoFactory.ToProxy(node.GetNodeInfo());
+
+            // Workaround for null pointer in DX11 - it expects the UserData field to be set
+            if (nodeInfo.UserData == null && nodeInfo.Factory != null)
+            {
+                var factoryType = nodeInfo.Factory.GetType();
+                if (factoryType.Name.StartsWith("DX11") && factoryType.BaseType != null && factoryType.BaseType.Name.StartsWith("AbstractDX11ShaderFactory"))
+                    nodeInfo.Factory.ExtractNodeInfos(nodeInfo.Filename, default);
+            }
+
             return nodeInfo.Factory.Create(nodeInfo, node);
         }
         
