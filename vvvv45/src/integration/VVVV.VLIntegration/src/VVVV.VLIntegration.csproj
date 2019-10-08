@@ -90,7 +90,7 @@
     <ItemGroup>
       <None Include="@(_PackContent)">
         <!-- Project specific metadata -->
-        <Link>$(_PackageTargetPrefix)%(_PackContent.PackageId)-%(_PackContent.PackageVersion)\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        <Link>$(_PackageTargetPrefix)%(_PackContent.PackageId).%(_PackContent.PackageVersion)\%(RecursiveDir)%(Filename)%(Extension)</Link>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Include="@(_GirlpowerPackContent)">
