@@ -31,17 +31,17 @@ namespace VVVV.Nodes.Input
         [Import]
         IWindowMessageService FWMService;
 
-        private readonly List<Subclass> FSubclasses = new List<Subclass>();
-
         public virtual void OnImportsSatisfied()
         {
-            FWMService.SubclassCreated += (s, e) => SubclassCreated(s as Subclass);
-            FWMService.SubclassDestroyed += (s, e) => SubclassDestroyed(s as Subclass);
+            FWMService.SubclassCreated += FWMService_SubclassCreated;
+            FWMService.SubclassDestroyed += FWMService_SubclassDestroyed;
             
             var disabled = FEnabledIn.ToObservable(1)
                 .DistinctUntilChanged()
                 .Where(enabled => !enabled);
-            Initialize(FWMService.MessageNotifications, disabled);
+            var windowsMessages = FWMService.MessageNotifications
+                .Where(_ => FEnabledIn.SliceCount > 0 && FEnabledIn[0]);
+            Initialize(windowsMessages, disabled);
         }
 
         protected abstract void Initialize(IObservable<EventPattern<WMEventArgs>> windowMessages, IObservable<bool> disabled);
@@ -58,6 +58,18 @@ namespace VVVV.Nodes.Input
 
         public virtual void Dispose()
         {
+            FWMService.SubclassCreated -= FWMService_SubclassCreated;
+            FWMService.SubclassDestroyed -= FWMService_SubclassDestroyed;
+        }
+
+        private void FWMService_SubclassCreated(object sender, EventArgs e)
+        {
+            SubclassCreated(sender as Subclass);
+        }
+
+        private void FWMService_SubclassDestroyed(object sender, EventArgs e)
+        {
+            SubclassDestroyed(sender as Subclass);
         }
     }
 }
