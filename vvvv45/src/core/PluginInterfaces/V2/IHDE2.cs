@@ -310,11 +310,19 @@ namespace VVVV.PluginInterfaces.V2
 		{
 			get;
 		}
-		
-		/// <summary>
-		/// Provides access to Direct3D9 devices created by vvvv.
+
+        /// <summary>
+		/// Gets the full path to the vvvv.exe.
 		/// </summary>
-		IDXDeviceService DeviceService
+		string UserPacksPath
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Provides access to Direct3D9 devices created by vvvv.
+        /// </summary>
+        IDXDeviceService DeviceService
 		{
 		    get;
 		}

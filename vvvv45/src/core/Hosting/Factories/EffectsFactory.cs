@@ -117,7 +117,7 @@ namespace VVVV.Hosting.Factories
                 {
                     // This is the single include path also used internally by vvvv.exe
                     var includePath = Path.Combine(FHDEHost.ExePath, "lib", "nodes");
-                    project = new FXProject(filename, includePath);
+                    project = new FXProject(filename, includePath + ";" + FHDEHost.UserPacksPath);
                     if (FSolution.Projects.CanAdd(project))
                     {
                         FSolution.Projects.Add(project);
