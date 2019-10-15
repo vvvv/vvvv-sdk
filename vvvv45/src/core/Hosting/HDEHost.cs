@@ -840,7 +840,7 @@ namespace VVVV.Hosting
         public string UserPacksPathLegacy => Path.Combine(ExePath, "packs");
 
         string UserAppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "vvvv", IsPreview ? $"beta-preview" : "beta");
-        public string UserPacksPath => Path.Combine(UserAppDataFolder, "packs" + (Environment.Is64BitProcess ? "_x64" : "_x86"));
+        public string UserPacksPath => Path.Combine(UserAppDataFolder + (Environment.Is64BitProcess ? "_x64" : "_x86"), "packs");
 
         private Window FActivePatchWindow;
         public IWindow2 ActivePatchWindow
