@@ -177,8 +177,8 @@ namespace VVVV.Hosting
             if (Directory.Exists(PacksPath))
                 AssemblyLoader.AddPackageRepository(PacksPath);
             //the one where the user is supposed to install packages to share it between vvvversions
-            if (Directory.Exists(UserPacksPath))
-                AssemblyLoader.AddPackageRepository(UserPacksPath);
+            //if (Directory.Exists(UserPacksPath))
+            //    AssemblyLoader.AddPackageRepository(UserPacksPath);
             //the legacy path
             if (Directory.Exists(UserPacksPathLegacy))
                 AssemblyLoader.AddPackageRepository(UserPacksPathLegacy);
@@ -303,8 +303,8 @@ namespace VVVV.Hosting
 
             //search for packs, add factories dir to this catalog, add core dir to assembly search path,
             //add nodes to nodes search path
-            if (Directory.Exists(UserPacksPath))
-                LoadFactoriesFromLegacyPackages(UserPacksPath, catalog);
+            //if (Directory.Exists(UserPacksPath))
+            //    LoadFactoriesFromLegacyPackages(UserPacksPath, catalog);
             if (Directory.Exists(UserPacksPathLegacy))
                 LoadFactoriesFromLegacyPackages(UserPacksPathLegacy, catalog);
             //new package loading system
@@ -359,8 +359,8 @@ namespace VVVV.Hosting
             //from the installed packs
             if (Directory.Exists(UserPacksPathLegacy))
                 LoadNodesFromLegacyPackages(UserPacksPathLegacy);
-            if (Directory.Exists(UserPacksPath))
-                LoadNodesFromLegacyPackages(UserPacksPath);
+            //if (Directory.Exists(UserPacksPath))
+            //    LoadNodesFromLegacyPackages(UserPacksPath);
             LoadNodesFromPackages();
         }
 
