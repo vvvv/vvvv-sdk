@@ -398,9 +398,9 @@ namespace VVVV.Nodes
 							case "Bang": parameter.Widget = new BangWidget(); break;
 							case "Press": parameter.Widget = new PressWidget(); break;
 							case "Toggle": parameter.Widget = new ToggleWidget(); break;
-							case "Slider": parameter.Widget = new SliderWidget(); break;
-							case "Endless": parameter.Widget = new NumberboxWidget(); break;
-						}
+							case "Slider": parameter.Widget = new SliderWidget(); break; 
+							case "Endless": parameter.Widget = new SliderWidget(); break; //better default as long as switching doesn't work without reexposing new NumberBoxWidget(); break;
+                            }
 						
 						//widget display precision
 						//int.TryParse(subtype[7], out precision);
@@ -770,8 +770,10 @@ namespace VVVV.Nodes
 			var pin = sender as IPin2;
 			var labelPin = sender as IPin2;
 			var userId = IdFromPin(labelPin);
-			
-			var param = FCachedParams[userId];
+
+            if (!FCachedParams.TryGetValue(userId, out var param))
+                return; //happens when closing a patch that has nodes exposed, where this is disposed before the pins are cleaned up
+
 			var subtype = pin.SubType.Split(',').Select(s => s.Trim()).ToArray();
 			
 			switch (param.TypeDefinition.Datatype)
