@@ -76,13 +76,15 @@ namespace VVVV.Nodes
 		  
 		public RCPRabbitNode()
 		{ 
-			//initialize the RCP Server
-			FRCPServer = new RCPServer();
+			
 		}
 		
 		public void OnImportsSatisfied()
 		{
-			FHDEHost.ExposedNodeService.NodeAdded += NodeAddedCB;
+            //initialize the RCP Server
+            FRCPServer = new RCPServer("vvvv beta " + FHDEHost.Version.ToString());
+
+            FHDEHost.ExposedNodeService.NodeAdded += NodeAddedCB;
 			FHDEHost.ExposedNodeService.NodeRemoved += NodeRemovedCB;
 			
 			GroupMap.GroupAdded += GroupAdded; 

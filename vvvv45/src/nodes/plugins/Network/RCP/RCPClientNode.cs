@@ -50,33 +50,41 @@ namespace VVVV.Nodes
 		
 		[Output("Connected")]
 		public ISpread<bool> FIsConnected;
-		
-		[Output("Parameters")]
+
+        [Output("Connected Server Info")]
+        public ISpread<string> FServerInfo;
+
+        [Output("Parameters")]
 		public ISpread<RcpParameter> FParameters;
 		
 		[Import()]
 		public ILogger FLogger;
-		
-		RCPClient FRCPClient;
+
+        [Import()]
+        public IHDEHost FHDEHost;
+
+        RCPClient FRCPClient;
 		WebsocketClientTransporter FTransporter;
 		HashSet<short> FParamIds = new HashSet<short>();
 		#endregion fields & pins
 		
 		public RCPStickNode()
 		{
-			FRCPClient = new RCPClient();
 			
-			FRCPClient.ParameterAdded += ParameterAdded;
-			FRCPClient.ParameterRemoved += ParameterRemoved;
 		}
 		
 		public void OnImportsSatisfied()
 		{
-			//FWebsocketTransporter = new WebsocketClientTransporter("127.0.0.1", 10000);
-			//FRCPClient.SetTransporter(FWebsocketTransporter);
-			
-			//FRCPClient.Log = (s) => FLogger.Log(LogType.Debug, "client: " + s);
-			FClientOut[0] = FRCPClient;
+            FRCPClient = new RCPClient("vvvv beta " + FHDEHost.Version.ToString());
+
+            FRCPClient.ParameterAdded += ParameterAdded;
+            FRCPClient.ParameterRemoved += ParameterRemoved;
+
+            //FWebsocketTransporter = new WebsocketClientTransporter("127.0.0.1", 10000);
+            //FRCPClient.SetTransporter(FWebsocketTransporter);
+
+            //FRCPClient.Log = (s) => FLogger.Log(LogType.Debug, "client: " + s);
+            FClientOut[0] = FRCPClient;
 		}
 		
 		public void Dispose()
@@ -128,12 +136,23 @@ namespace VVVV.Nodes
 			}
 			
 			FIsConnected[0] = FTransporter.IsConnected;
+            if (FIsConnected[0])
+            {
+                if (!string.IsNullOrWhiteSpace(FRCPClient.ConnectedServerVersion))
+                    FServerInfo[0] = "RCP Version: " + FRCPClient.ConnectedServerVersion + ", Application Id: " + FRCPClient.ConnectedServerApplicationId;
+            }
+            else
+            {
+                FParamIds.Clear();
+                UpdateOutputs();
+            }
 		}
 		
 		private void Initialize()
 		{
 			FParamIds.Clear();
 			FRCPClient.Initialize();
+            FRCPClient.RequestInfo();
 		}
 		
 		//updates all parameters
