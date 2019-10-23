@@ -770,12 +770,19 @@ namespace VVVV.Nodes
 			var pin = sender as IPin2;
 			var labelPin = sender as IPin2;
 			var userId = IdFromPin(labelPin);
+            Parameter param;
+            string[] subtype;
 
-            if (!FCachedParams.TryGetValue(userId, out var param))
-                return; //happens when closing a patch that has nodes exposed, where this is disposed before the pins are cleaned up
+            try
+            {
+                param = FCachedParams[userId];
+                subtype = pin.SubType.Split(',').Select(s => s.Trim()).ToArray();
+            }
+            catch (Exception)
+            {
+                return; //can happen when deleting an exposed node or closing a patch with exposed nodes
+            }
 
-			var subtype = pin.SubType.Split(',').Select(s => s.Trim()).ToArray();
-			
 			switch (param.TypeDefinition.Datatype)
 			{
 				case RcpTypes.Datatype.Boolean:
