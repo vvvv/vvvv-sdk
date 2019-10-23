@@ -26,131 +26,13 @@ using VVVV.PluginInterfaces.V2.Graph;
 using VL.UI.Core;
 using VVVV.NuGetAssemblyLoader;
 using VL.Lang.Platforms.CIL;
+using System.Runtime.CompilerServices;
 
 namespace VVVV.VL.Factories
 {
     [Export(typeof(IAddonFactory))]
     public partial class NodeFactory : AbstractFileFactory<IInternalPluginHost>, IPartImportsSatisfiedNotification
     {
-        class PatchExport : IDisposable
-        {
-            public readonly NodeFactory NodeFactory;
-            public bool IsInSync;
-            readonly INodeInfoFactory FNodeInfoFactory;
-            INodeInfo FNodeInfo;
-            NodeId? FNodeDefinitionId;
-            internal Node FCurrentNodeDefinition;
-
-            public PatchExport(NodeFactory nodeFactory, Node nodeDefinition)
-            {
-                NodeFactory = nodeFactory;
-                FNodeInfoFactory = nodeFactory.FNodeInfoFactory;
-                SerializedId = nodeDefinition.SerializedId;
-                FNodeInfo = CreateNodeInfo(nodeDefinition);
-            }
-
-            public string SerializedId { get; }
-
-            public NodeId NodeDefinitionId => InterlockedHelper.CacheNoLock(ref FNodeDefinitionId, () =>            
-                AsyncPump.Run(async () => (await NodeFactory.LoadDocumentAsync(NodeInfo.Filename)).AllTopLevelDefinitions.FirstOrDefault(n => n.SerializedId == SerializedId)));
-
-            public Node CurrentNodeDefinition => InterlockedHelper.CacheNoLock(ref FCurrentNodeDefinition, () =>
-            {
-                var nodeId = NodeDefinitionId; // has side effect. do that first.
-                return NodeFactory.FSyncedSolution.GetTopLevelDefinition(NodeDefinitionId);
-            });
-
-            public void LetGo()
-            {
-                FNodeDefinitionId = null;
-                FCurrentNodeDefinition = null;
-            }
-
-            public void Dispose()
-            {
-                if (FNodeInfo != null && FNodeInfo.UserData == this)
-                {
-                    FNodeInfoFactory.DestroyNodeInfo(FNodeInfo);
-                    FNodeInfo = null;
-                }
-            }
-
-            public INodeInfo NodeInfo => FNodeInfo;
-
-            private INodeInfo CreateNodeInfo(Node nodeDefinition)
-            {
-                string name, category, version;
-                GetNameAndVersion(nodeDefinition, out name, out category, out version);
-                var nodeInfo = FNodeInfoFactory.CreateNodeInfo(name, category, version, nodeDefinition.Document.FilePath, true);
-                if (nodeInfo.UserData == null)
-                {
-                    // If UserData != null the node info is already claimed by someone else - so leave it alone
-                    nodeInfo.UserData = this;
-                    nodeInfo.Factory = NodeFactory;
-                    nodeInfo.Type = NodeType.VL;
-                    SyncVLInfo(nodeDefinition, nodeInfo);
-                }
-                nodeInfo.CommitUpdate();
-                return nodeInfo;
-            }
-
-            public void Sync(Node nodeDefinition)
-            {
-                var nodeInfo = NodeInfo;
-                string name, category, version;
-                GetNameAndVersion(nodeDefinition, out name, out category, out version);
-                if (nodeInfo.Name != name || nodeInfo.Category != category || nodeInfo.Version != version || nodeInfo.Filename != nodeDefinition.Document.FilePath)
-                {
-                    if (nodeInfo.UserData == this)
-                        FNodeInfoFactory.UpdateNodeInfo(nodeInfo, name, category, version, nodeDefinition.Document.FilePath);
-                    else
-                        FNodeInfo = nodeInfo = CreateNodeInfo(nodeDefinition);
-                    var hdeHost = NodeFactory.FHDEHost;
-                    foreach (var node in hdeHost.RootNode.AsDepthFirstEnumerable())
-                    {
-                        if (node.NodeInfo == nodeInfo)
-                        {
-                            var patchMessage = new PatchMessage(node.Parent.NodeInfo.Filename);
-                            var nodeMessage = patchMessage.AddNode(node.ID);
-                            nodeMessage.CreateMe = true;
-                            nodeMessage.SystemName = nodeInfo.Systemname;
-                            nodeMessage.Filename = nodeInfo.Filename;
-                            hdeHost.SendXMLSnippet(patchMessage.Filename, patchMessage.ToString(), true);
-                        }
-                    }
-                }
-                SyncVLInfo(nodeDefinition, nodeInfo);
-            }
-
-            private void GetNameAndVersion(Node nodeDefinition, out string name, out string category, out string version)
-            {
-                category = NodeFactory.VLCategoryToCategory(nodeDefinition.Category);
-                name = nodeDefinition.Name.NamePart;
-                version = NodeFactory.VLVersionToVersion(nodeDefinition.Name.VersionPart);
-            }
-
-            private void SyncVLInfo(Node nodeDefinition, INodeInfo nodeInfo)
-            {
-                if (nodeInfo.UserData != this)
-                    return; // Not our responsibility
-
-                var tagString = string.Join(", ", nodeDefinition.Tags);
-                if (nodeInfo.Help != (nodeDefinition.Summary ?? string.Empty) ||
-                    nodeInfo.Tags != (tagString ?? string.Empty) ||
-                    nodeInfo.Author != (nodeDefinition.Document.Authors ?? string.Empty) ||
-                    nodeInfo.Credits != (nodeDefinition.Document.Credits ?? string.Empty))
-                {
-                    nodeInfo.BeginUpdate();
-                    nodeInfo.Help = nodeDefinition.Summary;
-                    nodeInfo.Tags = tagString;
-                    nodeInfo.Author = nodeDefinition.Document.Authors;
-                    nodeInfo.Credits = nodeDefinition.Document.Credits;
-                    nodeInfo.CommitUpdate();
-                }
-            }
-        }
-
-        private Dictionary<string, Dictionary<string, PatchExport>> FExports = new Dictionary<string, Dictionary<string, PatchExport>>();
         private SynchronizationContext FSyncContext;
         private Solution FSyncedSolution;
 
@@ -209,18 +91,14 @@ namespace VVVV.VL.Factories
         {
             if (SplashShown)
             {
-                var document = await VLSession.Instance.GetOrAddDocument(filename, createNew: false);
-                FSyncedSolution = document.Solution;
-                return document;
+                return await VLSession.Instance.GetOrAddDocument(filename, createNew: false);
             }
             else
             {
                 using (var sf = new SplashForm())
                 {
-                    var document = await VLSession.Instance.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashScreen: sf);
-                    FSyncedSolution = document.Solution;
                     SplashShown = true;
-                    return document;
+                    return await VLSession.Instance.GetOrAddDocumentWithSplashScreen(filename, createNew: false, splashScreen: sf);
                 }
             }
         }
@@ -236,17 +114,27 @@ namespace VVVV.VL.Factories
         }
         string FNodeFactoryPath;
 
-        protected override IEnumerable<INodeInfo> LoadNodeInfos(string filename)
+        protected override IEnumerable<INodeInfo> LoadNodeInfos(string filePath)
         {
-            var exports = GetExports(filename);
-            foreach (var export in exports)
+            var document = Host.Session.CurrentSolution.GetOrAddDocument(filePath, createNew: false, loadDependencies: false);
+            foreach (var nodeDefinition in GetNodeDefinitions(document))
             {
-                yield return export.NodeInfo;
-                export.LetGo();
+                var (name, category, version) = GetNodeInfoKeys(nodeDefinition);
+                var nodeInfo = FNodeInfoFactory.CreateNodeInfo(name, category, version, filePath, beginUpdate: true);
+                UpdateNodeInfo(nodeDefinition, nodeInfo);
+                yield return nodeInfo;
             }
-            // To debug issue #1971
-            //if (filename.Contains("VVVV.Games.Asteroids"))
-            //    DebugHelper.BreakOnFileAccess(filename);
+        }
+
+        private void UpdateNodeInfo(Node nodeDefinition, INodeInfo nodeInfo)
+        {
+            nodeInfo.Factory = this;
+            nodeInfo.Type = NodeType.VL;
+            nodeInfo.Help = nodeDefinition.Summary;
+            nodeInfo.Tags = string.Join(", ", nodeDefinition.Tags);
+            nodeInfo.Author = nodeDefinition.Document.Authors;
+            nodeInfo.Credits = nodeDefinition.Document.Credits;
+            nodeInfo.CommitUpdate();
         }
 
         protected override bool CreateNode(INodeInfo nodeInfo, IInternalPluginHost pluginHost)
@@ -269,36 +157,42 @@ namespace VVVV.VL.Factories
             Host.Platform.CompilationUpdated -= Platform_CompilationUpdated;
             try
             {
-                var export = GetExport(nodeInfo);
-                if (export != null)
+                return AsyncPump.Run(async () =>
                 {
+                    var document = await LoadDocumentAsync(nodeInfo.Filename);
+                    if (document == null)
+                        return false;
+
                     // Load all entry points as it is very likely more nodes of the document will get used in subsequent calls
+                    var nodeDefinition = default(Node);
                     var platform = Host.Platform;
                     var entryPoints = platform.LatestCompilation.EntryPointIds.ToBuilder();
                     var changed = false;
-                    foreach (var e in GetExports(nodeInfo.Filename))
+                    foreach (var n in GetNodeDefinitions(document))
                     {
-                        // Accessing the NodeDefinitionId has side-effects leading to a new compilation
-                        changed |= entryPoints.Add(e.NodeDefinitionId);
+                        changed |= entryPoints.Add(n.Identity);
+
+                        var (name, category, version) = GetNodeInfoKeys(n);
+                        if (name == nodeInfo.Name && category == nodeInfo.Category && version == nodeInfo.Version)
+                            nodeDefinition = n;
                     }
 
                     if (changed)
                     {
-                        AsyncPump.Run(async () =>
-                        {
                         // Fetch the latest compilation (previous calls had side-effects)
                         var compilation = await platform.UpdateCompilation(
                                 CancellationToken.None,
                                 platform.LatestCompilation.WithEntryPoints(entryPoints));
-                            await Host.RuntimeHost.UpdateAsync(compilation, CancellationToken.None);
-                        });
+                        await Host.RuntimeHost.UpdateAsync(compilation, CancellationToken.None);
                     }
 
-                    // It's ok to not use the CurrentNodeDefinition -> works on NodeId internally
-                    pluginHost.Plugin = Host.RuntimeHost.CreateInstance(export.CurrentNodeDefinition, pluginHost, FIORegistry);
+                    if (nodeDefinition != null)
+                    {
+                        pluginHost.Plugin = Host.RuntimeHost.CreateInstance(nodeDefinition, pluginHost, FIORegistry);
+                    }
+
                     return true;
-                }
-                return false;
+                });
             }
             finally
             {
@@ -319,26 +213,17 @@ namespace VVVV.VL.Factories
             return false;
         }
 
-        bool NameCategoryVersionValid(string name, string version, string category)
-        {
-            return UserInputParsing.IsValidIdentifier(name) &&
-                UserInputParsing.IsValidIdentifier(version, true) &&
-                UserInputParsing.IsValidCategories(category);
-        }
-
         protected override bool CloneNode(INodeInfo nodeInfo, string directory, string name, string category, string version, out string path)
         {
-            var export = GetExport(nodeInfo);
-            if (export != null)
+            var nodeDefinition = GetNodeDefinition(nodeInfo);
+            if (nodeDefinition != null)
             {
                 // Foo (Bar) -> VVVV.Bar.vl
-                var oldPrefixedCategory = Symbols.Category.VVVV.Name + "." + nodeInfo.Category;
                 var newPrefixedCategory = Symbols.Category.VVVV.Name + "." + category;
                 path = Path.Combine(directory, newPrefixedCategory + "." + name + ".vl");
                 var i = 1;
                 while (File.Exists(path))
                     path = Path.Combine(directory, newPrefixedCategory + "." + name + i++ + ".vl");
-                var session = Host.Session;
 
                 if (!string.IsNullOrEmpty(version.Trim()))
                     name += " (" + version + ")";
@@ -349,7 +234,6 @@ namespace VVVV.VL.Factories
 
                 Document document;
                 var newCategory = Symbols.Category.GetCategoryForFullName(newPrefixedCategory);
-                var nodeDefinition = export.CurrentNodeDefinition;
                 var newDefinition = nodeDefinition
                     .WithName((NameAndVersion)name, updateReferences: false)
                     .WithIsGeneric(false);
@@ -378,7 +262,7 @@ namespace VVVV.VL.Factories
             return base.CloneNode(nodeInfo, directory, name, category, version, out path);
         }
 
-        private void HandleMouseDown(object sender, MouseEventArgs args)
+        void HandleMouseDown(object sender, MouseEventArgs args)
         {
             var button = args.Button;
             if (button != Mouse_Buttons.Right) return;
@@ -388,62 +272,142 @@ namespace VVVV.VL.Factories
             if (nodeInfo == null) return;
             var factory = nodeInfo.Factory;
             if (factory == null || factory != this) return;
-            var export = GetExport(nodeInfo);
-            if (export == null) return;
+            var nodeDefinition = GetNodeDefinition(nodeInfo);
+            if (nodeDefinition == null) return;
 
             var n = (IInternalPluginHost) node.InternalCOMInterf;
             var path = (n.Plugin as NodePlugin)?.Object?.Context?.Path;
             var patchHandle = path.HasValue
                 ? new PatchHandle(path.Value)
                 : null;
-            Host.OpenPatchEditor(export.CurrentNodeDefinition, FHDEHost, patchHandle);
+            Host.OpenPatchEditor(nodeDefinition, FHDEHost, patchHandle);
         }
 
         void HandleWindowSelectionChanged(object sender, WindowEventArgs args)
         {
             Host.HideTooltip();
         }
-        
-        private PatchExport GetExport(INodeInfo nodeInfo)
+
+        Task HandleSolutionUpdated(object sender, SolutionUpdateEventArgs args)
         {
-            var export = nodeInfo.UserData as PatchExport;
-            if (export == null)
+            if (args.Kind.HasFlag(SolutionUpdateKind.AffectSession))
             {
-                // Node info from cached nodelist.xml
-                export = GetExports(nodeInfo.Filename)
-                    .FirstOrDefault(e => 
-                        e.CurrentNodeDefinition.Name.NamePart == nodeInfo.Name && 
-                        VLCategoryToCategory(e.CurrentNodeDefinition.Category) == nodeInfo.Category &&
-                        VLVersionToVersion(e.CurrentNodeDefinition.Name.VersionPart) == nodeInfo.Version
-                    );
-                nodeInfo.UserData = export;
+                SyncNodeInfos(args.Solution);
             }
-            return export;
+            return Task.CompletedTask;
         }
 
-        private IEnumerable<PatchExport> GetExports(string filename)
+        void SyncNodeInfos(Solution solution)
         {
-            var session = Host.Session;
-            Document document = null;
-            // Add the document to the session (session will check if already added to it)
-            try
+            var oldSolution = FSyncedSolution;
+            FSyncedSolution = solution;
+            if (solution.ChangedSince(oldSolution))
             {
-                // Load the document only, no need for symbols now
-                document = session.CurrentSolution.GetOrAddDocument(filename, createNew: false, loadDependencies: false);
+                foreach (var newDocument in solution.Documents)
+                {
+                    var oldDocument = oldSolution.GetDocument(newDocument.Identity);
+                    if (oldDocument != null && newDocument.ChangedSince(oldDocument))
+                        SyncNodeInfos(oldDocument, newDocument);
+                }
+                foreach (var oldDocument in oldSolution.Documents)
+                {
+                    var newDocument = solution.GetDocument(oldDocument.Identity);
+                    if (newDocument == null)
+                    {
+                        var nodeInfos = FNodeInfoFactory.NodeInfos.Where(n => n.Filename == oldDocument.FilePath);
+                        foreach (var nodeInfo in nodeInfos)
+                            FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
+                    }
+                }
             }
-            catch (Exception)
-            {
-            }
-
-            if (document != null)
-                return SyncExports(document);
-
-            return Enumerable.Empty<PatchExport>();
         }
 
-        private string VLCategoryToCategory(Symbols.Category vlCategory)
+        void SyncNodeInfos(Document oldDocument, Document newDocument)
         {
-            var session = Host.Session;
+            var oldFilePath = oldDocument.FilePath;
+            var filePath = newDocument.FilePath;
+            var oldMap = GetNodeDefinitions(oldDocument).ToDictionary(d => d.Identity);
+            foreach (var newDef in GetNodeDefinitions(newDocument))
+            {
+                var oldDef = oldMap.ValueOrDefault(newDef.Identity);
+                if (oldDef == newDef)
+                    continue;
+
+                var (oldName, oldCategory, oldVersion) = GetNodeInfoKeys(oldDef ?? newDef);
+                var (name, category, version) = GetNodeInfoKeys(newDef);
+
+                var nodeInfo = FNodeInfoFactory.CreateNodeInfo(oldName, oldCategory, oldVersion, oldFilePath, beginUpdate: true);
+                var oldNodeInfo = nodeInfo;
+
+                // Check if document was moved or the definition renamed.
+                if (name != oldName || category != oldCategory || version != oldVersion || filePath != oldFilePath)
+                {
+                    if (FNodeInfoFactory.ContainsKey(name, category, version, filePath))
+                    {
+                        // A node info already exists (document already existed). Switch to the existing one (otherwise we'd see double entries).
+                        nodeInfo = FNodeInfoFactory.CreateNodeInfo(name, category, version, filePath, beginUpdate: false);
+                    }
+                    else
+                    {
+                        // Update the existing node info.
+                        FNodeInfoFactory.UpdateNodeInfo(nodeInfo, name, category, version, filePath);
+                    }
+
+                    // Point all existing nodes to the updated node info
+                    foreach (var node in FHDEHost.RootNode.AsDepthFirstEnumerable())
+                    {
+                        if (node.NodeInfo == oldNodeInfo)
+                        {
+                            var patchMessage = new PatchMessage(node.Parent.NodeInfo.Filename);
+                            var nodeMessage = patchMessage.AddNode(node.ID);
+                            nodeMessage.CreateMe = true;
+                            nodeMessage.SystemName = nodeInfo.Systemname;
+                            nodeMessage.Filename = nodeInfo.Filename;
+                            FHDEHost.SendXMLSnippet(patchMessage.Filename, patchMessage.ToString(), true);
+                        }
+                    }
+                }
+
+                if (nodeInfo == oldNodeInfo)
+                    UpdateNodeInfo(newDef, nodeInfo);
+                else
+                    FNodeInfoFactory.DestroyNodeInfo(oldNodeInfo);
+            }
+
+            var newMap = GetNodeDefinitions(newDocument).ToDictionary(d => d.Identity);
+            foreach (var oldDef in GetNodeDefinitions(oldDocument))
+            {
+                if (newMap.ContainsKey(oldDef.Identity))
+                    continue;
+
+                var (name, category, version) = GetNodeInfoKeys(oldDef);
+                var nodeInfo = FNodeInfoFactory.CreateNodeInfo(name, category, version, filePath, beginUpdate: false);
+                if (nodeInfo.Factory == this)
+                    FNodeInfoFactory.DestroyNodeInfo(nodeInfo);
+            }
+
+            if (filePath != oldFilePath && File.Exists(oldFilePath))
+            {
+                // The document was saved under a new name but old document still exists on disk. 
+                // Scan the old document again so we have double entries in the node browser as we'd have after a restart.
+                foreach (var info in LoadNodeInfos(oldFilePath))
+                {
+                    Touch(info);
+                }
+            }
+        }
+
+        Node GetNodeDefinition(INodeInfo nodeInfo)
+        {
+            var document = AsyncPump.Run(() => LoadDocumentAsync(nodeInfo.Filename));
+            foreach (var n in GetNodeDefinitions(document))
+                if (Matches(n, nodeInfo))
+                    return n;
+            return null;
+        }
+
+        static string VLCategoryToCategory(Symbols.Category vlCategory)
+        {
             var exportedNodesCategory = Symbols.Category.VVVV;
             var categoryName = vlCategory.FullName
                 .Substring(exportedNodesCategory.FullName.Length)
@@ -453,75 +417,38 @@ namespace VVVV.VL.Factories
             return categoryName;
         }
 
-        private string VLVersionToVersion(string vlVersion)
+        static string VLVersionToVersion(string vlVersion)
         {
             return vlVersion ?? string.Empty;
         }
 
-        Task HandleSolutionUpdated(object sender, SolutionUpdateEventArgs args)
+        static (string name, string category, string version) GetNodeInfoKeys(Node nodeDefinition)
         {
-            if (args.Kind.HasFlag(SolutionUpdateKind.AffectSession))
-            {
-                SyncExports(args.Solution);
-            }
-            return Task.CompletedTask;
+            var name = nodeDefinition.Name.NamePart;
+            var category = VLCategoryToCategory(nodeDefinition.Category);
+            var version = VLVersionToVersion(nodeDefinition.Name.VersionPart);
+            return (name, category, version);
         }
 
-        void SyncExports(Solution solution)
+        static IEnumerable<Node> GetNodeDefinitions(Document doc)
         {
-            foreach (var map in FExports.Values)
-                foreach (var export in map.Values)
-                    export.FCurrentNodeDefinition = null; // Release reference to old model
-            var oldSolution = FSyncedSolution;
-            FSyncedSolution = solution;
-            if (solution.ChangedSince(oldSolution))
-            {
-                foreach (var newDocument in solution.Documents)
-                {
-                    var oldDocument = oldSolution.GetDocument(newDocument.Identity);
-                    if (newDocument.ChangedSince(oldDocument))
-                        SyncExports(newDocument);
-                }
-                foreach (var oldDocument in oldSolution.Documents)
-                {
-                    var newDocument = solution.GetDocument(oldDocument.Identity);
-                    if (newDocument == null)
-                    {
-                        var exports = FExports.ValueOrDefault(oldDocument.FilePath);
-                        foreach (var export in exports)
-                            export.Value.Dispose();
-                        FExports.Remove(oldDocument.FilePath);
-                    }
-                }
-            }
+            return doc?.AllTopLevelDefinitions.Where(n => CanBeWrapped(n)) ?? Enumerable.Empty<Node>();
         }
 
-        IEnumerable<PatchExport> SyncExports(Document document)
+        static bool CanBeWrapped(Node node)
         {
-            var exports = FExports.ValueOrDefault(document.FilePath);
-            if (exports == null)
-                FExports[document.FilePath] = exports = new Dictionary<string, PatchExport>();
-            foreach (var export in exports)
-                export.Value.IsInSync = false;
-            var nodeDefinitions = document.AllTopLevelDefinitions.Where(CanBeWrapped);
-            foreach (var nodeDefinition in nodeDefinitions.Where(n => n.SerializedId != null))
-            {
-                var export = exports.ValueOrDefault(nodeDefinition.SerializedId);
-                if (export == null)
-                    exports[nodeDefinition.SerializedId] = export = new PatchExport(this, nodeDefinition);
-                export.Sync(nodeDefinition);
-                export.IsInSync = true;
-            }
-            var invalidExports = exports.Values.Where(e => !e.IsInSync).ToArray();
-            // Remove them before disposing them as Dispose call has side-effects
-            foreach (var export in invalidExports)
-                exports.Remove(export.SerializedId);
-            foreach (var export in invalidExports)
-                export.Dispose();
-            return exports.Values;
+            return !node.IsGeneric && !node.IsAnyTypeDefinition && (node.Category == Symbols.Category.VVVV || Symbols.Category.VVVV.Contains(node.Category));
         }
 
-        private static bool CanBeWrapped(Node node) =>
-            !node.IsGeneric && !node.IsAnyTypeDefinition && (node.Category == Symbols.Category.VVVV || Symbols.Category.VVVV.Contains(node.Category));
+        static bool Matches(Node nodeDefinition, INodeInfo nodeInfo)
+        {
+            var (name, category, version) = GetNodeInfoKeys(nodeDefinition);
+            return name == nodeInfo.Name && category == nodeInfo.Category && version == nodeInfo.Version;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static void Touch(INodeInfo nodeInfo)
+        {
+        }
     }
 }
