@@ -776,7 +776,7 @@ namespace VVVV.Hosting
         {
             FVVVVHost.Open(file, inActivePatch, window);
         }
-        
+
         public void SelectNodes(INode2[] nodes)
         {
             var query =
@@ -784,7 +784,15 @@ namespace VVVV.Hosting
                 select node.InternalCOMInterf;
             FVVVVHost.SelectNodes(query.ToArray());
         }
-        
+
+        public void SelectNodesDontScroll(INode2[] nodes)
+        {
+            var query =
+                from node in nodes
+                select node.InternalCOMInterf;
+            FVVVVHost.SelectNodesDontScroll(query.ToArray());
+        }
+
         public void ShowEditor(INode2 node)
         {
             // TODO: Kind of a hack
