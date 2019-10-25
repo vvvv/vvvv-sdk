@@ -618,6 +618,6 @@
   <Target Name="GenerateAddonpackNodeList" AfterTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' AND '$(DeployGenerateNodeList)' == 'true' ">
     <!-- Call /nodelist with arguments to filter for specific directory -->
     <Exec Condition="!Exists('$(DeployedVVVVExe)')"
-          Command="&quot;$(VVVVExe)&quot; /allowmultiple /nodelist &quot;$(DeployDir)lib\nodes&quot;" />
+          Command="&quot;$(VVVVExe)&quot; /allowmultiple /appdata /nodelist &quot;$(DeployDir)lib\nodes&quot;" />
   </Target>
 </Project>

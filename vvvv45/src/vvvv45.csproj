@@ -92,7 +92,7 @@
   <Target Name="GenerateNodeList" AfterTargets="VVVV_Deploy" Condition=" '$(Configuration)' == 'Deploy' AND '$(DeployGenerateNodeList)' == 'true' ">
     <!-- /dx9ex flag fixes crash on build server, see: http://msdn.microsoft.com/en-us/library/windows/desktop/ff471598%28v=vs.85%29.aspx -->
     <!-- Call /nodelist without any arguments to include native nodes -->
-    <Exec Condition="Exists('$(DeployedVVVVExe)')" Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /nodelist" />
+    <Exec Condition="Exists('$(DeployedVVVVExe)')" Command="&quot;$(DeployedVVVVExe)&quot; /allowmultiple /appdata /nodelist" />
   </Target>
 
   <Target Name="BuildInstaller" AfterTargets="Zip" DependsOnTargets="VVVV_VersionInfo" Condition="Exists('$(InnoSetupExe)')">
