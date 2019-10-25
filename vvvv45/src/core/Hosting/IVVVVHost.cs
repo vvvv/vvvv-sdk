@@ -224,6 +224,12 @@ namespace VVVV.Hosting
         void SetTimeProvider(ITimeProvider timeProvider);
 
         void ShowVLEditor();
+
+        /// <summary>
+        /// Selects the given nodes in their patch.
+        /// </summary>
+        /// <param name="nodes">The nodes to be selected.</param>
+        void SelectNodesDontScroll(INode[] nodes);
     }
 
     #region Listeners

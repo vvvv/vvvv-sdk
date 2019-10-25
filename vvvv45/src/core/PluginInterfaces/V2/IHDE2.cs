@@ -266,7 +266,7 @@ namespace VVVV.PluginInterfaces.V2
         void SendXMLSnippet(string fileName, string message, bool undoable);
 		
 		/// <summary>
-		/// Selects the given nodes in their patch.
+		/// Selects the given nodes in their patch and scrolls so that they are in view.
 		/// </summary>
 		/// <param name="nodes">The nodes to be selected.</param>
 		void SelectNodes(INode2[] nodes);
@@ -428,6 +428,12 @@ namespace VVVV.PluginInterfaces.V2
         Version Version { get; }
 
         void ShowVLEditor();
+
+        /// <summary>
+        /// Selects the given nodes in their patch.
+        /// </summary>
+        /// <param name="nodes">The nodes to be selected.</param>
+        void SelectNodesDontScroll(INode2[] nodes);
     }
     #endregion IHDEHost
 
