@@ -63,6 +63,9 @@ namespace VVVV.Utils.IO
         public bool IsGestureRotate { get { return Kind == GestureNotificationKind.GestureRotate; } }
         public bool IsGestureTwoFingerTap { get { return Kind == GestureNotificationKind.GestureTwoFingerTap; } }
         public bool IsGesturePressAndTap { get { return Kind == GestureNotificationKind.GesturePressAndTap; } }
+
+        public override INotification WithSender(object sender)
+            => new GestureNotification(Kind, Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GestureBeginNotification : GestureNotification
@@ -71,6 +74,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GestureBegin, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender) 
+            => new GestureBeginNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GestureEndNotification : GestureNotification
@@ -79,6 +84,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GestureEnd, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+            => new GestureEndNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GestureZoomNotification : GestureNotification
@@ -87,6 +94,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GestureZoom, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+                => new GestureZoomNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GesturePanNotification : GestureNotification
@@ -95,6 +104,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GesturePan, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+                => new GesturePanNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GestureRotateNotification : GestureNotification
@@ -103,6 +114,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GestureRotate, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+                => new GestureRotateNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GestureTwoFingerTapNotification : GestureNotification
@@ -111,6 +124,8 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GestureTwoFingerTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+                => new GestureTwoFingerTapNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 
     public class GesturePressAndTapNotification : GestureNotification
@@ -119,5 +134,7 @@ namespace VVVV.Utils.IO
             : base(GestureNotificationKind.GesturePressAndTap, position, clientArea, id, sequenceId, gestureDeviceID, flags, ullArguments, cbExtraArgs, sender)
         {
         }
+        public override INotification WithSender(object sender)
+                => new GesturePressAndTapNotification(Position, ClientArea, Id, SequenceId, GestureDeviceID, Flags, Arguments, ExtraArguments, sender);
     }
 }

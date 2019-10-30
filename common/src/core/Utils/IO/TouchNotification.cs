@@ -49,6 +49,9 @@ namespace VVVV.Utils.IO
         public bool IsTouchDown { get { return Kind == TouchNotificationKind.TouchDown; } }
         public bool IsTouchUp { get { return Kind == TouchNotificationKind.TouchUp; } }
         public bool IsTouchMove { get { return Kind == TouchNotificationKind.TouchMove; } }
+
+        public override INotification WithSender(object sender)
+            => new TouchNotification(Kind, Position, ClientArea, Id, Primary, ContactArea, TouchDeviceID, sender);
     }
 
     public class TouchDownNotification : TouchNotification
