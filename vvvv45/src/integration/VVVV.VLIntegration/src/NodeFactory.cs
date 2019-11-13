@@ -414,7 +414,19 @@ namespace VVVV.VL.Factories
                 .TrimStart('.');
             if (string.IsNullOrEmpty(categoryName))
                 categoryName = exportedNodesCategory.FullName;
-            return categoryName;
+
+            // Special vvvv beta case always making the following categories lower case
+            switch (categoryName)
+            {
+                case "2D":
+                    return "2d";
+                case "3D":
+                    return "3d";
+                case "4D":
+                    return "4d";
+                default:
+                    return categoryName;
+            }
         }
 
         static string VLVersionToVersion(string vlVersion)
