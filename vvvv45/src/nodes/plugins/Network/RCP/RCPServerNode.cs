@@ -367,6 +367,11 @@ namespace VVVV.Nodes
 					//figure out the actual spreadcount
 					//taking dimensions (ie. vectors) of value-spreads into account
 					sliceCount /= dimensions;
+
+                    //FIX: for vector ioboxes on startup slicecount returns 1
+                    //so dividing by dimensions leads to sliceocunt 0
+                    //which is not a valid slicecount at this point, so fix that
+                    sliceCount = Math.Max(1, sliceCount);
 					
 					if (dimensions == 1)
 					{
