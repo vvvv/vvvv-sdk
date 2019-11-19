@@ -113,8 +113,8 @@
       <_InstallerAddonsZipUrl>http://teamcity.vvvv.org/guestAuth/app/rest/builds/id:$(BuildId)/artifacts/content/$(Addons_NameVersionPlatform_OnDisk).zip</_InstallerAddonsZipUrl>
       <_InstallerArguments>$(_InstallerArguments) /DZipDownloadURL=$(_InstallerZipUrl) /DZipDownloadURLAddonpack=$(_InstallerAddonsZipUrl)</_InstallerArguments>
     </PropertyGroup>
-    <!-- Go for offline installer if no BuildId is given -->
-    <PropertyGroup Condition=" '$(_InstallerZipUrl)' == '' ">
+    <!-- Go for offline installer if not preview -->
+    <PropertyGroup Condition="!$(VVVV_IsPreview)">
       <_InstallerArguments>$(_InstallerArguments) /DOffline</_InstallerArguments>
       <_InstallerOutputFileName>$(VVVV_NameVersionPlatform_OnDisk)_setup_offline</_InstallerOutputFileName>
     </PropertyGroup>
