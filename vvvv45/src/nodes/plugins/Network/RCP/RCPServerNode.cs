@@ -1319,7 +1319,7 @@ namespace RCP
 					case RcpTypes.Datatype.Enum:
 					{
 						var def = (IEnumDefinition)definition;
-						return def.Default; //, ((IEnumDefinition)def).Entries) + ", [" + string.Join(",", def.Entries) + "]";
+						return def.Default + ", " + "[" + string.Join(",", def.Entries) + "]";
 					}
 					case RcpTypes.Datatype.Int32:
 					{
