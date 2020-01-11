@@ -264,10 +264,12 @@ namespace VVVV.Nodes
 			
 			var userId = IdFromPin(pin);
 			FCachedPins.Add(userId, pin);
+			FCachedPins.Add(userId + "T", tagPin);
 			
 			var parentId = ParentIdFromNode(node);
 			var param = ParameterFromNode(node, userId, parentId);
-			param.ValueUpdated += ParameterUpdated;
+			param.ValueUpdated += ValueUpdated;
+			param.PropertyChanged += ParameterPropertyChanged;
 			FCachedParams.Add(userId, param);
 			
 			//group
@@ -281,7 +283,7 @@ namespace VVVV.Nodes
 			
 			FRCPServer.Update();
 		}
-		
+
 		private void NodeRemovedCB(INode2 node)
 		{
 			Remove(node);
@@ -299,8 +301,11 @@ namespace VVVV.Nodes
 			
 			var userId = IdFromNode(node);
 			FCachedPins.Remove(userId);
+			FCachedPins.Remove(userId + "T");
+
 			var param = FCachedParams[userId];
-			param.ValueUpdated -= ParameterUpdated;
+			param.ValueUpdated -= ValueUpdated;
+			param.PropertyChanged -= ParameterPropertyChanged;
 			FRCPServer.RemoveParameter(param);
 			FCachedParams.Remove(userId);
 
@@ -545,16 +550,26 @@ namespace VVVV.Nodes
 			mul = RCP.Helpers.ParseInt(subtype[5]);
 		}
 		
-		private void ParameterUpdated(object sender, EventArgs e)
+		private void ValueUpdated(object sender, EventArgs e)
         {
-        	IPin2 pin;
-        	if (FCachedPins.TryGetValue((sender as Parameter).UserId, out pin))
+        	if (FCachedPins.TryGetValue((sender as Parameter).UserId, out var pin))
         	{
 				pin.Spread = RCP.Helpers.ValueToString(sender as Parameter);
         		//FLogger.Log(LogType.Debug, "remote: " + pin.Spread);
         	}
         }
-		
+		private void ParameterPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "Userdata")
+			{
+				if (FCachedPins.TryGetValue((sender as Parameter).UserId + "T", out var pin))
+				{
+					pin.Spread = "|" + Encoding.UTF8.GetString((sender as Parameter).Userdata) + "|";
+					//FLogger.Log(LogType.Debug, "remote: " + pin.Spread);
+				}
+			}
+		}
+
 		#region GetParameter
 		private Parameter GetBoolParameter(string label, int sliceCount, bool def, IPin2 pin, Func<IPin2, int, bool> parse)
 		{
