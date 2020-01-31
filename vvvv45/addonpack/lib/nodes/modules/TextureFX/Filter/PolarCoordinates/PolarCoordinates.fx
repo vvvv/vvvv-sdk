@@ -45,6 +45,8 @@ float zoom<string uiname="Zoom";> = 1;
 float lens<string uiname="Lens";> = 0;
 float offsetx<string uiname="x offset";> = 0;
 float offsety<string uiname="y offset";> = 0;
+float tunnelx<string uiname="tunnel x";> = 0;
+float tunnely<string uiname="tunnel y";> = 0;
 
 // Helper functions
 float2 cartesian(float2 coords)
@@ -76,8 +78,8 @@ float2 cartToPolar(float2 coords)
     mag = lerp(mag, mag*mag/sqrt(2.0), lens);	//fisheye/lens effect
     angle += (1.0 - smoothstep(-1.0, 1.0, mag))*twirl;     //twirl
     
-    coords[0] = angle;
-    coords[1] = mag;
+    coords[0] = angle + tunnelx;
+    coords[1] = mag + tunnely;
     return coords;
 }
 float2 polarToCart(float2 coords)

@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates (EX9.Texture Filter).v4p" filename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates (EX9.Texture Filter).v4p" systemname="polarCoordinates (EX9.Texture Filter)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta39.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_beta_39_x64\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter).v4p" filename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates (EX9.Texture Filter).v4p" systemname="polarCoordinates (EX9.Texture Filter)">
    <BOUNDS height="7830" left="6585" top="2475" type="Window" width="10290">
    </BOUNDS>
-   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="435" top="3255" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4890" left="17910" top="6480" type="Window" width="6120">
@@ -14,6 +14,18 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.36888,0.50233,0.90659,1.00000|">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="20" nodename="Grid (EX9.Geometry)" systemname="Grid (EX9.Geometry)">
@@ -166,6 +178,10 @@
    <PIN pinname="Input Image" slicecount="1" visible="1" values="||">
    </PIN>
    <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
+   </PIN>
+   <PIN pinname="tunnel x" slicecount="1" values="0.26" visible="1">
+   </PIN>
+   <PIN pinname="tunnel y" slicecount="1" values="3.63" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="20" srcpinname="Mesh">
@@ -361,5 +377,31 @@
    </LINKPOINT>
    <LINKPOINT x="600" y="3780">
    </LINKPOINT>
+   </LINK>
+   <PACK Name="addonpack" Version="39.0.0">
+   </PACK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="31">
+   <BOUNDS type="Node" left="7245" top="1140" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7245" top="1140" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel x|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="6" dstpinname="tunnel x">
+   </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="32">
+   <BOUNDS type="Node" left="7545" top="1575" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="7545" top="1575" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel y|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="6" dstpinname="tunnel y">
    </LINK>
    </PATCH>
