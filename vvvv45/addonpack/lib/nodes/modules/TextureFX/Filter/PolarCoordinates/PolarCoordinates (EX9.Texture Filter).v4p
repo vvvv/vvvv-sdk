@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta39.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv_beta_39_x64\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter).v4p" filename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates (EX9.Texture Filter).v4p" systemname="polarCoordinates (EX9.Texture Filter)">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug39.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter).v4p" filename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates (EX9.Texture Filter).v4p" systemname="polarCoordinates (EX9.Texture Filter)">
    <BOUNDS height="7830" left="6585" top="2475" type="Window" width="10290">
    </BOUNDS>
    <NODE componentmode="Hidden" id="21" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
@@ -179,9 +179,13 @@
    </PIN>
    <PIN pinname="Texture Transform" slicecount="1" visible="1" values="||">
    </PIN>
-   <PIN pinname="tunnel x" slicecount="1" values="0.26" visible="1">
+   <PIN pinname="tunnel x" slicecount="1" visible="1" values="0.26">
    </PIN>
-   <PIN pinname="tunnel y" slicecount="1" values="3.63" visible="1">
+   <PIN pinname="tunnel y" slicecount="1" visible="1" values="3.63">
+   </PIN>
+   <PIN pinname="Tunnel X" visible="1">
+   </PIN>
+   <PIN pinname="Tunnel Y" visible="1">
    </PIN>
    </NODE>
    <LINK dstnodeid="6" dstpinname="Mesh" srcnodeid="20" srcpinname="Mesh">
@@ -378,30 +382,44 @@
    <LINKPOINT x="600" y="3780">
    </LINKPOINT>
    </LINK>
-   <PACK Name="addonpack" Version="39.0.0">
+   <PACK Name="addonpack" Version="38.1.0">
    </PACK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="31">
-   <BOUNDS type="Node" left="7245" top="1140" width="100" height="100">
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="33">
+   <BOUNDS type="Box" left="7305" top="1800" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Box" left="7245" top="1140" width="795" height="240">
+   <BOUNDS type="Node" left="7305" top="1800" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel x|">
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   </NODE>
-   <LINK srcnodeid="31" srcpinname="Y Output Value" dstnodeid="6" dstpinname="tunnel x">
-   </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="32">
-   <BOUNDS type="Node" left="7545" top="1575" width="100" height="100">
-   </BOUNDS>
-   <BOUNDS type="Box" left="7545" top="1575" width="795" height="240">
-   </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Precision" slicecount="1" values="4">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel y|">
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Tunnel X|">
    </PIN>
    </NODE>
-   <LINK srcnodeid="32" srcpinname="Y Output Value" dstnodeid="6" dstpinname="tunnel y">
+   <LINK srcnodeid="33" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Tunnel X">
    </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="34">
+   <BOUNDS type="Box" left="7650" top="2040" width="795" height="240">
+   </BOUNDS>
+   <BOUNDS type="Node" left="7650" top="2040" width="0" height="0">
+   </BOUNDS>
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
+   </PIN>
+   <PIN pinname="Units" slicecount="1" values="||">
+   </PIN>
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Tunnel Y|">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Tunnel Y">
+   </LINK>
+   <PACK Name="dx11" Version="1.3.1">
+   </PACK>
+   <PACK Name="Happy.fxh" Version="3.0.0">
+   </PACK>
+   <PACK Name="InstanceNoodles" Version="0.6">
+   </PACK>
    </PATCH>

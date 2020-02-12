@@ -45,8 +45,8 @@ float zoom<string uiname="Zoom";> = 1;
 float lens<string uiname="Lens";> = 0;
 float offsetx<string uiname="x offset";> = 0;
 float offsety<string uiname="y offset";> = 0;
-float tunnelx<string uiname="tunnel x";> = 0;
-float tunnely<string uiname="tunnel y";> = 0;
+float tunnelx<string uiname="Tunnel X";> = 0;
+float tunnely<string uiname="Tunnel Y";> = 0;
 
 // Helper functions
 float2 cartesian(float2 coords)

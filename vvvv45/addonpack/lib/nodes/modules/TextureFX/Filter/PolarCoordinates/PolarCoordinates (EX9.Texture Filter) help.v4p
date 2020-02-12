@@ -1,5 +1,5 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta39.dtd" >
-   <PATCH nodename="C:\vvvv\vvvv_beta_39_x64\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter) help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug39.1.dtd" >
+   <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter) help.v4p" locked="0">
    <BOUNDS height="9210" left="10905" top="600" type="Window" width="12930">
    </BOUNDS>
    <NODE componentmode="InABox" id="17" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
@@ -239,7 +239,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|interpolation - mix between source and destination coordinate systems&cr;&lf;&cr;&lf;Clamp (bool)- determines if the texture should be clmaped at the edge or repeated&cr;&lf;&cr;&lf;x offset - offsets the texture in the horizontal plane&cr;&lf;&cr;&lf;y offset - offsets the texture in the vertical plane&cr;&lf;&cr;&lf;repeats - changes how many times the texture repeats (stretches) around the circle&cr;&lf;&cr;&lf;twirl - rotate around the center&cr;&lf;&cr;&lf;squeeze - compress&cr;&lf;&cr;&lf;zoom - exactly that&cr;&lf;&cr;&lf;lens - slight fisheye effect&cr;&lf;&cr;&lf;scale - scales the texture in and out&cr;&lf;&cr;&lf;tunnel x - angle offset&cr;&lf;&cr;&lf;tunnel y - magnitude offset&cr;&lf;&cr;&lf;technique - which way to convert?|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|interpolation - mix between source and destination coordinate systems&cr;&lf;&cr;&lf;Clamp (bool)- determines if the texture should be clmaped at the edge or repeated&cr;&lf;&cr;&lf;X offset - offsets the texture in the horizontal plane&cr;&lf;&cr;&lf;Y offset - offsets the texture in the vertical plane&cr;&lf;&cr;&lf;repeats - changes how many times the texture repeats (stretches) around the circle&cr;&lf;&cr;&lf;Twirl - rotate around the center&cr;&lf;&cr;&lf;Squeeze - compress&cr;&lf;&cr;&lf;Zoom - exactly that&cr;&lf;&cr;&lf;Lens - slight fisheye effect&cr;&lf;&cr;&lf;Scale - scales the texture in and out&cr;&lf;&cr;&lf;Tunnel X - angle offset&cr;&lf;&cr;&lf;Tunnel Y - magnitude offset&cr;&lf;&cr;&lf;Technique - which way to convert?|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -365,6 +365,10 @@
    </PIN>
    <PIN pinname="tunnel y" visible="1">
    </PIN>
+   <PIN pinname="Tunnel X" visible="1">
+   </PIN>
+   <PIN pinname="Tunnel Y" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="23" dstpinname="Scale" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
@@ -418,38 +422,48 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="Y offset" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="34">
-   <BOUNDS type="Node" left="5475" top="3240" width="100" height="100">
+   <PACK Name="addonpack" Version="38.1.0">
+   </PACK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="36">
+   <BOUNDS type="Box" left="4920" top="3510" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Box" left="5475" top="3240" width="795" height="240">
+   <BOUNDS type="Node" left="4920" top="3510" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel x|">
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Tunnel X|">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
-   <BOUNDS type="Node" left="6435" top="3315" width="100" height="100">
+   <LINK srcnodeid="36" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Tunnel X">
+   </LINK>
+   <NODE nodename="IOBox (Value Advanced)" componentmode="InABox" id="37">
+   <BOUNDS type="Box" left="4980" top="4005" width="795" height="240">
    </BOUNDS>
-   <BOUNDS type="Box" left="6435" top="3315" width="795" height="240">
+   <BOUNDS type="Node" left="4980" top="4005" width="0" height="0">
    </BOUNDS>
-   <PIN pinname="Y Output Value" visible="1">
+   <PIN pinname="Y Input Value" slicecount="1" visible="1" values="0">
    </PIN>
-   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel y|">
+   <PIN pinname="Units" slicecount="1" values="||">
    </PIN>
-   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   <PIN pinname="Precision" slicecount="1" values="4">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|Tunnel Y|">
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
    </NODE>
-   <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="23" dstpinname="tunnel x">
+   <LINK srcnodeid="37" srcpinname="Y Output Value" dstnodeid="23" dstpinname="Tunnel Y">
    </LINK>
-   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="23" dstpinname="tunnel y">
-   </LINK>
-   <PACK Name="addonpack" Version="39.0.0">
+   <PACK Name="dx11" Version="1.3.1">
+   </PACK>
+   <PACK Name="Happy.fxh" Version="3.0.0">
+   </PACK>
+   <PACK Name="InstanceNoodles" Version="0.6">
    </PACK>
    </PATCH>
