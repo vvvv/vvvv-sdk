@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv45beta26.dtd" >
-   <PATCH nodename="C:\GiggelzGoggelz\extras\effects\polarCoordinates\polarCoordinates help.v4p" locked="0">
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50beta39.dtd" >
+   <PATCH nodename="C:\vvvv\vvvv_beta_39_x64\addonpack\lib\nodes\modules\TextureFX\Filter\PolarCoordinates\PolarCoordinates (EX9.Texture Filter) help.v4p" locked="0">
    <BOUNDS height="9210" left="10905" top="600" type="Window" width="12930">
    </BOUNDS>
-   <NODE componentmode="InABox" id="17" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InABox" id="17" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="420" top="5370" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4890" left="17910" top="6480" type="Window" width="6120">
@@ -14,6 +14,18 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.36888,0.50233,0.90659,1.00000|">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="14" nodename="IOBox (String)" systemname="IOBox (String)">
@@ -58,7 +70,7 @@
    <PIN pinname="Mip Map Count" slicecount="1" values="All">
    </PIN>
    </NODE>
-   <NODE componentmode="InABox" id="11" nodename="RENDERER (EX9)" systemname="Renderer (EX9)">
+   <NODE componentmode="InABox" id="11" nodename="RENDERER (EX9)" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="4200" top="6615" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4890" left="18510" top="7080" type="Window" width="6120">
@@ -70,6 +82,18 @@
    <PIN pinname="Background Color" slicecount="1" values="|0.36888,0.50233,0.90659,1.00000|">
    </PIN>
    <PIN pinname="EX9 Out" visible="1">
+   </PIN>
+   <PIN pinname="Fullscreen Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Fullscreen Dimensions" slicecount="1" values="|1024 x 768|">
+   </PIN>
+   <PIN pinname="Fullscreen Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="10" nodename="Quad (DX9)" systemname="Quad (DX9)">
@@ -215,7 +239,7 @@
    </BOUNDS>
    <BOUNDS height="160" left="0" top="0" type="Window" width="215">
    </BOUNDS>
-   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|interpolation - mix between source and destination coordinate systems&cr;&lf;&cr;&lf;Clamp (bool)- determines if the texture should be clmaped at the edge or repeated&cr;&lf;&cr;&lf;x offset - offsets the texture in the horizontal plane&cr;&lf;&cr;&lf;y offset - offsets the texture in the vertical plane&cr;&lf;&cr;&lf;repeats - changes how many times the texture repeats (stretches) around the circle&cr;&lf;&cr;&lf;twirl - rotate around the center&cr;&lf;&cr;&lf;squeeze - compress&cr;&lf;&cr;&lf;zoom - exactly that&cr;&lf;&cr;&lf;lens - slight fisheye effect&cr;&lf;&cr;&lf;scale - scales the texture in and out&cr;&lf;&cr;&lf;technique - which way to convert?|">
+   <PIN encoded="0" pinname="Input String" slicecount="1" visible="0" values="|interpolation - mix between source and destination coordinate systems&cr;&lf;&cr;&lf;Clamp (bool)- determines if the texture should be clmaped at the edge or repeated&cr;&lf;&cr;&lf;x offset - offsets the texture in the horizontal plane&cr;&lf;&cr;&lf;y offset - offsets the texture in the vertical plane&cr;&lf;&cr;&lf;repeats - changes how many times the texture repeats (stretches) around the circle&cr;&lf;&cr;&lf;twirl - rotate around the center&cr;&lf;&cr;&lf;squeeze - compress&cr;&lf;&cr;&lf;zoom - exactly that&cr;&lf;&cr;&lf;lens - slight fisheye effect&cr;&lf;&cr;&lf;scale - scales the texture in and out&cr;&lf;&cr;&lf;tunnel x - angle offset&cr;&lf;&cr;&lf;tunnel y - magnitude offset&cr;&lf;&cr;&lf;technique - which way to convert?|">
    </PIN>
    <PIN pinname="Output String" visible="0">
    </PIN>
@@ -337,6 +361,10 @@
    </PIN>
    <PIN pinname="Enabled" pintype="Input" slicecount="1" visible="-1" values="1">
    </PIN>
+   <PIN pinname="tunnel x" visible="1">
+   </PIN>
+   <PIN pinname="tunnel y" visible="1">
+   </PIN>
    </NODE>
    <LINK dstnodeid="23" dstpinname="Scale" srcnodeid="3" srcpinname="Y Output Value">
    </LINK>
@@ -390,4 +418,38 @@
    </LINK>
    <LINK dstnodeid="23" dstpinname="Y offset" srcnodeid="5" srcpinname="Y Output Value">
    </LINK>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="34">
+   <BOUNDS type="Node" left="5475" top="3240" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="5475" top="3240" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel x|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <NODE systemname="IOBox (Value Advanced)" nodename="IOBox (Value Advanced)" componentmode="InABox" id="35">
+   <BOUNDS type="Node" left="6435" top="3315" width="100" height="100">
+   </BOUNDS>
+   <BOUNDS type="Box" left="6435" top="3315" width="795" height="240">
+   </BOUNDS>
+   <PIN pinname="Y Output Value" visible="1">
+   </PIN>
+   <PIN pinname="Descriptive Name" slicecount="1" values="|tunnel y|">
+   </PIN>
+   <PIN pinname="Y Input Value" slicecount="1" values="0">
+   </PIN>
+   <PIN pinname="X Input Value" slicecount="1" values="0">
+   </PIN>
+   </NODE>
+   <LINK srcnodeid="34" srcpinname="Y Output Value" dstnodeid="23" dstpinname="tunnel x">
+   </LINK>
+   <LINK srcnodeid="35" srcpinname="Y Output Value" dstnodeid="23" dstpinname="tunnel y">
+   </LINK>
+   <PACK Name="addonpack" Version="39.0.0">
+   </PACK>
    </PATCH>
