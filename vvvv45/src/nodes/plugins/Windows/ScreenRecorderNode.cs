@@ -196,7 +196,7 @@ namespace VVVV.Nodes.Capture
             {
                 try
                 {
-                    var img = FScreenCapture.CaptureWindow(FHandleToCapture, FShowCursor[0]);
+                    var img = FScreenCapture.CaptureWindow(FHandleToCapture, true, null, FShowCursor[0]);
                     var delay = FHDEHost.FrameTime - FLastFrameTime;
 
                     FFrames.Add(new Frame() { Image = img, Delay = (float)delay });
