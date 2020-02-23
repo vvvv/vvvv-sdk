@@ -1,8 +1,8 @@
-<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug34.100.dtd" >
+<!DOCTYPE PATCH  SYSTEM "http://vvvv.org/versions/vvvv50debug39.1.dtd" >
    <PATCH nodename="C:\Users\joreg\Documents\repos\vvvv\public\vvvv45\lib\nodes\native\Writer (EX9.Texture AVI) help.v4p" scrollx="0" scrolly="45">
    <BOUNDS height="6645" left="6300" top="735" type="Window" width="10065">
    </BOUNDS>
-   <NODE id="13" nodename="RENDERER (EX9)" componentmode="InAWindow">
+   <NODE id="13" nodename="RENDERER (EX9)" componentmode="InAWindow" systemname="RENDERER (EX9)">
    <BOUNDS height="0" left="1575" top="2535" type="Node" width="0">
    </BOUNDS>
    <BOUNDS height="4230" left="1770" top="735" type="Window" width="4500">
@@ -30,6 +30,8 @@
    <PIN pinname="Windowed Depthbuffer Format" slicecount="1" values="NONE">
    </PIN>
    <PIN pinname="Windowed Antialiasing Quality Level" slicecount="1" values="NONE">
+   </PIN>
+   <PIN pinname="Auto Aspect Ratio" slicecount="1" values="0">
    </PIN>
    </NODE>
    <NODE id="12" nodename="Quad (DX9)">
@@ -139,7 +141,7 @@
    </PIN>
    <PIN pinname="X Input Value" slicecount="1" values="0">
    </PIN>
-   <PIN pinname="X Output Value" visible="1">
+   <PIN pinname="X Output Value" visible="-1" pintype="Output">
    </PIN>
    </NODE>
    <NODE componentmode="InABox" id="4" nodename="IOBox (String)">
@@ -184,8 +186,6 @@
    </NODE>
    <LINK dstnodeid="6" dstpinname="FileName" srcnodeid="4" srcpinname="Output String">
    </LINK>
-   <LINK dstnodeid="6" dstpinname="Write" srcnodeid="5" srcpinname="X Output Value">
-   </LINK>
    <NODE componentmode="InABox" id="1" nodename="IOBOX (VALUE ADVANCED)">
    <BOUNDS height="0" left="3360" top="4335" type="Node" width="0">
    </BOUNDS>
@@ -224,7 +224,7 @@
    </LINK>
    <LINK srcnodeid="18" srcpinname="Texture Out" dstnodeid="6" dstpinname="Texture">
    </LINK>
-   <PACK Name="addonpack" Version="34.100.0">
+   <PACK Name="addonpack" Version="38.1.0">
    </PACK>
    <NODE nodename="IOBox (String)" componentmode="InABox" id="19" systemname="IOBox (String)">
    <BOUNDS type="Node" left="6720" top="4560" width="7290" height="480">
@@ -240,4 +240,12 @@
    <PIN pinname="String Type" slicecount="1" values="String">
    </PIN>
    </NODE>
+   <LINK srcnodeid="5" srcpinname="Y Output Value" dstnodeid="6" dstpinname="Write">
+   </LINK>
+   <PACK Name="dx11" Version="1.3.1">
+   </PACK>
+   <PACK Name="Happy.fxh" Version="3.0.0">
+   </PACK>
+   <PACK Name="InstanceNoodles" Version="0.6">
+   </PACK>
    </PATCH>
