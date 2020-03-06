@@ -32,12 +32,12 @@ foreach ($c in $localCommits)
         
         $response = Invoke-RestMethod -Uri "$tcHost$($build.href)"
         $response = Invoke-RestMethod -Uri "$tcHost$($response.build.artifacts.href)"
-        $file = $response.ChildNodes.file | select -first 1
-        # $file.name like VVVV.NAME.31.3.2-develop-42.nupkg
-        $p = "VVVV\.[^\.]*\.([0-9]+)\.([0-9]+)\.([0-9]+)([^\.]*)\.nupkg"
+        $file = $response.ChildNodes.file | select -first 2
+        # $file.name like VVVV.Binaries.x64.31.3.2-develop-42.nupkg
+        $p = "VVVV\.Binaries\.[^\.]*\.([0-9]+)\.([0-9]+)\.([0-9]+)([^\.]*)\.nupkg"
         $major, $minor, $patch, $preRelease = ([regex]$p).Match($file.name).Groups | select -skip 1 | %{$_.Value}
         $packageVersion = "$major.$minor.$patch$preRelease"
-        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath" -Source "http://teamcity.vvvv.org/guestAuth/app/nuget/v1/FeedService.svc/"
+        & $nugetExe install $packageName -Version $packageVersion -OutputDirectory "$packagesPath" -Source "$tcHost/guestAuth/app/nuget/v1/FeedService.svc/"
         $contentFolder = Join-Path $packagesPath (Join-Path "VVVV.Binaries.$platform.$packageVersion" "content")
         Copy-Item (Join-Path $contentFolder "\*") -Destination $vvvvRootPath -Recurse -Force
         break
@@ -46,5 +46,5 @@ foreach ($c in $localCommits)
 
 if ($found -eq $false)
 {
-    Write-Error "Couldn't find any matching binaries. Either increase the maxCount parameter or look manually at http://teamcity.vvvv.org"
+    Write-Error "Couldn't find any matching binaries. Either increase the maxCount parameter or look manually at $tcHost"
 }
