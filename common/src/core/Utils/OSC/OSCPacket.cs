@@ -279,6 +279,7 @@ namespace VVVV.Utils.OSC
         protected static char unpackChar(byte[] bytes, ref int start)
         {
             byte[] data = {bytes[start]};
+            start += 4;
             return BitConverter.ToChar(data, 0);
         }
 
