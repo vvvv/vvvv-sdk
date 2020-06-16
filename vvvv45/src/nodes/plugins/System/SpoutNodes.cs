@@ -30,8 +30,12 @@ namespace VVVV.Nodes
 		
 		[Input("Height")]
 		public ISpread<uint> FHeight;
-		
-		[Input("Handle")]
+
+        // TODO
+        // [Input("Format")]
+        // public ISpread<double> FFormat;
+
+        [Input("Handle")]
 		public ISpread<uint> FHandle;
 		
 		[Input("Write", IsBang=true)]
@@ -64,9 +68,16 @@ namespace VVVV.Nodes
                     //if there was an existing one dispose it
 					if ((i < FSpoutSender.Length) && (FSpoutSender[i] != null))
 						FSpoutSender[i].Dispose();
-					
+
                     //create the spoutsender
-					FSpoutSender[i] = new SpoutSender(FSenderName[i], FHandle[i], FWidth[i], FHeight[i], 21, 0); 
+
+                    // Default format should be = 28 - DirectX 11 (DXGI_FORMAT_R8G8B8A8_UNORM)
+                    FSpoutSender[i] = new SpoutSender(FSenderName[i], FHandle[i], FWidth[i], FHeight[i], 28, 0);
+
+                    // TODO - create format pin and pass texture format in as integer
+                    // UInt32 format = Convert.ToUInt32(FFormat[i].ToString());
+                    // FSpoutSender[i] = new SpoutSender(FSenderName[i], FHandle[i], FWidth[i], FHeight[i], format, 0);
+
 					var succ = FSpoutSender[i].Initialize();
 					FLogger.Log(LogType.Debug, "Writing Spout sender " + (succ ? "succeeded!" : "failed!"));
 				}
