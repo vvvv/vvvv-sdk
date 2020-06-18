@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Threading;
 using System.Runtime.InteropServices;
+using Microsoft.Win32; // for registry
 
 //adapted from: https://github.com/ItayGal2/SpoutCSharp
 //with help from: Lynn Jarvis - http://spout.zeal.co
@@ -14,10 +15,12 @@ namespace Spout
     public class SpoutSender : IDisposable
     {
         const string CSenderNamesHandle = "SpoutSenderNames";
-        const int CMaxSenders = 40;
+        // const int CMaxSenders = 40;
         const int CSenderNameLength = 256;
         const string CActiveSenderHandle = "ActiveSenderName";
         const int CSpoutWaitTimeout = 100;
+
+        public static int MaxSenders = 40;
 
         MemoryMappedFile FSenderDescriptionMap;
         MemoryMappedFile FActiveSenderMap;
@@ -30,6 +33,20 @@ namespace Spout
         {
             FSenderName = senderName;
             FTextureDesc = new TextureDesc(sharedHandle, width, height, format, usage, new byte[256], 0);
+
+            // Retrieve the MaxSenders value from the registry - default 40
+            // Computer\HKEY_CURRENT_USER\Software\Leading Edge\Spout\MaxSenders
+            MaxSenders = 40; // Default
+            RegistryKey subkey = Registry.CurrentUser.OpenSubKey("Software\\Leading Edge\\Spout");
+            if (subkey != null)
+            {
+                int m = (int)subkey.GetValue("MaxSenders"); // Get the value
+                if (m > 0)
+                {
+                    MaxSenders = m; // Set the global max senders value
+                }
+            }
+
         }
 
         public void Dispose()
@@ -48,7 +65,8 @@ namespace Spout
 
         public bool Initialize()
         {
-            var len = CSenderNameLength * CMaxSenders;
+            // var len = CSenderNameLength * CMaxSenders;
+            var len = CSenderNameLength * MaxSenders;
             FSenderNamesMap = MemoryMappedFile.CreateOrOpen(CSenderNamesHandle, len);
 
             //add sendername to list of senders
@@ -116,7 +134,8 @@ namespace Spout
                 mutex.WaitOne(CSpoutWaitTimeout);
                 using (var vs = FSenderNamesMap.CreateViewStream())
                 {
-                    for (int i = 0; i < CMaxSenders; i++)
+                    // for (int i = 0; i < CMaxSenders; i++)
+                    for (int i = 0; i < MaxSenders; i++)
                     {
                         byte[] bytes;
                         if (i < senders.Count)
@@ -143,7 +162,8 @@ namespace Spout
         {
             var namesList = new List<string>();
             var name = new StringBuilder();
-            var len = CMaxSenders * CSenderNameLength;
+            // var len = CMaxSenders * CSenderNameLength;
+            var len = MaxSenders * CSenderNameLength;
 
             //Read the memory mapped file in to a byte array
             using (var mmf = MemoryMappedFile.CreateOrOpen(CSenderNamesHandle, len))
